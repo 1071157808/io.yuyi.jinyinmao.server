@@ -4,7 +4,7 @@
 // Created          : 2015-04-01  9:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-02  12:19 AM
+// Last Modified On : 2015-04-04  5:49 PM
 // ***********************************************************************
 // <copyright file="UserRegister.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,16 +14,16 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
-using Moe.Orleans.Command;
+using Moe.Orleans.Commands;
 using Orleans.Concurrency;
 
-namespace Yuyi.Jinyinmao.Domain.User.Interface
+namespace Yuyi.Jinyinmao.Domain
 {
     /// <summary>
     ///     Class UserRegister.
     /// </summary>
     [Immutable]
-    public class UserRegister : ICommand
+    public class UserRegister
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserRegister" /> class.
@@ -34,8 +34,6 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
             this.HandlerType = typeof(IUser);
             this.HanderResult = null;
         }
-
-        #region ICommand Members
 
         /// <summary>
         ///     Gets the hander result.
@@ -65,7 +63,5 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
         {
             get { return this.HanderResult != null; }
         }
-
-        #endregion ICommand Members
     }
 }

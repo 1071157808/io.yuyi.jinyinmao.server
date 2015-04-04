@@ -14,7 +14,7 @@
 #pragma warning disable 1591
 #pragma warning disable 1998
 
-namespace Yuyi.Jinyinmao.Domain.User.Interface
+namespace Yuyi.Jinyinmao.Domain
 {
     using System;
     using System.Net;
@@ -24,8 +24,8 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
     using System.Collections.Generic;
     using System.Reflection;
     using Orleans.Serialization;
-    using Yuyi.Jinyinmao.Domain.User.Interface;
-    using Moe.Orleans.Command;
+    using Yuyi.Jinyinmao.Domain;
+    using Moe.Orleans.Commands;
     using Orleans;
     using Orleans.Runtime;
     
@@ -36,27 +36,27 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
     {
         
 
-                        public static Yuyi.Jinyinmao.Domain.User.Interface.IUser GetGrain(long primaryKey)
+                        public static Yuyi.Jinyinmao.Domain.IUser GetGrain(long primaryKey)
                         {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.User.Interface.IUser), -94239657, primaryKey));
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUser), 829520060, primaryKey));
                         }
 
-                        public static Yuyi.Jinyinmao.Domain.User.Interface.IUser GetGrain(long primaryKey, string grainClassNamePrefix)
+                        public static Yuyi.Jinyinmao.Domain.IUser GetGrain(long primaryKey, string grainClassNamePrefix)
                         {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.User.Interface.IUser), -94239657, primaryKey, grainClassNamePrefix));
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUser), 829520060, primaryKey, grainClassNamePrefix));
                         }
 
-                        public static Yuyi.Jinyinmao.Domain.User.Interface.IUser GetGrain(System.Guid primaryKey)
+                        public static Yuyi.Jinyinmao.Domain.IUser GetGrain(System.Guid primaryKey)
                         {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.User.Interface.IUser), -94239657, primaryKey));
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUser), 829520060, primaryKey));
                         }
 
-                        public static Yuyi.Jinyinmao.Domain.User.Interface.IUser GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        public static Yuyi.Jinyinmao.Domain.IUser GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
                         {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.User.Interface.IUser), -94239657, primaryKey, grainClassNamePrefix));
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUser), 829520060, primaryKey, grainClassNamePrefix));
                         }
 
-            public static Yuyi.Jinyinmao.Domain.User.Interface.IUser Cast(global::Orleans.Runtime.IAddressable grainRef)
+            public static Yuyi.Jinyinmao.Domain.IUser Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
                 
                 return UserReference.Cast(grainRef);
@@ -65,15 +65,15 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
         [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
         [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.User.Interface.Yuyi.Jinyinmao.Domain.User.Interface.IUser")]
-        internal class UserReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.User.Interface.IUser
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IUser")]
+        internal class UserReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.IUser
         {
             
 
-            public static Yuyi.Jinyinmao.Domain.User.Interface.IUser Cast(global::Orleans.Runtime.IAddressable grainRef)
+            public static Yuyi.Jinyinmao.Domain.IUser Cast(global::Orleans.Runtime.IAddressable grainRef)
             {
                 
-                return (Yuyi.Jinyinmao.Domain.User.Interface.IUser) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.User.Interface.IUser), (global::Orleans.Runtime.GrainReference gr) => { return new UserReference(gr);}, grainRef, -94239657);
+                return (Yuyi.Jinyinmao.Domain.IUser) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.IUser), (global::Orleans.Runtime.GrainReference gr) => { return new UserReference(gr);}, grainRef, 829520060);
             }
             
             protected internal UserReference(global::Orleans.Runtime.GrainReference reference) : 
@@ -90,7 +90,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
             {
                 get
                 {
-                    return -94239657;
+                    return 829520060;
                 }
             }
             
@@ -98,7 +98,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
             {
                 get
                 {
-                    return "Yuyi.Jinyinmao.Domain.User.Interface.Yuyi.Jinyinmao.Domain.User.Interface.IUser";
+                    return "Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IUser";
                 }
             }
             
@@ -132,7 +132,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
                 return UserMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.User.Interface.IUser.Register(Yuyi.Jinyinmao.Domain.User.Interface.UserRegister @userRegister)
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.Register(Yuyi.Jinyinmao.Domain.UserRegister @userRegister)
             {
 
                 return base.InvokeMethodAsync<object>(1945285028, new object[] {@userRegister} );
@@ -142,7 +142,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.User.Interface.Yuyi.Jinyinmao.Domain.User.Interface.IUser", -94239657)]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IUser", 829520060)]
     internal class UserMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
     {
         
@@ -150,7 +150,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
         {
             get
             {
-                return -94239657;
+                return 829520060;
             }
         }
         
@@ -161,7 +161,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
             {                    if (grain == null) throw new System.ArgumentNullException("grain");
                 switch (interfaceId)
                 {
-                    case -94239657:  // IUser
+                    case 829520060:  // IUser
                         switch (methodId)
                         {
                             case 1945285028: 
@@ -187,7 +187,7 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
             switch (interfaceId)
             {
                 
-                case -94239657:  // IUser
+                case 829520060:  // IUser
                     switch (methodId)
                     {
                         case 1945285028:
@@ -206,14 +206,14 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
-    internal class Yuyi_Jinyinmao_Domain_User_Interface_UserRegisterSerialization
+    internal class Yuyi_Jinyinmao_Domain_UserRegisterSerialization
     {
         
         private static System.Reflection.FieldInfo fieldInfo2;
         
         private static System.Reflection.FieldInfo fieldInfo3;
         
-        static Yuyi_Jinyinmao_Domain_User_Interface_UserRegisterSerialization()
+        static Yuyi_Jinyinmao_Domain_UserRegisterSerialization()
         {
             Register();
         }
@@ -225,16 +225,16 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            Yuyi.Jinyinmao.Domain.User.Interface.UserRegister input = ((Yuyi.Jinyinmao.Domain.User.Interface.UserRegister)(untypedInput));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.HanderResult, stream, typeof(Moe.Orleans.Command.ICommandHanderResult));
+            Yuyi.Jinyinmao.Domain.UserRegister input = ((Yuyi.Jinyinmao.Domain.UserRegister)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.HanderResult, stream, typeof(Moe.Orleans.Commands.ICommandHanderResult));
             Orleans.Serialization.SerializationManager.SerializeInner(input.HandlerId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.HandlerType, stream, typeof(System.Type));
         }
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            Yuyi.Jinyinmao.Domain.User.Interface.UserRegister result = new Yuyi.Jinyinmao.Domain.User.Interface.UserRegister();
-            result.HanderResult = ((Moe.Orleans.Command.ICommandHanderResult)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Moe.Orleans.Command.ICommandHanderResult), stream)));
+            Yuyi.Jinyinmao.Domain.UserRegister result = new Yuyi.Jinyinmao.Domain.UserRegister();
+            result.HanderResult = ((Moe.Orleans.Commands.ICommandHanderResult)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Moe.Orleans.Commands.ICommandHanderResult), stream)));
             object objResult = ((object)(result));
             object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             fieldInfo2.SetValue(objResult, temp2);
@@ -245,10 +245,10 @@ namespace Yuyi.Jinyinmao.Domain.User.Interface
         
         public static void Register()
         {
-            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.User.Interface.UserRegister), DeepCopier, Serializer, Deserializer);
-            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.User.Interface.UserRegister).GetField("<HandlerId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.UserRegister), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.UserRegister).GetField("<HandlerId>k__BackingField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
-            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.User.Interface.UserRegister).GetField("<HandlerType>k__BackingField", (System.Reflection.BindingFlags.Instance 
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.UserRegister).GetField("<HandlerType>k__BackingField", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
