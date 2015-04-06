@@ -1,0 +1,91 @@
+﻿// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// Author           : Siqi Lu
+// Created          : 2015-04-06  10:08 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-04-07  12:05 AM
+// ***********************************************************************
+// <copyright file="MiscController.cs" company="Shanghai Yuyi">
+//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
+using Moe.AspNet.Filters;
+using Yuyi.Jinyinmao.Api.Models.Misc;
+using Yuyi.Jinyinmao.Api.Properties;
+using Yuyi.Jinyinmao.Service.Interface;
+using Yuyi.Jinyinmao.Service.Misc.Interface;
+
+namespace Yuyi.Jinyinmao.Api.Controllers
+{
+    /// <summary>
+    ///     Class MiscController.
+    /// </summary>
+    public class MiscController : ApiControllerBase
+    {
+        private readonly IVeriCodeService veriCodeService;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MiscController" /> class.
+        /// </summary>
+        /// <param name="veriCodeService">The veri code service.</param>
+        public MiscController(IVeriCodeService veriCodeService)
+        {
+            this.veriCodeService = veriCodeService;
+        }
+
+        /// <summary>
+        ///     发送验证码
+        /// </summary>
+        /// <remarks>
+        ///     一天(自然天)同种类型的验证码只能发送10次，防止恶意使用验证码
+        /// </remarks>
+        /// <param name="request">
+        ///     验证码发送请求
+        /// </param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        [Route("SendVeriCode"), ActionParameterRequired("request"), ActionParameterValidate(Order = 1), ResponseType(typeof(SendVeriCodeResponse))]
+        public async Task<IHttpActionResult> Send(SendVeriCodeRequest request)
+        {
+            string cellphone = request.Cellphone;
+
+            if (request.Type == VeriCodeType.ResetPaymentPassword)
+            {
+                if (this.CurrentUser == null)
+                {
+                    return this.Unauthorized();
+                }
+
+                cellphone = this.CurrentUser.Cellphone;
+            }
+
+            string message = GetVeriCodeMessage(request.Type);
+            SendVeriCodeResult result = await this.veriCodeService.SendAsync(cellphone, request.Type, message);
+
+            return this.Ok(result.ToResponse());
+        }
+
+        private string GetVeriCodeMessage(VeriCodeType type)
+        {
+            switch (type)
+            {
+                case VeriCodeType.SignUp:
+                    return Resources.Sms_VeriCode_SignUp;
+
+                case VeriCodeType.ResetLoginPassword:
+                    return Resources.Sms_VeriCode_ResetLoginPawword;
+
+                case VeriCodeType.ResetPaymentPassword:
+                    return Resources.Sms_VeriCode_ResetPaymentPawword;
+
+                default:
+                    return Resources.Sms_VeriCode;
+            }
+        }
+    }
+}
