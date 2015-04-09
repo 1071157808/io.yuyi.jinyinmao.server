@@ -16,16 +16,90 @@
 
 namespace Yuyi.Jinyinmao.Domain
 {
-    using Moe.Actor.Commands;
+    using System;
     using System.Collections.Generic;
     using System.Collections;
-    using System.Runtime.Serialization;
-    using System;
     using Orleans.CodeGeneration;
     using Orleans;
-    using Moe.Actor.Model;
     using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    using Moe.Actor.Commands;
+    using Moe.Actor.Model;
+    using Orleans.Runtime;
     
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [SerializableAttribute()]
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.Cellphone")]
+    public class CellphoneState : global::Orleans.CodeGeneration.GrainState, ICellphoneState
+    {
+        
+
+            public String @Cellphone { get; set; }
+
+            public Boolean @Registered { get; set; }
+
+            public Nullable<Guid> @UserId { get; set; }
+
+            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
+            {   
+                object value;
+                if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
+                if (values.TryGetValue("Registered", out value)) @Registered = (Boolean) value;
+                if (values.TryGetValue("UserId", out value)) @UserId = (Nullable<Guid>) value;
+            }
+
+            public override System.String ToString()
+            {
+                return System.String.Format("CellphoneState( Cellphone={0} Registered={1} UserId={2} )", @Cellphone, @Registered, @UserId);
+            }
+        
+        public CellphoneState() : 
+                base("Yuyi.Jinyinmao.Domain.Cellphone")
+        {
+            this.InitStateFields();
+        }
+        
+        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
+        {
+            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["Cellphone"] = this.Cellphone;
+            result["Registered"] = this.Registered;
+            result["UserId"] = this.UserId;
+            return result;
+        }
+        
+        private void InitStateFields()
+        {
+            this.Cellphone = default(String);
+            this.Registered = default(Boolean);
+            this.UserId = default(Nullable<Guid>);
+        }
+        
+        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+        public static object _Copier(object original)
+        {
+            CellphoneState input = ((CellphoneState)(original));
+            return input.DeepCopy();
+        }
+        
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            CellphoneState input = ((CellphoneState)(original));
+            input.SerializeTo(stream);
+        }
+        
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            CellphoneState result = new CellphoneState();
+            result.DeserializeFrom(stream);
+            return result;
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -146,7 +220,9 @@ namespace Yuyi.Jinyinmao.Domain
 
             public Nullable<DateTime> @VerifiedTime { get; set; }
 
-            public DateTime @VerifingTime { get; set; }
+            public IJinyinmaoAccount @JinyinmaoAccount { get; set; }
+
+            public ISourceAccount @SourceAccount { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
             {   
@@ -161,12 +237,13 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
                 if (values.TryGetValue("Verified", out value)) @Verified = (Boolean) value;
                 if (values.TryGetValue("VerifiedTime", out value)) @VerifiedTime = (Nullable<DateTime>) value;
-                if (values.TryGetValue("VerifingTime", out value)) @VerifingTime = (DateTime) value;
+                if (values.TryGetValue("JinyinmaoAccount", out value)) @JinyinmaoAccount = (IJinyinmaoAccount) value;
+                if (values.TryGetValue("SourceAccount", out value)) @SourceAccount = (ISourceAccount) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} Id={1} Cellphone={2} Credential={3} CredentialNo={4} RealName={5} RegisterTime={6} Verified={7} VerifiedTime={8} VerifingTime={9} )", @CommandStore, @Id, @Cellphone, @Credential, @CredentialNo, @RealName, @RegisterTime, @Verified, @VerifiedTime, @VerifingTime);
+                return System.String.Format("UserState( CommandStore={0} Id={1} Cellphone={2} Credential={3} CredentialNo={4} RealName={5} RegisterTime={6} Verified={7} VerifiedTime={8} JinyinmaoAccount={9} SourceAccount={10} )", @CommandStore, @Id, @Cellphone, @Credential, @CredentialNo, @RealName, @RegisterTime, @Verified, @VerifiedTime, @JinyinmaoAccount, @SourceAccount);
             }
         
         public UserState() : 
@@ -187,7 +264,8 @@ namespace Yuyi.Jinyinmao.Domain
             result["RegisterTime"] = this.RegisterTime;
             result["Verified"] = this.Verified;
             result["VerifiedTime"] = this.VerifiedTime;
-            result["VerifingTime"] = this.VerifingTime;
+            result["JinyinmaoAccount"] = this.JinyinmaoAccount;
+            result["SourceAccount"] = this.SourceAccount;
             return result;
         }
         
@@ -202,7 +280,8 @@ namespace Yuyi.Jinyinmao.Domain
             this.RegisterTime = default(DateTime);
             this.Verified = default(Boolean);
             this.VerifiedTime = default(Nullable<DateTime>);
-            this.VerifingTime = default(DateTime);
+            this.JinyinmaoAccount = default(IJinyinmaoAccount);
+            this.SourceAccount = default(ISourceAccount);
         }
         
         [global::Orleans.CodeGeneration.CopierMethodAttribute()]

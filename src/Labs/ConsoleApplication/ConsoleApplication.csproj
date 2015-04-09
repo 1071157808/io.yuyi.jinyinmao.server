@@ -41,6 +41,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MoeLib, Version=1.4.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.1.4.11.0\lib\net452\MoeLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -57,16 +61,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
-      <Project>{0E048DCC-F815-4D24-87B4-4210FD89E500}</Project>
-      <Name>Yuyi.Jinyinmao.Service.Misc.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Services.Misc\Yuyi.Jinyinmao.Services.Misc.csproj">
-      <Project>{A109D0AD-39B7-49EB-B7AD-A0850782E2BC}</Project>
-      <Name>Yuyi.Jinyinmao.Services.Misc</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

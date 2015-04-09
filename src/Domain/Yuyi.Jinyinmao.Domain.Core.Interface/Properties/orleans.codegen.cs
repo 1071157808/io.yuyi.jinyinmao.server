@@ -127,6 +127,12 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 return ClusterConfigMethodInvoker.GetMethodName(interfaceId, methodId);
             }
+            
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.IUserCellphoneManager> Yuyi.Jinyinmao.Domain.IClusterConfig.GetUserCellphoneManagerAsync()
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.IUserCellphoneManager>(-1876413840, new object[] {} );
+            }
         }
     }
     
@@ -154,6 +160,8 @@ namespace Yuyi.Jinyinmao.Domain
                     case 847408428:  // IClusterConfig
                         switch (methodId)
                         {
+                            case -1876413840: 
+                                return ((IClusterConfig)grain).GetUserCellphoneManagerAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -178,7 +186,9 @@ namespace Yuyi.Jinyinmao.Domain
                 case 847408428:  // IClusterConfig
                     switch (methodId)
                     {
-                        
+                        case -1876413840:
+                            return "GetUserCellphoneManagerAsync";
+                    
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                     }

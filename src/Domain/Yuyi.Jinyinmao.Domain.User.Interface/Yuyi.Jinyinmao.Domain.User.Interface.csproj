@@ -51,7 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\CellphoneInfo.cs" />
+    <Compile Include="Dto\UserInfo.cs" />
     <Compile Include="Credential.cs" />
+    <Compile Include="ICellphone.cs" />
+    <Compile Include="ICellphoneState.cs" />
     <Compile Include="IJBYAccount.cs" />
     <Compile Include="IJBYAccountState.cs" />
     <Compile Include="IJinyinmaoAccount.cs" />
@@ -77,13 +81,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Moe\Repositories\MoeOrleans\MoeOrleansInterface\MoeOrleansInterface.csproj">
-      <Project>{cf6a9491-c13c-4cbd-8aa7-b894919d7dfa}</Project>
-      <Name>MoeOrleansInterface</Name>
+    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">
+      <Project>{261fbc2f-580a-4b4b-a56b-d152c570dca1}</Project>
+      <Name>MoeActorInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Moe\Repositories\MoeOrleans\MoeOrleans\MoeOrleans.csproj">
-      <Project>{8237be87-2719-4570-8edf-05cedfbeb42f}</Project>
-      <Name>MoeOrleans</Name>
+    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActor\MoeActor.csproj">
+      <Project>{357afa0b-73da-401f-ba49-4a46d1c44b8b}</Project>
+      <Name>MoeActor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

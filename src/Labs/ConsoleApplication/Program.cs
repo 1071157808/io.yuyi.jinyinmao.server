@@ -4,7 +4,7 @@
 // Created          : 2015-04-06  2:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  7:27 PM
+// Last Modified On : 2015-04-07  11:40 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,9 +12,7 @@
 // ***********************************************************************
 
 using System;
-using Yuyi.Jinyinmao.Service.Interface;
-using Yuyi.Jinyinmao.Service.Misc.Interface;
-using Yuyi.Jinyinmao.Services;
+using Moe.Lib;
 
 namespace ConsoleApplication
 {
@@ -22,18 +20,17 @@ namespace ConsoleApplication
     {
         private static void Main(string[] args)
         {
-            IVeriCodeService service = new VeriCodeService(new SmsService());
-            var t1 = service.SendAsync("15800780728", VeriCodeType.SignUp);
-            t1.Wait();
-            Console.WriteLine(t1.Result);
-
-            var t2 = service.VerifyAsync("15800780728", "225555", VeriCodeType.SignUp);
-            t2.Wait();
-            Console.WriteLine(t2.Result);
-
-            var t3 = service.UseAsync(t2.Result.Token, VeriCodeType.SignUp);
-            t3.Wait();
-            Console.WriteLine(t3.Result);
+            string s = "{0}={1}={2}";
+            string s1 = "{1}={2}";
+            string a = string.Format(s, 1, 2, 3);
+            string b = string.Format(s1, 1, 2, 3);
+            string c = string.Format(s, 1);
+            string d = string.Format(s1, 1);
+            string e = s.FormatWith(1, 2, 3);
+            string f = s1.FormatWith(1, 2, 3);
+            string g = s.FormatWith(1);
+            string h = s1.FormatWith(1);
+            Console.WriteLine(a + b + c + d + e + f + g + h);
         }
     }
 }

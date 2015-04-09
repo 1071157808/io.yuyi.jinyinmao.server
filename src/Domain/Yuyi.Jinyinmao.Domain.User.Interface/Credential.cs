@@ -4,7 +4,7 @@
 // Created          : 2015-04-04  6:07 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-04  6:09 PM
+// Last Modified On : 2015-04-07  2:43 AM
 // ***********************************************************************
 // <copyright file="Credential.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -18,6 +18,11 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public enum Credential
     {
+        /// <summary>
+        ///     无
+        /// </summary>
+        None = 0,
+
         /// <summary>
         ///     身份证
         /// </summary>

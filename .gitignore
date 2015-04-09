@@ -5,6 +5,7 @@
 *.suo
 *.user
 !Yuyi.Jinyinmao.Domain.User
+!Yuyi.Jinyinmao.Service.User
 *.sln.docstates
 
 # Build results

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  1:42 AM
+// Created          : 2015-04-06  2:56 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  2:54 AM
+// Last Modified On : 2015-04-07  2:09 AM
 // ***********************************************************************
 // <copyright file="SignUpRequest.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -43,15 +43,15 @@ namespace Yuyi.Jinyinmao.Api.Models.User
         public string OutletCode { get; set; }
 
         /// <summary>
-        ///     用户设置的密码（6-18位的数字、字幕、一般特殊字符组合）
+        ///     用户设置的密码（6-18位的数字、字母、一般特殊字符组合）
         /// </summary>
-        [Required, MinLength(6), MaxLength(18), SimplePasswordFormat]
+        [Required, StringLength(18, MinimumLength = 6), SimplePasswordFormat]
         public string Password { get; set; }
 
         /// <summary>
         ///     验证码口令
         /// </summary>
-        [Required]
+        [Required, StringLength(32, MinimumLength = 32)]
         public string Token { get; set; }
     }
 }

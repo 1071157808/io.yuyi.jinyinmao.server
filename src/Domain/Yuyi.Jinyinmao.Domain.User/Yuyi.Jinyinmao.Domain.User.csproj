@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cellphone.cs" />
     <Compile Include="JinyinmaoAccountRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
@@ -62,13 +63,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Moe\Repositories\MoeOrleans\MoeOrleansInterface\MoeOrleansInterface.csproj">
-      <Project>{cf6a9491-c13c-4cbd-8aa7-b894919d7dfa}</Project>
-      <Name>MoeOrleansInterface</Name>
+    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">
+      <Project>{261fbc2f-580a-4b4b-a56b-d152c570dca1}</Project>
+      <Name>MoeActorInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Moe\Repositories\MoeOrleans\MoeOrleans\MoeOrleans.csproj">
-      <Project>{8237BE87-2719-4570-8EDF-05CEDFBEB42F}</Project>
-      <Name>MoeOrleans</Name>
+    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActor\MoeActor.csproj">
+      <Project>{357afa0b-73da-401f-ba49-4a46d1c44b8b}</Project>
+      <Name>MoeActor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
       <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>

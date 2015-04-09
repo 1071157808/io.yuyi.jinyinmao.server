@@ -4,15 +4,20 @@
 // Created          : 2015-04-06  8:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  9:56 PM
+// Last Modified On : 2015-04-07  1:50 AM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Sockets;
 using System.Web;
 using System.Web.Http;
+using Moe.AspNet.Utility;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
@@ -33,13 +38,20 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 {
                     Request.RequestUri,
                     Request.Headers,
-                    Request.Content,
+                    QueryParameters = Request.GetQueryNameValuePairs(),
+                    RequestProperties = Request.Properties.Keys,
                     RequestContext.ClientCertificate,
                     RequestContext.IsLocal,
                     RequestContext.VirtualPathRoot,
                     HttpContext.Current.Request.Browser.Browser,
                     HttpContext.Current.Request.IsSecureConnection,
-                    HttpContext.Current.Request.Browser.IsMobileDevice
+                    HttpContext.Current.Request.Browser.IsMobileDevice,
+                    UserHostAddress = HttpUtils.GetUserHostAddress(Request),
+                    UserAgent = HttpUtils.GetUserAgent(Request),
+                    Cookie = Request.Headers.GetCookies(),
+                    Request.Content,
+                    ConfigurationProperties = Configuration.Properties,
+                    ServerIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString()
                 });
         }
     }

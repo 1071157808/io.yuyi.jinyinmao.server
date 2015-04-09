@@ -4,7 +4,7 @@
 // Created          : 2015-04-06  10:08 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  12:05 AM
+// Last Modified On : 2015-04-07  1:33 AM
 // ***********************************************************************
 // <copyright file="MiscController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -48,9 +48,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     验证码发送请求
         /// </param>
         /// <response code="200"></response>
+        /// <response code="400"></response>
         /// <response code="401"></response>
-        [Route("SendVeriCode"), ActionParameterRequired("request"), ActionParameterValidate(Order = 1), ResponseType(typeof(SendVeriCodeResponse))]
-        public async Task<IHttpActionResult> Send(SendVeriCodeRequest request)
+        [Route("SendVeriCode"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SendVeriCodeResponse))]
+        public async Task<IHttpActionResult> SendAsync(SendVeriCodeRequest request)
         {
             string cellphone = request.Cellphone;
 
@@ -66,6 +67,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             string message = GetVeriCodeMessage(request.Type);
             SendVeriCodeResult result = await this.veriCodeService.SendAsync(cellphone, request.Type, message);
+
+            return this.Ok(result.ToResponse());
+        }
+
+        /// <summary>
+        ///     验证验证码是否正确
+        /// </summary>
+        /// <remarks>
+        ///     验证码只能验证失败3次，并且只能使用一次，验证码有效期为30分钟
+        /// </remarks>
+        /// <param name="request">
+        ///     验证码验证请求
+        /// </param>
+        /// <response code="200"></response>
+        /// <response code="400"></response>
+        [Route("VerifyVeriCode"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(VerifyVeriCodeResponse))]
+        public async Task<IHttpActionResult> VerifyCodeAsync(VerifyVeriCodeRequest request)
+        {
+            VerifyVeriCodeResult result = await this.veriCodeService.VerifyAsync(request.Cellphone, request.Code, request.Type);
 
             return this.Ok(result.ToResponse());
         }
