@@ -4,7 +4,7 @@
 // Created          : 2015-04-07  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  10:40 AM
+// Last Modified On : 2015-04-10  10:10 AM
 // ***********************************************************************
 // <copyright file="ICellphone.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -23,9 +23,9 @@ namespace Yuyi.Jinyinmao.Domain
     public interface ICellphone : IGrain
     {
         /// <summary>
-        /// Gets the cellphone information.
+        ///     Gets the cellphone information.
         /// </summary>
         /// <returns>Task&lt;CellphoneInfo&gt;.</returns>
-        Task<CellphoneInfo> GetCellphoneInfo();
+        Task<CellphoneInfo> GetCellphoneInfoAsync();
     }
 }

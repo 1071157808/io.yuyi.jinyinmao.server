@@ -14,6 +14,7 @@
 using System.Threading.Tasks;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -22,6 +23,12 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public interface IUser : IGrain
     {
+        /// <summary>
+        /// Gets the user information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> GetUserInfoAsync();
+
         /// <summary>
         ///     Registers the specified user register.
         /// </summary>

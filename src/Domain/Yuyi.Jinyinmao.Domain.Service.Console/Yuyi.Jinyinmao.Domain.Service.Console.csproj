@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{888D8132-6BB8-4C6A-A35D-795FD7370614}</ProjectGuid>
+    <ProjectGuid>{323DA38C-19B1-465B-8485-E9D06700F9C3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleApplication</RootNamespace>
-    <AssemblyName>ConsoleApplication</AssemblyName>
+    <RootNamespace>Yuyi.Jinyinmao.Domain.Service</RootNamespace>
+    <AssemblyName>Yuyi.Jinyinmao.Domain.Service.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -22,6 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Yuyi.Jinyinmao.Domain.Service.Console.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,14 +33,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Domain.Service.Console.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Yuyi.Jinyinmao.Domain.Service.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="CounterControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Orleans.CounterControl.1.0.5\lib\net45\CounterControl.exe</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -65,10 +71,6 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=1.4.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.1.4.11.0\lib\net452\MoeLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -81,6 +83,10 @@
       <HintPath>..\..\packages\Microsoft.Orleans.OrleansAzureUtils.1.0.5\lib\net45\OrleansAzureUtils.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="OrleansHost, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Orleans.OrleansHost.1.0.5\lib\net45\OrleansHost.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OrleansProviders, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Orleans.OrleansProviders.1.0.5\lib\net45\OrleansProviders.dll</HintPath>
       <Private>True</Private>
@@ -90,7 +96,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
@@ -103,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrleansHostWrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,23 +117,36 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">
-      <Project>{261FBC2F-580A-4B4B-A56B-D152C570DCA1}</Project>
-      <Name>MoeActorInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj">
-      <Project>{C3B74C74-F4C7-485E-9697-B51B754FCCEE}</Project>
-      <Name>Yuyi.Jinyinmao.Service.User.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.User\Yuyi.Jinyinmao.Service.User.csproj">
-      <Project>{D0C9996F-A7F6-4F7F-A5B8-8657CF4673C9}</Project>
-      <Name>Yuyi.Jinyinmao.Service.User</Name>
-    </ProjectReference>
+    <Content Include="favicon.ico" />
+    <Content Include="OrleansConfiguration.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientConfiguration.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">
+      <Project>{261fbc2f-580a-4b4b-a56b-d152c570dca1}</Project>
+      <Name>MoeActorInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActor\MoeActor.csproj">
+      <Project>{357afa0b-73da-401f-ba49-4a46d1c44b8b}</Project>
+      <Name>MoeActor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.Core.Interface\Yuyi.Jinyinmao.Domain.Core.Interface.csproj">
+      <Project>{18840dcc-ca5f-4817-bb38-e05237ae3610}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Core.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
+      <Project>{5245a89c-fd02-404a-a0a3-c1b5f197e426}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
+      <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.User.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.User\Yuyi.Jinyinmao.Domain.User.csproj">
+      <Project>{bd85b692-cb20-481b-9628-452d41971a92}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.User</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

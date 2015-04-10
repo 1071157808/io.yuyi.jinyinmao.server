@@ -4,7 +4,7 @@
 // Created          : 2015-04-07  3:02 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  10:51 AM
+// Last Modified On : 2015-04-10  5:56 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,7 +14,9 @@
 using System;
 using System.Threading.Tasks;
 using Moe.Actor.Commands;
+using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dto;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -23,7 +25,7 @@ namespace Yuyi.Jinyinmao.Service
     /// <summary>
     ///     Class UserService.
     /// </summary>
-    public class UserService : IUserService
+    public class UserService : CommandHandler, IUserService
     {
         #region IUserService Members
 
@@ -32,10 +34,14 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public Task<ICommandHanderResult<UserInfo>> ExcuteCommand(UserRegister command)
+        public async Task<ICommandHanderResult<UserInfo>> ExcuteCommand(UserRegister command)
         {
-            throw new NotImplementedException();
+            return await this.TryExcuteCommand(async c =>
+            {
+                IUser user = UserFactory.GetGrain(c.UserId);
+                await user.RegisterAsync(c);
+                return await user.GetUserInfoAsync();
+            }, command);
         }
 
         /// <summary>
@@ -43,9 +49,16 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;SignUpUserIdInfo&gt;.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone)
+        public async Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone)
         {
+            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone));
+            CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
+            return new SignUpUserIdInfo
+            {
+                Cellphone = info.Cellphone,
+                Registered = info.Registered,
+                UserId = info.UserId
+            };
         }
 
         /// <summary>

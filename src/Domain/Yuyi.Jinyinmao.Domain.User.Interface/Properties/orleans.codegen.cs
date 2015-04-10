@@ -132,10 +132,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return CellphoneMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo> Yuyi.Jinyinmao.Domain.ICellphone.GetCellphoneInfo()
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo> Yuyi.Jinyinmao.Domain.ICellphone.GetCellphoneInfoAsync()
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo>(-2044196324, new object[] {} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo>(38380462, new object[] {} );
             }
         }
     }
@@ -164,8 +164,8 @@ namespace Yuyi.Jinyinmao.Domain
                     case -1562377416:  // ICellphone
                         switch (methodId)
                         {
-                            case -2044196324: 
-                                return ((ICellphone)grain).GetCellphoneInfo().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 38380462: 
+                                return ((ICellphone)grain).GetCellphoneInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -190,8 +190,8 @@ namespace Yuyi.Jinyinmao.Domain
                 case -1562377416:  // ICellphone
                     switch (methodId)
                     {
-                        case -2044196324:
-                            return "GetCellphoneInfo";
+                        case 38380462:
+                            return "GetCellphoneInfoAsync";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);

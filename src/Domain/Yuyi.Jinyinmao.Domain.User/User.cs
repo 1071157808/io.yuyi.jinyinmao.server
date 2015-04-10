@@ -4,7 +4,7 @@
 // Created          : 2015-04-02  12:13 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-05  7:13 PM
+// Last Modified On : 2015-04-10  6:39 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -17,6 +17,7 @@ using Moe.Actor.Model;
 using Moe.Lib;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -26,6 +27,19 @@ namespace Yuyi.Jinyinmao.Domain
     public class User : EntityGrain<IUserState>, IUser
     {
         #region IUser Members
+
+        /// <summary>
+        ///     Gets the user information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public Task<UserInfo> GetUserInfoAsync()
+        {
+            return Task.FromResult(new UserInfo
+            {
+                Cellphone = this.State.Cellphone,
+                UserId = this.State.Id
+            });
+        }
 
         /// <summary>
         ///     Registers the specified user register.
