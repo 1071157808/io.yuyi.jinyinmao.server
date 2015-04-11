@@ -44,16 +44,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Service.User.Interface", "Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj", "{C3B74C74-F4C7-485E-9697-B51B754FCCEE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9-Publish", "9-Publish", "{D91863F8-FB00-4448-AEAC-E1442C17CF17}"
-	ProjectSection(SolutionItems) = preProject
-		Publish\InitGrainDBs.sql = Publish\InitGrainDBs.sql
-		Publish\InitGrainTables.sql = Publish\InitGrainTables.sql
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoeActor", "..\..\Moe\Repositories\MoeActor\MoeActor\MoeActor.csproj", "{357AFA0B-73DA-401F-BA49-4A46D1C44B8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoeActorInterface", "..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj", "{261FBC2F-580A-4B4B-A56B-D152C570DCA1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Service.Console", "Domain\Yuyi.Jinyinmao.Domain.Service.Console\Yuyi.Jinyinmao.Domain.Service.Console.csproj", "{323DA38C-19B1-465B-8485-E9D06700F9C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
+	ProjectSection(SolutionItems) = preProject
+		Publish\dev\InitGrainDBs.sql = Publish\dev\InitGrainDBs.sql
+		Publish\dev\InitGrainTables.sql = Publish\dev\InitGrainTables.sql
+		Publish\dev\InitTables.sql = Publish\dev\InitTables.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,5 +160,6 @@ Global
 		{357AFA0B-73DA-401F-BA49-4A46D1C44B8B} = {70973739-B9FB-4AD8-B051-A74574D36DC5}
 		{261FBC2F-580A-4B4B-A56B-D152C570DCA1} = {70973739-B9FB-4AD8-B051-A74574D36DC5}
 		{323DA38C-19B1-465B-8485-E9D06700F9C3} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
+		{C2CDB48E-6910-42A3-96E5-DE22025E6FAD} = {D91863F8-FB00-4448-AEAC-E1442C17CF17}
 	EndGlobalSection
 EndGlobal

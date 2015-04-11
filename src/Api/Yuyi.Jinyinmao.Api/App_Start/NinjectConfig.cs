@@ -4,7 +4,7 @@
 // Created          : 2015-04-06  10:03 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  12:40 AM
+// Last Modified On : 2015-04-10  7:08 PM
 // ***********************************************************************
 // <copyright file="NinjectConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,6 +20,7 @@ using Ninject.Web.Common;
 using Ninject.Web.WebApi;
 using WebActivatorEx;
 using Yuyi.Jinyinmao.Api;
+using Yuyi.Jinyinmao.Service;
 using Yuyi.Jinyinmao.Service.Interface;
 using Yuyi.Jinyinmao.Service.Misc.Interface;
 using Yuyi.Jinyinmao.Services;
@@ -74,19 +75,19 @@ namespace Yuyi.Jinyinmao.Api
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
-            RegisterServices(kernel);
+            RegisterServices();
             return kernel;
         }
 
         /// <summary>
         ///     Registers the services.
         /// </summary>
-        /// <param name="kernel">The kernel.</param>
-        private static void RegisterServices(IKernel kernel)
+        private static void RegisterServices()
         {
             // This is where we tell Ninject how to resolve service requests
             kernel.Bind<ISmsService>().To<SmsService>().InSingletonScope();
             kernel.Bind<IVeriCodeService>().To<VeriCodeService>().InSingletonScope();
+            kernel.Bind<IUserService>().To<UserService>().InSingletonScope();
         }
     }
 }

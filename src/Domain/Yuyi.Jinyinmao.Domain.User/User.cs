@@ -4,7 +4,7 @@
 // Created          : 2015-04-02  12:13 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  6:39 PM
+// Last Modified On : 2015-04-11  2:11 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,8 +14,8 @@
 using System;
 using System.Threading.Tasks;
 using Moe.Actor.Model;
-using Moe.Lib;
 using Orleans;
+using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
@@ -24,6 +24,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Class User.
     /// </summary>
+    [StorageProvider(ProviderName = "SqlDatabase")]
     public class User : EntityGrain<IUserState>, IUser
     {
         #region IUser Members
@@ -39,6 +40,15 @@ namespace Yuyi.Jinyinmao.Domain
                 Cellphone = this.State.Cellphone,
                 UserId = this.State.Id
             });
+        }
+
+        /// <summary>
+        ///     Determines whether [is registered] asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public Task<bool> IsRegisteredAsync()
+        {
+            return Task.FromResult(this.State.Id != Guid.Empty);
         }
 
         /// <summary>
@@ -61,8 +71,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.Id = userRegister.UserId;
             this.State.Cellphone = userRegister.Cellphone;
-            this.State.JinyinmaoAccount = JinyinmaoAccountFactory.GetGrain(GuidUtility.NewSequentialGuid());
-            this.State.SourceAccount = SourceAccountFactory.GetGrain(GuidUtility.NewSequentialGuid());
+            //this.State.JinyinmaoAccount = JinyinmaoAccountFactory.GetGrain(GuidUtility.NewSequentialGuid());
+            //this.State.SourceAccount = SourceAccountFactory.GetGrain(GuidUtility.NewSequentialGuid());
 
             return this.State.WriteStateAsync();
         }

@@ -28,6 +28,7 @@ namespace Yuyi.Jinyinmao.Domain
     using Orleans;
     using Orleans.Runtime;
     using Yuyi.Jinyinmao.Domain.Dto;
+    using Yuyi.Jinyinmao.Domain.Dtos;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -1130,6 +1131,18 @@ namespace Yuyi.Jinyinmao.Domain
                 return UserMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.UserInfo> Yuyi.Jinyinmao.Domain.IUser.GetUserInfoAsync()
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.UserInfo>(-390757202, new object[] {} );
+            }
+            
+            System.Threading.Tasks.Task<bool> Yuyi.Jinyinmao.Domain.IUser.IsRegisteredAsync()
+            {
+
+                return base.InvokeMethodAsync<System.Boolean>(553372534, new object[] {} );
+            }
+            
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.RegisterAsync(Yuyi.Jinyinmao.Domain.Commands.UserRegister @userRegister)
             {
 
@@ -1162,6 +1175,10 @@ namespace Yuyi.Jinyinmao.Domain
                     case 829520060:  // IUser
                         switch (methodId)
                         {
+                            case -390757202: 
+                                return ((IUser)grain).GetUserInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 553372534: 
+                                return ((IUser)grain).IsRegisteredAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1545947866: 
                                 return ((IUser)grain).RegisterAsync((Yuyi.Jinyinmao.Domain.Commands.UserRegister)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
@@ -1188,7 +1205,11 @@ namespace Yuyi.Jinyinmao.Domain
                 case 829520060:  // IUser
                     switch (methodId)
                     {
-                        case 1545947866:
+                        case -390757202:
+                            return "GetUserInfoAsync";
+                    case 553372534:
+                            return "IsRegisteredAsync";
+                    case 1545947866:
                             return "RegisterAsync";
                     
                         default: 
@@ -1407,6 +1428,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     using System.Reflection;
     using Orleans.Serialization;
     using Yuyi.Jinyinmao.Domain.Dto;
+    using Yuyi.Jinyinmao.Domain.Dtos;
     using Yuyi.Jinyinmao.Domain.Commands;
     using Yuyi.Jinyinmao.Domain;
     using System.Collections;
@@ -1455,6 +1477,48 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Dtos_UserInfoSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Dtos_UserInfoSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.UserInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.UserInfo result = new Yuyi.Jinyinmao.Domain.Dtos.UserInfo();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Cellphone = input.Cellphone;
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.UserInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.UserInfo result = new Yuyi.Jinyinmao.Domain.Dtos.UserInfo();
+            result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), DeepCopier, Serializer, Deserializer);
         }
     }
     

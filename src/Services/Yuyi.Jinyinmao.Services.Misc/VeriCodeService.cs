@@ -4,7 +4,7 @@
 // Created          : 2015-04-06  5:17 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  6:17 PM
+// Last Modified On : 2015-04-11  1:01 AM
 // ***********************************************************************
 // <copyright file="VeriCodeService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -59,8 +59,9 @@ namespace Yuyi.Jinyinmao.Services
         /// <param name="cellphone">The cellphone.</param>
         /// <param name="type">The type.</param>
         /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SendVeriCodeResult&gt;.</returns>
-        public async Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string message = "验证码:{0}，{1}分钟内有效")
+        public async Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string message, string args = "")
         {
             string veriCode;
             VeriCode code;
@@ -106,7 +107,8 @@ namespace Yuyi.Jinyinmao.Services
                         Times = 1,
                         Type = type,
                         Used = false,
-                        Verified = false
+                        Verified = false,
+                        Args = args
                     };
 
                     context.Add(code);

@@ -24,6 +24,12 @@ namespace Yuyi.Jinyinmao.Api.Models.Misc
     public class SendVeriCodeRequest : IRequest
     {
         /// <summary>
+        /// Gets or sets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        public string Args { get; set; }
+
+        /// <summary>
         ///     手机号码，验证使用正则表达式：^(13|14|15|17|18)\d{9}$
         /// </summary>
         [Required, CellphoneFormat]

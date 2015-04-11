@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             string message = GetVeriCodeMessage(request.Type);
-            SendVeriCodeResult result = await this.veriCodeService.SendAsync(cellphone, request.Type, message);
+            SendVeriCodeResult result = await this.veriCodeService.SendAsync(cellphone, request.Type, message, request.Args);
 
             return this.Ok(result.ToResponse());
         }

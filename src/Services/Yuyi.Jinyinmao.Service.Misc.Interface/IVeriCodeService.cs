@@ -4,7 +4,7 @@
 // Created          : 2015-04-06  3:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  6:17 PM
+// Last Modified On : 2015-04-11  1:05 AM
 // ***********************************************************************
 // <copyright file="IVeriCodeService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -27,8 +27,9 @@ namespace Yuyi.Jinyinmao.Service.Misc.Interface
         /// <param name="cellphone">The cellphone.</param>
         /// <param name="type">The type.</param>
         /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SendVeriCodeResult&gt;.</returns>
-        Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string message = "验证码:{0}，{1}分钟内有效");
+        Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string message, string args = "");
 
         /// <summary>
         ///     Uses the asynchronous.

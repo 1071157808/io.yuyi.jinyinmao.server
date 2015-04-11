@@ -2,7 +2,7 @@
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
     <StorageProviders>
-      <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase" DataConnectionString="Server=tcp:gl1yytpyuk.database.chinacloudapi.cn,1433;Database=jinyinmao-dev-db-server-core-{0};User ID=jinyinmao-dev-db-admin@gl1yytpyuk;Password=KScbe5BLHfELFFs2;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase" DataConnectionString="Server=tcp:gl1yytpyuk.database.chinacloudapi.cn,1433;Database=jinyinmao-dev-db-server-grains-{0};User ID=jinyinmao-dev-db-admin@gl1yytpyuk;Password=KScbe5BLHfELFFs2;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
     <SystemStore  ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" />

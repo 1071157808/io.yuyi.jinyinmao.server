@@ -30,6 +30,12 @@ namespace Yuyi.Jinyinmao.Domain
         Task<UserInfo> GetUserInfoAsync();
 
         /// <summary>
+        /// Determines whether [is registered] asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        Task<bool> IsRegisteredAsync();
+
+        /// <summary>
         ///     Registers the specified user register.
         /// </summary>
         /// <param name="userRegister">The user register.</param>

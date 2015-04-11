@@ -22,6 +22,12 @@ namespace Yuyi.Jinyinmao.Services.Models
     public class VeriCode
     {
         /// <summary>
+        /// Gets or sets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        public string Args { get; set; }
+
+        /// <summary>
         ///     Gets or sets the build at.
         /// </summary>
         /// <value>The build at.</value>
@@ -32,12 +38,6 @@ namespace Yuyi.Jinyinmao.Services.Models
         /// </summary>
         /// <value>The cellphone.</value>
         public string Cellphone { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the client identifier.
-        /// </summary>
-        /// <value>The client identifier.</value>
-        public int ClientId { get; set; }
 
         /// <summary>
         ///     Gets or sets the code.
