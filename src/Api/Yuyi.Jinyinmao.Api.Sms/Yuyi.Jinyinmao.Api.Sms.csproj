@@ -68,12 +68,29 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib">
-      <HintPath>..\..\packages\MoeLib.1.4.11.0\lib\net452\MoeLib.dll</HintPath>
+    <Reference Include="MoeAspNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeAspNet.1.0.5.0\lib\net452\MoeAspNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoeEnsure, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeEnsure.1.2.3.0\lib\net452\MoeEnsure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoeLib, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.1.5.2.0\lib\net452\MoeLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoeThrow, Version=1.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeThrow.1.1.6.0\lib\net452\MoeThrow.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Swashbuckle.Core">
       <HintPath>..\..\packages\Swashbuckle.Core.5.1.4\lib\net40\Swashbuckle.Core.dll</HintPath>
@@ -157,12 +174,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeAspNet\MoeAspNet\MoeAspNet.csproj">
-      <Project>{728cd30a-8326-43e5-8a56-f599b72dbc3f}</Project>
-      <Name>MoeAspNet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
@@ -170,7 +181,8 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-13  12:14 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  2:26 PM
+// Last Modified On : 2015-04-20  12:04 AM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -32,12 +32,18 @@ namespace Yuyi.Jinyinmao.Api.Filters
     public class CookieAuthorizeAttribute : OrderedActionFilterAttribute
     {
         /// <summary>
+        ///     Gets or sets a value indicating whether [refresh token].
+        /// </summary>
+        /// <value><c>true</c> if [refresh token]; otherwise, <c>false</c>.</value>
+        private readonly bool refreshToken;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="CookieAuthorizeAttribute" /> class.
         /// </summary>
         /// <param name="refreshToken">if set to <c>true</c> [refresh token].</param>
         public CookieAuthorizeAttribute(bool refreshToken = true)
         {
-            this.RefreshToken = refreshToken;
+            this.refreshToken = refreshToken;
         }
 
         /// <summary>
@@ -45,12 +51,6 @@ namespace Yuyi.Jinyinmao.Api.Filters
         /// </summary>
         /// <value><c>true</c> if [allow local]; otherwise, <c>false</c>.</value>
         public bool AllowInternal { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether [refresh token].
-        /// </summary>
-        /// <value><c>true</c> if [refresh token]; otherwise, <c>false</c>.</value>
-        private bool RefreshToken { get; }
 
         /// <summary>
         ///     Occurs before the action method is invoked.
@@ -69,7 +69,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 this.HandleUnauthorizedRequest(actionContext);
                 return;
             }
-            if (this.RefreshToken && !String.IsNullOrWhiteSpace(token))
+            if (this.refreshToken && !String.IsNullOrWhiteSpace(token))
             {
                 FormsAuthentication.SetAuthCookie(token, true);
             }
@@ -171,7 +171,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 return false;
             }
 
-            if (this.RefreshToken)
+            if (this.refreshToken)
             {
                 DateTime newExpiryTime = DateTime.Now.AddMinutes(30);
                 newToken = string.Format("{0},{1},{2}", guid, cellphone, newExpiryTime.ToBinary());

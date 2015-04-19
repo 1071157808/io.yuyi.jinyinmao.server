@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +12,7 @@
     <AssemblyName>Yuyi.Jinyinmao.Service.User</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>aff516b4</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +60,14 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MoeActorInterface, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeActorInterface.1.0.12.0\lib\net452\MoeActorInterface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MoeLib">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\MoeLib.1.5.2.0\lib\net452\MoeLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -92,13 +102,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">
-      <Project>{261fbc2f-580a-4b4b-a56b-d152c570dca1}</Project>
-      <Name>MoeActorInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Core.Interface\Yuyi.Jinyinmao.Domain.Core.Interface.csproj">
       <Project>{18840dcc-ca5f-4817-bb38-e05237ae3610}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core.Interface</Name>
@@ -120,8 +127,17 @@
     <Content Include="ClientConfiguration.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

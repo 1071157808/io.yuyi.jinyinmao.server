@@ -123,14 +123,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">
-      <Project>{261fbc2f-580a-4b4b-a56b-d152c570dca1}</Project>
-      <Name>MoeActorInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActor\MoeActor.csproj">
-      <Project>{357afa0b-73da-401f-ba49-4a46d1c44b8b}</Project>
-      <Name>MoeActor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.Core.Interface\Yuyi.Jinyinmao.Domain.Core.Interface.csproj">
       <Project>{18840dcc-ca5f-4817-bb38-e05237ae3610}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core.Interface</Name>
