@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  5:17 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-11  1:01 AM
+// Last Modified On : 2015-04-11  1:13 PM
 // ***********************************************************************
 // <copyright file="VeriCodeService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.

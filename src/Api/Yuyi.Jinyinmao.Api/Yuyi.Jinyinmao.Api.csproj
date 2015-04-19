@@ -140,6 +140,10 @@
       <HintPath>..\..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -147,6 +151,10 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.Tracing, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -186,6 +194,7 @@
     <Compile Include="Controllers\DevController.cs" />
     <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\CookieAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +202,9 @@
     <Compile Include="Models\Misc\SendVeriCodeResponse.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeResponse.cs" />
+    <Compile Include="Models\User\CheckCellphoneResponse.cs" />
+    <Compile Include="Models\User\SignInRequest.cs" />
+    <Compile Include="Models\User\SignInResponse.cs" />
     <Compile Include="Models\User\SignUpRequest.cs" />
     <Compile Include="Models\User\SignUpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

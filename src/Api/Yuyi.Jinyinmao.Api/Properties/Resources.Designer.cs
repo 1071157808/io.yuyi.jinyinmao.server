@@ -61,7 +61,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。.
+        ///   Looks up a localized string similar to 验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
         internal static string Sms_VeriCode {
             get {
@@ -70,7 +70,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。.
+        ///   Looks up a localized string similar to 您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
         internal static string Sms_VeriCode_ResetLoginPawword {
             get {
@@ -79,7 +79,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。.
+        ///   Looks up a localized string similar to 您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
         internal static string Sms_VeriCode_ResetPaymentPawword {
             get {
@@ -88,7 +88,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。.
+        ///   Looks up a localized string similar to 您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
         internal static string Sms_VeriCode_SignUp {
             get {

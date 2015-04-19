@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7-Labs", "7-Labs", "{A6AC133D-554D-4DE0-A239-981FB9CAAEBA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Domain", "3-Domain", "{6B30F856-2589-4217-BA6C-92E4B5DA49B6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Domain", "5-Domain", "{6B30F856-2589-4217-BA6C-92E4B5DA49B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterface", "Labs\GrainInterface\GrainInterface.csproj", "{A62C0D13-062A-4992-BBA9-AE7B5C9498CC}"
 EndProject
@@ -23,13 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Core"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Core.Interface", "Domain\Yuyi.Jinyinmao.Domain.Core.Interface\Yuyi.Jinyinmao.Domain.Core.Interface.csproj", "{18840DCC-CA5F-4817-BB38-E05237AE3610}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Api", "2-Api", "{E57225A1-3000-4369-8C1E-A1DF4C5120B9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Api", "1-Api", "{E57225A1-3000-4369-8C1E-A1DF4C5120B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoeAspNet", "..\..\Moe\Repositories\MoeAspNet\MoeAspNet\MoeAspNet.csproj", "{728CD30A-8326-43E5-8A56-F599B72DBC3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "Labs\ConsoleApplication\ConsoleApplication.csproj", "{888D8132-6BB8-4C6A-A35D-795FD7370614}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Services", "4-Services", "{5AB0F043-6026-4273-B365-0B1D9DC036CF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6-Services", "6-Services", "{5AB0F043-6026-4273-B365-0B1D9DC036CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Api", "Api\Yuyi.Jinyinmao.Api\Yuyi.Jinyinmao.Api.csproj", "{D2409F50-DFA5-48A4-9870-C7F321289E2F}"
 EndProject
@@ -57,6 +57,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E
 		Publish\dev\InitGrainTables.sql = Publish\dev\InitGrainTables.sql
 		Publish\dev\InitTables.sql = Publish\dev\InitTables.sql
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Worker", "2-Worker", "{427500D4-546D-43D3-9C68-B604408ABE4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-LocalHost", "3-LocalHost", "{A10B2E6B-7856-4EA5-AF60-816879A740BE}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "EventsProcessors", "Worker\EventsProcessors\EventsProcessors.ccproj", "{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Application", "4-Application", "{06FA11E8-18AC-4882-8EBE-165EE260E5D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIKeyGenarator", "Application\APIKeyGenarator\APIKeyGenarator.csproj", "{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsClient", "Application\SmsClient\SmsClient.csproj", "{F6633FBB-6227-4D15-838E-C6F8EC4641EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Api.Sms", "Api\Yuyi.Jinyinmao.Api.Sms\Yuyi.Jinyinmao.Api.Sms.csproj", "{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +151,22 @@ Global
 		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6633FBB-6227-4D15-838E-C6F8EC4641EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6633FBB-6227-4D15-838E-C6F8EC4641EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6633FBB-6227-4D15-838E-C6F8EC4641EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6633FBB-6227-4D15-838E-C6F8EC4641EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,5 +191,9 @@ Global
 		{261FBC2F-580A-4B4B-A56B-D152C570DCA1} = {70973739-B9FB-4AD8-B051-A74574D36DC5}
 		{323DA38C-19B1-465B-8485-E9D06700F9C3} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{C2CDB48E-6910-42A3-96E5-DE22025E6FAD} = {D91863F8-FB00-4448-AEAC-E1442C17CF17}
+		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C} = {427500D4-546D-43D3-9C68-B604408ABE4A}
+		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
+		{F6633FBB-6227-4D15-838E-C6F8EC4641EC} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
+		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9} = {E57225A1-3000-4369-8C1E-A1DF4C5120B9}
 	EndGlobalSection
 EndGlobal

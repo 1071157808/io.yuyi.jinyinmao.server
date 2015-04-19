@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-07  10:35 AM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  10:10 AM
+// Last Modified On : 2015-04-13  12:59 AM
 // ***********************************************************************
 // <copyright file="ICellphone.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,7 @@
 
 using System.Threading.Tasks;
 using Orleans;
-using Yuyi.Jinyinmao.Domain.Dto;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {

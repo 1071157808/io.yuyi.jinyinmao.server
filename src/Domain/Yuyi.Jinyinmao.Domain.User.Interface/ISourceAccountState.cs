@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-04  9:10 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-04  9:21 PM
+// Last Modified On : 2015-04-12  6:03 PM
 // ***********************************************************************
 // <copyright file="ISourceAccountState.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -22,6 +22,12 @@ namespace Yuyi.Jinyinmao.Domain
     public interface ISourceAccountState : IEntityState
     {
         /// <summary>
+        /// Gets or sets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        string Args { get; set; }
+
+        /// <summary>
         ///     Gets or sets the type of the client.
         /// </summary>
         /// <value>The type of the client.</value>
@@ -34,28 +40,16 @@ namespace Yuyi.Jinyinmao.Domain
         long ContractId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the identification code.
-        /// </summary>
-        /// <value>The identification code.</value>
-        string IdentificationCode { get; set; }
-
-        /// <summary>
         ///     Gets or sets the invite by.
         /// </summary>
         /// <value>The invite by.</value>
         string InviteBy { get; set; }
 
         /// <summary>
-        ///     Gets or sets the ip reg.
+        ///     Gets or sets the identification code.
         /// </summary>
-        /// <value>The ip reg.</value>
-        string IpReg { get; set; }
-
-        /// <summary>
-        /// Gets or sets the note.
-        /// </summary>
-        /// <value>The note.</value>
-        string Note { get; set; }
+        /// <value>The identification code.</value>
+        string OutletCode { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

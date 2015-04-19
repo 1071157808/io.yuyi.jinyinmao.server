@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Sms_VeriCode" xml:space="preserve">
-    <value>验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。</value>
+    <value>验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
   </data>
   <data name="Sms_VeriCode_ResetLoginPawword" xml:space="preserve">
-    <value>您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。</value>
+    <value>您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
   </data>
   <data name="Sms_VeriCode_ResetPaymentPawword" xml:space="preserve">
-    <value>您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。</value>
+    <value>您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
   </data>
   <data name="Sms_VeriCode_SignUp" xml:space="preserve">
-    <value>您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】。</value>
+    <value>您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
   </data>
 </root>

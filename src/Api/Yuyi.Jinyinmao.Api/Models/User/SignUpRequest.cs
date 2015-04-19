@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  2:56 AM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  2:09 AM
+// Last Modified On : 2015-04-12  6:15 PM
 // ***********************************************************************
 // <copyright file="SignUpRequest.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,8 +12,9 @@
 // ***********************************************************************
 
 using System.ComponentModel.DataAnnotations;
-using Moe.AspNet.RequestModels;
+using Moe.AspNet.Models;
 using Moe.AspNet.Validations;
+using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Models.User
 {
@@ -45,13 +46,13 @@ namespace Yuyi.Jinyinmao.Api.Models.User
         /// <summary>
         ///     用户设置的密码（6-18位的数字、字母、一般特殊字符组合）
         /// </summary>
-        [Required, StringLength(18, MinimumLength = 6), SimplePasswordFormat]
+        [Required, StringLength(18, MinimumLength = 6), SimplePasswordFormat, JsonProperty(PropertyName = "password")]
         public string Password { get; set; }
 
         /// <summary>
         ///     验证码口令
         /// </summary>
-        [Required, StringLength(32, MinimumLength = 32)]
+        [Required, StringLength(32, MinimumLength = 32), JsonProperty(PropertyName = "token")]
         public string Token { get; set; }
     }
 }

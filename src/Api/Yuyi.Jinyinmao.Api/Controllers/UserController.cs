@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  1:27 AM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  3:01 AM
+// Last Modified On : 2015-04-19  2:24 PM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,18 +12,20 @@
 // ***********************************************************************
 
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Security;
-using Moe.Actor.Commands;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 using Yuyi.Jinyinmao.Service.Misc.Interface;
-using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
@@ -31,7 +33,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     ///     Class UserController.
     /// </summary>
     [RoutePrefix("User")]
-    public class UserController : ApiController
+    public class UserController : ApiControllerBase
     {
         private readonly IUserService userService;
         private readonly IVeriCodeService veriCodeService;
@@ -48,17 +50,67 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     手机号是否已注册
+        /// </summary>
+        /// <remarks>
+        ///     如果手机号已经注册过，则不能再用于注册
+        /// </remarks>
+        /// <param name="cellphone">
+        ///     手机号[Required]
+        /// </param>
+        /// <response code="200">注册成功</response>
+        /// <response code="400">US01:手机号格式不正确</response>
+        [HttpGet, Route("CheckCellphone"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(CheckCellphoneResult))]
+        public async Task<IHttpActionResult> CheckCellphone(string cellphone)
+        {
+            cellphone = cellphone ?? "";
+            Match match = RegexUtility.CellphoneRegex.Match(cellphone);
+            if (!match.Success || match.Index != 0 || match.Length != cellphone.Length)
+            {
+                return this.BadRequest("US01:手机号格式不正确");
+            }
+
+            CheckCellphoneResult result = await this.userService.CheckCellphoneAsync(cellphone);
+            return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     登录
+        /// </summary>
+        /// <remarks>
+        ///     通过账户名和密码登录，现在账户名即为用户的手机号
+        /// </remarks>
+        /// <param name="request">
+        ///     登录请求
+        /// </param>
+        /// <response code="200">登录成功</response>
+        /// <response code="400">请求格式不合法</response>
+        [Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
+        public async Task<IHttpActionResult> SignIn(SignInRequest request)
+        {
+            SignInResult signInResult = await this.userService.CheckPasswordAsync(request.LoginName, request.Password);
+
+            if (signInResult.Successed)
+            {
+                this.SetCookie(signInResult.UserId, signInResult.Cellphone);
+            }
+
+            return this.Ok(signInResult.ToResponse());
+        }
+
+        /// <summary>
         ///     金银猫客户端注册接口
         /// </summary>
         /// <remarks>
         ///     在金银猫的客户端注册，包括PC网页、M版网页、iPhone、Android
-        ///     &lt;br /&gt;
+        ///     <br />
         ///     前置条件：已经通过验证码验证手机号码的真实性
         /// </remarks>
         /// <param name="request">
         ///     注册请求
         /// </param>
         /// <response code="200">注册成功</response>
+        /// <response code="400">请求格式不合法</response>
         /// <response code="400">US01:请输入正确的验证码</response>
         /// <response code="400">US02:此号码已注册，请直接登录</response>
         [Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
@@ -78,17 +130,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("US02:此号码已注册，请直接登录");
             }
 
-            ICommandHanderResult<UserInfo> commandResult = await this.userService.ExcuteCommand(new UserRegister
+            UserInfo commandResult = await this.userService.ExcuteCommand(new UserRegister
             {
                 Cellphone = info.Cellphone,
-                RegisterTime = DateTime.Now,
-                UserId = info.UserId
+                Password = request.Password,
+                UserId = info.UserId,
+                ClientType = request.ClientType.GetValueOrDefault(),
+                ContractId = request.ContractId.GetValueOrDefault(),
+                InviteBy = request.InviteBy ?? "JYM",
+                OutletCode = request.OutletCode ?? "JYM",
+                Args = this.BuildArgs()
             });
 
             // 自动登陆
-            this.SetCookie(commandResult.Result.UserId, commandResult.Result.Cellphone);
+            this.SetCookie(commandResult.UserId, commandResult.Cellphone);
 
-            return this.Ok(new SignUpResponse { Cellphone = commandResult.Result.Cellphone, UserId = commandResult.Result.UserId });
+            return this.Ok(commandResult.ToResponse());
         }
 
         /// <summary>

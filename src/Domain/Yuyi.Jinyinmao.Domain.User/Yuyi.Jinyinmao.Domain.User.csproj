@@ -53,9 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cellphone.cs" />
-    <Compile Include="JinyinmaoAccountRegister.cs" />
+    <Compile Include="Helper\CryptographyHelper.cs" />
+    <Compile Include="JBYAccount.cs" />
+    <Compile Include="JinyinmaoAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
+    <Compile Include="SourceAccount.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

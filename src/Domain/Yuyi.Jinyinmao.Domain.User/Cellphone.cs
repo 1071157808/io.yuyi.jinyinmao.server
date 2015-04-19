@@ -15,7 +15,7 @@ using System;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Providers;
-using Yuyi.Jinyinmao.Domain.Dto;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {

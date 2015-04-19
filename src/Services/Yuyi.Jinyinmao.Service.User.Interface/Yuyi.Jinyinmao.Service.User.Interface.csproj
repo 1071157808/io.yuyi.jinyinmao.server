@@ -43,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dtos\CheckCellphoneResult.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignInResult.cs" />
-    <Compile Include="SignUpUserIdInfo.cs" />
+    <Compile Include="Dtos\SignInResult.cs" />
+    <Compile Include="Dtos\SignUpUserIdInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Moe\Repositories\MoeActor\MoeActorInterface\MoeActorInterface.csproj">

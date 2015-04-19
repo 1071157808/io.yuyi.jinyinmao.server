@@ -1,0 +1,183 @@
+﻿// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// Author           : Siqi Lu
+// Created          : 2015-04-13  12:14 AM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-04-19  2:26 PM
+// ***********************************************************************
+// <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi">
+//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Security.Principal;
+using System.Web.Http.Controllers;
+using System.Web.Security;
+using Moe.AspNet.Filters;
+using Moe.AspNet.Utility;
+
+// ReSharper disable MergeSequentialChecks
+
+namespace Yuyi.Jinyinmao.Api.Filters
+{
+    /// <summary>
+    ///     Class CookieAuthorizeAttribute.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+    public class CookieAuthorizeAttribute : OrderedActionFilterAttribute
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CookieAuthorizeAttribute" /> class.
+        /// </summary>
+        /// <param name="refreshToken">if set to <c>true</c> [refresh token].</param>
+        public CookieAuthorizeAttribute(bool refreshToken = true)
+        {
+            this.RefreshToken = refreshToken;
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [allow local].
+        /// </summary>
+        /// <value><c>true</c> if [allow local]; otherwise, <c>false</c>.</value>
+        public bool AllowInternal { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [refresh token].
+        /// </summary>
+        /// <value><c>true</c> if [refresh token]; otherwise, <c>false</c>.</value>
+        private bool RefreshToken { get; }
+
+        /// <summary>
+        ///     Occurs before the action method is invoked.
+        /// </summary>
+        /// <param name="actionContext">The action context.</param>
+        public override void OnActionExecuting(HttpActionContext actionContext)
+        {
+            string token;
+
+            if (this.AllowInternal && (actionContext.RequestContext.IsLocal || this.IpIsAuthorized(actionContext.Request)))
+            {
+                return;
+            }
+            if (!this.IsValid(actionContext, out token))
+            {
+                this.HandleUnauthorizedRequest(actionContext);
+                return;
+            }
+            if (this.RefreshToken && !String.IsNullOrWhiteSpace(token))
+            {
+                FormsAuthentication.SetAuthCookie(token, true);
+            }
+        }
+
+        /// <summary>
+        ///     Formats the error message.
+        /// </summary>
+        /// <returns>string</returns>
+        private string FormatErrorMessage()
+        {
+            return "AUTH01:请先登录";
+        }
+
+        /// <summary>
+        ///     Processes requests that fail authorization. This default implementation creates a new
+        ///     response with the Unauthorized status code. Override this method to provide your own
+        ///     handling for unauthorized requests.
+        /// </summary>
+        /// <param name="actionContext">The context.</param>
+        private void HandleUnauthorizedRequest(HttpActionContext actionContext)
+        {
+            if (actionContext == null)
+            {
+                throw new ArgumentNullException("actionContext", "actionContext can not be null");
+            }
+
+            actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, this.FormatErrorMessage());
+        }
+
+        /// <summary>
+        ///     Determines whether the client ip is authorized.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>
+        ///     bool
+        /// </returns>
+        private bool IpIsAuthorized(HttpRequestMessage request)
+        {
+            string ip = HttpUtils.GetUserHostAddress(request);
+            return !String.IsNullOrEmpty(ip) && (ip == "::1" || ip.StartsWith("172.16.") || ip.StartsWith("10.0."));
+        }
+
+        /// <summary>
+        ///     Determines whether the specified action context is valid.
+        /// </summary>
+        /// <param name="actionContext">The action context.</param>
+        /// <param name="newToken">The new token.</param>
+        /// <returns>bool</returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     actionContext;actionContext can not be null
+        /// </exception>
+        private bool IsValid(HttpActionContext actionContext, out string newToken)
+        {
+            newToken = "";
+
+            if (actionContext == null)
+            {
+                throw new ArgumentNullException("actionContext", "actionContext can not be null");
+            }
+
+            IPrincipal user = actionContext.ControllerContext.RequestContext.Principal;
+            if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            // Token 格式检验，必须由3部分组成
+            if (String.IsNullOrWhiteSpace(user.Identity.Name) || user.Identity.Name.Split(',').Count() != 3)
+            {
+                return false;
+            }
+
+            string[] tokenContents = user.Identity.Name.Split(',');
+
+            // Identifier
+            string guid = tokenContents[0];
+            if (String.IsNullOrWhiteSpace(guid) || guid.Length != 32)
+            {
+                return false;
+            }
+
+            // 用户名检验，必须是手机号格式
+            string cellphone = tokenContents[1];
+            if (String.IsNullOrWhiteSpace(cellphone))
+            {
+                return false;
+            }
+
+            long expireDateTime;
+            if (!long.TryParse(tokenContents[2], out expireDateTime))
+            {
+                return false;
+            }
+
+            // Token 有效期已过
+            if (DateTime.FromBinary(expireDateTime) < DateTime.Now)
+            {
+                return false;
+            }
+
+            if (this.RefreshToken)
+            {
+                DateTime newExpiryTime = DateTime.Now.AddMinutes(30);
+                newToken = string.Format("{0},{1},{2}", guid, cellphone, newExpiryTime.ToBinary());
+            }
+
+            return true;
+        }
+    }
+}

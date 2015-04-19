@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\CellphoneInfo.cs" />
+    <Compile Include="Dto\JBYAccountRegister.cs" />
     <Compile Include="Dto\UserInfo.cs" />
     <Compile Include="Credential.cs" />
     <Compile Include="ICellphone.cs" />
@@ -69,7 +70,8 @@
     <Compile Include="IUser.cs" />
     <Compile Include="IUserCellphoneManager.cs" />
     <Compile Include="IUserState.cs" />
-    <Compile Include="JinyinmaoAccountRegister.cs" />
+    <Compile Include="Dto\SourceAccountRegister.cs" />
+    <Compile Include="Dto\JinyinmaoAccountRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Commands\UserRegister.cs" />

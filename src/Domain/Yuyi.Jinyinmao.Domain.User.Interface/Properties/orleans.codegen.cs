@@ -22,12 +22,8 @@ namespace Yuyi.Jinyinmao.Domain
     using System.Runtime.Serialization.Formatters.Binary;
     using System.IO;
     using System.Collections.Generic;
-    using System.Reflection;
-    using Orleans.Serialization;
-    using Yuyi.Jinyinmao.Domain;
     using Orleans;
     using Orleans.Runtime;
-    using Yuyi.Jinyinmao.Domain.Dto;
     using Yuyi.Jinyinmao.Domain.Dtos;
     
     
@@ -133,10 +129,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return CellphoneMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo> Yuyi.Jinyinmao.Domain.ICellphone.GetCellphoneInfoAsync()
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo> Yuyi.Jinyinmao.Domain.ICellphone.GetCellphoneInfoAsync()
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo>(38380462, new object[] {} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo>(38380462, new object[] {} );
             }
         }
     }
@@ -305,6 +301,12 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 return JBYAccountMethodInvoker.GetMethodName(interfaceId, methodId);
             }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IJBYAccount.Register(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister @jbyAccountRegister)
+            {
+
+                return base.InvokeMethodAsync<object>(-1186472068, new object[] {@jbyAccountRegister} );
+            }
         }
     }
     
@@ -332,6 +334,8 @@ namespace Yuyi.Jinyinmao.Domain
                     case -1809209798:  // IJBYAccount
                         switch (methodId)
                         {
+                            case -1186472068: 
+                                return ((IJBYAccount)grain).Register((JBYAccountRegister)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -356,7 +360,9 @@ namespace Yuyi.Jinyinmao.Domain
                 case -1809209798:  // IJBYAccount
                     switch (methodId)
                     {
-                        
+                        case -1186472068:
+                            return "Register";
+                    
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                     }
@@ -469,7 +475,7 @@ namespace Yuyi.Jinyinmao.Domain
                 return JinyinmaoAccountMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IJinyinmaoAccount.Register(Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister @jinyinmaoAccountRegister)
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IJinyinmaoAccount.Register(Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister @jinyinmaoAccountRegister)
             {
 
                 return base.InvokeMethodAsync<object>(-1341982666, new object[] {@jinyinmaoAccountRegister} );
@@ -967,6 +973,12 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 return SourceAccountMethodInvoker.GetMethodName(interfaceId, methodId);
             }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ISourceAccount.Register(Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister @sourceAccountRegister)
+            {
+
+                return base.InvokeMethodAsync<object>(550017841, new object[] {@sourceAccountRegister} );
+            }
         }
     }
     
@@ -994,6 +1006,8 @@ namespace Yuyi.Jinyinmao.Domain
                     case 1925841135:  // ISourceAccount
                         switch (methodId)
                         {
+                            case 550017841: 
+                                return ((ISourceAccount)grain).Register((SourceAccountRegister)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -1018,7 +1032,9 @@ namespace Yuyi.Jinyinmao.Domain
                 case 1925841135:  // ISourceAccount
                     switch (methodId)
                     {
-                        
+                        case 550017841:
+                            return "Register";
+                    
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                     }
@@ -1384,42 +1400,6 @@ namespace Yuyi.Jinyinmao.Domain
             }
         }
     }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
-    internal class Yuyi_Jinyinmao_Domain_JinyinmaoAccountRegisterSerialization
-    {
-        
-        static Yuyi_Jinyinmao_Domain_JinyinmaoAccountRegisterSerialization()
-        {
-            Register();
-        }
-        
-        public static object DeepCopier(object original)
-        {
-            Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister input = ((Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister)(original));
-            Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister result = new Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister();
-            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
-            return result;
-        }
-        
-        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister input = ((Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister)(untypedInput));
-        }
-        
-        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister result = new Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister();
-            return result;
-        }
-        
-        public static void Register()
-        {
-            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.JinyinmaoAccountRegister), DeepCopier, Serializer, Deserializer);
-        }
-    }
 }
 namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
 {
@@ -1427,10 +1407,8 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     using System.Collections.Generic;
     using System.Reflection;
     using Orleans.Serialization;
-    using Yuyi.Jinyinmao.Domain.Dto;
     using Yuyi.Jinyinmao.Domain.Dtos;
     using Yuyi.Jinyinmao.Domain.Commands;
-    using Yuyi.Jinyinmao.Domain;
     using System.Collections;
     using System.Runtime.InteropServices;
     
@@ -1438,18 +1416,18 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
-    internal class Yuyi_Jinyinmao_Domain_Dto_CellphoneInfoSerialization
+    internal class Yuyi_Jinyinmao_Domain_Dtos_CellphoneInfoSerialization
     {
         
-        static Yuyi_Jinyinmao_Domain_Dto_CellphoneInfoSerialization()
+        static Yuyi_Jinyinmao_Domain_Dtos_CellphoneInfoSerialization()
         {
             Register();
         }
         
         public static object DeepCopier(object original)
         {
-            Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo input = ((Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo)(original));
-            Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo result = new Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo();
+            Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo result = new Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo();
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
             result.Cellphone = input.Cellphone;
             result.Registered = input.Registered;
@@ -1459,7 +1437,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo input = ((Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo)(untypedInput));
+            Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Registered, stream, typeof(bool));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
@@ -1467,7 +1445,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo result = new Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo();
+            Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo result = new Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo();
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Registered = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
             result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
@@ -1476,7 +1454,148 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static void Register()
         {
-            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dto.CellphoneInfo), DeepCopier, Serializer, Deserializer);
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Dtos_JBYAccountRegisterSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Dtos_JBYAccountRegisterSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister input = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister result = new Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister input = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister result = new Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister();
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountRegister), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Dtos_JinyinmaoAccountRegisterSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Dtos_JinyinmaoAccountRegisterSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister input = ((Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister result = new Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.LoginNames = ((System.Collections.Generic.List<System.String>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.LoginNames)));
+            result.Password = input.Password;
+            result.Salt = input.Salt;
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister input = ((Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.LoginNames, stream, typeof(System.Collections.Generic.List<System.String>));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Password, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Salt, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister result = new Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister();
+            result.LoginNames = ((System.Collections.Generic.List<System.String>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.List<System.String>), stream)));
+            result.Password = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.Salt = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.JinyinmaoAccountRegister), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Dtos_SourceAccountRegisterSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Dtos_SourceAccountRegisterSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister input = ((Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister result = new Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Args = input.Args;
+            result.ClientType = input.ClientType;
+            result.ContractId = input.ContractId;
+            result.InviteBy = input.InviteBy;
+            result.OutletCode = input.OutletCode;
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister input = ((Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ClientType, stream, typeof(long));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ContractId, stream, typeof(long));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.InviteBy, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.OutletCode, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister result = new Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.ClientType = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            result.ContractId = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            result.InviteBy = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.OutletCode = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.SourceAccountRegister), DeepCopier, Serializer, Deserializer);
         }
     }
     
@@ -1528,6 +1647,8 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_UserRegisterSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo9;
+        
         static Yuyi_Jinyinmao_Domain_Commands_UserRegisterSerialization()
         {
             Register();
@@ -1541,35 +1662,39 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
             Yuyi.Jinyinmao.Domain.Commands.UserRegister input = ((Yuyi.Jinyinmao.Domain.Commands.UserRegister)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.Credential, stream, typeof(Yuyi.Jinyinmao.Domain.Credential));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.CredentialNo, stream, typeof(string));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.RealName, stream, typeof(string));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.RegisterTime, stream, typeof(System.Nullable<System.DateTime>));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ClientType, stream, typeof(long));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ContractId, stream, typeof(long));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.InviteBy, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.OutletCode, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Password, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.Verified, stream, typeof(bool));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.VerifiedTime, stream, typeof(System.Nullable<System.DateTime>));
+            Orleans.Serialization.SerializationManager.SerializeInner(fieldInfo9.GetValue(input), stream, typeof(System.Guid));
         }
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Yuyi.Jinyinmao.Domain.Commands.UserRegister result = new Yuyi.Jinyinmao.Domain.Commands.UserRegister();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Credential = ((Yuyi.Jinyinmao.Domain.Credential)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Credential), stream)));
-            result.CredentialNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.RealName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.RegisterTime = ((System.Nullable<System.DateTime>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.DateTime>), stream)));
+            result.ClientType = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            result.ContractId = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            result.InviteBy = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.OutletCode = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.Password = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Verified = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
-            result.VerifiedTime = ((System.Nullable<System.DateTime>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.DateTime>), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp9 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo9.SetValue(objResult, temp9);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister), DeepCopier, Serializer, Deserializer);
+            fieldInfo9 = typeof(Moe.Actor.Commands.Command).GetField("commandId", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
 }

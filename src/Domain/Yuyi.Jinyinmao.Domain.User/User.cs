@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-02  12:13 AM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-11  2:11 AM
+// Last Modified On : 2015-04-12  7:15 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,9 +12,10 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Actor.Model;
-using Orleans;
+using Moe.Lib;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -56,25 +57,52 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="userRegister">The user register.</param>
         /// <returns>Task.</returns>
-        public Task RegisterAsync(UserRegister userRegister)
+        public async Task RegisterAsync(UserRegister userRegister)
         {
             if (this.State.Id == userRegister.UserId)
             {
-                return TaskDone.Done;
+                return;
             }
 
             if (this.State.Id != Guid.Empty)
             {
-                // TODO: warning
-                return TaskDone.Done;
+                this.GetLogger().Warn(1, "Conflict user id: UserId {0}, UserRegisterCommand.UserId {1}", this.State.Id, userRegister.UserId);
+                return;
             }
+
+            DateTime registerTime = DateTime.Now;
 
             this.State.Id = userRegister.UserId;
             this.State.Cellphone = userRegister.Cellphone;
-            //this.State.JinyinmaoAccount = JinyinmaoAccountFactory.GetGrain(GuidUtility.NewSequentialGuid());
-            //this.State.SourceAccount = SourceAccountFactory.GetGrain(GuidUtility.NewSequentialGuid());
+            this.State.RegisterTime = registerTime;
 
-            return this.State.WriteStateAsync();
+            this.State.JinyinmaoAccount = JinyinmaoAccountFactory.GetGrain(Guid.NewGuid());
+            await this.State.JinyinmaoAccount.Register(new JinyinmaoAccountRegister
+            {
+                LoginNames = new List<string> { userRegister.Cellphone },
+                Password = userRegister.Password,
+                Salt = this.State.Id.ToGuidString(),
+                UserId = this.State.Id
+            });
+
+            this.State.SourceAccount = SourceAccountFactory.GetGrain(Guid.NewGuid());
+            await this.State.SourceAccount.Register(new SourceAccountRegister
+            {
+                ClientType = userRegister.ClientType,
+                ContractId = userRegister.ContractId,
+                InviteBy = userRegister.InviteBy,
+                OutletCode = userRegister.OutletCode,
+                UserId = this.State.Id,
+                Args = userRegister.Args
+            });
+
+            this.State.JBYAccount = JBYAccountFactory.GetGrain(Guid.NewGuid());
+
+#pragma warning disable 4014
+            this.StoreCommandAsync(userRegister);
+#pragma warning restore 4014
+
+            await this.State.WriteStateAsync();
         }
 
         #endregion IUser Members

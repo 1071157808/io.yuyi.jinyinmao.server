@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  11:05 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  11:32 PM
+// Last Modified On : 2015-04-12  6:15 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,9 +12,14 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http;
+using Moe.AspNet.Utility;
+using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
@@ -43,6 +48,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
                 return this.currentUser.Id.HasValue ? this.currentUser : null;
             }
+        }
+
+        /// <summary>
+        ///     Builds the arguments.
+        /// </summary>
+        /// <returns>System.String.</returns>
+        protected string BuildArgs(IList<KeyValuePair<string, string>> argsToAdd = null)
+        {
+            List<KeyValuePair<string, string>> args = this.Request.GetQueryNameValuePairs().ToList();
+            args.Add(new KeyValuePair<string, string>("Ip", HttpUtils.GetUserHostAddress(this.Request)));
+            args.Add(new KeyValuePair<string, string>("UserAgent", HttpUtils.GetUserAgent(this.Request)));
+            if (argsToAdd != null)
+            {
+                args.AddRange(argsToAdd);
+            }
+            return JsonConvert.SerializeObject(args);
         }
 
         /// <summary>

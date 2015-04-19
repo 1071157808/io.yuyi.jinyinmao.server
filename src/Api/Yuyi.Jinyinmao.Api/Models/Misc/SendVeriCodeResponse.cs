@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  10:32 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  1:20 AM
+// Last Modified On : 2015-04-12  3:09 PM
 // ***********************************************************************
 // <copyright file="SendVeriCodeResponse.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,13 +12,14 @@
 // ***********************************************************************
 
 using System.ComponentModel.DataAnnotations;
-using Moe.AspNet.ResponseModels;
+using Moe.AspNet.Models;
+using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Models.Misc
 {
     /// <summary>
-    ///     验证码发送响应
+    /// Class SendVeriCodeResponse.
     /// </summary>
     public class SendVeriCodeResponse : IResponse
     {
@@ -26,14 +27,14 @@ namespace Yuyi.Jinyinmao.Api.Models.Misc
         ///     今天剩余发送次数，若为-1，则今天不能再次发送该类型验证码
         /// </summary>
         /// <value>The remain count.</value>
-        [Required]
+        [Required, JsonProperty(PropertyName = "remainCount")]
         public int RemainCount { get; set; }
 
         /// <summary>
         ///     本次发送结果
         /// </summary>
         /// <value><c>true</c> if successed; otherwise, <c>false</c>.</value>
-        [Required]
+        [Required, JsonProperty(PropertyName = "successed")]
         public bool Successed { get; set; }
     }
 

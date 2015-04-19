@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-03  6:32 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-05  7:09 PM
+// Last Modified On : 2015-04-12  6:46 PM
 // ***********************************************************************
 // <copyright file="IUserState.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -22,57 +22,53 @@ namespace Yuyi.Jinyinmao.Domain
     public interface IUserState : IEntityState
     {
         /// <summary>
-        ///     Gets or sets the cellphone.
+        ///     用户手机号码
         /// </summary>
-        /// <value>The cellphone.</value>
         string Cellphone { get; set; }
 
         /// <summary>
-        ///     Gets or sets the credential.
+        ///     证件类型
         /// </summary>
-        /// <value>The credential.</value>
         Credential Credential { get; set; }
 
         /// <summary>
-        ///     Gets or sets the credential no.
+        ///     证件编号
         /// </summary>
-        /// <value>The credential no.</value>
         string CredentialNo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the name of the real name.
+        ///     金包银账户
         /// </summary>
-        /// <value>The name of the real name.</value>
-        string RealName { get; set; }
+        IJBYAccount JBYAccount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the register time.
+        ///     金银猫账户
         /// </summary>
-        /// <value>The register time.</value>
-        DateTime RegisterTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether the user information is verified.
-        /// </summary>
-        /// <value><c>true</c> if verified; otherwise, <c>false</c>.</value>
-        bool Verified { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the verified time.
-        /// </summary>
-        /// <value>The verified time.</value>
-        DateTime? VerifiedTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the jinyinmao account.
-        /// </summary>
-        /// <value>The jinyinmao account.</value>
         IJinyinmaoAccount JinyinmaoAccount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the source account.
+        ///     真实姓名
         /// </summary>
-        /// <value>The source account.</value>
+        string RealName { get; set; }
+
+        /// <summary>
+        ///     注册时间
+        /// </summary>
+        DateTime RegisterTime { get; set; }
+
+        /// <summary>
+        ///     来源账户
+        /// </summary>
         ISourceAccount SourceAccount { get; set; }
+
+        /// <summary>
+        ///     是否通过实名认证
+        /// </summary>
+        bool Verified { get; set; }
+
+        /// <summary>
+        ///     实名认证时间
+        /// </summary>
+        DateTime? VerifiedTime { get; set; }
     }
 }

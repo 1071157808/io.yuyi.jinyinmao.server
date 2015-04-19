@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  10:08 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  1:33 AM
+// Last Modified On : 2015-04-12  6:15 PM
 // ***********************************************************************
 // <copyright file="MiscController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             string message = GetVeriCodeMessage(request.Type);
-            SendVeriCodeResult result = await this.veriCodeService.SendAsync(cellphone, request.Type, message, request.Args);
+            SendVeriCodeResult result = await this.veriCodeService.SendAsync(cellphone, request.Type, message, this.BuildArgs());
 
             return this.Ok(result.ToResponse());
         }

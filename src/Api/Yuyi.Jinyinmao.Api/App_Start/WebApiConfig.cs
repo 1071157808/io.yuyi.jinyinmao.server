@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-05  9:55 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  12:40 AM
+// Last Modified On : 2015-04-19  2:50 PM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Tracing;
@@ -33,11 +34,8 @@ namespace Yuyi.Jinyinmao.Api
         /// <param name="config">The configuration.</param>
         public static void Register(HttpConfiguration config)
         {
-            config.Services.Replace(typeof(IFilterProvider), new ConfigurationFilterProvider());
             config.Services.Add(typeof(IFilterProvider), new OrderedFilterProvider());
             config.Services.Add(typeof(IExceptionLogger), new AzureExceptionLogger());
-
-            config.MessageHandlers.Add(new JsonpCallbackParameterHandler());
 
             SystemDiagnosticsTraceWriter traceWriter = config.EnableSystemDiagnosticsTracing();
             traceWriter.IsVerbose = true;
@@ -47,6 +45,8 @@ namespace Yuyi.Jinyinmao.Api
 
             config.Routes.MapHttpBatchRoute("WebApiBatch", "$batch", new BatchHandler(GlobalConfiguration.DefaultServer));
             config.MapHttpAttributeRoutes();
+
+            config.EnableCors(new EnableCorsAttribute("http://www.jinyinmao.com.cn,https://www.jinyinmao.com.cn", "*", "*"));
 
             NinjectConfig.RegisterDependencyResolver(config);
         }
