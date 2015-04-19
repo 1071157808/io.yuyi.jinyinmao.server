@@ -68,9 +68,9 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeAspNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeAspNet.1.0.5.0\lib\net452\MoeAspNet.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoeAspNet, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MoeAspNet.1.0.6.0\lib\net452\MoeAspNet.dll</HintPath>
     </Reference>
     <Reference Include="MoeEnsure, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MoeEnsure.1.2.3.0\lib\net452\MoeEnsure.dll</HintPath>
@@ -91,6 +91,9 @@
     <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="ReflectionMagic">
+      <HintPath>..\..\packages\ReflectionMagic.2.1.0\lib\net40\ReflectionMagic.dll</HintPath>
     </Reference>
     <Reference Include="Swashbuckle.Core">
       <HintPath>..\..\packages\Swashbuckle.Core.5.1.4\lib\net40\Swashbuckle.Core.dll</HintPath>

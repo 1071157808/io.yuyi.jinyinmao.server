@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-17  10:12 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  3:11 PM
+// Last Modified On : 2015-04-20  2:37 AM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -92,7 +92,7 @@ namespace SmsClient
         {
             Console.WriteLine("Calling the back-end API");
 
-            string apiBaseAddress = "http://localhost:10180/";
+            string apiBaseAddress = "https://d1-sms-api-jym.yuyidev.com/";
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();
 
