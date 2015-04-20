@@ -1,17 +1,19 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  11:54 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  11:55 AM
+// Last Modified On : 2015-04-20  12:03 PM
 // ***********************************************************************
 // <copyright file="ChannelBalance.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
+using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Sms.Models
 {
@@ -21,15 +23,15 @@ namespace Yuyi.Jinyinmao.Api.Sms.Models
     public class ChannelBalance : IResponse
     {
         /// <summary>
-        ///     Gets or sets the balance.
+        ///     余额
         /// </summary>
-        /// <value>The balance.</value>
+        [Required, JsonProperty(PropertyName = "balance")]
         public int Balance { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether [support balance query].
+        ///     是否支付余额查询
         /// </summary>
-        /// <value><c>true</c> if [support balance query]; otherwise, <c>false</c>.</value>
+        [Required, JsonProperty(PropertyName = "supportBalanceQuery")]
         public bool SupportBalanceQuery { get; set; }
     }
 }

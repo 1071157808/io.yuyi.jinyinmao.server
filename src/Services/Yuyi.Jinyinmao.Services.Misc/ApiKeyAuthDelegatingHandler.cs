@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-04-20  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  11:27 AM
+// Last Modified On : 2015-04-20  11:38 AM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -19,8 +19,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Moe.Lib;
 
-namespace SmsClient
+namespace Yuyi.Jinyinmao.Services
 {
     /// <summary>
     ///     ApiKeyAuthDelegatingHandler.
@@ -30,12 +31,12 @@ namespace SmsClient
         /// <summary>
         ///     The API key
         /// </summary>
-        private const string ApiKey = "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=";
+        private const string ApiKey = "53iqeaOpewkLDtIdi5U6YaXgdkKU4ew1fNzxVaDUbVI=";
 
         /// <summary>
         ///     The application identifier
         /// </summary>
-        private const string AppId = "0dcd384f-47a6-4083-bef4-a61bec55e12f";
+        private const string AppId = "79cc4ed8-3565-43b5-bb0b-65a4889c6fbd";
 
         /// <summary>
         ///     send as an asynchronous operation.
@@ -53,9 +54,7 @@ namespace SmsClient
             string requestHttpMethod = request.Method.Method;
 
             //Calculate UNIX time
-            DateTime epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan timeSpan = DateTime.UtcNow - epochStart;
-            string requestTimeStamp = Convert.ToUInt64(timeSpan.TotalSeconds).ToString();
+            string requestTimeStamp = DateTime.UtcNow.UnixTimeStamp().ToString();
 
             //create random nonce for each request
             string nonce = Guid.NewGuid().ToString("N");

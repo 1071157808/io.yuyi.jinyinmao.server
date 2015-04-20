@@ -92,7 +92,7 @@ namespace SmsClient
         {
             Console.WriteLine("Calling the back-end API");
 
-            string apiBaseAddress = "https://sms-api-jym.yuyidev.com/";
+            string apiBaseAddress = "http://sms.api.jinyinmao.yuyidev.com/";
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();
 

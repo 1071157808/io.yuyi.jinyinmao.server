@@ -1,47 +1,70 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  4:31 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  5:16 PM
+// Last Modified On : 2015-04-20  12:01 PM
 // ***********************************************************************
 // <copyright file="SmsService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moe.Lib;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Services
 {
     /// <summary>
+    ///     SmsMessage.
+    /// </summary>
+    public class SmsMessage
+    {
+        /// <summary>
+        ///     手机号，多个号码以,分隔，这里不会验证手机号的格式是否正确
+        /// </summary>
+        [JsonProperty(PropertyName = "cellphones")]
+        public string Cellphones { get; set; }
+
+        /// <summary>
+        ///     短信通道
+        /// </summary>
+        [JsonProperty(PropertyName = "channel")]
+        public string Channel { get; set; }
+
+        /// <summary>
+        ///     短信内容
+        /// </summary>
+        [JsonProperty(PropertyName = "message")]
+        public string Message { get; set; }
+
+        /// <summary>
+        ///     短信签名
+        /// </summary>
+        [JsonProperty(PropertyName = "signature")]
+        public string Signature { get; set; }
+    }
+
+    /// <summary>
     ///     Class SmsService.
     /// </summary>
     public class SmsService : ISmsService
     {
-        private static readonly string getBalanceUrl;
-        private static readonly string messageTemplate;
-        private static readonly string password;
-        private static readonly string sendMessageUrl;
+        private static readonly string apiBaseAddress;
         private static readonly bool smsServiceEnable;
-        private static readonly string userName;
 
         static SmsService()
         {
-            sendMessageUrl = "http://www.ztsms.cn:8800/sendSms.do?";
-            getBalanceUrl = "http://www.ztsms.cn:8800/balance.do?";
-            string userNameConfig = ConfigurationManager.AppSettings.Get("SmsServiceUserName");
-            string passwordConfig = ConfigurationManager.AppSettings.Get("SmsServicePassword");
             string smsServiceEnableConfig = ConfigurationManager.AppSettings.Get("SmsServiceEnable");
-            userName = userNameConfig.IsNotNullOrEmpty() ? userNameConfig : "jymao";
-            password = passwordConfig.IsNotNullOrEmpty() ? passwordConfig : "DRTkGfh9";
             smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty();
-            messageTemplate = "username={0}&password={1}&mobile={2}&content={3}【{4}】&dstime=&productid={5}&xh=";
+            apiBaseAddress = "http://sms.api.jinyinmao.yuyidev.com/";
         }
 
         #region ISmsService Members
@@ -54,9 +77,16 @@ namespace Yuyi.Jinyinmao.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                string getBalanceRequstUrl = getBalanceUrl + "username={0}&password={1}".FormatWith(userName, password);
+                int balance = 9999999;
+                string getBalanceRequstUrl = apiBaseAddress + "Balance?channel=100001";
                 HttpResponseMessage response = await client.GetAsync(getBalanceRequstUrl);
-                return (await response.Content.ReadAsStringAsync()).ToInt();
+                string responseContent = await response.Content.ReadAsStringAsync();
+                JObject result = JObject.Parse(responseContent);
+                if (Convert.ToBoolean(result.GetValue("supportBalanceQuery").ToString()))
+                {
+                    balance = Convert.ToInt32(result.GetValue("balance").ToString());
+                }
+                return balance;
             }
         }
 
@@ -74,12 +104,12 @@ namespace Yuyi.Jinyinmao.Services
                 return true;
             }
 
-            string productId = message.Contains("验证码") ? "676767" : "48661";
-            using (HttpClient client = new HttpClient())
+            string channel = message.Contains("验证码") ? "100001" : "100002";
+            SmsMessage smsMessage = new SmsMessage { Cellphones = cellphones, Channel = channel, Message = message, Signature = signature };
+            using (HttpClient client = HttpClientFactory.Create(new ApiKeyAuthDelegatingHandler()))
             {
-                HttpResponseMessage response = await client.GetAsync(sendMessageUrl + messageTemplate.FormatWith(
-                    userName, password, cellphones, message, signature, productId));
-                return (await response.Content.ReadAsStringAsync()).StartsWith("1,");
+                HttpResponseMessage response = await client.PostAsJsonAsync(apiBaseAddress + "Send", smsMessage);
+                return response.IsSuccessStatusCode;
             }
         }
 
