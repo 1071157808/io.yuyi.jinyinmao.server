@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,7 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <NuGetPackageImportStamp>6f6950fe</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>d8469544</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,8 +81,8 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeActorInterface, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeActorInterface.1.0.12.0\lib\net452\MoeActorInterface.dll</HintPath>
+    <Reference Include="MoeActorInterface, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeActorInterface.1.2.3.0\lib\net452\MoeActorInterface.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MoeAspNet, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
@@ -221,7 +220,6 @@
     <Compile Include="Models\User\SignUpRequest.cs" />
     <Compile Include="Models\User\SignUpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -310,10 +308,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.props'))" />
   </Target>
-  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces.1.0.5\build\Microsoft.Orleans.Templates.Interfaces.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

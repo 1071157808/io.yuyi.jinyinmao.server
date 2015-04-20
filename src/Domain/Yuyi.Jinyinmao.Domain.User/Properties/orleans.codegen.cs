@@ -23,8 +23,9 @@ namespace Yuyi.Jinyinmao.Domain
     using Orleans;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
-    using Moe.Actor.Commands;
-    using Moe.Actor.Model;
+    using Moe.Actor.Interface.Commands;
+    using Moe.Actor.Interface.Events;
+    using Moe.Actor.Interface.Model;
     using Orleans.Runtime;
     
     
@@ -109,9 +110,11 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public CommandStore @CommandStore { get; set; }
+            public ICommandStore @CommandStore { get; set; }
 
             public Guid @Id { get; set; }
+
+            public IEventStore @EventStore { get; set; }
 
             public Guid @UserId { get; set; }
 
@@ -119,14 +122,15 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (CommandStore) value;
+                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("UserId", out value)) @UserId = (Guid) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYAccountState( CommandStore={0} Id={1} UserId={2} )", @CommandStore, @Id, @UserId);
+                return System.String.Format("JBYAccountState( CommandStore={0} Id={1} EventStore={2} UserId={3} )", @CommandStore, @Id, @EventStore, @UserId);
             }
         
         public JBYAccountState() : 
@@ -140,14 +144,16 @@ namespace Yuyi.Jinyinmao.Domain
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
+            result["EventStore"] = this.EventStore;
             result["UserId"] = this.UserId;
             return result;
         }
         
         private void InitStateFields()
         {
-            this.CommandStore = default(CommandStore);
+            this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
+            this.EventStore = default(IEventStore);
             this.UserId = default(Guid);
         }
         
@@ -182,9 +188,11 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public CommandStore @CommandStore { get; set; }
+            public ICommandStore @CommandStore { get; set; }
 
             public Guid @Id { get; set; }
+
+            public IEventStore @EventStore { get; set; }
 
             public String @EncryptedPassword { get; set; }
 
@@ -200,8 +208,9 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (CommandStore) value;
+                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
@@ -211,7 +220,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("JinyinmaoAccountState( CommandStore={0} Id={1} EncryptedPassword={2} LoginNames={3} RegisterTime={4} Salt={5} UserId={6} )", @CommandStore, @Id, @EncryptedPassword, @LoginNames, @RegisterTime, @Salt, @UserId);
+                return System.String.Format("JinyinmaoAccountState( CommandStore={0} Id={1} EventStore={2} EncryptedPassword={3} LoginNames={4} RegisterTime={5} Salt={6} UserId={7} )", @CommandStore, @Id, @EventStore, @EncryptedPassword, @LoginNames, @RegisterTime, @Salt, @UserId);
             }
         
         public JinyinmaoAccountState() : 
@@ -225,6 +234,7 @@ namespace Yuyi.Jinyinmao.Domain
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
+            result["EventStore"] = this.EventStore;
             result["EncryptedPassword"] = this.EncryptedPassword;
             result["LoginNames"] = this.LoginNames;
             result["RegisterTime"] = this.RegisterTime;
@@ -235,8 +245,9 @@ namespace Yuyi.Jinyinmao.Domain
         
         private void InitStateFields()
         {
-            this.CommandStore = default(CommandStore);
+            this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
+            this.EventStore = default(IEventStore);
             this.EncryptedPassword = default(String);
             this.LoginNames = new List<String>();
             this.RegisterTime = default(DateTime);
@@ -275,9 +286,11 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public CommandStore @CommandStore { get; set; }
+            public ICommandStore @CommandStore { get; set; }
 
             public Guid @Id { get; set; }
+
+            public IEventStore @EventStore { get; set; }
 
             public String @Args { get; set; }
 
@@ -295,8 +308,9 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (CommandStore) value;
+                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("Args", out value)) @Args = (String) value;
                 if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("ContractId", out value)) @ContractId = value is Int32 ? (Int32)value : (Int64)value;
@@ -307,7 +321,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("SourceAccountState( CommandStore={0} Id={1} Args={2} ClientType={3} ContractId={4} InviteBy={5} OutletCode={6} UserId={7} )", @CommandStore, @Id, @Args, @ClientType, @ContractId, @InviteBy, @OutletCode, @UserId);
+                return System.String.Format("SourceAccountState( CommandStore={0} Id={1} EventStore={2} Args={3} ClientType={4} ContractId={5} InviteBy={6} OutletCode={7} UserId={8} )", @CommandStore, @Id, @EventStore, @Args, @ClientType, @ContractId, @InviteBy, @OutletCode, @UserId);
             }
         
         public SourceAccountState() : 
@@ -321,6 +335,7 @@ namespace Yuyi.Jinyinmao.Domain
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
+            result["EventStore"] = this.EventStore;
             result["Args"] = this.Args;
             result["ClientType"] = this.ClientType;
             result["ContractId"] = this.ContractId;
@@ -332,8 +347,9 @@ namespace Yuyi.Jinyinmao.Domain
         
         private void InitStateFields()
         {
-            this.CommandStore = default(CommandStore);
+            this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
+            this.EventStore = default(IEventStore);
             this.Args = default(String);
             this.ClientType = default(Int64);
             this.ContractId = default(Int64);
@@ -373,9 +389,11 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public CommandStore @CommandStore { get; set; }
+            public ICommandStore @CommandStore { get; set; }
 
             public Guid @Id { get; set; }
+
+            public IEventStore @EventStore { get; set; }
 
             public String @Cellphone { get; set; }
 
@@ -401,8 +419,9 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (CommandStore) value;
+                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
                 if (values.TryGetValue("Credential", out value)) @Credential = (Credential) value;
                 if (values.TryGetValue("CredentialNo", out value)) @CredentialNo = (String) value;
@@ -417,7 +436,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} Id={1} Cellphone={2} Credential={3} CredentialNo={4} JBYAccount={5} JinyinmaoAccount={6} RealName={7} RegisterTime={8} SourceAccount={9} Verified={10} VerifiedTime={11} )", @CommandStore, @Id, @Cellphone, @Credential, @CredentialNo, @JBYAccount, @JinyinmaoAccount, @RealName, @RegisterTime, @SourceAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( CommandStore={0} Id={1} EventStore={2} Cellphone={3} Credential={4} CredentialNo={5} JBYAccount={6} JinyinmaoAccount={7} RealName={8} RegisterTime={9} SourceAccount={10} Verified={11} VerifiedTime={12} )", @CommandStore, @Id, @EventStore, @Cellphone, @Credential, @CredentialNo, @JBYAccount, @JinyinmaoAccount, @RealName, @RegisterTime, @SourceAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -431,6 +450,7 @@ namespace Yuyi.Jinyinmao.Domain
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
+            result["EventStore"] = this.EventStore;
             result["Cellphone"] = this.Cellphone;
             result["Credential"] = this.Credential;
             result["CredentialNo"] = this.CredentialNo;
@@ -446,8 +466,9 @@ namespace Yuyi.Jinyinmao.Domain
         
         private void InitStateFields()
         {
-            this.CommandStore = default(CommandStore);
+            this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
+            this.EventStore = default(IEventStore);
             this.Cellphone = default(String);
             this.Credential = default(Credential);
             this.CredentialNo = default(String);

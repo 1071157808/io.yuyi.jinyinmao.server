@@ -13,7 +13,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Moe.Actor.Model;
+using Moe.Actor.Models;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Helper;
 

@@ -5,13 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>2.5</ProductVersion>
-    <ProjectGuid>0be15b73-1e67-4d7a-ab2c-6c14be61d76c</ProjectGuid>
+    <ProjectGuid>84f2542e-bea4-47c0-b807-61df5c2c7381</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EventsProcessors</RootNamespace>
-    <AssemblyName>EventsProcessors</AssemblyName>
+    <RootNamespace>Yuyi.Jinyinmao.Silos.AzureHost</RootNamespace>
+    <AssemblyName>Yuyi.Jinyinmao.Silos.AzureHost</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
-    <Name>EventsProcessors</Name>
+    <Name>Yuyi.Jinyinmao.Silos.AzureHost</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

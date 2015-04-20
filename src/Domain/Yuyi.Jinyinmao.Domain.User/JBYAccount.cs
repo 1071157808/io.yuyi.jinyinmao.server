@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-12  6:37 PM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-12  6:46 PM
+// Last Modified On : 2015-04-20  1:32 PM
 // ***********************************************************************
 // <copyright file="JBYAccount.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Moe.Actor.Model;
+using Moe.Actor.Models;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain

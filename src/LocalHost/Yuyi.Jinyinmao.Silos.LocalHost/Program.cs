@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-10  11:01 AM
+// Created          : 2015-04-21  12:13 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  12:34 PM
+// Last Modified On : 2015-04-21  12:14 AM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,7 @@
 
 using System;
 
-namespace Yuyi.Jinyinmao.Domain.Service
+namespace Yuyi.Jinyinmao.Silos.LocalHost
 {
     internal class Program
     {

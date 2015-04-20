@@ -1,28 +1,36 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-20  1:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-12  6:15 PM
+// Last Modified On : 2015-04-20  2:07 PM
 // ***********************************************************************
-// <copyright file="UserRegister.cs" company="Shanghai Yuyi">
+// <copyright file="UserRegistered.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using Moe.Actor.Interface.Commands;
+using Moe.Actor.Interface.Events;
 using Orleans.Concurrency;
 
-namespace Yuyi.Jinyinmao.Domain.Commands
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
-    ///     Class UserRegister.
+    ///     UserRegistered.
     /// </summary>
     [Immutable]
-    public class UserRegister : Command
+    public class UserRegistered : Event
     {
+        /// <summary>
+        ///     Initializes a new instance of the <c>Event</c> class.
+        /// </summary>
+        /// <param name="sourceId">The source identifier.</param>
+        public UserRegistered(string sourceId) : base(sourceId, typeof(IUser))
+        {
+        }
+
         /// <summary>
         ///     Gets or sets the arguments.
         /// </summary>
@@ -45,14 +53,6 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         public long ContractId { get; set; }
 
         /// <summary>
-        ///     Gets the handler identifier.
-        /// </summary>
-        public override Guid HandlerId
-        {
-            get { return this.UserId; }
-        }
-
-        /// <summary>
         ///     邀请码(推广相关)
         /// </summary>
         public string InviteBy { get; set; }
@@ -61,11 +61,6 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         ///     金银e家代码
         /// </summary>
         public string OutletCode { get; set; }
-
-        /// <summary>
-        ///     用户设置的密码
-        /// </summary>
-        public string Password { get; set; }
 
         /// <summary>
         ///     用户编号

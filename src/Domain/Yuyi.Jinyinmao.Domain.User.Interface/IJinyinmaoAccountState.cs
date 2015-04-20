@@ -13,7 +13,7 @@
 
 using System;
 using System.Collections.Generic;
-using Moe.Actor.Model;
+using Moe.Actor.Interface.Model;
 
 namespace Yuyi.Jinyinmao.Domain
 {

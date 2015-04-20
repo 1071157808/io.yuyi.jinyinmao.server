@@ -1693,7 +1693,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister), DeepCopier, Serializer, Deserializer);
-            fieldInfo9 = typeof(Moe.Actor.Commands.Command).GetField("commandId", (System.Reflection.BindingFlags.Instance 
+            fieldInfo9 = typeof(Moe.Actor.Interface.Commands.Command).GetField("commandId", (System.Reflection.BindingFlags.Instance 
                             | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }

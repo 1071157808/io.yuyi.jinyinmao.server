@@ -19,10 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "8-Packages", "8-Packages", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.User", "Domain\Yuyi.Jinyinmao.Domain.User\Yuyi.Jinyinmao.Domain.User.csproj", "{BD85B692-CB20-481B-9628-452D41971A92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Core", "Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj", "{5245A89C-FD02-404A-A0A3-C1B5F197E426}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Core.Interface", "Domain\Yuyi.Jinyinmao.Domain.Core.Interface\Yuyi.Jinyinmao.Domain.Core.Interface.csproj", "{18840DCC-CA5F-4817-BB38-E05237AE3610}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Api", "1-Api", "{E57225A1-3000-4369-8C1E-A1DF4C5120B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "Labs\ConsoleApplication\ConsoleApplication.csproj", "{888D8132-6BB8-4C6A-A35D-795FD7370614}"
@@ -41,8 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Service.User
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9-Publish", "9-Publish", "{D91863F8-FB00-4448-AEAC-E1442C17CF17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Service.Console", "Domain\Yuyi.Jinyinmao.Domain.Service.Console\Yuyi.Jinyinmao.Domain.Service.Console.csproj", "{323DA38C-19B1-465B-8485-E9D06700F9C3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
 	ProjectSection(SolutionItems) = preProject
 		Publish\dev\InitGrainDBs.sql = Publish\dev\InitGrainDBs.sql
@@ -54,8 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Worker", "2-Worker", "{42
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-LocalHost", "3-LocalHost", "{A10B2E6B-7856-4EA5-AF60-816879A740BE}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "EventsProcessors", "Worker\EventsProcessors\EventsProcessors.ccproj", "{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Application", "4-Application", "{06FA11E8-18AC-4882-8EBE-165EE260E5D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIKeyGenarator", "Application\APIKeyGenarator\APIKeyGenarator.csproj", "{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}"
@@ -63,6 +55,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsClient", "Application\SmsClient\SmsClient.csproj", "{F6633FBB-6227-4D15-838E-C6F8EC4641EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Api.Sms", "Api\Yuyi.Jinyinmao.Api.Sms\Yuyi.Jinyinmao.Api.Sms.csproj", "{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Core", "Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj", "{5245A89C-FD02-404A-A0A3-C1B5F197E426}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Yuyi.Jinyinmao.Silos.AzureHost", "Worker\Yuyi.Jinyinmao.Silos.AzureHost\Yuyi.Jinyinmao.Silos.AzureHost.ccproj", "{84F2542E-BEA4-47C0-B807-61DF5C2C7381}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silos.LocalHost", "LocalHost\Yuyi.Jinyinmao.Silos.LocalHost\Yuyi.Jinyinmao.Silos.LocalHost.csproj", "{9729F6C3-E595-4D10-A23D-719F3F35F91E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,14 +88,6 @@ Global
 		{BD85B692-CB20-481B-9628-452D41971A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD85B692-CB20-481B-9628-452D41971A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD85B692-CB20-481B-9628-452D41971A92}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18840DCC-CA5F-4817-BB38-E05237AE3610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18840DCC-CA5F-4817-BB38-E05237AE3610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18840DCC-CA5F-4817-BB38-E05237AE3610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18840DCC-CA5F-4817-BB38-E05237AE3610}.Release|Any CPU.Build.0 = Release|Any CPU
 		{888D8132-6BB8-4C6A-A35D-795FD7370614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{888D8132-6BB8-4C6A-A35D-795FD7370614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{888D8132-6BB8-4C6A-A35D-795FD7370614}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -123,14 +113,6 @@ Global
 		{C3B74C74-F4C7-485E-9697-B51B754FCCEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3B74C74-F4C7-485E-9697-B51B754FCCEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3B74C74-F4C7-485E-9697-B51B754FCCEE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{323DA38C-19B1-465B-8485-E9D06700F9C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -143,6 +125,18 @@ Global
 		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,22 +147,21 @@ Global
 		{C3B357A1-BDFB-4E82-8D76-4C055D21DBBA} = {A6AC133D-554D-4DE0-A239-981FB9CAAEBA}
 		{596F9CB8-45FF-4D76-ACD6-037938ED5EEE} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{BD85B692-CB20-481B-9628-452D41971A92} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
-		{5245A89C-FD02-404A-A0A3-C1B5F197E426} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
-		{18840DCC-CA5F-4817-BB38-E05237AE3610} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{888D8132-6BB8-4C6A-A35D-795FD7370614} = {A6AC133D-554D-4DE0-A239-981FB9CAAEBA}
 		{D2409F50-DFA5-48A4-9870-C7F321289E2F} = {E57225A1-3000-4369-8C1E-A1DF4C5120B9}
 		{A109D0AD-39B7-49EB-B7AD-A0850782E2BC} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{0E048DCC-F815-4D24-87B4-4210FD89E500} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{D0C9996F-A7F6-4F7F-A5B8-8657CF4673C9} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{C3B74C74-F4C7-485E-9697-B51B754FCCEE} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
-		{323DA38C-19B1-465B-8485-E9D06700F9C3} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{C2CDB48E-6910-42A3-96E5-DE22025E6FAD} = {D91863F8-FB00-4448-AEAC-E1442C17CF17}
-		{0BE15B73-1E67-4D7A-AB2C-6C14BE61D76C} = {427500D4-546D-43D3-9C68-B604408ABE4A}
 		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{F6633FBB-6227-4D15-838E-C6F8EC4641EC} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9} = {E57225A1-3000-4369-8C1E-A1DF4C5120B9}
+		{5245A89C-FD02-404A-A0A3-C1B5F197E426} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
+		{84F2542E-BEA4-47C0-B807-61DF5C2C7381} = {427500D4-546D-43D3-9C68-B604408ABE4A}
+		{9729F6C3-E595-4D10-A23D-719F3F35F91E} = {A10B2E6B-7856-4EA5-AF60-816879A740BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal

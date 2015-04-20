@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-10  11:01 AM
+// Created          : 2015-04-21  12:13 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  12:32 PM
+// Last Modified On : 2015-04-21  12:18 AM
 // ***********************************************************************
 // <copyright file="AssemblyInfo.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -18,11 +18,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("Yuyi.Jinyinmao.Domain.Service.Console")]
-[assembly: AssemblyDescription("Console host for Yuyi.Jinyinmao.Domain.Service")]
+[assembly: AssemblyTitle("Yuyi.Jinyinmao.Silos.LocalHost")]
+[assembly: AssemblyDescription("Console host for Yuyi.Jinyinmao.Silos")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Shanghai Yuyi")]
-[assembly: AssemblyProduct("Yuyi.Jinyinmao.Domain.Service.Console")]
+[assembly: AssemblyProduct("Yuyi.Jinyinmao.Silos.LocalHost")]
 [assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("323da38c-19b1-465b-8485-e9d06700f9c3")]
+[assembly: Guid("9729f6c3-e595-4d10-a23d-719f3f35f91e")]
 
 // Version information for an assembly consists of the following four values:
 //

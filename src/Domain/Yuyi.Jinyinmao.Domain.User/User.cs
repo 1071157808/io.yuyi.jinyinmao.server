@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-12  7:15 PM
+// Last Modified On : 2015-04-20  2:07 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,11 +14,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Moe.Actor.Model;
+using Moe.Actor.Models;
 using Moe.Lib;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.Events;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -98,11 +99,22 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.JBYAccount = JBYAccountFactory.GetGrain(Guid.NewGuid());
 
+            await this.State.WriteStateAsync();
+
 #pragma warning disable 4014
             this.StoreCommandAsync(userRegister);
-#pragma warning restore 4014
 
-            await this.State.WriteStateAsync();
+            this.StoreEventAsync(new UserRegistered(this.State.Id.ToGuidString())
+            {
+                Args = userRegister.Args,
+                Cellphone = userRegister.Cellphone,
+                ClientType = userRegister.ClientType,
+                ContractId = userRegister.ContractId,
+                InviteBy = userRegister.InviteBy,
+                OutletCode = userRegister.OutletCode,
+                UserId = userRegister.UserId
+            });
+#pragma warning restore 4014
         }
 
         #endregion IUser Members

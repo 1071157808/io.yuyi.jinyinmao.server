@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{323DA38C-19B1-465B-8485-E9D06700F9C3}</ProjectGuid>
+    <ProjectGuid>{9729F6C3-E595-4D10-A23D-719F3F35F91E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yuyi.Jinyinmao.Domain.Service</RootNamespace>
-    <AssemblyName>Yuyi.Jinyinmao.Domain.Service.Console</AssemblyName>
+    <RootNamespace>Yuyi.Jinyinmao.Silos.LocalHost</RootNamespace>
+    <AssemblyName>Yuyi.Jinyinmao.Silos.LocalHost</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Yuyi.Jinyinmao.Domain.Service.Console.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Yuyi.Jinyinmao.Silos.LocalHost.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,46 +33,43 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Domain.Service.Console.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Silos.LocalHost.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Yuyi.Jinyinmao.Domain.Service.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CounterControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Orleans.CounterControl.1.0.5\lib\net45\CounterControl.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\Microsoft.Data.OData.5.6.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\Microsoft.Data.Services.Client.5.6.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.0.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\Unofficial.Microsoft.WindowsAzure.ServiceRuntime.2.5.0.0\lib\net40\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\Unofficial.Microsoft.WindowsAzure.ServiceRuntime.2.4.0.0\lib\net40\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WindowsAzure.Storage.4.2.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Orleans, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
@@ -97,8 +94,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+    <Reference Include="System.Spatial, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\System.Spatial.5.6.0\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -119,23 +116,15 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="OrleansConfiguration.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.Core.Interface\Yuyi.Jinyinmao.Domain.Core.Interface.csproj">
-      <Project>{18840dcc-ca5f-4817-bb38-e05237ae3610}</Project>
-      <Name>Yuyi.Jinyinmao.Domain.Core.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
-      <Project>{5245a89c-fd02-404a-a0a3-c1b5f197e426}</Project>
-      <Name>Yuyi.Jinyinmao.Domain.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
       <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
       <Name>Yuyi.Jinyinmao.Domain.User.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.User\Yuyi.Jinyinmao.Domain.User.csproj">
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.User\Yuyi.Jinyinmao.Domain.User.csproj">
       <Project>{bd85b692-cb20-481b-9628-452d41971a92}</Project>
       <Name>Yuyi.Jinyinmao.Domain.User</Name>
     </ProjectReference>
