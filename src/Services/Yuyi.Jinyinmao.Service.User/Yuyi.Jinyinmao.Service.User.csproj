@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yuyi.Jinyinmao.Service</RootNamespace>
     <AssemblyName>Yuyi.Jinyinmao.Service.User</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>35b1d191</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Service.User.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -59,13 +63,13 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeActorInterface, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MoeActorInterface, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeActorInterface.1.2.3.0\lib\net452\MoeActorInterface.dll</HintPath>
+      <HintPath>..\..\packages\MoeActorInterface.2.0.1.0\lib\net45\MoeActorInterface.dll</HintPath>
     </Reference>
-    <Reference Include="MoeLib">
-      <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\MoeLib.1.5.2.0\lib\net452\MoeLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoeLib, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MoeLib.2.0.2.0\lib\net45\MoeLib.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>

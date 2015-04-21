@@ -68,21 +68,21 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeAspNet, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MoeAspNet, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeAspNet.1.0.6.0\lib\net452\MoeAspNet.dll</HintPath>
+      <HintPath>..\..\packages\MoeAspNet.2.0.1.0\lib\net45\MoeAspNet.dll</HintPath>
     </Reference>
-    <Reference Include="MoeEnsure, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeEnsure.1.2.3.0\lib\net452\MoeEnsure.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoeEnsure, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MoeEnsure.2.0.1.0\lib\net45\MoeEnsure.dll</HintPath>
     </Reference>
-    <Reference Include="MoeLib, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.1.5.2.0\lib\net452\MoeLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoeLib, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MoeLib.2.0.2.0\lib\net45\MoeLib.dll</HintPath>
     </Reference>
-    <Reference Include="MoeThrow, Version=1.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeThrow.1.1.6.0\lib\net452\MoeThrow.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoeThrow, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MoeThrow.2.0.1.0\lib\net45\MoeThrow.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -184,8 +184,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

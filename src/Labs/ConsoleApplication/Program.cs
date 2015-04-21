@@ -4,14 +4,14 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  12:59 PM
+// Last Modified On : 2015-04-21  3:48 AM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
+using Orleans.Runtime.Host;
 
 namespace ConsoleApplication
 {
@@ -19,8 +19,8 @@ namespace ConsoleApplication
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine(DateTime.UtcNow.Kind);
-            Console.WriteLine(DateTime.Now.Kind);
+            var silo = new AzureSilo();
+            silo.Start();
         }
     }
 }

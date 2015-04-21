@@ -58,9 +58,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Api.Sms", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Domain.Core", "Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj", "{5245A89C-FD02-404A-A0A3-C1B5F197E426}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Yuyi.Jinyinmao.Silos.AzureHost", "Worker\Yuyi.Jinyinmao.Silos.AzureHost\Yuyi.Jinyinmao.Silos.AzureHost.ccproj", "{84F2542E-BEA4-47C0-B807-61DF5C2C7381}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silos.LocalHost", "LocalHost\Yuyi.Jinyinmao.Silos.LocalHost\Yuyi.Jinyinmao.Silos.LocalHost.csproj", "{9729F6C3-E595-4D10-A23D-719F3F35F91E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silos.Client", "Application\Yuyi.Jinyinmao.Silos.Client\Yuyi.Jinyinmao.Silos.Client.csproj", "{DC3EECFC-04C5-4595-8D28-960CCD654D8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,14 +129,14 @@ Global
 		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5245A89C-FD02-404A-A0A3-C1B5F197E426}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84F2542E-BEA4-47C0-B807-61DF5C2C7381}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9729F6C3-E595-4D10-A23D-719F3F35F91E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,8 +158,8 @@ Global
 		{F6633FBB-6227-4D15-838E-C6F8EC4641EC} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9} = {E57225A1-3000-4369-8C1E-A1DF4C5120B9}
 		{5245A89C-FD02-404A-A0A3-C1B5F197E426} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
-		{84F2542E-BEA4-47C0-B807-61DF5C2C7381} = {427500D4-546D-43D3-9C68-B604408ABE4A}
 		{9729F6C3-E595-4D10-A23D-719F3F35F91E} = {A10B2E6B-7856-4EA5-AF60-816879A740BE}
+		{DC3EECFC-04C5-4595-8D28-960CCD654D8E} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45
