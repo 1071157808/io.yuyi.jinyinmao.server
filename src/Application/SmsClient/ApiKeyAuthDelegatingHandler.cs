@@ -28,14 +28,14 @@ namespace SmsClient
     public class ApiKeyAuthDelegatingHandler : DelegatingHandler
     {
         /// <summary>
-        ///     The API key
-        /// </summary>
-        private const string ApiKey = "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=";
-
-        /// <summary>
         ///     The application identifier
         /// </summary>
         private const string AppId = "0dcd384f-47a6-4083-bef4-a61bec55e12f";
+
+        /// <summary>
+        ///     The API key
+        /// </summary>
+        private const string AppKey = "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=";
 
         /// <summary>
         ///     send as an asynchronous operation.
@@ -73,7 +73,7 @@ namespace SmsClient
             //Creating the raw signature string
             string signatureRawData = String.Format("{0}{1}{2}{3}{4}{5}", AppId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
 
-            var secretKeyByteArray = Convert.FromBase64String(ApiKey);
+            var secretKeyByteArray = Convert.FromBase64String(AppKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(signatureRawData);
 
@@ -81,7 +81,7 @@ namespace SmsClient
             {
                 byte[] signatureBytes = hmac.ComputeHash(signature);
                 string requestSignatureBase64String = Convert.ToBase64String(signatureBytes);
-                //Setting the values in the Authorization header using custom scheme (amx)
+                //Setting the values in the Authorization header using custom scheme (jas)
                 request.Headers.Authorization = new AuthenticationHeaderValue("jas", string.Format("{0}:{1}:{2}:{3}", AppId, requestSignatureBase64String, nonce, requestTimeStamp));
             }
 

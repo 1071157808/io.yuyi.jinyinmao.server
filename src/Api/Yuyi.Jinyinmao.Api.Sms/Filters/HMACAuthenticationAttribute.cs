@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  1:22 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  2:32 PM
+// Last Modified On : 2015-04-21  1:34 PM
 // ***********************************************************************
 // <copyright file="HMACAuthenticationAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -44,7 +44,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
         private static readonly string authenticationScheme = "jas";
 
         private static readonly TableQuery<App> query = new TableQuery<App>().Where(TableQuery.GenerateFilterCondition("PartitionKey",
-            QueryComparisons.Equal, "cn.com.jinyinmao.api.sms.config.appkeys"));
+            QueryComparisons.Equal, "api.sms.config.appkeys"));
 
         private static readonly long requestMaxAgeInSeconds = 300;
         private static readonly CloudStorageAccount storageAccount;

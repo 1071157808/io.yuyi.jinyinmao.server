@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  12:57 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  1:56 PM
+// Last Modified On : 2015-04-21  1:30 PM
 // ***********************************************************************
 // <copyright file="ZTSmsService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -112,7 +112,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
                     Cellphones = cellphones,
                     Message = message,
                     Notes = productId,
-                    PartitionKey = "cn.com.jinyinmao.api.sms.data.messages",
+                    PartitionKey = "api.sms.data.messages",
                     RowKey = Guid.NewGuid().ToString("N"),
                     Response = responseMessage,
                     Time = DateTime.Now

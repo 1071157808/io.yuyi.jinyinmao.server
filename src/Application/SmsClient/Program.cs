@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  3:12 AM
+// Last Modified On : 2015-04-21  1:33 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -92,7 +92,7 @@ namespace SmsClient
         {
             Console.WriteLine("Calling the back-end API");
 
-            string apiBaseAddress = "http://sms.api.jinyinmao.yuyidev.com/";
+            string apiBaseAddress = "http://sms-api-dev-jym.yuyidev.com/";
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();
 

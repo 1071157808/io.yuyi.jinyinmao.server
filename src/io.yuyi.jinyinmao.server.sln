@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E
 		Publish\dev\InitTables.sql = Publish\dev\InitTables.sql
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Worker", "2-Worker", "{427500D4-546D-43D3-9C68-B604408ABE4A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-AzureHost", "2-AzureHost", "{427500D4-546D-43D3-9C68-B604408ABE4A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-LocalHost", "3-LocalHost", "{A10B2E6B-7856-4EA5-AF60-816879A740BE}"
 EndProject
@@ -61,6 +61,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silos.LocalHost", "LocalHost\Yuyi.Jinyinmao.Silos.LocalHost\Yuyi.Jinyinmao.Silos.LocalHost.csproj", "{9729F6C3-E595-4D10-A23D-719F3F35F91E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silos.Client", "Application\Yuyi.Jinyinmao.Silos.Client\Yuyi.Jinyinmao.Silos.Client.csproj", "{DC3EECFC-04C5-4595-8D28-960CCD654D8E}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Yuyi.Jinyinmao.Silos.AzureHost", "AzureHost\Yuyi.Jinyinmao.Silos.AzureHost\Yuyi.Jinyinmao.Silos.AzureHost.ccproj", "{08FF6192-B2AA-423A-AFE9-42425C6A0329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silos", "Yuyi.Jinyinmao.Silos\Yuyi.Jinyinmao.Silos.csproj", "{73DAD571-CA84-422A-80F8-5C08E7A96D27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +141,14 @@ Global
 		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC3EECFC-04C5-4595-8D28-960CCD654D8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FF6192-B2AA-423A-AFE9-42425C6A0329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FF6192-B2AA-423A-AFE9-42425C6A0329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FF6192-B2AA-423A-AFE9-42425C6A0329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FF6192-B2AA-423A-AFE9-42425C6A0329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73DAD571-CA84-422A-80F8-5C08E7A96D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73DAD571-CA84-422A-80F8-5C08E7A96D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73DAD571-CA84-422A-80F8-5C08E7A96D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73DAD571-CA84-422A-80F8-5C08E7A96D27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,6 +172,8 @@ Global
 		{5245A89C-FD02-404A-A0A3-C1B5F197E426} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{9729F6C3-E595-4D10-A23D-719F3F35F91E} = {A10B2E6B-7856-4EA5-AF60-816879A740BE}
 		{DC3EECFC-04C5-4595-8D28-960CCD654D8E} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
+		{08FF6192-B2AA-423A-AFE9-42425C6A0329} = {427500D4-546D-43D3-9C68-B604408ABE4A}
+		{73DAD571-CA84-422A-80F8-5C08E7A96D27} = {427500D4-546D-43D3-9C68-B604408ABE4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45
