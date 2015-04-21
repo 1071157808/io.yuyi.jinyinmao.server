@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-04-21  3:47 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  3:42 PM
+// Last Modified On : 2015-04-21  3:48 PM
 // ***********************************************************************
 // <copyright file="App.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,7 +14,7 @@
 using System;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace Yuyi.Jinyinmao.Api.Sms.Models
+namespace ConsoleApplication
 {
     /// <summary>
     ///     App.

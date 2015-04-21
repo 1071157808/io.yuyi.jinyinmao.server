@@ -146,9 +146,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\cn-com-jinyinmao-dev-api-sms.pubxml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DevController.cs" />
@@ -180,6 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\cn-com-jinyinmao-dev-api-sms.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
