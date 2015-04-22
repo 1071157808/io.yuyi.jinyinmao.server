@@ -38,14 +38,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.State.UserId = Guid.NewGuid();
             }
 
-            try
-            {
-                await this.State.WriteStateAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            await this.State.WriteStateAsync();
 
             return new CellphoneInfo
             {

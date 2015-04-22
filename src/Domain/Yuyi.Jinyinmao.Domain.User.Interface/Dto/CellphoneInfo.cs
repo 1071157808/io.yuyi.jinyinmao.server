@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-13  12:59 AM
+// Last Modified On : 2015-04-21  11:14 PM
 // ***********************************************************************
 // <copyright file="CellphoneInfo.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,12 +12,14 @@
 // ***********************************************************************
 
 using System;
+using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
     ///     Class CellphoneInfo.
     /// </summary>
+    [Immutable]
     public class CellphoneInfo
     {
         /// <summary>

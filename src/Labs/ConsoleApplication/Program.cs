@@ -13,38 +13,31 @@
 
 using System;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace ConsoleApplication
 {
+    internal class MyClass
+    {
+    }
+
     internal class Program
     {
+        private static readonly Regex regex = new Regex(@"((?<=.)[A-Z][a-zA-Z]*)|((?<=[a-zA-Z])\d+)", RegexOptions.Multiline);
+
+        /// <summary>
+        ///     The string replace
+        /// </summary>
+        private static readonly string strReplace = @"_$1$2";
+
         private static void Main(string[] args)
         {
-            Guid id = Guid.NewGuid();
-            string APIKey;
-
-            using (var cryptoProvider = new RNGCryptoServiceProvider())
-            {
-                byte[] secretKeyByteArray = new byte[32]; //256 bit
-                cryptoProvider.GetBytes(secretKeyByteArray);
-                APIKey = Convert.ToBase64String(secretKeyByteArray);
-            }
-            CloudStorageAccount account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            var client = account.CreateCloudTableClient();
-            var table = client.GetTableReference("ApiSms");
-            table.Execute(TableOperation.Insert(new App
-            {
-                AppId = id,
-                AppKey = APIKey,
-                AppName = "SmsClient",
-                Expiry = DateTime.Now.AddYears(10),
-                Notes = "SmsClient",
-                PartitionKey = "api.sms.config.appkeys",
-                RowKey = id.ToString("N")
-            }));
+            MyClass c = new MyClass();
+            string o = regex.Replace(c.GetType().Name, strReplace).ToLowerInvariant();
+            Console.WriteLine(o);
         }
     }
 }

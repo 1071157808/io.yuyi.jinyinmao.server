@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  11:27 AM
+// Last Modified On : 2015-04-22  1:47 PM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -28,16 +29,6 @@ namespace SmsClient
     public class ApiKeyAuthDelegatingHandler : DelegatingHandler
     {
         /// <summary>
-        ///     The application identifier
-        /// </summary>
-        private const string AppId = "0dcd384f-47a6-4083-bef4-a61bec55e12f";
-
-        /// <summary>
-        ///     The API key
-        /// </summary>
-        private const string AppKey = "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=";
-
-        /// <summary>
         ///     send as an asynchronous operation.
         /// </summary>
         /// <param name="request">The request.</param>
@@ -45,6 +36,11 @@ namespace SmsClient
         /// <returns>Task&lt;HttpResponseMessage&gt;.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            string appIdConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppId");
+            string AppId = string.IsNullOrEmpty(appIdConfig) ? "0dcd384f-47a6-4083-bef4-a61bec55e12f" : appIdConfig;
+            string appKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
+            string AppKey = string.IsNullOrEmpty(appKeyConfig) ? "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=" : appKeyConfig;
+
             HttpResponseMessage response;
             string requestContentBase64String = string.Empty;
 

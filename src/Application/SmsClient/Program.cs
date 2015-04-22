@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -92,7 +93,8 @@ namespace SmsClient
         {
             Console.WriteLine("Calling the back-end API");
 
-            string apiBaseAddress = "http://sms-api-dev-jym.yuyidev.com/";
+            string smsServiceAddress = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
+            string apiBaseAddress = string.IsNullOrEmpty(smsServiceAddress) ? "http://sms-api-dev-jym.yuyidev.com/" : smsServiceAddress;
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();
 

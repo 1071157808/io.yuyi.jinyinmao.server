@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-07  10:38 AM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-07  10:39 AM
+// Last Modified On : 2015-04-21  11:14 PM
 // ***********************************************************************
 // <copyright file="UserInfo.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,12 +12,14 @@
 // ***********************************************************************
 
 using System;
+using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
     ///     Class UserInfo.
     /// </summary>
+    [Immutable]
     public class UserInfo
     {
         /// <summary>

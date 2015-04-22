@@ -25,8 +25,8 @@ namespace Yuyi.Jinyinmao.Domain
     using System.Runtime.Serialization;
     using Moe.Actor.Interface.Commands;
     using Moe.Actor.Interface.Events;
-    using Moe.Actor.Interface.Model;
     using Orleans.Runtime;
+    using Moe.Actor.Interface.Model;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -110,11 +110,11 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public ICommandStore @CommandStore { get; set; }
-
             public Guid @Id { get; set; }
 
-            public IEventStore @EventStore { get; set; }
+            public IList<Int32> @InterestRate { get; set; }
+
+            public IList<TransactionInfo> @Transactions { get; set; }
 
             public Guid @UserId { get; set; }
 
@@ -122,15 +122,15 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
+                if (values.TryGetValue("InterestRate", out value)) @InterestRate = (IList<Int32>) value;
+                if (values.TryGetValue("Transactions", out value)) @Transactions = (IList<TransactionInfo>) value;
                 if (values.TryGetValue("UserId", out value)) @UserId = (Guid) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYAccountState( CommandStore={0} Id={1} EventStore={2} UserId={3} )", @CommandStore, @Id, @EventStore, @UserId);
+                return System.String.Format("JBYAccountState( Id={0} InterestRate={1} Transactions={2} UserId={3} )", @Id, @InterestRate, @Transactions, @UserId);
             }
         
         public JBYAccountState() : 
@@ -142,18 +142,18 @@ namespace Yuyi.Jinyinmao.Domain
         public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
-            result["EventStore"] = this.EventStore;
+            result["InterestRate"] = this.InterestRate;
+            result["Transactions"] = this.Transactions;
             result["UserId"] = this.UserId;
             return result;
         }
         
         private void InitStateFields()
         {
-            this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
-            this.EventStore = default(IEventStore);
+            this.InterestRate = default(IList<Int32>);
+            this.Transactions = default(IList<TransactionInfo>);
             this.UserId = default(Guid);
         }
         
@@ -183,24 +183,14 @@ namespace Yuyi.Jinyinmao.Domain
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.JinyinmaoAccount")]
-    public class JinyinmaoAccountState : global::Orleans.CodeGeneration.GrainState, IJinyinmaoAccountState
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.SettlementAccount")]
+    public class SettlementAccountState : global::Orleans.CodeGeneration.GrainState, ISettlementAccountState
     {
         
 
-            public ICommandStore @CommandStore { get; set; }
-
             public Guid @Id { get; set; }
 
-            public IEventStore @EventStore { get; set; }
-
-            public String @EncryptedPassword { get; set; }
-
-            public List<String> @LoginNames { get; set; }
-
-            public DateTime @RegisterTime { get; set; }
-
-            public String @Salt { get; set; }
+            public IList<TransactionInfo> @Transactions { get; set; }
 
             public Guid @UserId { get; set; }
 
@@ -208,23 +198,18 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
-                if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
-                if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
-                if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
-                if (values.TryGetValue("Salt", out value)) @Salt = (String) value;
+                if (values.TryGetValue("Transactions", out value)) @Transactions = (IList<TransactionInfo>) value;
                 if (values.TryGetValue("UserId", out value)) @UserId = (Guid) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JinyinmaoAccountState( CommandStore={0} Id={1} EventStore={2} EncryptedPassword={3} LoginNames={4} RegisterTime={5} Salt={6} UserId={7} )", @CommandStore, @Id, @EventStore, @EncryptedPassword, @LoginNames, @RegisterTime, @Salt, @UserId);
+                return System.String.Format("SettlementAccountState( Id={0} Transactions={1} UserId={2} )", @Id, @Transactions, @UserId);
             }
         
-        public JinyinmaoAccountState() : 
-                base("Yuyi.Jinyinmao.Domain.JinyinmaoAccount")
+        public SettlementAccountState() : 
+                base("Yuyi.Jinyinmao.Domain.SettlementAccount")
         {
             this.InitStateFields();
         }
@@ -232,150 +217,37 @@ namespace Yuyi.Jinyinmao.Domain
         public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
-            result["EventStore"] = this.EventStore;
-            result["EncryptedPassword"] = this.EncryptedPassword;
-            result["LoginNames"] = this.LoginNames;
-            result["RegisterTime"] = this.RegisterTime;
-            result["Salt"] = this.Salt;
+            result["Transactions"] = this.Transactions;
             result["UserId"] = this.UserId;
             return result;
         }
         
         private void InitStateFields()
         {
-            this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
-            this.EventStore = default(IEventStore);
-            this.EncryptedPassword = default(String);
-            this.LoginNames = new List<String>();
-            this.RegisterTime = default(DateTime);
-            this.Salt = default(String);
+            this.Transactions = default(IList<TransactionInfo>);
             this.UserId = default(Guid);
         }
         
         [global::Orleans.CodeGeneration.CopierMethodAttribute()]
         public static object _Copier(object original)
         {
-            JinyinmaoAccountState input = ((JinyinmaoAccountState)(original));
+            SettlementAccountState input = ((SettlementAccountState)(original));
             return input.DeepCopy();
         }
         
         [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
         public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            JinyinmaoAccountState input = ((JinyinmaoAccountState)(original));
+            SettlementAccountState input = ((SettlementAccountState)(original));
             input.SerializeTo(stream);
         }
         
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            JinyinmaoAccountState result = new JinyinmaoAccountState();
-            result.DeserializeFrom(stream);
-            return result;
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.SourceAccount")]
-    public class SourceAccountState : global::Orleans.CodeGeneration.GrainState, ISourceAccountState
-    {
-        
-
-            public ICommandStore @CommandStore { get; set; }
-
-            public Guid @Id { get; set; }
-
-            public IEventStore @EventStore { get; set; }
-
-            public String @Args { get; set; }
-
-            public Int64 @ClientType { get; set; }
-
-            public Int64 @ContractId { get; set; }
-
-            public String @InviteBy { get; set; }
-
-            public String @OutletCode { get; set; }
-
-            public Guid @UserId { get; set; }
-
-            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
-            {   
-                object value;
-                if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
-                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
-                if (values.TryGetValue("Args", out value)) @Args = (String) value;
-                if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
-                if (values.TryGetValue("ContractId", out value)) @ContractId = value is Int32 ? (Int32)value : (Int64)value;
-                if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
-                if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
-                if (values.TryGetValue("UserId", out value)) @UserId = (Guid) value;
-            }
-
-            public override System.String ToString()
-            {
-                return System.String.Format("SourceAccountState( CommandStore={0} Id={1} EventStore={2} Args={3} ClientType={4} ContractId={5} InviteBy={6} OutletCode={7} UserId={8} )", @CommandStore, @Id, @EventStore, @Args, @ClientType, @ContractId, @InviteBy, @OutletCode, @UserId);
-            }
-        
-        public SourceAccountState() : 
-                base("Yuyi.Jinyinmao.Domain.SourceAccount")
-        {
-            this.InitStateFields();
-        }
-        
-        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
-        {
-            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["CommandStore"] = this.CommandStore;
-            result["Id"] = this.Id;
-            result["EventStore"] = this.EventStore;
-            result["Args"] = this.Args;
-            result["ClientType"] = this.ClientType;
-            result["ContractId"] = this.ContractId;
-            result["InviteBy"] = this.InviteBy;
-            result["OutletCode"] = this.OutletCode;
-            result["UserId"] = this.UserId;
-            return result;
-        }
-        
-        private void InitStateFields()
-        {
-            this.CommandStore = default(ICommandStore);
-            this.Id = default(Guid);
-            this.EventStore = default(IEventStore);
-            this.Args = default(String);
-            this.ClientType = default(Int64);
-            this.ContractId = default(Int64);
-            this.InviteBy = default(String);
-            this.OutletCode = default(String);
-            this.UserId = default(Guid);
-        }
-        
-        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-        public static object _Copier(object original)
-        {
-            SourceAccountState input = ((SourceAccountState)(original));
-            return input.DeepCopy();
-        }
-        
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            SourceAccountState input = ((SourceAccountState)(original));
-            input.SerializeTo(stream);
-        }
-        
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            SourceAccountState result = new SourceAccountState();
+            SettlementAccountState result = new SettlementAccountState();
             result.DeserializeFrom(stream);
             return result;
         }
@@ -395,21 +267,35 @@ namespace Yuyi.Jinyinmao.Domain
 
             public IEventStore @EventStore { get; set; }
 
+            public String @Args { get; set; }
+
             public String @Cellphone { get; set; }
+
+            public Int64 @ClientType { get; set; }
+
+            public Int64 @ContractId { get; set; }
 
             public Credential @Credential { get; set; }
 
             public String @CredentialNo { get; set; }
 
+            public String @EncryptedPassword { get; set; }
+
+            public String @InviteBy { get; set; }
+
             public IJBYAccount @JBYAccount { get; set; }
 
-            public IJinyinmaoAccount @JinyinmaoAccount { get; set; }
+            public List<String> @LoginNames { get; set; }
+
+            public String @OutletCode { get; set; }
 
             public String @RealName { get; set; }
 
             public DateTime @RegisterTime { get; set; }
 
-            public ISourceAccount @SourceAccount { get; set; }
+            public String @Salt { get; set; }
+
+            public ISettlementAccount @SettlementAccount { get; set; }
 
             public Boolean @Verified { get; set; }
 
@@ -422,21 +308,28 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
+                if (values.TryGetValue("Args", out value)) @Args = (String) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
+                if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
+                if (values.TryGetValue("ContractId", out value)) @ContractId = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Credential", out value)) @Credential = (Credential) value;
                 if (values.TryGetValue("CredentialNo", out value)) @CredentialNo = (String) value;
+                if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
+                if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
                 if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (IJBYAccount) value;
-                if (values.TryGetValue("JinyinmaoAccount", out value)) @JinyinmaoAccount = (IJinyinmaoAccount) value;
+                if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
+                if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
-                if (values.TryGetValue("SourceAccount", out value)) @SourceAccount = (ISourceAccount) value;
+                if (values.TryGetValue("Salt", out value)) @Salt = (String) value;
+                if (values.TryGetValue("SettlementAccount", out value)) @SettlementAccount = (ISettlementAccount) value;
                 if (values.TryGetValue("Verified", out value)) @Verified = (Boolean) value;
                 if (values.TryGetValue("VerifiedTime", out value)) @VerifiedTime = (Nullable<DateTime>) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} Id={1} EventStore={2} Cellphone={3} Credential={4} CredentialNo={5} JBYAccount={6} JinyinmaoAccount={7} RealName={8} RegisterTime={9} SourceAccount={10} Verified={11} VerifiedTime={12} )", @CommandStore, @Id, @EventStore, @Cellphone, @Credential, @CredentialNo, @JBYAccount, @JinyinmaoAccount, @RealName, @RegisterTime, @SourceAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( CommandStore={0} Id={1} EventStore={2} Args={3} Cellphone={4} ClientType={5} ContractId={6} Credential={7} CredentialNo={8} EncryptedPassword={9} InviteBy={10} JBYAccount={11} LoginNames={12} OutletCode={13} RealName={14} RegisterTime={15} Salt={16} SettlementAccount={17} Verified={18} VerifiedTime={19} )", @CommandStore, @Id, @EventStore, @Args, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @RealName, @RegisterTime, @Salt, @SettlementAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -451,14 +344,21 @@ namespace Yuyi.Jinyinmao.Domain
             result["CommandStore"] = this.CommandStore;
             result["Id"] = this.Id;
             result["EventStore"] = this.EventStore;
+            result["Args"] = this.Args;
             result["Cellphone"] = this.Cellphone;
+            result["ClientType"] = this.ClientType;
+            result["ContractId"] = this.ContractId;
             result["Credential"] = this.Credential;
             result["CredentialNo"] = this.CredentialNo;
+            result["EncryptedPassword"] = this.EncryptedPassword;
+            result["InviteBy"] = this.InviteBy;
             result["JBYAccount"] = this.JBYAccount;
-            result["JinyinmaoAccount"] = this.JinyinmaoAccount;
+            result["LoginNames"] = this.LoginNames;
+            result["OutletCode"] = this.OutletCode;
             result["RealName"] = this.RealName;
             result["RegisterTime"] = this.RegisterTime;
-            result["SourceAccount"] = this.SourceAccount;
+            result["Salt"] = this.Salt;
+            result["SettlementAccount"] = this.SettlementAccount;
             result["Verified"] = this.Verified;
             result["VerifiedTime"] = this.VerifiedTime;
             return result;
@@ -469,14 +369,21 @@ namespace Yuyi.Jinyinmao.Domain
             this.CommandStore = default(ICommandStore);
             this.Id = default(Guid);
             this.EventStore = default(IEventStore);
+            this.Args = default(String);
             this.Cellphone = default(String);
+            this.ClientType = default(Int64);
+            this.ContractId = default(Int64);
             this.Credential = default(Credential);
             this.CredentialNo = default(String);
+            this.EncryptedPassword = default(String);
+            this.InviteBy = default(String);
             this.JBYAccount = default(IJBYAccount);
-            this.JinyinmaoAccount = default(IJinyinmaoAccount);
+            this.LoginNames = new List<String>();
+            this.OutletCode = default(String);
             this.RealName = default(String);
             this.RegisterTime = default(DateTime);
-            this.SourceAccount = default(ISourceAccount);
+            this.Salt = default(String);
+            this.SettlementAccount = default(ISettlementAccount);
             this.Verified = default(Boolean);
             this.VerifiedTime = default(Nullable<DateTime>);
         }

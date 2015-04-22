@@ -1,23 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ServiceDefinition name="Yuyi.Jinyinmao.Silos.AzureHost"
-                   xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
-                   schemaVersion="2014-06.2.4">
+<ServiceDefinition name="Yuyi.Jinyinmao.Silos.AzureHost" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
   <WorkerRole name="Yuyi.Jinyinmao.Silos" vmsize="Medium">
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" />
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="OrleansSiloEndpoint" protocol="tcp" port="11111" />
       <InputEndpoint name="OrleansProxyEndpoint" protocol="tcp" port="30000" />
     </Endpoints>
     <LocalResources>
-      <LocalStorage name="LocalStoreDirectory" cleanOnRoleRecycle="false" />
+      <LocalStorage name="LocalStoreDirectory" cleanOnRoleRecycle="false" sizeInMB="200" />
     </LocalResources>
-    <Imports>
-      <Import moduleName="RemoteAccess" />
-      <Import moduleName="RemoteForwarder" />
-    </Imports>
   </WorkerRole>
 </ServiceDefinition>

@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -29,14 +30,22 @@ namespace Yuyi.Jinyinmao.Services
     public class ApiKeyAuthDelegatingHandler : DelegatingHandler
     {
         /// <summary>
-        ///     The API key
-        /// </summary>
-        private const string ApiKey = "53iqeaOpewkLDtIdi5U6YaXgdkKU4ew1fNzxVaDUbVI=";
-
-        /// <summary>
         ///     The application identifier
         /// </summary>
-        private const string AppId = "79cc4ed8-3565-43b5-bb0b-65a4889c6fbd";
+        private static readonly string AppId;
+
+        /// <summary>
+        ///     The API key
+        /// </summary>
+        private static readonly string AppKey;
+
+        static ApiKeyAuthDelegatingHandler()
+        {
+            string appId = ConfigurationManager.AppSettings.Get("SmsServiceAppId");
+            AppId = appId.IsNullOrEmpty() ? "541a74bc-cdf0-455d-9093-1aa5ec3cb7d3" : appId;
+            string appKey = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
+            AppKey = appKey.IsNullOrEmpty() ? "rNAhdng2Tu1iXpH72jU2zLSW/hhxuGBxpBNSBBjwQEA=" : appKey;
+        }
 
         /// <summary>
         ///     send as an asynchronous operation.
@@ -72,7 +81,7 @@ namespace Yuyi.Jinyinmao.Services
             //Creating the raw signature string
             string signatureRawData = String.Format("{0}{1}{2}{3}{4}{5}", AppId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
 
-            var secretKeyByteArray = Convert.FromBase64String(ApiKey);
+            var secretKeyByteArray = Convert.FromBase64String(AppKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(signatureRawData);
 

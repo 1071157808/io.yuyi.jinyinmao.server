@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  3:07 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  6:58 PM
+// Last Modified On : 2015-04-21  11:44 PM
 // ***********************************************************************
 // <copyright file="MiscContext.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Services
         ///     Initializes a new instance of the <see cref="DbContextBase" /> class.
         /// </summary>
         public MiscContext()
-            : base("jinyinmao-db-server-query")
+            : base("cn.com.jinyinmao.db.front")
         {
         }
 

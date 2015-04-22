@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  2:07 PM
+// Last Modified On : 2015-04-22  2:07 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,6 +20,7 @@ using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
+using Yuyi.Jinyinmao.Domain.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -74,47 +75,54 @@ namespace Yuyi.Jinyinmao.Domain
             DateTime registerTime = DateTime.Now;
 
             this.State.Id = userRegister.UserId;
+            this.State.Args = userRegister.Args;
             this.State.Cellphone = userRegister.Cellphone;
+            this.State.ClientType = userRegister.ClientType;
+            this.State.ContractId = userRegister.ContractId;
+            this.State.Credential = Credential.None;
+            this.State.CredentialNo = "empty";
+            this.State.EncryptedPassword = CryptographyHelper.Encrypting(userRegister.Password, userRegister.UserId.ToGuidString());
+            this.State.InviteBy = userRegister.InviteBy;
+            this.State.LoginNames = new List<string> { userRegister.Cellphone };
+            this.State.OutletCode = userRegister.OutletCode;
+            this.State.RealName = "empty";
             this.State.RegisterTime = registerTime;
+            this.State.Salt = userRegister.UserId.ToGuidString();
+            this.State.Verified = false;
+            this.State.VerifiedTime = null;
 
-            this.State.JinyinmaoAccount = JinyinmaoAccountFactory.GetGrain(Guid.NewGuid());
-            await this.State.JinyinmaoAccount.Register(new JinyinmaoAccountRegister
+            Guid JBYAccountId = Guid.NewGuid();
+            this.State.JBYAccount = JBYAccountFactory.GetGrain(JBYAccountId);
+            await this.State.JBYAccount.Register(new JBYAccountRegister
             {
-                LoginNames = new List<string> { userRegister.Cellphone },
-                Password = userRegister.Password,
-                Salt = this.State.Id.ToGuidString(),
-                UserId = this.State.Id
+                UserId = userRegister.UserId
             });
 
-            this.State.SourceAccount = SourceAccountFactory.GetGrain(Guid.NewGuid());
-            await this.State.SourceAccount.Register(new SourceAccountRegister
+            Guid settlementAccountId = Guid.NewGuid();
+            this.State.SettlementAccount = SettlementAccountFactory.GetGrain(settlementAccountId);
+            await this.State.SettlementAccount.Register(new SettlementAccountRegister
             {
-                ClientType = userRegister.ClientType,
-                ContractId = userRegister.ContractId,
-                InviteBy = userRegister.InviteBy,
-                OutletCode = userRegister.OutletCode,
-                UserId = this.State.Id,
-                Args = userRegister.Args
+                UserId = userRegister.UserId
             });
 
-            this.State.JBYAccount = JBYAccountFactory.GetGrain(Guid.NewGuid());
+            await this.StoreCommandAsync(userRegister);
 
-            await this.State.WriteStateAsync();
-
-#pragma warning disable 4014
-            this.StoreCommandAsync(userRegister);
-
-            this.StoreEventAsync(new UserRegistered(this.State.Id.ToGuidString())
+            await this.StoreEventAsync(new UserRegistered(this.State.Id.ToGuidString())
             {
                 Args = userRegister.Args,
                 Cellphone = userRegister.Cellphone,
                 ClientType = userRegister.ClientType,
                 ContractId = userRegister.ContractId,
                 InviteBy = userRegister.InviteBy,
+                JBYAccountId = JBYAccountId,
+                LoginNames = this.State.LoginNames,
                 OutletCode = userRegister.OutletCode,
+                RegisterTime = registerTime,
+                SettlementAccountId = settlementAccountId,
                 UserId = userRegister.UserId
             });
-#pragma warning restore 4014
+
+            await this.State.WriteStateAsync();
         }
 
         #endregion IUser Members

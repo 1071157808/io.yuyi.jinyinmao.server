@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-11  10:52 AM
+// Last Modified On : 2015-04-21  6:23 PM
 // ***********************************************************************
 // <copyright file="Global.asax.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -29,7 +29,7 @@ namespace Yuyi.Jinyinmao.Api
         /// </summary>
         protected void Application_Start()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
             string configPaht = Path.Combine(HttpRuntime.AppDomainAppPath, "bin", "ClientConfiguration.xml");
             GrainClient.Initialize(configPaht);
             GlobalConfiguration.Configure(WebApiConfig.Register);
