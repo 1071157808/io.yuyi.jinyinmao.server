@@ -61,6 +61,15 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 恭喜您成功注册金银猫！如非本人操作，请致电4008556333.
+        /// </summary>
+        internal static string Sms_SignUpSuccessful {
+            get {
+                return ResourceManager.GetString("Sms_SignUpSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
         internal static string Sms_VeriCode {

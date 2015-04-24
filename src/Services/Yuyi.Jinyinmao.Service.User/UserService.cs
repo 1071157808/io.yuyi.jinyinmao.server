@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-13  12:55 AM
+// Last Modified On : 2015-04-25  2:32 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dto;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
@@ -29,7 +30,7 @@ namespace Yuyi.Jinyinmao.Service
         #region IUserService Members
 
         /// <summary>
-        /// Checks the cellphone asynchronous.
+        ///     Checks the cellphone asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
@@ -45,27 +46,37 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Sign in asynchronous.
+        /// Checks the password asynchronous.
         /// </summary>
-        /// <param name="loginName">The login name.</param>
+        /// <param name="userId">The user identifier.</param>
         /// <param name="password">The password.</param>
         /// <returns>Task&lt;SignInResult&gt;.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public Task<SignInResult> CheckPasswordAsync(string loginName, string password)
+        public Task<bool> CheckPasswordAsync(Guid userId, string password)
         {
-            throw new NotImplementedException();
+            IUser user = UserFactory.GetGrain(userId);
+            return user.CheckPasswordAsync(password);
         }
 
         /// <summary>
-        ///     Excutes the command.
+        ///     Sign in asynchronous.
         /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
-        public async Task<UserInfo> ExcuteCommand(UserRegister command)
+        /// <param name="cellphone"></param>
+        /// <param name="password">The password.</param>
+        /// <returns>Task&lt;SignInResult&gt;.</returns>
+        public async Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
-            await user.RegisterAsync(command);
-            return await user.GetUserInfoAsync();
+            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone));
+            CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
+            IUser user = UserFactory.GetGrain(info.UserId);
+            CheckPasswordResult result = await user.CheckPasswordAsync(cellphone, password);
+            return new SignInResult
+            {
+                Cellphone = result.Cellphone,
+                RemainCount = 5 - result.ErrorCount,
+                Success = result.Success,
+                UserExist = result.UserExist,
+                UserId = result.UserId
+            };
         }
 
         /// <summary>
@@ -83,6 +94,39 @@ namespace Yuyi.Jinyinmao.Service
                 Registered = info.Registered,
                 UserId = info.UserId
             };
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
+        public async Task<UserInfo> RegisterUserAsync(UserRegister command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            await user.RegisterAsync(command);
+            return await user.GetUserInfoAsync();
+        }
+
+        /// <summary>
+        ///     Resets the login password.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public Task ResetLoginPasswordAsync(ResetLoginPassword command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.ResetLoginPasswordAsync(command);
+        }
+
+        /// <summary>
+        ///     Sets the payment password asynchronous.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns>Task.</returns>
+        public Task SetPaymentPasswordAsync(SetPaymentPassword command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.SetPaymentPasswordAsync(command);
         }
 
         #endregion IUserService Members

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-13  12:53 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-13  1:21 AM
+// Last Modified On : 2015-04-25  1:50 AM
 // ***********************************************************************
 // <copyright file="SignInResult.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -21,7 +21,7 @@ namespace Yuyi.Jinyinmao.Service.Dtos
     public class SignInResult
     {
         /// <summary>
-        /// Gets or sets the cellphone.
+        ///     Gets or sets the cellphone.
         /// </summary>
         /// <value>The cellphone.</value>
         public string Cellphone { get; set; }
@@ -45,7 +45,7 @@ namespace Yuyi.Jinyinmao.Service.Dtos
         ///     Gets or sets a value indicating whether this <see cref="SignInResult" /> is successed.
         /// </summary>
         /// <value><c>true</c> if successed; otherwise, <c>false</c>.</value>
-        public bool Successed { get; set; }
+        public bool Success { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether [user exist].
@@ -54,7 +54,7 @@ namespace Yuyi.Jinyinmao.Service.Dtos
         public bool UserExist { get; set; }
 
         /// <summary>
-        /// Gets or sets the user identifier.
+        ///     Gets or sets the user identifier.
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }

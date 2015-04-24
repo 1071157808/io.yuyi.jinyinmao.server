@@ -4,13 +4,14 @@
 // Created          : 2015-04-21  11:03 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-22  12:57 AM
+// Last Modified On : 2015-04-25  12:51 AM
 // ***********************************************************************
 // <copyright file="SettlementAccount.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Providers;
@@ -31,12 +32,23 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="settlementAccountRegister">The settlement account register.</param>
         /// <returns>Task.</returns>
-        public Task Register(SettlementAccountRegister settlementAccountRegister)
+        public async Task Register(SettlementAccountRegister settlementAccountRegister)
         {
+            if (this.State.UserId == settlementAccountRegister.UserId)
+            {
+                return;
+            }
+
+            if (this.State.UserId != Guid.Empty)
+            {
+                this.GetLogger().Warn(1, "Conflict user id: UserId {0}, SettlementAccountRegister.UserId {1}", this.State.UserId, settlementAccountRegister.UserId);
+                return;
+            }
+
             this.State.Id = this.GetPrimaryKey();
             this.State.UserId = settlementAccountRegister.UserId;
 
-            return this.State.WriteStateAsync();
+            await this.State.WriteStateAsync();
         }
 
         #endregion ISettlementAccount Members

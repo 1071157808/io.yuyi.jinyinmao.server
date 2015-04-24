@@ -36,16 +36,13 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MoeActorInterface, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MoeLib, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeActorInterface.2.1.2.0\lib\net45\MoeActorInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="MoeLib, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeLib.2.0.2.0\lib\net45\MoeLib.dll</HintPath>
+      <HintPath>..\..\packages\MoeLib.2.0.3.0\lib\net45\MoeLib.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -71,6 +68,10 @@
     <Compile Include="Dtos\SignUpUserIdInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
+      <Project>{5245A89C-FD02-404A-A0A3-C1B5F197E426}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
       <Project>{596F9CB8-45FF-4D76-ACD6-037938ED5EEE}</Project>
       <Name>Yuyi.Jinyinmao.Domain.User.Interface</Name>

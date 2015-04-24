@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-07  10:57 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  1:36 PM
+// Last Modified On : 2015-04-25  12:48 AM
 // ***********************************************************************
 // <copyright file="Cellphone.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -46,6 +46,16 @@ namespace Yuyi.Jinyinmao.Domain
                 Registered = this.State.Registered,
                 UserId = this.State.UserId.GetValueOrDefault()
             };
+        }
+
+        /// <summary>
+        ///     Registers this instance.
+        /// </summary>
+        /// <returns>System.Threading.Tasks.Task.</returns>
+        public Task Register()
+        {
+            this.State.Registered = true;
+            return this.State.WriteStateAsync();
         }
 
         #endregion ICellphone Members

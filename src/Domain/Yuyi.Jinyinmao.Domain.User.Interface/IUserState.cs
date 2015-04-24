@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using Moe.Actor.Interface.Model;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -59,6 +58,11 @@ namespace Yuyi.Jinyinmao.Domain
         string EncryptedPassword { get; set; }
 
         /// <summary>
+        ///     加密支付密码
+        /// </summary>
+        string EncryptedPaymentPassword { get; set; }
+
+        /// <summary>
         ///     邀请人
         /// </summary>
         string InviteBy { get; set; }
@@ -77,6 +81,11 @@ namespace Yuyi.Jinyinmao.Domain
         ///     金银e家代码
         /// </summary>
         string OutletCode { get; set; }
+
+        /// <summary>
+        /// 支付密码加密盐
+        /// </summary>
+        string PaymentSalt { get; set; }
 
         /// <summary>
         ///     真实姓名

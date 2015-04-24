@@ -4,13 +4,14 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-22  1:14 AM
+// Last Modified On : 2015-04-25  12:50 AM
 // ***********************************************************************
 // <copyright file="JBYAccount.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Providers;
@@ -31,12 +32,23 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="jbyAccountRegister">The jby account register.</param>
         /// <returns>Task.</returns>
-        public Task Register(JBYAccountRegister jbyAccountRegister)
+        public async Task Register(JBYAccountRegister jbyAccountRegister)
         {
+            if (this.State.UserId == jbyAccountRegister.UserId)
+            {
+                return;
+            }
+
+            if (this.State.UserId != Guid.Empty)
+            {
+                this.GetLogger().Warn(1, "Conflict user id: UserId {0}, JBYAccountRegister.UserId {1}", this.State.UserId, jbyAccountRegister.UserId);
+                return;
+            }
+
             this.State.Id = this.GetPrimaryKey();
             this.State.UserId = jbyAccountRegister.UserId;
 
-            return this.State.WriteStateAsync();
+            await this.State.WriteStateAsync();
         }
 
         #endregion IJBYAccount Members

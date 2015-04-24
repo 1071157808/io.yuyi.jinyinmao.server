@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  12:04 AM
+// Last Modified On : 2015-04-25  3:14 AM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -81,7 +81,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
         /// <returns>string</returns>
         private string FormatErrorMessage()
         {
-            return "AUTH01:请先登录";
+            return "AUTH:请先登录";
         }
 
         /// <summary>

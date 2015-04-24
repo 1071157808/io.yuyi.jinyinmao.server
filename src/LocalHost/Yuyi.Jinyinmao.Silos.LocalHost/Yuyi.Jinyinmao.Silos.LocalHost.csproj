@@ -120,6 +120,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
+      <Project>{5245a89c-fd02-404a-a0a3-c1b5f197e426}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
       <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
       <Name>Yuyi.Jinyinmao.Domain.User.Interface</Name>

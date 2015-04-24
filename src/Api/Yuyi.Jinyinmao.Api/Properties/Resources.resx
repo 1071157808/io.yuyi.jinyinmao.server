@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Sms_SignUpSuccessful" xml:space="preserve">
+    <value>恭喜您成功注册金银猫！如非本人操作，请致电4008556333</value>
+  </data>
   <data name="Sms_VeriCode" xml:space="preserve">
     <value>验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
   </data>

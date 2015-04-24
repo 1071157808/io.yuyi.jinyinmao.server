@@ -90,10 +90,6 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeActorInterface, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeActorInterface.2.1.2.0\lib\net45\MoeActorInterface.dll</HintPath>
-    </Reference>
     <Reference Include="MoeAspNet, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MoeAspNet.2.0.1.0\lib\net45\MoeAspNet.dll</HintPath>
       <Private>True</Private>
@@ -106,9 +102,9 @@
       <HintPath>..\..\packages\MoeEntityFramework.2.0.1.0\lib\net45\MoeEntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.2.0\lib\net45\MoeLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoeLib, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MoeLib.2.0.3.0\lib\net45\MoeLib.dll</HintPath>
     </Reference>
     <Reference Include="MoeThrow, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MoeThrow.2.0.1.0\lib\net45\MoeThrow.dll</HintPath>
@@ -151,8 +147,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Swashbuckle.Core.5.1.4\lib\net40\Swashbuckle.Core.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Swashbuckle.Core.5.1.5\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -237,6 +233,8 @@
     <Compile Include="Models\Misc\VerifyVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeResponse.cs" />
     <Compile Include="Models\User\CheckCellphoneResponse.cs" />
+    <Compile Include="Models\User\ResetPasswordRequest.cs" />
+    <Compile Include="Models\User\SetPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\SignInRequest.cs" />
     <Compile Include="Models\User\SignInResponse.cs" />
     <Compile Include="Models\User\SignUpRequest.cs" />
@@ -247,6 +245,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Validations\PaymentPasswordFormatAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientConfiguration.xml">
@@ -265,6 +264,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
+      <Project>{5245A89C-FD02-404A-A0A3-C1B5F197E426}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
       <Project>{596F9CB8-45FF-4D76-ACD6-037938ED5EEE}</Project>
       <Name>Yuyi.Jinyinmao.Domain.User.Interface</Name>
@@ -300,7 +303,8 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

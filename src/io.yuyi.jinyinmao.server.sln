@@ -39,9 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9-Publish", "9-Publish", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
 	ProjectSection(SolutionItems) = preProject
+		Publish\dev\InitFrontTables.sql = Publish\dev\InitFrontTables.sql
 		Publish\dev\InitGrainDBs.sql = Publish\dev\InitGrainDBs.sql
 		Publish\dev\InitGrainTables.sql = Publish\dev\InitGrainTables.sql
-		Publish\dev\InitTables.sql = Publish\dev\InitTables.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-AzureHost", "2-AzureHost", "{427500D4-546D-43D3-9C68-B604408ABE4A}"

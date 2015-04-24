@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-12  6:15 PM
+// Last Modified On : 2015-04-25  2:59 AM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -39,15 +39,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <value>The current user.</value>
         protected CurrentUser CurrentUser
         {
-            get
-            {
-                if (currentUser == null)
-                {
-                    currentUser = this.GetCurrentUser();
-                }
-
-                return this.currentUser.Id.HasValue ? this.currentUser : null;
-            }
+            get { return this.currentUser ?? (this.currentUser = this.GetCurrentUser()); }
         }
 
         /// <summary>
@@ -134,6 +126,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

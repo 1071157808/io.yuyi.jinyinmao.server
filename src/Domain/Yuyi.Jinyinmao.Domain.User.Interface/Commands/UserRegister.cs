@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using Moe.Actor.Interface.Commands;
 using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Commands
@@ -21,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Commands
     ///     Class UserRegister.
     /// </summary>
     [Immutable]
-    public class UserRegister : Command
+    public class UserRegister : ICommand
     {
         /// <summary>
         ///     Gets or sets the arguments.
@@ -40,17 +39,15 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         public long ClientType { get; set; }
 
         /// <summary>
+        ///     Gets the command identifier.
+        /// </summary>
+        /// <value>The command identifier.</value>
+        public Guid CommandId { get; set; }
+
+        /// <summary>
         ///     活动编号(推广相关)
         /// </summary>
         public long ContractId { get; set; }
-
-        /// <summary>
-        ///     Gets the handler identifier.
-        /// </summary>
-        public override Guid HandlerId
-        {
-            get { return this.UserId; }
-        }
 
         /// <summary>
         ///     邀请码(推广相关)

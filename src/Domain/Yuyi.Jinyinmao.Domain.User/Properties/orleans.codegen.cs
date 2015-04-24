@@ -23,10 +23,7 @@ namespace Yuyi.Jinyinmao.Domain
     using Orleans;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
-    using Moe.Actor.Interface.Commands;
-    using Moe.Actor.Interface.Events;
     using Orleans.Runtime;
-    using Moe.Actor.Interface.Model;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -263,9 +260,9 @@ namespace Yuyi.Jinyinmao.Domain
 
             public ICommandStore @CommandStore { get; set; }
 
-            public Guid @Id { get; set; }
-
             public IEventStore @EventStore { get; set; }
+
+            public Guid @Id { get; set; }
 
             public String @Args { get; set; }
 
@@ -281,6 +278,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @EncryptedPassword { get; set; }
 
+            public String @EncryptedPaymentPassword { get; set; }
+
             public String @InviteBy { get; set; }
 
             public IJBYAccount @JBYAccount { get; set; }
@@ -288,6 +287,8 @@ namespace Yuyi.Jinyinmao.Domain
             public List<String> @LoginNames { get; set; }
 
             public String @OutletCode { get; set; }
+
+            public String @PaymentSalt { get; set; }
 
             public String @RealName { get; set; }
 
@@ -306,8 +307,8 @@ namespace Yuyi.Jinyinmao.Domain
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
-                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
+                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("Args", out value)) @Args = (String) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
                 if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
@@ -315,10 +316,12 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("Credential", out value)) @Credential = (Credential) value;
                 if (values.TryGetValue("CredentialNo", out value)) @CredentialNo = (String) value;
                 if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
+                if (values.TryGetValue("EncryptedPaymentPassword", out value)) @EncryptedPaymentPassword = (String) value;
                 if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
                 if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (IJBYAccount) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
                 if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
+                if (values.TryGetValue("PaymentSalt", out value)) @PaymentSalt = (String) value;
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
                 if (values.TryGetValue("Salt", out value)) @Salt = (String) value;
@@ -329,7 +332,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} Id={1} EventStore={2} Args={3} Cellphone={4} ClientType={5} ContractId={6} Credential={7} CredentialNo={8} EncryptedPassword={9} InviteBy={10} JBYAccount={11} LoginNames={12} OutletCode={13} RealName={14} RegisterTime={15} Salt={16} SettlementAccount={17} Verified={18} VerifiedTime={19} )", @CommandStore, @Id, @EventStore, @Args, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @RealName, @RegisterTime, @Salt, @SettlementAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( CommandStore={0} EventStore={1} Id={2} Args={3} Cellphone={4} ClientType={5} ContractId={6} Credential={7} CredentialNo={8} EncryptedPassword={9} EncryptedPaymentPassword={10} InviteBy={11} JBYAccount={12} LoginNames={13} OutletCode={14} PaymentSalt={15} RealName={16} RegisterTime={17} Salt={18} SettlementAccount={19} Verified={20} VerifiedTime={21} )", @CommandStore, @EventStore, @Id, @Args, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettlementAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -342,8 +345,8 @@ namespace Yuyi.Jinyinmao.Domain
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["CommandStore"] = this.CommandStore;
-            result["Id"] = this.Id;
             result["EventStore"] = this.EventStore;
+            result["Id"] = this.Id;
             result["Args"] = this.Args;
             result["Cellphone"] = this.Cellphone;
             result["ClientType"] = this.ClientType;
@@ -351,10 +354,12 @@ namespace Yuyi.Jinyinmao.Domain
             result["Credential"] = this.Credential;
             result["CredentialNo"] = this.CredentialNo;
             result["EncryptedPassword"] = this.EncryptedPassword;
+            result["EncryptedPaymentPassword"] = this.EncryptedPaymentPassword;
             result["InviteBy"] = this.InviteBy;
             result["JBYAccount"] = this.JBYAccount;
             result["LoginNames"] = this.LoginNames;
             result["OutletCode"] = this.OutletCode;
+            result["PaymentSalt"] = this.PaymentSalt;
             result["RealName"] = this.RealName;
             result["RegisterTime"] = this.RegisterTime;
             result["Salt"] = this.Salt;
@@ -367,8 +372,8 @@ namespace Yuyi.Jinyinmao.Domain
         private void InitStateFields()
         {
             this.CommandStore = default(ICommandStore);
-            this.Id = default(Guid);
             this.EventStore = default(IEventStore);
+            this.Id = default(Guid);
             this.Args = default(String);
             this.Cellphone = default(String);
             this.ClientType = default(Int64);
@@ -376,10 +381,12 @@ namespace Yuyi.Jinyinmao.Domain
             this.Credential = default(Credential);
             this.CredentialNo = default(String);
             this.EncryptedPassword = default(String);
+            this.EncryptedPaymentPassword = default(String);
             this.InviteBy = default(String);
             this.JBYAccount = default(IJBYAccount);
             this.LoginNames = new List<String>();
             this.OutletCode = default(String);
+            this.PaymentSalt = default(String);
             this.RealName = default(String);
             this.RegisterTime = default(DateTime);
             this.Salt = default(String);

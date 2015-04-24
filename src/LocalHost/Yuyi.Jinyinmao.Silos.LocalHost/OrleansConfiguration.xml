@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
     <StorageProviders>
-      <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase" DataConnectionString="Server=tcp:pcqxuves5z.database.chinacloudapi.cn,1433;Database=cn.com.jinyinmao.dev.db.grains-{0};User ID=cn.com.jinyinmao.dev.db.user.api@pcqxuves5z;Password=tNGRj4iyPAk70lEu;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase"
+                DataConnectionString="Server=tcp:pcqxuves5z.database.chinacloudapi.cn,1433;Database=cn.com.jinyinmao.dev.db.grains-{0};User ID=cn.com.jinyinmao.dev.db.user.api@pcqxuves5z;Password=tNGRj4iyPAk70lEu;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
-    <SeedNode Address="localhost" Port="11111" />
-    <SystemStore  ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" />
+    <Messaging MaxResendCount="100" />
+    <SystemStore ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" DeploymentId="8E9D303C-DF3B-4C99-ABC4-578FBE94E63F" />
   </Globals>
   <Defaults>
     <Networking Address="localhost" Port="11111" />

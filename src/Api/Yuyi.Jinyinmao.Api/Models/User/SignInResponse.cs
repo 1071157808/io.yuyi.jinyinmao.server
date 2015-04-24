@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-13  1:04 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-13  1:22 AM
+// Last Modified On : 2015-04-25  1:59 AM
 // ***********************************************************************
 // <copyright file="SignInResponse.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -38,8 +38,8 @@ namespace Yuyi.Jinyinmao.Api.Models.User
         /// <summary>
         ///     登陆结果
         /// </summary>
-        [Required, JsonProperty(PropertyName = "successful")]
-        public bool Successed { get; set; }
+        [Required, JsonProperty(PropertyName = "success")]
+        public bool Success { get; set; }
 
         /// <summary>
         ///     用户是否存在
@@ -56,7 +56,7 @@ namespace Yuyi.Jinyinmao.Api.Models.User
             {
                 Lock = result.Lock,
                 RemainCount = result.RemainCount,
-                Successed = result.Successed,
+                Success = result.Success,
                 UserExist = result.UserExist
             };
         }

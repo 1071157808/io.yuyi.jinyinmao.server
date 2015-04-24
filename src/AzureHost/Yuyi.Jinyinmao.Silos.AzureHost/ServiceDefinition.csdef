@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="Yuyi.Jinyinmao.Silos.AzureHost" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
+
+<ServiceDefinition name="Yuyi.Jinyinmao.Silos.AzureHost"
+                   xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
+                   schemaVersion="2014-06.2.4">
   <WorkerRole name="Yuyi.Jinyinmao.Silos" vmsize="Medium">
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
