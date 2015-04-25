@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  2:29 AM
+// Last Modified On : 2015-04-25  12:18 PM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -25,7 +25,6 @@ using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Api.Properties;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 using Yuyi.Jinyinmao.Service.Misc.Interface;
@@ -99,7 +98,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             UseVeriCodeResult veriCodeResult = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetLoginPassword);
             if (!veriCodeResult.Result)
             {
-                return this.BadRequest("URLP1:该验证码已经被使用，请重新获取验证码");
+                return this.BadRequest("URLP1:该验证码已经失效，请重新获取验证码");
             }
 
             SignUpUserIdInfo info = await this.userService.GetSignUpUserIdInfoAsync(veriCodeResult.Cellphone);
@@ -119,25 +118,71 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     设定支付密码（不能与登录密码一致）
+        ///     重置支付密码
         /// </summary>
         /// <remarks>
-        ///     设置支付密码，支付密码不能与登录密码一致
+        ///     如果已经通过实名认证，需要验证手机号、用户姓名、身份证号3要素进行重置支付密码
         ///     <br />
-        ///     支付密码必须包含一个字母字符或者一般特殊字符，长度为8到18位
+        ///     如果没有实名认证过，只需要验证手机号即可进行实名认证
+        /// </remarks>
+        /// <param name="request">
+        ///     重置支付密码请求
+        /// </param>
+        /// <response code="200">重置成功</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="500"></response>
+        [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
+        {
+            UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetPaymentPassword);
+            if (!result.Result)
+            {
+                return this.BadRequest("URPP1:该验证码已经失效，请重新获取验证码");
+            }
+
+            UserInfo info = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (info == null || !info.HaSetPaymentPassword ||
+                (info.Verified && info.RealName == request.UserRealName && info.CredentialNo.ToUpperInvariant() == request.CredentialNo.ToUpperInvariant()))
+            {
+                return this.BadRequest("URPP2:您输入的身份信息错误！请重新输入");
+            }
+
+            if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
+            {
+                return this.BadRequest("URPP3: 支付密码不能与登录密码一致，请选择新的支付密码");
+            }
+
+            await this.userService.SetPaymentPasswordAsync(new SetPaymentPassword
+            {
+                CommandId = Guid.NewGuid(),
+                Override = true,
+                PaymentPassword = request.Password,
+                Salt = this.CurrentUser.Id.ToGuidString(),
+                UserId = this.CurrentUser.Id
+            });
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     设置支付密码
+        /// </summary>
+        /// <remarks>
+        ///     支付密码必须包含一位字母或者一般特殊字符，长度为8到18位之间
         /// </remarks>
         /// <param name="request">
         ///     设置支付密码请求
         /// </param>
-        /// <response code="200">设置成功</response>
+        /// <response code="200">重置成功</response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="500"></response>
-        [HttpPost, Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired(Order = 1), ActionParameterValidate(Order = 2)]
+        [Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
         {
             if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
             {
-                return this.BadRequest("USPP1:支付密码不能与登录密码一致");
+                return this.BadRequest("USPP1: 支付密码不能与登录密码一致，请选择新的支付密码");
             }
 
             await this.userService.SetPaymentPasswordAsync(new SetPaymentPassword
@@ -243,7 +288,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             this.smsService.SendMessageAsync(userInfo.Cellphone, Resources.Sms_SignUpSuccessful);
 #pragma warning restore 4014
 
-            return this.Ok(userInfo.ToResponse());
+            return this.Ok(userInfo.ToSignUpResponse());
         }
 
         /// <summary>

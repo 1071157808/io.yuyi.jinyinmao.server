@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -23,15 +24,79 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     public class UserInfo
     {
         /// <summary>
-        ///     Gets or sets the cellphone.
+        ///     用户手机号码
         /// </summary>
-        /// <value>The cellphone.</value>
         public string Cellphone { get; set; }
+
+        /// <summary>
+        ///     活动编号(推广相关)
+        /// </summary>
+        public long ContractId { get; set; }
+
+        /// <summary>
+        ///     证件类型
+        /// </summary>
+        public Credential Credential { get; set; }
+
+        /// <summary>
+        ///     证件编号
+        /// </summary>
+        public string CredentialNo { get; set; }
+
+        /// <summary>
+        /// 是否已经设置支付密码
+        /// </summary>
+        public bool HaSetPaymentPassword { get; set; }
+
+        /// <summary>
+        /// 是否已经设置登录密码
+        /// </summary>
+        public bool HasSetPassword { get; set; }
+
+        /// <summary>
+        ///     邀请人
+        /// </summary>
+        public string InviteBy { get; set; }
+
+        /// <summary>
+        ///     金包银账户Id
+        /// </summary>
+        public Guid JBYAccountId { get; set; }
+
+        /// <summary>
+        ///     登录名
+        /// </summary>
+        public List<string> LoginNames { get; set; }
+
+        /// <summary>
+        ///     真实姓名
+        /// </summary>
+        public string RealName { get; set; }
+
+        /// <summary>
+        ///     注册时间
+        /// </summary>
+        public DateTime RegisterTime { get; set; }
+
+        /// <summary>
+        ///     结算账户
+        /// </summary>
+        public Guid SettlementAccountId { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }
+
+        /// <summary>
+        ///     是否通过实名认证
+        /// </summary>
+        public bool Verified { get; set; }
+
+        /// <summary>
+        ///     实名认证时间
+        /// </summary>
+        public DateTime? VerifiedTime { get; set; }
     }
 }

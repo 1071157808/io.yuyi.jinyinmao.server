@@ -234,6 +234,7 @@
     <Compile Include="Models\Misc\VerifyVeriCodeResponse.cs" />
     <Compile Include="Models\User\CheckCellphoneResponse.cs" />
     <Compile Include="Models\User\ResetPasswordRequest.cs" />
+    <Compile Include="Models\User\ResetPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\SetPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\SignInRequest.cs" />
     <Compile Include="Models\User\SignInResponse.cs" />

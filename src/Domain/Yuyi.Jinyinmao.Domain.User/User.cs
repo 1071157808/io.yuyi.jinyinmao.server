@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  3:25 AM
+// Last Modified On : 2015-04-25  11:22 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Lib;
+using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dto;
@@ -102,7 +103,20 @@ namespace Yuyi.Jinyinmao.Domain
             return Task.FromResult(new UserInfo
             {
                 Cellphone = this.State.Cellphone,
-                UserId = this.State.Id
+                ContractId = this.State.ContractId,
+                Credential = this.State.Credential,
+                CredentialNo = this.State.CredentialNo,
+                HaSetPaymentPassword = this.State.EncryptedPaymentPassword.IsNotNullOrEmpty(),
+                HasSetPassword = this.State.EncryptedPassword.IsNotNullOrEmpty(),
+                InviteBy = this.State.InviteBy,
+                JBYAccountId = this.State.JBYAccount.GetPrimaryKey(),
+                LoginNames = this.State.LoginNames,
+                RealName = this.State.RealName,
+                RegisterTime = this.State.RegisterTime,
+                SettlementAccountId = this.State.SettlementAccount.GetPrimaryKey(),
+                UserId = this.State.Id,
+                Verified = this.State.Verified,
+                VerifiedTime = this.State.VerifiedTime
             });
         }
 

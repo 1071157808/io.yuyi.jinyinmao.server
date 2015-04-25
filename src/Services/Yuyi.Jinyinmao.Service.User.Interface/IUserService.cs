@@ -55,6 +55,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone);
 
         /// <summary>
+        /// Gets the user information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> GetUserInfoAsync(Guid userId);
+
+        /// <summary>
         ///     Registers the user asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>

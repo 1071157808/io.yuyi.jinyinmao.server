@@ -49,7 +49,7 @@ namespace Yuyi.Jinyinmao.Api.Models.User
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>SignUpResponse.</returns>
-        internal static SignUpResponse ToResponse(this UserInfo info)
+        internal static SignUpResponse ToSignUpResponse(this UserInfo info)
         {
             return new SignUpResponse
             {

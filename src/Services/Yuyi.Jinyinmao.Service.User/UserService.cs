@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  2:32 AM
+// Last Modified On : 2015-04-25  12:05 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -46,7 +46,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Checks the password asynchronous.
+        ///     Checks the password asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="password">The password.</param>
@@ -94,6 +94,17 @@ namespace Yuyi.Jinyinmao.Service
                 Registered = info.Registered,
                 UserId = info.UserId
             };
+        }
+
+        /// <summary>
+        ///     Gets the user information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public Task<UserInfo> GetUserInfoAsync(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetUserInfoAsync();
         }
 
         /// <summary>
