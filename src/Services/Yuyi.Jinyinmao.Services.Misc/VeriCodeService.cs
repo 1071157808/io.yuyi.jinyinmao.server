@@ -17,10 +17,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Service.Interface;
-using Yuyi.Jinyinmao.Service.Misc.Interface;
-using Yuyi.Jinyinmao.Services.Models;
+using Yuyi.Jinyinmao.Service.Models;
 
-namespace Yuyi.Jinyinmao.Services
+namespace Yuyi.Jinyinmao.Service
 {
     /// <summary>
     ///     Class VeriCodeService.

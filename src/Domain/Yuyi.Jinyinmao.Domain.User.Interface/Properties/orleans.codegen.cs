@@ -29,6 +29,179 @@ namespace Yuyi.Jinyinmao.Domain
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class AddBankCardResultedProcessorFactory
+    {
+        
+
+                        public static Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor GetGrain(long primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor), 133352917, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor GetGrain(long primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor), 133352917, primaryKey, grainClassNamePrefix));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor), 133352917, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor), 133352917, primaryKey, grainClassNamePrefix));
+                        }
+
+            public static Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return AddBankCardResultedProcessorReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor")]
+        internal class AddBankCardResultedProcessorReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor
+        {
+            
+
+            public static Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor), (global::Orleans.Runtime.GrainReference gr) => { return new AddBankCardResultedProcessorReference(gr);}, grainRef, 133352917);
+            }
+            
+            protected internal AddBankCardResultedProcessorReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal AddBankCardResultedProcessorReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return 133352917;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                AddBankCardResultedProcessorReference input = ((AddBankCardResultedProcessorReference)(original));
+                return ((AddBankCardResultedProcessorReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                AddBankCardResultedProcessorReference input = ((AddBankCardResultedProcessorReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return AddBankCardResultedProcessorReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return AddBankCardResultedProcessorMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor.ProcessEventAsync(Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted @event)
+            {
+
+                return base.InvokeMethodAsync<object>(-825734092, new object[] {@event} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IAddBankCardResultedProcessor", 133352917)]
+    internal class AddBankCardResultedProcessorMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return 133352917;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case 133352917:  // IAddBankCardResultedProcessor
+                        switch (methodId)
+                        {
+                            case -825734092: 
+                                return ((IAddBankCardResultedProcessor)grain).ProcessEventAsync((Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case 133352917:  // IAddBankCardResultedProcessor
+                    switch (methodId)
+                    {
+                        case -825734092:
+                            return "ProcessEventAsync";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     public class CellphoneFactory
     {
         
@@ -827,10 +1000,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(955492027, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.AddBankCardAsync(Yuyi.Jinyinmao.Domain.Commands.AddBankCard @command, bool @result)
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.AddBankCardResultedAsync(Yuyi.Jinyinmao.Domain.Commands.AddBankCard @command, bool @result)
             {
 
-                return base.InvokeMethodAsync<object>(647271184, new object[] {@command, @result} );
+                return base.InvokeMethodAsync<object>(-792474218, new object[] {@command, @result} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult> Yuyi.Jinyinmao.Domain.IUser.CheckPasswordAsync(string @loginName, string @password)
@@ -903,8 +1076,8 @@ namespace Yuyi.Jinyinmao.Domain
                         {
                             case 955492027: 
                                 return ((IUser)grain).AddBankCardAsync((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 647271184: 
-                                return ((IUser)grain).AddBankCardAsync((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)arguments[0], (Boolean)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -792474218: 
+                                return ((IUser)grain).AddBankCardResultedAsync((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)arguments[0], (Boolean)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1723407494: 
                                 return ((IUser)grain).CheckPasswordAsync((String)arguments[0], (String)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1446235673: 
@@ -945,8 +1118,8 @@ namespace Yuyi.Jinyinmao.Domain
                     {
                         case 955492027:
                             return "AddBankCardAsync";
-                    case 647271184:
-                            return "AddBankCardAsync";
+                    case -792474218:
+                            return "AddBankCardResultedAsync";
                     case -1723407494:
                             return "CheckPasswordAsync";
                     case 1446235673:
@@ -1133,6 +1306,546 @@ namespace Yuyi.Jinyinmao.Domain
                     switch (methodId)
                     {
                         case -905129281:
+                            return "ProcessEventAsync";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+}
+namespace Yuyi.Jinyinmao.Domain.EventProcessor
+{
+    using System;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.IO;
+    using System.Collections.Generic;
+    using Orleans;
+    using Orleans.Runtime;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class LoginPasswordResetProcessorFactory
+    {
+        
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor GetGrain(long primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor), 185609065, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor GetGrain(long primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor), 185609065, primaryKey, grainClassNamePrefix));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor), 185609065, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor), 185609065, primaryKey, grainClassNamePrefix));
+                        }
+
+            public static Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return LoginPasswordResetProcessorReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.ILoginP" +
+            "asswordResetProcessor")]
+        internal class LoginPasswordResetProcessorReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor
+        {
+            
+
+            public static Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor), (global::Orleans.Runtime.GrainReference gr) => { return new LoginPasswordResetProcessorReference(gr);}, grainRef, 185609065);
+            }
+            
+            protected internal LoginPasswordResetProcessorReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal LoginPasswordResetProcessorReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return 185609065;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.ILoginP" +
+                        "asswordResetProcessor";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                LoginPasswordResetProcessorReference input = ((LoginPasswordResetProcessorReference)(original));
+                return ((LoginPasswordResetProcessorReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                LoginPasswordResetProcessorReference input = ((LoginPasswordResetProcessorReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return LoginPasswordResetProcessorReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return LoginPasswordResetProcessorMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.EventProcessor.ILoginPasswordResetProcessor.ProcessEventAsync(Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset @event)
+            {
+
+                return base.InvokeMethodAsync<object>(-1554599246, new object[] {@event} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.ILoginP" +
+        "asswordResetProcessor", 185609065)]
+    internal class LoginPasswordResetProcessorMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return 185609065;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case 185609065:  // ILoginPasswordResetProcessor
+                        switch (methodId)
+                        {
+                            case -1554599246: 
+                                return ((ILoginPasswordResetProcessor)grain).ProcessEventAsync((Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case 185609065:  // ILoginPasswordResetProcessor
+                    switch (methodId)
+                    {
+                        case -1554599246:
+                            return "ProcessEventAsync";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class PaymentPasswordResetFactory
+    {
+        
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset GetGrain(long primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset), 1115672132, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset GetGrain(long primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset), 1115672132, primaryKey, grainClassNamePrefix));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset), 1115672132, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset), 1115672132, primaryKey, grainClassNamePrefix));
+                        }
+
+            public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return PaymentPasswordResetReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.IPaymen" +
+            "tPasswordReset")]
+        internal class PaymentPasswordResetReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset
+        {
+            
+
+            public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset), (global::Orleans.Runtime.GrainReference gr) => { return new PaymentPasswordResetReference(gr);}, grainRef, 1115672132);
+            }
+            
+            protected internal PaymentPasswordResetReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal PaymentPasswordResetReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return 1115672132;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.IPaymen" +
+                        "tPasswordReset";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                PaymentPasswordResetReference input = ((PaymentPasswordResetReference)(original));
+                return ((PaymentPasswordResetReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                PaymentPasswordResetReference input = ((PaymentPasswordResetReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return PaymentPasswordResetReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return PaymentPasswordResetMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordReset.ProcessEventAsync(Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset @event)
+            {
+
+                return base.InvokeMethodAsync<object>(1984201703, new object[] {@event} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.IPaymen" +
+        "tPasswordReset", 1115672132)]
+    internal class PaymentPasswordResetMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return 1115672132;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case 1115672132:  // IPaymentPasswordReset
+                        switch (methodId)
+                        {
+                            case 1984201703: 
+                                return ((IPaymentPasswordReset)grain).ProcessEventAsync((Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case 1115672132:  // IPaymentPasswordReset
+                    switch (methodId)
+                    {
+                        case 1984201703:
+                            return "ProcessEventAsync";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class PaymentPasswordSetFactory
+    {
+        
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet GetGrain(long primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet), -1029124399, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet GetGrain(long primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet), -1029124399, primaryKey, grainClassNamePrefix));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet), -1029124399, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet), -1029124399, primaryKey, grainClassNamePrefix));
+                        }
+
+            public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return PaymentPasswordSetReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.IPaymen" +
+            "tPasswordSet")]
+        internal class PaymentPasswordSetReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet
+        {
+            
+
+            public static Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet), (global::Orleans.Runtime.GrainReference gr) => { return new PaymentPasswordSetReference(gr);}, grainRef, -1029124399);
+            }
+            
+            protected internal PaymentPasswordSetReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal PaymentPasswordSetReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return -1029124399;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.IPaymen" +
+                        "tPasswordSet";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                PaymentPasswordSetReference input = ((PaymentPasswordSetReference)(original));
+                return ((PaymentPasswordSetReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                PaymentPasswordSetReference input = ((PaymentPasswordSetReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return PaymentPasswordSetReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return (interfaceId == this.InterfaceId);
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return PaymentPasswordSetMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.EventProcessor.IPaymentPasswordSet.ProcessEventAsync(Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet @event)
+            {
+
+                return base.InvokeMethodAsync<object>(521806486, new object[] {@event} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.EventProcessor.Yuyi.Jinyinmao.Domain.EventProcessor.IPaymen" +
+        "tPasswordSet", -1029124399)]
+    internal class PaymentPasswordSetMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return -1029124399;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case -1029124399:  // IPaymentPasswordSet
+                        switch (methodId)
+                        {
+                            case 521806486: 
+                                return ((IPaymentPasswordSet)grain).ProcessEventAsync((Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case -1029124399:  // IPaymentPasswordSet
+                    switch (methodId)
+                    {
+                        case 521806486:
                             return "ProcessEventAsync";
                     
                         default: 
@@ -1364,14 +2077,196 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     using System.Collections.Generic;
     using System.Reflection;
     using Orleans.Serialization;
+    using Yuyi.Jinyinmao.Domain.Events;
     using Yuyi.Jinyinmao.Domain.Dtos;
     using Yuyi.Jinyinmao.Domain.Commands;
     using Yuyi.Jinyinmao.Domain;
-    using Yuyi.Jinyinmao.Domain.Events;
     using System.Collections;
-    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
+    using System.Runtime.InteropServices;
     
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Events_AddBankCardResultedSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Events_AddBankCardResultedSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted input = ((Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.BankCardNo, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.BankName, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CanBeUsedByYilian, stream, typeof(bool));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CityName, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Result, stream, typeof(bool));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Verified, stream, typeof(bool));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.VerifiedTime, stream, typeof(System.DateTime));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted result = new Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.CanBeUsedByYilian = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.CityName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.Result = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.Verified = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            result.VerifiedTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Events.AddBankCardResulted), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Events_LoginPasswordResetSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Events_LoginPasswordResetSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset input = ((Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset result = new Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Events.LoginPasswordReset), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Events_PaymentPasswordResetSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Events_PaymentPasswordResetSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset input = ((Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset result = new Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Events.PaymentPasswordReset), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Events_PaymentPasswordSetSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Events_PaymentPasswordSetSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet input = ((Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet result = new Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Events.PaymentPasswordSet), DeepCopier, Serializer, Deserializer);
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -1495,20 +2390,13 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static object DeepCopier(object original)
         {
-            Yuyi.Jinyinmao.Domain.Commands.AddBankCard input = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(original));
-            Yuyi.Jinyinmao.Domain.Commands.AddBankCard result = new Yuyi.Jinyinmao.Domain.Commands.AddBankCard();
-            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
-            result.BankCardNo = input.BankCardNo;
-            result.BankName = input.BankName;
-            result.CityName = input.CityName;
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
-            return result;
+            return original;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
             Yuyi.Jinyinmao.Domain.Commands.AddBankCard input = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.BankCardNo, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.BankName, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.CityName, stream, typeof(string));
@@ -1519,6 +2407,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Yuyi.Jinyinmao.Domain.Commands.AddBankCard result = new Yuyi.Jinyinmao.Domain.Commands.AddBankCard();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.CityName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
@@ -1717,6 +2606,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
             Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword input = ((Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Password, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Salt, stream, typeof(string));
@@ -1726,6 +2616,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword result = new Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             result.Password = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Salt = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
@@ -1755,6 +2646,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword input = ((Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword)(original));
             Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword result = new Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword();
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Args = input.Args;
             result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
             result.Override = input.Override;
             result.PaymentPassword = input.PaymentPassword;
@@ -1766,6 +2658,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
             Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword input = ((Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Override, stream, typeof(bool));
             Orleans.Serialization.SerializationManager.SerializeInner(input.PaymentPassword, stream, typeof(string));
@@ -1776,6 +2669,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword result = new Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword();
+            result.Args = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             result.Override = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
             result.PaymentPassword = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
@@ -1867,7 +2761,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto input = ((Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto)(original));
             Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto result = new Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto();
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
-            result.Command = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Command)));
+            result.Command = input.Command;
             result.UserInfo = input.UserInfo;
             return result;
         }

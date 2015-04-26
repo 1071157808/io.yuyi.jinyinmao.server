@@ -86,6 +86,11 @@
     <Compile Include="Dtos\JBYAccountRegister.cs" />
     <Compile Include="Dtos\UserInfo.cs" />
     <Compile Include="Credential.cs" />
+    <Compile Include="EventProcessor\IAddBankCardResultedProcessor.cs" />
+    <Compile Include="EventProcessor\ILoginPasswordResetProcessor.cs" />
+    <Compile Include="EventProcessor\IPaymentPasswordReset.cs" />
+    <Compile Include="EventProcessor\IPaymentPasswordSet.cs" />
+    <Compile Include="Events\AddBankCardResulted.cs" />
     <Compile Include="Events\LoginPasswordReset.cs" />
     <Compile Include="Events\PaymentPasswordReset.cs" />
     <Compile Include="Events\PaymentPasswordSet.cs" />

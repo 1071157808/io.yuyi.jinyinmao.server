@@ -77,7 +77,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 this.SagaEntity.State = 1;
 
                 IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AddBankCardAsync(this.State.InitData.Command, result.Result);
+                await user.AddBankCardResultedAsync(this.State.InitData.Command, result.Result);
             }
 
             await this.StoreSagaEntityAsync();

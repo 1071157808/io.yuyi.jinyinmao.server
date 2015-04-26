@@ -4,7 +4,7 @@
 // Created          : 2015-04-25  2:26 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  2:27 AM
+// Last Modified On : 2015-04-27  12:22 AM
 // ***********************************************************************
 // <copyright file="ResetLoginPassword.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Commands
     ///     ResetLoginPassword.
     /// </summary>
     [Immutable]
-    public class ResetLoginPassword : ICommand
+    public class ResetLoginPassword : Command
     {
         /// <summary>
         ///     登录密码
@@ -36,14 +36,5 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         ///     用户唯一标示符
         /// </summary>
         public Guid UserId { get; set; }
-
-        #region ICommand Members
-
-        /// <summary>
-        ///     Gets or sets the command identifier.
-        /// </summary>
-        public Guid CommandId { get; set; }
-
-        #endregion ICommand Members
     }
 }

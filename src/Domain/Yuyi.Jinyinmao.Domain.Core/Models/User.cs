@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  11:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  12:17 AM
+// Last Modified On : 2015-04-27  12:53 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -61,12 +61,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The credential no.</value>
         public string CredentialNo { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the identifier.
-        /// </summary>
-        /// <value>The identifier.</value>
-        public int Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the information.

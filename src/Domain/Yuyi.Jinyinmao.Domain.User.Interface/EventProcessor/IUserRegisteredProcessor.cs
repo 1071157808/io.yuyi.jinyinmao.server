@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  10:30 PM
+// Created          : 2015-04-26  1:36 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  10:35 PM
+// Last Modified On : 2015-04-27  12:32 AM
 // ***********************************************************************
 // <copyright file="IUserRegisteredProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -23,7 +23,7 @@ namespace Yuyi.Jinyinmao.Domain
     public interface IUserRegisteredProcessor : IGrain
     {
         /// <summary>
-        ///     Processes the event.
+        ///     Processes the event asynchronous.
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>

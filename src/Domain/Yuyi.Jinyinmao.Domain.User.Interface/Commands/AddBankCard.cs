@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  1:14 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  1:36 AM
+// Last Modified On : 2015-04-27  12:12 AM
 // ***********************************************************************
 // <copyright file="AddBankCard.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,13 +12,15 @@
 // ***********************************************************************
 
 using System;
+using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Commands
 {
     /// <summary>
     ///     AddBankCard.
     /// </summary>
-    public class AddBankCard : ICommand
+    [Immutable]
+    public class AddBankCard : Command
     {
         /// <summary>
         ///     银行卡号
@@ -40,15 +42,5 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }
-
-        #region ICommand Members
-
-        /// <summary>
-        ///     Gets or sets the command identifier.
-        /// </summary>
-        /// <value>The command identifier.</value>
-        public Guid CommandId { get; set; }
-
-        #endregion ICommand Members
     }
 }

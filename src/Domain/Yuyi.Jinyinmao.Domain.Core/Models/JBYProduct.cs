@@ -33,12 +33,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public int FinancingSumCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the identifier.
-        /// </summary>
-        /// <value>The identifier.</value>
-        public int Id { get; set; }
-
-        /// <summary>
         ///     Gets or sets the information.
         /// </summary>
         /// <value>The information.</value>

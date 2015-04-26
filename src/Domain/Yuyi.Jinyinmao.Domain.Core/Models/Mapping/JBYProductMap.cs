@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
         internal JBYProductMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.ProductIdentifier);
 
             // Properties
             this.Property(t => t.ProductIdentifier)
@@ -40,7 +40,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("JBYProducts");
-            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.ProductIdentifier).HasColumnName("ProductIdentifier");
             this.Property(t => t.ProductCategory).HasColumnName("ProductCategory");
             this.Property(t => t.ProductName).HasColumnName("ProductName");

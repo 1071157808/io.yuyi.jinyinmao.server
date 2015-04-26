@@ -14,7 +14,7 @@
 using System;
 using Yuyi.Jinyinmao.Service.Interface;
 
-namespace Yuyi.Jinyinmao.Services.Models
+namespace Yuyi.Jinyinmao.Service.Models
 {
     /// <summary>
     ///     Class VeriCode.

@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Moe.Lib;
 
-namespace Yuyi.Jinyinmao.Services
+namespace Yuyi.Jinyinmao.Service
 {
     /// <summary>
     ///     ApiKeyAuthDelegatingHandler.

@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  11:22 AM
+// Last Modified On : 2015-04-27  1:10 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,6 +20,7 @@ using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Helper;
 using Yuyi.Jinyinmao.Domain.Sagas;
@@ -32,35 +33,18 @@ namespace Yuyi.Jinyinmao.Domain
     [StorageProvider(ProviderName = "SqlDatabase")]
     public class User : EntityGrain<IUserState>, IUser
     {
-        private Dictionary<string, BankCard> BankCards { get; set; }
-
-        /// <summary>
-        ///     This method is called at the end of the process of activating a grain.
-        ///     It is called before any messages have been dispatched to the grain.
-        ///     For grains with declared persistent state, this method is called after the State property has been populated.
-        /// </summary>
-        public override Task OnActivateAsync()
-        {
-            this.ReloadBankCardsData();
-            return base.OnActivateAsync();
-        }
-
-        private void ReloadBankCardsData()
-        {
-            this.BankCards = this.State.BankCards.Where(c => !c.IsRemoved).ToDictionary(
-                            c => c.BankCardNo);
-        }
-
         /// <summary>
         ///     Gets or sets the error count.
         /// </summary>
         /// <value>The error count.</value>
         public int ErrorCount { get; set; }
 
+        private Dictionary<string, BankCard> BankCards { get; set; }
+
         #region IUser Members
 
         /// <summary>
-        /// Adds the bank card.
+        ///     Adds the bank card.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
@@ -93,7 +77,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <returns>Task.</returns>
-        public async Task AddBankCardAsync(AddBankCard command, bool result)
+        public async Task AddBankCardResultedAsync(AddBankCard command, bool result)
         {
             if (result)
             {
@@ -110,6 +94,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == command.BankCardNo);
             }
 
+            await this.RaiseAddBankCardResultedEvent(command, result);
             await this.State.WriteStateAsync();
         }
 
@@ -272,7 +257,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.Salt = command.Salt;
             this.State.EncryptedPassword = CryptographyHelper.Encrypting(command.Password, command.Salt);
             await this.StoreCommandAsync(command);
-            await this.RaiseLoginPasswordResetEvent();
+            await this.RaiseLoginPasswordResetEvent(command);
 
             await this.State.WriteStateAsync();
         }
@@ -293,7 +278,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.EncryptedPaymentPassword = CryptographyHelper.Encrypting(command.PaymentPassword, command.Salt);
 
             await this.StoreCommandAsync(command);
-            await this.RaisePaymentPasswordSetEvent(command.Override);
+            await this.RaisePaymentPasswordSetEvent(command);
 
             await this.State.WriteStateAsync();
         }
@@ -301,39 +286,99 @@ namespace Yuyi.Jinyinmao.Domain
         #endregion IUser Members
 
         /// <summary>
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
+        /// </summary>
+        public override Task OnActivateAsync()
+        {
+            this.ReloadBankCardsData();
+            return base.OnActivateAsync();
+        }
+
+        /// <summary>
+        ///     Raises the add bank card resulted event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseAddBankCardResultedEvent(AddBankCard command, bool result)
+        {
+            AddBankCardResulted @event = new AddBankCardResulted
+            {
+                Args = command.Args,
+                BankCardNo = command.BankCardNo,
+                BankName = command.BankName,
+                Cellphone = this.State.Cellphone,
+                CityName = command.CityName,
+                EventId = Guid.NewGuid(),
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name,
+                CanBeUsedByYilian = true,
+                Result = result,
+                UserId = this.State.Id,
+                Verified = result,
+                VerifiedTime = DateTime.Now
+            };
+            await this.StoreEventAsync(@event);
+
+            await AddBankCardResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        }
+
+        /// <summary>
         ///     Raises the login password reset event.
         /// </summary>
         /// <returns>Task.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        private async Task RaiseLoginPasswordResetEvent()
+        private async Task RaiseLoginPasswordResetEvent(ResetLoginPassword command)
         {
-            await this.StoreEventAsync(new PaymentPasswordReset
+            LoginPasswordReset @event = new LoginPasswordReset
             {
+                Args = command.Args,
                 EventId = Guid.NewGuid(),
                 SourceId = this.State.Id.ToGuidString(),
                 SourceType = this.GetType().Name
-            });
+            };
+
+            await this.StoreEventAsync(@event);
+
+            await LoginPasswordResetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
-        private async Task RaisePaymentPasswordSetEvent(bool @override)
+        private async Task RaisePaymentPasswordSetEvent(SetPaymentPassword command)
         {
-            if (@override)
+            if (command.Override)
             {
-                await this.StoreEventAsync(new PaymentPasswordReset
+                PaymentPasswordReset @event = new PaymentPasswordReset
                 {
+                    Args = command.Args,
                     EventId = Guid.NewGuid(),
                     SourceId = this.State.Id.ToGuidString(),
                     SourceType = this.GetType().Name
-                });
+                };
+
+                await this.StoreEventAsync(@event);
+
+                await PaymentPasswordResetFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
             }
             else
             {
+                PaymentPasswordSet @event = new PaymentPasswordSet
+                {
+                    Args = command.Args,
+                    EventId = Guid.NewGuid(),
+                    SourceId = this.State.Id.ToGuidString(),
+                    SourceType = this.GetType().Name
+                };
+
                 await this.StoreEventAsync(new PaymentPasswordSet
                 {
+                    Args = command.Args,
                     EventId = Guid.NewGuid(),
                     SourceId = this.State.Id.ToGuidString(),
                     SourceType = this.GetType().Name
                 });
+
+                await PaymentPasswordSetFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
             }
         }
 
@@ -359,7 +404,13 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.StoreEventAsync(@event);
 
-            await UserRegisteredProcessorFactory.GetGrain(Guid.NewGuid()).ProcessEventAsync(@event);
+            await UserRegisteredProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        }
+
+        private void ReloadBankCardsData()
+        {
+            this.BankCards = this.State.BankCards.Where(c => !c.IsRemoved).ToDictionary(
+                c => c.BankCardNo);
         }
     }
 }

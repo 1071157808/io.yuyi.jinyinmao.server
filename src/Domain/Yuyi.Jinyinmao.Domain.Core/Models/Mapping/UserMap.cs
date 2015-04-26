@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  11:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  12:03 AM
+// Last Modified On : 2015-04-27  12:54 AM
 // ***********************************************************************
 // <copyright file="UserMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
         internal UserMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.UserIdentifier);
 
             // Properties
             this.Property(t => t.UserIdentifier)
@@ -67,7 +67,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("Users");
-            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.Cellphone).HasColumnName("Cellphone");
             this.Property(t => t.RegisterTime).HasColumnName("RegisterTime");

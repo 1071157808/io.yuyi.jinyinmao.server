@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  11:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:35 PM
+// Last Modified On : 2015-04-27  12:54 AM
 // ***********************************************************************
 // <copyright file="RegularProductMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
         internal RegularProductMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.ProductIdentifier);
 
             // Properties
             this.Property(t => t.ProductIdentifier)
@@ -44,7 +44,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("RegularProducts");
-            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.ProductIdentifier).HasColumnName("ProductIdentifier");
             this.Property(t => t.ProductCategory).HasColumnName("ProductCategory");
             this.Property(t => t.ProductName).HasColumnName("ProductName");

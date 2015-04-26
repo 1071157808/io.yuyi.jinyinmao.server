@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-12  6:15 PM
+// Last Modified On : 2015-04-27  12:12 AM
 // ***********************************************************************
 // <copyright file="UserRegister.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,14 +20,8 @@ namespace Yuyi.Jinyinmao.Domain.Commands
     ///     Class UserRegister.
     /// </summary>
     [Immutable]
-    public class UserRegister : ICommand
+    public class UserRegister : Command
     {
-        /// <summary>
-        ///     Gets or sets the arguments.
-        /// </summary>
-        /// <value>The arguments.</value>
-        public string Args { get; set; }
-
         /// <summary>
         ///     用户手机号
         /// </summary>
@@ -37,12 +31,6 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         ///     客户端标识, 900 => PC, 901 => iPhone, 902 => Android, 903 => M
         /// </summary>
         public long ClientType { get; set; }
-
-        /// <summary>
-        ///     Gets the command identifier.
-        /// </summary>
-        /// <value>The command identifier.</value>
-        public Guid CommandId { get; set; }
 
         /// <summary>
         ///     活动编号(推广相关)

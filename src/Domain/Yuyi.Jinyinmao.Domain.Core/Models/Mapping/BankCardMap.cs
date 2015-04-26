@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
         internal BankCardMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.BankCardNo);
 
             // Properties
             this.Property(t => t.UserIdentifier)
@@ -47,7 +47,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("BankCards");
-            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.BankCardNo).HasColumnName("BankCardNo");
             this.Property(t => t.BankName).HasColumnName("BankName");

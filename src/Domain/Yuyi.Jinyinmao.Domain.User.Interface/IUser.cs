@@ -4,7 +4,7 @@
 // Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  10:38 PM
+// Last Modified On : 2015-04-26  11:19 PM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <returns>Task.</returns>
-        Task AddBankCardAsync(AddBankCard command, bool result);
+        Task AddBankCardResultedAsync(AddBankCard command, bool result);
 
         /// <summary>
         ///     Checks the password asynchronous.

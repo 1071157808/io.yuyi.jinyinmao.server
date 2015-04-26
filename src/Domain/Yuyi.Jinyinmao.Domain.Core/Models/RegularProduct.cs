@@ -34,12 +34,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public int FinancingSumCount { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        /// <value>The identifier.</value>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the information.
         /// </summary>
         /// <value>The information.</value>
@@ -151,13 +145,13 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// Gets or sets the value date.
         /// </summary>
         /// <value>The value date.</value>
-        public Nullable<DateTime> ValueDate { get; set; }
+        public DateTime? ValueDate { get; set; }
 
         /// <summary>
         /// Gets or sets the value date mode.
         /// </summary>
         /// <value>The value date mode.</value>
-        public Nullable<int> ValueDateMode { get; set; }
+        public int? ValueDateMode { get; set; }
 
         /// <summary>
         /// Gets or sets the yield.

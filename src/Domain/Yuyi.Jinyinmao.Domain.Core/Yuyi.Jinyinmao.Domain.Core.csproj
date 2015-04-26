@@ -118,23 +118,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandStore.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandStore.cs" />
     <Compile Include="EntityGrain.cs" />
     <Compile Include="ErrorCode.cs" />
-    <Compile Include="EventProcessingLogger.cs" />
-    <Compile Include="EventRecord.cs" />
-    <Compile Include="EventStore.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\EventProcessingLogger.cs" />
+    <Compile Include="Events\EventProcessor.cs" />
+    <Compile Include="Events\EventRecord.cs" />
+    <Compile Include="Events\EventStore.cs" />
+    <Compile Include="Events\IEventProcessor.cs" />
     <Compile Include="GrainType.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="CommandRecord.cs" />
-    <Compile Include="ICommandStore.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\CommandRecord.cs" />
+    <Compile Include="Commands\ICommandStore.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityState.cs" />
-    <Compile Include="IEvent.cs" />
-    <Compile Include="IEventProcessingLogger.cs" />
-    <Compile Include="IEventStore.cs" />
-    <Compile Include="ISaga.cs" />
-    <Compile Include="ISagaState.cs" />
+    <Compile Include="Events\IEvent.cs" />
+    <Compile Include="Events\IEventProcessingLogger.cs" />
+    <Compile Include="Events\IEventStore.cs" />
+    <Compile Include="Saga\ISaga.cs" />
+    <Compile Include="Saga\ISagaState.cs" />
     <Compile Include="Models\AccountTranscation.cs" />
     <Compile Include="Models\BankCard.cs" />
     <Compile Include="Models\JYMDBContext.cs" />
@@ -156,10 +160,10 @@
     <Compile Include="Models\VeriCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RetryPolicyFactory.cs" />
-    <Compile Include="SagaEntity.cs" />
-    <Compile Include="SagaGrain.cs" />
+    <Compile Include="Saga\SagaEntity.cs" />
+    <Compile Include="Saga\SagaGrain.cs" />
     <Compile Include="SiloClusterConfig.cs" />
-    <Compile Include="SqlDatabaseProvider.cs" />
+    <Compile Include="StorageProvider\SqlDatabaseProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -167,6 +171,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
+      <Project>{0E048DCC-F815-4D24-87B4-4210FD89E500}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Misc.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Services.Misc\Yuyi.Jinyinmao.Services.Misc.csproj">
+      <Project>{A109D0AD-39B7-49EB-B7AD-A0850782E2BC}</Project>
+      <Name>Yuyi.Jinyinmao.Services.Misc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

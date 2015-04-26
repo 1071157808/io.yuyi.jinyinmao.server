@@ -14,7 +14,7 @@
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Service.Interface;
 
-namespace Yuyi.Jinyinmao.Service.Misc.Interface
+namespace Yuyi.Jinyinmao.Service.Interface
 {
     /// <summary>
     ///     Interface IVeriCodeService

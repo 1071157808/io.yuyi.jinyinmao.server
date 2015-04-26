@@ -250,7 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientConfiguration.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -278,7 +278,7 @@
       <Name>Yuyi.Jinyinmao.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
-      <Project>{0E048DCC-F815-4D24-87B4-4210FD89E500}</Project>
+      <Project>{0e048dcc-f815-4d24-87b4-4210fd89e500}</Project>
       <Name>Yuyi.Jinyinmao.Service.Misc.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj">
@@ -290,7 +290,7 @@
       <Name>Yuyi.Jinyinmao.Service.User</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Services.Misc\Yuyi.Jinyinmao.Services.Misc.csproj">
-      <Project>{A109D0AD-39B7-49EB-B7AD-A0850782E2BC}</Project>
+      <Project>{a109d0ad-39b7-49eb-b7ad-a0850782e2bc}</Project>
       <Name>Yuyi.Jinyinmao.Services.Misc</Name>
     </ProjectReference>
   </ItemGroup>

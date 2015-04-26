@@ -4,7 +4,7 @@
 // Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  1:11 AM
+// Last Modified On : 2015-04-27  1:01 AM
 // ***********************************************************************
 // <copyright file="NinjectConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,10 +20,6 @@ using Ninject.Web.Common;
 using Ninject.Web.WebApi;
 using WebActivatorEx;
 using Yuyi.Jinyinmao.Api;
-using Yuyi.Jinyinmao.Service;
-using Yuyi.Jinyinmao.Service.Interface;
-using Yuyi.Jinyinmao.Service.Misc.Interface;
-using Yuyi.Jinyinmao.Services;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(NinjectConfig), "Start")]
 [assembly: ApplicationShutdownMethod(typeof(NinjectConfig), "Stop")]
@@ -89,7 +85,7 @@ namespace Yuyi.Jinyinmao.Api
             kernel.Bind<IVeriCodeService>().To<VeriCodeService>().InSingletonScope();
             kernel.Bind<IUserService>().To<UserService>().InSingletonScope();
             kernel.Bind<IUserInfoService>().To<UserInfoService>().InSingletonScope()
-                .WithConstructorArgument<IUserInfoService>(new UserService());
+                .WithConstructorArgument(new UserService());
         }
     }
 }

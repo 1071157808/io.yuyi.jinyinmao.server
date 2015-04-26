@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Yuyi.Jinyinmao.Service.Interface;
 
-namespace Yuyi.Jinyinmao.Services
+namespace Yuyi.Jinyinmao.Service
 {
     /// <summary>
     ///     SmsMessage.

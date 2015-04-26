@@ -21,14 +21,8 @@ namespace Yuyi.Jinyinmao.Domain.Events
     ///     UserRegistered.
     /// </summary>
     [Immutable]
-    public class UserRegistered : IEvent
+    public class UserRegistered : Event
     {
-        /// <summary>
-        ///     Gets or sets the arguments.
-        /// </summary>
-        /// <value>The arguments.</value>
-        public string Args { get; set; }
-
         /// <summary>
         ///     用户手机号
         /// </summary>
@@ -43,12 +37,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     活动编号(推广相关)
         /// </summary>
         public long ContractId { get; set; }
-
-        /// <summary>
-        ///     Gets the event identifier.
-        /// </summary>
-        /// <value>The event identifier.</value>
-        public Guid EventId { get; set; }
 
         /// <summary>
         ///     邀请码(推广相关)
@@ -79,18 +67,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     结算账户
         /// </summary>
         public Guid SettlementAccountId { get; set; }
-
-        /// <summary>
-        ///     Gets the source identifier.
-        /// </summary>
-        /// <value>The source identifier.</value>
-        public string SourceId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the type of the source.
-        /// </summary>
-        /// <value>The type of the source.</value>
-        public string SourceType { get; set; }
 
         /// <summary>
         ///     用户编号

@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  11:02 PM
+// Last Modified On : 2015-04-27  12:34 AM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -95,7 +95,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 BankName = request.BankName,
                 CityName = request.CityName,
                 CommandId = Guid.NewGuid(),
-                UserId = this.CurrentUser.Id
+                UserId = this.CurrentUser.Id,
+                Args = this.BuildArgs()
             });
             return this.Ok();
         }
@@ -157,7 +158,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 CommandId = Guid.NewGuid(),
                 Password = request.Password,
                 Salt = info.UserId.ToGuidString(),
-                UserId = info.UserId
+                UserId = info.UserId,
+                Args = this.BuildArgs()
             });
 
             return this.Ok();
@@ -205,7 +207,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Override = true,
                 PaymentPassword = request.Password,
                 Salt = this.CurrentUser.Id.ToGuidString(),
-                UserId = this.CurrentUser.Id
+                UserId = this.CurrentUser.Id,
+                Args = this.BuildArgs()
             });
 
             return this.Ok();
@@ -237,7 +240,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Override = false,
                 PaymentPassword = request.Password,
                 Salt = this.CurrentUser.Id.ToGuidString(),
-                UserId = this.CurrentUser.Id
+                UserId = this.CurrentUser.Id,
+                Args = this.BuildArgs()
             });
 
             return this.Ok();

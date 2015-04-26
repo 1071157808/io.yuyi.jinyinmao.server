@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  11:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:34 PM
+// Last Modified On : 2015-04-27  12:54 AM
 // ***********************************************************************
 // <copyright file="OrderMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
         internal OrderMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.OrderIdentifier);
 
             // Properties
             this.Property(t => t.OrderIdentifier)
@@ -64,7 +64,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("Orders");
-            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.OrderIdentifier).HasColumnName("OrderIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.OrderTime).HasColumnName("OrderTime");

@@ -20,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
         internal JBYTranscationMap()
         {
             // Primary Key
-            this.HasKey(t => t.Id);
+            this.HasKey(t => t.TranscationIdentifier);
 
             // Properties
             this.Property(t => t.TranscationIdentifier)
@@ -57,7 +57,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("JBYTranscations");
-            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.TranscationIdentifier).HasColumnName("TranscationIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.TradeCode).HasColumnName("TradeCode");
