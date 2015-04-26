@@ -25,7 +25,6 @@ namespace Yuyi.Jinyinmao.Domain
     using Orleans;
     using Orleans.Runtime;
     using Yuyi.Jinyinmao.Domain.Dtos;
-    using Yuyi.Jinyinmao.Domain.Dto;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -822,10 +821,22 @@ namespace Yuyi.Jinyinmao.Domain
                 return UserMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult> Yuyi.Jinyinmao.Domain.IUser.CheckPasswordAsync(string @loginName, string @password)
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.AddBankCardAsync(Yuyi.Jinyinmao.Domain.Commands.AddBankCard @command)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult>(-1723407494, new object[] {@loginName, @password} );
+                return base.InvokeMethodAsync<object>(955492027, new object[] {@command} );
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.AddBankCardAsync(Yuyi.Jinyinmao.Domain.Commands.AddBankCard @command, bool @result)
+            {
+
+                return base.InvokeMethodAsync<object>(647271184, new object[] {@command, @result} );
+            }
+            
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult> Yuyi.Jinyinmao.Domain.IUser.CheckPasswordAsync(string @loginName, string @password)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult>(-1723407494, new object[] {@loginName, @password} );
             }
             
             System.Threading.Tasks.Task<bool> Yuyi.Jinyinmao.Domain.IUser.CheckPasswordAsync(string @password)
@@ -890,6 +901,10 @@ namespace Yuyi.Jinyinmao.Domain
                     case 829520060:  // IUser
                         switch (methodId)
                         {
+                            case 955492027: 
+                                return ((IUser)grain).AddBankCardAsync((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 647271184: 
+                                return ((IUser)grain).AddBankCardAsync((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)arguments[0], (Boolean)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1723407494: 
                                 return ((IUser)grain).CheckPasswordAsync((String)arguments[0], (String)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1446235673: 
@@ -928,7 +943,11 @@ namespace Yuyi.Jinyinmao.Domain
                 case 829520060:  // IUser
                     switch (methodId)
                     {
-                        case -1723407494:
+                        case 955492027:
+                            return "AddBankCardAsync";
+                    case 647271184:
+                            return "AddBankCardAsync";
+                    case -1723407494:
                             return "CheckPasswordAsync";
                     case 1446235673:
                             return "CheckPasswordAsync";
@@ -943,169 +962,6 @@ namespace Yuyi.Jinyinmao.Domain
                     case 2116538135:
                             return "SetPaymentPasswordAsync";
                     
-                        default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                    }
-
-                default:
-                    throw new System.InvalidCastException("interfaceId="+interfaceId);
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    public class UserCellphoneManagerFactory
-    {
-        
-
-                        public static Yuyi.Jinyinmao.Domain.IUserCellphoneManager GetGrain(long primaryKey)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUserCellphoneManager), 1917601304, primaryKey));
-                        }
-
-                        public static Yuyi.Jinyinmao.Domain.IUserCellphoneManager GetGrain(long primaryKey, string grainClassNamePrefix)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUserCellphoneManager), 1917601304, primaryKey, grainClassNamePrefix));
-                        }
-
-                        public static Yuyi.Jinyinmao.Domain.IUserCellphoneManager GetGrain(System.Guid primaryKey)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUserCellphoneManager), 1917601304, primaryKey));
-                        }
-
-                        public static Yuyi.Jinyinmao.Domain.IUserCellphoneManager GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
-                        {
-                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.IUserCellphoneManager), 1917601304, primaryKey, grainClassNamePrefix));
-                        }
-
-            public static Yuyi.Jinyinmao.Domain.IUserCellphoneManager Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return UserCellphoneManagerReference.Cast(grainRef);
-            }
-        
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-        [System.SerializableAttribute()]
-        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IUserCellphoneManager")]
-        internal class UserCellphoneManagerReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.IUserCellphoneManager
-        {
-            
-
-            public static Yuyi.Jinyinmao.Domain.IUserCellphoneManager Cast(global::Orleans.Runtime.IAddressable grainRef)
-            {
-                
-                return (Yuyi.Jinyinmao.Domain.IUserCellphoneManager) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.IUserCellphoneManager), (global::Orleans.Runtime.GrainReference gr) => { return new UserCellphoneManagerReference(gr);}, grainRef, 1917601304);
-            }
-            
-            protected internal UserCellphoneManagerReference(global::Orleans.Runtime.GrainReference reference) : 
-                    base(reference)
-            {
-            }
-            
-            protected internal UserCellphoneManagerReference(SerializationInfo info, StreamingContext context) : 
-                    base(info, context)
-            {
-            }
-            
-            protected override int InterfaceId
-            {
-                get
-                {
-                    return 1917601304;
-                }
-            }
-            
-            public override string InterfaceName
-            {
-                get
-                {
-                    return "Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IUserCellphoneManager";
-                }
-            }
-            
-            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-            public static object _Copier(object original)
-            {
-                UserCellphoneManagerReference input = ((UserCellphoneManagerReference)(original));
-                return ((UserCellphoneManagerReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
-            }
-            
-            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-            {
-                UserCellphoneManagerReference input = ((UserCellphoneManagerReference)(original));
-                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
-            }
-            
-            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-            {
-                return UserCellphoneManagerReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
-            }
-            
-            public override bool IsCompatible(int interfaceId)
-            {
-                return (interfaceId == this.InterfaceId);
-            }
-            
-            protected override string GetMethodName(int interfaceId, int methodId)
-            {
-                return UserCellphoneManagerMethodInvoker.GetMethodName(interfaceId, methodId);
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.IUserCellphoneManager", 1917601304)]
-    internal class UserCellphoneManagerMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
-    {
-        
-        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
-        {
-            get
-            {
-                return 1917601304;
-            }
-        }
-        
-        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
-        {
-
-            try
-            {                    if (grain == null) throw new System.ArgumentNullException("grain");
-                switch (interfaceId)
-                {
-                    case 1917601304:  // IUserCellphoneManager
-                        switch (methodId)
-                        {
-                            default: 
-                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
-                        }
-                    default:
-                        throw new System.InvalidCastException("interfaceId="+interfaceId);
-                }
-            }
-            catch(Exception ex)
-            {
-                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
-                t.SetException(ex);
-                return t.Task;
-            }
-        }
-        
-        public static string GetMethodName(int interfaceId, int methodId)
-        {
-
-            switch (interfaceId)
-            {
-                
-                case 1917601304:  // IUserCellphoneManager
-                    switch (methodId)
-                    {
-                        
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                     }
@@ -1289,6 +1145,219 @@ namespace Yuyi.Jinyinmao.Domain
         }
     }
 }
+namespace Yuyi.Jinyinmao.Domain.Sagas
+{
+    using System;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.IO;
+    using System.Collections.Generic;
+    using Yuyi.Jinyinmao.Domain;
+    using Orleans;
+    using Orleans.Runtime;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class AddBankCardSagaFactory
+    {
+        
+
+                        public static Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga GetGrain(long primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga), -834139397, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga GetGrain(long primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga), -834139397, primaryKey, grainClassNamePrefix));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga GetGrain(System.Guid primaryKey)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga), -834139397, primaryKey));
+                        }
+
+                        public static Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga GetGrain(System.Guid primaryKey, string grainClassNamePrefix)
+                        {
+                            return Cast(global::Orleans.CodeGeneration.GrainFactoryBase.MakeGrainReferenceInternal(typeof(Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga), -834139397, primaryKey, grainClassNamePrefix));
+                        }
+
+            public static Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return AddBankCardSagaReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [global::Orleans.CodeGeneration.GrainReferenceAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga")]
+        internal class AddBankCardSagaReference : global::Orleans.Runtime.GrainReference, global::Orleans.Runtime.IAddressable, Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga
+        {
+            
+
+            public static Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga Cast(global::Orleans.Runtime.IAddressable grainRef)
+            {
+                
+                return (Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga) global::Orleans.Runtime.GrainReference.CastInternal(typeof(Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga), (global::Orleans.Runtime.GrainReference gr) => { return new AddBankCardSagaReference(gr);}, grainRef, -834139397);
+            }
+            
+            protected internal AddBankCardSagaReference(global::Orleans.Runtime.GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            protected internal AddBankCardSagaReference(SerializationInfo info, StreamingContext context) : 
+                    base(info, context)
+            {
+            }
+            
+            protected override int InterfaceId
+            {
+                get
+                {
+                    return -834139397;
+                }
+            }
+            
+            public override string InterfaceName
+            {
+                get
+                {
+                    return "Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga";
+                }
+            }
+            
+            [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                AddBankCardSagaReference input = ((AddBankCardSagaReference)(original));
+                return ((AddBankCardSagaReference)(global::Orleans.Runtime.GrainReference.CopyGrainReference(input)));
+            }
+            
+            [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+            public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                AddBankCardSagaReference input = ((AddBankCardSagaReference)(original));
+                global::Orleans.Runtime.GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return AddBankCardSagaReference.Cast(((global::Orleans.Runtime.GrainReference)(global::Orleans.Runtime.GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public override bool IsCompatible(int interfaceId)
+            {
+                return ((interfaceId == this.InterfaceId) 
+                            || (interfaceId == 1013315129));
+            }
+            
+            protected override string GetMethodName(int interfaceId, int methodId)
+            {
+                return AddBankCardSagaMethodInvoker.GetMethodName(interfaceId, methodId);
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga.BeginProcessAsync(Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto @initData)
+            {
+
+                return base.InvokeMethodAsync<object>(-524088215, new object[] {@initData} );
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ISaga.ProcessAsync()
+            {
+
+                return base.InvokeMethodAsync<object>(1442573781, new object[] {} );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.MethodInvokerAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.IAddBankCardSaga", -834139397)]
+    internal class AddBankCardSagaMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        
+        int global::Orleans.CodeGeneration.IGrainMethodInvoker.InterfaceId
+        {
+            get
+            {
+                return -834139397;
+            }
+        }
+        
+        global::System.Threading.Tasks.Task<object> global::Orleans.CodeGeneration.IGrainMethodInvoker.Invoke(global::Orleans.Runtime.IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+
+            try
+            {                    if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case -834139397:  // IAddBankCardSaga
+                        switch (methodId)
+                        {
+                            case -524088215: 
+                                return ((IAddBankCardSaga)grain).BeginProcessAsync((Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 1442573781: 
+                                return ((IAddBankCardSaga)grain).ProcessAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }case 1013315129:  // ISaga
+                        switch (methodId)
+                        {
+                            case 1442573781: 
+                                return ((ISaga)grain).ProcessAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+            }
+            catch(Exception ex)
+            {
+                var t = new System.Threading.Tasks.TaskCompletionSource<object>();
+                t.SetException(ex);
+                return t.Task;
+            }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case -834139397:  // IAddBankCardSaga
+                    switch (methodId)
+                    {
+                        case -524088215:
+                            return "BeginProcessAsync";
+                    case 1442573781:
+                            return "ProcessAsync";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+                case 1013315129:  // ISaga
+                    switch (methodId)
+                    {
+                        case 1442573781:
+                            return "ProcessAsync";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+}
 namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
 {
     using System;
@@ -1296,9 +1365,8 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     using System.Reflection;
     using Orleans.Serialization;
     using Yuyi.Jinyinmao.Domain.Dtos;
-    using Yuyi.Jinyinmao.Domain.Dto;
-    using Yuyi.Jinyinmao.Domain;
     using Yuyi.Jinyinmao.Domain.Commands;
+    using Yuyi.Jinyinmao.Domain;
     using Yuyi.Jinyinmao.Domain.Events;
     using System.Collections;
     using System.Runtime.InteropServices;
@@ -1417,18 +1485,69 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
-    internal class Yuyi_Jinyinmao_Domain_Dto_CheckPasswordResultSerialization
+    internal class Yuyi_Jinyinmao_Domain_Commands_AddBankCardSerialization
     {
         
-        static Yuyi_Jinyinmao_Domain_Dto_CheckPasswordResultSerialization()
+        static Yuyi_Jinyinmao_Domain_Commands_AddBankCardSerialization()
         {
             Register();
         }
         
         public static object DeepCopier(object original)
         {
-            Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult input = ((Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult)(original));
-            Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult result = new Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult();
+            Yuyi.Jinyinmao.Domain.Commands.AddBankCard input = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(original));
+            Yuyi.Jinyinmao.Domain.Commands.AddBankCard result = new Yuyi.Jinyinmao.Domain.Commands.AddBankCard();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.BankCardNo = input.BankCardNo;
+            result.BankName = input.BankName;
+            result.CityName = input.CityName;
+            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.AddBankCard input = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.BankCardNo, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.BankName, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CityName, stream, typeof(string));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.AddBankCard result = new Yuyi.Jinyinmao.Domain.Commands.AddBankCard();
+            result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.CityName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.AddBankCard), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Dtos_CheckPasswordResultSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Dtos_CheckPasswordResultSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult input = ((Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult result = new Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult();
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
             result.Cellphone = input.Cellphone;
             result.ErrorCount = input.ErrorCount;
@@ -1440,7 +1559,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult input = ((Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult)(untypedInput));
+            Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult input = ((Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.ErrorCount, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Success, stream, typeof(bool));
@@ -1450,7 +1569,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult result = new Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult();
+            Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult result = new Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult();
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.ErrorCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.Success = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
@@ -1461,7 +1580,7 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         
         public static void Register()
         {
-            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dto.CheckPasswordResult), DeepCopier, Serializer, Deserializer);
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult), DeepCopier, Serializer, Deserializer);
         }
     }
     
@@ -1729,6 +1848,48 @@ namespace Yuyi.Jinyinmao.Domain.User.InterfaceSerializers
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Events.UserRegistered), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Dtos_AddBankCardSageInitDtoSerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Dtos_AddBankCardSageInitDtoSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto input = ((Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto result = new Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Command = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Command)));
+            result.UserInfo = input.UserInfo;
+            return result;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto input = ((Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Command, stream, typeof(Yuyi.Jinyinmao.Domain.Commands.AddBankCard));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto result = new Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto();
+            result.Command = ((Yuyi.Jinyinmao.Domain.Commands.AddBankCard)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Commands.AddBankCard), stream)));
+            result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.AddBankCardSageInitDto), DeepCopier, Serializer, Deserializer);
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Yuyi.Jinyinmao.Api.Properties {
+namespace Yuyi.Jinyinmao {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Yuyi.Jinyinmao.Api.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Yuyi.Jinyinmao.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,27 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败!如非本人操作，请致电4008556333.
+        /// </summary>
+        public static string Sms_AddBankCardFailed {
+            get {
+                return ResourceManager.GetString("Sms_AddBankCardFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功!现在即可开始购买。如非本人操作，请致电4008556333.
+        /// </summary>
+        public static string Sms_AddBankCardSuccessed {
+            get {
+                return ResourceManager.GetString("Sms_AddBankCardSuccessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 恭喜您成功注册金银猫！如非本人操作，请致电4008556333.
         /// </summary>
-        internal static string Sms_SignUpSuccessful {
+        public static string Sms_SignUpSuccessful {
             get {
                 return ResourceManager.GetString("Sms_SignUpSuccessful", resourceCulture);
             }
@@ -72,7 +90,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
-        internal static string Sms_VeriCode {
+        public static string Sms_VeriCode {
             get {
                 return ResourceManager.GetString("Sms_VeriCode", resourceCulture);
             }
@@ -81,7 +99,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
-        internal static string Sms_VeriCode_ResetLoginPawword {
+        public static string Sms_VeriCode_ResetLoginPawword {
             get {
                 return ResourceManager.GetString("Sms_VeriCode_ResetLoginPawword", resourceCulture);
             }
@@ -90,7 +108,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
-        internal static string Sms_VeriCode_ResetPaymentPawword {
+        public static string Sms_VeriCode_ResetPaymentPawword {
             get {
                 return ResourceManager.GetString("Sms_VeriCode_ResetPaymentPawword", resourceCulture);
             }
@@ -99,7 +117,7 @@ namespace Yuyi.Jinyinmao.Api.Properties {
         /// <summary>
         ///   Looks up a localized string similar to 您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
         /// </summary>
-        internal static string Sms_VeriCode_SignUp {
+        public static string Sms_VeriCode_SignUp {
             get {
                 return ResourceManager.GetString("Sms_VeriCode_SignUp", resourceCulture);
             }

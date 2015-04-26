@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http;
+using System.Web.Http.Tracing;
 using Moe.AspNet.Utility;
 using Newtonsoft.Json;
 
@@ -32,6 +33,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     The current user
         /// </summary>
         private CurrentUser currentUser;
+
+        /// <summary>
+        /// Gets the trace.
+        /// </summary>
+        /// <value>The trace.</value>
+        public ITraceWriter Trace
+        {
+            get { return this.Configuration.Services.GetTraceWriter(); }
+        }
 
         /// <summary>
         ///     Gets the current user.

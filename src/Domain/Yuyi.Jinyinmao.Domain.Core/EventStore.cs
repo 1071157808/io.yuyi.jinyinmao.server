@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  4:45 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  5:46 PM
+// Last Modified On : 2015-04-26  6:47 PM
 // ***********************************************************************
 // <copyright file="EventStore.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
 using Orleans;
@@ -25,6 +26,15 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public class EventStore : Dictionary<Guid, string>, IEventStore
     {
+        /// <summary>
+        ///     Gets the error logger.
+        /// </summary>
+        /// <value>The error logger.</value>
+        public IEventProcessingLogger ErrorLogger
+        {
+            get { return new EventProcessingLogger(); }
+        }
+
         #region IEventStore Members
 
         /// <summary>
@@ -50,7 +60,19 @@ namespace Yuyi.Jinyinmao.Domain
             record.PartitionKey = this.EntityId.ToGuidString();
             record.RowKey = record.EventId.ToGuidString();
 
-            SiloClusterConfig.EventStoreTable.ExecuteAsync(TableOperation.Insert(record));
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    TopicClient client = TopicClient.CreateFromConnectionString(SiloClusterConfig.ServiceBusConnectiongString, record.Event.GetType().Name.ToUnderScope());
+                    await client.SendAsync(new BrokeredMessage(record));
+                    await SiloClusterConfig.EventStoreTable.ExecuteAsync(TableOperation.Insert(record));
+                }
+                catch (Exception e)
+                {
+                    this.ErrorLogger.LogError(record.EventId, record.Event, e.Message, e);
+                }
+            });
 
             return TaskDone.Done;
         }

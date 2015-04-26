@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  11:23 PM
+// Last Modified On : 2015-04-26  7:22 PM
 // ***********************************************************************
 // <copyright file="IUserState.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -26,6 +26,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The arguments.</value>
         string Args { get; set; }
+
+        /// <summary>
+        ///     绑定的银行卡
+        /// </summary>
+        List<BankCard> BankCards { get; set; }
 
         /// <summary>
         ///     用户手机号码
@@ -83,7 +88,7 @@ namespace Yuyi.Jinyinmao.Domain
         string OutletCode { get; set; }
 
         /// <summary>
-        /// 支付密码加密盐
+        ///     支付密码加密盐
         /// </summary>
         string PaymentSalt { get; set; }
 

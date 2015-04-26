@@ -76,9 +76,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\MoeEnsure.2.0.1.0\lib\net45\MoeEnsure.dll</HintPath>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MoeLib, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeLib.2.0.3.0\lib\net45\MoeLib.dll</HintPath>
+      <HintPath>..\..\packages\MoeLib.2.0.4.0\lib\net45\MoeLib.dll</HintPath>
     </Reference>
     <Reference Include="MoeThrow, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,9 +88,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+    <Reference Include="NLog, Version=3.2.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\packages\NLog.3.2.1\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="ReflectionMagic">
       <HintPath>..\..\packages\ReflectionMagic.2.1.0\lib\net40\ReflectionMagic.dll</HintPath>

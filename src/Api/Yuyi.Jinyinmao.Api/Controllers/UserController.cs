@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  12:18 PM
+// Last Modified On : 2015-04-26  11:02 PM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -16,13 +16,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models.User;
-using Yuyi.Jinyinmao.Api.Properties;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
@@ -38,20 +38,66 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     public class UserController : ApiControllerBase
     {
         private readonly ISmsService smsService;
+        private readonly IUserInfoService userInfoService;
         private readonly IUserService userService;
         private readonly IVeriCodeService veriCodeService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserController" /> class.
         /// </summary>
-        /// <param name="veriCodeService">The veri code service.</param>
-        /// <param name="userService">The user service.</param>
         /// <param name="smsService">The SMS service.</param>
-        public UserController(IVeriCodeService veriCodeService, IUserService userService, ISmsService smsService)
+        /// <param name="userInfoService">The user information service.</param>
+        /// <param name="userService">The user service.</param>
+        /// <param name="veriCodeService">The veri code service.</param>
+        public UserController(ISmsService smsService, IUserInfoService userInfoService, IUserService userService, IVeriCodeService veriCodeService)
         {
-            this.veriCodeService = veriCodeService;
-            this.userService = userService;
             this.smsService = smsService;
+            this.userInfoService = userInfoService;
+            this.userService = userService;
+            this.veriCodeService = veriCodeService;
+        }
+
+        /// <summary>
+        ///     添加新银行卡
+        /// </summary>
+        /// <remarks>
+        ///     该接口只适合已经绑定过实名信息的用户添加新银行卡
+        /// </remarks>
+        /// <param name="request">
+        ///     添加银行卡请求
+        /// </param>
+        /// <response code="200">成功</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">UABC1:无法添加银行卡</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="500"></response>
+        [Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> AddBankCard(AddBankCardRequest request)
+        {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (userInfo == null)
+            {
+                this.Trace.Warn(this.Request, "Application", "User-AddBankCard: Can not load user date.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UABC1:无法添加银行卡");
+            }
+
+            if (!userInfo.Verified)
+            {
+                return this.BadRequest("UABC2:请先进行实名认证");
+            }
+
+            await this.userService.AddBankCardAsync(new AddBankCard
+            {
+                BankCardNo = request.BankCardNo,
+                BankName = request.BankName,
+                CityName = request.CityName,
+                CommandId = Guid.NewGuid(),
+                UserId = this.CurrentUser.Id
+            });
+            return this.Ok();
         }
 
         /// <summary>
@@ -283,10 +329,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             // 自动登陆
             this.SetCookie(userInfo.UserId, userInfo.Cellphone);
-
-#pragma warning disable 4014
-            this.smsService.SendMessageAsync(userInfo.Cellphone, Resources.Sms_SignUpSuccessful);
-#pragma warning restore 4014
 
             return this.Ok(userInfo.ToSignUpResponse());
         }

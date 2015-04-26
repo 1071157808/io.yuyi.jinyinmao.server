@@ -22,44 +22,14 @@ namespace Yuyi.Jinyinmao.Service.Interface
     /// <summary>
     ///     Interface IUserService
     /// </summary>
-    public interface IUserService
+    public interface IUserService : IUserInfoService
     {
         /// <summary>
-        ///     Checks the cellphone asynchronous.
+        /// Adds the bank card asynchronous.
         /// </summary>
-        /// <param name="cellphone">The cellphone.</param>
-        /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
-        Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone);
-
-        /// <summary>
-        ///     Checks the password asynchronous.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <param name="password">The password.</param>
-        /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        Task<bool> CheckPasswordAsync(Guid userId, string password);
-
-        /// <summary>
-        ///     Checks the password asynchronous.
-        /// </summary>
-        /// <param name="cellphone">The cellphone.</param>
-        /// <param name="password">The password.</param>
-        /// <returns>Task&lt;SignInResult&gt;.</returns>
-        Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password);
-
-        /// <summary>
-        ///     Gets the sign up user identifier information asynchronous.
-        /// </summary>
-        /// <param name="cellphone">The cellphone.</param>
-        /// <returns>Task&lt;SignUpUserIdInfo&gt;.</returns>
-        Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone);
-
-        /// <summary>
-        /// Gets the user information asynchronous.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns>Task&lt;UserInfo&gt;.</returns>
-        Task<UserInfo> GetUserInfoAsync(Guid userId);
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        Task AddBankCardAsync(AddBankCard command);
 
         /// <summary>
         ///     Registers the user asynchronous.

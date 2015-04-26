@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  10:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  12:53 AM
+// Last Modified On : 2015-04-26  11:04 PM
 // ***********************************************************************
 // <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -18,6 +18,8 @@ using Moe.Lib;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Models;
+using Yuyi.Jinyinmao.Service.Interface;
+using Yuyi.Jinyinmao.Services;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -26,6 +28,8 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public class UserRegisteredProcessor : IUserRegisteredProcessor
     {
+        private readonly ISmsService smsService = new SmsService();
+
         /// <summary>
         ///     Gets the error logger.
         /// </summary>
@@ -44,6 +48,18 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task ProcessEventAsync(UserRegistered @event)
         {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await this.smsService.SendMessageAsync(@event.Cellphone, Resources.Sms_SignUpSuccessful);
+                }
+                catch (Exception e)
+                {
+                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
+                }
+            });
+
             Task.Factory.StartNew(async () =>
             {
                 try

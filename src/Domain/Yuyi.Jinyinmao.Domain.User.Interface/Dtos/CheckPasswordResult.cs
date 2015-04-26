@@ -4,7 +4,7 @@
 // Created          : 2015-04-25  1:02 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  1:04 AM
+// Last Modified On : 2015-04-26  1:37 AM
 // ***********************************************************************
 // <copyright file="CheckPasswordResult.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,7 @@
 
 using System;
 
-namespace Yuyi.Jinyinmao.Domain.Dto
+namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
     ///     CheckPasswordResult.

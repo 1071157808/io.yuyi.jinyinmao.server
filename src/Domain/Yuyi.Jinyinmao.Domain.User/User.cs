@@ -13,15 +13,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
-using Yuyi.Jinyinmao.Domain.Dto;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Helper;
+using Yuyi.Jinyinmao.Domain.Sagas;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -31,6 +32,25 @@ namespace Yuyi.Jinyinmao.Domain
     [StorageProvider(ProviderName = "SqlDatabase")]
     public class User : EntityGrain<IUserState>, IUser
     {
+        private Dictionary<string, BankCard> BankCards { get; set; }
+
+        /// <summary>
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
+        /// </summary>
+        public override Task OnActivateAsync()
+        {
+            this.ReloadBankCardsData();
+            return base.OnActivateAsync();
+        }
+
+        private void ReloadBankCardsData()
+        {
+            this.BankCards = this.State.BankCards.Where(c => !c.IsRemoved).ToDictionary(
+                            c => c.BankCardNo);
+        }
+
         /// <summary>
         ///     Gets or sets the error count.
         /// </summary>
@@ -38,6 +58,60 @@ namespace Yuyi.Jinyinmao.Domain
         public int ErrorCount { get; set; }
 
         #region IUser Members
+
+        /// <summary>
+        /// Adds the bank card.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public async Task AddBankCardAsync(AddBankCard command)
+        {
+            if (!this.State.Verified)
+            {
+                return;
+            }
+
+            if (this.BankCards.ContainsKey(command.BankCardNo))
+            {
+                return;
+            }
+
+            IAddBankCardSaga saga = AddBankCardSagaFactory.GetGrain(Guid.NewGuid());
+            await saga.BeginProcessAsync(new AddBankCardSageInitDto
+            {
+                Command = command,
+                UserInfo = await this.GetUserInfoAsync()
+            });
+
+            await this.StoreCommandAsync(command);
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
+        ///     Adds the bank card asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <returns>Task.</returns>
+        public async Task AddBankCardAsync(AddBankCard command, bool result)
+        {
+            if (result)
+            {
+                this.State.BankCards.Where(c => c.BankCardNo == command.BankCardNo).ForEach(
+                    c =>
+                    {
+                        c.Verified = true;
+                        c.VerifiedByYilian = true;
+                        c.VerifiedTime = DateTime.Now;
+                    });
+            }
+            else
+            {
+                this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == command.BankCardNo);
+            }
+
+            await this.State.WriteStateAsync();
+        }
 
         /// <summary>
         ///     Checks the password asynchronous.

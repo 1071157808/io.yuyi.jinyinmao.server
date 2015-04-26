@@ -64,9 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\MoeEntityFramework.2.0.1.0\lib\net45\MoeEntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MoeLib, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeLib.2.0.3.0\lib\net45\MoeLib.dll</HintPath>
+      <HintPath>..\..\packages\MoeLib.2.0.4.0\lib\net45\MoeLib.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  10:03 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  7:08 PM
+// Last Modified On : 2015-04-26  1:11 AM
 // ***********************************************************************
 // <copyright file="NinjectConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -88,6 +88,8 @@ namespace Yuyi.Jinyinmao.Api
             kernel.Bind<ISmsService>().To<SmsService>().InSingletonScope();
             kernel.Bind<IVeriCodeService>().To<VeriCodeService>().InSingletonScope();
             kernel.Bind<IUserService>().To<UserService>().InSingletonScope();
+            kernel.Bind<IUserInfoService>().To<UserInfoService>().InSingletonScope()
+                .WithConstructorArgument<IUserInfoService>(new UserService());
         }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  12:05 PM
+// Last Modified On : 2015-04-26  12:44 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,9 +13,9 @@
 
 using System;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
-using Yuyi.Jinyinmao.Domain.Dto;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
@@ -28,6 +28,17 @@ namespace Yuyi.Jinyinmao.Service
     public class UserService : IUserService
     {
         #region IUserService Members
+
+        /// <summary>
+        /// Adds the bank card asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public Task AddBankCardAsync(AddBankCard command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.AddBankCardAsync(command);
+        }
 
         /// <summary>
         ///     Checks the cellphone asynchronous.
@@ -101,10 +112,11 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
-        public Task<UserInfo> GetUserInfoAsync(Guid userId)
+        public async Task<UserInfo> GetUserInfoAsync(Guid userId)
         {
             IUser user = UserFactory.GetGrain(userId);
-            return user.GetUserInfoAsync();
+            UserInfo info = await user.GetUserInfoAsync();
+            return info.Cellphone.IsNullOrEmpty() ? null : info;
         }
 
         /// <summary>

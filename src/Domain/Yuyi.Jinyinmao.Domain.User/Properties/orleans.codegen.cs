@@ -266,6 +266,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @Args { get; set; }
 
+            public List<BankCard> @BankCards { get; set; }
+
             public String @Cellphone { get; set; }
 
             public Int64 @ClientType { get; set; }
@@ -310,6 +312,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("Args", out value)) @Args = (String) value;
+                if (values.TryGetValue("BankCards", out value)) @BankCards = (List<BankCard>) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
                 if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("ContractId", out value)) @ContractId = value is Int32 ? (Int32)value : (Int64)value;
@@ -332,7 +335,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} EventStore={1} Id={2} Args={3} Cellphone={4} ClientType={5} ContractId={6} Credential={7} CredentialNo={8} EncryptedPassword={9} EncryptedPaymentPassword={10} InviteBy={11} JBYAccount={12} LoginNames={13} OutletCode={14} PaymentSalt={15} RealName={16} RegisterTime={17} Salt={18} SettlementAccount={19} Verified={20} VerifiedTime={21} )", @CommandStore, @EventStore, @Id, @Args, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettlementAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( CommandStore={0} EventStore={1} Id={2} Args={3} BankCards={4} Cellphone={5} ClientType={6} ContractId={7} Credential={8} CredentialNo={9} EncryptedPassword={10} EncryptedPaymentPassword={11} InviteBy={12} JBYAccount={13} LoginNames={14} OutletCode={15} PaymentSalt={16} RealName={17} RegisterTime={18} Salt={19} SettlementAccount={20} Verified={21} VerifiedTime={22} )", @CommandStore, @EventStore, @Id, @Args, @BankCards, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettlementAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -348,6 +351,7 @@ namespace Yuyi.Jinyinmao.Domain
             result["EventStore"] = this.EventStore;
             result["Id"] = this.Id;
             result["Args"] = this.Args;
+            result["BankCards"] = this.BankCards;
             result["Cellphone"] = this.Cellphone;
             result["ClientType"] = this.ClientType;
             result["ContractId"] = this.ContractId;
@@ -375,6 +379,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.EventStore = default(IEventStore);
             this.Id = default(Guid);
             this.Args = default(String);
+            this.BankCards = new List<BankCard>();
             this.Cellphone = default(String);
             this.ClientType = default(Int64);
             this.ContractId = default(Int64);
@@ -413,6 +418,91 @@ namespace Yuyi.Jinyinmao.Domain
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             UserState result = new UserState();
+            result.DeserializeFrom(stream);
+            return result;
+        }
+    }
+}
+namespace Yuyi.Jinyinmao.Domain.Sagas
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Collections;
+    using Yuyi.Jinyinmao.Domain.Dtos;
+    using Orleans.CodeGeneration;
+    using Orleans;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [SerializableAttribute()]
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.AddBankCardSaga")]
+    public class AddBankCardSagaState : global::Orleans.CodeGeneration.GrainState, IAddBankCardSagaState
+    {
+        
+
+            public Guid @SagaId { get; set; }
+
+            public String @SagaType { get; set; }
+
+            public AddBankCardSageInitDto @InitData { get; set; }
+
+            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
+            {   
+                object value;
+                if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
+                if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
+                if (values.TryGetValue("InitData", out value)) @InitData = (AddBankCardSageInitDto) value;
+            }
+
+            public override System.String ToString()
+            {
+                return System.String.Format("AddBankCardSagaState( SagaId={0} SagaType={1} InitData={2} )", @SagaId, @SagaType, @InitData);
+            }
+        
+        public AddBankCardSagaState() : 
+                base("Yuyi.Jinyinmao.Domain.Sagas.AddBankCardSaga")
+        {
+            this.InitStateFields();
+        }
+        
+        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
+        {
+            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["SagaId"] = this.SagaId;
+            result["SagaType"] = this.SagaType;
+            result["InitData"] = this.InitData;
+            return result;
+        }
+        
+        private void InitStateFields()
+        {
+            this.SagaId = default(Guid);
+            this.SagaType = default(String);
+            this.InitData = new AddBankCardSageInitDto();
+        }
+        
+        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+        public static object _Copier(object original)
+        {
+            AddBankCardSagaState input = ((AddBankCardSagaState)(original));
+            return input.DeepCopy();
+        }
+        
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            AddBankCardSagaState input = ((AddBankCardSagaState)(original));
+            input.SerializeTo(stream);
+        }
+        
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            AddBankCardSagaState result = new AddBankCardSagaState();
             result.DeserializeFrom(stream);
             return result;
         }
