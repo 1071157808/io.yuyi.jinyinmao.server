@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  1:08 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  1:13 AM
+// Last Modified On : 2015-04-28  12:45 PM
 // ***********************************************************************
 // <copyright file="SmsChannel.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -27,20 +27,17 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         /// <summary>
         ///     助通验证码
         /// </summary>
-        [Description("助通验证码")]
-        ZTYanZhengMa = 100001,
+        [Description("验证码")] YanZhengMa = 100001,
 
         /// <summary>
         ///     助通通知
         /// </summary>
-        [Description("助通通知")]
-        ZTTongZhi = 100002,
+        [Description("通知")] TongZhi = 100002,
 
         /// <summary>
         ///     助通营销
         /// </summary>
-        [Description("助通营销")]
-        ZTYingXiao = 100003
+        [Description("营销")] YingXiao = 100003
     }
 
     internal static class SmsChannelEnumHelper

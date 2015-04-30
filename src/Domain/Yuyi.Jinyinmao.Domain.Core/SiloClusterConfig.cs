@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  4:13 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  7:28 PM
+// Last Modified On : 2015-04-30  1:25 AM
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -31,12 +32,18 @@ namespace Yuyi.Jinyinmao.Domain
             string storageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
             CloudStorageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
-            CloudTableClient client = CloudStorageAccount.CreateCloudTableClient();
-            client.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
-            CommandStoreTable = CloudStorageAccount.CreateCloudTableClient().GetTableReference("CommandStore");
-            SagasTable = CloudStorageAccount.CreateCloudTableClient().GetTableReference("Sagas");
-            EventProcessingErrorsTable = CloudStorageAccount.CreateCloudTableClient().GetTableReference("EventProcessingErrors");
-            EventStoreTable = CloudStorageAccount.CreateCloudTableClient().GetTableReference("EventStore");
+            CloudTableClient tableClient = CloudStorageAccount.CreateCloudTableClient();
+            tableClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
+            CommandStoreTable = tableClient.GetTableReference("CommandStore");
+            SagasTable = tableClient.GetTableReference("Sagas");
+            EventProcessingErrorsTable = tableClient.GetTableReference("EventProcessingErrors");
+            EventStoreTable = tableClient.GetTableReference("EventStore");
+            ProductCacheTable = tableClient.GetTableReference("ProductCache");
+
+            CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
+            blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
+            PublicFileContainer = blobClient.GetContainerReference("PublicFiles");
+            PrivateFileContainer = blobClient.GetContainerReference("PrivateFiles");
 
             ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
         }
@@ -67,7 +74,25 @@ namespace Yuyi.Jinyinmao.Domain
         public static CloudTable EventStoreTable { get; private set; }
 
         /// <summary>
-        /// Gets or sets the sagas table.
+        ///     Gets the private file container.
+        /// </summary>
+        /// <value>The private file container.</value>
+        public static CloudBlobContainer PrivateFileContainer { get; private set; }
+
+        /// <summary>
+        ///     Gets the product cache table.
+        /// </summary>
+        /// <value>The product cache table.</value>
+        public static CloudTable ProductCacheTable { get; private set; }
+
+        /// <summary>
+        ///     Gets the public file container.
+        /// </summary>
+        /// <value>The public file container.</value>
+        public static CloudBlobContainer PublicFileContainer { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the sagas table.
         /// </summary>
         /// <value>The sagas table.</value>
         public static CloudTable SagasTable { get; private set; }
@@ -91,6 +116,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// </exception>
         public static void CheckConfig()
         {
+            //TODO: finish this
+
             if (CloudStorageAccount.CreateCloudTableClient().GetTableReference("CommandStore") == null)
             {
                 throw new ApplicationException("Can not connect to Command Store");

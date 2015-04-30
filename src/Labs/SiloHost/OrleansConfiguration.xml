@@ -5,7 +5,7 @@
       <!--<Provider Type="Orleans.Storage.MemoryStorage" Name="MemoryStore" />-->
       <!-- To use Azure storage, uncomment one of the following lines: -->
       <!--<Provider Type="Orleans.Storage.AzureTableStorage" Name="AzureStore" DataConnectionString="UseDevelopmentStorage=true" />-->
-      <Provider Type="Orleans.Storage.AzureTableStorage" Name="AzureStore" UseJsonFormat="true" DataConnectionString="DefaultEndpointsProtocol=https;AccountName=orleans;AccountKey=6q+xLqxmc9BwvHlWgWjSGcU9zNKepyYzlTAfue73WGjqdB3fX9JzD/UozRxQ0hkxceQEOohpVUL9ocV/rceZFw==;TableEndpoint=https://orleans.table.core.chinacloudapi.cn/;" />
+      <Provider Type="Orleans.Storage.AzureTableStorage" Name="AzureStore" UseJsonFormat="true" DataConnectionString="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11112" />
     <SystemStore  ServiceId="42783519-d64e-44c9-9c29-399e3afaa999" />

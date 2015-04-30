@@ -83,8 +83,8 @@ namespace Yuyi.Jinyinmao.Domain
         {
             this.SagaEntity = new SagaEntity
             {
-                BeginTime = DateTime.Now,
-                UpdateTime = DateTime.Now,
+                BeginTime = DateTime.UtcNow.AddHours(8),
+                UpdateTime = DateTime.UtcNow.AddHours(8),
                 Info = new Dictionary<string, object>(),
                 InitData = new Object().ToJson(),
                 Message = string.Empty,

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:33 PM
+// Last Modified On : 2015-04-30  5:16 AM
 // ***********************************************************************
 // <copyright file="BankCardMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,12 +15,18 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
-    internal class BankCardMap : EntityTypeConfiguration<BankCard>
+    /// <summary>
+    ///     BankCardMap.
+    /// </summary>
+    public class BankCardMap : EntityTypeConfiguration<BankCard>
     {
-        internal BankCardMap()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="BankCardMap" /> class.
+        /// </summary>
+        public BankCardMap()
         {
             // Primary Key
-            this.HasKey(t => t.BankCardNo);
+            this.HasKey(t => t.Id);
 
             // Properties
             this.Property(t => t.UserIdentifier)
@@ -47,12 +53,12 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             // Table & Column Mappings
             this.ToTable("BankCards");
+            this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.BankCardNo).HasColumnName("BankCardNo");
             this.Property(t => t.BankName).HasColumnName("BankName");
             this.Property(t => t.CityName).HasColumnName("CityName");
             this.Property(t => t.IsDefault).HasColumnName("IsDefault");
-            this.Property(t => t.Verified).HasColumnName("Verified");
             this.Property(t => t.VerifiedTime).HasColumnName("VerifiedTime");
             this.Property(t => t.Info).HasColumnName("Info");
             this.Property(t => t.Args).HasColumnName("Args");

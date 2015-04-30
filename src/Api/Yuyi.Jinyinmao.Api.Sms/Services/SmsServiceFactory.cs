@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  1:04 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  11:57 AM
+// Last Modified On : 2015-04-28  12:45 PM
 // ***********************************************************************
 // <copyright file="SmsServiceFactory.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -27,13 +27,13 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         {
             switch (channel)
             {
-                case SmsChannel.ZTYanZhengMa:
+                case SmsChannel.YanZhengMa:
                     return new ZTSmsService(0);
 
-                case SmsChannel.ZTTongZhi:
+                case SmsChannel.TongZhi:
                     return new ZTSmsService(1);
 
-                case SmsChannel.ZTYingXiao:
+                case SmsChannel.YingXiao:
                     return new ZTSmsService(2);
 
                 default:

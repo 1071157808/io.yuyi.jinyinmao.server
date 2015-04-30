@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:32 PM
+// Last Modified On : 2015-04-29  5:43 PM
 // ***********************************************************************
 // <copyright file="AccountTranscationMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,9 +15,15 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
-    internal class AccountTranscationMap : EntityTypeConfiguration<AccountTranscation>
+    /// <summary>
+    ///     AccountTranscationMap.
+    /// </summary>
+    public class AccountTranscationMap : EntityTypeConfiguration<AccountTranscation>
     {
-        internal AccountTranscationMap()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AccountTranscationMap" /> class.
+        /// </summary>
+        public AccountTranscationMap()
         {
             // Primary Key
             this.HasKey(t => t.TranscationIdentifier);

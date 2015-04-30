@@ -33,27 +33,18 @@
   <!-- Items for the project -->
   <ItemGroup>
     <ServiceDefinition Include="ServiceDefinition.csdef" />
-    <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Profiles" />
+    <Folder Include="Yuyi.Jinyinmao.Api-CloudContent\" />
     <Folder Include="Yuyi.Jinyinmao.SilosContent\" />
   </ItemGroup>
   <ItemGroup>
     <PublishProfile Include="Profiles\cn-com-jinyinmao-dev-silosProduction.azurePubxml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Yuyi.Jinyinmao.Silos\Yuyi.Jinyinmao.Silos.csproj">
-      <Name>Yuyi.Jinyinmao.Silos</Name>
-      <Project>{73dad571-ca84-422a-80f8-5c08e7a96d27}</Project>
-      <Private>True</Private>
-      <RoleType>Worker</RoleType>
-      <RoleName>Yuyi.Jinyinmao.Silos</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.Api-CloudContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.SilosContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->

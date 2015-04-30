@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:54 AM
+// Last Modified On : 2015-04-29  6:28 PM
 // ***********************************************************************
 // <copyright file="OrderMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,15 +15,25 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
-    internal class OrderMap : EntityTypeConfiguration<Order>
+    /// <summary>
+    ///     OrderMap.
+    /// </summary>
+    public class OrderMap : EntityTypeConfiguration<Order>
     {
-        internal OrderMap()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="OrderMap" /> class.
+        /// </summary>
+        public OrderMap()
         {
             // Primary Key
             this.HasKey(t => t.OrderIdentifier);
 
             // Properties
             this.Property(t => t.OrderIdentifier)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.AccountTranscationIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -65,12 +75,12 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             // Table & Column Mappings
             this.ToTable("Orders");
             this.Property(t => t.OrderIdentifier).HasColumnName("OrderIdentifier");
+            this.Property(t => t.AccountTranscationIdentifier).HasColumnName("AccountTranscationIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.OrderTime).HasColumnName("OrderTime");
             this.Property(t => t.OrderNo).HasColumnName("OrderNo");
             this.Property(t => t.ProductIdentifier).HasColumnName("ProductIdentifier");
             this.Property(t => t.ProductSnapshot).HasColumnName("ProductSnapshot");
-            this.Property(t => t.ShareCount).HasColumnName("ShareCount");
             this.Property(t => t.Principal).HasColumnName("Principal");
             this.Property(t => t.Yield).HasColumnName("Yield");
             this.Property(t => t.ExtraYield).HasColumnName("ExtraYield");

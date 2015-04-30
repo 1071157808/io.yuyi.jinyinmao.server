@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:41 PM
+// Last Modified On : 2015-04-29  6:28 PM
 // ***********************************************************************
 // <copyright file="BankCard.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -45,6 +45,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string CityName { get; set; }
 
         /// <summary>
+        ///     Gets or sets the identifier.
+        /// </summary>
+        /// <value>The identifier.</value>
+        public int Id { get; set; }
+
+        /// <summary>
         ///     Gets or sets the information.
         /// </summary>
         /// <value>The information.</value>
@@ -61,12 +67,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this <see cref="BankCard" /> is verified.
-        /// </summary>
-        /// <value><c>true</c> if verified; otherwise, <c>false</c>.</value>
-        public bool Verified { get; set; }
 
         /// <summary>
         ///     Gets or sets the verified time.

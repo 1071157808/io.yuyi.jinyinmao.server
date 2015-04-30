@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  12:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  12:58 AM
+// Last Modified On : 2015-04-28  12:00 PM
 // ***********************************************************************
 // <copyright file="IUserInfoService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
@@ -45,6 +46,21 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="password">The password.</param>
         /// <returns>Task&lt;SignInResult&gt;.</returns>
         Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password);
+
+        /// <summary>
+        ///     Gets the bank card information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
+        Task<BankCardInfo> GetBankCardInfoAsync(Guid userId, string bankCardNo);
+
+        /// <summary>
+        ///     Gets the bank card infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
+        Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId);
 
         /// <summary>
         ///     Gets the sign up user identifier information asynchronous.

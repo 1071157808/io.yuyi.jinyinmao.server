@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  1:30 PM
+// Last Modified On : 2015-04-28  12:42 PM
 // ***********************************************************************
 // <copyright file="ZTSmsService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -56,15 +56,15 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         {
             if (priority == 0)
             {
-                productId = "676767";
+                this.productId = "676767";
             }
             else if (priority == 1)
             {
-                productId = "48661";
+                this.productId = "48661";
             }
             else
             {
-                productId = "251503";
+                this.productId = "251503";
             }
         }
 
@@ -83,11 +83,12 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         /// <summary>
         ///     Sends the message asynchronous.
         /// </summary>
+        /// <param name="appId"></param>
         /// <param name="cellphones">The cellphones.</param>
         /// <param name="message">The message.</param>
         /// <param name="signature">The signature.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public async Task SendMessageAsync(string cellphones, string message, string signature)
+        public async Task SendMessageAsync(string appId, string cellphones, string message, string signature)
         {
             string responseMessage = "";
             try
@@ -95,7 +96,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
                 using (HttpClient client = new HttpClient())
                 {
                     HttpResponseMessage response = await client.GetAsync(sendMessageUrl + messageTemplate.FormatWith(
-                        userName, password, cellphones, message, signature, productId));
+                        userName, password, cellphones, message, signature, this.productId));
                     responseMessage = await response.Content.ReadAsStringAsync();
                 }
             }
@@ -109,13 +110,14 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
                 CloudTableClient client = storageAccount.CreateCloudTableClient();
                 client.GetTableReference("ApiSms").Execute(TableOperation.Insert(new SmsMessage
                 {
+                    AppId = appId,
                     Cellphones = cellphones,
                     Message = message,
-                    Notes = productId,
+                    Notes = this.productId,
                     PartitionKey = "api.sms.data.messages",
                     RowKey = Guid.NewGuid().ToString("N"),
                     Response = responseMessage,
-                    Time = DateTime.Now
+                    Time = DateTime.UtcNow.AddHours(8)
                 }));
             }
 

@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  1:41 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  2:01 AM
+// Last Modified On : 2015-04-29  1:30 PM
 // ***********************************************************************
 // <copyright file="SequenceNoUtils.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Packages
             DateTime currentTime;
             lock (lockObject)
             {
-                currentTime = DateTime.Now;
+                currentTime = DateTime.UtcNow.AddHours(8);
             }
 
             int year = currentTime.Year - 2013;

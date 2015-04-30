@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  12:55 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  2:57 PM
+// Last Modified On : 2015-04-28  12:41 PM
 // ***********************************************************************
 // <copyright file="SmsController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -81,7 +81,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Controllers
         public async Task<IHttpActionResult> SendMessage(SmsMessageRequest request)
         {
             ISmsService service = SmsServiceFactory.GetSmsService(request.Channel);
-            await service.SendMessageAsync(request.Cellphones, request.Message, request.Signature);
+            await service.SendMessageAsync(this.User.Identity.Name, request.Cellphones, request.Message, request.Signature);
 
             return this.Ok();
         }

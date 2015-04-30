@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  12:03 PM
+// Last Modified On : 2015-04-30  12:10 AM
 // ***********************************************************************
 // <copyright file="ChannelBalance.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -25,13 +25,13 @@ namespace Yuyi.Jinyinmao.Api.Sms.Models
         /// <summary>
         ///     余额
         /// </summary>
-        [Required, JsonProperty(PropertyName = "balance")]
+        [Required, JsonProperty("balance")]
         public int Balance { get; set; }
 
         /// <summary>
         ///     是否支付余额查询
         /// </summary>
-        [Required, JsonProperty(PropertyName = "supportBalanceQuery")]
+        [Required, JsonProperty("supportBalanceQuery")]
         public bool SupportBalanceQuery { get; set; }
     }
 }

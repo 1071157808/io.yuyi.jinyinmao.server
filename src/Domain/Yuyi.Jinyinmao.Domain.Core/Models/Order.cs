@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:44 PM
+// Last Modified On : 2015-04-30  2:17 AM
 // ***********************************************************************
 // <copyright file="Order.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,6 +20,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
     /// </summary>
     public class Order
     {
+        /// <summary>
+        ///     Gets or sets the account transcation identifier.
+        /// </summary>
+        /// <value>The account transcation identifier.</value>
+        public string AccountTranscationIdentifier { get; set; }
+
         /// <summary>
         ///     Gets or sets the agreements information.
         /// </summary>
@@ -90,7 +96,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the principal.
         /// </summary>
         /// <value>The principal.</value>
-        public decimal Principal { get; set; }
+        public int Principal { get; set; }
 
         /// <summary>
         ///     Gets or sets the product identifier.
@@ -108,7 +114,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the repaid time.
         /// </summary>
         /// <value>The repaid time.</value>
-        public Nullable<DateTime> RepaidTime { get; set; }
+        public DateTime? RepaidTime { get; set; }
 
         /// <summary>
         ///     Gets or sets the result code.
@@ -120,19 +126,13 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the result time.
         /// </summary>
         /// <value>The result time.</value>
-        public Nullable<DateTime> ResultTime { get; set; }
+        public DateTime? ResultTime { get; set; }
 
         /// <summary>
         ///     Gets or sets the settle date.
         /// </summary>
         /// <value>The settle date.</value>
         public DateTime SettleDate { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the share count.
-        /// </summary>
-        /// <value>The share count.</value>
-        public int ShareCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the trans desc.

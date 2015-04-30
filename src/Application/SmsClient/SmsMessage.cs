@@ -20,25 +20,25 @@ namespace SmsClient
         /// <summary>
         ///     手机号，多个号码以,分隔，这里不会验证手机号的格式是否正确
         /// </summary>
-        [JsonProperty(PropertyName = "cellphones")]
+        [JsonProperty("cellphones")]
         public string Cellphones { get; set; }
 
         /// <summary>
         ///     短信通道
         /// </summary>
-        [JsonProperty(PropertyName = "channel")]
+        [JsonProperty("channel")]
         public string Channel { get; set; }
 
         /// <summary>
         ///     短信内容
         /// </summary>
-        [JsonProperty(PropertyName = "message")]
+        [JsonProperty("message")]
         public string Message { get; set; }
 
         /// <summary>
         ///     短信签名
         /// </summary>
-        [JsonProperty(PropertyName = "signature")]
+        [JsonProperty("signature")]
         public string Signature { get; set; }
     }
 }

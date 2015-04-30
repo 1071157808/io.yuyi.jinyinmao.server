@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:54 AM
+// Last Modified On : 2015-04-30  3:56 AM
 // ***********************************************************************
 // <copyright file="RegularProductMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,9 +15,15 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
-    internal class RegularProductMap : EntityTypeConfiguration<RegularProduct>
+    /// <summary>
+    ///     RegularProductMap.
+    /// </summary>
+    public class RegularProductMap : EntityTypeConfiguration<RegularProduct>
     {
-        internal RegularProductMap()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RegularProductMap" /> class.
+        /// </summary>
+        public RegularProductMap()
         {
             // Primary Key
             this.HasKey(t => t.ProductIdentifier);
@@ -51,11 +57,9 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.IssueNo).HasColumnName("IssueNo");
             this.Property(t => t.PledgeNo).HasColumnName("PledgeNo");
             this.Property(t => t.Yield).HasColumnName("Yield");
-            this.Property(t => t.FinancingSumCount).HasColumnName("FinancingSumCount");
-            this.Property(t => t.MaxShareCount).HasColumnName("MaxShareCount");
-            this.Property(t => t.MinShareCount).HasColumnName("MinShareCount");
+            this.Property(t => t.FinancingSumAmount).HasColumnName("FinancingSumAmount");
             this.Property(t => t.UnitPrice).HasColumnName("UnitPrice");
-            this.Property(t => t.LaunchTime).HasColumnName("LaunchTime");
+            this.Property(t => t.IssueTime).HasColumnName("IssueTime");
             this.Property(t => t.StartSellTime).HasColumnName("StartSellTime");
             this.Property(t => t.EndSellTime).HasColumnName("EndSellTime");
             this.Property(t => t.SoldOut).HasColumnName("SoldOut");

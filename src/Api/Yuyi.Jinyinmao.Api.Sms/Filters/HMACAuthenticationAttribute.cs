@@ -91,7 +91,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             {
                 string rawAuthzHeader = req.Headers.Authorization.Parameter;
 
-                string[] autherizationHeaderArray = GetAutherizationHeaderValues(rawAuthzHeader);
+                string[] autherizationHeaderArray = this.GetAutherizationHeaderValues(rawAuthzHeader);
 
                 if (autherizationHeaderArray != null)
                 {
@@ -100,7 +100,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
                     string nonce = autherizationHeaderArray[2];
                     string requestTimeStamp = autherizationHeaderArray[3];
 
-                    Task<bool> isValid = isValidRequest(req, APPId, incomingBase64Signature, nonce, requestTimeStamp);
+                    Task<bool> isValid = this.isValidRequest(req, APPId, incomingBase64Signature, nonce, requestTimeStamp);
 
                     if (isValid.Result)
                     {
@@ -161,7 +161,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
                 CloudTableClient client = storageAccount.CreateCloudTableClient();
 
                 IEnumerable<App> apps = client.GetTableReference("ApiSms").ExecuteQuery(query);
-                Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.Now).ToDictionary(app => app.AppId);
+                Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.AddHours(8)).ToDictionary(app => app.AppId);
                 allowedApps = tempAllowedApps;
             }
         }
@@ -212,7 +212,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
 
             App app = allowedApps[appId];
 
-            if (isReplayRequest(nonce, requestTimeStamp))
+            if (this.isReplayRequest(nonce, requestTimeStamp))
             {
                 return false;
             }
@@ -266,11 +266,11 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             /// <returns>Task&lt;HttpResponseMessage&gt;.</returns>
             public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
             {
-                HttpResponseMessage response = await next.ExecuteAsync(cancellationToken);
+                HttpResponseMessage response = await this.next.ExecuteAsync(cancellationToken);
 
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(authenticationScheme));
+                    response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.authenticationScheme));
                 }
 
                 return response;

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:42 PM
+// Last Modified On : 2015-04-29  5:41 PM
 // ***********************************************************************
 // <copyright file="JBYTranscation.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -20,6 +20,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
     /// </summary>
     public class JBYTranscation
     {
+        /// <summary>
+        ///     Gets or sets the account transcation identifier.
+        /// </summary>
+        /// <value>The account transcation identifier.</value>
+        public string AccountTranscationIdentifier { get; set; }
+
         /// <summary>
         ///     Gets or sets the agreements information.
         /// </summary>
@@ -60,7 +66,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the result time.
         /// </summary>
         /// <value>The result time.</value>
-        public DateTime? ResultTime { get; set; }
+        public Nullable<DateTime> ResultTime { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade code.

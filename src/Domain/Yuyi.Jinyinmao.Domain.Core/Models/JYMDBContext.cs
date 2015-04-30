@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:42 PM
+// Last Modified On : 2015-04-29  5:48 PM
 // ***********************************************************************
 // <copyright file="JYMDBContext.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -34,7 +34,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Initializes a new instance of the <see cref="JYMDBContext" /> class.
         /// </summary>
         public JYMDBContext()
-            : base("Name=cn.com.jinyinmao.db.front")
+            : base("Name=JYMDBContext")
         {
         }
 
@@ -51,6 +51,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public DbSet<BankCard> BankCards { get; set; }
 
         /// <summary>
+        ///     Gets or sets the jby configs.
+        /// </summary>
+        /// <value>The jby configs.</value>
+        public DbSet<JBYConfig> JBYConfigs { get; set; }
+
+        /// <summary>
         ///     Gets or sets the jby products.
         /// </summary>
         /// <value>The jby products.</value>
@@ -61,12 +67,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The jby transcations.</value>
         public DbSet<JBYTranscation> JBYTranscations { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the jby yields.
-        /// </summary>
-        /// <value>The jby yields.</value>
-        public DbSet<JBYYield> JBYYields { get; set; }
 
         /// <summary>
         ///     Gets or sets the orders.
@@ -100,9 +100,9 @@ namespace Yuyi.Jinyinmao.Domain.Models
         {
             modelBuilder.Configurations.Add(new AccountTranscationMap());
             modelBuilder.Configurations.Add(new BankCardMap());
+            modelBuilder.Configurations.Add(new JBYConfigMap());
             modelBuilder.Configurations.Add(new JBYProductMap());
             modelBuilder.Configurations.Add(new JBYTranscationMap());
-            modelBuilder.Configurations.Add(new JBYYieldMap());
             modelBuilder.Configurations.Add(new OrderMap());
             modelBuilder.Configurations.Add(new RegularProductMap());
             modelBuilder.Configurations.Add(new UserMap());

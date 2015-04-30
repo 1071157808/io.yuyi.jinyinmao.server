@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:34 PM
+// Last Modified On : 2015-04-29  5:45 PM
 // ***********************************************************************
 // <copyright file="JBYTranscationMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,15 +15,25 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
-    internal class JBYTranscationMap : EntityTypeConfiguration<JBYTranscation>
+    /// <summary>
+    ///     JBYTranscationMap.
+    /// </summary>
+    public class JBYTranscationMap : EntityTypeConfiguration<JBYTranscation>
     {
-        internal JBYTranscationMap()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="JBYTranscationMap" /> class.
+        /// </summary>
+        public JBYTranscationMap()
         {
             // Primary Key
             this.HasKey(t => t.TranscationIdentifier);
 
             // Properties
             this.Property(t => t.TranscationIdentifier)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.AccountTranscationIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -58,6 +68,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             // Table & Column Mappings
             this.ToTable("JBYTranscations");
             this.Property(t => t.TranscationIdentifier).HasColumnName("TranscationIdentifier");
+            this.Property(t => t.AccountTranscationIdentifier).HasColumnName("AccountTranscationIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.TradeCode).HasColumnName("TradeCode");
             this.Property(t => t.Amount).HasColumnName("Amount");

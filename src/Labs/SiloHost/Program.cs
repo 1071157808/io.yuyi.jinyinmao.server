@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-03-31  10:35 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-08  10:52 AM
+// Last Modified On : 2015-04-30  2:57 AM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.Threading;
 using GrainInterface;
 using Orleans;
-using Orleans.Runtime;
 using Yuyi.Jinyinmao.Domain;
 
 namespace SiloHosting
@@ -73,16 +72,6 @@ namespace SiloHosting
                 "e23a55af-217c-4d76-8221-c2b447bf04c8",
                 "2eef0ac5-540f-4421-b9a9-79d89400f7ab"
             };
-
-            var _g = GrainReference.FromKeyString("GrainReference=000000000000000001634664dffbd7b803ffffffe40e9884");
-            var _key1 = _g.GetPrimaryKey();
-            var _key2 = _g.GetPrimaryKeyLong();
-            Console.WriteLine(_key1.ToString() + _key2);
-
-            var g = GrainReference.FromKeyString("GrainReference=487ba0b15ad9274426989a1eb9e6e7a903ffffffe40e9884");
-            var key1 = g.GetPrimaryKey();
-            var key2 = g.GetPrimaryKeyLong();
-            Console.WriteLine(key1.ToString() + key2);
 
             var t0 = ManagerFactory.GetGrain(Guid.Parse("4ad92744-a0b1-487b-a9e7-e6b91e9a9821"));
             var t1 = ManagerFactory.GetGrain((int)GrainType.Cellphone * GrainTypeHelper.Trillion + 15800780728);

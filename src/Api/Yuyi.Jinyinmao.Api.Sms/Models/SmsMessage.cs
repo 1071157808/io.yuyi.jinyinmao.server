@@ -22,6 +22,11 @@ namespace Yuyi.Jinyinmao.Api.Sms.Models
     public class SmsMessage : TableEntity
     {
         /// <summary>
+        /// 应用Id
+        /// </summary>
+        public string AppId { get; set; }
+
+        /// <summary>
         ///     手机号，多个号码以,分隔，这里不会验证手机号的格式是否正确
         /// </summary>
         public string Cellphones { get; set; }

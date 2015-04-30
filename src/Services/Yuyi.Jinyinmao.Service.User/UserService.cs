@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain;
@@ -38,6 +39,17 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.AddBankCardAsync(command);
+        }
+
+        /// <summary>
+        /// Authenticatings the asynchronous.
+        /// </summary>
+        /// <param name="command">The apply for authentication.</param>
+        /// <returns>Task.</returns>
+        public Task AuthenticateAsync(Authenticate command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.AuthenticateAsync(command);
         }
 
         /// <summary>
@@ -91,6 +103,29 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the bank card information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
+        public Task<BankCardInfo> GetBankCardInfoAsync(Guid userId, string bankCardNo)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetBankCardInfoAsync(bankCardNo);
+        }
+
+        /// <summary>
+        /// Gets the bank card infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
+        public Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetBankCardInfosAsync();
+        }
+
+        /// <summary>
         ///     Gets the sign up user identifier information asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
@@ -139,6 +174,18 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.ResetLoginPasswordAsync(command);
+        }
+
+        /// <summary>
+        /// Sets the default bank card asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task.</returns>
+        public Task SetDefaultBankCardAsync(Guid userId, string bankCardNo)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.SetDefaultBankCardAsync(bankCardNo);
         }
 
         /// <summary>

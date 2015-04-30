@@ -4,7 +4,7 @@
 // Created          : 2015-04-27  12:10 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:11 AM
+// Last Modified On : 2015-04-27  4:06 PM
 // ***********************************************************************
 // <copyright file="Event.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -18,8 +18,16 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Event.
     /// </summary>
-    public class Event : IEvent
+    public abstract class Event : IEvent
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Event" /> class.
+        /// </summary>
+        protected Event()
+        {
+            this.EventId = Guid.NewGuid();
+        }
+
         /// <summary>
         ///     Gets or sets the arguments.
         /// </summary>

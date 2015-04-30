@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:42 PM
+// Last Modified On : 2015-04-29  6:21 PM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -45,22 +45,10 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public int IssueNo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the launch time.
+        ///     Gets or sets the issue time.
         /// </summary>
-        /// <value>The launch time.</value>
-        public DateTime LaunchTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the maximum share count.
-        /// </summary>
-        /// <value>The maximum share count.</value>
-        public int MaxShareCount { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the minimum share count.
-        /// </summary>
-        /// <value>The minimum share count.</value>
-        public int MinShareCount { get; set; }
+        /// <value>The issue time.</value>
+        public DateTime IssueTime { get; set; }
 
         /// <summary>
         ///     Gets or sets the product category.

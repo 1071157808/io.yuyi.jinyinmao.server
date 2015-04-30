@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  12:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  1:02 AM
+// Last Modified On : 2015-04-29  11:37 AM
 // ***********************************************************************
 // <copyright file="UserInfoService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
@@ -24,15 +25,15 @@ namespace Yuyi.Jinyinmao.Service
     /// </summary>
     public class UserInfoService : IUserInfoService
     {
-        private readonly IUserInfoService interService;
+        private readonly IUserService innerService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserInfoService" /> class.
         /// </summary>
-        /// <param name="interService">The inter service.</param>
-        public UserInfoService(IUserInfoService interService)
+        /// <param name="innerService">The inter service.</param>
+        public UserInfoService(IUserService innerService)
         {
-            this.interService = interService;
+            this.innerService = innerService;
         }
 
         #region IUserInfoService Members
@@ -44,7 +45,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
         public Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone)
         {
-            return this.interService.CheckCellphoneAsync(cellphone);
+            return this.innerService.CheckCellphoneAsync(cellphone);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
         public Task<bool> CheckPasswordAsync(Guid userId, string password)
         {
-            return this.interService.CheckPasswordAsync(userId, password);
+            return this.innerService.CheckPasswordAsync(userId, password);
         }
 
         /// <summary>
@@ -66,7 +67,28 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignInResult&gt;.</returns>
         public Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password)
         {
-            return this.interService.CheckPasswordViaCellphoneAsync(cellphone, password);
+            return this.innerService.CheckPasswordViaCellphoneAsync(cellphone, password);
+        }
+
+        /// <summary>
+        ///     Gets the bank card information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
+        public Task<BankCardInfo> GetBankCardInfoAsync(Guid userId, string bankCardNo)
+        {
+            return this.innerService.GetBankCardInfoAsync(userId, bankCardNo);
+        }
+
+        /// <summary>
+        ///     Gets the bank card infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
+        public Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId)
+        {
+            return this.innerService.GetBankCardInfosAsync(userId);
         }
 
         /// <summary>
@@ -76,7 +98,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignUpUserIdInfo&gt;.</returns>
         public Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone)
         {
-            return this.interService.GetSignUpUserIdInfoAsync(cellphone);
+            return this.innerService.GetSignUpUserIdInfoAsync(cellphone);
         }
 
         /// <summary>
@@ -86,7 +108,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public Task<UserInfo> GetUserInfoAsync(Guid userId)
         {
-            return this.interService.GetUserInfoAsync(userId);
+            return this.innerService.GetUserInfoAsync(userId);
         }
 
         #endregion IUserInfoService Members

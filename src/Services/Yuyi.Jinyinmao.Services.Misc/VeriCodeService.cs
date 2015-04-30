@@ -90,7 +90,7 @@ namespace Yuyi.Jinyinmao.Service
                     code.ErrorCount = 0;
                     code.Verified = false;
                     code.Used = false;
-                    code.BuildAt = DateTime.Now;
+                    code.BuildAt = DateTime.UtcNow.AddHours(8);
                 }
 
                 // 没有记录，重新生成
@@ -102,7 +102,7 @@ namespace Yuyi.Jinyinmao.Service
                         Token = Guid.NewGuid().ToGuidString(),
                         Code = veriCode,
                         ErrorCount = 0,
-                        BuildAt = DateTime.Now,
+                        BuildAt = DateTime.UtcNow.AddHours(8),
                         Times = 1,
                         Type = type,
                         Used = false,
@@ -133,7 +133,7 @@ namespace Yuyi.Jinyinmao.Service
             using (MiscContext context = new MiscContext())
             {
                 // 验证码的使用有效期为30分钟
-                DateTime availableTime = DateTime.Now.AddMinutes(-veriCodeValidityInMinute);
+                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-veriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
                     .FirstOrDefaultAsync(v => v.Token == token && v.Type == type && v.BuildAt >= availableTime);
 
@@ -162,7 +162,7 @@ namespace Yuyi.Jinyinmao.Service
             using (MiscContext context = new MiscContext())
             {
                 // 只取有效期内的验证码
-                DateTime availableTime = DateTime.Now.AddMinutes(-veriCodeValidityInMinute);
+                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-veriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
                     .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == type && v.BuildAt >= availableTime);
 

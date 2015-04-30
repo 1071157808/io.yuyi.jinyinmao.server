@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  11:18 PM
+// Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  11:35 PM
+// Last Modified On : 2015-04-29  5:46 PM
 // ***********************************************************************
 // <copyright file="VeriCodeMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,9 +15,15 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
-    internal class VeriCodeMap : EntityTypeConfiguration<VeriCode>
+    /// <summary>
+    ///     VeriCodeMap.
+    /// </summary>
+    public class VeriCodeMap : EntityTypeConfiguration<VeriCode>
     {
-        internal VeriCodeMap()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="VeriCodeMap" /> class.
+        /// </summary>
+        public VeriCodeMap()
         {
             // Primary Key
             this.HasKey(t => t.Id);

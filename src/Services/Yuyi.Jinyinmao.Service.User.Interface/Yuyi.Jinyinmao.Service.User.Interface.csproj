@@ -11,7 +11,7 @@
     <AssemblyName>Yuyi.Jinyinmao.Service.User.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>6c1598ca</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>7ac4ea5d</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -54,6 +54,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,9 +81,9 @@
       <Project>{5245A89C-FD02-404A-A0A3-C1B5F197E426}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.User.Interface\Yuyi.Jinyinmao.Domain.User.Interface.csproj">
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Interface\Yuyi.Jinyinmao.Domain.Interface.csproj">
       <Project>{596F9CB8-45FF-4D76-ACD6-037938ED5EEE}</Project>
-      <Name>Yuyi.Jinyinmao.Domain.User.Interface</Name>
+      <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +96,13 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
