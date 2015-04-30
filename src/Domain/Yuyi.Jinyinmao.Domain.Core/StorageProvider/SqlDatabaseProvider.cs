@@ -118,12 +118,12 @@ namespace Yuyi.Jinyinmao.Domain
                 using (IDbConnection db = new SqlConnection(this.connectionStringTemplate.FormatWith(0)))
                 {
                     // ReSharper disable once AccessToDisposedClosure
-                    await retryPolicy.ExecuteAsync(async () => await SqlMapper.QueryAsync<int>(db, "SELECT count(Id) FROM " + this.tableNameTemplate.FormatWith(0)));
+                    await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.QueryAsync<int>(db, "SELECT count(Id) FROM " + this.tableNameTemplate.FormatWith(0)));
                 }
             }
             catch (Exception e)
             {
-                Log.Error((int)ErrorCode.SqlDatabaseProvider_InitProvider, e.Message, e);
+                this.Log.Error((int)ErrorCode.SqlDatabaseProvider_InitProvider, e.Message, e);
             }
         }
 
@@ -139,8 +139,8 @@ namespace Yuyi.Jinyinmao.Domain
         {
             try
             {
-                string connectionString = GetConnectionString(grainReference);
-                string tableName = GetTableName(grainReference);
+                string connectionString = this.GetConnectionString(grainReference);
+                string tableName = this.GetTableName(grainReference);
                 GrainStateRecord record;
                 using (IDbConnection db = new SqlConnection(connectionString))
                 {
@@ -151,7 +151,7 @@ namespace Yuyi.Jinyinmao.Domain
 
                 if (record != null && record.Data.IsNotNullOrEmpty())
                 {
-                    object data = JsonConvert.DeserializeObject(record.Data, grainState.GetType(), settings);
+                    object data = JsonConvert.DeserializeObject(record.Data, grainState.GetType(), this.settings);
                     IDictionary<string, object> dict = ((IGrainState)data).AsDictionary();
                     grainState.SetAll(dict);
                     grainState.Etag = record.TimeStamp.ToString();
@@ -164,7 +164,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             catch (Exception e)
             {
-                Log.Error((int)ErrorCode.SqlDatabaseProvider_Read, "{0} : {1}".FormatWith(e.Message, grainReference.GetPrimaryKey().ToGuidString()), e);
+                this.Log.Error((int)ErrorCode.SqlDatabaseProvider_Read, "{0} : {1}".FormatWith(e.Message, grainReference.GetPrimaryKey().ToGuidString()), e);
                 throw;
             }
         }
@@ -187,10 +187,10 @@ namespace Yuyi.Jinyinmao.Domain
             try
             {
                 IDictionary<string, object> grainStateDictionary = grainState.AsDictionary();
-                string storedData = JsonConvert.SerializeObject(grainStateDictionary, settings);
+                string storedData = JsonConvert.SerializeObject(grainStateDictionary, this.settings);
                 string timeStamp = DateTime.UtcNow.Ticks.ToString();
-                string connectionString = GetConnectionString(grainReference);
-                string tableName = GetTableName(grainReference);
+                string connectionString = this.GetConnectionString(grainReference);
+                string tableName = this.GetTableName(grainReference);
 
                 // Grain use the long as its key
                 if (id.StartsWith("00000000") && !id.EndsWith("000000"))
@@ -240,7 +240,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             catch (Exception e)
             {
-                Log.Error((int)ErrorCode.SqlDatabaseProvider_Write, "{0} : {1}".FormatWith(e.Message, id), e);
+                this.Log.Error((int)ErrorCode.SqlDatabaseProvider_Write, "{0} : {1}".FormatWith(e.Message, id), e);
                 throw;
             }
         }
@@ -254,10 +254,10 @@ namespace Yuyi.Jinyinmao.Domain
         private void ConfigureJsonSerializerSettings(IProviderConfiguration config)
         {
             // By default, use automatic type name handling, simple assembly names, and no JSON formatting
-            settings = new JsonSerializerSettings();
-            settings.TypeNameHandling = TypeNameHandling.Auto;
-            settings.TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple;
-            settings.Formatting = Formatting.None;
+            this.settings = new JsonSerializerSettings();
+            this.settings.TypeNameHandling = TypeNameHandling.Auto;
+            this.settings.TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple;
+            this.settings.Formatting = Formatting.None;
 
             string propertie;
             if (config.Properties.TryGetValue("SerializeTypeNames", out propertie))
@@ -267,7 +267,7 @@ namespace Yuyi.Jinyinmao.Domain
                 bool.TryParse(serializeTypeNamesValue, out serializeTypeNames);
                 if (serializeTypeNames)
                 {
-                    settings.TypeNameHandling = TypeNameHandling.All;
+                    this.settings.TypeNameHandling = TypeNameHandling.All;
                 }
             }
 
@@ -278,7 +278,7 @@ namespace Yuyi.Jinyinmao.Domain
                 bool.TryParse(UseFullAssemblyNamesValue, out useFullAssemblyNames);
                 if (useFullAssemblyNames)
                 {
-                    settings.TypeNameAssemblyFormat = FormatterAssemblyStyle.Full;
+                    this.settings.TypeNameAssemblyFormat = FormatterAssemblyStyle.Full;
                 }
             }
 
@@ -289,7 +289,7 @@ namespace Yuyi.Jinyinmao.Domain
                 bool.TryParse(indentJSONValue, out indentJSON);
                 if (indentJSON)
                 {
-                    settings.Formatting = Formatting.Indented;
+                    this.settings.Formatting = Formatting.Indented;
                 }
             }
         }

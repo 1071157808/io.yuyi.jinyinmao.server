@@ -41,7 +41,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
-        private static readonly string authenticationScheme = "jas";
+        private static readonly string AuthenticationScheme = "jas";
 
         private static readonly TableQuery<App> query = new TableQuery<App>().Where(TableQuery.GenerateFilterCondition("PartitionKey",
             QueryComparisons.Equal, "api.sms.config.appkeys"));
@@ -87,7 +87,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
 
             HttpRequestMessage req = context.Request;
 
-            if (req.Headers.Authorization != null && authenticationScheme.Equals(req.Headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
+            if (req.Headers.Authorization != null && AuthenticationScheme.Equals(req.Headers.Authorization.Scheme, StringComparison.OrdinalIgnoreCase))
             {
                 string rawAuthzHeader = req.Headers.Authorization.Parameter;
 

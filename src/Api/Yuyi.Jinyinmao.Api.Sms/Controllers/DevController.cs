@@ -36,21 +36,22 @@ namespace Yuyi.Jinyinmao.Api.Sms.Controllers
             return this.Ok(
                 new
                 {
-                    Request.RequestUri,
-                    Request.Headers,
-                    QueryParameters = Request.GetQueryNameValuePairs(),
-                    RequestProperties = Request.Properties.Keys,
-                    RequestContext.ClientCertificate,
-                    RequestContext.IsLocal,
-                    RequestContext.VirtualPathRoot,
+                    this.Request.RequestUri,
+                    this.Request.Headers,
+                    QueryParameters = this.Request.GetQueryNameValuePairs(),
+                    RequestProperties = this.Request.Properties.Keys,
+                    this.RequestContext.ClientCertificate,
+                    this.RequestContext.IsLocal,
+                    this.RequestContext.VirtualPathRoot,
                     HttpContext.Current.Request.Browser.Browser,
                     HttpContext.Current.Request.IsSecureConnection,
                     HttpContext.Current.Request.Browser.IsMobileDevice,
-                    UserHostAddress = HttpUtils.GetUserHostAddress(Request),
-                    UserAgent = HttpUtils.GetUserAgent(Request),
-                    Cookie = Request.Headers.GetCookies(),
-                    Request.Content,
-                    ConfigurationProperties = Configuration.Properties,
+                    IsFromMobileDevice = HttpUtils.IsFromMobileDevice(this.Request),
+                    UserHostAddress = HttpUtils.GetUserHostAddress(this.Request),
+                    UserAgent = HttpUtils.GetUserAgent(this.Request),
+                    Cookie = this.Request.Headers.GetCookies(),
+                    this.Request.Content,
+                    ConfigurationProperties = this.Configuration.Properties,
                     ServerIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString()
                 });
         }

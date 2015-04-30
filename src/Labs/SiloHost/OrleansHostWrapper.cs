@@ -23,21 +23,21 @@ namespace SiloHosting
 
         public OrleansHostWrapper(string[] args)
         {
-            ParseArguments(args);
-            Init();
+            this.ParseArguments(args);
+            this.Init();
         }
 
         public bool Debug
         {
-            get { return siloHost != null && siloHost.Debug; }
-            set { siloHost.Debug = value; }
+            get { return this.siloHost != null && this.siloHost.Debug; }
+            set { this.siloHost.Debug = value; }
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
         #endregion IDisposable Members
@@ -60,22 +60,22 @@ Where:
 
             try
             {
-                siloHost.InitializeOrleansSilo();
+                this.siloHost.InitializeOrleansSilo();
 
-                ok = siloHost.StartOrleansSilo();
+                ok = this.siloHost.StartOrleansSilo();
 
                 if (ok)
                 {
-                    Console.WriteLine("Successfully started Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type);
+                    Console.WriteLine("Successfully started Orleans silo '{0}' as a {1} node.", this.siloHost.Name, this.siloHost.Type);
                 }
                 else
                 {
-                    throw new SystemException(string.Format("Failed to start Orleans silo '{0}' as a {1} node.", siloHost.Name, siloHost.Type));
+                    throw new SystemException(string.Format("Failed to start Orleans silo '{0}' as a {1} node.", this.siloHost.Name, this.siloHost.Type));
                 }
             }
             catch (Exception exc)
             {
-                siloHost.ReportStartupError(exc);
+                this.siloHost.ReportStartupError(exc);
                 var msg = string.Format("{0}:\n{1}\n{2}", exc.GetType().FullName, exc.Message, exc.StackTrace);
                 Console.WriteLine(msg);
             }
@@ -89,13 +89,13 @@ Where:
 
             try
             {
-                siloHost.StopOrleansSilo();
+                this.siloHost.StopOrleansSilo();
 
-                Console.WriteLine("Orleans silo '{0}' shutdown.", siloHost.Name);
+                Console.WriteLine("Orleans silo '{0}' shutdown.", this.siloHost.Name);
             }
             catch (Exception exc)
             {
-                siloHost.ReportStartupError(exc);
+                this.siloHost.ReportStartupError(exc);
                 var msg = string.Format("{0}:\n{1}\n{2}", exc.GetType().FullName, exc.Message, exc.StackTrace);
                 Console.WriteLine(msg);
             }
@@ -105,13 +105,13 @@ Where:
 
         protected virtual void Dispose(bool dispose)
         {
-            siloHost.Dispose();
-            siloHost = null;
+            this.siloHost.Dispose();
+            this.siloHost = null;
         }
 
         private void Init()
         {
-            siloHost.LoadOrleansConfig();
+            this.siloHost.LoadOrleansConfig();
         }
 
         private bool ParseArguments(string[] args)
@@ -184,10 +184,10 @@ Where:
                 }
             }
 
-            siloHost = new SiloHost(siloName);
-            siloHost.ConfigFileName = configFileName;
+            this.siloHost = new SiloHost(siloName);
+            this.siloHost.ConfigFileName = configFileName;
             if (deploymentId != null)
-                siloHost.DeploymentId = deploymentId;
+                this.siloHost.DeploymentId = deploymentId;
 
             return true;
         }

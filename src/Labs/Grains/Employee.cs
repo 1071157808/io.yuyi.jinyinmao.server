@@ -27,12 +27,12 @@ namespace Grains
         public Task<int> GetLevel()
         {
             this.DeactivateOnIdle();
-            return Task.FromResult(State.Level);
+            return Task.FromResult(this.State.Level);
         }
 
         public Task<IManager> GetManager()
         {
-            return Task.FromResult(State.Manager);
+            return Task.FromResult(this.State.Manager);
         }
 
         public Task Greeting(IEmployee from, string message)
@@ -43,16 +43,16 @@ namespace Grains
 
         public Task Promote(int newLevel)
         {
-            State.Level = newLevel;
-            State.WriteStateAsync();
+            this.State.Level = newLevel;
+            this.State.WriteStateAsync();
             this.DeactivateOnIdle();
             return TaskDone.Done;
         }
 
         public Task SetManager(IManager manager)
         {
-            State.Manager = manager;
-            State.WriteStateAsync();
+            this.State.Manager = manager;
+            this.State.WriteStateAsync();
             return TaskDone.Done;
         }
 

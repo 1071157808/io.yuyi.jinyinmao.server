@@ -29,23 +29,23 @@ namespace Grains
 
         public Task AddDirectReport(IEmployee employee)
         {
-            State.Reports.Add(employee);
-            State.WriteStateAsync();
+            this.State.Reports.Add(employee);
+            this.State.WriteStateAsync();
             employee.SetManager(this);
-            employee.Greeting(me, "Welcome to my team!");
+            employee.Greeting(this.me, "Welcome to my team!");
             this.DeactivateOnIdle();
             return TaskDone.Done;
         }
 
         public Task<IEmployee> AsEmployee()
         {
-            State.WriteStateAsync();
+            this.State.WriteStateAsync();
             return Task.FromResult(this.me);
         }
 
         public Task<List<IEmployee>> GetDirectReports()
         {
-            return Task.FromResult(State.Reports);
+            return Task.FromResult(this.State.Reports);
         }
 
         #endregion IManager Members
