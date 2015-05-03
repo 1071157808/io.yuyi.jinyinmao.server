@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-04-28  11:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  7:22 PM
+// Last Modified On : 2015-05-04  12:49 AM
 // ***********************************************************************
 // <copyright file="IUserState.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -75,7 +75,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     金包银账户
         /// </summary>
-        IJBYAccount JBYAccount { get; set; }
+        List<Transcation> JBYAccount { get; set; }
 
         /// <summary>
         ///     登录名
@@ -110,7 +110,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     结算账户
         /// </summary>
-        ISettlementAccount SettlementAccount { get; set; }
+        List<Transcation> SettleAccount { get; set; }
 
         /// <summary>
         ///     是否通过实名认证

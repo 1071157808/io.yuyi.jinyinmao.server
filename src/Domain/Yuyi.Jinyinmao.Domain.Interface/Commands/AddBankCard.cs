@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  1:14 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:12 AM
+// Last Modified On : 2015-05-03  4:45 PM
 // ***********************************************************************
 // <copyright file="AddBankCard.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.

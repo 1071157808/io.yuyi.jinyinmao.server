@@ -37,10 +37,22 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string BankName { get; set; }
 
         /// <summary>
+        /// 是否可以用于易联充值
+        /// </summary>
+        [Required, JsonProperty("canBeUsedForYilian")]
+        public bool CanBeUsedForYilian { get; set; }
+
+        /// <summary>
         ///     是否是默认银行卡
         /// </summary>
         [Required, JsonProperty("isDefault")]
         public bool IsDefault { get; set; }
+
+        /// <summary>
+        /// 是否已经认证
+        /// </summary>
+        [Required, JsonProperty("verified")]
+        public bool Verified { get; set; }
 
         /// <summary>
         ///     认证时间
@@ -63,7 +75,9 @@ namespace Yuyi.Jinyinmao.Api.Models
             {
                 BankCardNo = info.BankCardNo,
                 BankName = info.BankName,
+                CanBeUsedForYilian = info.CanBeUsedForYilian,
                 IsDefault = info.IsDefault,
+                Verified = info.Verified,
                 VerifiedTime = info.VerifiedTime,
                 WithdrawAmount = info.WithdrawAmount
             };

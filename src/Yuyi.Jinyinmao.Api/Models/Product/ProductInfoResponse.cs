@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:14 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  12:44 AM
+// Last Modified On : 2015-05-03  3:08 PM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -25,16 +25,16 @@ namespace Yuyi.Jinyinmao.Api.Models
     public class RegularProductInfoResponse : IResponse
     {
         /// <summary>
-        ///     停售时间
+        ///     停售时间（北京时间）
         /// </summary>
         [Required, JsonProperty("endSellTime")]
         public DateTime EndSellTime { get; set; }
 
         /// <summary>
-        ///     募集总份数
+        ///     募集总金额，以“分”为单位
         /// </summary>
-        [Required, JsonProperty("financingSumCount")]
-        public int FinancingSumCount { get; set; }
+        [Required, JsonProperty("financingSumAmount")]
+        public int FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     额外内容，请参考其他文档
@@ -43,31 +43,31 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string Info { get; set; }
 
         /// <summary>
-        ///     发行编号
+        ///     发行编号，即期数，可以重复
         /// </summary>
         [Required, JsonProperty("issueNo")]
         public int IssueNo { get; set; }
 
         /// <summary>
-        ///     发行时间
+        ///     发行时间，即上线时间
         /// </summary>
         [Required, JsonProperty("issueTime")]
         public DateTime IssueTime { get; set; }
 
         /// <summary>
-        ///     质押物编号
+        ///     质押物编号，可以认为是票号、合同号等相关文件的编号
         /// </summary>
         [Required, JsonProperty("pledgeNo")]
         public string PledgeNo { get; set; }
 
         /// <summary>
-        ///     产品类别
+        ///     产品类别，详细分类参考文档
         /// </summary>
         [Required, JsonProperty("productCategory")]
         public long ProductCategory { get; set; }
 
         /// <summary>
-        ///     产品唯一标识
+        ///     产品唯一标识，应该为32位的guid形式的字符串
         /// </summary>
         [Required, JsonProperty("productIdentifier")]
         public string ProductIdentifier { get; set; }
@@ -79,7 +79,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string ProductName { get; set; }
 
         /// <summary>
-        ///     产品编号
+        ///     产品编号，产品的编号，区别于IssueNo
         /// </summary>
         [Required, JsonProperty("productNo")]
         public string ProductNo { get; set; }
@@ -145,7 +145,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int? ValueDateMode { get; set; }
 
         /// <summary>
-        ///     收益率
+        ///     收益率，以“万分之一”为单位
         /// </summary>
         [Required, JsonProperty("yield")]
         public decimal Yield { get; set; }
@@ -158,7 +158,7 @@ namespace Yuyi.Jinyinmao.Api.Models
             return new RegularProductInfoResponse
             {
                 EndSellTime = info.EndSellTime,
-                FinancingSumCount = info.FinancingSumAmount,
+                FinancingSumAmount = info.FinancingSumAmount,
                 Info = info.Info,
                 IssueNo = info.IssueNo,
                 IssueTime = info.IssueTime,

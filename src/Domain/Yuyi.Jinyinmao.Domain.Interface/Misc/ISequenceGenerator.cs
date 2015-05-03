@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-26  1:54 AM
+// Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  1:59 AM
+// Last Modified On : 2015-05-04  5:16 AM
 // ***********************************************************************
 // <copyright file="ISequenceGenerator.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.

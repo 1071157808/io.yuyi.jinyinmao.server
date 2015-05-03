@@ -26,7 +26,7 @@ namespace APIKeyGenarator
 
             using (var cryptoProvider = new RNGCryptoServiceProvider())
             {
-                byte[] secretKeyByteArray = new byte[32]; //256 bit
+                byte[] secretKeyByteArray = new byte[256]; //2048 bit
                 cryptoProvider.GetBytes(secretKeyByteArray);
                 APIKey = Convert.ToBase64String(secretKeyByteArray);
             }

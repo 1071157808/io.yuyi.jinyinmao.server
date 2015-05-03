@@ -12,7 +12,9 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Service.Interface
@@ -45,6 +47,23 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="productIdentifier">The product identifier.</param>
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         Task<RegularProductInfo> GetProductInfoAsync(string productNo, string productIdentifier);
+
+        /// <summary>
+        /// Gets the product infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="productCategory">The product category.</param>
+        /// <returns>Task&lt;PaginatedList&lt;RegularProductInfo&gt;&gt;.</returns>
+        Task<PaginatedList<RegularProductInfo>> GetProductInfosAsync(int pageIndex, int pageSize, long productCategory);
+
+        /// <summary>
+        /// Gets the top product infos asynchronous.
+        /// </summary>
+        /// <param name="number">The number.</param>
+        /// <param name="productCategory">The product category.</param>
+        /// <returns>Task&lt;List&lt;RegularProductInfo&gt;&gt;.</returns>
+        Task<IList<RegularProductInfo>> GetTopProductInfosAsync(int number, long productCategory);
 
         /// <summary>
         ///     Gets the product paid amount asynchronous.

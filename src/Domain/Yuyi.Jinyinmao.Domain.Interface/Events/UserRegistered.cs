@@ -4,7 +4,7 @@
 // Created          : 2015-04-20  1:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  11:26 PM
+// Last Modified On : 2015-05-03  6:00 PM
 // ***********************************************************************
 // <copyright file="UserRegistered.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -44,11 +44,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public string InviteBy { get; set; }
 
         /// <summary>
-        ///     金包银账户
-        /// </summary>
-        public Guid JBYAccountId { get; set; }
-
-        /// <summary>
         ///     登录名
         /// </summary>
         public List<string> LoginNames { get; set; }
@@ -62,11 +57,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     注册时间
         /// </summary>
         public DateTime RegisterTime { get; set; }
-
-        /// <summary>
-        ///     结算账户
-        /// </summary>
-        public Guid SettlementAccountId { get; set; }
 
         /// <summary>
         ///     用户编号

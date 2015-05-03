@@ -45,7 +45,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WindowsAzure.ServiceBus.2.6.5\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
+      <HintPath>..\..\packages\WindowsAzure.ServiceBus.2.6.6\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration">
@@ -82,14 +82,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DepositFromYilian.cs" />
     <Compile Include="Commands\IssueRegularProduct.cs" />
+    <Compile Include="Commands\RegularInvesting.cs" />
+    <Compile Include="Commands\Withdrawal.cs" />
+    <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
+    <Compile Include="Dtos\DepositFromYilianSagaInitDto.cs" />
     <Compile Include="Dtos\OrderInfo.cs" />
     <Compile Include="Dtos\RegularProductInfo.cs" />
+    <Compile Include="Dtos\SettleAccountInfo.cs" />
+    <Compile Include="Dtos\TranscationInfo.cs" />
+    <Compile Include="EventProcessor\IDepositFromYilianResultedProcessor.cs" />
+    <Compile Include="EventProcessor\IOrderBuiltProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductIssuedProcessor.cs" />
+    <Compile Include="EventProcessor\IWithdrawalResultedProcessor.cs" />
+    <Compile Include="Events\DepositFromYilianResulted.cs" />
+    <Compile Include="Events\OrderBuilt.cs" />
     <Compile Include="Events\RegularProductIssued.cs" />
+    <Compile Include="Events\WithdrawalResulted.cs" />
     <Compile Include="Misc\ISequenceGenerator.cs" />
+    <Compile Include="Order\Order.cs" />
     <Compile Include="Products\IRegularProduct.cs" />
     <Compile Include="Products\IRegularProductState.cs" />
+    <Compile Include="Sagas\IDepositByYilianSaga.cs" />
+    <Compile Include="Sagas\IDepositByYilianSagaState.cs" />
+    <Compile Include="Transcation\JBYAccount.cs" />
+    <Compile Include="Transcation\SettlementAccount.cs" />
     <Compile Include="Users\BankCard.cs" />
     <Compile Include="Commands\AddBankCard.cs" />
     <Compile Include="Commands\Authenticate.cs" />
@@ -107,8 +125,8 @@
     <Compile Include="EventProcessor\IAuthenticateResultedProcessor.cs" />
     <Compile Include="EventProcessor\IAddBankCardResultedProcessor.cs" />
     <Compile Include="EventProcessor\ILoginPasswordResetProcessor.cs" />
-    <Compile Include="EventProcessor\IPaymentPasswordReset.cs" />
-    <Compile Include="EventProcessor\IPaymentPasswordSet.cs" />
+    <Compile Include="EventProcessor\IPaymentPasswordResetProcessor.cs" />
+    <Compile Include="EventProcessor\IPaymentPasswordSetProcessor.cs" />
     <Compile Include="Events\AddBankCardResulted.cs" />
     <Compile Include="Events\AuthenticateResulted.cs" />
     <Compile Include="Events\LoginPasswordReset.cs" />
@@ -117,11 +135,6 @@
     <Compile Include="Events\UserRegistered.cs" />
     <Compile Include="Misc\ICellphone.cs" />
     <Compile Include="Misc\ICellphoneState.cs" />
-    <Compile Include="Transcation\IJBYAccount.cs" />
-    <Compile Include="Transcation\IJBYAccountState.cs" />
-    <Compile Include="Transcation\ISettlementAccount.cs" />
-    <Compile Include="Transcation\ISettlementAccountState.cs" />
-    <Compile Include="Transcation\ITransaction.cs" />
     <Compile Include="Users\IUser.cs" />
     <Compile Include="EventProcessor\IUserRegisteredProcessor.cs" />
     <Compile Include="Users\IUserState.cs" />
@@ -133,7 +146,7 @@
     <Compile Include="Sagas\IAuthenticateSaga.cs" />
     <Compile Include="Sagas\IAuthenticateSagaState.cs" />
     <Compile Include="Transcation\Trade.cs" />
-    <Compile Include="Transcation\TransactionInfo.cs" />
+    <Compile Include="Transcation\Transcation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

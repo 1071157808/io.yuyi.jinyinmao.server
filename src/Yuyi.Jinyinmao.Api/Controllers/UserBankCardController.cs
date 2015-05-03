@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  9:34 AM
+// Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-28  9:49 AM
+// Last Modified On : 2015-05-03  5:06 PM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -81,11 +81,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             await this.userService.AddBankCardAsync(new AddBankCard
             {
                 BankCardNo = request.BankCardNo,
-                BankName = request.BankName,
-                CityName = request.CityName,
+                BankName = request.BankCode,
                 UserId = this.CurrentUser.Id,
                 Args = this.BuildArgs()
             });
+
             return this.Ok();
         }
 

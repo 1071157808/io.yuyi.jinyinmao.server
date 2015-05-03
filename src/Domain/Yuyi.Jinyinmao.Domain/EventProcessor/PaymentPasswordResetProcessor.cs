@@ -18,7 +18,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
     /// <summary>
     ///     PaymentPasswordResetProcessor.
     /// </summary>
-    public class PaymentPasswordResetProcessor : EventProcessor<PaymentPasswordReset>, IPaymentPasswordReset
+    public class PaymentPasswordResetProcessor : EventProcessor<PaymentPasswordReset>, IPaymentPasswordResetProcessor
     {
     }
 }

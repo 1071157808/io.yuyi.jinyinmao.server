@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  2:17 AM
+// Last Modified On : 2015-05-04  5:16 AM
 // ***********************************************************************
 // <copyright file="Order.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -27,12 +27,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string AccountTranscationIdentifier { get; set; }
 
         /// <summary>
-        ///     Gets or sets the agreements information.
-        /// </summary>
-        /// <value>The agreements information.</value>
-        public string AgreementsInfo { get; set; }
-
-        /// <summary>
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
@@ -48,7 +42,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the extra interest.
         /// </summary>
         /// <value>The extra interest.</value>
-        public decimal ExtraInterest { get; set; }
+        public int ExtraInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the extra yield.
@@ -66,7 +60,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the interest.
         /// </summary>
         /// <value>The interest.</value>
-        public decimal Interest { get; set; }
+        public int Interest { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is repaid.
@@ -120,7 +114,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the result code.
         /// </summary>
         /// <value>The result code.</value>
-        public long ResultCode { get; set; }
+        public int ResultCode { get; set; }
 
         /// <summary>
         ///     Gets or sets the result time.

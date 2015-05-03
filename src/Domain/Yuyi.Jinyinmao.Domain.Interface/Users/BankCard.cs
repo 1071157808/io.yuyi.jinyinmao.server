@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-26  1:19 AM
+// Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  9:44 PM
+// Last Modified On : 2015-05-04  12:03 AM
 // ***********************************************************************
 // <copyright file="BankCard.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -65,7 +65,7 @@ namespace Yuyi.Jinyinmao.Domain
         public DateTime? VerifiedTime { get; set; }
 
         /// <summary>
-        /// 可提现额度
+        ///     可提现额度
         /// </summary>
         public int WithdrawAmount { get; set; }
     }

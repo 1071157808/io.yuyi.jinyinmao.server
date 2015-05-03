@@ -106,6 +106,10 @@
     <Compile Include="SmsService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Resources\Yuyi.Jinyinmao.Resources.csproj">
+      <Project>{E6B0BDA3-6554-4F1E-AF83-FD22C16B627E}</Project>
+      <Name>Yuyi.Jinyinmao.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
       <Project>{0e048dcc-f815-4d24-87b4-4210fd89e500}</Project>
       <Name>Yuyi.Jinyinmao.Service.Misc.Interface</Name>

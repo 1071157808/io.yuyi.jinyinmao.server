@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:11 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  5:13 AM
+// Last Modified On : 2015-05-03  3:17 PM
 // ***********************************************************************
 // <copyright file="RegularProductController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,6 +12,8 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -90,6 +92,42 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        ///     获取产品信息列表
+        /// </summary>
+        /// <remarks>
+        ///     每页数量为10个，页数从0开始。接口数据有有3分钟的缓存。
+        /// </remarks>
+        /// <param name="index">页码，从0开始，默认值为0</param>
+        /// <param name="category">产品分类，默认值为100000010，详细的产品分类参考文档 </param>
+        /// <response code="200"></response>
+        /// <response code="404">无该产品信息</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Page/{index:int=1:min(1)}/{category:long=100000010}"), ResponseType(typeof(IPaginatedList<RegularProductInfoResponse>))]
+        public async Task<IHttpActionResult> Page(int index = 1, long category = 100000010)
+        {
+            PaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, category);
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()));
+        }
+
+        /// <summary>
+        ///     获取优先展示的产品信息列表
+        /// </summary>
+        /// <remarks>
+        ///     接口数据有有3分钟的缓存。
+        /// </remarks>
+        /// <param name="number">数量，默认值为1</param>
+        /// <param name="category">产品分类，默认值为100000010，详细的产品分类参考文档 </param>
+        /// <response code="200"></response>
+        /// <response code="404">无该产品信息</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Index/{number:int=1:min(1)}/{category:long=100000010}"), ResponseType(typeof(IList<RegularProductInfoResponse>))]
+        public async Task<IHttpActionResult> Index(int number = 1, long category = 100000010)
+        {
+            IList<RegularProductInfo> infos = await this.productInfoService.GetTopProductInfosAsync(number, category);
+            return this.Ok(infos.Select(i => i.ToResponse()));
         }
 
         /// <summary>

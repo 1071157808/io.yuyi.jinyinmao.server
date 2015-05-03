@@ -63,6 +63,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId);
 
         /// <summary>
+        /// Gets the settle account information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
+        Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId);
+
+        /// <summary>
         ///     Gets the sign up user identifier information asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>

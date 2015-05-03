@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  6:28 PM
+// Last Modified On : 2015-05-03  6:56 PM
 // ***********************************************************************
 // <copyright file="AccountTranscation.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
-        public string Amount { get; set; }
+        public int Amount { get; set; }
 
         /// <summary>
         ///     Gets or sets the arguments.

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-21  10:43 PM
+// Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  10:45 PM
+// Last Modified On : 2015-05-03  5:51 PM
 // ***********************************************************************
 // <copyright file="Trade.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -26,11 +26,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The credit
         /// </summary>
-        Credit = 1,
-
-        /// <summary>
-        ///     The interest
-        /// </summary>
-        Interest = 2
+        Credit = 1
     }
 }

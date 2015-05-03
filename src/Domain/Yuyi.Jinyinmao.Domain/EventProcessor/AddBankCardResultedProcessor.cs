@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  6:42 PM
+// Last Modified On : 2015-05-03  10:34 PM
 // ***********************************************************************
 // <copyright file="AddBankCardResultedProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
                 try
                 {
                     string message = @event.Result ? Resources.Sms_AddBankCardSuccessed : Resources.Sms_AddBankCardFailed;
-                    await this.SmsService.SendMessageAsync(@event.Cellphone, message);
+                    await this.SmsService.SendMessageAsync(@event.Cellphone, message.FormatWith(@event.BankCardNo.GetLast(4)));
                 }
                 catch (Exception e)
                 {

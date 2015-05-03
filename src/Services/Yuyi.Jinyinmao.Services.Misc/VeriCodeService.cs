@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  6:32 PM
+// Last Modified On : 2015-05-04  1:41 AM
 // ***********************************************************************
 // <copyright file="VeriCodeService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -57,10 +57,9 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <param name="type">The type.</param>
-        /// <param name="message">The message.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SendVeriCodeResult&gt;.</returns>
-        public async Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string message, string args = "")
+        public async Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string args = "")
         {
             string veriCode;
             VeriCode code;
@@ -116,6 +115,7 @@ namespace Yuyi.Jinyinmao.Service
                 await context.ExecuteSaveChangesAsync();
             }
 
+            string message = GetVeriCodeMessage(type);
             string verifyMessage = message.FormatWith(veriCode, veriCodeValidityInMinute);
             await this.smsService.SendMessageAsync(cellphone, verifyMessage);
 
@@ -193,6 +193,24 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         #endregion IVeriCodeService Members
+
+        private static string GetVeriCodeMessage(VeriCodeType type)
+        {
+            switch (type)
+            {
+                case VeriCodeType.SignUp:
+                    return Resources.Sms_VeriCode_SignUp;
+
+                case VeriCodeType.ResetLoginPassword:
+                    return Resources.Sms_VeriCode_ResetLoginPawword;
+
+                case VeriCodeType.ResetPaymentPassword:
+                    return Resources.Sms_VeriCode_ResetPaymentPawword;
+
+                default:
+                    return Resources.Sms_VeriCode;
+            }
+        }
 
         private string GenerateCode()
         {

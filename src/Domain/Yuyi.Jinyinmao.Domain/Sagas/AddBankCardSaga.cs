@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  2:17 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  11:15 PM
+// Last Modified On : 2015-05-04  5:16 AM
 // ***********************************************************************
 // <copyright file="AddBankCardSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -44,10 +44,9 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             this.SagaEntity.Info.Add("Reuqest", new { result.Message, result.ResponseString });
             if (!result.Result)
             {
-                this.SagaEntity.State = 1;
+                this.SagaEntity.State = -1;
             }
-
-            if (result.Result)
+            else
             {
                 await this.RegisterOrUpdateReminder("Saga", TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
             }
@@ -76,8 +75,10 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 this.SagaEntity.Info["Query"] = new { result.Message, result.ResponseString };
                 this.SagaEntity.State = 1;
 
+                await this.UnregisterReminder(await this.GetReminder("Saga"));
+
                 IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AddBankCardResultedAsync(this.State.InitData.Command, result.Result);
+                await user.AddBankCardResultedAsync(this.State.InitData, result.Result);
             }
 
             await this.StoreSagaEntityAsync();
@@ -108,7 +109,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
         private async Task<AuthRequestParameter> BuildRequestParameter()
         {
-            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.NewGuid());
+            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
             string sequenceNo = await sequenceGenerator.GenerateNoAsync('B');
             string[] address = this.State.InitData.Command.CityName.Split('|');
             return new AuthRequestParameter(this.State.SagaId.ToGuidString(), sequenceNo,

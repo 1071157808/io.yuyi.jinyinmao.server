@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  1:41 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  1:30 PM
+// Last Modified On : 2015-05-03  7:16 PM
 // ***********************************************************************
 // <copyright file="SequenceNoUtils.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -36,6 +36,7 @@ namespace Yuyi.Jinyinmao.Packages
             // B => add bank card for yilian
             // O => common order
             // S => common sequence number
+            // D => deposit
             DateTime currentTime;
             lock (lockObject)
             {

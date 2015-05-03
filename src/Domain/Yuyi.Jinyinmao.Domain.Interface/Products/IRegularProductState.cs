@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  12:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  5:53 PM
+// Last Modified On : 2015-05-04  4:52 AM
 // ***********************************************************************
 // <copyright file="IRegularProductState.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -94,9 +93,9 @@ namespace Yuyi.Jinyinmao.Domain
         DateTime IssueTime { get; set; }
 
         /// <summary>
-        /// 订单
+        ///     订单
         /// </summary>
-        List<OrderInfo> Orders { get; set; }
+        List<Order> Orders { get; set; }
 
         /// <summary>
         ///     理财周期，主要用于显示
@@ -124,12 +123,12 @@ namespace Yuyi.Jinyinmao.Domain
         string ProductNo { get; set; }
 
         /// <summary>
-        /// 是否已经还款
+        ///     是否已经还款
         /// </summary>
         bool Repaid { get; set; }
 
         /// <summary>
-        /// 实际还款时间
+        ///     实际还款时间
         /// </summary>
         DateTime? RepaidTime { get; set; }
 
@@ -159,12 +158,12 @@ namespace Yuyi.Jinyinmao.Domain
         DateTime SettleDate { get; set; }
 
         /// <summary>
-        /// 是否售罄
+        ///     是否售罄
         /// </summary>
         bool SoldOut { get; set; }
 
         /// <summary>
-        /// 实际售罄时间
+        ///     实际售罄时间
         /// </summary>
         DateTime? SoldOutTime { get; set; }
 
@@ -196,6 +195,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     收益率，以“万分之一”为单位
         /// </summary>
-        decimal Yield { get; set; }
+        int Yield { get; set; }
     }
 }

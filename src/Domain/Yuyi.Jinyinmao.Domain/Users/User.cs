@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  1:52 AM
+// Last Modified On : 2015-05-04  4:11 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -16,14 +16,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
+using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Domain.Sagas;
 using Yuyi.Jinyinmao.Helper;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -34,10 +35,40 @@ namespace Yuyi.Jinyinmao.Domain
     public class User : EntityGrain<IUserState>, IUser
     {
         /// <summary>
+        ///     Gets the jby account.
+        /// </summary>
+        /// <value>The jby account.</value>
+        public List<Transcation> JBYAccount
+        {
+            get { return this.State.JBYAccount.Where(t => t.ResultCode == 1).ToList(); }
+        }
+
+        /// <summary>
         ///     Gets or sets the error count.
         /// </summary>
         /// <value>The error count.</value>
-        public int ErrorCount { get; set; }
+        public int PasswordErrorCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the payment password error count.
+        /// </summary>
+        /// <value>The payment password error count.</value>
+        public int PaymentPasswordErrorCount { get; set; }
+
+        /// <summary>
+        ///     Gets the settlement account.
+        /// </summary>
+        /// <value>The settlement account.</value>
+        public List<Transcation> SettleAccount
+        {
+            get { return this.State.SettleAccount.Where(t => t.ResultCode == 1).ToList(); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the settlement account balance.
+        /// </summary>
+        /// <value>The settlement account balance.</value>
+        public int SettleAccountBalance { get; private set; }
 
         private Dictionary<string, BankCard> BankCards { get; set; }
 
@@ -86,14 +117,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Adds the bank card asynchronous.
         /// </summary>
-        /// <param name="command">The command.</param>
+        /// <param name="dto">The add bank card saga initialize dto.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <returns>Task.</returns>
-        public async Task AddBankCardResultedAsync(AddBankCard command, bool result)
+        public async Task AddBankCardResultedAsync(AddBankCardSagaInitDto dto, bool result)
         {
             if (result)
             {
-                this.State.BankCards.Where(c => c.BankCardNo == command.BankCardNo).ForEach(
+                this.State.BankCards.Where(c => c.BankCardNo == dto.Command.BankCardNo).ForEach(
                     c =>
                     {
                         c.Verified = true;
@@ -103,10 +134,10 @@ namespace Yuyi.Jinyinmao.Domain
             }
             else
             {
-                this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == command.BankCardNo);
+                this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == dto.Command.BankCardNo);
             }
 
-            await this.RaiseAddBankCardResultedEvent(command, result);
+            await this.RaiseAddBankCardResultedEvent(dto, result);
             await this.State.WriteStateAsync();
         }
 
@@ -154,12 +185,12 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Authenticatings the user information asynchronous.
+        ///     Authenticates the resulted asynchronous.
         /// </summary>
-        /// <param name="command">The command.</param>
+        /// <param name="dto">The authenticate saga initialize dto.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <returns>Task.</returns>
-        public async Task AuthenticateAsync(Authenticate command, bool result)
+        public async Task AuthenticateResultedAsync(AuthenticateSagaInitDto dto, bool result)
         {
             DateTime now = DateTime.UtcNow.AddHours(8);
             if (this.State.Verified)
@@ -171,7 +202,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 this.State.Verified = true;
                 this.State.VerifiedTime = now;
-                this.State.BankCards.Where(c => c.BankCardNo == command.BankCardNo).ForEach(
+                this.State.BankCards.Where(c => c.BankCardNo == dto.Command.BankCardNo).ForEach(
                     c =>
                     {
                         c.IsDefault = true;
@@ -187,10 +218,10 @@ namespace Yuyi.Jinyinmao.Domain
                 this.State.CredentialNo = string.Empty;
                 this.State.Verified = false;
                 this.State.VerifiedTime = null;
-                this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == command.BankCardNo);
+                this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == dto.Command.BankCardNo);
             }
 
-            await this.RaiseApplyForAuthenticationResultedEvent(command, result);
+            await this.RaiseApplyForAuthenticationResultedEvent(dto.Command, result);
             await this.State.WriteStateAsync();
         }
 
@@ -215,7 +246,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 if (CryptographyHelper.Check(password, this.State.Salt, this.State.EncryptedPassword))
                 {
-                    this.ErrorCount = 0;
+                    this.PasswordErrorCount = 0;
                     return Task.FromResult(new CheckPasswordResult
                     {
                         Cellphone = this.State.Cellphone,
@@ -227,12 +258,12 @@ namespace Yuyi.Jinyinmao.Domain
                 }
             }
 
-            this.ErrorCount += 1;
+            this.PasswordErrorCount += 1;
 
             return Task.FromResult(new CheckPasswordResult
             {
                 Cellphone = this.State.Cellphone,
-                ErrorCount = this.ErrorCount,
+                ErrorCount = this.PasswordErrorCount,
                 Success = false,
                 UserExist = false,
                 UserId = this.State.Id
@@ -250,6 +281,120 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Checks the payment password asynchronous.
+        /// </summary>
+        /// <param name="paymentPassword">The payment password.</param>
+        /// <returns>Task&lt;CheckPaymentPasswordResult&gt;.</returns>
+        public Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(string paymentPassword)
+        {
+            if (this.State.EncryptedPaymentPassword.IsNullOrEmpty())
+            {
+                return Task.FromResult(new CheckPaymentPasswordResult
+                {
+                    Success = false,
+                    RemainCount = -1
+                });
+            }
+
+            if (CryptographyHelper.Check(paymentPassword, this.State.PaymentSalt, this.State.EncryptedPassword))
+            {
+                this.PaymentPasswordErrorCount = 0;
+                return Task.FromResult(new CheckPaymentPasswordResult
+                {
+                    Success = true,
+                    RemainCount = 5 - this.PaymentPasswordErrorCount
+                });
+            }
+
+            this.PasswordErrorCount += 1;
+
+            return Task.FromResult(new CheckPaymentPasswordResult
+            {
+                Success = false,
+                RemainCount = 5 - this.PaymentPasswordErrorCount
+            });
+        }
+
+        /// <summary>
+        ///     Deposits from the settle account asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public async Task DepositAsync(DepositFromYilian command)
+        {
+            if (!this.State.Verified)
+            {
+                return;
+            }
+
+            BankCard value;
+            if (!this.BankCards.TryGetValue(command.BankCardNo, out value) || value.VerifiedByYilian)
+            {
+                return;
+            }
+
+            if (this.State.SettleAccount.Any(t => t.TransactionId == command.CommandId))
+            {
+                return;
+            }
+
+            this.State.SettleAccount.Add(new Transcation
+            {
+                AgreementsInfo = new Dictionary<string, object>(),
+                Amount = command.Amount,
+                BankCardNo = command.BankCardNo,
+                ChannelCode = ChannelCodeHelper.Yilian,
+                ResultCode = 0,
+                ResultTime = null,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC1005051001,
+                TransactionId = command.CommandId,
+                TransactionTime = DateTime.UtcNow.AddHours(8),
+                TransDesc = ""
+            });
+
+            IDepositByYilianSaga saga = DepositByYilianSagaFactory.GetGrain(Guid.NewGuid());
+            await saga.BeginProcessAsync(new DepositFromYilianSagaInitDto
+            {
+                BackCardInfo = await this.GetBankCardInfoAsync(command.BankCardNo),
+                Command = command,
+                TranscationInfo = await this.GetSettleAccountTranscationInfoAsync(command.CommandId),
+                UserInfo = await this.GetUserInfoAsync()
+            });
+
+            await this.StoreCommandAsync(command);
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
+        ///     Deposits the resulted asynchronous.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
+        public async Task DepositResultedAsync(DepositFromYilianSagaInitDto dto, bool result, string message)
+        {
+            if (this.State.SettleAccount.Any(t => t.TransactionId == dto.TranscationInfo.TransactionId && t.ResultTime.HasValue))
+            {
+                return;
+            }
+
+            this.State.SettleAccount.Where(t => t.TransactionId == dto.TranscationInfo.TransactionId).ForEach(
+                t =>
+                {
+                    t.ResultCode = result ? 1 : -1;
+                    t.ResultTime = DateTime.UtcNow.AddHours(8);
+                    t.TransDesc += message;
+                });
+
+            this.ReloadSettleAccountData();
+
+            await this.RaiseDepositResultedEvent(dto, result);
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
         ///     Gets the bank card information asynchronous.
         /// </summary>
         /// <param name="bankCardNo">The bank card no.</param>
@@ -259,14 +404,18 @@ namespace Yuyi.Jinyinmao.Domain
             BankCard card;
             if (this.BankCards.TryGetValue(bankCardNo, out card))
             {
+                int withdrawAmount = this.SettleAccountBalance - this.BankCards.Values.Sum(c => c.WithdrawAmount);
+                withdrawAmount = withdrawAmount > 0 ? withdrawAmount + card.WithdrawAmount : card.WithdrawAmount;
+
                 return Task.FromResult(new BankCardInfo
                 {
                     BankCardNo = card.BankCardNo,
                     BankName = card.BankName,
                     CanBeUsedForYilian = card.VerifiedByYilian,
                     IsDefault = card.IsDefault,
+                    Verified = card.Verified,
                     VerifiedTime = card.VerifiedTime.GetValueOrDefault(DateTime.MaxValue),
-                    WithdrawAmount = 0
+                    WithdrawAmount = withdrawAmount
                 });
             }
             return null;
@@ -283,10 +432,51 @@ namespace Yuyi.Jinyinmao.Domain
                 BankCardNo = c.BankCardNo,
                 BankName = c.BankName,
                 CanBeUsedForYilian = c.VerifiedByYilian,
+                CityName = c.CityName,
                 IsDefault = c.IsDefault,
                 VerifiedTime = c.VerifiedTime.GetValueOrDefault(DateTime.MaxValue),
                 WithdrawAmount = c.WithdrawAmount
             }).ToList());
+        }
+
+        /// <summary>
+        ///     Gets the settle account information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
+        public Task<SettleAccountInfo> GetSettleAccountInfoAsync()
+        {
+            return Task.FromResult(new SettleAccountInfo
+            {
+                Balance = this.SettleAccountBalance
+            });
+        }
+
+        /// <summary>
+        ///     Gets the transcation information asynchronous.
+        /// </summary>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        public Task<TranscationInfo> GetSettleAccountTranscationInfoAsync(Guid transcationId)
+        {
+            var transcation = this.State.SettleAccount.FirstOrDefault(t => t.TransactionId == transcationId);
+            if (transcation == null)
+            {
+                return null;
+            }
+            return Task.FromResult(new TranscationInfo
+            {
+                AgreementsInfo = transcation.AgreementsInfo,
+                Amount = transcation.Amount,
+                BankCardNo = transcation.BankCardNo,
+                ChannelCode = transcation.ChannelCode,
+                ResultCode = transcation.ResultCode,
+                ResultTime = transcation.ResultTime,
+                Trade = TradeCodeHelper.IsDebit(transcation.TradeCode) ? Trade.Debit : Trade.Credit,
+                TradeCode = transcation.TradeCode,
+                TransactionId = transcation.TransactionId,
+                TransactionTime = transcation.TransactionTime,
+                TransDesc = transcation.TransDesc
+            });
         }
 
         /// <summary>
@@ -309,15 +499,52 @@ namespace Yuyi.Jinyinmao.Domain
                 HaSetPaymentPassword = this.State.EncryptedPaymentPassword.IsNotNullOrEmpty(),
                 HasSetPassword = this.State.EncryptedPassword.IsNotNullOrEmpty(),
                 InviteBy = this.State.InviteBy,
-                JBYAccountId = this.State.JBYAccount.GetPrimaryKey(),
                 LoginNames = this.State.LoginNames,
                 RealName = this.State.RealName,
                 RegisterTime = this.State.RegisterTime,
-                SettlementAccountId = this.State.SettlementAccount.GetPrimaryKey(),
                 UserId = this.State.Id,
                 Verified = this.State.Verified,
                 VerifiedTime = this.State.VerifiedTime
             });
+        }
+
+        /// <summary>
+        ///     Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public async Task InvestingAsync(RegularInvesting command)
+        {
+            if (this.State.SettleAccount.Any(t => t.TransactionId == command.CommandId))
+            {
+                return;
+            }
+
+            if (this.SettleAccountBalance < command.Amount)
+            {
+                return;
+            }
+
+            int tradeCode = command.ProductCategory > 199999999 ? TradeCodeHelper.TC1005022004 : TradeCodeHelper.TC1005012004;
+
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            this.State.SettleAccount.Add(new Transcation
+            {
+                AgreementsInfo = new Dictionary<string, object>(),
+                Amount = command.Amount,
+                BankCardNo = string.Empty,
+                ChannelCode = 0,
+                ResultCode = 1,
+                ResultTime = now,
+                Trade = Trade.Credit,
+                TradeCode = tradeCode,
+                TransDesc = string.Empty,
+                TransactionId = command.CommandId,
+                TransactionTime = now
+            });
+
+            IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
+            await product.BuildOrderAsync(await this.GetUserInfoAsync(), await this.GetSettleAccountTranscationInfoAsync(command.CommandId));
         }
 
         /// <summary>
@@ -368,19 +595,9 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.Verified = false;
             this.State.VerifiedTime = null;
 
-            Guid JBYAccountId = Guid.NewGuid();
-            this.State.JBYAccount = JBYAccountFactory.GetGrain(JBYAccountId);
-            await this.State.JBYAccount.Register(new JBYAccountRegister
-            {
-                UserId = command.UserId
-            });
+            this.State.JBYAccount = new List<Transcation>();
 
-            Guid settlementAccountId = Guid.NewGuid();
-            this.State.SettlementAccount = SettlementAccountFactory.GetGrain(settlementAccountId);
-            await this.State.SettlementAccount.Register(new SettlementAccountRegister
-            {
-                UserId = command.UserId
-            });
+            this.State.SettleAccount = new List<Transcation>();
 
             await this.StoreCommandAsync(command);
             await this.RaiseUserRegisteredEvent(command);
@@ -442,6 +659,103 @@ namespace Yuyi.Jinyinmao.Domain
             await this.State.WriteStateAsync();
         }
 
+        /// <summary>
+        ///     Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public async Task WithdrawalAsync(Withdrawal command)
+        {
+            if (!this.State.Verified)
+            {
+                return;
+            }
+
+            if (!this.BankCards.ContainsKey(command.BankCardNo))
+            {
+                return;
+            }
+
+            if (this.State.SettleAccount.Any(t => t.TransactionId == command.CommandId))
+            {
+                return;
+            }
+
+            BankCardInfo info = await this.GetBankCardInfoAsync(command.BankCardNo);
+            if (info.WithdrawAmount < command.Amount)
+            {
+                return;
+            }
+
+            Transcation transcation = new Transcation
+            {
+                AgreementsInfo = new Dictionary<string, object>(),
+                Amount = command.Amount,
+                BankCardNo = command.BankCardNo,
+                ChannelCode = ChannelCodeHelper.Yilian,
+                ResultCode = 0,
+                ResultTime = null,
+                Trade = Trade.Credit,
+                TradeCode = TradeCodeHelper.TC1005052001,
+                TransactionId = command.CommandId,
+                TransactionTime = DateTime.UtcNow.AddHours(8),
+                TransDesc = ""
+            };
+
+            this.State.SettleAccount.Add(transcation);
+
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                AccountTranscation accountTranscation = new AccountTranscation
+                {
+                    AgreementsInfo = transcation.AgreementsInfo.ToJson(),
+                    Amount = transcation.Amount,
+                    Args = command.Args,
+                    BankCardInfo = info.ToJson(),
+                    Cellphone = this.State.Cellphone,
+                    ChannelCode = transcation.ChannelCode,
+                    Info = new object().ToJson(),
+                    ResultCode = 0,
+                    ResultTime = null,
+                    TradeCode = TradeCodeHelper.TC1005052001,
+                    TransDesc = transcation.TransDesc,
+                    TranscationIdentifier = transcation.TransactionId.ToGuidString(),
+                    TranscationTime = transcation.TransactionTime,
+                    UserIdentifier = this.State.Id.ToGuidString(),
+                    UserInfo = (await this.GetUserInfoAsync()).ToJson()
+                };
+
+                await db.SaveAsync(accountTranscation);
+            }
+
+            await this.StoreCommandAsync(command);
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
+        ///     Withdrawals the resulted asynchronous.
+        /// </summary>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public async Task WithdrawalResultedAsync(Guid transcationId)
+        {
+            Transcation transcation = this.State.SettleAccount.FirstOrDefault(t => t.TransactionId == transcationId);
+            if (transcation == null || transcation.ResultCode != 0 || transcation.TradeCode != TradeCodeHelper.TC1005052001)
+            {
+                return;
+            }
+
+            transcation.ResultCode = 1;
+            transcation.ResultTime = DateTime.UtcNow.AddHours(8);
+            transcation.TransDesc += "取现完成。";
+
+            this.ReloadSettleAccountData();
+
+            await this.RaiseWithdrawalResultedEvent(transcation);
+            await this.State.WriteStateAsync();
+        }
+
         #endregion IUser Members
 
         /// <summary>
@@ -451,25 +765,41 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public override Task OnActivateAsync()
         {
+            if (this.State.BankCards == null)
+            {
+                this.State.BankCards = new List<BankCard>();
+            }
+
+            if (this.State.SettleAccount == null)
+            {
+                this.State.SettleAccount = new List<Transcation>();
+            }
+
+            if (this.State.JBYAccount == null)
+            {
+                this.State.JBYAccount = new List<Transcation>();
+            }
+
             this.ReloadBankCardsData();
+            this.ReloadSettleAccountData();
             return base.OnActivateAsync();
         }
 
         /// <summary>
         ///     Raises the add bank card resulted event.
         /// </summary>
-        /// <param name="command">The command.</param>
+        /// <param name="dto">The AddBankCardSagaInitDto.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <returns>Task.</returns>
-        private async Task RaiseAddBankCardResultedEvent(AddBankCard command, bool result)
+        private async Task RaiseAddBankCardResultedEvent(AddBankCardSagaInitDto dto, bool result)
         {
             AddBankCardResulted @event = new AddBankCardResulted
             {
-                Args = command.Args,
-                BankCardNo = command.BankCardNo,
-                BankName = command.BankName,
+                Args = dto.Command.Args,
+                BankCardNo = dto.Command.BankCardNo,
+                BankName = dto.Command.BankName,
                 Cellphone = this.State.Cellphone,
-                CityName = command.CityName,
+                CityName = dto.Command.CityName,
                 SourceId = this.State.Id.ToGuidString(),
                 SourceType = this.GetType().Name,
                 CanBeUsedByYilian = true,
@@ -506,15 +836,57 @@ namespace Yuyi.Jinyinmao.Domain
 
             await AuthenticateResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
 
-            await this.RaiseAddBankCardResultedEvent(new AddBankCard
+            await this.RaiseAddBankCardResultedEvent(new AddBankCardSagaInitDto
             {
-                Args = command.Args,
-                BankCardNo = command.BankCardNo,
-                BankName = command.BankName,
-                CityName = command.CityName,
-                CommandId = command.CommandId,
-                UserId = this.State.Id
+                Command = new AddBankCard
+                {
+                    Args = command.Args,
+                    BankCardNo = command.BankCardNo,
+                    BankName = command.BankName,
+                    CityName = command.CityName,
+                    CommandId = command.CommandId,
+                    UserId = this.State.Id
+                },
+                UserInfo = await this.GetUserInfoAsync()
             }, result);
+        }
+
+        /// <summary>
+        ///     Raises the deposit resulted event.
+        /// </summary>
+        /// <param name="dto">The DepositFromYilianSagaInitDto.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseDepositResultedEvent(DepositFromYilianSagaInitDto dto, bool result)
+        {
+            DepositFromYilianResulted @event = new DepositFromYilianResulted
+            {
+                Amount = dto.Command.Amount,
+                Args = dto.Command.Args,
+                BankCardNo = dto.BackCardInfo.BankCardNo,
+                BankName = dto.BackCardInfo.BankName,
+                Cellphone = dto.UserInfo.Cellphone,
+                ChannalCode = dto.TranscationInfo.ChannelCode,
+                CityName = dto.BackCardInfo.CityName,
+                Credential = dto.UserInfo.Credential,
+                CredentialNo = dto.UserInfo.CredentialNo,
+                RealName = dto.UserInfo.RealName,
+                Result = result,
+                ResultCode = dto.TranscationInfo.ResultCode,
+                ResultTime = dto.TranscationInfo.ResultTime.GetValueOrDefault(),
+                SettleAccountBalance = this.SettleAccountBalance,
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name,
+                Trade = dto.TranscationInfo.Trade,
+                TranscationId = dto.TranscationInfo.TransactionId,
+                TranscationTime = dto.TranscationInfo.TransactionTime,
+                TransDesc = dto.TranscationInfo.TransDesc,
+                UserId = this.State.Id
+            };
+
+            await this.StoreEventAsync(@event);
+
+            await DepositFromYilianResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
         /// <summary>
@@ -548,7 +920,7 @@ namespace Yuyi.Jinyinmao.Domain
 
                 await this.StoreEventAsync(@event);
 
-                await PaymentPasswordResetFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+                await PaymentPasswordResetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
             }
             else
             {
@@ -566,7 +938,7 @@ namespace Yuyi.Jinyinmao.Domain
                     SourceType = this.GetType().Name
                 });
 
-                await PaymentPasswordSetFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+                await PaymentPasswordSetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
             }
         }
 
@@ -579,11 +951,9 @@ namespace Yuyi.Jinyinmao.Domain
                 ClientType = this.State.ClientType,
                 ContractId = this.State.ContractId,
                 InviteBy = this.State.InviteBy,
-                JBYAccountId = this.State.JBYAccount.GetPrimaryKey(),
                 LoginNames = this.State.LoginNames,
                 OutletCode = userRegister.OutletCode,
                 RegisterTime = this.State.RegisterTime,
-                SettlementAccountId = this.State.SettlementAccount.GetPrimaryKey(),
                 UserId = userRegister.UserId,
                 SourceId = this.State.Id.ToGuidString(),
                 SourceType = this.GetType().Name
@@ -594,9 +964,53 @@ namespace Yuyi.Jinyinmao.Domain
             await UserRegisteredProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
+        private async Task RaiseWithdrawalResultedEvent(Transcation transcation)
+        {
+            BankCardInfo info = await this.GetBankCardInfoAsync(transcation.BankCardNo);
+
+            WithdrawalResulted @event = new WithdrawalResulted
+            {
+                Amount = transcation.Amount,
+                Args = new object().ToJson(),
+                BankCardNo = transcation.BankCardNo,
+                BankName = info.BankName,
+                Cellphone = this.State.Cellphone,
+                CityName = info.CityName,
+                Credential = this.State.Credential,
+                CredentialNo = this.State.CredentialNo,
+                RealName = this.State.RealName,
+                Result = transcation.ResultCode == 1,
+                ResultCode = transcation.ResultCode,
+                ResultTime = transcation.ResultTime.GetValueOrDefault(),
+                SettleAccountBalance = this.SettleAccountBalance,
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name,
+                Trade = transcation.Trade,
+                TransDesc = transcation.TransDesc,
+                TranscationId = transcation.TransactionId,
+                TranscationTime = transcation.TransactionTime,
+                UserId = this.State.Id
+            };
+            await this.StoreEventAsync(@event);
+        }
+
         private void ReloadBankCardsData()
         {
             this.BankCards = this.State.BankCards.ToDictionary(c => c.BankCardNo);
+        }
+
+        private void ReloadSettleAccountData()
+        {
+            List<Transcation> debitTrans = this.SettleAccount.Where(t => t.Trade == Trade.Debit && t.TradeCode == 1).ToList();
+            List<Transcation> creditTrans = this.SettleAccount.Where(t => t.Trade == Trade.Credit && t.TradeCode >= 0).ToList();
+
+            this.SettleAccountBalance = debitTrans.Sum(t => t.Amount) - creditTrans.Sum(t => t.Amount);
+
+            this.BankCards.Values.ForEach(c =>
+            {
+                c.WithdrawAmount = debitTrans.Where(t => t.BankCardNo == c.BankCardNo).Sum(t => t.Amount)
+                                   - creditTrans.Where(t => t.BankCardNo == c.BankCardNo).Sum(t => t.Amount);
+            });
         }
     }
 }

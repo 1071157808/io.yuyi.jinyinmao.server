@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  5:46 PM
+// Last Modified On : 2015-05-03  6:05 PM
 // ***********************************************************************
 // <copyright file="UserMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -49,14 +49,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.JBYAccount)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            this.Property(t => t.SettlementAccount)
-                .IsRequired()
-                .HasMaxLength(50);
-
             this.Property(t => t.OutletCode)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -82,8 +74,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.CredentialNo).HasColumnName("CredentialNo");
             this.Property(t => t.Verified).HasColumnName("Verified");
             this.Property(t => t.VerifiedTime).HasColumnName("VerifiedTime");
-            this.Property(t => t.JBYAccount).HasColumnName("JBYAccount");
-            this.Property(t => t.SettlementAccount).HasColumnName("SettlementAccount");
             this.Property(t => t.OutletCode).HasColumnName("OutletCode");
             this.Property(t => t.ClientType).HasColumnName("ClientType");
             this.Property(t => t.InviteBy).HasColumnName("InviteBy");

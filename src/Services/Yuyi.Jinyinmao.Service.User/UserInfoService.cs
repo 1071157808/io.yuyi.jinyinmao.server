@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  12:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  11:37 AM
+// Last Modified On : 2015-05-04  3:28 AM
 // ***********************************************************************
 // <copyright file="UserInfoService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -89,6 +89,16 @@ namespace Yuyi.Jinyinmao.Service
         public Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId)
         {
             return this.innerService.GetBankCardInfosAsync(userId);
+        }
+
+        /// <summary>
+        ///     Gets the settle account information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
+        public Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId)
+        {
+            return this.innerService.GetSettleAccountInfoAsync(userId);
         }
 
         /// <summary>

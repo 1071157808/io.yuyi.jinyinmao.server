@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:56 AM
+// Last Modified On : 2015-05-03  6:05 PM
 // ***********************************************************************
 // <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -74,12 +74,10 @@ namespace Yuyi.Jinyinmao.Domain
                         CredentialNo = string.Empty,
                         Info = "{}",
                         InviteBy = @event.InviteBy,
-                        JBYAccount = @event.JBYAccountId.ToGuidString(),
                         LoginNames = @event.LoginNames.Join(","),
                         OutletCode = @event.OutletCode,
                         RealName = string.Empty,
                         RegisterTime = @event.RegisterTime,
-                        SettlementAccount = @event.SettlementAccountId.ToGuidString(),
                         UserIdentifier = @event.UserId.ToGuidString(),
                         Verified = false,
                         VerifiedTime = null

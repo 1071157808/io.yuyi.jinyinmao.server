@@ -4,7 +4,7 @@
 // Created          : 2015-04-27  2:02 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  10:30 PM
+// Last Modified On : 2015-05-03  5:26 PM
 // ***********************************************************************
 // <copyright file="BankCardInfo.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -41,10 +41,22 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public bool CanBeUsedForYilian { get; set; }
 
         /// <summary>
+        ///     Gets or sets the name of the city.
+        /// </summary>
+        /// <value>The name of the city.</value>
+        public string CityName { get; set; }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether this instance is default.
         /// </summary>
         /// <value><c>true</c> if this instance is default; otherwise, <c>false</c>.</value>
         public bool IsDefault { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="BankCard" /> is verified.
+        /// </summary>
+        /// <value><c>true</c> if verified; otherwise, <c>false</c>.</value>
+        public bool Verified { get; set; }
 
         /// <summary>
         ///     Gets or sets the verified time.

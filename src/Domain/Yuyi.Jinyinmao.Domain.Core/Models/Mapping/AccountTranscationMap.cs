@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  5:43 PM
+// Last Modified On : 2015-05-03  6:57 PM
 // ***********************************************************************
 // <copyright file="AccountTranscationMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -36,10 +36,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.UserIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
-
-            this.Property(t => t.Amount)
-                .IsRequired()
-                .HasMaxLength(255);
 
             this.Property(t => t.TransDesc)
                 .IsRequired()

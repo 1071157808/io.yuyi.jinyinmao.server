@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  3:51 PM
+// Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-11  1:05 AM
+// Last Modified On : 2015-05-03  10:38 PM
 // ***********************************************************************
 // <copyright file="IVeriCodeService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System.Threading.Tasks;
-using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -26,10 +25,9 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <param name="type">The type.</param>
-        /// <param name="message">The message.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SendVeriCodeResult&gt;.</returns>
-        Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string message, string args = "");
+        Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string args = "");
 
         /// <summary>
         ///     Uses the asynchronous.

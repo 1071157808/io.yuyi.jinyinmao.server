@@ -181,7 +181,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\cn-com-jinyinmao-dev-api-sms.pubxml" />
+    <None Include="Properties\PublishProfiles\jym-dev-apisms.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  6:28 PM
+// Last Modified On : 2015-05-03  6:05 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -75,12 +75,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string InviteBy { get; set; }
 
         /// <summary>
-        ///     Gets or sets the jby account.
-        /// </summary>
-        /// <value>The jby account.</value>
-        public string JBYAccount { get; set; }
-
-        /// <summary>
         ///     Gets or sets the login names.
         /// </summary>
         /// <value>The login names.</value>
@@ -103,12 +97,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The register time.</value>
         public DateTime RegisterTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the settlement account.
-        /// </summary>
-        /// <value>The settlement account.</value>
-        public string SettlementAccount { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  2:33 AM
+// Last Modified On : 2015-05-04  5:31 AM
 // ***********************************************************************
 // <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -188,7 +188,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     收益率，以“万分之一”为单位
         /// </summary>
-        [Required, Range(0, 100), JsonProperty("yield")]
-        public decimal Yield { get; set; }
+        [Required, Range(0, 10000), JsonProperty("yield")]
+        public int Yield { get; set; }
     }
 }

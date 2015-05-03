@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-27  4:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  6:25 PM
+// Last Modified On : 2015-05-04  4:50 AM
 // ***********************************************************************
 // <copyright file="AuthenticateSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 this.SagaEntity.State = 1;
 
                 IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AuthenticateAsync(this.State.InitData.Command, result.Result);
+                await user.AuthenticateResultedAsync(this.State.InitData, result.Result);
             }
 
             await this.StoreSagaEntityAsync();
@@ -87,7 +87,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
         private async Task<AuthRequestParameter> BuildRequestParameter()
         {
-            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.NewGuid());
+            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
             string sequenceNo = await sequenceGenerator.GenerateNoAsync('B');
             string[] address = this.State.InitData.Command.CityName.Split('|');
             return new AuthRequestParameter(this.State.SagaId.ToGuidString(), sequenceNo,

@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-26  8:17 PM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  10:14 PM
+// Last Modified On : 2015-05-03  7:24 PM
 // ***********************************************************************
 // <copyright file="SagaEntity.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -65,7 +65,7 @@ namespace Yuyi.Jinyinmao.Domain
         public int State { get; set; }
 
         /// <summary>
-        ///     Gets or sets the update time.
+        ///     Gets or sets the update time. 0 => Processing, -1 => Error, 1 => Complete
         /// </summary>
         /// <value>The update time.</value>
         public DateTime UpdateTime { get; set; }

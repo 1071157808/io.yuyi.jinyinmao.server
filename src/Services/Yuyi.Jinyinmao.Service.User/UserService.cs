@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  12:44 AM
+// Last Modified On : 2015-05-04  3:29 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -31,7 +31,7 @@ namespace Yuyi.Jinyinmao.Service
         #region IUserService Members
 
         /// <summary>
-        /// Adds the bank card asynchronous.
+        ///     Adds the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
@@ -42,7 +42,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Authenticatings the asynchronous.
+        ///     Authenticatings the asynchronous.
         /// </summary>
         /// <param name="command">The apply for authentication.</param>
         /// <returns>Task.</returns>
@@ -103,7 +103,30 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the bank card information asynchronous.
+        ///     Checks the payment password asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="paymentPassword">The payment password.</param>
+        /// <returns>Task&lt;CheckPaymentPasswordResult&gt;.</returns>
+        public Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(Guid userId, string paymentPassword)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.CheckPaymentPasswordAsync(paymentPassword);
+        }
+
+        /// <summary>
+        ///     Deposits from the settle account.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public Task DepositAsync(DepositFromYilian command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.DepositAsync(command);
+        }
+
+        /// <summary>
+        ///     Gets the bank card information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="bankCardNo">The bank card no.</param>
@@ -115,7 +138,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the bank card infos asynchronous.
+        ///     Gets the bank card infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
@@ -123,6 +146,17 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetBankCardInfosAsync();
+        }
+
+        /// <summary>
+        ///     Gets the settle account information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
+        public Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetSettleAccountInfoAsync();
         }
 
         /// <summary>
@@ -155,6 +189,17 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The regular investing.</param>
+        /// <returns>Task.</returns>
+        public Task InvestingAsync(RegularInvesting command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.InvestingAsync(command);
+        }
+
+        /// <summary>
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
@@ -177,7 +222,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Sets the default bank card asynchronous.
+        ///     Sets the default bank card asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="bankCardNo">The bank card no.</param>
@@ -197,6 +242,29 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.SetPaymentPasswordAsync(command);
+        }
+
+        /// <summary>
+        ///     Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The withdrawal.</param>
+        /// <returns>Task.</returns>
+        public Task WithdrawalAsync(Withdrawal command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.WithdrawalAsync(command);
+        }
+
+        /// <summary>
+        ///     Withdrawals the resulted asynchronous.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="transcationIdentifier">The transcation identifier.</param>
+        /// <returns>Task.</returns>
+        public Task WithdrawalResultedAsync(string userIdentifier, string transcationIdentifier)
+        {
+            IUser user = UserFactory.GetGrain(Guid.ParseExact(userIdentifier, "N"));
+            return user.WithdrawalResultedAsync(Guid.ParseExact(transcationIdentifier, "N"));
         }
 
         #endregion IUserService Members

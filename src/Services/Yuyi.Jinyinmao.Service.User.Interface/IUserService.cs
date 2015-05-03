@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  4:15 PM
+// Last Modified On : 2015-05-04  1:56 AM
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -38,6 +38,28 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task AuthenticateAsync(Authenticate command);
 
         /// <summary>
+        /// Checks the payment password asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="paymentPassword">The payment password.</param>
+        /// <returns>Task&lt;CheckPaymentPasswordResult&gt;.</returns>
+        Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(Guid userId, string paymentPassword);
+
+        /// <summary>
+        ///     Deposits from the settle account asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        Task DepositAsync(DepositFromYilian command);
+
+        /// <summary>
+        /// Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The regular investing.</param>
+        /// <returns>Task.</returns>
+        Task InvestingAsync(RegularInvesting command);
+
+        /// <summary>
         ///     Registers the user asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -65,5 +87,20 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="command"></param>
         /// <returns>Task.</returns>
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
+
+        /// <summary>
+        ///     Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The withdrawal.</param>
+        /// <returns>Task.</returns>
+        Task WithdrawalAsync(Withdrawal command);
+
+        /// <summary>
+        ///     Withdrawals the resulted asynchronous.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="transcationIdentifier">The transcation identifier.</param>
+        /// <returns>Task.</returns>
+        Task WithdrawalResultedAsync(string userIdentifier, string transcationIdentifier);
     }
 }

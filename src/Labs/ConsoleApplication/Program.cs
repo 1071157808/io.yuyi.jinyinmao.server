@@ -14,6 +14,7 @@
 using System;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
 using Newtonsoft.Json;
 
@@ -21,110 +22,72 @@ namespace ConsoleApplication
 {
     internal class Program
     {
-        internal static void UploadProductDataToStorageCache(string blobName, object uploadData)
-        {
-            CloudStorageAccount account = CloudStorageAccount.Parse("BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==");
-            var client = account.CreateCloudBlobClient();
-            CloudBlockBlob blob = client.GetContainerReference("dev").GetBlockBlobReference(blobName);
-            blob.Properties.ContentType = "application/json; charset=utf-8";
-            //blob.Properties.ContentEncoding = "gzip";
-            byte[] buffer = JsonConvert.SerializeObject(uploadData).GetBytesOfUTF8();
-            blob.UploadFromByteArray(buffer, 0, buffer.Length);
-            //            MemoryStream ms = new MemoryStream();
-            //            using (GZipStream zip = new GZipStream(ms, CompressionMode.Compress, true))
-            //            {
-            //                zip.Write(buffer, 0, buffer.Length);
-            //            }
-            //            ms.Position = 0;
-            //
-            //            byte[] gzBuffer = new byte[ms.Length];
-            //            ms.Read(gzBuffer, 0, gzBuffer.Length);
-            //
-            //            blob.UploadFromByteArray(gzBuffer, 0, gzBuffer.Length);
-        }
-
         private static void Main(string[] args)
         {
-            UploadProductDataToStorageCache("json-test", new
+            CloudStorageAccount account = CloudStorageAccount.Parse("BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==");
+            string appKey = "HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==";
+
+            Guid guid = Guid.NewGuid();
+
+            account.CreateCloudTableClient().GetTableReference("ApiSms").Execute(TableOperation.Insert(new App()
             {
-                Environment.MachineName,
-                Environment.Is64BitOperatingSystem,
-                Environment.Is64BitProcess,
-                Environment.ProcessorCount,
-                Environment.OSVersion,
-                Environment.UserName,
-                Environment.Version,
-                T = "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "1111111111111111111111111111111111111111111111111111111111111111111111111" +
-                    "11111111111111111111111111111111111111111111111111111111111111111111111111"
-            });
+                AppId = guid,
+                AppKey = appKey,
+                AppName = "SmsClient",
+                Expiry = DateTime.Now.AddDays(100),
+                Notes = "SmsClient",
+                PartitionKey = "api.sms.config.appkeys"
+            }));
+            Console.WriteLine("a");
+        }
+
+        /// <summary>
+        ///     App.
+        /// </summary>
+        public class App : TableEntity
+        {
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="App" /> class.
+            /// </summary>
+            public App()
+            {
+                this.PartitionKey = "api.sms.config.appkeys";
+                this.RowKey = Guid.NewGuid().ToString();
+            }
+
+            /// <summary>
+            ///     Gets or sets the application identifier.
+            /// </summary>
+            /// <value>The application identifier.</value>
+            public Guid AppId
+            {
+                get { return Guid.Parse(this.RowKey); }
+                set { this.RowKey = value.ToString(); }
+            }
+
+            /// <summary>
+            ///     Gets or sets the application key.
+            /// </summary>
+            /// <value>The application key.</value>
+            public string AppKey { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the name.
+            /// </summary>
+            /// <value>The name.</value>
+            public string AppName { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the expiry.
+            /// </summary>
+            /// <value>The expiry.</value>
+            public DateTime Expiry { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the notes.
+            /// </summary>
+            /// <value>The notes.</value>
+            public string Notes { get; set; }
         }
     }
 }

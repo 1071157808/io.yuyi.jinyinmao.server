@@ -9,63 +9,93 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
+using Orleans.Providers;
+using Orleans.Runtime.Configuration;
+using Orleans.Runtime.Host;
 
 namespace Yuyi.Jinyinmao.Silo
 {
     public class WorkerRole : RoleEntryPoint
     {
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
+        private const string DATA_CONNECTION_STRING_KEY = "DataConnectionString";
 
-        public override void Run()
+        private AzureSilo orleansAzureSilo;
+
+        public WorkerRole()
         {
-            Trace.TraceInformation("Yuyi.Jinyinmao.Silo is running");
-
-            try
-            {
-                this.RunAsync(this.cancellationTokenSource.Token).Wait();
-            }
-            finally
-            {
-                this.runCompleteEvent.Set();
-            }
+            Console.WriteLine("OrleansAzureSilos-Constructor called");
         }
 
         public override bool OnStart()
         {
-            // Set the maximum number of concurrent connections
+            Trace.WriteLine("OrleansAzureSilos-OnStart called", "Information");
+
+            Trace.WriteLine("OrleansAzureSilos-OnStart Initializing config", "Information");
+
+            // Set the maximum number of concurrent connections 
             ServicePointManager.DefaultConnectionLimit = 12;
 
-            // For information on handling configuration changes
-            // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
+            // For information on handling configuration changes see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
+            RoleEnvironment.Changing += RoleEnvironmentChanging;
+            SetupEnvironmentChangeHandlers();
 
-            bool result = base.OnStart();
+            bool ok = base.OnStart();
 
-            Trace.TraceInformation("Yuyi.Jinyinmao.Silo has been started");
+            Trace.WriteLine("OrleansAzureSilos-OnStart called base.OnStart ok=" + ok, "Information");
 
-            return result;
+            return ok;
+        }
+
+        public override void Run()
+        {
+            Trace.WriteLine("OrleansAzureSilos-Run entry point called", "Information");
+
+            Trace.WriteLine("OrleansAzureSilos-OnStart Starting Orleans silo", "Information");
+
+            var config = new ClusterConfiguration();
+            config.StandardLoad();
+
+            // It is IMPORTANT to start the silo not in OnStart but in Run.
+            // Azure may not have the firewalls open yet (on the remote silos) at the OnStart phase.
+            this.orleansAzureSilo = new AzureSilo();
+            bool ok = this.orleansAzureSilo.Start(RoleEnvironment.DeploymentId, RoleEnvironment.CurrentRoleInstance, config);
+
+            Trace.WriteLine("OrleansAzureSilos-OnStart Orleans silo started ok=" + ok, "Information");
+
+            this.orleansAzureSilo.Run(); // Call will block until silo is shutdown
         }
 
         public override void OnStop()
         {
-            Trace.TraceInformation("Yuyi.Jinyinmao.Silo is stopping");
-
-            this.cancellationTokenSource.Cancel();
-            this.runCompleteEvent.WaitOne();
-
+            Trace.WriteLine("OrleansAzureSilos-OnStop called", "Information");
+            if (this.orleansAzureSilo != null)
+            {
+                this.orleansAzureSilo.Stop();
+            }
+            RoleEnvironment.Changing -= RoleEnvironmentChanging;
             base.OnStop();
-
-            Trace.TraceInformation("Yuyi.Jinyinmao.Silo has stopped");
+            Trace.WriteLine("OrleansAzureSilos-OnStop finished", "Information");
         }
 
-        private async Task RunAsync(CancellationToken cancellationToken)
+        private static void RoleEnvironmentChanging(object sender, RoleEnvironmentChangingEventArgs e)
         {
-            // TODO: Replace the following with your own logic.
-            while (!cancellationToken.IsCancellationRequested)
+            int i = 1;
+            foreach (var c in e.Changes)
             {
-                Trace.TraceInformation("Working");
-                await Task.Delay(1000);
+                Trace.WriteLine(string.Format("RoleEnvironmentChanging: #{0} Type={1} Change={2}", i++, c.GetType().FullName, c));
             }
+
+            // If a configuration setting is changing);
+            if (e.Changes.Any((RoleEnvironmentChange change) => change is RoleEnvironmentConfigurationSettingChange))
+            {
+                // Set e.Cancel to true to restart this role instance
+                e.Cancel = true;
+            }
+        }
+
+        private static void SetupEnvironmentChangeHandlers()
+        {
+            // For information on handling configuration changes see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
         }
     }
 }

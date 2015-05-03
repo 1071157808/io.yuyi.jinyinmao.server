@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  12:26 PM
@@ -11,6 +11,7 @@
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -22,6 +23,14 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public interface IRegularProduct : IEntity
     {
+        /// <summary>
+        /// Builds the order asynchronous.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        /// <param name="transcationInfo">The transcation information.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> BuildOrderAsync(UserInfo userInfo, TranscationInfo transcationInfo);
+
         /// <summary>
         /// Gets the agreement asynchronous.
         /// </summary>

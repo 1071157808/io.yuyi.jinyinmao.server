@@ -23,8 +23,6 @@ namespace Yuyi.Jinyinmao.Domain
     using Orleans;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
-    using Yuyi.Jinyinmao.Domain.Dtos;
-    using Orleans.Runtime;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -142,7 +140,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public DateTime @IssueTime { get; set; }
 
-            public List<OrderInfo> @Orders { get; set; }
+            public List<Order> @Orders { get; set; }
 
             public Int32 @Period { get; set; }
 
@@ -182,7 +180,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public Nullable<Int32> @ValueDateMode { get; set; }
 
-            public Decimal @Yield { get; set; }
+            public Int32 @Yield { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
             {   
@@ -205,7 +203,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueNo", out value)) @IssueNo = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueTime", out value)) @IssueTime = (DateTime) value;
-                if (values.TryGetValue("Orders", out value)) @Orders = (List<OrderInfo>) value;
+                if (values.TryGetValue("Orders", out value)) @Orders = (List<Order>) value;
                 if (values.TryGetValue("Period", out value)) @Period = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("PledgeNo", out value)) @PledgeNo = (String) value;
                 if (values.TryGetValue("ProductCategory", out value)) @ProductCategory = value is Int32 ? (Int32)value : (Int64)value;
@@ -225,7 +223,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("Usage", out value)) @Usage = (String) value;
                 if (values.TryGetValue("ValueDate", out value)) @ValueDate = (Nullable<DateTime>) value;
                 if (values.TryGetValue("ValueDateMode", out value)) @ValueDateMode = (Nullable<Int32>) value;
-                if (values.TryGetValue("Yield", out value)) @Yield = (Decimal) value;
+                if (values.TryGetValue("Yield", out value)) @Yield = value is Int64 ? (Int32)(Int64)value : (Int32)value;
             }
 
             public override System.String ToString()
@@ -302,7 +300,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.FinancingSumAmount = default(Int32);
             this.IssueNo = default(Int32);
             this.IssueTime = default(DateTime);
-            this.Orders = new List<OrderInfo>();
+            this.Orders = new List<Order>();
             this.Period = default(Int32);
             this.PledgeNo = default(String);
             this.ProductCategory = default(Int64);
@@ -322,7 +320,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.Usage = default(String);
             this.ValueDate = default(Nullable<DateTime>);
             this.ValueDateMode = default(Nullable<Int32>);
-            this.Yield = default(Decimal);
+            this.Yield = default(Int32);
         }
         
         [global::Orleans.CodeGeneration.CopierMethodAttribute()]
@@ -343,157 +341,6 @@ namespace Yuyi.Jinyinmao.Domain
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             RegularProductState result = new RegularProductState();
-            result.DeserializeFrom(stream);
-            return result;
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.JBYAccount")]
-    public class JBYAccountState : global::Orleans.CodeGeneration.GrainState, IJBYAccountState
-    {
-        
-
-            public Guid @Id { get; set; }
-
-            public IList<Int32> @InterestRate { get; set; }
-
-            public IList<TransactionInfo> @Transactions { get; set; }
-
-            public Guid @UserId { get; set; }
-
-            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
-            {   
-                object value;
-                if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("InterestRate", out value)) @InterestRate = (IList<Int32>) value;
-                if (values.TryGetValue("Transactions", out value)) @Transactions = (IList<TransactionInfo>) value;
-                if (values.TryGetValue("UserId", out value)) @UserId = (Guid) value;
-            }
-
-            public override System.String ToString()
-            {
-                return System.String.Format("JBYAccountState( Id={0} InterestRate={1} Transactions={2} UserId={3} )", @Id, @InterestRate, @Transactions, @UserId);
-            }
-        
-        public JBYAccountState() : 
-                base("Yuyi.Jinyinmao.Domain.JBYAccount")
-        {
-            this.InitStateFields();
-        }
-        
-        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
-        {
-            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["Id"] = this.Id;
-            result["InterestRate"] = this.InterestRate;
-            result["Transactions"] = this.Transactions;
-            result["UserId"] = this.UserId;
-            return result;
-        }
-        
-        private void InitStateFields()
-        {
-            this.Id = default(Guid);
-            this.InterestRate = default(IList<Int32>);
-            this.Transactions = default(IList<TransactionInfo>);
-            this.UserId = default(Guid);
-        }
-        
-        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-        public static object _Copier(object original)
-        {
-            JBYAccountState input = ((JBYAccountState)(original));
-            return input.DeepCopy();
-        }
-        
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            JBYAccountState input = ((JBYAccountState)(original));
-            input.SerializeTo(stream);
-        }
-        
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            JBYAccountState result = new JBYAccountState();
-            result.DeserializeFrom(stream);
-            return result;
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Yuyi.Jinyinmao.Domain.SettlementAccount")]
-    public class SettlementAccountState : global::Orleans.CodeGeneration.GrainState, ISettlementAccountState
-    {
-        
-
-            public Guid @Id { get; set; }
-
-            public IList<TransactionInfo> @Transactions { get; set; }
-
-            public Guid @UserId { get; set; }
-
-            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
-            {   
-                object value;
-                if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("Transactions", out value)) @Transactions = (IList<TransactionInfo>) value;
-                if (values.TryGetValue("UserId", out value)) @UserId = (Guid) value;
-            }
-
-            public override System.String ToString()
-            {
-                return System.String.Format("SettlementAccountState( Id={0} Transactions={1} UserId={2} )", @Id, @Transactions, @UserId);
-            }
-        
-        public SettlementAccountState() : 
-                base("Yuyi.Jinyinmao.Domain.SettlementAccount")
-        {
-            this.InitStateFields();
-        }
-        
-        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
-        {
-            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["Id"] = this.Id;
-            result["Transactions"] = this.Transactions;
-            result["UserId"] = this.UserId;
-            return result;
-        }
-        
-        private void InitStateFields()
-        {
-            this.Id = default(Guid);
-            this.Transactions = default(IList<TransactionInfo>);
-            this.UserId = default(Guid);
-        }
-        
-        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-        public static object _Copier(object original)
-        {
-            SettlementAccountState input = ((SettlementAccountState)(original));
-            return input.DeepCopy();
-        }
-        
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            SettlementAccountState input = ((SettlementAccountState)(original));
-            input.SerializeTo(stream);
-        }
-        
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            SettlementAccountState result = new SettlementAccountState();
             result.DeserializeFrom(stream);
             return result;
         }
@@ -533,7 +380,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @InviteBy { get; set; }
 
-            public IJBYAccount @JBYAccount { get; set; }
+            public List<Transcation> @JBYAccount { get; set; }
 
             public List<String> @LoginNames { get; set; }
 
@@ -547,7 +394,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @Salt { get; set; }
 
-            public ISettlementAccount @SettlementAccount { get; set; }
+            public List<Transcation> @SettleAccount { get; set; }
 
             public Boolean @Verified { get; set; }
 
@@ -570,21 +417,21 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
                 if (values.TryGetValue("EncryptedPaymentPassword", out value)) @EncryptedPaymentPassword = (String) value;
                 if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
-                if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (IJBYAccount) value;
+                if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (List<Transcation>) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
                 if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
                 if (values.TryGetValue("PaymentSalt", out value)) @PaymentSalt = (String) value;
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
                 if (values.TryGetValue("Salt", out value)) @Salt = (String) value;
-                if (values.TryGetValue("SettlementAccount", out value)) @SettlementAccount = (ISettlementAccount) value;
+                if (values.TryGetValue("SettleAccount", out value)) @SettleAccount = (List<Transcation>) value;
                 if (values.TryGetValue("Verified", out value)) @Verified = (Boolean) value;
                 if (values.TryGetValue("VerifiedTime", out value)) @VerifiedTime = (Nullable<DateTime>) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} EventStore={1} Id={2} Args={3} BankCards={4} Cellphone={5} ClientType={6} ContractId={7} Credential={8} CredentialNo={9} EncryptedPassword={10} EncryptedPaymentPassword={11} InviteBy={12} JBYAccount={13} LoginNames={14} OutletCode={15} PaymentSalt={16} RealName={17} RegisterTime={18} Salt={19} SettlementAccount={20} Verified={21} VerifiedTime={22} )", @CommandStore, @EventStore, @Id, @Args, @BankCards, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettlementAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( CommandStore={0} EventStore={1} Id={2} Args={3} BankCards={4} Cellphone={5} ClientType={6} ContractId={7} Credential={8} CredentialNo={9} EncryptedPassword={10} EncryptedPaymentPassword={11} InviteBy={12} JBYAccount={13} LoginNames={14} OutletCode={15} PaymentSalt={16} RealName={17} RegisterTime={18} Salt={19} SettleAccount={20} Verified={21} VerifiedTime={22} )", @CommandStore, @EventStore, @Id, @Args, @BankCards, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -616,7 +463,7 @@ namespace Yuyi.Jinyinmao.Domain
             result["RealName"] = this.RealName;
             result["RegisterTime"] = this.RegisterTime;
             result["Salt"] = this.Salt;
-            result["SettlementAccount"] = this.SettlementAccount;
+            result["SettleAccount"] = this.SettleAccount;
             result["Verified"] = this.Verified;
             result["VerifiedTime"] = this.VerifiedTime;
             return result;
@@ -637,14 +484,14 @@ namespace Yuyi.Jinyinmao.Domain
             this.EncryptedPassword = default(String);
             this.EncryptedPaymentPassword = default(String);
             this.InviteBy = default(String);
-            this.JBYAccount = default(IJBYAccount);
+            this.JBYAccount = new List<Transcation>();
             this.LoginNames = new List<String>();
             this.OutletCode = default(String);
             this.PaymentSalt = default(String);
             this.RealName = default(String);
             this.RegisterTime = default(DateTime);
             this.Salt = default(String);
-            this.SettlementAccount = default(ISettlementAccount);
+            this.SettleAccount = new List<Transcation>();
             this.Verified = default(Boolean);
             this.VerifiedTime = default(Nullable<DateTime>);
         }
@@ -825,6 +672,79 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             AuthenticateSagaState result = new AuthenticateSagaState();
+            result.DeserializeFrom(stream);
+            return result;
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [SerializableAttribute()]
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.DepositByYilianSaga")]
+    public class DepositByYilianSagaState : global::Orleans.CodeGeneration.GrainState, IDepositByYilianSagaState
+    {
+        
+
+            public Guid @SagaId { get; set; }
+
+            public String @SagaType { get; set; }
+
+            public DepositFromYilianSagaInitDto @InitData { get; set; }
+
+            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
+            {   
+                object value;
+                if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
+                if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
+                if (values.TryGetValue("InitData", out value)) @InitData = (DepositFromYilianSagaInitDto) value;
+            }
+
+            public override System.String ToString()
+            {
+                return System.String.Format("DepositByYilianSagaState( SagaId={0} SagaType={1} InitData={2} )", @SagaId, @SagaType, @InitData);
+            }
+        
+        public DepositByYilianSagaState() : 
+                base("Yuyi.Jinyinmao.Domain.Sagas.DepositByYilianSaga")
+        {
+            this.InitStateFields();
+        }
+        
+        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
+        {
+            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["SagaId"] = this.SagaId;
+            result["SagaType"] = this.SagaType;
+            result["InitData"] = this.InitData;
+            return result;
+        }
+        
+        private void InitStateFields()
+        {
+            this.SagaId = default(Guid);
+            this.SagaType = default(String);
+            this.InitData = new DepositFromYilianSagaInitDto();
+        }
+        
+        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+        public static object _Copier(object original)
+        {
+            DepositByYilianSagaState input = ((DepositByYilianSagaState)(original));
+            return input.DeepCopy();
+        }
+        
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            DepositByYilianSagaState input = ((DepositByYilianSagaState)(original));
+            input.SerializeTo(stream);
+        }
+        
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            DepositByYilianSagaState result = new DepositByYilianSagaState();
             result.DeserializeFrom(stream);
             return result;
         }

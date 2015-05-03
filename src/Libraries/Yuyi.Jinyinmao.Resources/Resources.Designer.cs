@@ -61,7 +61,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败!如非本人操作，请致电4008556333.
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败。如需帮助，请致电4008556333.
         /// </summary>
         public static string Sms_AddBankCardFailed {
             get {
@@ -70,7 +70,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功!现在即可开始购买。如非本人操作，请致电4008556333.
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功。现在即可开始购买。如非本人操作，请致电4008556333.
         /// </summary>
         public static string Sms_AddBankCardSuccessed {
             get {
@@ -79,7 +79,34 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 恭喜您成功注册金银猫！如非本人操作，请致电4008556333.
+        ///   Looks up a localized string similar to 金银猫账户充值失败，金额{0}元。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】.
+        /// </summary>
+        public static string Sms_DepositFailed {
+            get {
+                return ResourceManager.GetString("Sms_DepositFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 金银猫账户充值成功，金额{0}元。如非本人操作，请致电4008556333.
+        /// </summary>
+        public static string Sms_DepositSuccessed {
+            get {
+                return ResourceManager.GetString("Sms_DepositSuccessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 您已购买成功金银猫理财产品，订单号：{0}，订单金额{1}元。如非本人操作，请致电4008556333.
+        /// </summary>
+        public static string Sms_OrderBuilt {
+            get {
+                return ResourceManager.GetString("Sms_OrderBuilt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 恭喜您成功注册金银猫。如非本人操作，请致电4008556333.
         /// </summary>
         public static string Sms_SignUpSuccessful {
             get {
@@ -120,6 +147,15 @@ namespace Yuyi.Jinyinmao {
         public static string Sms_VeriCode_SignUp {
             get {
                 return ResourceManager.GetString("Sms_VeriCode_SignUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 您申请的{0}元提现已被银行受理，请注意查收。.
+        /// </summary>
+        public static string Sms_WithdrawalResulted {
+            get {
+                return ResourceManager.GetString("Sms_WithdrawalResulted", resourceCulture);
             }
         }
     }
