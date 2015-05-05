@@ -3,11 +3,15 @@
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
     <StorageProviders>
-      <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase"
-                DataConnectionString="Server=tcp:pcqxuves5z.database.chinacloudapi.cn,1433;Database=cn.com.jinyinmao.dev.db.grains-{0};User ID=cn.com.jinyinmao.dev.db.user.api@pcqxuves5z;Password=tNGRj4iyPAk70lEu;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Provider Type="Yuyi.Jinyinmao.Domain.SqlDatabaseProvider" Name="SqlDatabase"
+                DataConnectionString="Server=tcp:et9odecrjx.database.chinacloudapi.cn,1433;Database=dev-db-grains-{0};User ID=dev-db-user-frontapp@et9odecrjx;Password=W7N5HSPewmqLjs7aAC8C;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
     <Messaging MaxResendCount="100" />
-    <SystemStore SystemStoreType="AzureTable" ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" DeploymentId="8E9D303C-DF3B-4C99-ABC4-578FBE94E63F" />
+    <SeedNode Address="localhost" Port="11111" />
+    <Liveness LivenessType="AzureTable" />
+    <Azure DeploymentId="8E9D303C-DF3B-4C99-ABC4-578FBE94E63F"
+           DataConnectionString="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+    <SystemStore ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" DeploymentId="8E9D303C-DF3B-4C99-ABC4-578FBE94E63F" />
   </Globals>
   <Defaults>
     <Networking Address="localhost" Port="11111" />

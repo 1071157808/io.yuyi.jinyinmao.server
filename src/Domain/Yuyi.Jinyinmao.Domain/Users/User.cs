@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  4:11 AM
+// Last Modified On : 2015-05-06  3:20 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
+using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -35,31 +36,48 @@ namespace Yuyi.Jinyinmao.Domain
     public class User : EntityGrain<IUserState>, IUser
     {
         /// <summary>
-        ///     Gets the jby account.
-        /// </summary>
-        /// <value>The jby account.</value>
-        public List<Transcation> JBYAccount
-        {
-            get { return this.State.JBYAccount.Where(t => t.ResultCode == 1).ToList(); }
-        }
-
-        /// <summary>
         ///     Gets or sets the error count.
         /// </summary>
         /// <value>The error count.</value>
         public int PasswordErrorCount { get; set; }
 
         /// <summary>
+        ///     用户所有的银行卡，包括未通过认证的
+        /// </summary>
+        private Dictionary<string, BankCard> BankCards { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the investing interest.
+        /// </summary>
+        /// <value>The investing interest.</value>
+        private int InvestingInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the principal.
+        /// </summary>
+        /// <value>The principal.</value>
+        private int InvestingPrincipal { get; set; }
+
+        /// <summary>
+        ///     Gets the jby account.
+        /// </summary>
+        /// <value>The jby account.</value>
+        private List<Transcation> JBYAccount
+        {
+            get { return this.State.JBYAccount.Where(t => t.ResultCode == 1).ToList(); }
+        }
+
+        /// <summary>
         ///     Gets or sets the payment password error count.
         /// </summary>
         /// <value>The payment password error count.</value>
-        public int PaymentPasswordErrorCount { get; set; }
+        private int PaymentPasswordErrorCount { get; set; }
 
         /// <summary>
         ///     Gets the settlement account.
         /// </summary>
         /// <value>The settlement account.</value>
-        public List<Transcation> SettleAccount
+        private List<Transcation> SettleAccount
         {
             get { return this.State.SettleAccount.Where(t => t.ResultCode == 1).ToList(); }
         }
@@ -68,9 +86,19 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the settlement account balance.
         /// </summary>
         /// <value>The settlement account balance.</value>
-        public int SettleAccountBalance { get; private set; }
+        private int SettleAccountBalance { get; set; }
 
-        private Dictionary<string, BankCard> BankCards { get; set; }
+        /// <summary>
+        ///     Gets or sets the total interest.
+        /// </summary>
+        /// <value>The total interest.</value>
+        private int TotalInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the total principal.
+        /// </summary>
+        /// <value>The total principal.</value>
+        private int TotalPrincipal { get; set; }
 
         #region IUser Members
 
@@ -122,11 +150,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task AddBankCardResultedAsync(AddBankCardSagaInitDto dto, bool result)
         {
+            bool isDefault = !this.State.BankCards.Any(c => c.IsDefault && c.Verified);
+
             if (result)
             {
                 this.State.BankCards.Where(c => c.BankCardNo == dto.Command.BankCardNo).ForEach(
                     c =>
                     {
+                        c.IsDefault = isDefault;
                         c.Verified = true;
                         c.VerifiedByYilian = true;
                         c.VerifiedTime = DateTime.UtcNow.AddHours(8);
@@ -137,7 +168,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.State.BankCards.RemoveAll(c => !c.Verified && c.BankCardNo == dto.Command.BankCardNo);
             }
 
-            await this.RaiseAddBankCardResultedEvent(dto, result);
+            await this.RaiseAddBankCardResultedEvent(dto, result, isDefault);
             await this.State.WriteStateAsync();
         }
 
@@ -148,7 +179,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task AuthenticateAsync(Authenticate command)
         {
-            if (!this.State.Verified)
+            if (this.State.Verified)
             {
                 return;
             }
@@ -265,7 +296,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Cellphone = this.State.Cellphone,
                 ErrorCount = this.PasswordErrorCount,
                 Success = false,
-                UserExist = false,
+                UserExist = true,
                 UserId = this.State.Id
             });
         }
@@ -313,6 +344,26 @@ namespace Yuyi.Jinyinmao.Domain
                 Success = false,
                 RemainCount = 5 - this.PaymentPasswordErrorCount
             });
+        }
+
+        /// <summary>
+        ///     Clears the unauthenticated information.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task ClearUnauthenticatedInfo()
+        {
+            if (!this.State.Verified)
+            {
+                this.State.RealName = string.Empty;
+                this.State.Credential = Credential.None;
+                this.State.CredentialNo = string.Empty;
+                this.State.VerifiedTime = null;
+            }
+
+            this.State.BankCards.RemoveAll(c => !c.Verified);
+            this.ReloadBankCardsData();
+
+            await this.State.WriteStateAsync();
         }
 
         /// <summary>
@@ -544,7 +595,25 @@ namespace Yuyi.Jinyinmao.Domain
             });
 
             IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
-            await product.BuildOrderAsync(await this.GetUserInfoAsync(), await this.GetSettleAccountTranscationInfoAsync(command.CommandId));
+            OrderInfo order = await product.BuildOrderAsync(await this.GetUserInfoAsync(), await this.GetSettleAccountTranscationInfoAsync(command.CommandId));
+            if (order == null)
+            {
+                this.State.SettleAccount.RemoveAll(t => t.TransactionId == command.CommandId);
+            }
+            else
+            {
+                if (this.State.Orders.All(o => o.OrderId != order.OrderId))
+                {
+                    this.State.Orders.Add(order);
+                }
+            }
+
+            await this.RaiseOrderBuiltEvent(order);
+
+            await this.State.WriteStateAsync();
+
+            this.ReloadSettleAccountData();
+            this.ReloadOrderInfosData();
         }
 
         /// <summary>
@@ -606,6 +675,25 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Repays the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="repaidTime">The repaid time.</param>
+        /// <returns>Task.</returns>
+        public Task RepayOrderAsync(Guid orderId, DateTime repaidTime)
+        {
+            this.State.Orders.Where(o => o.OrderId == orderId).ForEach(o =>
+            {
+                o.IsRepaid = true;
+                o.RepaidTime = repaidTime;
+
+                this.RaiseOrderRepaidEvent(o);
+            });
+
+            return TaskDone.Done;
+        }
+
+        /// <summary>
         ///     Resets the login password.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -645,7 +733,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task SetPaymentPasswordAsync(SetPaymentPassword command)
         {
-            if (this.State.EncryptedPaymentPassword.IsNullOrEmpty() && !command.Override)
+            if (this.State.EncryptedPaymentPassword.IsNotNullOrEmpty() && !command.Override)
             {
                 return;
             }
@@ -765,23 +853,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public override Task OnActivateAsync()
         {
-            if (this.State.BankCards == null)
-            {
-                this.State.BankCards = new List<BankCard>();
-            }
-
-            if (this.State.SettleAccount == null)
-            {
-                this.State.SettleAccount = new List<Transcation>();
-            }
-
-            if (this.State.JBYAccount == null)
-            {
-                this.State.JBYAccount = new List<Transcation>();
-            }
-
             this.ReloadBankCardsData();
             this.ReloadSettleAccountData();
+            this.ReloadOrderInfosData();
             return base.OnActivateAsync();
         }
 
@@ -790,8 +864,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="dto">The AddBankCardSagaInitDto.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
         /// <returns>Task.</returns>
-        private async Task RaiseAddBankCardResultedEvent(AddBankCardSagaInitDto dto, bool result)
+        private async Task RaiseAddBankCardResultedEvent(AddBankCardSagaInitDto dto, bool result, bool isDefault)
         {
             AddBankCardResulted @event = new AddBankCardResulted
             {
@@ -803,6 +878,7 @@ namespace Yuyi.Jinyinmao.Domain
                 SourceId = this.State.Id.ToGuidString(),
                 SourceType = this.GetType().Name,
                 CanBeUsedByYilian = true,
+                IsDefault = isDefault,
                 Result = result,
                 UserId = this.State.Id,
                 Verified = result,
@@ -848,7 +924,7 @@ namespace Yuyi.Jinyinmao.Domain
                     UserId = this.State.Id
                 },
                 UserInfo = await this.GetUserInfoAsync()
-            }, result);
+            }, result, true);
         }
 
         /// <summary>
@@ -907,6 +983,75 @@ namespace Yuyi.Jinyinmao.Domain
             await LoginPasswordResetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
+        private async Task RaiseOrderBuiltEvent(OrderInfo order)
+        {
+            OrderBuilt @event = new OrderBuilt
+            {
+                AccountTranscationId = order.AccountTranscationId,
+                Args = new object().ToJson(),
+                Cellphone = order.Cellphone,
+                ExtraInterest = order.ExtraInterest,
+                ExtraYield = order.ExtraYield,
+                Info = order.Info,
+                Interest = order.Interest,
+                IsRepaid = order.IsRepaid,
+                OrderId = order.OrderId,
+                OrderNo = order.OrderNo,
+                OrderTime = order.OrderTime,
+                Principal = order.Principal,
+                ProductId = order.ProductId,
+                ProductSnapshot = order.ProductSnapshot,
+                RepaidTime = order.RepaidTime,
+                ResultCode = order.ResultCode,
+                ResultTime = order.ResultTime,
+                SettleDate = order.SettleDate,
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name,
+                TransDesc = order.TransDesc,
+                UserId = order.UserId,
+                UserInfo = order.UserInfo,
+                ValueDate = order.ValueDate,
+                Yield = order.Yield
+            };
+            await this.StoreEventAsync(@event);
+
+            await OrderBuiltProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        }
+
+        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo)
+        {
+            OrderRepaid @event = new OrderRepaid
+            {
+                AccountTranscationId = orderInfo.AccountTranscationId,
+                Args = new object().ToJson(),
+                Cellphone = orderInfo.Cellphone,
+                ExtraInterest = orderInfo.ExtraInterest,
+                ExtraYield = orderInfo.ExtraYield,
+                Info = orderInfo.Info,
+                Interest = orderInfo.Interest,
+                IsRepaid = orderInfo.IsRepaid,
+                OrderId = orderInfo.OrderId,
+                OrderNo = orderInfo.OrderNo,
+                OrderTime = orderInfo.OrderTime,
+                Principal = orderInfo.Principal,
+                ProductId = orderInfo.ProductId,
+                ProductSnapshot = orderInfo.ProductSnapshot,
+                RepaidTime = orderInfo.RepaidTime,
+                ResultCode = orderInfo.ResultCode,
+                ResultTime = orderInfo.ResultTime,
+                SettleDate = orderInfo.SettleDate,
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name,
+                TransDesc = string.Empty,
+                UserId = orderInfo.UserId,
+                UserInfo = orderInfo.UserInfo,
+                ValueDate = orderInfo.ValueDate,
+                Yield = orderInfo.Yield
+            };
+
+            await this.StoreEventAsync(@event);
+        }
+
         private async Task RaisePaymentPasswordSetEvent(SetPaymentPassword command)
         {
             if (command.Override)
@@ -955,7 +1100,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OutletCode = userRegister.OutletCode,
                 RegisterTime = this.State.RegisterTime,
                 UserId = userRegister.UserId,
-                SourceId = this.State.Id.ToGuidString(),
+                SourceId = this.GetPrimaryKey().ToGuidString(),
                 SourceType = this.GetType().Name
             };
 
@@ -997,6 +1142,17 @@ namespace Yuyi.Jinyinmao.Domain
         private void ReloadBankCardsData()
         {
             this.BankCards = this.State.BankCards.ToDictionary(c => c.BankCardNo);
+        }
+
+        private void ReloadOrderInfosData()
+        {
+            List<OrderInfo> paidOrders = this.State.Orders.Where(o => o.ResultCode == 1).ToList();
+            List<OrderInfo> investingOrders = paidOrders.Where(o => !o.IsRepaid).ToList();
+
+            this.TotalPrincipal = paidOrders.Sum(o => o.Principal);
+            this.TotalInterest = paidOrders.Sum(o => o.Interest + o.ExtraInterest);
+            this.InvestingPrincipal = investingOrders.Sum(o => o.Principal);
+            this.InvestingInterest = investingOrders.Sum(o => o.Interest + o.ExtraInterest);
         }
 
         private void ReloadSettleAccountData()

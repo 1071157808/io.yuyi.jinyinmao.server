@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  7:11 PM
@@ -59,7 +59,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200"></response>
         /// <response code="404">无该协议</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Agreement/{productNo: minlength(5)}-{productIdentifier:length(32)}-{agreementIndex:int}"), CookieAuthorize]
+        [HttpGet, Route("Agreement/{productNo:length(5,50)}-{productIdentifier:length(32)}-{agreementIndex:int}"), CookieAuthorize]
         public async Task<IHttpActionResult> GetAgreement(string productNo, string productIdentifier, int agreementIndex)
         {
             string content = await this.productInfoService.GetAgreementAsync(productNo, productIdentifier, agreementIndex);
@@ -95,21 +95,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     获取产品信息列表
+        ///     获取产品的已售金额
         /// </summary>
-        /// <remarks>
-        ///     每页数量为10个，页数从0开始。接口数据有有3分钟的缓存。
-        /// </remarks>
-        /// <param name="index">页码，从0开始，默认值为0</param>
-        /// <param name="category">产品分类，默认值为100000010，详细的产品分类参考文档 </param>
+        /// <remarks>返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
+        /// <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
         /// <response code="200"></response>
-        /// <response code="404">无该产品信息</response>
+        /// <response code="404">无该产品</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Page/{index:int=1:min(1)}/{category:long=100000010}"), ResponseType(typeof(IPaginatedList<RegularProductInfoResponse>))]
-        public async Task<IHttpActionResult> Page(int index = 1, long category = 100000010)
+        [HttpGet, Route("Sold/{productIdentifier:length(32)}")]
+        public async Task<IHttpActionResult> GetSaleProcess(string productIdentifier)
         {
-            PaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, category);
-            return this.Ok(infos.ToPaginated(i => i.ToResponse()));
+            Guid productId;
+            if (Guid.TryParseExact(productIdentifier, "N", out productId))
+            {
+                return this.Ok(new { Paid = await this.productInfoService.GetProductPaidAmountAsync(productId) });
+            }
+
+            return this.NotFound();
         }
 
         /// <summary>
@@ -131,23 +133,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     获取产品的已售金额
+        ///     获取产品信息列表
         /// </summary>
-        /// <remarks>返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
-        /// <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
+        /// <remarks>
+        ///     每页数量为10个，页数从0开始。接口数据有有3分钟的缓存。
+        /// </remarks>
+        /// <param name="index">页码，从0开始，默认值为0</param>
+        /// <param name="category">产品分类，默认值为100000010，详细的产品分类参考文档 </param>
         /// <response code="200"></response>
-        /// <response code="404">无该产品</response>
+        /// <response code="404">无该产品信息</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Sold/{productIdentifier:length(32)}")]
-        public async Task<IHttpActionResult> GetSaleProcess(string productIdentifier)
+        [HttpGet, Route("Page/{index:int=1:min(1)}/{category:long=100000010}"), ResponseType(typeof(IPaginatedList<RegularProductInfoResponse>))]
+        public async Task<IHttpActionResult> Page(int index = 1, long category = 100000010)
         {
-            Guid productId;
-            if (Guid.TryParseExact(productIdentifier, "N", out productId))
-            {
-                return this.Ok(new { Paid = await this.productInfoService.GetProductPaidAmountAsync(productId) });
-            }
-
-            return this.NotFound();
+            PaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, category);
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()));
         }
     }
 }

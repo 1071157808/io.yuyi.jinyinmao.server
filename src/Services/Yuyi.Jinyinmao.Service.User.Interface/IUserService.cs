@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  1:56 AM
+// Last Modified On : 2015-05-06  2:02 AM
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -38,12 +38,19 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task AuthenticateAsync(Authenticate command);
 
         /// <summary>
-        /// Checks the payment password asynchronous.
+        ///     Checks the payment password asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="paymentPassword">The payment password.</param>
         /// <returns>Task&lt;CheckPaymentPasswordResult&gt;.</returns>
         Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(Guid userId, string paymentPassword);
+
+        /// <summary>
+        ///     Clears the unauthenticated information.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task.</returns>
+        Task ClearUnauthenticatedInfo(Guid userId);
 
         /// <summary>
         ///     Deposits from the settle account asynchronous.
@@ -53,7 +60,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task DepositAsync(DepositFromYilian command);
 
         /// <summary>
-        /// Investings the asynchronous.
+        ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The regular investing.</param>
         /// <returns>Task.</returns>

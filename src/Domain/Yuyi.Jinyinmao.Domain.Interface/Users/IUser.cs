@@ -78,6 +78,12 @@ namespace Yuyi.Jinyinmao.Domain
         Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(string paymentPassword);
 
         /// <summary>
+        /// Clears the unauthenticated information.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task ClearUnauthenticatedInfo();
+
+        /// <summary>
         ///     Deposits from the settle account asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -144,6 +150,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command"></param>
         /// <returns>Task.</returns>
         Task RegisterAsync(UserRegister command);
+
+        /// <summary>
+        /// Repays the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="repaidTime">The repaid time.</param>
+        /// <returns>Task.</returns>
+        Task RepayOrderAsync(Guid orderId, DateTime repaidTime);
 
         /// <summary>
         ///     Resets the login password.

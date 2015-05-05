@@ -106,6 +106,15 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 您购买的金银猫理财产品已经还款，订单号：{0}，本息共计{1}元。如需帮助，请致电4008556333.
+        /// </summary>
+        public static string Sms_OrderRepaid {
+            get {
+                return ResourceManager.GetString("Sms_OrderRepaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 恭喜您成功注册金银猫。如非本人操作，请致电4008556333.
         /// </summary>
         public static string Sms_SignUpSuccessful {

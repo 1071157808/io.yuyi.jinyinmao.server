@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  5:48 PM
+// Last Modified On : 2015-05-05  7:03 PM
 // ***********************************************************************
 // <copyright file="JYMDBContext.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -51,12 +51,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public DbSet<BankCard> BankCards { get; set; }
 
         /// <summary>
-        ///     Gets or sets the jby configs.
-        /// </summary>
-        /// <value>The jby configs.</value>
-        public DbSet<JBYConfig> JBYConfigs { get; set; }
-
-        /// <summary>
         ///     Gets or sets the jby products.
         /// </summary>
         /// <value>The jby products.</value>
@@ -100,7 +94,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         {
             modelBuilder.Configurations.Add(new AccountTranscationMap());
             modelBuilder.Configurations.Add(new BankCardMap());
-            modelBuilder.Configurations.Add(new JBYConfigMap());
             modelBuilder.Configurations.Add(new JBYProductMap());
             modelBuilder.Configurations.Add(new JBYTranscationMap());
             modelBuilder.Configurations.Add(new OrderMap());

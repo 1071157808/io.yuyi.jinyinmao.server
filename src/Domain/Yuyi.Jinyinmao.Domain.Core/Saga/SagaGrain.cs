@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-26  10:00 PM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  10:14 PM
+// Last Modified On : 2015-05-06  2:22 AM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -46,7 +46,19 @@ namespace Yuyi.Jinyinmao.Domain
         /// </returns>
         public async Task ReceiveReminder(string reminderName, TickStatus status)
         {
-            await this.ProcessAsync();
+            TableResult tableResult = await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.Retrieve<SagaEntity>(this.State.SagaType, this.State.SagaId.ToGuidString()));
+            this.SagaEntity = (SagaEntity)tableResult.Result;
+
+            try
+            {
+                await this.ProcessAsync();
+            }
+            catch (Exception e)
+            {
+                this.RunIntoError(e.Message, e);
+            }
+
+            await this.StoreSagaEntityAsync();
         }
 
         #endregion IRemindable Members
@@ -79,13 +91,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Initializes the saga entity.
         /// </summary>
-        protected virtual void InitSagaEntity()
+        /// <param name="initDataJson">The initialize data json.</param>
+        protected virtual void InitSagaEntity(string initDataJson)
         {
             this.SagaEntity = new SagaEntity
             {
                 BeginTime = DateTime.UtcNow.AddHours(8),
                 UpdateTime = DateTime.UtcNow.AddHours(8),
-                Info = new Dictionary<string, object>(),
+                Info = new Dictionary<string, object>().ToJson(),
                 InitData = new Object().ToJson(),
                 Message = string.Empty,
                 PartitionKey = this.State.SagaType,
@@ -97,12 +110,41 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     store saga entity as an asynchronous operation.
+        ///     Registers the reminder.
+        /// </summary>
+        /// <returns>Task.</returns>
+        protected virtual async Task RegisterReminder()
+        {
+            await this.RegisterOrUpdateReminder("Saga", TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+        }
+
+        /// <summary>
+        ///     Runs the into error.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        protected void RunIntoError(string message, Exception exception)
+        {
+            this.SagaEntity.Message = message;
+            this.SagaEntity.Add("Exception", exception.GetExceptionString());
+        }
+
+        /// <summary>
+        ///     Store saga entity asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         protected async Task StoreSagaEntityAsync()
         {
-            await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.Insert(this.SagaEntity));
+            await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.InsertOrReplace(this.SagaEntity));
+        }
+
+        /// <summary>
+        ///     Unregisters the reminder.
+        /// </summary>
+        /// <returns>Task.</returns>
+        protected virtual async Task UnregisterReminder()
+        {
+            await this.UnregisterReminder(await this.GetReminder("Saga"));
         }
     }
 }

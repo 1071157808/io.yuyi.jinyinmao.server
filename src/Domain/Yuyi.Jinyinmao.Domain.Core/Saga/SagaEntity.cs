@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  7:24 PM
+// Last Modified On : 2015-05-06  12:03 AM
 // ***********************************************************************
 // <copyright file="SagaEntity.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,6 +14,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage.Table;
+using Moe.Lib;
+using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -32,7 +34,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the information.
         /// </summary>
         /// <value>The information.</value>
-        public Dictionary<string, object> Info { get; set; }
+        public string Info { get; set; }
 
         /// <summary>
         ///     Gets or sets the initialize data.
@@ -69,5 +71,25 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The update time.</value>
         public DateTime UpdateTime { get; set; }
+
+        /// <summary>
+        ///     Adds the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        public void Add(string key, object value)
+        {
+            Dictionary<string, object> info = JsonConvert.DeserializeObject<Dictionary<string, object>>(this.Info);
+            if (info.ContainsKey(key))
+            {
+                info[key] = value;
+            }
+            else
+            {
+                info.Add(key, value);
+            }
+
+            this.Info = info.ToJson();
+        }
     }
 }

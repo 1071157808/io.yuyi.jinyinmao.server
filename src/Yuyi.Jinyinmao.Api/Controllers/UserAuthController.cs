@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  9:31 AM
+// Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-28  10:51 AM
+// Last Modified On : 2015-05-06  2:11 AM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -141,6 +141,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     清楚未认证成功的身份信息
+        /// </summary>
+        /// <remarks>
+        ///     调用该接口会清楚未认证的身份信息和银行卡信息，清楚了的信心之后后收到的认证通过结果也会被忽略
+        /// </remarks>
+        /// <response code="200"></response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [Route("ClearUnauthenticatedInfo"), CookieAuthorize]
+        public async Task<IHttpActionResult> ClearUnauthenticatedInfo()
+        {
+            await this.userService.ClearUnauthenticatedInfo(this.CurrentUser.Id);
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     重置登录密码
         /// </summary>
         /// <remarks>
@@ -155,7 +172,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UARLP2:手机号码不存在，密码修改失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
         {
             UseVeriCodeResult veriCodeResult = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetLoginPassword);
@@ -244,6 +261,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200">重置成功</response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="400">UASPP1:支付密码不能与登录密码一致，请选择新的支付密码</response>
+        /// <response code="400">UASPP2: 支付密码已经设置，请直接使用</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
@@ -252,6 +270,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
             {
                 return this.BadRequest("UASPP1:支付密码不能与登录密码一致，请选择新的支付密码");
+            }
+
+            UserInfo info = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (info.HaSetPaymentPassword)
+            {
+                return this.BadRequest("UASPP2: 支付密码已经设置，请直接使用");
             }
 
             await this.userService.SetPaymentPasswordAsync(new SetPaymentPassword

@@ -1,17 +1,16 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-27  6:08 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  5:48 PM
+// Last Modified On : 2015-05-06  3:13 AM
 // ***********************************************************************
 // <copyright file="AuthenticateResultedProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -32,35 +31,26 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public override Task ProcessEventAsync(AuthenticateResulted @event)
+        public override async Task ProcessEventAsync(AuthenticateResulted @event)
         {
-            Task.Factory.StartNew(async () =>
+            string userIdentifier = @event.UserId.ToGuidString();
+            await this.ProcessingEventAsync(@event, async e =>
             {
-                if (@event.Result)
+                using (JYMDBContext db = new JYMDBContext())
                 {
-                    try
-                    {
-                        using (JYMDBContext db = new JYMDBContext())
-                        {
-                            Models.User user = await db.Query<Models.User>().FirstAsync(u => u.UserIdentifier == @event.UserId.ToGuidString());
+                    Models.User user = await db.Query<Models.User>().FirstAsync(u => u.UserIdentifier == userIdentifier);
 
-                            user.RealName = @event.RealName;
-                            user.Credential = (int)@event.Credential;
-                            user.CredentialNo = @event.CredentialNo;
-                            user.Verified = true;
-                            user.VerifiedTime = @event.VerifiedTime;
+                    user.RealName = e.RealName;
+                    user.Credential = (int)e.Credential;
+                    user.CredentialNo = e.CredentialNo;
+                    user.Verified = true;
+                    user.VerifiedTime = e.VerifiedTime;
 
-                            await db.SaveChangesAsync();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
-                    }
+                    await db.SaveChangesAsync();
                 }
             });
 
-            return base.ProcessEventAsync(@event);
+            await base.ProcessEventAsync(@event);
         }
 
         #endregion IAuthenticateResultedProcessor Members

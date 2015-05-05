@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  2:05 AM
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System.Threading.Tasks;
+using Orleans;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Sagas
@@ -19,7 +20,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     /// <summary>
     ///     Interface IAddBankCardSaga
     /// </summary>
-    public interface IAddBankCardSaga : ISaga
+    public interface IAddBankCardSaga : IGrain
     {
         /// <summary>
         ///     Begins the process.

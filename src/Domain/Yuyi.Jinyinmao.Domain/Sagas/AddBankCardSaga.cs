@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  2:17 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:16 AM
+// Last Modified On : 2015-05-06  12:07 AM
 // ***********************************************************************
 // <copyright file="AddBankCardSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
+using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service;
 
@@ -23,6 +24,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     /// <summary>
     ///     AddBankCardSaga.
     /// </summary>
+    [StorageProvider(ProviderName = "SqlDatabase")]
     public class AddBankCardSaga : SagaGrain<IAddBankCardSagaState>, IAddBankCardSaga
     {
         private IYilianPaymentGatewayService Service { get; set; }
@@ -37,48 +39,18 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public async Task BeginProcessAsync(AddBankCardSagaInitDto initData)
         {
             this.State.InitData = initData;
-            this.InitSagaEntity();
+            this.InitSagaEntity(initData.ToString());
 
             AuthRequestParameter parameter = await this.BuildRequestParameter();
             YilianRequestResult result = await this.Service.AuthRequestAsync(parameter);
-            this.SagaEntity.Info.Add("Reuqest", new { result.Message, result.ResponseString });
+            this.SagaEntity.Add("Reuqest", new { result.Message, result.ResponseString });
             if (!result.Result)
             {
                 this.SagaEntity.State = -1;
             }
             else
             {
-                await this.RegisterOrUpdateReminder("Saga", TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
-            }
-
-            await this.StoreSagaEntityAsync();
-        }
-
-        /// <summary>
-        ///     Processes the saga task asynchronous.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public override async Task ProcessAsync()
-        {
-            YilianRequestResult result = await this.Service.QueryRequestAsync(this.State.SagaId.ToGuidString(), false);
-
-            TableResult tableResult = await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.Retrieve<SagaEntity>(this.State.SagaType, this.State.SagaId.ToGuidString()));
-
-            this.SagaEntity = (SagaEntity)tableResult.Result;
-
-            if (result == null)
-            {
-                this.SagaEntity.Info["Query"] = new { Message = "Processing" };
-            }
-            else
-            {
-                this.SagaEntity.Info["Query"] = new { result.Message, result.ResponseString };
-                this.SagaEntity.State = 1;
-
-                await this.UnregisterReminder(await this.GetReminder("Saga"));
-
-                IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AddBankCardResultedAsync(this.State.InitData, result.Result);
+                await this.RegisterReminder();
             }
 
             await this.StoreSagaEntityAsync();
@@ -99,12 +71,33 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         }
 
         /// <summary>
-        ///     Initializes the saga entity.
+        ///     Processes the saga task asynchronous.
         /// </summary>
-        protected override void InitSagaEntity()
+        /// <returns>Task.</returns>
+        public override async Task ProcessAsync()
         {
-            base.InitSagaEntity();
-            this.SagaEntity.InitData = this.State.InitData.ToJson();
+            YilianRequestResult result = await this.Service.QueryRequestAsync(this.State.SagaId.ToGuidString(), false);
+
+            TableResult tableResult = await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.Retrieve<SagaEntity>(this.State.SagaType, this.State.SagaId.ToGuidString()));
+
+            this.SagaEntity = (SagaEntity)tableResult.Result;
+
+            if (result == null)
+            {
+                this.SagaEntity.Add("Query", new { Message = "Processing" });
+            }
+            else
+            {
+                this.SagaEntity.Add("Query", new { result.Message, result.ResponseString });
+                this.SagaEntity.State = 1;
+
+                await this.UnregisterReminder();
+
+                IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
+                await user.AddBankCardResultedAsync(this.State.InitData, result.Result);
+            }
+
+            await this.StoreSagaEntityAsync();
         }
 
         private async Task<AuthRequestParameter> BuildRequestParameter()

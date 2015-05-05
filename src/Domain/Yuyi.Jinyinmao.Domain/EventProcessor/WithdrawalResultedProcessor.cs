@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-04  2:22 AM
@@ -32,43 +32,30 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public override Task ProcessEventAsync(WithdrawalResulted @event)
+        public override async Task ProcessEventAsync(WithdrawalResulted @event)
         {
-            Task.Factory.StartNew(async () =>
+            string transcationIdentifier = @event.TranscationId.ToGuidString();
+            await this.ProcessingEventAsync(@event, async e =>
             {
-                try
+                string message = Resources.Sms_WithdrawalResulted;
+                await this.SmsService.SendMessageAsync(e.Cellphone, message.FormatWith(e.Amount / 100));
+            });
+
+            await this.ProcessingEventAsync(@event, async e =>
+            {
+                using (JYMDBContext db = new JYMDBContext())
                 {
-                    string message = Resources.Sms_WithdrawalResulted;
-                    await this.SmsService.SendMessageAsync(@event.Cellphone, message.FormatWith(@event.Amount / 100));
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
+                    AccountTranscation transcation = await db.Query<AccountTranscation>().FirstAsync(t => t.TranscationIdentifier == transcationIdentifier);
+
+                    transcation.ResultTime = e.ResultTime;
+                    transcation.ResultCode = e.ResultCode;
+                    transcation.TransDesc = e.TransDesc;
+
+                    await db.ExecuteSaveChangesAsync();
                 }
             });
 
-            Task.Factory.StartNew(async () =>
-            {
-                try
-                {
-                    using (JYMDBContext db = new JYMDBContext())
-                    {
-                        AccountTranscation transcation = await db.Query<AccountTranscation>().FirstAsync(t => t.TranscationIdentifier == @event.TranscationId.ToGuidString());
-
-                        transcation.ResultTime = @event.ResultTime;
-                        transcation.ResultCode = @event.ResultCode;
-                        transcation.TransDesc = @event.TransDesc;
-
-                        await db.ExecuteSaveChangesAsync();
-                    }
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
-                }
-            });
-
-            return base.ProcessEventAsync(@event);
+            await base.ProcessEventAsync(@event);
         }
 
         #endregion IWithdrawalResultedProcessor Members

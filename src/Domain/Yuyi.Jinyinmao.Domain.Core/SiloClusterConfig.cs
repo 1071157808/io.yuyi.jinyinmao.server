@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  4:13 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  1:25 AM
+// Last Modified On : 2015-05-04  10:46 AM
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -35,15 +35,15 @@ namespace Yuyi.Jinyinmao.Domain
             CloudTableClient tableClient = CloudStorageAccount.CreateCloudTableClient();
             tableClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
             CommandStoreTable = tableClient.GetTableReference("CommandStore");
-            SagasTable = tableClient.GetTableReference("Sagas");
             EventProcessingErrorsTable = tableClient.GetTableReference("EventProcessingErrors");
             EventStoreTable = tableClient.GetTableReference("EventStore");
             ProductCacheTable = tableClient.GetTableReference("ProductCache");
+            SagasTable = tableClient.GetTableReference("Sagas");
 
             CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
             blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
-            PublicFileContainer = blobClient.GetContainerReference("PublicFiles");
-            PrivateFileContainer = blobClient.GetContainerReference("PrivateFiles");
+            PublicFileContainer = blobClient.GetContainerReference("publicfiles");
+            PrivateFileContainer = blobClient.GetContainerReference("privatefiles");
 
             ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
         }
@@ -59,43 +59,43 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets the command store table.
         /// </summary>
         /// <value>The command store table.</value>
-        public static CloudTable CommandStoreTable { get; private set; }
+        public static CloudTable CommandStoreTable { get; }
 
         /// <summary>
         ///     Gets the event processing errors table.
         /// </summary>
         /// <value>The event processing errors table.</value>
-        public static CloudTable EventProcessingErrorsTable { get; private set; }
+        public static CloudTable EventProcessingErrorsTable { get; }
 
         /// <summary>
         ///     Gets the event store table.
         /// </summary>
         /// <value>The event store table.</value>
-        public static CloudTable EventStoreTable { get; private set; }
+        public static CloudTable EventStoreTable { get; }
 
         /// <summary>
         ///     Gets the private file container.
         /// </summary>
         /// <value>The private file container.</value>
-        public static CloudBlobContainer PrivateFileContainer { get; private set; }
+        public static CloudBlobContainer PrivateFileContainer { get; }
 
         /// <summary>
         ///     Gets the product cache table.
         /// </summary>
         /// <value>The product cache table.</value>
-        public static CloudTable ProductCacheTable { get; private set; }
+        public static CloudTable ProductCacheTable { get; }
 
         /// <summary>
         ///     Gets the public file container.
         /// </summary>
         /// <value>The public file container.</value>
-        public static CloudBlobContainer PublicFileContainer { get; private set; }
+        public static CloudBlobContainer PublicFileContainer { get; }
 
         /// <summary>
         ///     Gets or sets the sagas table.
         /// </summary>
         /// <value>The sagas table.</value>
-        public static CloudTable SagasTable { get; private set; }
+        public static CloudTable SagasTable { get; }
 
         /// <summary>
         ///     Gets or sets the service bus connectiong string.
@@ -116,19 +116,37 @@ namespace Yuyi.Jinyinmao.Domain
         /// </exception>
         public static void CheckConfig()
         {
-            //TODO: finish this
-
-            if (CloudStorageAccount.CreateCloudTableClient().GetTableReference("CommandStore") == null)
+            if (!CommandStoreTable.Exists())
             {
                 throw new ApplicationException("Can not connect to Command Store");
             }
 
-            if (CloudStorageAccount.CreateCloudTableClient().GetTableReference("EventStore") == null)
+            if (!EventProcessingErrorsTable.Exists())
+            {
+                throw new ApplicationException("Can not connect to Event Processing Errors");
+            }
+
+            if (!EventStoreTable.Exists())
             {
                 throw new ApplicationException("Can not connect to Event Store");
             }
 
-            if (CloudStorageAccount.CreateCloudTableClient().GetTableReference("EventProcessingErrors") == null)
+            if (!ProductCacheTable.Exists())
+            {
+                throw new ApplicationException("Can not connect to Product Cache");
+            }
+
+            if (!SagasTable.Exists())
+            {
+                throw new ApplicationException("Can not connect to Sagas");
+            }
+
+            if (!PublicFileContainer.Exists())
+            {
+                throw new ApplicationException("Can not connect to Event Processing Errors");
+            }
+
+            if (!PrivateFileContainer.Exists())
             {
                 throw new ApplicationException("Can not connect to Event Processing Errors");
             }
@@ -139,9 +157,34 @@ namespace Yuyi.Jinyinmao.Domain
                 throw new ApplicationException("Can not connect to Events Service Bus");
             }
 
+            if (!namespaceManager.TopicExists("add_bank_card_resulted"))
+            {
+                throw new ApplicationException("Can not connect to topic add_bank_card_resulted");
+            }
+
+            if (!namespaceManager.TopicExists("authenticate_resulted"))
+            {
+                throw new ApplicationException("Can not connect to topic authenticate_resulted");
+            }
+
+            if (!namespaceManager.TopicExists("deposit_from_yilian_resulted"))
+            {
+                throw new ApplicationException("Can not connect to topic deposit_from_yilian_resulted");
+            }
+
             if (!namespaceManager.TopicExists("login_password_reset"))
             {
                 throw new ApplicationException("Can not connect to topic login_password_reset");
+            }
+
+            if (!namespaceManager.TopicExists("order_built"))
+            {
+                throw new ApplicationException("Can not connect to topic order_built");
+            }
+
+            if (!namespaceManager.TopicExists("order_repaid"))
+            {
+                throw new ApplicationException("Can not connect to topic order_repaid");
             }
 
             if (!namespaceManager.TopicExists("payment_password_reset"))
@@ -154,9 +197,19 @@ namespace Yuyi.Jinyinmao.Domain
                 throw new ApplicationException("Can not connect to topic payment_password_set");
             }
 
+            if (!namespaceManager.TopicExists("regular_product_issued"))
+            {
+                throw new ApplicationException("Can not connect to topic regular_product_issued");
+            }
+
             if (!namespaceManager.TopicExists("user_registered"))
             {
                 throw new ApplicationException("Can not connect to topic user_registered");
+            }
+
+            if (!namespaceManager.TopicExists("withdrawal_resulted"))
+            {
+                throw new ApplicationException("Can not connect to topic withdrawal_resulted");
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
@@ -64,11 +64,11 @@ namespace Yuyi.Jinyinmao.Service
             string veriCode;
             VeriCode code;
 
-            using (MiscContext context = new MiscContext())
+            using (JYMDBContext context = new JYMDBContext())
             {
                 // 时间大于今天开始日期，就一定是今天发送的验证码
                 code = await context.Query<VeriCode>().OrderByDescending(c => c.BuildAt)
-                    .FirstOrDefaultAsync(c => c.Cellphone == cellphone && c.Type == type && c.BuildAt >= DateTime.Today);
+                    .FirstOrDefaultAsync(c => c.Cellphone == cellphone && c.Type == (int)type && c.BuildAt >= DateTime.Today);
 
                 // 超过最大次数，停止发送
                 if (code != null && code.Times >= maxSendTimes)
@@ -103,7 +103,7 @@ namespace Yuyi.Jinyinmao.Service
                         ErrorCount = 0,
                         BuildAt = DateTime.UtcNow.AddHours(8),
                         Times = 1,
-                        Type = type,
+                        Type = (int)type,
                         Used = false,
                         Verified = false,
                         Args = args
@@ -130,12 +130,12 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;UseVeriCodeResult&gt;.</returns>
         public async Task<UseVeriCodeResult> UseAsync(string token, VeriCodeType type)
         {
-            using (MiscContext context = new MiscContext())
+            using (JYMDBContext context = new JYMDBContext())
             {
                 // 验证码的使用有效期为30分钟
                 DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-veriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
-                    .FirstOrDefaultAsync(v => v.Token == token && v.Type == type && v.BuildAt >= availableTime);
+                    .FirstOrDefaultAsync(v => v.Token == token && v.Type == (int)type && v.BuildAt >= availableTime);
 
                 if (veriCode == null || !veriCode.Verified || veriCode.Used) return new UseVeriCodeResult();
 
@@ -159,12 +159,12 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;VerifyVeriCodeResult&gt;.</returns>
         public async Task<VerifyVeriCodeResult> VerifyAsync(string cellphone, string code, VeriCodeType type)
         {
-            using (MiscContext context = new MiscContext())
+            using (JYMDBContext context = new JYMDBContext())
             {
                 // 只取有效期内的验证码
                 DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-veriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
-                    .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == type && v.BuildAt >= availableTime);
+                    .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == (int)type && v.BuildAt >= availableTime);
 
                 // 无该手机验证码记录，或者超过3次，验证码失效
                 if (veriCode == null || veriCode.ErrorCount >= 3)

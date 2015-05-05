@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  12:19 PM
+// Last Modified On : 2015-05-04  3:17 PM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -147,7 +147,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             // Identifier
             string guid = tokenContents[0];
-            if (String.IsNullOrWhiteSpace(guid) || guid.Length != 32)
+            if (String.IsNullOrWhiteSpace(guid) || guid.Length != 36)
             {
                 return false;
             }

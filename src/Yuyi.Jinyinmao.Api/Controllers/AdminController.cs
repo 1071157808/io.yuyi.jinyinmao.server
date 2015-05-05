@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
@@ -105,8 +105,28 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        /// 定期理财产品还款通知
+        /// </summary>
+        /// <param name="productIdentifier">The product identifier.</param>
+        /// <param name="productNo">The product no.</param>
+        /// <param name="productCategory">The product category.</param>
+        /// <response code="200"></response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="401">未授权</response>
+        /// <response code="500"></response>
+        [Route("RegularProduct/Repay"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public IHttpActionResult RegularProductRepay(string productIdentifier, string productNo, string productCategory)
+        {
+            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            this.productService.RepayAsync(productId, productNo, productCategory);
+
+            return this.Ok();
+        }
+
+        /// <summary>
         /// 用户取现到账
         /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transcationIdentifier">The transcation identifier.</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>

@@ -62,5 +62,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
         Task HitShelvesAsync(IssueRegularProduct command);
+
+        /// <summary>
+        /// Repays the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task RepayAsync();
     }
 }

@@ -1,37 +1,27 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  4:08 PM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  4:43 PM
+// Last Modified On : 2015-05-06  3:25 AM
 // ***********************************************************************
 // <copyright file="CommandStore.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
-using Moe.Lib;
-using Orleans;
 
 namespace Yuyi.Jinyinmao.Domain
 {
     /// <summary>
     ///     CommandStore.
     /// </summary>
-    public class CommandStore : Dictionary<Guid, string>, ICommandStore
+    public class CommandStore : ICommandStore
     {
         #region ICommandStore Members
-
-        /// <summary>
-        ///     Gets the entity identifier.
-        /// </summary>
-        /// <value>The entity identifier.</value>
-        public Guid EntityId { get; set; }
 
         /// <summary>
         ///     Stores the command record asynchronous.
@@ -40,19 +30,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task StoreCommandRecordAsync(CommandRecord record)
         {
-            if (this.ContainsKey(record.CommandId))
-            {
-                return TaskDone.Done;
-            }
-
-            this.Add(record.CommandId, record.Command.GetType().Name);
-
-            record.PartitionKey = this.EntityId.ToGuidString();
-            record.RowKey = record.CommandId.ToGuidString();
-
-            SiloClusterConfig.CommandStoreTable.ExecuteAsync(TableOperation.Insert(record));
-
-            return TaskDone.Done;
+            return SiloClusterConfig.CommandStoreTable.ExecuteAsync(TableOperation.InsertOrReplace(record));
         }
 
         #endregion ICommandStore Members

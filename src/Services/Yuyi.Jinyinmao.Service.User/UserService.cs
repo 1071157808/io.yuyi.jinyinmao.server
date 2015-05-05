@@ -115,6 +115,16 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Clears the unauthenticated information.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        public Task ClearUnauthenticatedInfo(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.ClearUnauthenticatedInfo();
+        }
+
+        /// <summary>
         ///     Deposits from the settle account.
         /// </summary>
         /// <param name="command">The command.</param>

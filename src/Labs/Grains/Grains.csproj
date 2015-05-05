@@ -15,6 +15,8 @@
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>6eaf22d9</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OrleansSDK)' != '' ">
     <StartAction>Program</StartAction>
@@ -82,6 +84,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Orleans.Templates.Grains.1.0.5\build\Microsoft.Orleans.Templates.Grains.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Orleans.Templates.Grains.1.0.5\build\Microsoft.Orleans.Templates.Grains.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Orleans.Templates.Grains.1.0.5\build\Microsoft.Orleans.Templates.Grains.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Orleans.Templates.Grains.1.0.5\build\Microsoft.Orleans.Templates.Grains.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains.1.0.5\build\Microsoft.Orleans.Templates.Grains.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains.1.0.5\build\Microsoft.Orleans.Templates.Grains.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

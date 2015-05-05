@@ -4,7 +4,7 @@
 // Created          : 2015-04-30  2:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:14 AM
+// Last Modified On : 2015-05-04  10:05 AM
 // ***********************************************************************
 // <copyright file="OrderInfo.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,9 +12,50 @@
 // ***********************************************************************
 
 using System;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
+    /// <summary>
+    ///     OrderEx.
+    /// </summary>
+    public static class OrderEx
+    {
+        /// <summary>
+        ///     To the information.
+        /// </summary>
+        /// <param name="order">The order.</param>
+        /// <returns>OrderInfo.</returns>
+        public static OrderInfo ToInfo(this Order order)
+        {
+            return new OrderInfo
+            {
+                AccountTranscationId = order.AccountTranscationId,
+                Cellphone = order.Cellphone,
+                ExtraInterest = order.ExtraInterest,
+                ExtraYield = order.ExtraYield,
+                Info = order.Info.ToJson(),
+                Interest = order.Interest,
+                IsRepaid = order.IsRepaid,
+                OrderId = order.OrderId,
+                OrderNo = order.OrderNo,
+                OrderTime = order.OrderTime,
+                Principal = order.Principal,
+                ProductId = order.ProductId,
+                ProductSnapshot = order.ProductSnapshot.ToJson(),
+                RepaidTime = order.RepaidTime,
+                ResultCode = order.ResultCode,
+                ResultTime = order.ResultTime,
+                SettleDate = order.SettleDate,
+                TransDesc = order.TransDesc,
+                UserId = order.UserId,
+                UserInfo = order.UserInfo.ToJson(),
+                ValueDate = order.ValueDate,
+                Yield = order.Yield
+            };
+        }
+    }
+
     /// <summary>
     ///     OrderInfo.
     /// </summary>

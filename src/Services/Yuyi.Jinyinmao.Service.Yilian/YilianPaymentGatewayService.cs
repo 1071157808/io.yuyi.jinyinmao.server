@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  11:13 PM
+// Last Modified On : 2015-05-04  5:39 PM
 // ***********************************************************************
 // <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -35,7 +35,7 @@ namespace Yuyi.Jinyinmao.Service
         private static readonly string PaymentGatewayHost;
         private static readonly string PaymentRequestReturnUrl;
         private static readonly string PaymentRequestUrl;
-        private static readonly string QueryAuthRequestUrl;
+        private static readonly string QueryRequestUrl;
         private static readonly RetryPolicy RetryPolicy;
         private static readonly string UserAuthRequestReturnUrl;
         private static readonly string UserAuthRequestUrl;
@@ -44,12 +44,12 @@ namespace Yuyi.Jinyinmao.Service
         static YilianPaymentGatewayService()
         {
             PaymentGatewayHost = ConfigurationManager.AppSettings.Get("YilianPaymentGatewayHost");
-            UserAuthRequestUrl = ConfigurationManager.AppSettings.Get("YilianUserAuthRequestUrl");
-            QueryAuthRequestUrl = ConfigurationManager.AppSettings.Get("YilianQueryAuthRequestUrl");
+            UserAuthRequestUrl = "/paycore/services/userAuthRequestService";
+            PaymentRequestUrl = "/paycore/services/easyLinkGatherRequestService";
+            QueryRequestUrl = "/paycore/services/easyLinkGatherQueryRequestService";
 
-            UserAuthRequestReturnUrl = ConfigurationManager.AppSettings.Get("YilianUserAuthRequestReturnUrl");
-            PaymentRequestUrl = ConfigurationManager.AppSettings.Get("YilianPaymentRequestUrl");
-            PaymentRequestReturnUrl = ConfigurationManager.AppSettings.Get("YilianPaymentRequestReturnUrl");
+            UserAuthRequestReturnUrl = "https://api.jinyinmao.com.cn/";
+            PaymentRequestReturnUrl = "https://api.jinyinmao.com.cn/";
             RetryPolicy = new RetryPolicy<HttpTransientErrorDetectionStrategy>(5, TimeSpan.FromSeconds(2));
         }
 
@@ -158,7 +158,7 @@ namespace Yuyi.Jinyinmao.Service
         {
             try
             {
-                string url = string.Format(QueryAuthRequestWithParameters, QueryAuthRequestUrl, batchNo);
+                string url = string.Format(QueryAuthRequestWithParameters, QueryRequestUrl, batchNo);
                 HttpResponseMessage response = await RetryPolicy.ExecuteAsync(() => this.Client.GetAsync(url));
                 string responseString = await response.Content.ReadAsStringAsync();
 

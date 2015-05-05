@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  11:25 AM
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -81,6 +82,11 @@ namespace Yuyi.Jinyinmao.Domain
         ///     登录名
         /// </summary>
         List<string> LoginNames { get; set; }
+
+        /// <summary>
+        /// 所有成立的订单
+        /// </summary>
+        List<OrderInfo> Orders { get; set; }
 
         /// <summary>
         ///     金银e家代码

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:33 AM
+// Last Modified On : 2015-05-04  10:05 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -19,9 +19,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Moe.Lib;
+using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -32,6 +32,7 @@ namespace Yuyi.Jinyinmao.Domain
     public class RegularProduct : EntityGrain<IRegularProductState>, IRegularProduct
     {
         private int PaidAmount { get; set; }
+
         private List<Order> PaidOrders { get; set; }
 
         #region IRegularProduct Members
@@ -49,74 +50,50 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
-            if (this.State.Orders.Any(o => o.AccountTranscationId == transcationInfo.TransactionId))
+            Order order;
+            order = this.State.Orders.FirstOrDefault(o => o.AccountTranscationId == transcationInfo.TransactionId);
+            if (order == null)
             {
-                return null;
+                ISequenceGenerator generator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
+                string orderNo = await generator.GenerateNoAsync('O');
+                DateTime valueDate = this.BuildValueDate();
+                int interest = this.BuildInterest(valueDate, transcationInfo.Amount);
+
+                DateTime now = DateTime.UtcNow.AddHours(8);
+                order = new Order
+                {
+                    AccountTranscationId = transcationInfo.TransactionId,
+                    Cellphone = userInfo.Cellphone,
+                    ExtraInterest = 0,
+                    ExtraYield = 0,
+                    Info = new Dictionary<string, object>(),
+                    Interest = interest,
+                    IsRepaid = false,
+                    OrderId = Guid.NewGuid(),
+                    OrderNo = orderNo,
+                    OrderTime = now,
+                    Principal = transcationInfo.Amount,
+                    ProductId = this.State.Id,
+                    ProductSnapshot = await this.GetRegularProductInfoAsync(),
+                    RepaidTime = null,
+                    ResultCode = 1,
+                    ResultTime = now,
+                    SettleDate = this.State.SettleDate.Date,
+                    TransDesc = string.Empty,
+                    UserId = userInfo.UserId,
+                    UserInfo = userInfo,
+                    ValueDate = valueDate,
+                    Yield = this.State.Yield
+                };
+
+                this.State.Orders.Add(order);
+
+                await this.State.WriteStateAsync();
+
+                this.ReloadOrderData();
             }
 
-            ISequenceGenerator generator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
-            string orderNo = await generator.GenerateNoAsync('O');
-            DateTime valueDate = this.BuildValueDate();
-            int interest = this.BuildInterest(valueDate, transcationInfo.Amount);
-
-            DateTime now = DateTime.UtcNow.AddHours(8);
-            Order order = new Order
-            {
-                AccountTranscationId = transcationInfo.TransactionId,
-                Cellphone = userInfo.Cellphone,
-                ExtraInterest = 0,
-                ExtraYield = 0,
-                Info = new Dictionary<string, object>(),
-                Interest = interest,
-                IsRepaid = false,
-                OrderId = Guid.NewGuid(),
-                OrderNo = orderNo,
-                OrderTime = now,
-                Principal = transcationInfo.Amount,
-                ProductId = this.State.Id,
-                ProductSnapshot = await this.GetRegularProductInfoAsync(),
-                RepaidTime = null,
-                ResultCode = 1,
-                ResultTime = now,
-                SettleDate = this.State.SettleDate.Date,
-                TransDesc = string.Empty,
-                UserId = userInfo.UserId,
-                UserInfo = userInfo,
-                ValueDate = valueDate,
-                Yield = this.State.Yield
-            };
-
-            this.State.Orders.Add(order);
-
-            await this.RaiseOrderBuiltEvent(order);
-
-            await this.State.WriteStateAsync();
-
-            return new OrderInfo
-            {
-                AccountTranscationId = order.AccountTranscationId,
-                Cellphone = order.Cellphone,
-                ExtraInterest = order.ExtraInterest,
-                ExtraYield = order.ExtraYield,
-                Info = order.Info.ToJson(),
-                Interest = order.Interest,
-                IsRepaid = order.IsRepaid,
-                OrderId = order.OrderId,
-                OrderNo = order.OrderNo,
-                OrderTime = order.OrderTime,
-                Principal = order.Principal,
-                ProductId = order.ProductId,
-                ProductSnapshot = order.ProductSnapshot.ToJson(),
-                RepaidTime = order.RepaidTime,
-                ResultCode = order.ResultCode,
-                ResultTime = order.ResultTime,
-                SettleDate = order.SettleDate,
-                TransDesc = order.TransDesc,
-                UserId = order.UserId,
-                UserInfo = order.UserInfo.ToJson(),
-                ValueDate = order.ValueDate,
-                Yield = order.Yield
-            };
+            return order.ToInfo();
         }
 
         /// <summary>
@@ -289,38 +266,38 @@ namespace Yuyi.Jinyinmao.Domain
             await this.State.WriteStateAsync();
         }
 
+        /// <summary>
+        ///     Repays the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public Task RepayAsync()
+        {
+            DateTime now = DateTime.UtcNow.AddHours(8);
+
+            this.PaidOrders.ForEach(async o =>
+            {
+                o.IsRepaid = true;
+                o.RepaidTime = now;
+
+                IUser user = UserFactory.GetGrain(o.UserId);
+                await user.RepayOrderAsync(o.OrderId, now);
+            });
+
+            return TaskDone.Done;
+        }
+
         #endregion IRegularProduct Members
 
-        private async Task RaiseOrderBuiltEvent(Order order)
+        /// <summary>
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
+        /// </summary>
+        public override Task OnActivateAsync()
         {
-            OrderBuilt @event = new OrderBuilt
-            {
-                AccountTranscationId = order.AccountTranscationId,
-                Cellphone = order.Cellphone,
-                ExtraInterest = order.ExtraInterest,
-                ExtraYield = order.ExtraYield,
-                Info = order.Info.ToJson(),
-                Interest = order.Interest,
-                IsRepaid = order.IsRepaid,
-                OrderId = order.OrderId,
-                OrderNo = order.OrderNo,
-                OrderTime = order.OrderTime,
-                Principal = order.Principal,
-                ProductId = order.ProductId,
-                ProductSnapshot = order.ProductSnapshot.ToJson(),
-                RepaidTime = order.RepaidTime,
-                ResultCode = order.ResultCode,
-                ResultTime = order.ResultTime,
-                SettleDate = order.SettleDate,
-                TransDesc = order.TransDesc,
-                UserId = order.UserId,
-                UserInfo = order.UserInfo.ToJson(),
-                ValueDate = order.ValueDate,
-                Yield = order.Yield
-            };
-            await this.StoreEventAsync(@event);
+            this.ReloadOrderData();
 
-            await OrderBuiltProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            return base.OnActivateAsync();
         }
 
         private int BuildInterest(DateTime valueDate, int principal)
@@ -334,23 +311,6 @@ namespace Yuyi.Jinyinmao.Domain
             return this.State.ValueDateMode == null ?
                 this.State.ValueDate.GetValueOrDefault(DateTime.UtcNow.AddHours(8).Date)
                 : DateTime.UtcNow.AddHours(8).AddDays(this.State.ValueDateMode.GetValueOrDefault(0)).Date;
-        }
-
-        /// <summary>
-        ///     This method is called at the end of the process of activating a grain.
-        ///     It is called before any messages have been dispatched to the grain.
-        ///     For grains with declared persistent state, this method is called after the State property has been populated.
-        /// </summary>
-        public override Task OnActivateAsync()
-        {
-            if (this.State.Orders == null)
-            {
-                this.State.Orders = new List<Order>();
-            }
-
-            this.ReloadOrderData();
-
-            return base.OnActivateAsync();
         }
 
         private async Task RaiseRegularProductIssued(IssueRegularProduct command)
@@ -382,7 +342,7 @@ namespace Yuyi.Jinyinmao.Domain
                 RiskManagementInfo = this.State.RiskManagementInfo,
                 RiskManagementMode = this.State.RiskManagementMode,
                 SettleDate = this.State.SettleDate,
-                SourceId = this.State.Id.ToGuidString(),
+                SourceId = this.GetPrimaryKey().ToGuidString(),
                 SourceType = this.GetType().Name,
                 StartSellTime = this.State.StartSellTime,
                 UnitPrice = this.State.UnitPrice,

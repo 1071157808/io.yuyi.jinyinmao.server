@@ -4,7 +4,7 @@
 // Created          : 2015-04-27  4:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  4:50 AM
+// Last Modified On : 2015-05-06  1:37 AM
 // ***********************************************************************
 // <copyright file="AuthenticateSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,8 +13,8 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
+using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service;
 
@@ -23,39 +23,12 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     /// <summary>
     ///     AuthenticateSaga.
     /// </summary>
+    [StorageProvider(ProviderName = "SqlDatabase")]
     public class AuthenticateSaga : SagaGrain<IAuthenticateSagaState>, IAuthenticateSaga
     {
         private IYilianPaymentGatewayService Service { get; set; }
 
         #region IAuthenticateSaga Members
-
-        /// <summary>
-        ///     Processes the saga task asynchronous.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public override async Task ProcessAsync()
-        {
-            YilianRequestResult result = await this.Service.QueryRequestAsync(this.State.SagaId.ToGuidString(), false);
-
-            TableResult tableResult = await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.Retrieve<SagaEntity>(this.State.SagaType, this.State.SagaId.ToGuidString()));
-
-            this.SagaEntity = (SagaEntity)tableResult.Result;
-
-            if (result == null)
-            {
-                this.SagaEntity.Info["Query"] = new { Message = "Processing" };
-            }
-            else
-            {
-                this.SagaEntity.Info["Query"] = new { result.Message, result.ResponseString };
-                this.SagaEntity.State = 1;
-
-                IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AuthenticateResultedAsync(this.State.InitData, result.Result);
-            }
-
-            await this.StoreSagaEntityAsync();
-        }
 
         /// <summary>
         ///     Begins the process.
@@ -65,37 +38,32 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public async Task BeginProcessAsync(AuthenticateSagaInitDto initData)
         {
             this.State.InitData = initData;
-            this.InitSagaEntity();
+            this.InitSagaEntity(initData.ToJson());
 
-            AuthRequestParameter parameter = await this.BuildRequestParameter();
-            YilianRequestResult result = await this.Service.AuthRequestAsync(parameter);
-            this.SagaEntity.Info.Add("Reuqest", new { result.Message, result.ResponseString });
-            if (!result.Result)
+            try
             {
-                this.SagaEntity.State = 1;
+                AuthRequestParameter parameter = await this.BuildRequestParameter();
+                YilianRequestResult result = await this.Service.AuthRequestAsync(parameter);
+                this.SagaEntity.Add("Reuqest", new { result.Message, result.ResponseString });
+                if (!result.Result)
+                {
+                    this.SagaEntity.State = 1;
+                }
+
+                if (result.Result)
+                {
+                    await this.RegisterReminder();
+                }
             }
-
-            if (result.Result)
+            catch (Exception e)
             {
-                await this.RegisterOrUpdateReminder("Saga", TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+                this.RunIntoError(e.Message, e);
             }
 
             await this.StoreSagaEntityAsync();
         }
 
         #endregion IAuthenticateSaga Members
-
-        private async Task<AuthRequestParameter> BuildRequestParameter()
-        {
-            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
-            string sequenceNo = await sequenceGenerator.GenerateNoAsync('B');
-            string[] address = this.State.InitData.Command.CityName.Split('|');
-            return new AuthRequestParameter(this.State.SagaId.ToGuidString(), sequenceNo,
-                this.State.InitData.Command.BankCardNo, this.State.InitData.UserInfo.RealName,
-                address[0], address[1], this.State.InitData.Command.BankName,
-                (int)this.State.InitData.UserInfo.Credential, this.State.InitData.UserInfo.CredentialNo,
-                this.State.InitData.UserInfo.Cellphone, this.State.InitData.UserInfo.UserId.ToGuidString());
-        }
 
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.
@@ -110,12 +78,39 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         }
 
         /// <summary>
-        ///     Initializes the saga entity.
+        ///     Processes the saga task asynchronous.
         /// </summary>
-        protected override void InitSagaEntity()
+        /// <returns>Task.</returns>
+        public override async Task ProcessAsync()
         {
-            base.InitSagaEntity();
-            this.SagaEntity.InitData = this.State.InitData.ToJson();
+            YilianRequestResult result = await this.Service.QueryRequestAsync(this.State.SagaId.ToGuidString(), false);
+
+            if (result == null)
+            {
+                this.SagaEntity.Add("Query", new { Message = "Processing" });
+            }
+            else
+            {
+                this.SagaEntity.Add("Query", new { result.Message, result.ResponseString });
+                this.SagaEntity.State = 1;
+
+                await this.UnregisterReminder();
+
+                IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
+                await user.AuthenticateResultedAsync(this.State.InitData, result.Result);
+            }
+        }
+
+        private async Task<AuthRequestParameter> BuildRequestParameter()
+        {
+            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
+            string sequenceNo = await sequenceGenerator.GenerateNoAsync('B');
+            string[] address = this.State.InitData.Command.CityName.Split('|');
+            return new AuthRequestParameter(this.State.SagaId.ToGuidString().ToUpperInvariant(), sequenceNo.ToUpperInvariant(),
+                this.State.InitData.Command.BankCardNo, this.State.InitData.UserInfo.RealName,
+                address[0], address[1], this.State.InitData.Command.BankName,
+                (int)this.State.InitData.UserInfo.Credential, this.State.InitData.UserInfo.CredentialNo,
+                this.State.InitData.UserInfo.Cellphone, this.State.InitData.UserInfo.UserId.ToGuidString());
         }
     }
 }

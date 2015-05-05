@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-06  3:38 PM
+// Created          : 2015-05-04  11:50 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-06  7:01 PM
+// Last Modified On : 2015-05-04  11:55 AM
 // ***********************************************************************
 // <copyright file="VeriCode.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,17 +12,16 @@
 // ***********************************************************************
 
 using System;
-using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Service.Models
 {
     /// <summary>
-    ///     Class VeriCode.
+    ///     VeriCode.
     /// </summary>
     public class VeriCode
     {
         /// <summary>
-        /// Gets or sets the arguments.
+        ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
         public string Args { get; set; }
@@ -64,16 +63,16 @@ namespace Yuyi.Jinyinmao.Service.Models
         public int Times { get; set; }
 
         /// <summary>
-        ///     Gets or sets the identifier.
+        ///     Gets or sets the token.
         /// </summary>
-        /// <value>The identifier.</value>
+        /// <value>The token.</value>
         public string Token { get; set; }
 
         /// <summary>
         ///     Gets or sets the type.
         /// </summary>
         /// <value>The type.</value>
-        public VeriCodeType Type { get; set; }
+        public int Type { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="VeriCode" /> is used.

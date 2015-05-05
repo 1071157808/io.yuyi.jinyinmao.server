@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  6:19 PM
+// Last Modified On : 2015-05-04  5:43 PM
 // ***********************************************************************
 // <copyright file="SmsService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -65,7 +65,7 @@ namespace Yuyi.Jinyinmao.Service
             string smsServiceEnableConfig = ConfigurationManager.AppSettings.Get("SmsServiceEnable");
             smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty();
             string smsServiceAddressConfig = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
-            apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() ? smsServiceAddressConfig : "http://sms-api-jym.yuyidev.com/";
+            apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
         }
 
         #region ISmsService Members

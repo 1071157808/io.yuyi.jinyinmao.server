@@ -1,17 +1,17 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  6:05 PM
+// Last Modified On : 2015-05-06  2:42 AM
 // ***********************************************************************
 // <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -32,75 +32,51 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public override Task ProcessEventAsync(UserRegistered @event)
+        public override async Task ProcessEventAsync(UserRegistered @event)
         {
-            Task.Factory.StartNew(async () =>
+            await this.ProcessingEventAsync(@event, async e => { await this.SmsService.SendMessageAsync(e.Cellphone, Resources.Sms_SignUpSuccessful); });
+
+            await this.ProcessingEventAsync(@event, async e =>
             {
-                try
-                {
-                    await this.SmsService.SendMessageAsync(@event.Cellphone, Resources.Sms_SignUpSuccessful);
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
-                }
+                ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, e.Cellphone));
+                await cellphone.Register();
             });
 
-            Task.Factory.StartNew(async () =>
+            await this.ProcessingEventAsync(@event, async e =>
             {
-                try
+                Models.User user = new Models.User
                 {
-                    ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, @event.Cellphone));
-                    await cellphone.Register();
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
-                }
-            });
+                    Args = e.Args,
+                    Cellphone = e.Cellphone,
+                    ClientType = e.ClientType,
+                    Closed = false,
+                    ContractId = e.ContractId,
+                    Credential = (int)Credential.None,
+                    CredentialNo = string.Empty,
+                    Info = new Dictionary<string, object>().ToJson(),
+                    InviteBy = e.InviteBy,
+                    LoginNames = e.LoginNames.Join(","),
+                    OutletCode = e.OutletCode,
+                    RealName = string.Empty,
+                    RegisterTime = e.RegisterTime,
+                    UserIdentifier = e.UserId.ToGuidString(),
+                    Verified = false,
+                    VerifiedTime = null
+                };
 
-            Task.Factory.StartNew(async () =>
-            {
-                try
+                using (JYMDBContext db = new JYMDBContext())
                 {
-                    Models.User user = new Models.User
+                    if (await db.Users.AnyAsync(u => u.UserIdentifier == user.UserIdentifier))
                     {
-                        Args = @event.Args,
-                        Cellphone = @event.Cellphone,
-                        ClientType = @event.ClientType,
-                        Closed = false,
-                        ContractId = @event.ContractId,
-                        Credential = (int)Credential.None,
-                        CredentialNo = string.Empty,
-                        Info = "{}",
-                        InviteBy = @event.InviteBy,
-                        LoginNames = @event.LoginNames.Join(","),
-                        OutletCode = @event.OutletCode,
-                        RealName = string.Empty,
-                        RegisterTime = @event.RegisterTime,
-                        UserIdentifier = @event.UserId.ToGuidString(),
-                        Verified = false,
-                        VerifiedTime = null
-                    };
-
-                    using (JYMDBContext db = new JYMDBContext())
-                    {
-                        if (await db.Users.AnyAsync(u => u.UserIdentifier == user.UserIdentifier))
-                        {
-                            return;
-                        }
-
-                        db.Users.Add(user);
-                        await db.SaveChangesAsync();
+                        return;
                     }
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
+
+                    db.Users.Add(user);
+                    await db.SaveChangesAsync();
                 }
             });
 
-            return base.ProcessEventAsync(@event);
+            await base.ProcessEventAsync(@event);
         }
 
         #endregion IUserRegisteredProcessor Members

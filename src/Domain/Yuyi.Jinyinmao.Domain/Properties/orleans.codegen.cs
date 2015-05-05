@@ -14,6 +14,15 @@
 #pragma warning disable 1591
 #pragma warning disable 1998
 
+namespace Yuyi.Jinyinmao.Domain.EventProcessor
+{
+    using Orleans.CodeGeneration;
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+}
 namespace Yuyi.Jinyinmao.Domain
 {
     using System;
@@ -23,6 +32,7 @@ namespace Yuyi.Jinyinmao.Domain
     using Orleans;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
+    using Yuyi.Jinyinmao.Domain.Dtos;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -106,10 +116,6 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public ICommandStore @CommandStore { get; set; }
-
-            public IEventStore @EventStore { get; set; }
-
             public Guid @Id { get; set; }
 
             public String @Agreement1 { get; set; }
@@ -186,8 +192,6 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
-                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("Agreement1", out value)) @Agreement1 = (String) value;
                 if (values.TryGetValue("Agreement2", out value)) @Agreement2 = (String) value;
@@ -228,7 +232,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("RegularProductState( CommandStore={0} EventStore={1} Id={2} Agreement1={3} Agreement2={4} Args={5} BankName={6} Drawee={7} DraweeInfo={8} EndorseImageLink={9} EndSellTime={10} EnterpriseInfo={11} EnterpriseLicense={12} EnterpriseName={13} FinancingSumAmount={14} IssueNo={15} IssueTime={16} Orders={17} Period={18} PledgeNo={19} ProductCategory={20} ProductName={21} ProductNo={22} Repaid={23} RepaidTime={24} RepaymentDeadline={25} RiskManagement={26} RiskManagementInfo={27} RiskManagementMode={28} SettleDate={29} SoldOut={30} SoldOutTime={31} StartSellTime={32} UnitPrice={33} Usage={34} ValueDate={35} ValueDateMode={36} Yield={37} )", @CommandStore, @EventStore, @Id, @Agreement1, @Agreement2, @Args, @BankName, @Drawee, @DraweeInfo, @EndorseImageLink, @EndSellTime, @EnterpriseInfo, @EnterpriseLicense, @EnterpriseName, @FinancingSumAmount, @IssueNo, @IssueTime, @Orders, @Period, @PledgeNo, @ProductCategory, @ProductName, @ProductNo, @Repaid, @RepaidTime, @RepaymentDeadline, @RiskManagement, @RiskManagementInfo, @RiskManagementMode, @SettleDate, @SoldOut, @SoldOutTime, @StartSellTime, @UnitPrice, @Usage, @ValueDate, @ValueDateMode, @Yield);
+                return System.String.Format("RegularProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} BankName={4} Drawee={5} DraweeInfo={6} EndorseImageLink={7} EndSellTime={8} EnterpriseInfo={9} EnterpriseLicense={10} EnterpriseName={11} FinancingSumAmount={12} IssueNo={13} IssueTime={14} Orders={15} Period={16} PledgeNo={17} ProductCategory={18} ProductName={19} ProductNo={20} Repaid={21} RepaidTime={22} RepaymentDeadline={23} RiskManagement={24} RiskManagementInfo={25} RiskManagementMode={26} SettleDate={27} SoldOut={28} SoldOutTime={29} StartSellTime={30} UnitPrice={31} Usage={32} ValueDate={33} ValueDateMode={34} Yield={35} )", @Id, @Agreement1, @Agreement2, @Args, @BankName, @Drawee, @DraweeInfo, @EndorseImageLink, @EndSellTime, @EnterpriseInfo, @EnterpriseLicense, @EnterpriseName, @FinancingSumAmount, @IssueNo, @IssueTime, @Orders, @Period, @PledgeNo, @ProductCategory, @ProductName, @ProductNo, @Repaid, @RepaidTime, @RepaymentDeadline, @RiskManagement, @RiskManagementInfo, @RiskManagementMode, @SettleDate, @SoldOut, @SoldOutTime, @StartSellTime, @UnitPrice, @Usage, @ValueDate, @ValueDateMode, @Yield);
             }
         
         public RegularProductState() : 
@@ -240,8 +244,6 @@ namespace Yuyi.Jinyinmao.Domain
         public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["CommandStore"] = this.CommandStore;
-            result["EventStore"] = this.EventStore;
             result["Id"] = this.Id;
             result["Agreement1"] = this.Agreement1;
             result["Agreement2"] = this.Agreement2;
@@ -283,8 +285,6 @@ namespace Yuyi.Jinyinmao.Domain
         
         private void InitStateFields()
         {
-            this.CommandStore = default(ICommandStore);
-            this.EventStore = default(IEventStore);
             this.Id = default(Guid);
             this.Agreement1 = default(String);
             this.Agreement2 = default(String);
@@ -354,10 +354,6 @@ namespace Yuyi.Jinyinmao.Domain
     {
         
 
-            public ICommandStore @CommandStore { get; set; }
-
-            public IEventStore @EventStore { get; set; }
-
             public Guid @Id { get; set; }
 
             public String @Args { get; set; }
@@ -384,6 +380,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             public List<String> @LoginNames { get; set; }
 
+            public List<OrderInfo> @Orders { get; set; }
+
             public String @OutletCode { get; set; }
 
             public String @PaymentSalt { get; set; }
@@ -404,8 +402,6 @@ namespace Yuyi.Jinyinmao.Domain
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("CommandStore", out value)) @CommandStore = (ICommandStore) value;
-                if (values.TryGetValue("EventStore", out value)) @EventStore = (IEventStore) value;
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("Args", out value)) @Args = (String) value;
                 if (values.TryGetValue("BankCards", out value)) @BankCards = (List<BankCard>) value;
@@ -419,6 +415,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
                 if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (List<Transcation>) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
+                if (values.TryGetValue("Orders", out value)) @Orders = (List<OrderInfo>) value;
                 if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
                 if (values.TryGetValue("PaymentSalt", out value)) @PaymentSalt = (String) value;
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
@@ -431,7 +428,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( CommandStore={0} EventStore={1} Id={2} Args={3} BankCards={4} Cellphone={5} ClientType={6} ContractId={7} Credential={8} CredentialNo={9} EncryptedPassword={10} EncryptedPaymentPassword={11} InviteBy={12} JBYAccount={13} LoginNames={14} OutletCode={15} PaymentSalt={16} RealName={17} RegisterTime={18} Salt={19} SettleAccount={20} Verified={21} VerifiedTime={22} )", @CommandStore, @EventStore, @Id, @Args, @BankCards, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( Id={0} Args={1} BankCards={2} Cellphone={3} ClientType={4} ContractId={5} Credential={6} CredentialNo={7} EncryptedPassword={8} EncryptedPaymentPassword={9} InviteBy={10} JBYAccount={11} LoginNames={12} Orders={13} OutletCode={14} PaymentSalt={15} RealName={16} RegisterTime={17} Salt={18} SettleAccount={19} Verified={20} VerifiedTime={21} )", @Id, @Args, @BankCards, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @Orders, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -443,8 +440,6 @@ namespace Yuyi.Jinyinmao.Domain
         public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["CommandStore"] = this.CommandStore;
-            result["EventStore"] = this.EventStore;
             result["Id"] = this.Id;
             result["Args"] = this.Args;
             result["BankCards"] = this.BankCards;
@@ -458,6 +453,7 @@ namespace Yuyi.Jinyinmao.Domain
             result["InviteBy"] = this.InviteBy;
             result["JBYAccount"] = this.JBYAccount;
             result["LoginNames"] = this.LoginNames;
+            result["Orders"] = this.Orders;
             result["OutletCode"] = this.OutletCode;
             result["PaymentSalt"] = this.PaymentSalt;
             result["RealName"] = this.RealName;
@@ -471,8 +467,6 @@ namespace Yuyi.Jinyinmao.Domain
         
         private void InitStateFields()
         {
-            this.CommandStore = default(ICommandStore);
-            this.EventStore = default(IEventStore);
             this.Id = default(Guid);
             this.Args = default(String);
             this.BankCards = new List<BankCard>();
@@ -486,6 +480,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.InviteBy = default(String);
             this.JBYAccount = new List<Transcation>();
             this.LoginNames = new List<String>();
+            this.Orders = new List<OrderInfo>();
             this.OutletCode = default(String);
             this.PaymentSalt = default(String);
             this.RealName = default(String);
@@ -518,6 +513,15 @@ namespace Yuyi.Jinyinmao.Domain
             return result;
         }
     }
+}
+namespace Yuyi.Jinyinmao.Domain.Misc
+{
+    using Orleans.CodeGeneration;
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
 }
 namespace Yuyi.Jinyinmao.Domain.Sagas
 {

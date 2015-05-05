@@ -1,18 +1,16 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  8:17 AM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  2:49 PM
+// Last Modified On : 2015-05-06  3:25 AM
 // ***********************************************************************
 // <copyright file="ICommandStore.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -20,14 +18,8 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Interface ICommandStore
     /// </summary>
-    public interface ICommandStore : IDictionary<Guid, string>
+    public interface ICommandStore
     {
-        /// <summary>
-        ///     Gets the entity identifier.
-        /// </summary>
-        /// <value>The entity identifier.</value>
-        Guid EntityId { get; }
-
         /// <summary>
         ///     Stores the command record asynchronous.
         /// </summary>

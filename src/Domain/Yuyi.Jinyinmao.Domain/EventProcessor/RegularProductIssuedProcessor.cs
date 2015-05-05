@@ -1,17 +1,16 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  6:16 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  5:03 AM
+// Last Modified On : 2015-05-06  2:40 AM
 // ***********************************************************************
 // <copyright file="RegularProductIssuedProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -34,124 +33,111 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public override Task ProcessEventAsync(RegularProductIssued @event)
+        public override async Task ProcessEventAsync(RegularProductIssued @event)
         {
-            Task.Factory.StartNew(async () =>
+            await this.ProcessingEventAsync(@event, async e =>
             {
-                try
+                string info = new
                 {
-                    string info = new
-                    {
-                        @event.BankName,
-                        @event.Drawee,
-                        @event.DraweeInfo,
-                        @event.EndorseImageLink,
-                        @event.EnterpriseInfo,
-                        @event.EnterpriseLicense,
-                        @event.EnterpriseName,
-                        @event.Period,
-                        @event.RiskManagement,
-                        @event.RiskManagementInfo,
-                        @event.RiskManagementMode,
-                        @event.Usage
-                    }.ToJson();
-                    RegularProductInfo product = new RegularProductInfo
-                    {
-                        ProductIdentifier = @event.ProductId.ToGuidString(),
-                        EndSellTime = @event.EndSellTime,
-                        FinancingSumAmount = @event.FinancingSumCount,
-                        IssueNo = @event.IssueNo,
-                        IssueTime = @event.IssueTime,
-                        PledgeNo = @event.PledgeNo,
-                        ProductCategory = @event.ProductCategory,
-                        ProductName = @event.ProductName,
-                        ProductNo = @event.ProductNo,
-                        Repaid = false,
-                        RepaidTime = null,
-                        RepaymentDeadline = @event.RepaymentDeadline,
-                        SettleDate = @event.SettleDate,
-                        SoldOut = false,
-                        SoldOutTime = null,
-                        StartSellTime = @event.StartSellTime,
-                        UnitPrice = @event.UnitPrice,
-                        ValueDate = @event.ValueDate,
-                        ValueDateMode = @event.ValueDateMode,
-                        Yield = @event.Yield,
-                        Info = info
-                    };
+                    e.BankName,
+                    e.Drawee,
+                    e.DraweeInfo,
+                    e.EndorseImageLink,
+                    e.EnterpriseInfo,
+                    e.EnterpriseLicense,
+                    e.EnterpriseName,
+                    e.Period,
+                    e.RiskManagement,
+                    e.RiskManagementInfo,
+                    e.RiskManagementMode,
+                    e.Usage
+                }.ToJson();
+                RegularProductInfo product = new RegularProductInfo
+                {
+                    ProductIdentifier = e.ProductId.ToGuidString(),
+                    EndSellTime = e.EndSellTime,
+                    FinancingSumAmount = e.FinancingSumCount,
+                    IssueNo = e.IssueNo,
+                    IssueTime = e.IssueTime,
+                    PledgeNo = e.PledgeNo,
+                    ProductCategory = e.ProductCategory,
+                    ProductName = e.ProductName,
+                    ProductNo = e.ProductNo,
+                    Repaid = false,
+                    RepaidTime = null,
+                    RepaymentDeadline = e.RepaymentDeadline,
+                    SettleDate = e.SettleDate,
+                    SoldOut = false,
+                    SoldOutTime = null,
+                    StartSellTime = e.StartSellTime,
+                    UnitPrice = e.UnitPrice,
+                    ValueDate = e.ValueDate,
+                    ValueDateMode = e.ValueDateMode,
+                    Yield = e.Yield,
+                    Info = info
+                };
 
-                    string cacheId = "-{1}-{2}".FormatWith(product.ProductNo, product.ProductIdentifier);
-                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync("product", cacheId, product);
-                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync("agreement", "-1" + cacheId, @event.Agreement1);
-                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync("agreement", "-2" + cacheId, @event.Agreement2);
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
-                }
+                string cacheId = "-{1}-{2}".FormatWith(product.ProductNo, product.ProductIdentifier);
+                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync("product", cacheId, product);
+                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync("agreement", "-1" + cacheId, e.Agreement1);
+                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync("agreement", "-2" + cacheId, e.Agreement2);
             });
 
-            Task.Factory.StartNew(async () =>
+            await this.ProcessingEventAsync(@event, async e =>
             {
-                try
+                string info = new
                 {
-                    string info = new
-                    {
-                        @event.BankName,
-                        @event.Drawee,
-                        @event.DraweeInfo,
-                        @event.EndorseImageLink,
-                        @event.EnterpriseInfo,
-                        @event.EnterpriseLicense,
-                        @event.EnterpriseName,
-                        @event.Period,
-                        @event.RiskManagement,
-                        @event.RiskManagementInfo,
-                        @event.RiskManagementMode,
-                        @event.Usage
-                    }.ToJson();
-                    Models.RegularProduct product = new Models.RegularProduct
-                    {
-                        ProductIdentifier = @event.ProductId.ToGuidString(),
-                        EndSellTime = @event.EndSellTime,
-                        FinancingSumAmount = @event.FinancingSumCount,
-                        IssueNo = @event.IssueNo,
-                        IssueTime = @event.IssueTime,
-                        PledgeNo = @event.PledgeNo,
-                        ProductCategory = @event.ProductCategory,
-                        ProductName = @event.ProductName,
-                        ProductNo = @event.ProductNo,
-                        Repaid = false,
-                        RepaidTime = null,
-                        RepaymentDeadline = @event.RepaymentDeadline,
-                        SettleDate = @event.SettleDate,
-                        SoldOut = false,
-                        SoldOutTime = null,
-                        StartSellTime = @event.StartSellTime,
-                        UnitPrice = @event.UnitPrice,
-                        ValueDate = @event.ValueDate,
-                        ValueDateMode = @event.ValueDateMode,
-                        Yield = @event.Yield,
-                        Info = info
-                    };
+                    e.BankName,
+                    e.Drawee,
+                    e.DraweeInfo,
+                    e.EndorseImageLink,
+                    e.EnterpriseInfo,
+                    e.EnterpriseLicense,
+                    e.EnterpriseName,
+                    e.Period,
+                    e.RiskManagement,
+                    e.RiskManagementInfo,
+                    e.RiskManagementMode,
+                    e.Usage
+                }.ToJson();
+                Models.RegularProduct product = new Models.RegularProduct
+                {
+                    ProductIdentifier = e.ProductId.ToGuidString(),
+                    EndSellTime = e.EndSellTime,
+                    FinancingSumAmount = e.FinancingSumCount,
+                    IssueNo = e.IssueNo,
+                    IssueTime = e.IssueTime,
+                    PledgeNo = e.PledgeNo,
+                    ProductCategory = e.ProductCategory,
+                    ProductName = e.ProductName,
+                    ProductNo = e.ProductNo,
+                    Repaid = false,
+                    RepaidTime = null,
+                    RepaymentDeadline = e.RepaymentDeadline,
+                    SettleDate = e.SettleDate,
+                    SoldOut = false,
+                    SoldOutTime = null,
+                    StartSellTime = e.StartSellTime,
+                    UnitPrice = e.UnitPrice,
+                    ValueDate = e.ValueDate,
+                    ValueDateMode = e.ValueDateMode,
+                    Yield = e.Yield,
+                    Info = info
+                };
 
-                    using (JYMDBContext db = new JYMDBContext())
+                string productIdentifier = @event.ProductId.ToGuidString();
+                using (JYMDBContext db = new JYMDBContext())
+                {
+                    if (await db.RegularProducts.AnyAsync(p => p.ProductIdentifier == productIdentifier || p.ProductNo == e.ProductNo))
                     {
-                        if (await db.RegularProducts.AnyAsync(p => p.ProductIdentifier == @event.ProductId.ToGuidString() || p.ProductNo == @event.ProductNo))
-                        {
-                            return;
-                        }
-
-                        await db.SaveAsync(product);
+                        return;
                     }
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
+
+                    await db.SaveAsync(product);
                 }
             });
 
-            return base.ProcessEventAsync(@event);
+            await base.ProcessEventAsync(@event);
         }
 
         #endregion IRegularProductIssuedProcessor Members

@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-03  6:42 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  12:17 AM
+// Last Modified On : 2015-05-04  11:36 PM
 // ***********************************************************************
 // <copyright file="IDepositByYilianSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.

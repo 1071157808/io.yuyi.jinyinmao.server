@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
@@ -17,6 +17,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
 using Newtonsoft.Json;
+using Yuyi.Jinyinmao.Helper;
 
 namespace ConsoleApplication
 {
@@ -24,21 +25,7 @@ namespace ConsoleApplication
     {
         private static void Main(string[] args)
         {
-            CloudStorageAccount account = CloudStorageAccount.Parse("BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==");
-            string appKey = "HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==";
-
-            Guid guid = Guid.NewGuid();
-
-            account.CreateCloudTableClient().GetTableReference("ApiSms").Execute(TableOperation.Insert(new App()
-            {
-                AppId = guid,
-                AppKey = appKey,
-                AppName = "SmsClient",
-                Expiry = DateTime.Now.AddDays(100),
-                Notes = "SmsClient",
-                PartitionKey = "api.sms.config.appkeys"
-            }));
-            Console.WriteLine("a");
+            CryptographyHelper.Check("123456", "585a59a9c2a94e6a92817fec0134b772", "B98AA59AEB52AE86E507A94BB474E2691660C380788B1E28D069F75240BEB7DD");
         }
 
         /// <summary>

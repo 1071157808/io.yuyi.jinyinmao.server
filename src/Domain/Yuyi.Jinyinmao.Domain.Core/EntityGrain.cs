@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  8:45 PM
+// Last Modified On : 2015-05-06  3:27 AM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Orleans;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -26,26 +27,23 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Gets the command store.
         /// </summary>
-        public ICommandStore CommandStore
-        {
-            get { return this.State.CommandStore; }
-        }
+        public ICommandStore CommandStore { get; set; }
 
         /// <summary>
         ///     Gets the event store.
         /// </summary>
-        public IEventStore EventStore
-        {
-            get { return this.State.EventStore; }
-        }
+        public IEventStore EventStore { get; set; }
 
         /// <summary>
-        /// Gets the error logger.
+        /// This method is called at the end of the process of activating a grain.
+        ///             It is called before any messages have been dispatched to the grain.
+        ///             For grains with declared persistent state, this method is called after the State property has been populated.
         /// </summary>
-        /// <value>The error logger.</value>
-        public IEventProcessingLogger ErrorLogger
+        public override Task OnActivateAsync()
         {
-            get { return new EventProcessingLogger(); }
+            this.CommandStore = new CommandStore();
+            this.EventStore = new EventStore();
+            return base.OnActivateAsync();
         }
 
         #region IEntity Members
@@ -70,9 +68,12 @@ namespace Yuyi.Jinyinmao.Domain
         {
             CommandRecord record = new CommandRecord
             {
-                Command = command,
+                Command = command.ToJson(),
                 CommandId = command.CommandId,
-                TimeStamp = DateTime.UtcNow.Ticks
+                TimeStamp = DateTime.UtcNow.Ticks,
+                CommandName = command.GetType().Name,
+                PartitionKey = this.GetPrimaryKey().ToGuidString(),
+                RowKey = command.CommandId.ToGuidString()
             };
             return this.CommandStore.StoreCommandRecordAsync(record);
         }
@@ -86,31 +87,14 @@ namespace Yuyi.Jinyinmao.Domain
         {
             EventRecord record = new EventRecord
             {
-                Event = @event,
+                Event = @event.ToJson(),
                 EventId = @event.EventId,
-                TimeStamp = DateTime.UtcNow.Ticks
+                TimeStamp = DateTime.UtcNow.Ticks,
+                EventName = @event.GetType().Name,
+                PartitionKey = this.GetPrimaryKey().ToGuidString(),
+                RowKey = @event.EventId.ToGuidString()
             };
             return this.EventStore.StoreEventRecordAsync(record);
-        }
-
-        /// <summary>
-        ///     This method is called at the end of the process of activating a grain.
-        ///     It is called before any messages have been dispatched to the grain.
-        ///     For grains with declared persistent state, this method is called after the State property has been populated.
-        /// </summary>
-        public override Task OnActivateAsync()
-        {
-            if (this.State.CommandStore == null)
-            {
-                this.State.CommandStore = new CommandStore { EntityId = this.State.Id };
-            }
-
-            if (this.State.EventStore == null)
-            {
-                this.State.EventStore = new EventStore { EntityId = this.State.Id };
-            }
-
-            return base.OnActivateAsync();
         }
     }
 }

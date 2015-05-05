@@ -75,6 +75,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silo", "Yuyi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBusExplorer", "Application\ServiceBusExplorer\ServiceBusExplorer.csproj", "{32754F39-E353-4607-94FE-B9B9ACFD58EF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{12B7369E-296E-4C4D-BB0A-3B76C8102D96}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyConfigInitApp", "Application\DailyConfigInitApp\DailyConfigInitApp.csproj", "{2E7053E7-1822-4052-86A8-FB671579735E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -276,6 +285,14 @@ Global
 		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|x86.ActiveCfg = Release|x86
 		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|x86.Build.0 = Release|x86
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -303,6 +320,7 @@ Global
 		{596F9CB8-45FF-4D76-ACD6-037938ED5EEE} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{BD85B692-CB20-481B-9628-452D41971A92} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{32754F39-E353-4607-94FE-B9B9ACFD58EF} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
+		{2E7053E7-1822-4052-86A8-FB671579735E} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45

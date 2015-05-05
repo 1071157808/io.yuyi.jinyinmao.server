@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  2:45 PM
@@ -25,13 +25,15 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the event.
         /// </summary>
         /// <value>The event.</value>
-        public IEvent Event { get; set; }
+        public string Event { get; set; }
 
         /// <summary>
         ///     Gets or sets the event identifier.
         /// </summary>
         /// <value>The event identifier.</value>
         public Guid EventId { get; set; }
+
+        public string EventName { get; set; }
 
         /// <summary>
         ///     Gets or sets the time stamp.

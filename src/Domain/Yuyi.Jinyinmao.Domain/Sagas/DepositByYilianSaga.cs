@@ -4,7 +4,7 @@
 // Created          : 2015-05-03  6:40 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  4:50 AM
+// Last Modified On : 2015-05-06  12:09 AM
 // ***********************************************************************
 // <copyright file="DepositByYilianSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -16,6 +16,7 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
+using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Service;
@@ -25,6 +26,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     /// <summary>
     ///     DepositByYilianSaga.
     /// </summary>
+    [StorageProvider(ProviderName = "SqlDatabase")]
     public class DepositByYilianSaga : SagaGrain<IDepositByYilianSagaState>, IDepositByYilianSaga
     {
         private IYilianPaymentGatewayService Service { get; set; }
@@ -39,7 +41,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public async Task BeginProcessAsync(DepositFromYilianSagaInitDto initData)
         {
             this.State.InitData = initData;
-            this.InitSagaEntity();
+            this.InitSagaEntity(initData.ToString());
 
             AccountTranscation transcation = new AccountTranscation
             {
@@ -72,14 +74,14 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
             PaymentRequestParameter parameter = await this.BuildRequestParameter();
             YilianRequestResult result = await this.Service.PaymentRequestAsync(parameter);
-            this.SagaEntity.Info.Add("Request", new { result.Message, result.ResponseString });
+            this.SagaEntity.Add("Request", new { result.Message, result.ResponseString });
             if (!result.Result)
             {
                 this.SagaEntity.State = -1;
             }
             else
             {
-                await this.RegisterOrUpdateReminder("Saga", TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(30));
+                await this.RegisterReminder();
             }
         }
 
@@ -111,29 +113,20 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
             if (result == null)
             {
-                this.SagaEntity.Info["Query"] = new { Message = "Processing" };
+                this.SagaEntity.Add("Query", new { Message = "Processing" });
             }
             else
             {
-                this.SagaEntity.Info["Query"] = new { result.Message, result.ResponseString };
+                this.SagaEntity.Add("Query", new { result.Message, result.ResponseString });
                 this.SagaEntity.State = 1;
 
-                await this.UnregisterReminder(await this.GetReminder("Saga"));
+                await this.UnregisterReminder();
 
                 IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
                 await user.DepositResultedAsync(this.State.InitData, result.Result, result.ResponseString.Remove(0, result.ResponseString.IndexOf(":", StringComparison.InvariantCulture)));
             }
 
             await this.StoreSagaEntityAsync();
-        }
-
-        /// <summary>
-        ///     Initializes the saga entity.
-        /// </summary>
-        protected override void InitSagaEntity()
-        {
-            base.InitSagaEntity();
-            this.SagaEntity.InitData = this.State.InitData.ToJson();
         }
 
         private async Task<PaymentRequestParameter> BuildRequestParameter()

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
@@ -56,7 +56,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Builds the arguments.
         /// </summary>
         /// <returns>System.String.</returns>
-        protected string BuildArgs(IList<KeyValuePair<string, string>> argsToAdd = null)
+        protected string BuildArgs(Dictionary<string, string> argsToAdd = null)
         {
             List<KeyValuePair<string, string>> args = this.Request.GetQueryNameValuePairs().ToList();
             args.Add(new KeyValuePair<string, string>("Ip", HttpUtils.GetUserHostAddress(this.Request)));
@@ -65,7 +65,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 args.AddRange(argsToAdd);
             }
-            return JsonConvert.SerializeObject(args);
+            Dictionary<string, object> argsDictionary = new Dictionary<string, object>();
+
+            foreach (KeyValuePair<string, string> arg in args)
+            {
+                if (argsDictionary.ContainsKey(arg.Key))
+                {
+                    argsDictionary[arg.Key] = arg.Value;
+                }
+                else
+                {
+                    argsDictionary.Add(arg.Key, arg.Value);
+                }
+            }
+
+            return JsonConvert.SerializeObject(argsDictionary);
         }
 
         /// <summary>
@@ -99,7 +113,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             return new CurrentUser
             {
-                Id = new Guid(tokens[0]),
+                Id = Guid.Parse(tokens[0]),
                 Cellphone = tokens[1],
                 ExpiryTime = expiryTime
             };

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:21 PM
@@ -51,6 +51,12 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// </summary>
         /// <value>The name of the city.</value>
         public string CityName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is default.
+        /// </summary>
+        /// <value><c>true</c> if this instance is default; otherwise, <c>false</c>.</value>
+        public bool IsDefault { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="AddBankCardResulted" /> is result.
