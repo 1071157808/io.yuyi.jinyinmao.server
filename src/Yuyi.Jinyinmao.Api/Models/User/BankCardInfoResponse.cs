@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-27  9:51 PM
+// Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  10:53 PM
+// Last Modified On : 2015-05-07  1:02 PM
 // ***********************************************************************
 // <copyright file="BankCardInfoResponse.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -37,10 +37,16 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string BankName { get; set; }
 
         /// <summary>
-        /// 是否可以用于易联充值
+        ///     是否可以用于易联充值
         /// </summary>
         [Required, JsonProperty("canBeUsedForYilian")]
         public bool CanBeUsedForYilian { get; set; }
+
+        /// <summary>
+        ///     开户地，格式应该为  **|**
+        /// </summary>
+        [Required, JsonProperty("cityName")]
+        public string CityName { get; set; }
 
         /// <summary>
         ///     是否是默认银行卡
@@ -49,7 +55,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public bool IsDefault { get; set; }
 
         /// <summary>
-        /// 是否已经认证
+        ///     是否已经认证
         /// </summary>
         [Required, JsonProperty("verified")]
         public bool Verified { get; set; }
@@ -76,6 +82,7 @@ namespace Yuyi.Jinyinmao.Api.Models
                 BankCardNo = info.BankCardNo,
                 BankName = info.BankName,
                 CanBeUsedForYilian = info.CanBeUsedForYilian,
+                CityName = info.CityName,
                 IsDefault = info.IsDefault,
                 Verified = info.Verified,
                 VerifiedTime = info.VerifiedTime,

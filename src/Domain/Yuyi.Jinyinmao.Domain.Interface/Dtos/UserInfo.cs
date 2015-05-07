@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-11  10:35 AM
@@ -79,6 +79,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public List<string> LoginNames { get; set; }
 
         /// <summary>
+        /// 当月取款次数
+        /// </summary>
+        public int MonthWithdrawalCount { get; set; }
+
+        /// <summary>
         ///     真实姓名
         /// </summary>
         public string RealName { get; set; }
@@ -87,6 +92,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     注册时间
         /// </summary>
         public DateTime RegisterTime { get; set; }
+
+        /// <summary>
+        /// 当天取款次数
+        /// </summary>
+        public int TodayWithdrawalCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

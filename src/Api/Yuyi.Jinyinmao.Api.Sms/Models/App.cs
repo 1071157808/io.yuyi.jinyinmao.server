@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  3:42 PM
+// Last Modified On : 2015-05-06  6:17 PM
 // ***********************************************************************
 // <copyright file="App.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -22,29 +22,16 @@ namespace Yuyi.Jinyinmao.Api.Sms.Models
     public class App : TableEntity
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="App" /> class.
+        ///     Gets or sets the application key.
         /// </summary>
-        public App()
-        {
-            this.PartitionKey = "api.sms.config.appkeys";
-            this.RowKey = Guid.NewGuid().ToString();
-        }
+        /// <value>The application key.</value>
+        public string ApiKey { get; set; }
 
         /// <summary>
         ///     Gets or sets the application identifier.
         /// </summary>
         /// <value>The application identifier.</value>
-        public Guid AppId
-        {
-            get { return Guid.Parse(this.RowKey); }
-            set { this.RowKey = value.ToString(); }
-        }
-
-        /// <summary>
-        ///     Gets or sets the application key.
-        /// </summary>
-        /// <value>The application key.</value>
-        public string AppKey { get; set; }
+        public Guid AppId { get; set; }
 
         /// <summary>
         ///     Gets or sets the name.

@@ -181,6 +181,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
+      <Project>{7B420A40-ACEC-4461-AE6E-CA89E2AD65C9}</Project>
+      <Name>Yuyi.Jinyinmao.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
       <Project>{0E048DCC-F815-4D24-87B4-4210FD89E500}</Project>
       <Name>Yuyi.Jinyinmao.Service.Misc.Interface</Name>

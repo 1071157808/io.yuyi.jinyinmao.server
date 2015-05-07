@@ -160,6 +160,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Yilian\Yuyi.Jinyinmao.Service.Yilian.csproj">
+      <Project>{850e78f8-beee-4dd2-b4d9-ceebe0f4dd5d}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Yilian</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
       <Project>{5245a89c-fd02-404a-a0a3-c1b5f197e426}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core</Name>

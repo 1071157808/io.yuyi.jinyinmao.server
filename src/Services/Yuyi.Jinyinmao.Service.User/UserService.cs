@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  3:29 AM
+// Last Modified On : 2015-05-07  2:42 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -115,7 +115,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Clears the unauthenticated information.
+        ///     Clears the unauthenticated information.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         public Task ClearUnauthenticatedInfo(Guid userId)
@@ -199,7 +199,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Investings the asynchronous.
+        ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The regular investing.</param>
         /// <returns>Task.</returns>
@@ -218,6 +218,17 @@ namespace Yuyi.Jinyinmao.Service
             IUser user = UserFactory.GetGrain(command.UserId);
             await user.RegisterAsync(command);
             return await user.GetUserInfoAsync();
+        }
+
+        /// <summary>
+        ///     Reloads the data asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task.</returns>
+        public Task ReloadDataAsync(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.ReloadAsync();
         }
 
         /// <summary>
@@ -268,13 +279,13 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     Withdrawals the resulted asynchronous.
         /// </summary>
-        /// <param name="userIdentifier">The user identifier.</param>
-        /// <param name="transcationIdentifier">The transcation identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
         /// <returns>Task.</returns>
-        public Task WithdrawalResultedAsync(string userIdentifier, string transcationIdentifier)
+        public Task WithdrawalResultedAsync(Guid userId, Guid transcationId)
         {
-            IUser user = UserFactory.GetGrain(Guid.ParseExact(userIdentifier, "N"));
-            return user.WithdrawalResultedAsync(Guid.ParseExact(transcationIdentifier, "N"));
+            IUser user = UserFactory.GetGrain(userId);
+            return user.WithdrawalResultedAsync(transcationId);
         }
 
         #endregion IUserService Members

@@ -38,7 +38,10 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
             await this.ProcessingEventAsync(@event, async e =>
             {
                 string message = Resources.Sms_OrderRepaid.FormatWith(e.OrderNo, (e.Principal + e.Interest + e.ExtraInterest) / 100);
-                await this.SmsService.SendMessageAsync(e.Cellphone, message);
+                if (!await this.SmsService.SendMessageAsync(e.Cellphone, message))
+                {
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(@event.Cellphone, message));
+                }
             });
 
             await this.ProcessingEventAsync(@event, async e =>

@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  1:34 PM
+// Last Modified On : 2015-05-07  12:06 AM
 // ***********************************************************************
 // <copyright file="HMACAuthenticationAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -43,13 +43,13 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
     {
         private static readonly string AuthenticationScheme = "jas";
 
-        private static readonly TableQuery<App> query = new TableQuery<App>().Where(TableQuery.GenerateFilterCondition("PartitionKey",
-            QueryComparisons.Equal, "api.sms.config.appkeys"));
+        private static readonly TableQuery<App> query = new TableQuery<App>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey",
+            QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "JymApiSms eq true"));
 
         private static readonly long requestMaxAgeInSeconds = 300;
         private static readonly CloudStorageAccount storageAccount;
         private static Dictionary<Guid, App> allowedApps = new Dictionary<Guid, App>();
-        private static DateTime configLoadTime;
+        private static DateTime configLoadTime = DateTime.MinValue;
 
         /// <summary>
         ///     Initializes static members of the <see cref="HMACAuthenticationAttribute" /> class.
@@ -95,16 +95,16 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
 
                 if (autherizationHeaderArray != null)
                 {
-                    string APPId = autherizationHeaderArray[0];
+                    string appId = autherizationHeaderArray[0];
                     string incomingBase64Signature = autherizationHeaderArray[1];
                     string nonce = autherizationHeaderArray[2];
                     string requestTimeStamp = autherizationHeaderArray[3];
 
-                    Task<bool> isValid = this.isValidRequest(req, APPId, incomingBase64Signature, nonce, requestTimeStamp);
+                    Task<bool> isValid = this.isValidRequest(req, appId, incomingBase64Signature, nonce, requestTimeStamp);
 
                     if (isValid.Result)
                     {
-                        GenericPrincipal currentPrincipal = new GenericPrincipal(new GenericIdentity(APPId), null);
+                        GenericPrincipal currentPrincipal = new GenericPrincipal(new GenericIdentity(appId), null);
                         context.Principal = currentPrincipal;
                     }
                     else
@@ -160,7 +160,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
                 configLoadTime = DateTime.UtcNow;
                 CloudTableClient client = storageAccount.CreateCloudTableClient();
 
-                IEnumerable<App> apps = client.GetTableReference("ApiSms").ExecuteQuery(query);
+                IEnumerable<App> apps = client.GetTableReference("ApiKeys").ExecuteQuery(query);
                 Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.AddHours(8)).ToDictionary(app => app.AppId);
                 allowedApps = tempAllowedApps;
             }
@@ -193,14 +193,14 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             return false;
         }
 
-        private async Task<bool> isValidRequest(HttpRequestMessage req, string APPId, string incomingBase64Signature, string nonce, string requestTimeStamp)
+        private async Task<bool> isValidRequest(HttpRequestMessage req, string appIdString, string incomingBase64Signature, string nonce, string requestTimeStamp)
         {
             string requestContentBase64String = "";
             string requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());
             string requestHttpMethod = req.Method.Method;
 
             Guid appId;
-            if (!Guid.TryParse(APPId, out appId))
+            if (!Guid.TryParse(appIdString, out appId))
             {
                 return false;
             }
@@ -224,9 +224,9 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
                 requestContentBase64String = Convert.ToBase64String(hash);
             }
 
-            string data = String.Format("{0}{1}{2}{3}{4}{5}", APPId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
+            string data = String.Format("{0}{1}{2}{3}{4}{5}", appIdString, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
 
-            byte[] secretKeyBytes = Convert.FromBase64String(app.AppKey);
+            byte[] secretKeyBytes = Convert.FromBase64String(app.ApiKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(data);
 

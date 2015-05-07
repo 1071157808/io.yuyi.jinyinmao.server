@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-27  11:32 PM
@@ -66,6 +66,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         public bool HasSetPaymentPassword { get; set; }
 
         /// <summary>
+        /// 当月取款次数
+        /// </summary>
+        [Required, JsonProperty("monthWithdrawalCount")]
+        public int MonthWithdrawalCount { get; set; }
+
+        /// <summary>
         ///     用户真实姓名
         /// </summary>
         [Required, JsonProperty("realName")]
@@ -76,6 +82,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("registerTime")]
         public string RegisterTime { get; set; }
+
+        /// <summary>
+        /// 当天取款次数
+        /// </summary>
+        [Required, JsonProperty("todayWithdrawalCount")]
+        public int TodayWithdrawalCount { get; set; }
 
         /// <summary>
         ///     用户是否通过实名认证
@@ -97,8 +109,10 @@ namespace Yuyi.Jinyinmao.Api.Models
                 Credential = (int)info.Credential,
                 CredentialNo = info.CredentialNo,
                 HasSetPaymentPassword = info.HaSetPaymentPassword,
+                MonthWithdrawalCount = info.MonthWithdrawalCount,
                 RealName = info.RealName,
                 RegisterTime = info.RegisterTime.ToString("G"),
+                TodayWithdrawalCount = info.TodayWithdrawalCount,
                 Verified = info.Verified
             };
         }

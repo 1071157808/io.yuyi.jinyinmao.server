@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:39 PM
+// Last Modified On : 2015-05-07  12:35 AM
 // ***********************************************************************
 // <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -168,6 +168,7 @@ namespace Yuyi.Jinyinmao.Service
                     JArray jArray = resultJObjects.SelectToken("TRANS_DETAILS").Value<JArray>();
                     string result = jArray.First.SelectToken("PAY_STATE").Value<string>();
                     string message = jArray.First.SelectToken("REMARK").Value<string>();
+                    message = message.Substring(message.IndexOf(':') + 1);
 
                     // 易联很坑爹，现在这样写，00A4 需要忽略
                     if (result.ToUpper() == "00A4")

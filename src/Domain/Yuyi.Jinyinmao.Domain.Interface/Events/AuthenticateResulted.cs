@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-27  5:03 PM
@@ -45,6 +45,12 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// </summary>
         /// <value><c>true</c> if result; otherwise, <c>false</c>.</value>
         public bool Result { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tran desc.
+        /// </summary>
+        /// <value>The tran desc.</value>
+        public string TranDesc { get; set; }
 
         /// <summary>
         ///     用户唯一标示符

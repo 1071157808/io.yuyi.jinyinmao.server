@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-03  6:18 PM
@@ -19,12 +19,12 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     public static class ChannelCodeHelper
     {
         /// <summary>
-        ///     Gets the yilian.
+        /// Gets the jinyinmao.
         /// </summary>
-        /// <value>The yilian.</value>
-        public static int Yilian
+        /// <value>The jinyinmao.</value>
+        public static int Jinyinmao
         {
-            get { return 10010; }
+            get { return 10000; }
         }
 
         /// <summary>
@@ -34,6 +34,15 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         public static int Lianlian
         {
             get { return 10020; }
+        }
+
+        /// <summary>
+        ///     Gets the yilian.
+        /// </summary>
+        /// <value>The yilian.</value>
+        public static int Yilian
+        {
+            get { return 10010; }
         }
     }
 }

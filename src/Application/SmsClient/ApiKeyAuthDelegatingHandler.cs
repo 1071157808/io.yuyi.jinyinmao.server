@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-22  1:47 PM
+// Last Modified On : 2015-05-07  12:10 AM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -37,9 +37,9 @@ namespace SmsClient
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string appIdConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppId");
-            string AppId = string.IsNullOrEmpty(appIdConfig) ? "0dcd384f-47a6-4083-bef4-a61bec55e12f" : appIdConfig;
-            string appKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
-            string AppKey = string.IsNullOrEmpty(appKeyConfig) ? "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=" : appKeyConfig;
+            string appId = string.IsNullOrEmpty(appIdConfig) ? "0dcd384f-47a6-4083-bef4-a61bec55e12f" : appIdConfig;
+            string apiKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
+            string apiKey = string.IsNullOrEmpty(apiKeyConfig) ? "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=" : apiKeyConfig;
 
             HttpResponseMessage response;
             string requestContentBase64String = string.Empty;
@@ -67,9 +67,9 @@ namespace SmsClient
             }
 
             //Creating the raw signature string
-            string signatureRawData = String.Format("{0}{1}{2}{3}{4}{5}", AppId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
+            string signatureRawData = String.Format("{0}{1}{2}{3}{4}{5}", appId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
 
-            var secretKeyByteArray = Convert.FromBase64String(AppKey);
+            var secretKeyByteArray = Convert.FromBase64String(apiKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(signatureRawData);
 
@@ -78,7 +78,7 @@ namespace SmsClient
                 byte[] signatureBytes = hmac.ComputeHash(signature);
                 string requestSignatureBase64String = Convert.ToBase64String(signatureBytes);
                 //Setting the values in the Authorization header using custom scheme (jas)
-                request.Headers.Authorization = new AuthenticationHeaderValue("jas", string.Format("{0}:{1}:{2}:{3}", AppId, requestSignatureBase64String, nonce, requestTimeStamp));
+                request.Headers.Authorization = new AuthenticationHeaderValue("jas", string.Format("{0}:{1}:{2}:{3}", appId, requestSignatureBase64String, nonce, requestTimeStamp));
             }
 
             response = await base.SendAsync(request, cancellationToken);

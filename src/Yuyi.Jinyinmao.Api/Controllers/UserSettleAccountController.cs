@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-03  3:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  1:34 AM
+// Last Modified On : 2015-05-07  5:34 PM
 // ***********************************************************************
 // <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,10 @@
 
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain.Commands;
@@ -28,6 +31,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     [RoutePrefix("User/Settle")]
     public class UserSettleAccountController : ApiControllerBase
     {
+        private static readonly int DailyWithdrawalLimitCount = 100;
         private readonly IUserInfoService userInfoService;
         private readonly IUserService userService;
 
@@ -57,7 +61,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [Route("Deposit/Yilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> Deposit(DepositFromYilianRequest request)
+        public async Task<IHttpActionResult> DepositFromYilian(DepositFromYilianRequest request)
         {
             BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
 
@@ -78,6 +82,29 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     钱包账户信息
+        /// </summary>
+        /// <remarks>
+        ///     必须登录
+        /// </remarks>
+        /// <response code="200">成功</response>
+        /// <response code="400">USAI:查询不到该账户的信息</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Info"), CookieAuthorize, ResponseType(typeof(SettleAccountInfoResponse))]
+        public async Task<IHttpActionResult> Info()
+        {
+            SettleAccountInfo info = await this.userInfoService.GetSettleAccountInfoAsync(this.CurrentUser.Id);
+
+            if (info == null)
+            {
+                return this.BadRequest("USAI:查询不到该账户的信息");
+            }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
         ///     账户取现
         /// </summary>
         /// <remarks>
@@ -88,23 +115,38 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </param>
         /// <response code="200">成功</response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="400">USAD1:该银行卡未经过认证</response>
-        /// <response code="400">USAD2:取现额度超过限制</response>
+        /// <response code="400">USAD1:暂时无法取现</response>
+        /// <response code="400">USAD2:取现次数已经达到今日上限</response>
+        /// <response code="400">USAD3:该银行卡未经过认证</response>
+        /// <response code="400">USAD4:取现额度超过限制</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> Withdrawal(WithdrawalRequest request)
         {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (userInfo == null)
+            {
+                this.Trace.Warn(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("USAD1:暂时无法取现");
+            }
+
+            if (userInfo.TodayWithdrawalCount >= DailyWithdrawalLimitCount)
+            {
+                return this.BadRequest("USAD2:取现次数已经达到今日上限");
+            }
+
             BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
 
             if (bankCardInfo == null || !bankCardInfo.Verified)
             {
-                return this.BadRequest("USAD2:该银行卡未经过认证");
+                return this.BadRequest("USAD3:该银行卡未经过认证");
             }
 
             if (bankCardInfo.WithdrawAmount < request.Amount)
             {
-                return this.BadRequest("USAD2:取现额度超过限制");
+                return this.BadRequest("USAD4:取现额度超过限制");
             }
 
             await this.userService.WithdrawalAsync(new Withdrawal

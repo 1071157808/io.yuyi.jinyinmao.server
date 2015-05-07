@@ -74,6 +74,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<UserInfo> RegisterUserAsync(UserRegister command);
 
         /// <summary>
+        /// Reloads the data asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task.</returns>
+        Task ReloadDataAsync(Guid userId);
+
+        /// <summary>
         ///     Resets the login password asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -103,11 +110,11 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task WithdrawalAsync(Withdrawal command);
 
         /// <summary>
-        ///     Withdrawals the resulted asynchronous.
+        /// Withdrawals the resulted asynchronous.
         /// </summary>
-        /// <param name="userIdentifier">The user identifier.</param>
-        /// <param name="transcationIdentifier">The transcation identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
         /// <returns>Task.</returns>
-        Task WithdrawalResultedAsync(string userIdentifier, string transcationIdentifier);
+        Task WithdrawalResultedAsync(Guid userId, Guid transcationId);
     }
 }

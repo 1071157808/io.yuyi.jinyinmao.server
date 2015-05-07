@@ -2,9 +2,9 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  8:15 AM
-//
+// 
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  3:27 AM
+// Last Modified On : 2015-05-07  3:03 PM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -34,18 +34,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public IEventStore EventStore { get; set; }
 
-        /// <summary>
-        /// This method is called at the end of the process of activating a grain.
-        ///             It is called before any messages have been dispatched to the grain.
-        ///             For grains with declared persistent state, this method is called after the State property has been populated.
-        /// </summary>
-        public override Task OnActivateAsync()
-        {
-            this.CommandStore = new CommandStore();
-            this.EventStore = new EventStore();
-            return base.OnActivateAsync();
-        }
-
         #region IEntity Members
 
         /// <summary>
@@ -57,25 +45,24 @@ namespace Yuyi.Jinyinmao.Domain
             return Task.FromResult(this.State.Id);
         }
 
-        #endregion IEntity Members
+        /// <summary>
+        ///     Reload state data as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public abstract Task ReloadAsync();
+
+        #endregion
 
         /// <summary>
-        ///     Stores the command asynchronous.
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
         /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        public Task StoreCommandAsync(ICommand command)
+        public override Task OnActivateAsync()
         {
-            CommandRecord record = new CommandRecord
-            {
-                Command = command.ToJson(),
-                CommandId = command.CommandId,
-                TimeStamp = DateTime.UtcNow.Ticks,
-                CommandName = command.GetType().Name,
-                PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                RowKey = command.CommandId.ToGuidString()
-            };
-            return this.CommandStore.StoreCommandRecordAsync(record);
+            this.CommandStore = new CommandStore();
+            this.EventStore = new EventStore();
+            return base.OnActivateAsync();
         }
 
         /// <summary>
@@ -95,6 +82,35 @@ namespace Yuyi.Jinyinmao.Domain
                 RowKey = @event.EventId.ToGuidString()
             };
             return this.EventStore.StoreEventRecordAsync(record);
+        }
+
+        /// <summary>
+        ///     Begins the process command asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        protected async Task BeginProcessCommandAsync(ICommand command)
+        {
+            await this.StoreCommandAsync(command);
+        }
+
+        /// <summary>
+        ///     Stores the command asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        private Task StoreCommandAsync(ICommand command)
+        {
+            CommandRecord record = new CommandRecord
+            {
+                Command = command.ToJson(),
+                CommandId = command.CommandId,
+                TimeStamp = DateTime.UtcNow.Ticks,
+                CommandName = command.GetType().Name,
+                PartitionKey = this.GetPrimaryKey().ToGuidString(),
+                RowKey = command.CommandId.ToGuidString()
+            };
+            return this.CommandStore.StoreCommandRecordAsync(record);
         }
     }
 }

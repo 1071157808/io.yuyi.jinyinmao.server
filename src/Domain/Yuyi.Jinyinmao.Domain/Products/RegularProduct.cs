@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  10:05 AM
+// Last Modified On : 2015-05-07  3:05 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -205,8 +205,9 @@ namespace Yuyi.Jinyinmao.Domain
                 return;
             }
 
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            await this.BeginProcessCommandAsync(command);
 
+            DateTime now = DateTime.UtcNow.AddHours(8);
             this.State.Id = command.ProductId;
             this.State.Agreement1 = command.Agreement1;
             this.State.Agreement2 = command.Agreement2;
@@ -260,10 +261,9 @@ namespace Yuyi.Jinyinmao.Domain
                 }
             }
 
-            await this.StoreCommandAsync(command);
-            await this.RaiseRegularProductIssued(command);
-
             await this.State.WriteStateAsync();
+
+            await this.RaiseRegularProductIssued(command);
         }
 
         /// <summary>
@@ -298,6 +298,16 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadOrderData();
 
             return base.OnActivateAsync();
+        }
+
+        /// <summary>
+        ///     Reload state data as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public override async Task ReloadAsync()
+        {
+            await this.State.ReadStateAsync();
+            this.ReloadOrderData();
         }
 
         private int BuildInterest(DateTime valueDate, int principal)

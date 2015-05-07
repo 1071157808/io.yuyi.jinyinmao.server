@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-28  12:42 PM
+// Last Modified On : 2015-05-06  3:56 PM
 // ***********************************************************************
 // <copyright file="ZTSmsService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -108,13 +108,13 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
             finally
             {
                 CloudTableClient client = storageAccount.CreateCloudTableClient();
-                client.GetTableReference("ApiSms").Execute(TableOperation.Insert(new SmsMessage
+                client.GetTableReference("Sms").Execute(TableOperation.Insert(new SmsMessage
                 {
                     AppId = appId,
                     Cellphones = cellphones,
                     Message = message,
                     Notes = this.productId,
-                    PartitionKey = "api.sms.data.messages",
+                    PartitionKey = "jinyinmao-api-sms",
                     RowKey = Guid.NewGuid().ToString("N"),
                     Response = responseMessage,
                     Time = DateTime.UtcNow.AddHours(8)

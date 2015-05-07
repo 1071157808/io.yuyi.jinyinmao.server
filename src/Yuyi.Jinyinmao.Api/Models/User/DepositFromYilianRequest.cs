@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-03  4:46 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  12:28 AM
+// Last Modified On : 2015-05-07  2:21 AM
 // ***********************************************************************
 // <copyright file="DepositFromYilianRequest.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -23,10 +23,10 @@ namespace Yuyi.Jinyinmao.Api.Models
     public class DepositFromYilianRequest : IRequest
     {
         /// <summary>
-        ///     Gets or sets the amount.
+        ///     支付金额，以“分”为单位
         /// </summary>
         /// <value>The amount.</value>
-        [Required, Range(1, 10000000), JsonProperty("amount")]
+        [Required, Range(100, 30000000), JsonProperty("amount")]
         public int Amount { get; set; }
 
         /// <summary>

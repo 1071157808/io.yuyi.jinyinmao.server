@@ -4,19 +4,20 @@
 // Created          : 2015-04-26  11:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  2:42 AM
+// Last Modified On : 2015-05-07  5:47 PM
 // ***********************************************************************
 // <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System.Collections.Generic;
+using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Models;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -34,7 +35,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(UserRegistered @event)
         {
-            await this.ProcessingEventAsync(@event, async e => { await this.SmsService.SendMessageAsync(e.Cellphone, Resources.Sms_SignUpSuccessful); });
+            await this.ProcessingEventAsync(@event, async e =>
+            {
+                string message = Resources.Sms_SignUpSuccessful;
+                if (!await this.SmsService.SendMessageAsync(e.Cellphone, message))
+                {
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(@event.Cellphone, message));
+                }
+            });
 
             await this.ProcessingEventAsync(@event, async e =>
             {
@@ -53,7 +61,7 @@ namespace Yuyi.Jinyinmao.Domain
                     ContractId = e.ContractId,
                     Credential = (int)Credential.None,
                     CredentialNo = string.Empty,
-                    Info = new Dictionary<string, object>().ToJson(),
+                    Info = JsonHelper.NewDictionary,
                     InviteBy = e.InviteBy,
                     LoginNames = e.LoginNames.Join(","),
                     OutletCode = e.OutletCode,

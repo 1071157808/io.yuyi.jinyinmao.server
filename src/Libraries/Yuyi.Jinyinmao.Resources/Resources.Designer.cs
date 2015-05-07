@@ -61,7 +61,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败。如需帮助，请致电4008556333.
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败。失败原因：{1}。如需帮助，请致电4008556333.
         /// </summary>
         public static string Sms_AddBankCardFailed {
             get {
@@ -79,7 +79,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 金银猫账户充值失败，金额{0}元。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】.
+        ///   Looks up a localized string similar to 金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】.
         /// </summary>
         public static string Sms_DepositFailed {
             get {
@@ -88,7 +88,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 金银猫账户充值成功，金额{0}元。如非本人操作，请致电4008556333.
+        ///   Looks up a localized string similar to 金银猫账户充值成功，充值银行卡尾号为{0}，金额{1}元。如非本人操作，请致电4008556333.
         /// </summary>
         public static string Sms_DepositSuccessed {
             get {
@@ -160,7 +160,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您申请的{0}元提现已被银行受理，请注意查收。.
+        ///   Looks up a localized string similar to 您申请金银猫账户提现已被银行受理，银行卡尾号为{0}，金额{1}元。请注意查收。如非本人操作，请致电4008556333.
         /// </summary>
         public static string Sms_WithdrawalResulted {
             get {

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  1:43 AM
+// Last Modified On : 2015-05-07  3:19 PM
 // ***********************************************************************
 // <copyright file="AdminController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         private readonly IUserService userService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AdminController" /> class.
+        ///     Initializes a new instance of the <see cref="AdminController" /> class.
         /// </summary>
         /// <param name="productInfoService">The product information service.</param>
         /// <param name="productService">The product service.</param>
@@ -105,16 +105,16 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// 定期理财产品还款通知
+        ///     定期理财产品还款通知
         /// </summary>
-        /// <param name="productIdentifier">The product identifier.</param>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productCategory">The product category.</param>
+        /// <param name="productIdentifier">产品唯一标识</param>
+        /// <param name="productNo">产品编号</param>
+        /// <param name="productCategory">产品类别</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="401">未授权</response>
         /// <response code="500"></response>
-        [Route("RegularProduct/Repay"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("RegularProduct/Repay/{productIdentifier:length(32)}-{productNo:minlength(5)}-{productCategory:length(9)}")]
         public IHttpActionResult RegularProductRepay(string productIdentifier, string productNo, string productCategory)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
@@ -124,18 +124,37 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// 用户取现到账
+        ///     重新刷新用户数据
         /// </summary>
-        /// <param name="userIdentifier">The user identifier.</param>
-        /// <param name="transcationIdentifier">The transcation identifier.</param>
+        /// <param name="userIdentifier">用户唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="401">未授权</response>
         /// <response code="500"></response>
-        [Route("Withdrawal"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public IHttpActionResult WithdrawalTranscationFinished(string userIdentifier, string transcationIdentifier)
+        [Route("User/Reload/{userIdentifier:length(32)}")]
+        public async Task<IHttpActionResult> ReloadUserData(string userIdentifier)
         {
-            this.userService.WithdrawalResultedAsync(userIdentifier, transcationIdentifier);
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            await this.userService.ReloadDataAsync(userId);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     用户取现到账
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <param name="transcationIdentifier">交易流水唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="401">未授权</response>
+        /// <response code="500"></response>
+        [Route("Withdrawal/{userIdentifier:length(32)}-{transcationIdentifier:length(32)}")]
+        public async Task<IHttpActionResult> WithdrawalTranscationFinished(string userIdentifier, string transcationIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid transcationId = Guid.ParseExact(transcationIdentifier, "N");
+            await this.userService.WithdrawalResultedAsync(userId, transcationId);
 
             return this.Ok();
         }

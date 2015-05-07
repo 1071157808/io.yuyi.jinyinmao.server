@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  2:55 AM
+// Last Modified On : 2015-05-07  1:54 AM
 // ***********************************************************************
 // <copyright file="EventProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -61,7 +61,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 string topicName = e.GetType().Name.ToUnderScope();
                 TopicClient client = TopicClient.CreateFromConnectionString(SiloClusterConfig.ServiceBusConnectiongString, topicName);
-                await client.SendAsync(new BrokeredMessage(e));
+                await client.SendAsync(new BrokeredMessage(e.ToJson()));
             });
         }
 

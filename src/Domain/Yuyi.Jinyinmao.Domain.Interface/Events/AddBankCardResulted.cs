@@ -65,6 +65,12 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public bool Result { get; set; }
 
         /// <summary>
+        /// Gets or sets the tran desc.
+        /// </summary>
+        /// <value>The tran desc.</value>
+        public string TranDesc { get; set; }
+
+        /// <summary>
         ///     Gets or sets the user identifier.
         /// </summary>
         /// <value>The user identifier.</value>

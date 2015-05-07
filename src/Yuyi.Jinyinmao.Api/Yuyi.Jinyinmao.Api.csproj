@@ -233,6 +233,10 @@
       <Project>{5AEB9CC5-4D0B-456C-9233-2D7517781BC9}</Project>
       <Name>Yuyi.Jinyinmao.Service.Product.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Product\Yuyi.Jinyinmao.Service.Product.csproj">
+      <Project>{A2075913-20FC-496C-9F53-BCA0762ECEF1}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Product</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj">
       <Project>{C3B74C74-F4C7-485E-9697-B51B754FCCEE}</Project>
       <Name>Yuyi.Jinyinmao.Service.User.Interface</Name>
@@ -280,6 +284,7 @@
     <Compile Include="Models\User\ResetPasswordRequest.cs" />
     <Compile Include="Models\User\ResetPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\SetPaymentPasswordRequest.cs" />
+    <Compile Include="Models\User\SettleAccountInfoResponse.cs" />
     <Compile Include="Models\User\SignInRequest.cs" />
     <Compile Include="Models\User\SignInResponse.cs" />
     <Compile Include="Models\User\SignUpRequest.cs" />
@@ -304,7 +309,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

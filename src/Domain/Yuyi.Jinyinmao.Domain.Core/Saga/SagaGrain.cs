@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  2:22 AM
+// Last Modified On : 2015-05-07  1:17 PM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,13 +12,13 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
 using Orleans;
 using Orleans.Runtime;
 using Yuyi.Jinyinmao.Domain.Sagas;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -92,14 +92,34 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Initializes the saga entity.
         /// </summary>
         /// <param name="initDataJson">The initialize data json.</param>
-        protected virtual void InitSagaEntity(string initDataJson)
+        protected virtual void InitSagaEntity(object initDataJson)
         {
             this.SagaEntity = new SagaEntity
             {
                 BeginTime = DateTime.UtcNow.AddHours(8),
                 UpdateTime = DateTime.UtcNow.AddHours(8),
-                Info = new Dictionary<string, object>().ToJson(),
-                InitData = new Object().ToJson(),
+                Info = JsonHelper.NewDictionary,
+                InitData = initDataJson.ToJson(),
+                Message = string.Empty,
+                PartitionKey = this.State.SagaType,
+                RowKey = this.State.SagaId.ToGuidString(),
+                SagaId = this.State.SagaId,
+                SagaType = this.State.SagaType,
+                State = 0
+            };
+        }
+
+        /// <summary>
+        ///     Initializes the saga entity.
+        /// </summary>
+        protected virtual void InitSagaEntity()
+        {
+            this.SagaEntity = new SagaEntity
+            {
+                BeginTime = DateTime.UtcNow.AddHours(8),
+                UpdateTime = DateTime.UtcNow.AddHours(8),
+                Info = JsonHelper.NewDictionary,
+                InitData = JsonHelper.NewObject,
                 Message = string.Empty,
                 PartitionKey = this.State.SagaType,
                 RowKey = this.State.SagaId.ToGuidString(),
@@ -115,7 +135,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected virtual async Task RegisterReminder()
         {
-            await this.RegisterOrUpdateReminder("Saga", TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+            await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
         }
 
         /// <summary>
@@ -126,6 +146,16 @@ namespace Yuyi.Jinyinmao.Domain
         protected void RunIntoError(string message, Exception exception)
         {
             this.SagaEntity.Message = message;
+            this.SagaEntity.Add("Exception", exception.GetExceptionString());
+        }
+
+        /// <summary>
+        ///     Runs the into error.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        protected void RunIntoError(Exception exception)
+        {
+            this.SagaEntity.Message = exception.Message;
             this.SagaEntity.Add("Exception", exception.GetExceptionString());
         }
 
@@ -144,7 +174,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected virtual async Task UnregisterReminder()
         {
-            await this.UnregisterReminder(await this.GetReminder("Saga"));
+            await this.UnregisterReminder(await this.GetReminder(this.GetType().Name));
         }
     }
 }

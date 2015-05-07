@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Sms_AddBankCardFailed" xml:space="preserve">
-    <value>您尾号为{0}的借记卡绑定失败。如需帮助，请致电4008556333</value>
+    <value>您尾号为{0}的借记卡绑定失败。失败原因：{1}。如需帮助，请致电4008556333</value>
   </data>
   <data name="Sms_AddBankCardSuccessed" xml:space="preserve">
     <value>您尾号为{0}的借记卡已经绑定成功。现在即可开始购买。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_DepositFailed" xml:space="preserve">
-    <value>金银猫账户充值失败，金额{0}元。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】</value>
+    <value>金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】</value>
   </data>
   <data name="Sms_DepositSuccessed" xml:space="preserve">
-    <value>金银猫账户充值成功，金额{0}元。如非本人操作，请致电4008556333</value>
+    <value>金银猫账户充值成功，充值银行卡尾号为{0}，金额{1}元。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_OrderBuilt" xml:space="preserve">
     <value>您已购买成功金银猫理财产品，订单号：{0}，订单金额{1}元。如非本人操作，请致电4008556333</value>
@@ -151,6 +151,6 @@
     <value>您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
   </data>
   <data name="Sms_WithdrawalResulted" xml:space="preserve">
-    <value>您申请的{0}元提现已被银行受理，请注意查收。</value>
+    <value>您申请金银猫账户提现已被银行受理，银行卡尾号为{0}，金额{1}元。请注意查收。如非本人操作，请致电4008556333</value>
   </data>
 </root>

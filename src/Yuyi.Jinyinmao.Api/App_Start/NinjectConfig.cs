@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-11  10:35 AM
+// Created          : 2015-04-28  1:04 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  1:30 AM
+// Last Modified On : 2015-05-07  3:53 PM
 // ***********************************************************************
 // <copyright file="NinjectConfig.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -83,6 +83,8 @@ namespace Yuyi.Jinyinmao.Api
         private static void RegisterServices()
         {
             // This is where we tell Ninject how to resolve service requests
+            kernel.Bind<IProductInfoService>().To<ProductInfoService>().InSingletonScope();
+            kernel.Bind<IProductService>().To<ProductService>().InSingletonScope();
             kernel.Bind<ISmsService>().To<SmsService>().InSingletonScope();
             kernel.Bind<IVeriCodeService>().To<VeriCodeService>().InSingletonScope();
             kernel.Bind<IUserService>().To<UserService>().InSingletonScope();

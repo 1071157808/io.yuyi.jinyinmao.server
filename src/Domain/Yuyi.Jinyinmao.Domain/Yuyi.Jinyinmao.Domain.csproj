@@ -159,6 +159,10 @@
     <Compile Include="Sagas\DepositByYilianSaga.cs" />
     <Compile Include="Sagas\DepositSaga.cs" />
     <Compile Include="Users\User.cs" />
+    <Compile Include="Users\User_CacheProperties.cs" />
+    <Compile Include="Users\User_Grain.cs" />
+    <Compile Include="Users\User_RaiseEvent.cs" />
+    <Compile Include="Users\User_ReloadData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

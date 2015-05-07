@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  5:06 PM
+// Last Modified On : 2015-05-07  3:18 PM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -81,7 +81,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             await this.userService.AddBankCardAsync(new AddBankCard
             {
                 BankCardNo = request.BankCardNo,
-                BankName = request.BankCode,
+                BankName = request.BankName,
+                CityName = request.CityName,
                 UserId = this.CurrentUser.Id,
                 Args = this.BuildArgs()
             });
@@ -124,7 +125,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UBCSDBC:银行卡信息错误</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("SetDefaultBankCard"), Route("SetDefaultBankCard/{bankCardNo}"), CookieAuthorize]
+        [HttpGet, Route("SetDefaultBankCard/{bankCardNo}"), CookieAuthorize]
         public async Task<IHttpActionResult> SetDefaultBankCard(string bankCardNo)
         {
             BankCardInfo info = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, bankCardNo);

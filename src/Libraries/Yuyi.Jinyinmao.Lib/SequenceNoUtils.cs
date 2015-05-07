@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  1:41 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  7:16 PM
+// Last Modified On : 2015-05-06  4:21 PM
 // ***********************************************************************
 // <copyright file="SequenceNoUtils.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -60,8 +60,8 @@ namespace Yuyi.Jinyinmao.Packages
             string time = currentTime.ToString("mmssffff");
 
             StringBuilder sb = new StringBuilder();
-            sb.Append(sequencePrefix).Append("x").Append(yearChar).Append(monthChar).Append(dayChar).Append(hourChar).Append(time);
-            return sb.ToString();
+            sb.Append(sequencePrefix).Append("X").Append(yearChar).Append(monthChar).Append(dayChar).Append(hourChar).Append(time);
+            return sb.ToString().ToUpperInvariant();
         }
     }
 }

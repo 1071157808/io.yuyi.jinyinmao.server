@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  2:17 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  12:07 AM
+// Last Modified On : 2015-05-07  1:17 PM
 // ***********************************************************************
 // <copyright file="AddBankCardSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -39,18 +38,25 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public async Task BeginProcessAsync(AddBankCardSagaInitDto initData)
         {
             this.State.InitData = initData;
-            this.InitSagaEntity(initData.ToString());
+            this.InitSagaEntity(initData);
 
-            AuthRequestParameter parameter = await this.BuildRequestParameter();
-            YilianRequestResult result = await this.Service.AuthRequestAsync(parameter);
-            this.SagaEntity.Add("Reuqest", new { result.Message, result.ResponseString });
-            if (!result.Result)
+            try
             {
-                this.SagaEntity.State = -1;
+                AuthRequestParameter parameter = await this.BuildRequestParameter();
+                YilianRequestResult result = await this.Service.AuthRequestAsync(parameter);
+                this.SagaEntity.Add("Reuqest", new { result.Message, result.ResponseString });
+                if (!result.Result)
+                {
+                    this.SagaEntity.State = -1;
+                }
+                else
+                {
+                    await this.RegisterReminder();
+                }
             }
-            else
+            catch (Exception e)
             {
-                await this.RegisterReminder();
+                this.RunIntoError(e);
             }
 
             await this.StoreSagaEntityAsync();
@@ -78,10 +84,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         {
             YilianRequestResult result = await this.Service.QueryRequestAsync(this.State.SagaId.ToGuidString(), false);
 
-            TableResult tableResult = await SiloClusterConfig.SagasTable.ExecuteAsync(TableOperation.Retrieve<SagaEntity>(this.State.SagaType, this.State.SagaId.ToGuidString()));
-
-            this.SagaEntity = (SagaEntity)tableResult.Result;
-
             if (result == null)
             {
                 this.SagaEntity.Add("Query", new { Message = "Processing" });
@@ -94,10 +96,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 await this.UnregisterReminder();
 
                 IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AddBankCardResultedAsync(this.State.InitData, result.Result);
+                await user.AddBankCardResultedAsync(this.State.InitData, result);
             }
-
-            await this.StoreSagaEntityAsync();
         }
 
         private async Task<AuthRequestParameter> BuildRequestParameter()

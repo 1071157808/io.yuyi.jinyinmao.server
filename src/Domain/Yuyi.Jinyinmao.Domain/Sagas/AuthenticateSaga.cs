@@ -4,7 +4,7 @@
 // Created          : 2015-04-27  4:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  1:37 AM
+// Last Modified On : 2015-05-06  11:12 PM
 // ***********************************************************************
 // <copyright file="AuthenticateSaga.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -38,7 +38,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public async Task BeginProcessAsync(AuthenticateSagaInitDto initData)
         {
             this.State.InitData = initData;
-            this.InitSagaEntity(initData.ToJson());
+            this.InitSagaEntity(initData);
 
             try
             {
@@ -57,7 +57,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             }
             catch (Exception e)
             {
-                this.RunIntoError(e.Message, e);
+                this.RunIntoError(e);
             }
 
             await this.StoreSagaEntityAsync();
@@ -97,7 +97,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 await this.UnregisterReminder();
 
                 IUser user = UserFactory.GetGrain(this.State.InitData.UserInfo.UserId);
-                await user.AuthenticateResultedAsync(this.State.InitData, result.Result);
+                await user.AuthenticateResultedAsync(this.State.InitData, result);
             }
         }
 
