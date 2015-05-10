@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  4:12 PM
+// Last Modified On : 2015-05-10  10:31 AM
 // ***********************************************************************
-// <copyright file="AuthenticationRequest.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="AuthenticationRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -43,7 +43,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string CityName { get; set; }
 
         /// <summary>
-        ///     证件类型。0 => 身份证， 1 => 护照，2 => 台湾， 3=> 军官证
+        ///     证件类型。10 => 身份证， 20 => 护照，30 => 台湾， 40=> 军官证
         /// </summary>
         [Required, JsonProperty("credential"), AvailableValues(Credential.IdCard, Credential.Junguan, Credential.Passport, Credential.Taiwan)]
         public Credential Credential { get; set; }

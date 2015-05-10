@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  11:03 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  2:57 PM
+// Last Modified On : 2015-05-09  2:26 AM
 // ***********************************************************************
 // <copyright file="ProductInfoService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -53,20 +53,22 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     Gets the agreement asynchronous.
         /// </summary>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productIdentifier">The product identifier.</param>
+        /// <param name="productId">The product identifier.</param>
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
-        public async Task<string> GetAgreementAsync(string productNo, string productIdentifier, int agreementIndex)
+        public async Task<string> GetAgreementAsync(Guid productId, int agreementIndex)
         {
             string cacheName = "agreement";
-            string cacheId = "-{0}-{1}-{2}".FormatWith(agreementIndex, productNo, productIdentifier);
+            string cacheId = "{0}-{1}".FormatWith(productId.ToGuidString(), agreementIndex);
             string agreement = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
 
             if (agreement.IsNullOrEmpty())
             {
-                agreement = await this.innerService.GetAgreementAsync(productNo, productIdentifier, agreementIndex);
-                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
+                agreement = await this.innerService.GetAgreementAsync(productId, agreementIndex);
+                if (agreement.IsNotNullOrEmpty())
+                {
+                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
+                }
             }
 
             return agreement;
@@ -75,18 +77,17 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     Gets the product information asynchronous.
         /// </summary>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productIdentifier">The product identifier.</param>
+        /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
-        public async Task<RegularProductInfo> GetProductInfoAsync(string productNo, string productIdentifier)
+        public async Task<RegularProductInfo> GetProductInfoAsync(Guid productId)
         {
             string cacheName = "product";
-            string cacheId = "-{0}-{1}".FormatWith(productNo, productIdentifier);
+            string cacheId = productId.ToGuidString();
             RegularProductInfo product = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<RegularProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (product == null)
             {
-                product = await this.innerService.GetProductInfoAsync(productNo, productIdentifier);
+                product = await this.innerService.GetProductInfoAsync(productId);
                 await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, product);
             }
 
@@ -98,38 +99,17 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <param name="productCategory">The product category.</param>
+        /// <param name="productCategories">The product categories.</param>
         /// <returns>Task&lt;PaginatedList&lt;RegularProductInfo&gt;&gt;.</returns>
-        public async Task<PaginatedList<RegularProductInfo>> GetProductInfosAsync(int pageIndex, int pageSize, long productCategory)
+        public async Task<PaginatedList<RegularProductInfo>> GetProductInfosAsync(int pageIndex, int pageSize, params long[] productCategories)
         {
             string cacheName = "product-page";
-            string cacheId = "-{0}-{1}-{2}".FormatWith(pageIndex, pageSize, productCategory);
+            string cacheId = "{0}-{1}-{2}".FormatWith(pageIndex, pageSize, productCategories.Join("-"));
             PaginatedList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<PaginatedList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(3));
 
             if (infos == null)
             {
-                infos = await this.innerService.GetProductInfosAsync(pageIndex, pageSize, productCategory);
-                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
-            }
-
-            return infos;
-        }
-
-        /// <summary>
-        ///     Gets the top product infos asynchronous.
-        /// </summary>
-        /// <param name="number">The number.</param>
-        /// <param name="productCategory">The product category.</param>
-        /// <returns>Task&lt;List&lt;RegularProductInfo&gt;&gt;.</returns>
-        public async Task<IList<RegularProductInfo>> GetTopProductInfosAsync(int number, long productCategory)
-        {
-            string cacheName = "product-top";
-            string cacheId = "-{0}-{1}".FormatWith(number, productCategory);
-            IList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(3));
-
-            if (infos == null)
-            {
-                infos = await this.innerService.GetTopProductInfosAsync(number, productCategory);
+                infos = await this.innerService.GetProductInfosAsync(pageIndex, pageSize, productCategories);
                 await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
             }
 
@@ -144,6 +124,27 @@ namespace Yuyi.Jinyinmao.Service
         public Task<int> GetProductPaidAmountAsync(Guid productId)
         {
             return this.innerService.GetProductPaidAmountAsync(productId);
+        }
+
+        /// <summary>
+        ///     Gets the top product infos asynchronous.
+        /// </summary>
+        /// <param name="number">The number.</param>
+        /// <param name="productCategories">The product categories.</param>
+        /// <returns>Task&lt;List&lt;RegularProductInfo&gt;&gt;.</returns>
+        public async Task<IList<RegularProductInfo>> GetTopProductInfosAsync(int number, params long[] productCategories)
+        {
+            string cacheName = "product-top";
+            string cacheId = "{0}-{1}".FormatWith(number, productCategories.Join("-"));
+            IList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(3));
+
+            if (infos == null)
+            {
+                infos = await this.innerService.GetTopProductInfosAsync(number, productCategories);
+                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
+            }
+
+            return infos;
         }
 
         #endregion IProductInfoService Members

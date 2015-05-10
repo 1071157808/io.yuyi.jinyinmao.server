@@ -4,7 +4,7 @@
 // Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:43 PM
+// Last Modified On : 2015-05-10  8:34 AM
 // ***********************************************************************
 // <copyright file="SmsService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -62,10 +62,11 @@ namespace Yuyi.Jinyinmao.Service
 
         static SmsService()
         {
+            bool temp;
             string smsServiceEnableConfig = ConfigurationManager.AppSettings.Get("SmsServiceEnable");
-            smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty();
+            smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty() && bool.TryParse(smsServiceEnableConfig, out temp) && temp;
             string smsServiceAddressConfig = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
-            apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
+            apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() && smsServiceAddressConfig.IsUrl() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
         }
 
         #region ISmsService Members

@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  12:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  3:05 PM
+// Last Modified On : 2015-05-10  6:04 PM
 // ***********************************************************************
-// <copyright file="RegularProduct.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -20,8 +20,10 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Moe.Lib;
 using Orleans;
+using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -29,6 +31,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     RegularProduct.
     /// </summary>
+    [StorageProvider(ProviderName = "SqlDatabase")]
     public class RegularProduct : EntityGrain<IRegularProductState>, IRegularProduct
     {
         private int PaidAmount { get; set; }
@@ -45,13 +48,17 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         public async Task<OrderInfo> BuildOrderAsync(UserInfo userInfo, TranscationInfo transcationInfo)
         {
+            if (this.State.SoldOut)
+            {
+                return null;
+            }
+
             if (transcationInfo.Amount > this.State.FinancingSumAmount - this.PaidAmount)
             {
                 return null;
             }
 
-            Order order;
-            order = this.State.Orders.FirstOrDefault(o => o.AccountTranscationId == transcationInfo.TransactionId);
+            Order order = this.State.Orders.FirstOrDefault(o => o.AccountTranscationId == transcationInfo.TransactionId);
             if (order == null)
             {
                 ISequenceGenerator generator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
@@ -73,13 +80,14 @@ namespace Yuyi.Jinyinmao.Domain
                     OrderNo = orderNo,
                     OrderTime = now,
                     Principal = transcationInfo.Amount,
+                    ProductCategory = this.State.ProductCategory,
                     ProductId = this.State.Id,
                     ProductSnapshot = await this.GetRegularProductInfoAsync(),
                     RepaidTime = null,
                     ResultCode = 1,
                     ResultTime = now,
                     SettleDate = this.State.SettleDate.Date,
-                    TransDesc = string.Empty,
+                    TransDesc = "购买成功",
                     UserId = userInfo.UserId,
                     UserInfo = userInfo,
                     ValueDate = valueDate,
@@ -91,6 +99,13 @@ namespace Yuyi.Jinyinmao.Domain
                 await this.State.WriteStateAsync();
 
                 this.ReloadOrderData();
+            }
+
+            if (this.PaidAmount == this.State.FinancingSumAmount)
+            {
+                this.State.SoldOut = true;
+                this.State.SoldOutTime = DateTime.UtcNow.AddHours(8);
+                await this.RaiseRegularProductSoldOutEvent();
             }
 
             return order.ToInfo();
@@ -112,16 +127,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 return Task.FromResult(this.State.Agreement2);
             }
-            return null;
-        }
-
-        /// <summary>
-        ///     Gets the paid amount.
-        /// </summary>
-        /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public Task<int> GetPaidAmountAsync()
-        {
-            return Task.FromResult(0);
+            return Task.FromResult(string.Empty);
         }
 
         /// <summary>
@@ -139,26 +145,26 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         public Task<RegularProductInfo> GetRegularProductInfoAsync()
         {
-            if (this.State.ProductNo.IsNotNullOrEmpty())
+            if (this.State.ProductNo.IsNullOrEmpty())
             {
                 return null;
             }
 
-            string info = new
+            Dictionary<string, object> info = new Dictionary<string, object>
             {
-                this.State.BankName,
-                this.State.Drawee,
-                this.State.DraweeInfo,
-                this.State.EndorseImageLink,
-                this.State.EnterpriseInfo,
-                this.State.EnterpriseLicense,
-                this.State.EnterpriseName,
-                this.State.Period,
-                this.State.RiskManagement,
-                this.State.RiskManagementInfo,
-                this.State.RiskManagementMode,
-                this.State.Usage
-            }.ToJson();
+                { "BankName", this.State.BankName },
+                { "Drawee", this.State.Drawee },
+                { "DraweeInfo", this.State.DraweeInfo },
+                { "EndorseImageLink", this.State.EndorseImageLink },
+                { "EnterpriseInfo", this.State.EnterpriseInfo },
+                { "EnterpriseLicense", this.State.EnterpriseLicense },
+                { "EnterpriseName", this.State.EnterpriseName },
+                { "Period", this.State.Period },
+                { "RiskManagement", this.State.RiskManagement },
+                { "RiskManagementInfo", this.State.RiskManagementInfo },
+                { "RiskManagementMode", this.State.RiskManagementMode },
+                { "Usage", this.State.Usage }
+            };
 
             return Task.FromResult(new RegularProductInfo
             {
@@ -263,7 +269,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.State.WriteStateAsync();
 
-            await this.RaiseRegularProductIssued(command);
+            await this.RaiseRegularProductIssuedEvent(command);
         }
 
         /// <summary>
@@ -323,7 +329,7 @@ namespace Yuyi.Jinyinmao.Domain
                 : DateTime.UtcNow.AddHours(8).AddDays(this.State.ValueDateMode.GetValueOrDefault(0)).Date;
         }
 
-        private async Task RaiseRegularProductIssued(IssueRegularProduct command)
+        private async Task RaiseRegularProductIssuedEvent(IssueRegularProduct command)
         {
             RegularProductIssued @event = new RegularProductIssued
             {
@@ -360,6 +366,24 @@ namespace Yuyi.Jinyinmao.Domain
                 ValueDate = this.State.ValueDate,
                 ValueDateMode = this.State.ValueDateMode,
                 Yield = this.State.Yield
+            };
+
+            await this.StoreEventAsync(@event);
+
+            await RegularProductIssuedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseRegularProductSoldOutEvent()
+        {
+            RegularProductSoldOut @event = new RegularProductSoldOut
+            {
+                Args = this.State.Args,
+                PaidAmount = this.PaidAmount,
+                PaidOrders = this.PaidOrders,
+                ProductId = this.State.Id,
+                SoldOutTime = this.State.SoldOutTime.GetValueOrDefault(),
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name
             };
 
             await this.StoreEventAsync(@event);

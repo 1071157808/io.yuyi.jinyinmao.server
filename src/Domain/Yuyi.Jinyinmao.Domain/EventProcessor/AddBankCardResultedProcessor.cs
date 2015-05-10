@@ -4,14 +4,15 @@
 // Created          : 2015-04-26  11:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  5:46 PM
+// Last Modified On : 2015-05-10  7:32 PM
 // ***********************************************************************
-// <copyright file="AddBankCardResultedProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="AddBankCardResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,10 +39,10 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
             await this.ProcessingEventAsync(@event, async e =>
             {
                 string message = e.Result ? Resources.Sms_AddBankCardSuccessed.FormatWith(e.BankCardNo.GetLast(4))
-                    : Resources.Sms_AddBankCardFailed.FormatWith(e.BankCardNo.GetLast(4), @event.TranDesc);
+                    : Resources.Sms_AddBankCardFailed.FormatWith(e.BankCardNo.GetLast(4), e.TranDesc);
                 if (!await this.SmsService.SendMessageAsync(e.Cellphone, message))
                 {
-                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(@event.Cellphone, message));
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.Cellphone, message));
                 }
             });
 
@@ -70,7 +71,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
 
                         if (e.IsDefault)
                         {
-                            var defaultBankCards = await db.Query<Models.BankCard>().Where(c => c.IsDefault).ToListAsync();
+                            List<Models.BankCard> defaultBankCards = await db.Query<Models.BankCard>().Where(c => c.IsDefault).ToListAsync();
                             defaultBankCards.ForEach(c => c.IsDefault = false);
                         }
 

@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  2:31 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  3:06 AM
+// Last Modified On : 2015-05-08  1:21 PM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -13,15 +13,14 @@
 
 using System;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 using Moe.AspNet.Filters;
-using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models.Investing;
+using Yuyi.Jinyinmao.Api.Models.Order;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Packages;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
@@ -37,7 +36,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         private readonly IUserService userService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvestingController" /> class.
+        ///     Initializes a new instance of the <see cref="InvestingController" /> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="userInfoService">The user information service.</param>
@@ -63,11 +62,18 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">IRI4:产品剩余份额不足"</response>
         /// <response code="400">IRI5:该产品未开售</response>
         /// <response code="400">IRI6:购买金额错误</response>
+        /// <response code="400">IRI7:购买失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpPost, Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [HttpPost, Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> RegularInvesting(InvestingRequest request)
         {
+            Guid productId;
+            if (!Guid.TryParseExact(request.ProductIdentifier, "N", out productId))
+            {
+                return this.BadRequest("请求格式不合法");
+            }
+
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
 
             if (result.Lock)
@@ -86,7 +92,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI3:账户余额不足");
             }
 
-            RegularProductInfo productInfo = await this.productService.GetProductInfoAsync(request.ProductNo, request.ProductIdentifier);
+            RegularProductInfo productInfo = await this.productService.GetProductInfoAsync(productId);
             if (productInfo == null || productInfo.FinancingSumAmount - productInfo.PaidAmount < request.Amount || productInfo.SoldOut)
             {
                 return this.BadRequest("IRI4:产品剩余份额不足");
@@ -102,17 +108,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI6:购买金额错误");
             }
 
-            await this.userService.InvestingAsync(new RegularInvesting()
+            OrderInfo order = await this.userService.InvestingAsync(new RegularInvesting
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
                 ProductCategory = request.ProductCategory,
                 ProductId = Guid.ParseExact(request.ProductIdentifier, "N"),
-                ProductNo = request.ProductNo,
                 UserId = this.CurrentUser.Id
             });
 
-            return this.Ok();
+            if (order == null)
+            {
+                return this.BadRequest("IRI7:购买失败");
+            }
+
+            return this.Ok(order.ToResponse());
         }
     }
 }

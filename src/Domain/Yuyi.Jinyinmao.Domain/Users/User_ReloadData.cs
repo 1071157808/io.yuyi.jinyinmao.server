@@ -45,6 +45,8 @@ namespace Yuyi.Jinyinmao.Domain
             this.TotalInterest = paidOrders.Sum(o => o.Interest + o.ExtraInterest);
             this.InvestingPrincipal = investingOrders.Sum(o => o.Principal);
             this.InvestingInterest = investingOrders.Sum(o => o.Interest + o.ExtraInterest);
+
+            this.Orders = this.State.Orders.ToDictionary(o => o.OrderId);
         }
 
         /// <summary>
@@ -70,6 +72,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.TodayWithdrawalCount = this.State.SettleAccount.Count(t => t.TransactionTime >= todayDate && t.TransactionTime < todayDate.AddDays(1) && t.TradeCode == TradeCodeHelper.TC1005052001);
             this.MonthWithdrawalCount = this.State.SettleAccount.Count(t => t.TransactionTime >= monthDate && t.TransactionTime < monthDate.AddMonths(1) && t.TradeCode == TradeCodeHelper.TC1005052001);
+
+            this.SettleAccount = this.State.SettleAccount.ToDictionary(t => t.TransactionId);
         }
     }
 }

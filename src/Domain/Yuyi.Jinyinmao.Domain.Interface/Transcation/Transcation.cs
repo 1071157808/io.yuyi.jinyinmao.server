@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  11:27 AM
@@ -38,6 +38,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The bank card no.</value>
         public string BankCardNo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cellphone.
+        /// </summary>
+        /// <value>The cellphone.</value>
+        public string Cellphone { get; set; }
 
         /// <summary>
         ///     Gets or sets the channel code.
@@ -86,5 +92,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The trans desc.</value>
         public string TransDesc { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user identifier.
+        /// </summary>
+        /// <value>The user identifier.</value>
+        public Guid UserId { get; set; }
     }
 }

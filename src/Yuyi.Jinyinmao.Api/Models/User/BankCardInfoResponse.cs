@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  1:02 PM
+// Last Modified On : 2015-05-10  11:55 AM
 // ***********************************************************************
-// <copyright file="BankCardInfoResponse.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="BankCardInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 

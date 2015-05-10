@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  2:02 AM
+// Last Modified On : 2015-05-09  3:57 PM
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -64,7 +64,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="command">The regular investing.</param>
         /// <returns>Task.</returns>
-        Task InvestingAsync(RegularInvesting command);
+        Task<OrderInfo> InvestingAsync(RegularInvesting command);
 
         /// <summary>
         ///     Registers the user asynchronous.
@@ -74,7 +74,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<UserInfo> RegisterUserAsync(UserRegister command);
 
         /// <summary>
-        /// Reloads the data asynchronous.
+        ///     Reloads the data asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task.</returns>
@@ -110,7 +110,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task WithdrawalAsync(Withdrawal command);
 
         /// <summary>
-        /// Withdrawals the resulted asynchronous.
+        ///     Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>

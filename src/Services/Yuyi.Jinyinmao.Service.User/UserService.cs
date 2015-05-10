@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  2:42 PM
+// Last Modified On : 2015-05-09  3:58 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -159,6 +159,21 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <param name="categories">The categories.</param>
+        /// <returns>PaginatedList&lt;OrderInfo&gt;.</returns>
+        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetOrderInfosAsync(pageIndex, pageSize, ordersSortMode, categories);
+        }
+
+        /// <summary>
         ///     Gets the settle account information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -167,6 +182,32 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetSettleAccountInfoAsync();
+        }
+
+        /// <summary>
+        ///     Gets the settle account transcation information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public Task<TranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetSettleAccountTranscationInfoAsync(transcationId);
+        }
+
+        /// <summary>
+        ///     Gets the settle account transcation information asynchronous.
+        /// </summary>
+        /// <param name="userId">The useri identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;IPaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<TranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetSettleAccountTranscationInfosAsync(pageIndex, pageSize);
         }
 
         /// <summary>
@@ -203,7 +244,7 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The regular investing.</param>
         /// <returns>Task.</returns>
-        public Task InvestingAsync(RegularInvesting command)
+        public Task<OrderInfo> InvestingAsync(RegularInvesting command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.InvestingAsync(command);

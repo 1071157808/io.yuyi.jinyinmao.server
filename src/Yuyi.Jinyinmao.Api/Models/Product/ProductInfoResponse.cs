@@ -1,17 +1,18 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  7:14 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  3:08 PM
+// Last Modified On : 2015-05-10  10:57 AM
 // ***********************************************************************
-// <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
@@ -40,7 +41,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     额外内容，请参考其他文档
         /// </summary>
         [Required, JsonProperty("info")]
-        public string Info { get; set; }
+        public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
         ///     发行编号，即期数，可以重复
@@ -53,6 +54,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("issueTime")]
         public DateTime IssueTime { get; set; }
+
+        /// <summary>
+        ///     已售金额，以“万分之一”为单位
+        /// </summary>
+        [Required, JsonProperty("paidAmount")]
+        public int PaidAmount { get; set; }
 
         /// <summary>
         ///     质押物编号，可以认为是票号、合同号等相关文件的编号
@@ -93,8 +100,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     还款时间
         /// </summary>
-        [JsonProperty("repaidTime")]
-        public DateTime? RepaidTime { get; set; }
+        [Required, JsonProperty("repaidTime")]
+        public DateTime RepaidTime { get; set; }
 
         /// <summary>
         ///     最迟还款日
@@ -117,8 +124,14 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     售罄时间
         /// </summary>
-        [JsonProperty("soldOutTime")]
-        public DateTime? SoldOutTime { get; set; }
+        [Required, JsonProperty("soldOutTime")]
+        public DateTime SoldOutTime { get; set; }
+
+        /// <summary>
+        ///     指定日期起息
+        /// </summary>
+        [Required, JsonProperty("specifyValueDate")]
+        public bool SpecifyValueDate { get; set; }
 
         /// <summary>
         ///     开售时间
@@ -135,20 +148,20 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     起息日
         /// </summary>
-        [JsonProperty("valueDate")]
-        public DateTime? ValueDate { get; set; }
+        [Required, JsonProperty("valueDate")]
+        public DateTime ValueDate { get; set; }
 
         /// <summary>
-        ///     起息方式：为null，即为指定时间起息，起息日为起息时间所指定的日期；为0，则为购买当日起息，为n，则为T+n日起息；为-n，则为T-n日起息
+        ///     先判断是否是指定日期起息；为0，则为购买当日起息，为n，则为T+n日起息；为-n，则为T-n日起息
         /// </summary>
-        [JsonProperty("valueDateMode")]
-        public int? ValueDateMode { get; set; }
+        [Required, JsonProperty("valueDateMode")]
+        public int ValueDateMode { get; set; }
 
         /// <summary>
         ///     收益率，以“万分之一”为单位
         /// </summary>
         [Required, JsonProperty("yield")]
-        public decimal Yield { get; set; }
+        public int Yield { get; set; }
     }
 
     internal static class RegularProductInfoEx
@@ -162,21 +175,23 @@ namespace Yuyi.Jinyinmao.Api.Models
                 Info = info.Info,
                 IssueNo = info.IssueNo,
                 IssueTime = info.IssueTime,
+                PaidAmount = info.PaidAmount,
                 PledgeNo = info.PledgeNo,
                 ProductCategory = info.ProductCategory,
                 ProductIdentifier = info.ProductIdentifier,
                 ProductName = info.ProductName,
                 ProductNo = info.ProductNo,
                 Repaid = info.Repaid,
-                RepaidTime = info.RepaidTime,
+                RepaidTime = info.RepaidTime.GetValueOrDefault(),
                 RepaymentDeadline = info.RepaymentDeadline,
                 SettleDate = info.SettleDate,
                 SoldOut = info.SoldOut,
-                SoldOutTime = info.SoldOutTime,
+                SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
+                SpecifyValueDate = !info.ValueDateMode.HasValue,
                 StartSellTime = info.StartSellTime,
                 UnitPrice = info.UnitPrice,
-                ValueDate = info.ValueDate,
-                ValueDateMode = info.ValueDateMode,
+                ValueDate = info.ValueDate.GetValueOrDefault(),
+                ValueDateMode = info.ValueDateMode.GetValueOrDefault(),
                 Yield = info.Yield
             };
         }

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-06  3:56 PM
@@ -25,9 +25,9 @@ namespace Yuyi.Jinyinmao.Service.Interface
         public int RemainCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this <see cref="SendVeriCodeResult" /> is successed.
+        ///     Gets or sets a value indicating whether this <see cref="SendVeriCodeResult" /> is success.
         /// </summary>
-        /// <value><c>true</c> if successed; otherwise, <c>false</c>.</value>
-        public bool Successed { get; set; }
+        /// <value><c>true</c> if success; otherwise, <c>false</c>.</value>
+        public bool Success { get; set; }
     }
 }

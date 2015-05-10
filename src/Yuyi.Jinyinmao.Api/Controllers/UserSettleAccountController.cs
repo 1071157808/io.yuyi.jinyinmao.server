@@ -4,13 +4,14 @@
 // Created          : 2015-05-03  3:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  5:34 PM
+// Last Modified On : 2015-05-10  11:29 AM
 // ***********************************************************************
-// <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -57,17 +58,31 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </param>
         /// <response code="200">成功</response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="400">USAD1:该银行卡不能用于易联支付</response>
+        /// <response code="400">USAD1:请重置支付密码后再试</response>
+        /// <response code="400">USAD2:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
+        /// <response code="400">USAD3:该银行卡不能用于易联支付</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [Route("Deposit/Yilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> DepositFromYilian(DepositFromYilianRequest request)
         {
+            CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
+
+            if (result.Lock)
+            {
+                return this.BadRequest("USAD1:请重置支付密码后再试");
+            }
+
+            if (!result.Success)
+            {
+                return this.BadRequest("USAD2:支付密码错误，支付密码输入错误5次会锁定支付功能");
+            }
+
             BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
 
             if (bankCardInfo == null || !bankCardInfo.Verified || !bankCardInfo.CanBeUsedForYilian)
             {
-                return this.BadRequest("USAD1:该银行卡不能用于易联支付");
+                return this.BadRequest("USAD3:该银行卡不能用于易联支付");
             }
 
             await this.userService.DepositAsync(new DepositFromYilian
@@ -105,6 +120,60 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     钱包流水信息
+        /// </summary>
+        /// <remarks>
+        ///     必须登录
+        /// </remarks>
+        /// <response code="200">成功</response>
+        /// <response code="400">USAT1:交易流水不存在</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Transcation/{transcationIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(TranscationInfoResponse))]
+        public async Task<IHttpActionResult> Transcation(string transcationIdentifier)
+        {
+            Guid transcationId;
+            if (!Guid.TryParseExact(transcationIdentifier, "N", out transcationId))
+            {
+                return this.BadRequest("USAT1:交易流水不存在");
+            }
+
+            TranscationInfo info = await this.userInfoService.GetSettleAccountTranscationInfoAsync(this.CurrentUser.Id, transcationId);
+
+            if (info == null)
+            {
+                return this.BadRequest("USAT1:交易流水不存在");
+            }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        ///     钱包流水信息
+        /// </summary>
+        /// <remarks>
+        ///     必须登录，每页10条信息，页码从0开始，
+        /// </remarks>
+        /// <response code="200">成功</response>
+        /// <response code="400">USAT1:交易流水不存在</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Transcations/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<TranscationInfoResponse>))]
+        public async Task<IHttpActionResult> Transcations(int pageIndex = 0)
+        {
+            pageIndex = pageIndex < 0 ? 0 : pageIndex;
+
+            PaginatedList<TranscationInfo> infos = await this.userInfoService.GetSettleAccountTranscationInfosAsync(this.CurrentUser.Id, pageIndex, 10);
+
+            if (infos == null)
+            {
+                return this.BadRequest("USAT1:交易流水不存在");
+            }
+
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
+        }
+
+        /// <summary>
         ///     账户取现
         /// </summary>
         /// <remarks>
@@ -119,11 +188,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAD2:取现次数已经达到今日上限</response>
         /// <response code="400">USAD3:该银行卡未经过认证</response>
         /// <response code="400">USAD4:取现额度超过限制</response>
+        /// <response code="400">USAD5:请重置支付密码后再试</response>
+        /// <response code="400">USAD6:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> Withdrawal(WithdrawalRequest request)
         {
+            CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
+
+            if (result.Lock)
+            {
+                return this.BadRequest("USAD5:请重置支付密码后再试");
+            }
+
+            if (!result.Success)
+            {
+                return this.BadRequest("USAD6:支付密码错误，支付密码输入错误5次会锁定支付功能");
+            }
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (userInfo == null)

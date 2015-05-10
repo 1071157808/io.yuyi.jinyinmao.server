@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  1:00 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  5:02 AM
+// Last Modified On : 2015-05-08  11:42 AM
 // ***********************************************************************
 // <copyright file="RegularProductIssued.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -171,6 +171,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// <summary>
         ///     收益率，以“万分之一”为单位
         /// </summary>
-        public decimal Yield { get; set; }
+        public int Yield { get; set; }
     }
 }

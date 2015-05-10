@@ -14,6 +14,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moe.Lib;
+using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
@@ -92,6 +94,20 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <param name="categories">The categories.</param>
+        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
+        {
+            return this.innerService.GetOrderInfosAsync(userId, pageIndex, pageSize, ordersSortMode, categories);
+        }
+
+        /// <summary>
         ///     Gets the settle account information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -99,6 +115,29 @@ namespace Yuyi.Jinyinmao.Service
         public Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId)
         {
             return this.innerService.GetSettleAccountInfoAsync(userId);
+        }
+
+        /// <summary>
+        /// Gets the settle account transcation information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        public Task<TranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        {
+            return this.innerService.GetSettleAccountTranscationInfoAsync(userId, transcationId);
+        }
+
+        /// <summary>
+        /// Gets the settle account transcation information asynchronous.
+        /// </summary>
+        /// <param name="useriId">The useri identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;IPaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<TranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid useriId, int pageIndex, int pageSize)
+        {
+            return this.innerService.GetSettleAccountTranscationInfosAsync(useriId, pageIndex, pageSize);
         }
 
         /// <summary>

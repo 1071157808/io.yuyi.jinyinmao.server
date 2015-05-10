@@ -24,6 +24,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     public class UserInfo
     {
         /// <summary>
+        ///     账户可用余额
+        /// </summary>
+        public int Balance { get; set; }
+
+        /// <summary>
         ///     默认银行卡号
         /// </summary>
         public string BankCardNo { get; set; }
@@ -59,14 +64,34 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public string CredentialNo { get; set; }
 
         /// <summary>
-        ///     是否已经设置支付密码
+        ///     账户出账在途金额
         /// </summary>
-        public bool HaSetPaymentPassword { get; set; }
+        public int Crediting { get; set; }
+
+        /// <summary>
+        ///     账户入账在途金额
+        /// </summary>
+        public int Debiting { get; set; }
 
         /// <summary>
         ///     是否已经设置登录密码
         /// </summary>
         public bool HasSetPassword { get; set; }
+
+        /// <summary>
+        ///     是否已经设置支付密码
+        /// </summary>
+        public bool HasSetPaymentPassword { get; set; }
+
+        /// <summary>
+        ///     预期收益
+        /// </summary>
+        public int InvestingInterest { get; set; }
+
+        /// <summary>
+        ///     在投资金
+        /// </summary>
+        public int InvestingPrincipal { get; set; }
 
         /// <summary>
         ///     邀请人
@@ -84,6 +109,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public int MonthWithdrawalCount { get; set; }
 
         /// <summary>
+        /// 登录密码错误次数
+        /// </summary>
+        public int PasswordErrorCount { get; set; }
+
+        /// <summary>
         ///     真实姓名
         /// </summary>
         public string RealName { get; set; }
@@ -97,6 +127,16 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// 当天取款次数
         /// </summary>
         public int TodayWithdrawalCount { get; set; }
+
+        /// <summary>
+        ///     总收益
+        /// </summary>
+        public int TotalInterest { get; set; }
+
+        /// <summary>
+        ///     总本金
+        /// </summary>
+        public int TotalPrincipal { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

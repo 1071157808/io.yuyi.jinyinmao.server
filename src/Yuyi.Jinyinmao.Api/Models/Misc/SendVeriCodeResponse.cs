@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-11  10:35 AM
@@ -33,9 +33,9 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     本次发送结果
         /// </summary>
-        /// <value><c>true</c> if successed; otherwise, <c>false</c>.</value>
-        [Required, JsonProperty("successed")]
-        public bool Successed { get; set; }
+        /// <value><c>true</c> if success; otherwise, <c>false</c>.</value>
+        [Required, JsonProperty("success")]
+        public bool Success { get; set; }
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Yuyi.Jinyinmao.Api.Models
             return new SendVeriCodeResponse
             {
                 RemainCount = result.RemainCount,
-                Successed = result.Successed
+                Success = result.Success
             };
         }
     }

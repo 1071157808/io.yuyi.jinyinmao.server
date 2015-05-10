@@ -40,7 +40,7 @@ namespace Yuyi.Jinyinmao.Domain
                 string message = Resources.Sms_SignUpSuccessful;
                 if (!await this.SmsService.SendMessageAsync(e.Cellphone, message))
                 {
-                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(@event.Cellphone, message));
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.Cellphone, message));
                 }
             });
 

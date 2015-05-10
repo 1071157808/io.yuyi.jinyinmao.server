@@ -4,15 +4,16 @@
 // Created          : 2015-05-04  9:49 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  9:51 AM
+// Last Modified On : 2015-05-10  7:28 PM
 // ***********************************************************************
-// <copyright file="OrderRepaid.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="OrderRepaid.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using Orleans.Concurrency;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {
@@ -23,135 +24,33 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class OrderRepaid : Event
     {
         /// <summary>
-        ///     Gets or sets the account transcation identifier.
+        ///     Gets or sets the interest transcation information.
         /// </summary>
-        /// <value>The account transcation identifier.</value>
-        public Guid AccountTranscationId { get; set; }
+        /// <value>The interest transcation information.</value>
+        public TranscationInfo InterestTranscationInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the cellphone.
+        ///     Gets or sets the order information.
         /// </summary>
-        /// <value>The cellphone.</value>
-        public string Cellphone { get; set; }
+        /// <value>The order information.</value>
+        public OrderInfo OrderInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the extra interest.
+        ///     Gets or sets the pri int sum amount.
         /// </summary>
-        /// <value>The extra interest.</value>
-        public int ExtraInterest { get; set; }
+        /// <value>The pri int sum amount.</value>
+        public int PriIntSumAmount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the extra yield.
+        ///     Gets or sets the principal transcation information.
         /// </summary>
-        /// <value>The extra yield.</value>
-        public int ExtraYield { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the information.
-        /// </summary>
-        /// <value>The information.</value>
-        public string Info { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the interest.
-        /// </summary>
-        /// <value>The interest.</value>
-        public int Interest { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance is repaid.
-        /// </summary>
-        /// <value><c>true</c> if this instance is repaid; otherwise, <c>false</c>.</value>
-        public bool IsRepaid { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the order identifier.
-        /// </summary>
-        /// <value>The order identifier.</value>
-        public Guid OrderId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the order no.
-        /// </summary>
-        /// <value>The order no.</value>
-        public string OrderNo { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the order time.
-        /// </summary>
-        /// <value>The order time.</value>
-        public DateTime OrderTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the principal.
-        /// </summary>
-        /// <value>The principal.</value>
-        public int Principal { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the product identifier.
-        /// </summary>
-        /// <value>The product identifier.</value>
-        public Guid ProductId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the product snapshot.
-        /// </summary>
-        /// <value>The product snapshot.</value>
-        public string ProductSnapshot { get; set; }
+        /// <value>The principal transcation information.</value>
+        public TranscationInfo PrincipalTranscationInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the repaid time.
         /// </summary>
         /// <value>The repaid time.</value>
-        public DateTime? RepaidTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the result code.
-        /// </summary>
-        /// <value>The result code.</value>
-        public int ResultCode { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the result time.
-        /// </summary>
-        /// <value>The result time.</value>
-        public DateTime? ResultTime { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the settle date.
-        /// </summary>
-        /// <value>The settle date.</value>
-        public DateTime SettleDate { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the trans desc.
-        /// </summary>
-        /// <value>The trans desc.</value>
-        public string TransDesc { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the user identifier.
-        /// </summary>
-        /// <value>The user identifier.</value>
-        public Guid UserId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the user information.
-        /// </summary>
-        /// <value>The user information.</value>
-        public string UserInfo { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the value date.
-        /// </summary>
-        /// <value>The value date.</value>
-        public DateTime ValueDate { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the yield.
-        /// </summary>
-        /// <value>The yield.</value>
-        public int Yield { get; set; }
+        public DateTime RepaidTime { get; set; }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  12:22 PM
+// Last Modified On : 2015-05-09  2:21 PM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -113,6 +114,16 @@ namespace Yuyi.Jinyinmao.Domain
         Task<List<BankCardInfo>> GetBankCardInfosAsync();
 
         /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <param name="categories">The categories.</param>
+        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
+        Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories);
+
+        /// <summary>
         ///     Gets the settle account information asynchronous.
         /// </summary>
         /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
@@ -126,6 +137,14 @@ namespace Yuyi.Jinyinmao.Domain
         Task<TranscationInfo> GetSettleAccountTranscationInfoAsync(Guid transcationId);
 
         /// <summary>
+        ///     Gets the settle account transcation infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+        Task<PaginatedList<TranscationInfo>> GetSettleAccountTranscationInfosAsync(int pageIndex, int pageSize);
+
+        /// <summary>
         ///     Gets the user information asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -136,7 +155,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task InvestingAsync(RegularInvesting command);
+        Task<OrderInfo> InvestingAsync(RegularInvesting command);
 
         /// <summary>
         ///     Determines whether [is registered] asynchronous.

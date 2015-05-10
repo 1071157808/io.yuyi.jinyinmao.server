@@ -89,6 +89,12 @@ namespace Yuyi.Jinyinmao.Domain
         public int Principal { get; set; }
 
         /// <summary>
+        /// Gets or sets the product category.
+        /// </summary>
+        /// <value>The product category.</value>
+        public long ProductCategory { get; set; }
+
+        /// <summary>
         ///     Gets or sets the product identifier.
         /// </summary>
         /// <value>The product identifier.</value>

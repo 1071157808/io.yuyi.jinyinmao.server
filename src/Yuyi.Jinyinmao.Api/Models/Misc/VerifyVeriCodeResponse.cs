@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-11  10:35 AM
@@ -35,9 +35,9 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     本次验证结果
         /// </summary>
-        /// <value><c>true</c> if successed; otherwise, <c>false</c>.</value>
-        [Required, JsonProperty("successed")]
-        public bool Successed { get; set; }
+        /// <value><c>true</c> if success; otherwise, <c>false</c>.</value>
+        [Required, JsonProperty("success")]
+        public bool Success { get; set; }
 
         /// <summary>
         ///     验证码验证后的token，若验证码验证成功，则该token为32位字符串，若验证失败，为空字符串
@@ -62,7 +62,7 @@ namespace Yuyi.Jinyinmao.Api.Models
             return new VerifyVeriCodeResponse
             {
                 RemainCount = result.RemainCount,
-                Successed = result.Successed,
+                Success = result.Success,
                 Token = result.Token.IsNotNullOrEmpty() ? result.Token : ""
             };
         }

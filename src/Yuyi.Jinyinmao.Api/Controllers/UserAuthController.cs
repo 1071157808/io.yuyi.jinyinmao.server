@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  2:11 AM
+// Last Modified On : 2015-05-08  2:44 PM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -23,6 +23,7 @@ using Moe.AspNet.Utility;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Dtos;
@@ -83,7 +84,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UAA1:无法开通快捷支付功能");
             }
 
-            if (!userInfo.HaSetPaymentPassword)
+            if (!userInfo.HasSetPaymentPassword)
             {
                 return this.BadRequest("UAA2:请先设置支付密码");
             }
@@ -138,6 +139,39 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             CheckCellphoneResult result = await this.userService.CheckCellphoneAsync(cellphone);
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     检验支付密码
+        /// </summary>
+        /// <remarks>
+        ///     必须登录
+        /// </remarks>
+        /// <param name="request">
+        ///     请求
+        /// </param>
+        /// <response code="200">密码正确</response>
+        /// <response code="400">请求格式错误</response>
+        /// <response code="400">UACPP1:请重置支付密码后再试</response>
+        /// <response code="400">UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [Route("CheckPaymentPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> CheckPaymentPassword(CheckPaymentPasswordRequest request)
+        {
+            CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.Password);
+
+            if (result.Lock)
+            {
+                return this.BadRequest("UACPP1:请重置支付密码后再试");
+            }
+
+            if (!result.Success)
+            {
+                return this.BadRequest("UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能");
+            }
+
+            return this.Ok();
         }
 
         /// <summary>
@@ -226,8 +260,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             UserInfo info = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (info == null || !info.HaSetPaymentPassword ||
-                (info.Verified && info.RealName == request.UserRealName && info.CredentialNo.ToUpperInvariant() == request.CredentialNo.ToUpperInvariant()))
+            if (info == null || !info.HasSetPaymentPassword ||
+                !(info.Verified && info.RealName == request.UserRealName && info.CredentialNo.ToUpperInvariant() == request.CredentialNo.ToUpperInvariant()))
             {
                 return this.BadRequest("UARPP2:您输入的身份信息错误！请重新输入");
             }
@@ -274,7 +308,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             UserInfo info = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (info.HaSetPaymentPassword)
+            if (info.HasSetPaymentPassword)
             {
                 return this.BadRequest("UASPP2: 支付密码已经设置，请直接使用");
             }

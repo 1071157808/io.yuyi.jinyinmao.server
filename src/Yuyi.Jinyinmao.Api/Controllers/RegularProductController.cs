@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:11 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  3:17 PM
+// Last Modified On : 2015-05-08  1:21 PM
 // ***********************************************************************
 // <copyright file="RegularProductController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
@@ -46,27 +45,34 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取产品协议模板
         /// </summary>
         /// <remarks>
-        ///     需要使用使用产品编号加产品唯一标识调用接口，接口数据会只读取缓存中的数据
+        ///     需要使用使用产品唯一标识调用接口，接口数据会只读取缓存中的数据
         ///     <br />
         ///     返回值为：{"Content": "协议内容"}
         /// </remarks>
-        /// <param name="productNo">产品编号</param>
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <param name="agreementIndex">协议序号</param>
         /// <returns>
         ///     Content[string]: 协议内容
         /// </returns>
         /// <response code="200"></response>
-        /// <response code="404">无该协议</response>
+        /// <response code="401">RPGA:无此协议</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Agreement/{productNo:length(5,50)}-{productIdentifier:length(32)}-{agreementIndex:int}"), CookieAuthorize]
-        public async Task<IHttpActionResult> GetAgreement(string productNo, string productIdentifier, int agreementIndex)
+        [HttpGet, Route("Agreement/{productIdentifier:length(32)}-{agreementIndex:int}")]
+        public async Task<IHttpActionResult> GetAgreement(string productIdentifier, int agreementIndex)
         {
-            string content = await this.productInfoService.GetAgreementAsync(productNo, productIdentifier, agreementIndex);
+            agreementIndex = agreementIndex < 1 ? 1 : agreementIndex;
+
+            Guid productId;
+            if (!Guid.TryParseExact(productIdentifier, "N", out productId))
+            {
+                return this.BadRequest("RPGA:无此协议");
+            }
+
+            string content = await this.productInfoService.GetAgreementAsync(productId, agreementIndex);
 
             if (content.IsNotNullOrEmpty())
             {
-                return this.NotFound();
+                return this.BadRequest("RPGA:无此协议");
             }
 
             return this.Ok(new { Content = content });
@@ -75,20 +81,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取产品信息
         /// </summary>
-        /// <remarks>需要使用使用产品编号加产品唯一标识调用接口，接口数据会有一分钟的缓存</remarks>
-        /// <param name="productNo">产品编号</param>
+        /// <remarks>需要使用使用产品唯一标识调用接口，接口数据会有一分钟的缓存</remarks>
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
-        /// <response code="404">无该产品信息</response>
+        /// <response code="401">RPRI:无此产品信息</response>
         /// <response code="500"></response>
-        [HttpGet, Route("{productNo:minlength(5)}-{productIdentifier:length(32)}"), ResponseType(typeof(RegularProductInfoResponse))]
-        public async Task<IHttpActionResult> GetInfo(string productNo, string productIdentifier)
+        [HttpGet, Route("{productIdentifier:length(32)}"), ResponseType(typeof(RegularProductInfoResponse))]
+        public async Task<IHttpActionResult> GetInfo(string productIdentifier)
         {
-            RegularProductInfo info = await this.productInfoService.GetProductInfoAsync(productNo, productIdentifier);
+            Guid productId;
+            if (!Guid.TryParseExact(productIdentifier, "N", out productId))
+            {
+                return this.BadRequest("RPRI:无此产品信息");
+            }
+
+            RegularProductInfo info = await this.productInfoService.GetProductInfoAsync(productId);
 
             if (info == null)
             {
-                return this.NotFound();
+                return this.BadRequest("RPRI:无此产品信息");
             }
 
             return this.Ok(info.ToResponse());
@@ -120,15 +131,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     接口数据有有3分钟的缓存。
         /// </remarks>
-        /// <param name="number">数量，默认值为1</param>
-        /// <param name="category">产品分类，默认值为100000010，详细的产品分类参考文档 </param>
+        /// <param name="number">数量，最小为1</param>
+        /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
         /// <response code="200"></response>
         /// <response code="404">无该产品信息</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Index/{number:int=1:min(1)}/{category:long=100000010}"), ResponseType(typeof(IList<RegularProductInfoResponse>))]
-        public async Task<IHttpActionResult> Index(int number = 1, long category = 100000010)
+        [HttpGet, Route("Index/{number:int=1:min(1)}"), ResponseType(typeof(IList<RegularProductInfoResponse>))]
+        public async Task<IHttpActionResult> Index(int number = 1, [FromUri] long[] categories = null)
         {
-            IList<RegularProductInfo> infos = await this.productInfoService.GetTopProductInfosAsync(number, category);
+            number = number < 1 ? 1 : number;
+
+            if (categories == null)
+            {
+                categories = new long[] { 100000010 };
+            }
+
+            IList<RegularProductInfo> infos = await this.productInfoService.GetTopProductInfosAsync(number, categories);
             return this.Ok(infos.Select(i => i.ToResponse()));
         }
 
@@ -138,16 +156,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     每页数量为10个，页数从0开始。接口数据有有3分钟的缓存。
         /// </remarks>
-        /// <param name="index">页码，从0开始，默认值为0</param>
-        /// <param name="category">产品分类，默认值为100000010，详细的产品分类参考文档 </param>
+        /// <param name="index">页码，从0开始，最小为0</param>
+        /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
         /// <response code="200"></response>
         /// <response code="404">无该产品信息</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Page/{index:int=1:min(1)}/{category:long=100000010}"), ResponseType(typeof(IPaginatedList<RegularProductInfoResponse>))]
-        public async Task<IHttpActionResult> Page(int index = 1, long category = 100000010)
+        [HttpGet, Route("Page/{index:int=0:min(0)}"), ResponseType(typeof(PaginatedResponse<RegularProductInfoResponse>))]
+        public async Task<IHttpActionResult> Page(int index = 0, [FromUri] long[] categories = null)
         {
-            PaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, category);
-            return this.Ok(infos.ToPaginated(i => i.ToResponse()));
+            index = index < 0 ? 0 : index;
+
+            if (categories == null)
+            {
+                categories = new long[] { 100000010 };
+            }
+
+            PaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, categories);
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
         }
     }
 }

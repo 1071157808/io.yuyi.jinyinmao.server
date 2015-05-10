@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  3:18 PM
+// Last Modified On : 2015-05-07  5:58 PM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     添加新银行卡（通过易联）
         /// </summary>
         /// <remarks>
-        ///     该接口只适合已经绑定过实名信息的用户添加新银行卡
+        ///     该接口只适合已经绑定过实名信息的用户添加新银行卡，最多只能绑定10张银行卡
         /// </remarks>
         /// <param name="request">
         ///     添加银行卡请求
@@ -60,6 +60,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">请求格式不合法</response>
         /// <response code="400">UBCABC1:无法添加银行卡</response>
         /// <response code="400">UBCABC2:请先进行实名认证</response>
+        /// <response code="400">UBCABC3:最多绑定10张银行卡</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
@@ -76,6 +77,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (!userInfo.Verified)
             {
                 return this.BadRequest("UBCABC2:请先进行实名认证");
+            }
+
+            if (userInfo.BankCardsCount >= 10)
+            {
+                return this.BadRequest("UBCABC3:最多绑定10张银行卡");
             }
 
             await this.userService.AddBankCardAsync(new AddBankCard

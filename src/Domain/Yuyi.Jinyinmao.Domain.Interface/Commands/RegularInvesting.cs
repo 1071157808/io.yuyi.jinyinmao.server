@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  3:46 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  3:50 AM
+// Last Modified On : 2015-05-08  1:20 PM
 // ***********************************************************************
 // <copyright file="RegularInvesting.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -37,12 +37,6 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// </summary>
         /// <value>The product identifier.</value>
         public Guid ProductId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the product no.
-        /// </summary>
-        /// <value>The product no.</value>
-        public string ProductNo { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

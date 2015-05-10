@@ -4,10 +4,10 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  1:41 AM
+// Last Modified On : 2015-05-10  9:27 AM
 // ***********************************************************************
-// <copyright file="VeriCodeService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="VeriCodeService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -73,7 +73,7 @@ namespace Yuyi.Jinyinmao.Service
                 // 超过最大次数，停止发送
                 if (code != null && code.Times >= maxSendTimes)
                 {
-                    return new SendVeriCodeResult { RemainCount = -1, Successed = false };
+                    return new SendVeriCodeResult { RemainCount = -1, Success = false };
                 }
 
                 veriCode = this.GenerateCode();
@@ -119,7 +119,7 @@ namespace Yuyi.Jinyinmao.Service
             string verifyMessage = message.FormatWith(veriCode, veriCodeValidityInMinute);
             await this.smsService.SendMessageAsync(cellphone, verifyMessage);
 
-            return new SendVeriCodeResult { RemainCount = maxSendTimes - code.Times, Successed = true };
+            return new SendVeriCodeResult { RemainCount = maxSendTimes - code.Times, Success = true };
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Yuyi.Jinyinmao.Service
                 // 无该手机验证码记录，或者超过3次，验证码失效
                 if (veriCode == null || veriCode.ErrorCount >= 3)
                 {
-                    return new VerifyVeriCodeResult { RemainCount = -1, Successed = false };
+                    return new VerifyVeriCodeResult { RemainCount = -1, Success = false };
                 }
 
                 // 少于3次，执行验证
@@ -181,14 +181,14 @@ namespace Yuyi.Jinyinmao.Service
                         await context.SaveChangesAsync();
                     }
                     // 验证成功，返回token
-                    return new VerifyVeriCodeResult { Successed = true, Token = veriCode.Token };
+                    return new VerifyVeriCodeResult { Success = true, Token = veriCode.Token };
                 }
 
                 // 验证未通过，且失败次数少于2次，递增失败次数
                 veriCode.ErrorCount += 1;
                 veriCode.Verified = false;
                 await context.SaveChangesAsync();
-                return new VerifyVeriCodeResult { Successed = false, RemainCount = 3 - veriCode.ErrorCount };
+                return new VerifyVeriCodeResult { Success = false, RemainCount = 3 - veriCode.ErrorCount };
             }
         }
 

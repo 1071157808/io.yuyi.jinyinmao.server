@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  12:19 PM
+// Last Modified On : 2015-05-10  9:13 AM
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -24,18 +24,20 @@ namespace Yuyi.Jinyinmao.Api.Filters
     ///     IpAuthorizeAttribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class IpAuthorizeAttribute : OrderedActionFilterAttribute
+    public class IpAuthorizeAttribute : OrderedAuthorizationFilterAttribute
     {
         /// <summary>
-        ///     Occurs before the action method is invoked.
+        ///     Calls when a process requests authorization.
         /// </summary>
-        /// <param name="actionContext">The action context.</param>
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        /// <param name="actionContext">The action context, which encapsulates information for using <see cref="T:System.Web.Http.Filters.AuthorizationFilterAttribute" />.</param>
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (!this.IpIsAuthorized(actionContext.Request))
             {
                 this.HandleUnauthorizedRequest(actionContext);
             }
+
+            base.OnAuthorization(actionContext);
         }
 
         /// <summary>

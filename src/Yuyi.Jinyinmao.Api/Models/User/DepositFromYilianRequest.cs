@@ -4,10 +4,10 @@
 // Created          : 2015-05-03  4:46 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  2:21 AM
+// Last Modified On : 2015-05-10  11:27 AM
 // ***********************************************************************
-// <copyright file="DepositFromYilianRequest.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="DepositFromYilianRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -34,5 +34,11 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, StringLength(19, MinimumLength = 15), JsonProperty("bankCardNo")]
         public string BankCardNo { get; set; }
+
+        /// <summary>
+        ///     支付密码
+        /// </summary>
+        [Required, StringLength(18, MinimumLength = 6), JsonProperty("paymentPassword")]
+        public string PaymentPassword { get; set; }
     }
 }

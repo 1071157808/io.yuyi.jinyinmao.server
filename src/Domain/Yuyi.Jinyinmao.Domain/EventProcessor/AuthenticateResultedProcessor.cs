@@ -4,10 +4,10 @@
 // Created          : 2015-04-27  6:08 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  3:13 AM
+// Last Modified On : 2015-05-10  7:33 PM
 // ***********************************************************************
-// <copyright file="AuthenticateResultedProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="AuthenticateResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -33,9 +33,9 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(AuthenticateResulted @event)
         {
-            string userIdentifier = @event.UserId.ToGuidString();
             await this.ProcessingEventAsync(@event, async e =>
             {
+                string userIdentifier = e.UserId.ToGuidString();
                 using (JYMDBContext db = new JYMDBContext())
                 {
                     Models.User user = await db.Query<Models.User>().FirstAsync(u => u.UserIdentifier == userIdentifier);

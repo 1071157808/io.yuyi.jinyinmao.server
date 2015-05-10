@@ -4,7 +4,7 @@
 // Created          : 2015-05-03  10:27 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  1:53 AM
+// Last Modified On : 2015-05-09  3:59 PM
 // ***********************************************************************
 // <copyright file="DepositFromYilianResultedProcessor.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -34,19 +34,19 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(DepositFromYilianResulted @event)
         {
-            string transcationIdentifier = @event.TranscationId.ToGuidString();
             await this.ProcessingEventAsync(@event, async e =>
             {
-                string message = e.Result ? Resources.Sms_DepositSuccessed.FormatWith(@event.BankCardNo.GetLast(4), e.Amount / 100)
-                    : Resources.Sms_DepositFailed.FormatWith(@event.BankCardNo.GetLast(4), e.Amount / 100, @event.TransDesc);
+                string message = e.Result ? Resources.Sms_DepositSuccessed.FormatWith(e.BankCardNo.GetLast(4), e.Amount / 100)
+                    : Resources.Sms_DepositFailed.FormatWith(e.BankCardNo.GetLast(4), e.Amount / 100, e.TransDesc);
                 if (!await this.SmsService.SendMessageAsync(e.Cellphone, message))
                 {
-                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(@event.Cellphone, message));
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.Cellphone, message));
                 }
             });
 
             await this.ProcessingEventAsync(@event, async e =>
             {
+                string transcationIdentifier = e.TranscationId.ToGuidString();
                 using (JYMDBContext db = new JYMDBContext())
                 {
                     AccountTranscation transcation = await db.Query<AccountTranscation>().FirstAsync(t => t.TranscationIdentifier == transcationIdentifier);

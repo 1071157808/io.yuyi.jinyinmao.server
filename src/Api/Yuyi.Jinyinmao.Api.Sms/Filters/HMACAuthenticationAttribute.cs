@@ -41,13 +41,14 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
+        private static readonly string ApiKeyName = "JymApiSms";
         private static readonly string AuthenticationScheme = "jas";
 
-        private static readonly TableQuery<App> query = new TableQuery<App>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey",
-            QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "JymApiSms eq true"));
+        private static readonly TableQuery<App> Query = new TableQuery<App>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey",
+            QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "{0} eq true".FormatWith(ApiKeyName)));
 
-        private static readonly long requestMaxAgeInSeconds = 300;
-        private static readonly CloudStorageAccount storageAccount;
+        private static readonly long RequestMaxAgeInSeconds = 300;
+        private static readonly CloudStorageAccount StorageAccount;
         private static Dictionary<Guid, App> allowedApps = new Dictionary<Guid, App>();
         private static DateTime configLoadTime = DateTime.MinValue;
 
@@ -56,7 +57,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
         /// </summary>
         static HMACAuthenticationAttribute()
         {
-            storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            StorageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             LoadAppKeysConfig();
         }
 
@@ -158,9 +159,9 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             if (DateTime.UtcNow - configLoadTime > TimeSpan.FromMinutes(5))
             {
                 configLoadTime = DateTime.UtcNow;
-                CloudTableClient client = storageAccount.CreateCloudTableClient();
+                CloudTableClient client = StorageAccount.CreateCloudTableClient();
 
-                IEnumerable<App> apps = client.GetTableReference("ApiKeys").ExecuteQuery(query);
+                IEnumerable<App> apps = client.GetTableReference("ApiKeys").ExecuteQuery(Query);
                 Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.AddHours(8)).ToDictionary(app => app.AppId);
                 allowedApps = tempAllowedApps;
             }
@@ -183,12 +184,12 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             long serverTotalSeconds = DateTime.UtcNow.UnixTimeStamp();
             long requestTotalSeconds = Convert.ToInt64(requestTimeStamp);
 
-            if ((serverTotalSeconds - requestTotalSeconds) > requestMaxAgeInSeconds)
+            if ((serverTotalSeconds - requestTotalSeconds) > RequestMaxAgeInSeconds)
             {
                 return true;
             }
 
-            MemoryCache.Default.Add(nonce, requestTimeStamp, DateTimeOffset.UtcNow.AddSeconds(requestMaxAgeInSeconds));
+            MemoryCache.Default.Add(nonce, requestTimeStamp, DateTimeOffset.UtcNow.AddSeconds(RequestMaxAgeInSeconds));
 
             return false;
         }

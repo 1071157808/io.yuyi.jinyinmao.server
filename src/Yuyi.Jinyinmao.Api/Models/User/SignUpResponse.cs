@@ -1,19 +1,19 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  11:36 PM
+// Last Modified On : 2015-05-10  9:25 AM
 // ***********************************************************************
-// <copyright file="SignUpResponse.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SignUpResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
@@ -32,11 +32,11 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string Cellphone { get; set; }
 
         /// <summary>
-        ///     用户编号
+        ///     用户唯一标识
         /// </summary>
         /// <value>The user identifier.</value>
-        [Required, JsonProperty("userId")]
-        public Guid UserId { get; set; }
+        [Required, JsonProperty("userIdentifier")]
+        public string UserIdentifier { get; set; }
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ namespace Yuyi.Jinyinmao.Api.Models
             return new SignUpResponse
             {
                 Cellphone = info.Cellphone,
-                UserId = info.UserId
+                UserIdentifier = info.UserId.ToGuidString()
             };
         }
     }

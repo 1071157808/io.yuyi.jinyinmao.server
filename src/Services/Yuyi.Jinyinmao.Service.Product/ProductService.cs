@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  2:51 PM
+// Last Modified On : 2015-05-10  6:03 PM
 // ***********************************************************************
-// <copyright file="ProductService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -37,29 +37,22 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productNo">The product no.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public Task<bool> CheckProductNoExistsAsync(string productNo)
+        public async Task<bool> CheckProductNoExistsAsync(string productNo)
         {
             using (JYMDBContext db = new JYMDBContext())
             {
-                return db.ReadonlyQuery<RegularProduct>().AnyAsync(p => p.ProductNo == productNo);
+                return await db.ReadonlyQuery<RegularProduct>().AnyAsync(p => p.ProductNo == productNo);
             }
         }
 
         /// <summary>
         ///     Gets the agreement asynchronous.
         /// </summary>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productIdentifier">The product identifier.</param>
+        /// <param name="productId">The product identifier.</param>
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
-        public Task<string> GetAgreementAsync(string productNo, string productIdentifier, int agreementIndex)
+        public Task<string> GetAgreementAsync(Guid productId, int agreementIndex)
         {
-            Guid productId;
-            if (productIdentifier.IsNullOrEmpty() || !Guid.TryParseExact(productIdentifier, "N", out productId))
-            {
-                return null;
-            }
-
             IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
             return regularProduct.GetAgreementAsync(agreementIndex);
         }
@@ -67,17 +60,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     Gets the product information asynchronous.
         /// </summary>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productIdentifier">The product identifier.</param>
+        /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
-        public Task<RegularProductInfo> GetProductInfoAsync(string productNo, string productIdentifier)
+        public Task<RegularProductInfo> GetProductInfoAsync(Guid productId)
         {
-            Guid productId;
-            if (productIdentifier.IsNullOrEmpty() || !Guid.TryParseExact(productIdentifier, "N", out productId))
-            {
-                return null;
-            }
-
             IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
             return regularProduct.GetRegularProductInfoAsync();
         }
@@ -89,45 +75,22 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="productCategory">The product category.</param>
         /// <returns>Task&lt;PaginatedList&lt;RegularProductInfo&gt;&gt;.</returns>
-        public async Task<PaginatedList<RegularProductInfo>> GetProductInfosAsync(int pageIndex, int pageSize, long productCategory)
+        public async Task<PaginatedList<RegularProductInfo>> GetProductInfosAsync(int pageIndex, int pageSize, params long[] productCategory)
         {
             pageIndex = pageIndex < 1 ? 0 : pageIndex;
+            pageSize = pageSize < 1 ? 10 : pageSize;
 
             int totalCount;
             IList<RegularProduct> items;
 
             using (JYMDBContext db = new JYMDBContext())
             {
-                totalCount = await db.ReadonlyQuery<RegularProduct>().CountAsync(p => p.ProductCategory == productCategory);
-                items = await GetSortedProductContext<RegularProduct>(db).Where(p => p.ProductCategory == productCategory)
+                totalCount = await db.ReadonlyQuery<RegularProduct>().CountAsync(p => productCategory.Contains(p.ProductCategory));
+                items = await GetSortedProductContext<RegularProduct>(db).Where(p => productCategory.Contains(p.ProductCategory))
                     .Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
             }
 
-            IList<RegularProductInfo> infos = items.Select(i => new RegularProductInfo
-            {
-                EndSellTime = i.EndSellTime,
-                FinancingSumAmount = i.FinancingSumAmount,
-                Info = i.Info,
-                IssueNo = i.IssueNo,
-                IssueTime = i.IssueTime,
-                PaidAmount = null,
-                PledgeNo = i.PledgeNo,
-                ProductCategory = i.ProductCategory,
-                ProductIdentifier = i.ProductIdentifier,
-                ProductName = i.ProductName,
-                ProductNo = i.ProductNo,
-                Repaid = i.Repaid,
-                RepaidTime = i.RepaidTime,
-                RepaymentDeadline = i.RepaymentDeadline,
-                SettleDate = i.SettleDate,
-                SoldOut = i.SoldOut,
-                SoldOutTime = i.SoldOutTime,
-                StartSellTime = i.StartSellTime,
-                UnitPrice = i.UnitPrice,
-                ValueDate = i.ValueDate,
-                ValueDateMode = i.ValueDateMode,
-                Yield = i.Yield
-            }).ToList();
+            IList<RegularProductInfo> infos = items.Select(i => i.ToInfo()).ToList();
 
             await this.FillWithSaleData(infos);
 
@@ -149,9 +112,9 @@ namespace Yuyi.Jinyinmao.Service
         ///     Gets the top product infos asynchronous.
         /// </summary>
         /// <param name="number">The number.</param>
-        /// <param name="productCategory">The product category.</param>
+        /// <param name="productCategories">The product categories.</param>
         /// <returns>Task&lt;List&lt;RegularProductInfo&gt;&gt;.</returns>
-        public async Task<IList<RegularProductInfo>> GetTopProductInfosAsync(int number, long productCategory)
+        public async Task<IList<RegularProductInfo>> GetTopProductInfosAsync(int number, params long[] productCategories)
         {
             number = number < 1 ? 1 : number;
 
@@ -159,35 +122,11 @@ namespace Yuyi.Jinyinmao.Service
 
             using (JYMDBContext db = new JYMDBContext())
             {
-                items = await GetSortedProductContext<RegularProduct>(db).Where(p => p.ProductCategory == productCategory)
+                items = await GetSortedProductContext<RegularProduct>(db).Where(p => productCategories.Contains(p.ProductCategory))
                     .Take(number).ToListAsync();
             }
 
-            IList<RegularProductInfo> infos = items.Select(i => new RegularProductInfo
-            {
-                EndSellTime = i.EndSellTime,
-                FinancingSumAmount = i.FinancingSumAmount,
-                Info = i.Info,
-                IssueNo = i.IssueNo,
-                IssueTime = i.IssueTime,
-                PaidAmount = null,
-                PledgeNo = i.PledgeNo,
-                ProductCategory = i.ProductCategory,
-                ProductIdentifier = i.ProductIdentifier,
-                ProductName = i.ProductName,
-                ProductNo = i.ProductNo,
-                Repaid = i.Repaid,
-                RepaidTime = i.RepaidTime,
-                RepaymentDeadline = i.RepaymentDeadline,
-                SettleDate = i.SettleDate,
-                SoldOut = i.SoldOut,
-                SoldOutTime = i.SoldOutTime,
-                StartSellTime = i.StartSellTime,
-                UnitPrice = i.UnitPrice,
-                ValueDate = i.ValueDate,
-                ValueDateMode = i.ValueDateMode,
-                Yield = i.Yield
-            }).ToList();
+            IList<RegularProductInfo> infos = items.Select(i => i.ToInfo()).ToList();
 
             await this.FillWithSaleData(infos);
 
@@ -201,7 +140,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task HitShelves(IssueRegularProduct command)
         {
-            IRegularProduct product = RegularProductFactory.GetGrain(Guid.NewGuid());
+            IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
             return product.HitShelvesAsync(command);
         }
 
@@ -209,10 +148,8 @@ namespace Yuyi.Jinyinmao.Service
         ///     Repays the asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productCategory">The product category.</param>
         /// <returns>Task.</returns>
-        public Task RepayAsync(Guid productId, string productNo, string productCategory)
+        public Task RepayAsync(Guid productId)
         {
             IRegularProduct product = RegularProductFactory.GetGrain(productId);
             return product.RepayAsync();

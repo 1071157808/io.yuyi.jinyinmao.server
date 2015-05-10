@@ -2,9 +2,9 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
-//
+// 
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  3:17 PM
+// Last Modified On : 2015-05-10  9:12 AM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -19,7 +19,6 @@ using System.Security.Principal;
 using System.Web.Http.Controllers;
 using System.Web.Security;
 using Moe.AspNet.Filters;
-using Moe.AspNet.Utility;
 
 // ReSharper disable MergeSequentialChecks
 
@@ -29,7 +28,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
     ///     Class CookieAuthorizeAttribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class CookieAuthorizeAttribute : OrderedActionFilterAttribute
+    public class CookieAuthorizeAttribute : OrderedAuthorizationFilterAttribute
     {
         /// <summary>
         ///     Gets or sets a value indicating whether [refresh token].
@@ -56,14 +55,10 @@ namespace Yuyi.Jinyinmao.Api.Filters
         ///     Occurs before the action method is invoked.
         /// </summary>
         /// <param name="actionContext">The action context.</param>
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public void OnActionExecuting(HttpActionContext actionContext)
         {
             string token;
 
-            if (this.AllowInternal && (actionContext.RequestContext.IsLocal || this.IpIsAuthorized(actionContext.Request)))
-            {
-                return;
-            }
             if (!this.IsValid(actionContext, out token))
             {
                 this.HandleUnauthorizedRequest(actionContext);
@@ -73,6 +68,17 @@ namespace Yuyi.Jinyinmao.Api.Filters
             {
                 FormsAuthentication.SetAuthCookie(token, true);
             }
+
+            base.OnAuthorization(actionContext);
+        }
+
+        /// <summary>
+        ///     Calls when a process requests authorization.
+        /// </summary>
+        /// <param name="actionContext">The action context, which encapsulates information for using <see cref="T:System.Web.Http.Filters.AuthorizationFilterAttribute" />.</param>
+        public override void OnAuthorization(HttpActionContext actionContext)
+        {
+            base.OnAuthorization(actionContext);
         }
 
         /// <summary>
@@ -98,19 +104,6 @@ namespace Yuyi.Jinyinmao.Api.Filters
             }
 
             actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, this.FormatErrorMessage());
-        }
-
-        /// <summary>
-        ///     Determines whether the client ip is authorized.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>
-        ///     bool
-        /// </returns>
-        private bool IpIsAuthorized(HttpRequestMessage request)
-        {
-            string ip = HttpUtils.GetUserHostAddress(request);
-            return !String.IsNullOrEmpty(ip) && (ip.StartsWith("172.26") || ip.StartsWith("172.25") || ip.StartsWith("10.1") || ip == "::1");
         }
 
         /// <summary>

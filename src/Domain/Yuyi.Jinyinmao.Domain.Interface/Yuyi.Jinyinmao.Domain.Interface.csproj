@@ -44,7 +44,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dapper.1.40\lib\net45\Dapper.dll</HintPath>
+      <HintPath>..\..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -55,8 +55,8 @@
       <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.7.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -96,17 +96,20 @@
     <Compile Include="Dtos\SettleAccountInfo.cs" />
     <Compile Include="Dtos\TranscationInfo.cs" />
     <Compile Include="EventProcessor\IDepositFromYilianResultedProcessor.cs" />
-    <Compile Include="EventProcessor\IOrderBuiltProcessor.cs" />
+    <Compile Include="EventProcessor\IOrderPaidProcessor.cs" />
     <Compile Include="EventProcessor\IOrderRepaidProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductIssuedProcessor.cs" />
+    <Compile Include="EventProcessor\IRegularProductSoldOutProcessor.cs" />
     <Compile Include="EventProcessor\IWithdrawalResultedProcessor.cs" />
     <Compile Include="Events\DepositFromYilianResulted.cs" />
-    <Compile Include="Events\OrderBuilt.cs" />
+    <Compile Include="Events\OrderPaid.cs" />
     <Compile Include="Events\OrderRepaid.cs" />
     <Compile Include="Events\RegularProductIssued.cs" />
+    <Compile Include="Events\RegularProductSoldOut.cs" />
     <Compile Include="Events\WithdrawalResulted.cs" />
     <Compile Include="Misc\ISequenceGenerator.cs" />
     <Compile Include="Order\Order.cs" />
+    <Compile Include="Order\OrdersSortMode.cs" />
     <Compile Include="Products\IRegularProduct.cs" />
     <Compile Include="Products\IRegularProductState.cs" />
     <Compile Include="Sagas\IDepositByYilianSaga.cs" />
@@ -160,6 +163,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
+      <Project>{7B420A40-ACEC-4461-AE6E-CA89E2AD65C9}</Project>
+      <Name>Yuyi.Jinyinmao.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Yilian\Yuyi.Jinyinmao.Service.Yilian.csproj">
       <Project>{850e78f8-beee-4dd2-b4d9-ceebe0f4dd5d}</Project>
       <Name>Yuyi.Jinyinmao.Service.Yilian</Name>

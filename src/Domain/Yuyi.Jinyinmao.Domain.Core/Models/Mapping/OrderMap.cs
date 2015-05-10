@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  3:16 AM
+// Last Modified On : 2015-05-08  1:01 PM
 // ***********************************************************************
 // <copyright file="OrderMap.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -77,6 +77,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.OrderTime).HasColumnName("OrderTime");
             this.Property(t => t.OrderNo).HasColumnName("OrderNo");
             this.Property(t => t.ProductIdentifier).HasColumnName("ProductIdentifier");
+            this.Property(t => t.ProductCategory).HasColumnName("ProductCategory");
             this.Property(t => t.ProductSnapshot).HasColumnName("ProductSnapshot");
             this.Property(t => t.Principal).HasColumnName("Principal");
             this.Property(t => t.Yield).HasColumnName("Yield");

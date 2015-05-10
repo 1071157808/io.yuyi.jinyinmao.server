@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  5:41 PM
+// Last Modified On : 2015-05-10  12:22 PM
 // ***********************************************************************
-// <copyright file="User.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -64,6 +64,11 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             if (this.BankCards.ContainsKey(command.BankCardNo))
+            {
+                return;
+            }
+
+            if (this.BankCards.Count >= 10)
             {
                 return;
             }
@@ -296,7 +301,7 @@ namespace Yuyi.Jinyinmao.Domain
                 });
             }
 
-            if (CryptographyHelper.Check(paymentPassword, this.State.PaymentSalt, this.State.EncryptedPassword))
+            if (CryptographyHelper.Check(paymentPassword, this.State.PaymentSalt, this.State.EncryptedPaymentPassword))
             {
                 this.PaymentPasswordErrorCount = 0;
                 return Task.FromResult(new CheckPaymentPasswordResult
@@ -439,7 +444,7 @@ namespace Yuyi.Jinyinmao.Domain
                     WithdrawAmount = withdrawAmount
                 });
             }
-            return null;
+            return Task.FromResult<BankCardInfo>(null);
         }
 
         /// <summary>
@@ -459,6 +464,30 @@ namespace Yuyi.Jinyinmao.Domain
                 VerifiedTime = c.VerifiedTime.GetValueOrDefault(DateTime.MaxValue),
                 WithdrawAmount = c.WithdrawAmount
             }).ToList());
+        }
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <param name="categories">The categories.</param>
+        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
+        {
+            IList<OrderInfo> orders = this.State.Orders.Where(o => categories.Contains(o.ProductCategory)).ToList();
+            int totalCount = orders.Count;
+            if (ordersSortMode == OrdersSortMode.ByOrderTimeDesc)
+            {
+                orders = orders.OrderByDescending(o => o.OrderTime).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+            }
+            else
+            {
+                orders = orders.OrderBy(o => o.SettleDate).ThenByDescending(o => o.OrderTime).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+            }
+
+            return Task.FromResult(new PaginatedList<OrderInfo>(pageIndex, pageSize, totalCount, orders));
         }
 
         /// <summary>
@@ -487,23 +516,26 @@ namespace Yuyi.Jinyinmao.Domain
             Transcation transcation = this.State.SettleAccount.FirstOrDefault(t => t.TransactionId == transcationId);
             if (transcation == null)
             {
-                return null;
+                return Task.FromResult<TranscationInfo>(null);
             }
 
-            return Task.FromResult(new TranscationInfo
-            {
-                AgreementsInfo = transcation.AgreementsInfo,
-                Amount = transcation.Amount,
-                BankCardNo = transcation.BankCardNo,
-                ChannelCode = transcation.ChannelCode,
-                ResultCode = transcation.ResultCode,
-                ResultTime = transcation.ResultTime,
-                Trade = TradeCodeHelper.IsDebit(transcation.TradeCode) ? Trade.Debit : Trade.Credit,
-                TradeCode = transcation.TradeCode,
-                TransactionId = transcation.TransactionId,
-                TransactionTime = transcation.TransactionTime,
-                TransDesc = transcation.TransDesc
-            });
+            return Task.FromResult(transcation.ToInfo());
+        }
+
+        /// <summary>
+        ///     Gets the settle account transcation infos asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<TranscationInfo>> GetSettleAccountTranscationInfosAsync(int pageIndex, int pageSize)
+        {
+            pageIndex = pageIndex < 1 ? 0 : pageIndex;
+            pageSize = pageSize < 1 ? 10 : pageSize;
+
+            int totalCount = this.State.SettleAccount.Count;
+            IList<TranscationInfo> items = this.State.SettleAccount.OrderByDescending(t => t.TransactionTime).Skip(pageIndex * pageSize).Take(pageSize)
+                .Select(t => t.ToInfo()).ToList();
+
+            return Task.FromResult(new PaginatedList<TranscationInfo>(pageIndex, pageSize, totalCount, items));
         }
 
         /// <summary>
@@ -516,6 +548,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             return Task.FromResult(new UserInfo
             {
+                Balance = this.SettleAccountBalance,
                 BankCardNo = card == null ? string.Empty : card.BankCardNo,
                 BankCardsCount = this.BankCards.Count,
                 BankName = card == null ? string.Empty : card.BankName,
@@ -523,12 +556,21 @@ namespace Yuyi.Jinyinmao.Domain
                 ContractId = this.State.ContractId,
                 Credential = this.State.Credential,
                 CredentialNo = this.State.CredentialNo,
-                HaSetPaymentPassword = this.State.EncryptedPaymentPassword.IsNotNullOrEmpty(),
+                Crediting = this.CreditingSettleAccountAmount,
+                Debiting = this.DebitingSettleAccountAmount,
+                HasSetPaymentPassword = this.State.EncryptedPaymentPassword.IsNotNullOrEmpty(),
                 HasSetPassword = this.State.EncryptedPassword.IsNotNullOrEmpty(),
+                InvestingInterest = this.InvestingInterest,
+                InvestingPrincipal = this.InvestingPrincipal,
                 InviteBy = this.State.InviteBy,
                 LoginNames = this.State.LoginNames,
+                MonthWithdrawalCount = this.MonthWithdrawalCount,
+                PasswordErrorCount = this.PasswordErrorCount,
                 RealName = this.State.RealName,
                 RegisterTime = this.State.RegisterTime,
+                TodayWithdrawalCount = this.TodayWithdrawalCount,
+                TotalInterest = this.TotalInterest,
+                TotalPrincipal = this.TotalPrincipal,
                 UserId = this.State.Id,
                 Verified = this.State.Verified,
                 VerifiedTime = this.State.VerifiedTime
@@ -540,56 +582,57 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public async Task InvestingAsync(RegularInvesting command)
+        public async Task<OrderInfo> InvestingAsync(RegularInvesting command)
         {
-            if (this.State.SettleAccount.Any(t => t.TransactionId == command.CommandId))
+            if (this.SettleAccount.ContainsKey(command.CommandId))
             {
-                return;
+                return null;
             }
 
             if (this.SettleAccountBalance < command.Amount)
             {
-                return;
+                return null;
             }
 
             await this.BeginProcessCommandAsync(command);
 
-            int tradeCode = command.ProductCategory > 199999999 ? TradeCodeHelper.TC1005022004 : TradeCodeHelper.TC1005012004;
+            int tradeCode = ProductCategoryCodeHelper.IsJinyinmaoProduct(command.ProductCategory) ? TradeCodeHelper.TC1005012004 : TradeCodeHelper.TC1005022004;
             DateTime now = DateTime.UtcNow.AddHours(8);
-            this.State.SettleAccount.Add(new Transcation
+            Transcation transcation = new Transcation
             {
                 AgreementsInfo = new Dictionary<string, object>(),
                 Amount = command.Amount,
                 BankCardNo = string.Empty,
-                ChannelCode = 0,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
                 ResultCode = 1,
                 ResultTime = now,
                 Trade = Trade.Credit,
                 TradeCode = tradeCode,
-                TransDesc = string.Empty,
+                TransDesc = "支付成功",
                 TransactionId = command.CommandId,
                 TransactionTime = now
-            });
+            };
+
+            TranscationInfo transcationInfo = transcation.ToInfo();
 
             IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
-            OrderInfo order = await product.BuildOrderAsync(await this.GetUserInfoAsync(), await this.GetSettleAccountTranscationInfoAsync(command.CommandId));
+            OrderInfo order = await product.BuildOrderAsync(await this.GetUserInfoAsync(), transcationInfo);
             if (order == null)
             {
-                this.State.SettleAccount.RemoveAll(t => t.TransactionId == command.CommandId);
+                return null;
             }
-            else
-            {
-                if (this.State.Orders.All(o => o.OrderId != order.OrderId))
-                {
-                    this.State.Orders.Add(order);
-                }
-            }
+
+            this.State.Orders.Add(order);
+
+            this.State.SettleAccount.Add(transcation);
 
             await this.State.WriteStateAsync();
             this.ReloadSettleAccountData();
             this.ReloadOrderInfosData();
 
-            await this.RaiseOrderBuiltEvent(order);
+            await this.RaiseOrderPaidEvent(order, transcationInfo);
+
+            return order;
         }
 
         /// <summary>
@@ -656,12 +699,64 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task RepayOrderAsync(Guid orderId, DateTime repaidTime)
         {
+            DateTime now = DateTime.UtcNow.AddHours(8);
+
             this.State.Orders.Where(o => o.OrderId == orderId).ForEach(o =>
             {
                 o.IsRepaid = true;
                 o.RepaidTime = repaidTime;
 
-                this.RaiseOrderRepaidEvent(o);
+                int principalTradeCode;
+                int interestTradeCode;
+                if (ProductCategoryCodeHelper.IsJinyinmaoRegularProduct(o.ProductCategory))
+                {
+                    principalTradeCode = TradeCodeHelper.TC1005011104;
+                    interestTradeCode = TradeCodeHelper.TC1005011105;
+                }
+                else
+                {
+                    principalTradeCode = TradeCodeHelper.TC1005021104;
+                    interestTradeCode = TradeCodeHelper.TC1005021105;
+                }
+
+                Transcation principalTranscation = new Transcation
+                {
+                    AgreementsInfo = new Dictionary<string, object>(),
+                    Amount = o.Principal,
+                    BankCardNo = string.Empty,
+                    Cellphone = this.State.Cellphone,
+                    ChannelCode = ChannelCodeHelper.Jinyinmao,
+                    ResultCode = 1,
+                    ResultTime = now,
+                    Trade = Trade.Debit,
+                    TradeCode = principalTradeCode,
+                    TransactionId = Guid.NewGuid(),
+                    TransDesc = "本金还款",
+                    TransactionTime = now,
+                    UserId = this.State.Id
+                };
+
+                Transcation interestTranscation = new Transcation
+                {
+                    AgreementsInfo = new Dictionary<string, object>(),
+                    Amount = o.Interest + o.ExtraInterest,
+                    BankCardNo = string.Empty,
+                    Cellphone = this.State.Cellphone,
+                    ChannelCode = ChannelCodeHelper.Jinyinmao,
+                    ResultCode = 1,
+                    ResultTime = now,
+                    Trade = Trade.Debit,
+                    TradeCode = interestTradeCode,
+                    TransactionId = Guid.NewGuid(),
+                    TransDesc = "产品结息",
+                    TransactionTime = now,
+                    UserId = this.State.Id
+                };
+
+                this.State.SettleAccount.Add(principalTranscation);
+                this.State.SettleAccount.Add(interestTranscation);
+
+                this.RaiseOrderRepaidEvent(o, principalTranscation.ToInfo(), interestTranscation.ToInfo());
             });
 
             return TaskDone.Done;

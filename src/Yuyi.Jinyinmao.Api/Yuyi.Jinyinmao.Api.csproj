@@ -16,10 +16,11 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <NuGetPackageImportStamp>cb64bf72</NuGetPackageImportStamp>
     <UseGlobalApplicationHostFile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -100,8 +101,8 @@
     <Reference Include="MoeEntityFramework">
       <HintPath>..\packages\MoeEntityFramework.2.0.1.0\lib\net45\MoeEntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MoeLib.2.0.7.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MoeThrow">
@@ -160,6 +161,7 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
@@ -255,6 +257,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BackOfficeController.cs" />
     <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Controllers\DevController.cs" />
     <Compile Include="Controllers\InvestingController.cs" />
@@ -263,23 +266,28 @@
     <Compile Include="Controllers\UserAuthController.cs" />
     <Compile Include="Controllers\UserBankCardController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserOrderController.cs" />
     <Compile Include="Controllers\UserSettleAccountController.cs" />
     <Compile Include="Filters\CookieAuthorizeAttribute.cs" />
+    <Compile Include="Filters\HMACAuthenticationAttribute.cs" />
     <Compile Include="Filters\IpAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Admin\IssueProductRequest.cs" />
+    <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeResponse.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeResponse.cs" />
+    <Compile Include="Models\Order\OrderInfoResponse.cs" />
+    <Compile Include="Models\PaginatedResponse.cs" />
     <Compile Include="Models\Product\ProductInfoResponse.cs" />
     <Compile Include="Models\User\AddBankCardRequest.cs" />
     <Compile Include="Models\User\AuthenticationRequest.cs" />
     <Compile Include="Models\User\BankCardInfoResponse.cs" />
     <Compile Include="Models\User\CheckCellphoneResponse.cs" />
+    <Compile Include="Models\User\CheckPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\DepositFromYilianRequest.cs" />
     <Compile Include="Models\User\ResetPasswordRequest.cs" />
     <Compile Include="Models\User\ResetPaymentPasswordRequest.cs" />
@@ -289,6 +297,7 @@
     <Compile Include="Models\User\SignInResponse.cs" />
     <Compile Include="Models\User\SignUpRequest.cs" />
     <Compile Include="Models\User\SignUpResponse.cs" />
+    <Compile Include="Models\User\TranscationInfoResponse.cs" />
     <Compile Include="Models\User\UserInfoResponse.cs" />
     <Compile Include="Models\User\WithdrawalRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -320,8 +329,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -337,7 +345,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>24010</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:12080/</IISUrl>
+          <IISUrl>http://localhost:10080/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

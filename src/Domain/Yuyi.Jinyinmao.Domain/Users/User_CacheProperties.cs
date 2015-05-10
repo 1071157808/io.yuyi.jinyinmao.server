@@ -4,14 +4,16 @@
 // Created          : 2015-05-07  12:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  12:28 PM
+// Last Modified On : 2015-05-09  2:20 PM
 // ***********************************************************************
 // <copyright file="User_CacheProperties.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Collections.Generic;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -30,13 +32,13 @@ namespace Yuyi.Jinyinmao.Domain
         private Dictionary<string, BankCard> BankCards { get; set; }
 
         /// <summary>
-        /// Gets or sets the crediting settle account amount.
+        ///     Gets or sets the crediting settle account amount.
         /// </summary>
         /// <value>The crediting settle account amount.</value>
         private int CreditingSettleAccountAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the debiting settle account amount.
+        ///     Gets or sets the debiting settle account amount.
         /// </summary>
         /// <value>The debiting settle account amount.</value>
         private int DebitingSettleAccountAmount { get; set; }
@@ -60,10 +62,22 @@ namespace Yuyi.Jinyinmao.Domain
         private int MonthWithdrawalCount { get; set; }
 
         /// <summary>
+        ///     Gets or sets the orders.
+        /// </summary>
+        /// <value>The orders.</value>
+        private Dictionary<Guid, OrderInfo> Orders { get; set; }
+
+        /// <summary>
         ///     Gets or sets the payment password error count.
         /// </summary>
         /// <value>The payment password error count.</value>
         private int PaymentPasswordErrorCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the settle account.
+        /// </summary>
+        /// <value>The settle account.</value>
+        private Dictionary<Guid, Transcation> SettleAccount { get; set; }
 
         /// <summary>
         ///     Gets or sets the settlement account balance.

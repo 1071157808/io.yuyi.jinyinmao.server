@@ -4,10 +4,10 @@
 // Created          : 2015-05-07  12:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  12:48 PM
+// Last Modified On : 2015-05-10  7:12 PM
 // ***********************************************************************
-// <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -169,78 +169,47 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Raises the order built event.
         /// </summary>
         /// <param name="order">The order.</param>
+        /// <param name="transcation">The transcation.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseOrderBuiltEvent(OrderInfo order)
+        private async Task RaiseOrderPaidEvent(OrderInfo order, TranscationInfo transcation)
         {
-            OrderBuilt @event = new OrderBuilt
+            OrderPaid @event = new OrderPaid
             {
-                AccountTranscationId = order.AccountTranscationId,
                 Args = JsonHelper.NewDictionary,
-                Cellphone = order.Cellphone,
-                ExtraInterest = order.ExtraInterest,
-                ExtraYield = order.ExtraYield,
-                Info = order.Info,
-                Interest = order.Interest,
-                IsRepaid = order.IsRepaid,
-                OrderId = order.OrderId,
-                OrderNo = order.OrderNo,
-                OrderTime = order.OrderTime,
-                Principal = order.Principal,
-                ProductId = order.ProductId,
-                ProductSnapshot = order.ProductSnapshot,
-                RepaidTime = order.RepaidTime,
-                ResultCode = order.ResultCode,
-                ResultTime = order.ResultTime,
-                SettleDate = order.SettleDate,
+                Order = order,
                 SourceId = this.State.Id.ToGuidString(),
                 SourceType = this.GetType().Name,
-                TransDesc = order.TransDesc,
-                UserId = order.UserId,
-                UserInfo = order.UserInfo,
-                ValueDate = order.ValueDate,
-                Yield = order.Yield
+                Transcation = transcation
             };
+
             await this.StoreEventAsync(@event);
 
-            await OrderBuiltProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await OrderPaidProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
         /// <summary>
         ///     Raises the order repaid event.
         /// </summary>
         /// <param name="orderInfo">The order information.</param>
-        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo)
+        /// <param name="principalTranscationInfo">The principal transcation information.</param>
+        /// <param name="interestTranscationInfo">The interest transcation information.</param>
+        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo, TranscationInfo principalTranscationInfo, TranscationInfo interestTranscationInfo)
         {
             OrderRepaid @event = new OrderRepaid
             {
-                AccountTranscationId = orderInfo.AccountTranscationId,
                 Args = JsonHelper.NewDictionary,
-                Cellphone = orderInfo.Cellphone,
-                ExtraInterest = orderInfo.ExtraInterest,
-                ExtraYield = orderInfo.ExtraYield,
-                Info = orderInfo.Info,
-                Interest = orderInfo.Interest,
-                IsRepaid = orderInfo.IsRepaid,
-                OrderId = orderInfo.OrderId,
-                OrderNo = orderInfo.OrderNo,
-                OrderTime = orderInfo.OrderTime,
-                Principal = orderInfo.Principal,
-                ProductId = orderInfo.ProductId,
-                ProductSnapshot = orderInfo.ProductSnapshot,
-                RepaidTime = orderInfo.RepaidTime,
-                ResultCode = orderInfo.ResultCode,
-                ResultTime = orderInfo.ResultTime,
-                SettleDate = orderInfo.SettleDate,
+                InterestTranscationInfo = interestTranscationInfo,
+                OrderInfo = orderInfo,
+                PriIntSumAmount = principalTranscationInfo.Amount + interestTranscationInfo.Amount,
+                PrincipalTranscationInfo = principalTranscationInfo,
+                RepaidTime = orderInfo.ResultTime.GetValueOrDefault(),
                 SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                TransDesc = string.Empty,
-                UserId = orderInfo.UserId,
-                UserInfo = orderInfo.UserInfo,
-                ValueDate = orderInfo.ValueDate,
-                Yield = orderInfo.Yield
+                SourceType = this.GetType().Name
             };
 
             await this.StoreEventAsync(@event);
+
+            await OrderRepaidProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
         /// <summary>

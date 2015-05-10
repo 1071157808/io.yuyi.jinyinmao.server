@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  11:52 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  3:53 AM
+// Last Modified On : 2015-05-08  1:15 AM
 // ***********************************************************************
 // <copyright file="CloudStorageHelper.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -38,7 +38,7 @@ namespace Yuyi.Jinyinmao.Helper
         {
             TableQuery<TableCacheEntity> query = new TableQuery<TableCacheEntity>()
                 .Where(TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "api.cache" + cacheName),
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, cacheName),
                     TableOperators.And,
                     TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, cacheId)));
             TableCacheEntity cacheData = table.ExecuteQuery(query).FirstOrDefault();
@@ -75,7 +75,7 @@ namespace Yuyi.Jinyinmao.Helper
             TableCacheEntity cache = new TableCacheEntity
             {
                 Data = data.ToJson(),
-                PartitionKey = "api.cache" + cacheName,
+                PartitionKey = cacheName,
                 RowKey = cacheId,
                 TimeStamp = DateTime.UtcNow
             };

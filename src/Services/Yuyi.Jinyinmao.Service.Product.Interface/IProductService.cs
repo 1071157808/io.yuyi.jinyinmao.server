@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  10:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  9:40 AM
+// Last Modified On : 2015-05-10  6:04 PM
 // ***********************************************************************
-// <copyright file="IProductService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -33,9 +33,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Repays the asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
-        /// <param name="productNo">The product no.</param>
-        /// <param name="productCategory">The product category.</param>
         /// <returns>Task.</returns>
-        Task RepayAsync(Guid productId, string productNo, string productCategory);
+        Task RepayAsync(Guid productId);
     }
 }

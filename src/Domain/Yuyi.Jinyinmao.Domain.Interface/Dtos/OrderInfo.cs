@@ -4,7 +4,7 @@
 // Created          : 2015-04-30  2:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  10:05 AM
+// Last Modified On : 2015-05-08  1:11 PM
 // ***********************************************************************
 // <copyright file="OrderInfo.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -12,7 +12,7 @@
 // ***********************************************************************
 
 using System;
-using Moe.Lib;
+using System.Collections.Generic;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -34,22 +34,23 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 Cellphone = order.Cellphone,
                 ExtraInterest = order.ExtraInterest,
                 ExtraYield = order.ExtraYield,
-                Info = order.Info.ToJson(),
+                Info = order.Info,
                 Interest = order.Interest,
                 IsRepaid = order.IsRepaid,
                 OrderId = order.OrderId,
                 OrderNo = order.OrderNo,
                 OrderTime = order.OrderTime,
                 Principal = order.Principal,
+                ProductCategory = order.ProductCategory,
                 ProductId = order.ProductId,
-                ProductSnapshot = order.ProductSnapshot.ToJson(),
+                ProductSnapshot = order.ProductSnapshot,
                 RepaidTime = order.RepaidTime,
                 ResultCode = order.ResultCode,
                 ResultTime = order.ResultTime,
                 SettleDate = order.SettleDate,
                 TransDesc = order.TransDesc,
                 UserId = order.UserId,
-                UserInfo = order.UserInfo.ToJson(),
+                UserInfo = order.UserInfo,
                 ValueDate = order.ValueDate,
                 Yield = order.Yield
             };
@@ -89,7 +90,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the information.
         /// </summary>
         /// <value>The information.</value>
-        public string Info { get; set; }
+        public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
         ///     Gets or sets the interest.
@@ -128,6 +129,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public int Principal { get; set; }
 
         /// <summary>
+        ///     Gets or sets the product category.
+        /// </summary>
+        /// <value>The product category.</value>
+        public long ProductCategory { get; set; }
+
+        /// <summary>
         ///     Gets or sets the product identifier.
         /// </summary>
         /// <value>The product identifier.</value>
@@ -137,7 +144,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the product snapshot.
         /// </summary>
         /// <value>The product snapshot.</value>
-        public string ProductSnapshot { get; set; }
+        public RegularProductInfo ProductSnapshot { get; set; }
 
         /// <summary>
         ///     Gets or sets the repaid time.
@@ -179,7 +186,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
-        public string UserInfo { get; set; }
+        public UserInfo UserInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the value date.

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:26 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  2:43 PM
+// Last Modified On : 2015-05-09  1:58 AM
 // ***********************************************************************
 // <copyright file="IRegularProduct.cs" company="Shanghai Yuyi">
 //     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
@@ -37,12 +37,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
         Task<string> GetAgreementAsync(int agreementIndex);
-
-        /// <summary>
-        ///     Gets the paid amount.
-        /// </summary>
-        /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int> GetPaidAmountAsync();
 
         /// <summary>
         ///     Gets the product paid amount asynchronous.
