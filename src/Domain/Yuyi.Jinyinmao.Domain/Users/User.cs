@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  12:22 PM
+// Last Modified On : 2015-05-12  12:12 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,7 +20,7 @@ using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Models;
+using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
 using Yuyi.Jinyinmao.Helper;
 using Yuyi.Jinyinmao.Packages.Helper;
@@ -516,7 +516,7 @@ namespace Yuyi.Jinyinmao.Domain
             Transcation transcation = this.State.SettleAccount.FirstOrDefault(t => t.TransactionId == transcationId);
             if (transcation == null)
             {
-                return Task.FromResult<TranscationInfo>(null);
+                return null;
             }
 
             return Task.FromResult(transcation.ToInfo());
@@ -563,11 +563,14 @@ namespace Yuyi.Jinyinmao.Domain
                 InvestingInterest = this.InvestingInterest,
                 InvestingPrincipal = this.InvestingPrincipal,
                 InviteBy = this.State.InviteBy,
+                JBYAccrualAmount = this.JBYAccrualAmount,
+                JBYWithdrawalableAmount = this.JBYWithdrawalableAmount,
                 LoginNames = this.State.LoginNames,
                 MonthWithdrawalCount = this.MonthWithdrawalCount,
                 PasswordErrorCount = this.PasswordErrorCount,
                 RealName = this.State.RealName,
                 RegisterTime = this.State.RegisterTime,
+                TodayJBYWithdrawalAmount = this.TodayJBYWithdrawalAmount,
                 TodayWithdrawalCount = this.TodayWithdrawalCount,
                 TotalInterest = this.TotalInterest,
                 TotalPrincipal = this.TotalPrincipal,
@@ -636,6 +639,82 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        public async Task<TranscationInfo> InvestingAsync(JBYInvesting command)
+        {
+            if (this.JBYAccount.ContainsKey(command.CommandId))
+            {
+                return null;
+            }
+
+            if (this.SettleAccountBalance < command.Amount)
+            {
+                return null;
+            }
+
+            await this.BeginProcessCommandAsync(command);
+
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            Guid jbyTranscationId = Guid.NewGuid();
+
+            Transcation settleTranscation = new Transcation
+            {
+                AgreementsInfo = new Dictionary<string, object>(),
+                Amount = command.Amount,
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                Info = new Dictionary<string, object> { { "JBYTranscationId", jbyTranscationId } },
+                ResultCode = 1,
+                ResultTime = now,
+                Trade = Trade.Credit,
+                TradeCode = TradeCodeHelper.TC1005012003,
+                TransDesc = "支付成功",
+                TransactionId = command.CommandId,
+                TransactionTime = now
+            };
+
+            Transcation jbyTranscation = new Transcation
+            {
+                AgreementsInfo = new Dictionary<string, object>(),
+                Amount = command.Amount,
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                Info = new Dictionary<string, object> { { "SettleTranscation", settleTranscation.TransactionId } },
+                ResultCode = 1,
+                ResultTime = now,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC2001051102,
+                TransDesc = "申购成功",
+                TransactionId = jbyTranscationId,
+                TransactionTime = now
+            };
+
+            IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYGrainTypeLongKey());
+            Tuple<bool, Guid> result = await product.BuildJBYTranscationAsync(jbyTranscation.ToInfo());
+            if (result.Item1)
+            {
+                settleTranscation.Info.Add("ProductId", result.Item2);
+                jbyTranscation.Info.Add("ProductId", result.Item2);
+
+                this.State.SettleAccount.Add(settleTranscation);
+                this.State.JBYAccount.Add(jbyTranscation);
+
+                await this.State.WriteStateAsync();
+                this.ReloadSettleAccountData();
+                this.ReloadJBYAccountData();
+
+                await this.RaiseJBYPurchasedEvent(command, jbyTranscation.ToInfo(), settleTranscation.ToInfo());
+
+                return jbyTranscation.ToInfo();
+            }
+
+            return null;
+        }
+
+        /// <summary>
         ///     Determines whether [is registered] asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
@@ -701,7 +780,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             DateTime now = DateTime.UtcNow.AddHours(8);
 
-            this.State.Orders.Where(o => o.OrderId == orderId).ForEach(o =>
+            this.State.Orders.Where(o => o.OrderId == orderId).ForEach(async o =>
             {
                 o.IsRepaid = true;
                 o.RepaidTime = repaidTime;
@@ -755,6 +834,9 @@ namespace Yuyi.Jinyinmao.Domain
 
                 this.State.SettleAccount.Add(principalTranscation);
                 this.State.SettleAccount.Add(interestTranscation);
+
+                await this.State.WriteStateAsync();
+                this.ReloadSettleAccountData();
 
                 this.RaiseOrderRepaidEvent(o, principalTranscation.ToInfo(), interestTranscation.ToInfo());
             });
@@ -865,6 +947,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Amount = command.Amount,
                 BankCardNo = command.BankCardNo,
                 ChannelCode = ChannelCodeHelper.Yilian,
+                Info = new Dictionary<string, object>(),
                 ResultCode = 0,
                 ResultTime = null,
                 Trade = Trade.Credit,
@@ -882,51 +965,7 @@ namespace Yuyi.Jinyinmao.Domain
             await this.State.WriteStateAsync();
             this.ReloadSettleAccountData();
 
-            using (JYMDBContext db = new JYMDBContext())
-            {
-                AccountTranscation accountTranscation = new AccountTranscation
-                {
-                    AgreementsInfo = transcation.AgreementsInfo.ToJson(),
-                    Amount = transcation.Amount,
-                    Args = command.Args,
-                    BankCardInfo = info.ToJson(),
-                    Cellphone = this.State.Cellphone,
-                    ChannelCode = transcation.ChannelCode,
-                    Info = JsonHelper.NewDictionary,
-                    ResultCode = 0,
-                    ResultTime = null,
-                    TradeCode = transcation.TradeCode,
-                    TransDesc = transcation.TransDesc,
-                    TranscationIdentifier = transcation.TransactionId.ToGuidString(),
-                    TranscationTime = transcation.TransactionTime,
-                    UserIdentifier = this.State.Id.ToGuidString(),
-                    UserInfo = (await this.GetUserInfoAsync()).ToJson()
-                };
-
-                AccountTranscation accountChargeTranscation = new AccountTranscation
-                {
-                    AgreementsInfo = chargeTranscation.AgreementsInfo.ToJson(),
-                    Amount = chargeTranscation.Amount,
-                    Args = command.Args,
-                    BankCardInfo = JsonHelper.NewDictionary,
-                    Cellphone = this.State.Cellphone,
-                    ChannelCode = chargeTranscation.ChannelCode,
-                    Info = JsonHelper.NewDictionary,
-                    ResultCode = 1,
-                    ResultTime = chargeTranscation.ResultTime,
-                    TradeCode = chargeTranscation.TradeCode,
-                    TransDesc = chargeTranscation.TransDesc,
-                    TranscationIdentifier = chargeTranscation.TransactionId.ToGuidString(),
-                    TranscationTime = chargeTranscation.TransactionTime,
-                    UserIdentifier = this.State.Id.ToGuidString(),
-                    UserInfo = (await this.GetUserInfoAsync()).ToJson()
-                };
-
-                db.Add(accountTranscation);
-                db.Add(accountChargeTranscation);
-
-                await db.ExecuteSaveChangesAsync();
-            }
+            await this.RaiseWithdrawalAcceptedEvent(command, transcation, chargeTranscation);
         }
 
         /// <summary>
@@ -981,6 +1020,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Amount = chargeAmount,
                 BankCardNo = string.Empty,
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
+                Info = new Dictionary<string, object>(),
                 ResultCode = 1,
                 ResultTime = now,
                 Trade = Trade.Credit,

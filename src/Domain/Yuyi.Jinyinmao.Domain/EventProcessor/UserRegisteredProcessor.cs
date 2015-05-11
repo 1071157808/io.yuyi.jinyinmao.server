@@ -4,10 +4,10 @@
 // Created          : 2015-04-26  11:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  5:47 PM
+// Last Modified On : 2015-05-11  8:18 PM
 // ***********************************************************************
-// <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -54,7 +54,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 Models.User user = new Models.User
                 {
-                    Args = e.Args,
+                    Args = e.Args.ToJson(),
                     Cellphone = e.Cellphone,
                     ClientType = e.ClientType,
                     Closed = false,
@@ -74,13 +74,11 @@ namespace Yuyi.Jinyinmao.Domain
 
                 using (JYMDBContext db = new JYMDBContext())
                 {
-                    if (await db.Users.AnyAsync(u => u.UserIdentifier == user.UserIdentifier))
+                    if (!await db.Users.AnyAsync(u => u.UserIdentifier == user.UserIdentifier))
                     {
-                        return;
+                        db.Users.Add(user);
+                        await db.SaveChangesAsync();
                     }
-
-                    db.Users.Add(user);
-                    await db.SaveChangesAsync();
                 }
             });
 

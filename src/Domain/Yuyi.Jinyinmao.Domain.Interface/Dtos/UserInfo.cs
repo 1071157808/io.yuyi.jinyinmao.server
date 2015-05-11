@@ -99,6 +99,16 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public string InviteBy { get; set; }
 
         /// <summary>
+        /// 金包银计息金额
+        /// </summary>
+        public int JBYAccrualAmount { get; set; }
+
+        /// <summary>
+        /// 金包银可取现金额
+        /// </summary>
+        public int JBYWithdrawalableAmount { get; set; }
+
+        /// <summary>
         ///     登录名
         /// </summary>
         public List<string> LoginNames { get; set; }
@@ -122,6 +132,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     注册时间
         /// </summary>
         public DateTime RegisterTime { get; set; }
+
+        /// <summary>
+        /// 当天金包银已经申请体现的总额
+        /// </summary>
+        public int TodayJBYWithdrawalAmount { get; set; }
 
         /// <summary>
         /// 当天取款次数

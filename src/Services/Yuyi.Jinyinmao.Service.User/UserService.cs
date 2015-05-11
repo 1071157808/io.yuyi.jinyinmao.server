@@ -251,6 +251,17 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The regular investing.</param>
+        /// <returns>Task.</returns>
+        public Task<TranscationInfo> InvestingAsync(JBYInvesting command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.InvestingAsync(command);
+        }
+
+        /// <summary>
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>

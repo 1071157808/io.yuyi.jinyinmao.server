@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  9:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  7:36 PM
+// Last Modified On : 2015-05-11  10:26 PM
 // ***********************************************************************
 // <copyright file="OrderRepaidProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -48,8 +48,8 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
             {
                 string orderIdentifier = e.OrderInfo.OrderId.ToGuidString();
 
-                AccountTranscation principalTranscation = e.PrincipalTranscationInfo.ToDBModel();
-                AccountTranscation interestTranscation = e.InterestTranscationInfo.ToDBModel();
+                AccountTranscation principalTranscation = e.PrincipalTranscationInfo.ToDBAccountTranscationModel(e.Args);
+                AccountTranscation interestTranscation = e.InterestTranscationInfo.ToDBAccountTranscationModel(e.Args);
 
                 using (JYMDBContext db = new JYMDBContext())
                 {
@@ -58,12 +58,12 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
                     order.IsRepaid = true;
                     order.RepaidTime = e.RepaidTime;
 
-                    if (await db.Query<AccountTranscation>().AllAsync(t => t.TranscationIdentifier != principalTranscation.TranscationIdentifier))
+                    if (!await db.Query<AccountTranscation>().AnyAsync(t => t.TranscationIdentifier != principalTranscation.TranscationIdentifier))
                     {
                         db.AccountTranscations.Add(principalTranscation);
                     }
 
-                    if (await db.Query<AccountTranscation>().AllAsync(t => t.TranscationIdentifier != interestTranscation.TranscationIdentifier))
+                    if (!await db.Query<AccountTranscation>().AnyAsync(t => t.TranscationIdentifier != interestTranscation.TranscationIdentifier))
                     {
                         db.AccountTranscations.Add(interestTranscation);
                     }

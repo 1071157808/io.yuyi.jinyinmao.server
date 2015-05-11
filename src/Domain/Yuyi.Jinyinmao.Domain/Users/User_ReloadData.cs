@@ -33,6 +33,23 @@ namespace Yuyi.Jinyinmao.Domain
             this.BankCards = this.State.BankCards.ToDictionary(c => c.BankCardNo);
         }
 
+        private void ReloadJBYAccountData()
+        {
+            List<Transcation> debitTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Debit && t.ResultCode == 1).ToList();
+            List<Transcation> creditTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode >= 0).ToList();
+            List<Transcation> creditedTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode == 1).ToList();
+            // ReSharper disable once UnusedVariable
+            List<Transcation> creditingTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode == 0).ToList();
+
+            this.JBYAccrualAmount = debitTrans.Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
+            this.JBYWithdrawalableAmount = debitTrans.Sum(t => t.Amount) - creditTrans.Sum(t => t.Amount);
+
+            DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
+            this.TodayJBYWithdrawalAmount = this.State.JBYAccount.Count(t => t.TransactionTime >= todayDate && t.TransactionTime < todayDate.AddDays(1) && t.TradeCode == TradeCodeHelper.TC2001012002);
+
+            this.JBYAccount = this.State.JBYAccount.ToDictionary(t => t.TransactionId);
+        }
+
         /// <summary>
         ///     Reloads the order infos data.
         /// </summary>

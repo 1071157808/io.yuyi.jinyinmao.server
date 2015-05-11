@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  12:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  4:52 AM
+// Last Modified On : 2015-05-11  8:11 PM
 // ***********************************************************************
-// <copyright file="IRegularProductState.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IRegularProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -35,7 +35,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        string Args { get; set; }
+        Dictionary<string, object> Args { get; set; }
 
         /// <summary>
         ///     银行名称

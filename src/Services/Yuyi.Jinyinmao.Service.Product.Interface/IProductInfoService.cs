@@ -29,6 +29,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="productNo">The product no.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        Task<bool> CheckJBYProductNoExistsAsync(string productNo);
+
+        /// <summary>
+        ///     Checks the product no exists.
+        /// </summary>
+        /// <param name="productNo">The product no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
         Task<bool> CheckProductNoExistsAsync(string productNo);
 
         /// <summary>
@@ -38,6 +45,20 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
         Task<string> GetAgreementAsync(Guid productId, int agreementIndex);
+
+        /// <summary>
+        /// Gets the jby agreement asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <param name="agreementIndex">Index of the agreement.</param>
+        /// <returns>Task&lt;System.String&gt;.</returns>
+        Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex);
+
+        /// <summary>
+        /// Gets the jby product information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
+        Task<JBYProductInfo> GetJBYProductInfoAsync();
 
         /// <summary>
         ///     Gets the product information asynchronous.

@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  9:27 AM
+// Last Modified On : 2015-05-11  8:18 PM
 // ***********************************************************************
 // <copyright file="VeriCodeService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,7 +60,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SendVeriCodeResult&gt;.</returns>
-        public async Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string args = "")
+        public async Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, Dictionary<string, object> args)
         {
             string veriCode;
             VeriCode code;
@@ -106,7 +107,7 @@ namespace Yuyi.Jinyinmao.Service
                         Type = (int)type,
                         Used = false,
                         Verified = false,
-                        Args = args
+                        Args = args.ToJson()
                     };
 
                     context.Add(code);

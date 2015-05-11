@@ -52,6 +52,12 @@ namespace Yuyi.Jinyinmao.Domain
         public int ChannelCode { get; set; }
 
         /// <summary>
+        /// Gets or sets the information.
+        /// </summary>
+        /// <value>The information.</value>
+        public Dictionary<string, object> Info { get; set; }
+
+        /// <summary>
         ///     Gets or sets the result code.
         /// </summary>
         /// <value>The result code.</value>

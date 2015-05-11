@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
@@ -103,11 +103,5 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the user information.
-        /// </summary>
-        /// <value>The user information.</value>
-        public string UserInfo { get; set; }
     }
 }

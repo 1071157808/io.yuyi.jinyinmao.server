@@ -4,10 +4,10 @@
 // Created          : 2015-05-03  7:02 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  7:04 PM
+// Last Modified On : 2015-05-11  10:33 PM
 // ***********************************************************************
-// <copyright file="TranscationInfo.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="TranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -21,12 +21,12 @@ using Yuyi.Jinyinmao.Packages.Helper;
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
-    /// TranscationEx.
+    ///     TranscationEx.
     /// </summary>
     public static class TranscationEx
     {
         /// <summary>
-        /// To the information.
+        ///     To the information.
         /// </summary>
         /// <param name="transcation">The transcation.</param>
         /// <returns>TranscationInfo.</returns>
@@ -39,6 +39,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 BankCardNo = transcation.BankCardNo,
                 Cellphone = transcation.Cellphone,
                 ChannelCode = transcation.ChannelCode,
+                Info = transcation.Info,
                 ResultCode = transcation.ResultCode,
                 ResultTime = transcation.ResultTime,
                 Trade = transcation.Trade,
@@ -52,17 +53,17 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     }
 
     /// <summary>
-    /// TranscationInfoEx.
+    ///     TranscationInfoEx.
     /// </summary>
     public static class TranscationInfoEx
     {
         /// <summary>
-        /// To the database model.
+        ///     To the database account transcation model.
         /// </summary>
         /// <param name="info">The information.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>AccountTranscation.</returns>
-        public static AccountTranscation ToDBModel(this TranscationInfo info, Dictionary<string, object> args = null)
+        public static AccountTranscation ToDBAccountTranscationModel(this TranscationInfo info, Dictionary<string, object> args = null)
         {
             string argsString = JsonHelper.NewDictionary;
             if (args != null)
@@ -75,10 +76,43 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 AgreementsInfo = info.AgreementsInfo.ToJson(),
                 Amount = info.Amount,
                 Args = argsString,
-                BankCardInfo = JsonHelper.NewDictionary,
+                BankCardInfo = new Dictionary<string, object> { { "BankCardNo", info.BankCardNo } }.ToJson(),
                 Cellphone = info.Cellphone,
                 ChannelCode = info.ChannelCode,
-                Info = JsonHelper.NewDictionary,
+                Info = info.Info.ToJson(),
+                ResultCode = info.ResultCode,
+                ResultTime = info.ResultTime,
+                TradeCode = info.TradeCode,
+                TransDesc = info.TransDesc,
+                TranscationIdentifier = info.TransactionId.ToGuidString(),
+                TranscationTime = info.TransactionTime,
+                UserIdentifier = info.UserId.ToGuidString()
+            };
+        }
+
+        /// <summary>
+        ///     To the dbjby transcation model.
+        /// </summary>
+        /// <param name="info">The information.</param>
+        /// <param name="settleTranscationId">The settle transcation identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>JBYTranscation.</returns>
+        public static JBYTranscation ToDBJBYTranscationModel(this TranscationInfo info, Guid settleTranscationId, Dictionary<string, object> args = null)
+        {
+            string argsString = JsonHelper.NewDictionary;
+            if (args != null)
+            {
+                argsString = args.ToJson();
+            }
+
+            return new JBYTranscation
+            {
+                AccountTranscationIdentifier = settleTranscationId.ToGuidString(),
+                AgreementsInfo = info.AgreementsInfo.ToJson(),
+                Amount = info.Amount,
+                Args = argsString,
+                Cellphone = info.Cellphone,
+                Info = info.Info.ToJson(),
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime,
                 TradeCode = info.TradeCode,
@@ -91,85 +125,91 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     }
 
     /// <summary>
-    /// TranscationInfo.
+    ///     TranscationInfo.
     /// </summary>
     [Immutable]
     public class TranscationInfo
     {
         /// <summary>
-        /// Gets or sets the agreements information.
+        ///     Gets or sets the agreements information.
         /// </summary>
         /// <value>The agreements information.</value>
         public Dictionary<string, object> AgreementsInfo { get; set; }
 
         /// <summary>
-        /// 金额，以分为单位
+        ///     金额，以分为单位
         /// </summary>
         /// <value>The amount.</value>
         public int Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets the bank card no.
+        ///     Gets or sets the bank card no.
         /// </summary>
         /// <value>The bank card no.</value>
         public string BankCardNo { get; set; }
 
         /// <summary>
-        /// Gets or sets the cellphone.
+        ///     Gets or sets the cellphone.
         /// </summary>
         /// <value>The cellphone.</value>
         public string Cellphone { get; set; }
 
         /// <summary>
-        /// Gets or sets the channel code.
+        ///     Gets or sets the channel code.
         /// </summary>
         /// <value>The channel code.</value>
         public int ChannelCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the result code.
+        ///     Gets or sets the information.
+        /// </summary>
+        /// <value>The information.</value>
+        public Dictionary<string, object> Info { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the result code.
         /// </summary>
         /// <value>The result code.</value>
         public int ResultCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the result time.
+        ///     Gets or sets the result time.
         /// </summary>
         /// <value>The result time.</value>
         public DateTime? ResultTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the trade.
+        ///     Gets or sets the trade.
         /// </summary>
         /// <value>The trade.</value>
         public Trade Trade { get; set; }
 
         /// <summary>
-        /// Gets or sets the trade code.
+        ///     Gets or sets the trade code.
         /// </summary>
         /// <value>The trade code.</value>
         public int TradeCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the transaction identifier.
+        ///     Gets or sets the transaction identifier.
         /// </summary>
         /// <value>The transaction identifier.</value>
         public Guid TransactionId { get; set; }
 
         /// <summary>
-        /// Gets or sets the transaction time.
+        ///     Gets or sets the transaction time.
         /// </summary>
         /// <value>The transaction time.</value>
         public DateTime TransactionTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the trans desc.
+        ///     Gets or sets the trans desc.
         /// </summary>
         /// <value>The trans desc.</value>
         public string TransDesc { get; set; }
 
         /// <summary>
-        /// Gets or sets the user identifier.
+        ///     Gets or sets the user identifier.
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }

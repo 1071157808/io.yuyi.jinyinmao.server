@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  11:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  12:49 AM
+// Last Modified On : 2015-05-11  8:18 PM
 // ***********************************************************************
-// <copyright file="IUserState.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IUserState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -26,7 +26,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        string Args { get; set; }
+        Dictionary<string, object> Args { get; set; }
 
         /// <summary>
         ///     绑定的银行卡
@@ -84,7 +84,7 @@ namespace Yuyi.Jinyinmao.Domain
         List<string> LoginNames { get; set; }
 
         /// <summary>
-        /// 所有成立的订单
+        ///     所有成立的订单
         /// </summary>
         List<OrderInfo> Orders { get; set; }
 

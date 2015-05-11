@@ -1,17 +1,18 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-07  10:53 PM
+// Created          : 2015-04-21  12:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-10  12:57 PM
+// Last Modified On : 2015-05-11  12:24 AM
 // ***********************************************************************
-// <copyright file="GrainType.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="GrainType.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -23,7 +24,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The cellphone, 100001
         /// </summary>
-        Cellphone = 100001
+        Cellphone = 100001,
+
+        /// <summary>
+        ///     The jby
+        /// </summary>
+        JBY = 100002
     }
 
     /// <summary>
@@ -66,7 +72,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>System.Int64.</returns>
         public static long GetGrainTypeLongKey(GrainType grainType, long key)
         {
-            return Convert.ToInt64(grainType) * Trillion + Convert.ToInt64(key);
+            return Convert.ToInt64(grainType) * Trillion + key;
+        }
+
+        /// <summary>
+        /// Gets the jby grain type long key.
+        /// </summary>
+        /// <returns>System.Int64.</returns>
+        public static long GetJBYGrainTypeLongKey()
+        {
+            return GrainTypeHelper.GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030);
         }
     }
 }

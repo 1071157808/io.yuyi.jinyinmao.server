@@ -158,6 +158,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<OrderInfo> InvestingAsync(RegularInvesting command);
 
         /// <summary>
+        /// Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        Task<TranscationInfo> InvestingAsync(JBYInvesting command);
+
+        /// <summary>
         ///     Determines whether [is registered] asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>

@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  6:24 PM
+// Last Modified On : 2015-05-11  11:47 AM
 // ***********************************************************************
-// <copyright file="JBYProductMap.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="JBYProductMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -51,13 +51,14 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.ProductName).HasColumnName("ProductName");
             this.Property(t => t.ProductNo).HasColumnName("ProductNo");
             this.Property(t => t.IssueNo).HasColumnName("IssueNo");
-            this.Property(t => t.FinancingSumCount).HasColumnName("FinancingSumCount");
+            this.Property(t => t.FinancingSumAmount).HasColumnName("FinancingSumAmount");
             this.Property(t => t.UnitPrice).HasColumnName("UnitPrice");
             this.Property(t => t.IssueTime).HasColumnName("IssueTime");
             this.Property(t => t.StartSellTime).HasColumnName("StartSellTime");
             this.Property(t => t.EndSellTime).HasColumnName("EndSellTime");
             this.Property(t => t.SoldOut).HasColumnName("SoldOut");
             this.Property(t => t.SoldOutTime).HasColumnName("SoldOutTime");
+            this.Property(t => t.ValueDateMode).HasColumnName("ValueDateMode");
             this.Property(t => t.Info).HasColumnName("Info");
         }
     }

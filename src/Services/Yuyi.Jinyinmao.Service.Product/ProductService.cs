@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  6:03 PM
+// Last Modified On : 2015-05-12  12:26 AM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,6 +21,8 @@ using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Models;
+using Yuyi.Jinyinmao.Domain.Products;
+using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Service
@@ -31,6 +33,19 @@ namespace Yuyi.Jinyinmao.Service
     public class ProductService : IProductService
     {
         #region IProductService Members
+
+        /// <summary>
+        ///     Checks the product no exists.
+        /// </summary>
+        /// <param name="productNo">The product no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public async Task<bool> CheckJBYProductNoExistsAsync(string productNo)
+        {
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                return await db.ReadonlyQuery<JBYProduct>().AnyAsync(p => p.ProductNo == productNo);
+            }
+        }
 
         /// <summary>
         ///     Checks the product no exists.
@@ -55,6 +70,28 @@ namespace Yuyi.Jinyinmao.Service
         {
             IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
             return regularProduct.GetAgreementAsync(agreementIndex);
+        }
+
+        /// <summary>
+        ///     Gets the jby agreement asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <param name="agreementIndex">Index of the agreement.</param>
+        /// <returns>Task&lt;System.String&gt;.</returns>
+        public Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex)
+        {
+            IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYGrainTypeLongKey());
+            return product.GetAgreementAsync(agreementIndex);
+        }
+
+        /// <summary>
+        ///     Gets the jby product information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
+        public Task<JBYProductInfo> GetJBYProductInfoAsync()
+        {
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030));
+            return jbyProduct.GetProductInfoAsync();
         }
 
         /// <summary>
@@ -138,10 +175,56 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public Task HitShelves(IssueRegularProduct command)
+        public Task HitShelvesAsync(IssueRegularProduct command)
         {
             IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
             return product.HitShelvesAsync(command);
+        }
+
+        /// <summary>
+        ///     Hits the shelves.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public async Task HitShelvesAsync(IssueJBYProduct command)
+        {
+            Dictionary<string, object> info = new Dictionary<string, object>
+            {
+                { "Aggrement1", command.Agreement1 },
+                { "Agreement2", command.Agreement2 }
+            };
+
+            JBYProduct product = new JBYProduct
+            {
+                EndSellTime = command.EndSellTime,
+                FinancingSumAmount = command.FinancingSumAmount,
+                Info = info.ToJson(),
+                IssueNo = command.IssueNo,
+                IssueTime = command.IssueTime,
+                ProductCategory = command.ProductCategory,
+                ProductIdentifier = command.ProductId.ToGuidString(),
+                ProductName = command.ProductName,
+                ProductNo = command.ProductNo,
+                SoldOutTime = null,
+                SoldOut = false,
+                StartSellTime = command.StartSellTime,
+                UnitPrice = command.UnitPrice
+            };
+
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                if (await db.Query<JBYProduct>().AnyAsync(p => p.ProductIdentifier == product.ProductIdentifier))
+                {
+                    return;
+                }
+
+                db.Add(product);
+
+                await db.ExecuteSaveChangesAsync();
+            }
+
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYGrainTypeLongKey());
+            await jbyProduct.HitShelvesAsync(command);
         }
 
         /// <summary>
@@ -174,7 +257,7 @@ namespace Yuyi.Jinyinmao.Service
                 }
                 else
                 {
-                    i.PaidAmount = await this.GetProductPaidAmountAsync(Guid.ParseExact(i.ProductIdentifier, "N"));
+                    i.PaidAmount = await this.GetProductPaidAmountAsync(i.ProductId);
                 }
             });
 

@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-03  6:57 PM
+// Last Modified On : 2015-05-12  12:13 AM
 // ***********************************************************************
-// <copyright file="JBYTranscation.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="JBYTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -97,11 +97,5 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the user information.
-        /// </summary>
-        /// <value>The user information.</value>
-        public string UserInfo { get; set; }
     }
 }

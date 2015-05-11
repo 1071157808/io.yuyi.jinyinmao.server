@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
@@ -178,7 +179,7 @@ namespace Yuyi.Jinyinmao.Api.Models
                 PaidAmount = info.PaidAmount,
                 PledgeNo = info.PledgeNo,
                 ProductCategory = info.ProductCategory,
-                ProductIdentifier = info.ProductIdentifier,
+                ProductIdentifier = info.ProductId.ToGuidString(),
                 ProductName = info.ProductName,
                 ProductNo = info.ProductNo,
                 Repaid = info.Repaid,

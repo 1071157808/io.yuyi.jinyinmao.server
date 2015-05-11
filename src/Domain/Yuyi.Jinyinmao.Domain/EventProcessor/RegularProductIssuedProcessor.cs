@@ -4,13 +4,14 @@
 // Created          : 2015-04-29  6:16 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  1:20 PM
+// Last Modified On : 2015-05-12  12:28 AM
 // ***********************************************************************
-// <copyright file="RegularProductIssuedProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="RegularProductIssuedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -39,21 +40,21 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         {
             await this.ProcessingEventAsync(@event, async e =>
             {
-                string info = new
+                Dictionary<string, object> info = new Dictionary<string, object>
                 {
-                    e.BankName,
-                    e.Drawee,
-                    e.DraweeInfo,
-                    e.EndorseImageLink,
-                    e.EnterpriseInfo,
-                    e.EnterpriseLicense,
-                    e.EnterpriseName,
-                    e.Period,
-                    e.RiskManagement,
-                    e.RiskManagementInfo,
-                    e.RiskManagementMode,
-                    e.Usage
-                }.ToJson();
+                    { "BankName", e.BankName },
+                    { "Drawee", e.Drawee },
+                    { "DraweeInfo", e.DraweeInfo },
+                    { "EndorseImageLink", e.EndorseImageLink },
+                    { "EnterpriseInfo", e.EnterpriseInfo },
+                    { "EnterpriseLicense", e.EnterpriseLicense },
+                    { "EnterpriseName", e.EnterpriseName },
+                    { "Period", e.Period },
+                    { "RiskManagement", e.RiskManagement },
+                    { "RiskManagementInfo", e.RiskManagementInfo },
+                    { "RiskManagementMode", e.RiskManagementMode },
+                    { "Usage", e.Usage }
+                };
 
                 Models.RegularProduct product = new Models.RegularProduct
                 {
@@ -77,27 +78,29 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
                     ValueDate = e.ValueDate,
                     ValueDateMode = e.ValueDateMode,
                     Yield = e.Yield,
-                    Info = info
+                    Info = info.ToJson()
                 };
 
                 string productIdentifier = @event.ProductId.ToGuidString();
                 using (JYMDBContext db = new JYMDBContext())
                 {
-                    if (await db.RegularProducts.AnyAsync(p => p.ProductIdentifier == productIdentifier || p.ProductNo == e.ProductNo))
+                    if (!await db.RegularProducts.AnyAsync(p => p.ProductIdentifier == productIdentifier || p.ProductNo == e.ProductNo))
                     {
-                        return;
+                        await db.SaveAsync(product);
                     }
-
-                    await db.SaveAsync(product);
                 }
             });
 
             await this.ProcessingEventAsync(@event, async e =>
             {
                 await this.productInfoService.GetProductInfoAsync(@event.ProductId);
-                for (int i = 1; i < 6; i++)
+                for (int i = 1; i < 20; i++)
                 {
-                    await this.productInfoService.GetAgreementAsync(@event.ProductId, i);
+                    string agreement = await this.productInfoService.GetAgreementAsync(@event.ProductId, i);
+                    if (agreement.IsNullOrEmpty())
+                    {
+                        break;
+                    }
                 }
             });
 

@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:31 AM
+// Last Modified On : 2015-05-11  2:42 AM
 // ***********************************************************************
-// <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -86,8 +86,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     最大融资额度，以“分”为单位
         /// </summary>
-        [Required, Range(1, int.MaxValue), JsonProperty("financingSumCount")]
-        public int FinancingSumCount { get; set; }
+        [Required, Range(1, int.MaxValue), JsonProperty("financingSumAmount")]
+        public int FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     发行期数，可以重复，必须大于0
@@ -164,7 +164,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     单价，以“分”为单位，10000即每份100元
         /// </summary>
-        [Range(1, 2000000000), JsonProperty("unitPrice")]
+        [Required, Range(1, int.MaxValue), JsonProperty("unitPrice")]
         public int UnitPrice { get; set; }
 
         /// <summary>

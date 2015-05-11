@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  7:32 PM
+// Last Modified On : 2015-05-11  8:18 PM
 // ***********************************************************************
 // <copyright file="AddBankCardResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -52,7 +52,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
                 {
                     Models.BankCard bankCard = new Models.BankCard
                     {
-                        Args = e.Args,
+                        Args = e.Args.ToJson(),
                         BankCardNo = e.BankCardNo,
                         BankName = e.BankName,
                         CityName = e.CityName,
@@ -64,20 +64,18 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
 
                     using (JYMDBContext db = new JYMDBContext())
                     {
-                        if (await db.BankCards.AnyAsync(c => c.BankCardNo == bankCard.BankCardNo))
+                        if (!await db.BankCards.AnyAsync(c => c.BankCardNo == bankCard.BankCardNo))
                         {
-                            return;
+                            if (e.IsDefault)
+                            {
+                                List<Models.BankCard> defaultBankCards = await db.Query<Models.BankCard>().Where(c => c.IsDefault).ToListAsync();
+                                defaultBankCards.ForEach(c => c.IsDefault = false);
+                            }
+
+                            db.BankCards.Add(bankCard);
+
+                            await db.ExecuteSaveChangesAsync();
                         }
-
-                        if (e.IsDefault)
-                        {
-                            List<Models.BankCard> defaultBankCards = await db.Query<Models.BankCard>().Where(c => c.IsDefault).ToListAsync();
-                            defaultBankCards.ForEach(c => c.IsDefault = false);
-                        }
-
-                        db.BankCards.Add(bankCard);
-
-                        await db.ExecuteSaveChangesAsync();
                     }
                 }
             });

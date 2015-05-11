@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-29  6:21 PM
+// Last Modified On : 2015-05-11  11:46 AM
 // ***********************************************************************
-// <copyright file="JBYProduct.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the financing sum count.
         /// </summary>
         /// <value>The financing sum count.</value>
-        public int FinancingSumCount { get; set; }
+        public int FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the information.
@@ -97,5 +97,11 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The unit price.</value>
         public int UnitPrice { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the value date mode.
+        /// </summary>
+        /// <value>The value date mode.</value>
+        public int ValueDateMode { get; set; }
     }
 }

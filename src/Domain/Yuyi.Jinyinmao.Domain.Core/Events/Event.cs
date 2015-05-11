@@ -1,17 +1,18 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-27  12:10 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  4:06 PM
+// Last Modified On : 2015-05-11  8:14 PM
 // ***********************************************************************
-// <copyright file="Event.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Event.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {
@@ -32,7 +33,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        public string Args { get; set; }
+        public Dictionary<string, object> Args { get; set; }
 
         #region IEvent Members
 

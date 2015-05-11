@@ -4,10 +4,10 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  3:57 PM
+// Last Modified On : 2015-05-11  3:38 AM
 // ***********************************************************************
-// <copyright file="IUserService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IUserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -65,6 +65,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="command">The regular investing.</param>
         /// <returns>Task.</returns>
         Task<OrderInfo> InvestingAsync(RegularInvesting command);
+
+        /// <summary>
+        ///     Investings the asynchronous.
+        /// </summary>
+        /// <param name="command">The regular investing.</param>
+        /// <returns>Task.</returns>
+        Task<TranscationInfo> InvestingAsync(JBYInvesting command);
 
         /// <summary>
         ///     Registers the user asynchronous.

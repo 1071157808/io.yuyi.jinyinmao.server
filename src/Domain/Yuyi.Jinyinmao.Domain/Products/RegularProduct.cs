@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  6:04 PM
+// Last Modified On : 2015-05-11  10:48 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -49,6 +49,11 @@ namespace Yuyi.Jinyinmao.Domain
         public async Task<OrderInfo> BuildOrderAsync(UserInfo userInfo, TranscationInfo transcationInfo)
         {
             if (this.State.SoldOut)
+            {
+                return null;
+            }
+
+            if (this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
             {
                 return null;
             }
@@ -176,7 +181,7 @@ namespace Yuyi.Jinyinmao.Domain
                 PaidAmount = this.PaidAmount,
                 PledgeNo = this.State.PledgeNo,
                 ProductCategory = this.State.ProductCategory,
-                ProductIdentifier = this.State.Id.ToGuidString(),
+                ProductId = this.State.Id,
                 ProductName = this.State.ProductName,
                 ProductNo = this.State.ProductNo,
                 Repaid = this.State.Repaid,
@@ -276,9 +281,21 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Repays the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public Task RepayAsync()
+        public async Task RepayAsync()
         {
+            if (this.State.Repaid)
+            {
+                return;
+            }
+
             DateTime now = DateTime.UtcNow.AddHours(8);
+
+            this.State.SoldOut = true;
+            this.State.SoldOutTime = this.State.SoldOutTime.GetValueOrDefault(now);
+            this.State.Repaid = true;
+            this.State.RepaidTime = now;
+
+            await this.State.WriteStateAsync();
 
             this.PaidOrders.ForEach(async o =>
             {
@@ -288,8 +305,6 @@ namespace Yuyi.Jinyinmao.Domain
                 IUser user = UserFactory.GetGrain(o.UserId);
                 await user.RepayOrderAsync(o.OrderId, now);
             });
-
-            return TaskDone.Done;
         }
 
         #endregion IRegularProduct Members
@@ -387,6 +402,8 @@ namespace Yuyi.Jinyinmao.Domain
             };
 
             await this.StoreEventAsync(@event);
+
+            await RegularProductSoldOutProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
         private void ReloadOrderData()

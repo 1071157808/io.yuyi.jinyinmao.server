@@ -39,8 +39,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -86,30 +85,45 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DepositFromYilian.cs" />
+    <Compile Include="Commands\IssueJBYProduct.cs" />
     <Compile Include="Commands\IssueRegularProduct.cs" />
+    <Compile Include="Commands\JBYInvesting.cs" />
     <Compile Include="Commands\RegularInvesting.cs" />
     <Compile Include="Commands\Withdrawal.cs" />
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
     <Compile Include="Dtos\DepositFromYilianSagaInitDto.cs" />
+    <Compile Include="Dtos\JBYProductInfo.cs" />
     <Compile Include="Dtos\OrderInfo.cs" />
     <Compile Include="Dtos\RegularProductInfo.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
     <Compile Include="Dtos\TranscationInfo.cs" />
     <Compile Include="EventProcessor\IDepositFromYilianResultedProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYProductIssuedProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYProductSoldOutProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYProductUpdatedProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYPurchasedProcessor.cs" />
     <Compile Include="EventProcessor\IOrderPaidProcessor.cs" />
     <Compile Include="EventProcessor\IOrderRepaidProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductIssuedProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductSoldOutProcessor.cs" />
+    <Compile Include="EventProcessor\IWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\IWithdrawalResultedProcessor.cs" />
     <Compile Include="Events\DepositFromYilianResulted.cs" />
+    <Compile Include="Events\JBYProductIssued.cs" />
+    <Compile Include="Events\JBYProductSoldOut.cs" />
+    <Compile Include="Events\JBYProductUpdated.cs" />
+    <Compile Include="Events\JBYPurchased.cs" />
     <Compile Include="Events\OrderPaid.cs" />
     <Compile Include="Events\OrderRepaid.cs" />
     <Compile Include="Events\RegularProductIssued.cs" />
     <Compile Include="Events\RegularProductSoldOut.cs" />
+    <Compile Include="Events\WithdrawalAccepted.cs" />
     <Compile Include="Events\WithdrawalResulted.cs" />
     <Compile Include="Misc\ISequenceGenerator.cs" />
     <Compile Include="Order\Order.cs" />
     <Compile Include="Order\OrdersSortMode.cs" />
+    <Compile Include="Products\IJBYProduct.cs" />
+    <Compile Include="Products\IJBYProductState.cs" />
     <Compile Include="Products\IRegularProduct.cs" />
     <Compile Include="Products\IRegularProductState.cs" />
     <Compile Include="Sagas\IDepositByYilianSaga.cs" />

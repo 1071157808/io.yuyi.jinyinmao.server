@@ -1,13 +1,13 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  11:24 PM
+// Last Modified On : 2015-05-11  8:10 PM
 // ***********************************************************************
-// <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -20,7 +20,6 @@ using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Tracing;
 using Moe.AspNet.Utility;
-using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
@@ -56,15 +55,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Builds the arguments.
         /// </summary>
         /// <returns>System.String.</returns>
-        protected string BuildArgs(Dictionary<string, string> argsToAdd = null)
+        protected Dictionary<string, object> BuildArgs(Dictionary<string, object> argsToAdd = null)
         {
             List<KeyValuePair<string, string>> args = this.Request.GetQueryNameValuePairs().ToList();
             args.Add(new KeyValuePair<string, string>("Ip", HttpUtils.GetUserHostAddress(this.Request)));
             args.Add(new KeyValuePair<string, string>("UserAgent", HttpUtils.GetUserAgent(this.Request)));
-            if (argsToAdd != null)
-            {
-                args.AddRange(argsToAdd);
-            }
+
             Dictionary<string, object> argsDictionary = new Dictionary<string, object>();
 
             foreach (KeyValuePair<string, string> arg in args)
@@ -79,7 +75,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 }
             }
 
-            return JsonConvert.SerializeObject(argsDictionary);
+            if (argsToAdd != null)
+            {
+                foreach (KeyValuePair<string, object> arg in argsToAdd)
+                {
+                    if (argsDictionary.ContainsKey(arg.Key))
+                    {
+                        argsDictionary[arg.Key] = arg.Value;
+                    }
+                    else
+                    {
+                        argsDictionary.Add(arg.Key, arg.Value);
+                    }
+                }
+            }
+
+            return argsDictionary;
         }
 
         /// <summary>

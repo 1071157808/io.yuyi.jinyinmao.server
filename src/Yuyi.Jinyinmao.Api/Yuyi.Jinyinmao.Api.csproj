@@ -259,6 +259,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BackOfficeController.cs" />
     <Compile Include="Controllers\ApiControllerBase.cs" />
+    <Compile Include="Controllers\CurrentProductController.cs" />
     <Compile Include="Controllers\DevController.cs" />
     <Compile Include="Controllers\InvestingController.cs" />
     <Compile Include="Controllers\MiscController.cs" />
@@ -274,14 +275,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BackOffice\IssueJBYProductRequest.cs" />
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
+    <Compile Include="Models\BackOffice\JBYProductRequest.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />
+    <Compile Include="Models\Investing\JBYInvestingRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeResponse.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeResponse.cs" />
     <Compile Include="Models\Order\OrderInfoResponse.cs" />
     <Compile Include="Models\PaginatedResponse.cs" />
+    <Compile Include="Models\Product\JBYInfoResponse.cs" />
     <Compile Include="Models\Product\ProductInfoResponse.cs" />
     <Compile Include="Models\User\AddBankCardRequest.cs" />
     <Compile Include="Models\User\AuthenticationRequest.cs" />

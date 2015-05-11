@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:15 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  9:32 AM
+// Last Modified On : 2015-05-11  1:25 AM
 // ***********************************************************************
 // <copyright file="RegularProductInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,12 +19,12 @@ using Yuyi.Jinyinmao.Domain.Models;
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
-    /// RegularProductEx.
+    ///     RegularProductEx.
     /// </summary>
     public static class RegularProductEx
     {
         /// <summary>
-        /// To the information.
+        ///     To the information.
         /// </summary>
         /// <param name="product">The product.</param>
         /// <returns>RegularProductInfo.</returns>
@@ -40,7 +40,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 PaidAmount = product.FinancingSumAmount,
                 PledgeNo = product.PledgeNo,
                 ProductCategory = product.ProductCategory,
-                ProductIdentifier = product.ProductIdentifier,
+                ProductId = Guid.ParseExact(product.ProductIdentifier, "N"),
                 ProductName = product.ProductName,
                 ProductNo = product.ProductNo,
                 Repaid = product.Repaid,
@@ -59,138 +59,138 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     }
 
     /// <summary>
-    /// RegularProductInfo.
+    ///     RegularProductInfo.
     /// </summary>
     public class RegularProductInfo
     {
         /// <summary>
-        /// Gets or sets the end sell time.
+        ///     Gets or sets the end sell time.
         /// </summary>
         /// <value>The end sell time.</value>
         public DateTime EndSellTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the financing sum amount.
+        ///     Gets or sets the financing sum amount.
         /// </summary>
         /// <value>The financing sum amount.</value>
         public int FinancingSumAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the information.
+        ///     Gets or sets the information.
         /// </summary>
         /// <value>The information.</value>
         public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
-        /// Gets or sets the issue no.
+        ///     Gets or sets the issue no.
         /// </summary>
         /// <value>The issue no.</value>
         public int IssueNo { get; set; }
 
         /// <summary>
-        /// Gets or sets the issue time.
+        ///     Gets or sets the issue time.
         /// </summary>
         /// <value>The issue time.</value>
         public DateTime IssueTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the paid amount.
+        ///     Gets or sets the paid amount.
         /// </summary>
         /// <value>The paid amount.</value>
         public int PaidAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the pledge no.
+        ///     Gets or sets the pledge no.
         /// </summary>
         /// <value>The pledge no.</value>
         public string PledgeNo { get; set; }
 
         /// <summary>
-        /// Gets or sets the product category.
+        ///     Gets or sets the product category.
         /// </summary>
         /// <value>The product category.</value>
         public long ProductCategory { get; set; }
 
         /// <summary>
-        /// Gets or sets the product identifier.
+        ///     Gets or sets the product identifier.
         /// </summary>
         /// <value>The product identifier.</value>
-        public string ProductIdentifier { get; set; }
+        public Guid ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the product.
+        ///     Gets or sets the name of the product.
         /// </summary>
         /// <value>The name of the product.</value>
         public string ProductName { get; set; }
 
         /// <summary>
-        /// Gets or sets the product no.
+        ///     Gets or sets the product no.
         /// </summary>
         /// <value>The product no.</value>
         public string ProductNo { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="RegularProductInfo" /> is repaid.
+        ///     Gets or sets a value indicating whether this <see cref="RegularProductInfo" /> is repaid.
         /// </summary>
         /// <value><c>true</c> if repaid; otherwise, <c>false</c>.</value>
         public bool Repaid { get; set; }
 
         /// <summary>
-        /// Gets or sets the repaid time.
+        ///     Gets or sets the repaid time.
         /// </summary>
         /// <value>The repaid time.</value>
         public DateTime? RepaidTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the repayment deadline.
+        ///     Gets or sets the repayment deadline.
         /// </summary>
         /// <value>The repayment deadline.</value>
         public DateTime RepaymentDeadline { get; set; }
 
         /// <summary>
-        /// Gets or sets the settle date.
+        ///     Gets or sets the settle date.
         /// </summary>
         /// <value>The settle date.</value>
         public DateTime SettleDate { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [sold out].
+        ///     Gets or sets a value indicating whether [sold out].
         /// </summary>
         /// <value><c>true</c> if [sold out]; otherwise, <c>false</c>.</value>
         public bool SoldOut { get; set; }
 
         /// <summary>
-        /// Gets or sets the sold out time.
+        ///     Gets or sets the sold out time.
         /// </summary>
         /// <value>The sold out time.</value>
         public DateTime? SoldOutTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the start sell time.
+        ///     Gets or sets the start sell time.
         /// </summary>
         /// <value>The start sell time.</value>
         public DateTime StartSellTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit price.
+        ///     Gets or sets the unit price.
         /// </summary>
         /// <value>The unit price.</value>
         public int UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the value date.
+        ///     Gets or sets the value date.
         /// </summary>
         /// <value>The value date.</value>
         public DateTime? ValueDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the value date mode.
+        ///     Gets or sets the value date mode.
         /// </summary>
         /// <value>The value date mode.</value>
         public int? ValueDateMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the yield.
+        ///     Gets or sets the yield.
         /// </summary>
         /// <value>The yield.</value>
         public int Yield { get; set; }

@@ -4,10 +4,10 @@
 // Created          : 2015-04-29  7:11 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  1:21 PM
+// Last Modified On : 2015-05-11  12:19 AM
 // ***********************************************************************
-// <copyright file="RegularProductController.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="RegularProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -81,10 +81,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取产品信息
         /// </summary>
-        /// <remarks>需要使用使用产品唯一标识调用接口，接口数据会有一分钟的缓存</remarks>
+        /// <remarks>需要使用产品唯一标识调用接口，接口数据会有一分钟的缓存，包括销售份额数据也会缓存</remarks>
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
-        /// <response code="401">RPRI:无此产品信息</response>
+        /// <response code="400">RPRI:无此产品信息</response>
         /// <response code="500"></response>
         [HttpGet, Route("{productIdentifier:length(32)}"), ResponseType(typeof(RegularProductInfoResponse))]
         public async Task<IHttpActionResult> GetInfo(string productIdentifier)
@@ -108,7 +108,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取产品的已售金额
         /// </summary>
-        /// <remarks>返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
+        /// <remarks>该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
         /// <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
         /// <response code="200"></response>
         /// <response code="404">无该产品</response>

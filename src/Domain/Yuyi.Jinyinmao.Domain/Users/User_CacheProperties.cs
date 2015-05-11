@@ -56,6 +56,24 @@ namespace Yuyi.Jinyinmao.Domain
         private int InvestingPrincipal { get; set; }
 
         /// <summary>
+        /// Gets or sets the jby account.
+        /// </summary>
+        /// <value>The jby account.</value>
+        private Dictionary<Guid, Transcation> JBYAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the jby accrual amount.
+        /// </summary>
+        /// <value>The jby accrual amount.</value>
+        private int JBYAccrualAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the jby withdrawalable amount.
+        /// </summary>
+        /// <value>The jby withdrawalable amount.</value>
+        private int JBYWithdrawalableAmount { get; set; }
+
+        /// <summary>
         ///     Gets or sets the month withdrawal count.
         /// </summary>
         /// <value>The month withdrawal count.</value>
@@ -84,6 +102,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The settlement account balance.</value>
         private int SettleAccountBalance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the today jby withdrawal amount.
+        /// </summary>
+        /// <value>The today jby withdrawal amount.</value>
+        private int TodayJBYWithdrawalAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the today withdrawal count.

@@ -83,6 +83,7 @@
     <Compile Include="Helper\ChannelCodeHelper.cs" />
     <Compile Include="Helper\CloudStorageHelper.cs" />
     <Compile Include="Helper\CryptographyHelper.cs" />
+    <Compile Include="Helper\DailyConfigHelper.cs" />
     <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="Helper\ProductCategoryCodeHelper.cs" />
     <Compile Include="Helper\TradeCodeHelper.cs" />

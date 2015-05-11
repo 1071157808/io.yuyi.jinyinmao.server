@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  7:12 PM
+// Last Modified On : 2015-05-11  10:55 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -20,7 +21,6 @@ using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
-using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -146,6 +146,22 @@ namespace Yuyi.Jinyinmao.Domain
             await DepositFromYilianResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
+        private async Task RaiseJBYPurchasedEvent(JBYInvesting command, TranscationInfo jbyTranscation, TranscationInfo settleTranscation)
+        {
+            JBYPurchased @event = new JBYPurchased
+            {
+                Args = command.Args,
+                JBYTranscation = jbyTranscation,
+                SettleTranscation = settleTranscation,
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name
+            };
+
+            await this.StoreEventAsync(@event);
+
+            await JBYPurchasedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        }
+
         /// <summary>
         ///     Raises the login password reset event.
         /// </summary>
@@ -175,7 +191,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             OrderPaid @event = new OrderPaid
             {
-                Args = JsonHelper.NewDictionary,
+                Args = new Dictionary<string, object>(),
                 Order = order,
                 SourceId = this.State.Id.ToGuidString(),
                 SourceType = this.GetType().Name,
@@ -197,7 +213,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             OrderRepaid @event = new OrderRepaid
             {
-                Args = JsonHelper.NewDictionary,
+                Args = new Dictionary<string, object>(),
                 InterestTranscationInfo = interestTranscationInfo,
                 OrderInfo = orderInfo,
                 PriIntSumAmount = principalTranscationInfo.Amount + interestTranscationInfo.Amount,
@@ -279,6 +295,22 @@ namespace Yuyi.Jinyinmao.Domain
             await UserRegisteredProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
         }
 
+        private async Task RaiseWithdrawalAcceptedEvent(Withdrawal command, Transcation transcation, Transcation chargeTranscation)
+        {
+            WithdrawalAccepted @event = new WithdrawalAccepted
+            {
+                Args = command.Args,
+                ChargeTranscation = chargeTranscation.ToInfo(),
+                SourceId = this.State.Id.ToGuidString(),
+                SourceType = this.GetType().Name,
+                WithdrawalTranscation = transcation.ToInfo()
+            };
+
+            await this.StoreEventAsync(@event);
+
+            await WithdrawalAcceptedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        }
+
         /// <summary>
         ///     Raises the withdrawal resulted event.
         /// </summary>
@@ -291,7 +323,7 @@ namespace Yuyi.Jinyinmao.Domain
             WithdrawalResulted @event = new WithdrawalResulted
             {
                 Amount = transcation.Amount,
-                Args = JsonHelper.NewDictionary,
+                Args = new Dictionary<string, object>(),
                 BankCardNo = transcation.BankCardNo,
                 BankName = info.BankName,
                 Cellphone = this.State.Cellphone,

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-11  10:35 AM
@@ -11,6 +11,7 @@
 // </copyright>
 // ***********************************************************************
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Yuyi.Jinyinmao.Service.Interface
@@ -27,7 +28,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SendVeriCodeResult&gt;.</returns>
-        Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, string args = "");
+        Task<SendVeriCodeResult> SendAsync(string cellphone, VeriCodeType type, Dictionary<string, object> args);
 
         /// <summary>
         ///     Uses the asynchronous.

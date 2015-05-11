@@ -4,10 +4,10 @@
 // Created          : 2015-05-03  6:40 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  1:17 PM
+// Last Modified On : 2015-05-11  8:18 PM
 // ***********************************************************************
-// <copyright file="DepositByYilianSaga.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="DepositByYilianSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -49,7 +49,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 {
                     AgreementsInfo = initData.TranscationInfo.AgreementsInfo.ToJson(),
                     Amount = initData.TranscationInfo.Amount,
-                    Args = initData.Command.Args,
+                    Args = initData.Command.Args.ToJson(),
                     BankCardInfo = initData.BackCardInfo.ToJson(),
                     Cellphone = initData.UserInfo.Cellphone,
                     ChannelCode = initData.TranscationInfo.ChannelCode,
@@ -60,8 +60,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                     TransDesc = initData.TranscationInfo.TransDesc,
                     TranscationIdentifier = initData.TranscationInfo.TransactionId.ToGuidString(),
                     TranscationTime = initData.TranscationInfo.TransactionTime,
-                    UserIdentifier = initData.UserInfo.UserId.ToGuidString(),
-                    UserInfo = initData.UserInfo.ToJson()
+                    UserIdentifier = initData.UserInfo.UserId.ToGuidString()
                 };
 
                 using (JYMDBContext db = new JYMDBContext())

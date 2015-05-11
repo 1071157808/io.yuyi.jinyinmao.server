@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  6:04 PM
+// Last Modified On : 2015-05-11  8:51 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,7 +17,9 @@ using System.Web.Http;
 using Moe.AspNet.Filters;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Api.Models.BackOffice;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
@@ -46,10 +48,55 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     发行金包银理财产品
+        /// </summary>
+        /// <param name="request">
+        ///     JBY产品上架请求
+        /// </param>
+        /// <response code="200">上架成功</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">上架失败：产品编号已存在</response>
+        /// <response code="401">未授权</response>
+        /// <response code="500"></response>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("RegularProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> JBYProductIssue(IssueJBYProductRequest request)
+        {
+            bool result = await this.productInfoService.CheckProductNoExistsAsync(request.ProductNo);
+            if (result)
+            {
+                return this.BadRequest("上架失败：产品编号已存在");
+            }
+
+            DailyConfig config = DailyConfigHelper.GetDailyConfig(DateTime.UtcNow.AddHours(8));
+
+            await this.productService.HitShelvesAsync(new IssueJBYProduct
+            {
+                Agreement1 = request.Agreement1,
+                Agreement2 = request.Agreement2,
+                Args = this.BuildArgs(),
+                EndSellTime = request.EndSellTime,
+                FinancingSumAmount = request.FinancingSumAmount,
+                IssueNo = request.IssueNo,
+                IssueTime = DateTime.UtcNow.AddHours(8),
+                ProductCategory = request.ProductCategory,
+                ProductId = Guid.NewGuid(),
+                ProductName = request.ProductName,
+                ProductNo = request.ProductNo,
+                StartSellTime = request.StartSellTime,
+                UnitPrice = request.UnitPrice,
+                ValueDateMode = request.ValueDateMode,
+                WithdrawalLimit = config.JBYWithdrawalLimit,
+                Yield = config.JBYYield
+            });
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     发行定期理财产品
         /// </summary>
         /// <param name="request">
-        ///     The request.
         ///     产品上架请求
         /// </param>
         /// <response code="200">上架成功</response>
@@ -67,7 +114,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品编号已存在");
             }
 
-            await this.productService.HitShelves(new IssueRegularProduct
+            await this.productService.HitShelvesAsync(new IssueRegularProduct
             {
                 Agreement1 = request.Agreement1,
                 Agreement2 = request.Agreement2,
@@ -80,7 +127,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 EnterpriseInfo = request.EnterpriseInfo,
                 EnterpriseLicense = request.EnterpriseLicense,
                 EnterpriseName = request.EnterpriseName,
-                FinancingSumCount = request.FinancingSumCount,
+                FinancingSumCount = request.FinancingSumAmount,
                 IssueNo = request.IssueNo,
                 Period = request.Period,
                 PledgeNo = request.PledgeNo,

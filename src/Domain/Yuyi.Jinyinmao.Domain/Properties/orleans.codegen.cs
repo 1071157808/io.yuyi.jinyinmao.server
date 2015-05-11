@@ -122,7 +122,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @Agreement2 { get; set; }
 
-            public String @Args { get; set; }
+            public Dictionary<String,Object> @Args { get; set; }
 
             public String @BankName { get; set; }
 
@@ -195,7 +195,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("Agreement1", out value)) @Agreement1 = (String) value;
                 if (values.TryGetValue("Agreement2", out value)) @Agreement2 = (String) value;
-                if (values.TryGetValue("Args", out value)) @Args = (String) value;
+                if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("BankName", out value)) @BankName = (String) value;
                 if (values.TryGetValue("Drawee", out value)) @Drawee = (String) value;
                 if (values.TryGetValue("DraweeInfo", out value)) @DraweeInfo = (String) value;
@@ -288,7 +288,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.Id = default(Guid);
             this.Agreement1 = default(String);
             this.Agreement2 = default(String);
-            this.Args = default(String);
+            this.Args = new Dictionary<String,Object>();
             this.BankName = default(String);
             this.Drawee = default(String);
             this.DraweeInfo = default(String);
@@ -356,7 +356,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public Guid @Id { get; set; }
 
-            public String @Args { get; set; }
+            public Dictionary<String,Object> @Args { get; set; }
 
             public List<BankCard> @BankCards { get; set; }
 
@@ -403,7 +403,7 @@ namespace Yuyi.Jinyinmao.Domain
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("Args", out value)) @Args = (String) value;
+                if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("BankCards", out value)) @BankCards = (List<BankCard>) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
                 if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
@@ -468,7 +468,7 @@ namespace Yuyi.Jinyinmao.Domain
         private void InitStateFields()
         {
             this.Id = default(Guid);
-            this.Args = default(String);
+            this.Args = new Dictionary<String,Object>();
             this.BankCards = new List<BankCard>();
             this.Cellphone = default(String);
             this.ClientType = default(Int64);
@@ -522,6 +522,172 @@ namespace Yuyi.Jinyinmao.Domain.Misc
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
     
+}
+namespace Yuyi.Jinyinmao.Domain.Products
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using Yuyi.Jinyinmao.Domain.Dtos;
+    using Orleans.CodeGeneration;
+    using Orleans;
+    using Yuyi.Jinyinmao.Domain;
+    using System.Runtime.InteropServices;
+    
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [SerializableAttribute()]
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Products.Yuyi.Jinyinmao.Domain.Products.JBYProduct")]
+    public class JBYProductState : global::Orleans.CodeGeneration.GrainState, IJBYProductState
+    {
+        
+
+            public Guid @Id { get; set; }
+
+            public String @Agreement1 { get; set; }
+
+            public String @Agreement2 { get; set; }
+
+            public Dictionary<String,Object> @Args { get; set; }
+
+            public DateTime @EndSellTime { get; set; }
+
+            public Int32 @FinancingSumAmount { get; set; }
+
+            public Dictionary<String,Object> @Info { get; set; }
+
+            public Int32 @IssueNo { get; set; }
+
+            public DateTime @IssueTime { get; set; }
+
+            public Int64 @ProductCategory { get; set; }
+
+            public String @ProductName { get; set; }
+
+            public String @ProductNo { get; set; }
+
+            public Boolean @SoldOut { get; set; }
+
+            public Nullable<DateTime> @SoldOutTime { get; set; }
+
+            public DateTime @StartSellTime { get; set; }
+
+            public List<TranscationInfo> @Transcations { get; set; }
+
+            public Int32 @UnitPrice { get; set; }
+
+            public Int32 @ValueDateMode { get; set; }
+
+            public Int32 @Yield { get; set; }
+
+            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
+            {   
+                object value;
+                if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("Agreement1", out value)) @Agreement1 = (String) value;
+                if (values.TryGetValue("Agreement2", out value)) @Agreement2 = (String) value;
+                if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
+                if (values.TryGetValue("EndSellTime", out value)) @EndSellTime = (DateTime) value;
+                if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("Info", out value)) @Info = (Dictionary<String,Object>) value;
+                if (values.TryGetValue("IssueNo", out value)) @IssueNo = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("IssueTime", out value)) @IssueTime = (DateTime) value;
+                if (values.TryGetValue("ProductCategory", out value)) @ProductCategory = value is Int32 ? (Int32)value : (Int64)value;
+                if (values.TryGetValue("ProductName", out value)) @ProductName = (String) value;
+                if (values.TryGetValue("ProductNo", out value)) @ProductNo = (String) value;
+                if (values.TryGetValue("SoldOut", out value)) @SoldOut = (Boolean) value;
+                if (values.TryGetValue("SoldOutTime", out value)) @SoldOutTime = (Nullable<DateTime>) value;
+                if (values.TryGetValue("StartSellTime", out value)) @StartSellTime = (DateTime) value;
+                if (values.TryGetValue("Transcations", out value)) @Transcations = (List<TranscationInfo>) value;
+                if (values.TryGetValue("UnitPrice", out value)) @UnitPrice = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("ValueDateMode", out value)) @ValueDateMode = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("Yield", out value)) @Yield = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+            }
+
+            public override System.String ToString()
+            {
+                return System.String.Format("JBYProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} EndSellTime={4} FinancingSumAmount={5} Info={6} IssueNo={7} IssueTime={8} ProductCategory={9} ProductName={10} ProductNo={11} SoldOut={12} SoldOutTime={13} StartSellTime={14} Transcations={15} UnitPrice={16} ValueDateMode={17} Yield={18} )", @Id, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @Info, @IssueNo, @IssueTime, @ProductCategory, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transcations, @UnitPrice, @ValueDateMode, @Yield);
+            }
+        
+        public JBYProductState() : 
+                base("Yuyi.Jinyinmao.Domain.Products.JBYProduct")
+        {
+            this.InitStateFields();
+        }
+        
+        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
+        {
+            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["Id"] = this.Id;
+            result["Agreement1"] = this.Agreement1;
+            result["Agreement2"] = this.Agreement2;
+            result["Args"] = this.Args;
+            result["EndSellTime"] = this.EndSellTime;
+            result["FinancingSumAmount"] = this.FinancingSumAmount;
+            result["Info"] = this.Info;
+            result["IssueNo"] = this.IssueNo;
+            result["IssueTime"] = this.IssueTime;
+            result["ProductCategory"] = this.ProductCategory;
+            result["ProductName"] = this.ProductName;
+            result["ProductNo"] = this.ProductNo;
+            result["SoldOut"] = this.SoldOut;
+            result["SoldOutTime"] = this.SoldOutTime;
+            result["StartSellTime"] = this.StartSellTime;
+            result["Transcations"] = this.Transcations;
+            result["UnitPrice"] = this.UnitPrice;
+            result["ValueDateMode"] = this.ValueDateMode;
+            result["Yield"] = this.Yield;
+            return result;
+        }
+        
+        private void InitStateFields()
+        {
+            this.Id = default(Guid);
+            this.Agreement1 = default(String);
+            this.Agreement2 = default(String);
+            this.Args = new Dictionary<String,Object>();
+            this.EndSellTime = default(DateTime);
+            this.FinancingSumAmount = default(Int32);
+            this.Info = new Dictionary<String,Object>();
+            this.IssueNo = default(Int32);
+            this.IssueTime = default(DateTime);
+            this.ProductCategory = default(Int64);
+            this.ProductName = default(String);
+            this.ProductNo = default(String);
+            this.SoldOut = default(Boolean);
+            this.SoldOutTime = default(Nullable<DateTime>);
+            this.StartSellTime = default(DateTime);
+            this.Transcations = new List<TranscationInfo>();
+            this.UnitPrice = default(Int32);
+            this.ValueDateMode = default(Int32);
+            this.Yield = default(Int32);
+        }
+        
+        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+        public static object _Copier(object original)
+        {
+            JBYProductState input = ((JBYProductState)(original));
+            return input.DeepCopy();
+        }
+        
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            JBYProductState input = ((JBYProductState)(original));
+            input.SerializeTo(stream);
+        }
+        
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            JBYProductState result = new JBYProductState();
+            result.DeserializeFrom(stream);
+            return result;
+        }
+    }
 }
 namespace Yuyi.Jinyinmao.Domain.Sagas
 {

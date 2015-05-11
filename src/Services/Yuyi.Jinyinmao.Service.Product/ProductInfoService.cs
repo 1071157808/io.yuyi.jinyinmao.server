@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  11:03 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  2:26 AM
+// Last Modified On : 2015-05-11  3:07 AM
 // ***********************************************************************
-// <copyright file="ProductInfoService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ProductInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -18,6 +18,7 @@ using Moe.Lib;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Helper;
+using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Service
@@ -39,6 +40,16 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         #region IProductInfoService Members
+
+        /// <summary>
+        ///     Checks the product no exists.
+        /// </summary>
+        /// <param name="productNo">The product no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public Task<bool> CheckJBYProductNoExistsAsync(string productNo)
+        {
+            return this.innerService.CheckJBYProductNoExistsAsync(productNo);
+        }
 
         /// <summary>
         ///     Checks the product no exists.
@@ -75,6 +86,49 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the jby agreement asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <param name="agreementIndex">Index of the agreement.</param>
+        /// <returns>Task&lt;System.String&gt;.</returns>
+        public async Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex)
+        {
+            string cacheName = "jby-agreement";
+            string cacheId = "{0}-{1}".FormatWith(productId.ToGuidString(), agreementIndex);
+            string agreement = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
+
+            if (agreement.IsNullOrEmpty())
+            {
+                agreement = await this.innerService.GetJBYAgreementAsync(productId, agreementIndex);
+                if (agreement.IsNotNullOrEmpty())
+                {
+                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
+                }
+            }
+
+            return agreement;
+        }
+
+        /// <summary>
+        ///     Gets the jby product information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
+        public async Task<JBYProductInfo> GetJBYProductInfoAsync()
+        {
+            string cacheName = "jby";
+            string cacheId = ProductCategoryCodeHelper.PC100000030.ToString();
+            JBYProductInfo product = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<JBYProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+
+            if (product == null)
+            {
+                product = await this.innerService.GetJBYProductInfoAsync();
+                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, product);
+            }
+
+            return product;
+        }
+
+        /// <summary>
         ///     Gets the product information asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
@@ -105,7 +159,7 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "product-page";
             string cacheId = "{0}-{1}-{2}".FormatWith(pageIndex, pageSize, productCategories.Join("-"));
-            PaginatedList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<PaginatedList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(3));
+            PaginatedList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<PaginatedList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (infos == null)
             {
@@ -136,7 +190,7 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "product-top";
             string cacheId = "{0}-{1}".FormatWith(number, productCategories.Join("-"));
-            IList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(3));
+            IList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (infos == null)
             {

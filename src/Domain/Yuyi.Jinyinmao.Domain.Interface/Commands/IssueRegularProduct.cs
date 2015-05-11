@@ -83,11 +83,6 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         public int IssueNo { get; set; }
 
         /// <summary>
-        ///     发行时间
-        /// </summary>
-        public DateTime IssueTime { get; set; }
-
-        /// <summary>
         ///     理财周期，主要用于显示
         /// </summary>
         public int Period { get; set; }

@@ -4,15 +4,17 @@
 // Created          : 2015-04-30  2:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  1:11 PM
+// Last Modified On : 2015-05-11  10:23 PM
 // ***********************************************************************
-// <copyright file="OrderInfo.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="OrderInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Collections.Generic;
+using Moe.Lib;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -51,6 +53,54 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 TransDesc = order.TransDesc,
                 UserId = order.UserId,
                 UserInfo = order.UserInfo,
+                ValueDate = order.ValueDate,
+                Yield = order.Yield
+            };
+        }
+    }
+
+    /// <summary>
+    ///     OrderInfoEx.
+    /// </summary>
+    public static class OrderInfoEx
+    {
+        /// <summary>
+        ///     To the information.
+        /// </summary>
+        /// <param name="order">The order.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>OrderInfo.</returns>
+        public static Models.Order ToDBModel(this OrderInfo order, Dictionary<string, object> args = null)
+        {
+            string argsString = JsonHelper.NewDictionary;
+            if (args != null)
+            {
+                argsString = args.ToJson();
+            }
+
+            return new Models.Order
+            {
+                AccountTranscationIdentifier = order.AccountTranscationId.ToGuidString(),
+                Args = argsString,
+                Cellphone = order.Cellphone,
+                ExtraInterest = order.ExtraInterest,
+                ExtraYield = order.ExtraYield,
+                Info = order.Info.ToJson(),
+                Interest = order.Interest,
+                IsRepaid = order.IsRepaid,
+                OrderIdentifier = order.OrderId.ToGuidString(),
+                OrderNo = order.OrderNo,
+                OrderTime = order.OrderTime,
+                Principal = order.Principal,
+                ProductIdentifier = order.ProductId.ToGuidString(),
+                ProductSnapshot = order.ProductSnapshot.ToJson(),
+                RepaidTime = order.RepaidTime,
+                ResultCode = order.ResultCode,
+                ResultTime = order.ResultTime,
+                SettleDate = order.SettleDate,
+                TransDesc = order.TransDesc,
+                UserIdentifier = order.UserId.ToGuidString(),
+                UserInfo = order.UserInfo.ToJson(),
                 ValueDate = order.ValueDate,
                 Yield = order.Yield
             };
