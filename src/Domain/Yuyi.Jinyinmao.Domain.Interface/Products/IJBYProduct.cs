@@ -4,7 +4,7 @@
 // Created          : 2015-05-10  11:58 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:10 AM
+// Last Modified On : 2015-05-17  8:20 PM
 // ***********************************************************************
 // <copyright file="IJBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Products
 {
@@ -29,15 +28,21 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Builds the jby transcation asynchronous.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <returns>Task&lt;Transcation&gt;.</returns>
-        Task<Tuple<bool, Guid>> BuildJBYTranscationAsync(TranscationInfo info);
+        /// <returns>Task&lt;System.Nullable&lt;Guid&gt;&gt;.</returns>
+        Task<Guid?> BuildJBYTranscationAsync(JBYAccountTranscationInfo info);
 
         /// <summary>
-        /// Gets the agreement asynchronous.
+        ///     Gets the agreement asynchronous.
         /// </summary>
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
         Task<string> GetAgreementAsync(int agreementIndex);
+
+        /// <summary>
+        ///     Gets the jby product paid amount asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int64&gt;.</returns>
+        Task<long> GetJBYProductPaidAmountAsync();
 
         /// <summary>
         ///     Gets the product information asynchronous.
@@ -53,15 +58,21 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task HitShelvesAsync(IssueJBYProduct command);
 
         /// <summary>
+        /// Refreshes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task RefreshAsync();
+
+        /// <summary>
+        /// Reloads the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task ReloadAsync();
+
+        /// <summary>
         ///     Sets to sold out asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task SetToSoldOutAsync();
-
-        /// <summary>
-        ///     Updates the sale information asynchronous.
-        /// </summary>
-        /// <returns>Task.</returns>
-        Task UpdateSaleInfoAsync(JBYProduct product);
     }
 }

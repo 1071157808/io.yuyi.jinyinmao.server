@@ -110,11 +110,18 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
-        ///     Withdrawals the asynchronous.
+        /// Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The withdrawal.</param>
-        /// <returns>Task.</returns>
-        Task WithdrawalAsync(Withdrawal command);
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        Task<TranscationInfo> WithdrawalAsync(Withdrawal command);
+
+        /// <summary>
+        /// Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        Task<TranscationInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
         ///     Withdrawals the resulted asynchronous.

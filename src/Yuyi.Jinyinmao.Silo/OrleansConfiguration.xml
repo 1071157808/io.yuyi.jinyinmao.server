@@ -3,7 +3,7 @@
   <Globals>
     <StorageProviders>
       <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase"
-                DataConnectionString="Server=tcp:et9odecrjx.database.chinacloudapi.cn,1433;Database=dev-db-grains-{0};User ID=dev-db-user-frontapp@et9odecrjx;Password=W7N5HSPewmqLjs7aAC8C;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+                DataConnectionString="Server=tcp:oj5tefr55h.database.chinacloudapi.cn,1433;Database=jym-dev-db-front;User ID=db-user-apiapp@oj5tefr55h;Password={此处为你的密码};Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
     <Liveness LivenessType="AzureTable" />
   </Globals>

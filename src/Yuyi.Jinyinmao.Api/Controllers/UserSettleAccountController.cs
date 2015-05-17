@@ -4,7 +4,7 @@
 // Created          : 2015-05-03  3:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  11:29 AM
+// Last Modified On : 2015-05-14  3:42 PM
 // ***********************************************************************
 // <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -145,7 +145,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAT1:交易流水不存在");
             }
 
-            return this.Ok(info.ToResponse());
+            return this.Ok(info.ToTranscationInfoResponse());
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAT1:交易流水不存在");
             }
 
-            return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
+            return this.Ok(infos.ToPaginated(i => i.ToTranscationInfoResponse()).ToResponse());
         }
 
         /// <summary>
@@ -184,27 +184,28 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </param>
         /// <response code="200">成功</response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="400">USAD1:暂时无法取现</response>
-        /// <response code="400">USAD2:取现次数已经达到今日上限</response>
-        /// <response code="400">USAD3:该银行卡未经过认证</response>
-        /// <response code="400">USAD4:取现额度超过限制</response>
-        /// <response code="400">USAD5:请重置支付密码后再试</response>
-        /// <response code="400">USAD6:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
+        /// <response code="400">USAW1:暂时无法取现</response>
+        /// <response code="400">USAW2:取现次数已经达到今日上限</response>
+        /// <response code="400">USAW3:该银行卡未经过认证</response>
+        /// <response code="400">USAW4:取现额度超过限制</response>
+        /// <response code="400">USAW5:请重置支付密码后再试</response>
+        /// <response code="400">USAW6:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
+        /// <response code="400">USAW7:取现失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(TranscationInfoResponse))]
         public async Task<IHttpActionResult> Withdrawal(WithdrawalRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
 
             if (result.Lock)
             {
-                return this.BadRequest("USAD5:请重置支付密码后再试");
+                return this.BadRequest("USAW5:请重置支付密码后再试");
             }
 
             if (!result.Success)
             {
-                return this.BadRequest("USAD6:支付密码错误，支付密码输入错误5次会锁定支付功能");
+                return this.BadRequest("USAW6:支付密码错误，支付密码输入错误5次会锁定支付功能");
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
@@ -212,27 +213,27 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (userInfo == null)
             {
                 this.Trace.Warn(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("USAD1:暂时无法取现");
+                return this.BadRequest("USAW1:暂时无法取现");
             }
 
             if (userInfo.TodayWithdrawalCount >= DailyWithdrawalLimitCount)
             {
-                return this.BadRequest("USAD2:取现次数已经达到今日上限");
+                return this.BadRequest("USAW2:取现次数已经达到今日上限");
             }
 
             BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
 
             if (bankCardInfo == null || !bankCardInfo.Verified)
             {
-                return this.BadRequest("USAD3:该银行卡未经过认证");
+                return this.BadRequest("USAW3:该银行卡未经过认证");
             }
 
             if (bankCardInfo.WithdrawAmount < request.Amount)
             {
-                return this.BadRequest("USAD4:取现额度超过限制");
+                return this.BadRequest("USAW4:取现额度超过限制");
             }
 
-            await this.userService.WithdrawalAsync(new Withdrawal
+            TranscationInfo info = await this.userService.WithdrawalAsync(new Withdrawal
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
@@ -240,7 +241,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 UserId = this.CurrentUser.Id
             });
 
-            return this.Ok();
+            if (info == null)
+            {
+                return this.BadRequest("USAW7:取现失败");
+            }
+
+            return this.Ok(info.ToTranscationInfoResponse());
         }
     }
 }

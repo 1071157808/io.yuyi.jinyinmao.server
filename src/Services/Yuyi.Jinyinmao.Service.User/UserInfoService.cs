@@ -4,10 +4,10 @@
 // Created          : 2015-04-26  12:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  3:28 AM
+// Last Modified On : 2015-05-12  2:25 AM
 // ***********************************************************************
-// <copyright file="UserInfoService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -94,7 +94,40 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the order infos asynchronous.
+        ///     Gets the jby account information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;JBYAccountInfo&gt;.</returns>
+        public Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId)
+        {
+            return this.innerService.GetJBYAccountInfoAsync(userId);
+        }
+
+        /// <summary>
+        ///     Gets the jby account transcation information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        public Task<TranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        {
+            return this.innerService.GetJBYAccountTranscationInfoAsync(userId, transcationId);
+        }
+
+        /// <summary>
+        ///     Gets the jby account transcation infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<TranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        {
+            return this.innerService.GetSettleAccountTranscationInfosAsync(userId, pageIndex, pageSize);
+        }
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
@@ -118,7 +151,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transcation information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
@@ -129,7 +162,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transcation information asynchronous.
         /// </summary>
         /// <param name="useriId">The useri identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>

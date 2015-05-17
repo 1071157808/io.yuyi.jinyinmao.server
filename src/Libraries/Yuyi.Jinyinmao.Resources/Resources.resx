@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Sms_AddBankCardFailed" xml:space="preserve">
+  <data name="Sms_VerifyBankCardFailed" xml:space="preserve">
     <value>您尾号为{0}的借记卡绑定失败。失败原因：{1}。如需帮助，请致电4008556333</value>
   </data>
-  <data name="Sms_AddBankCardSuccessed" xml:space="preserve">
+  <data name="Sms_VerifyBankCardSuccessed" xml:space="preserve">
     <value>您尾号为{0}的借记卡已经绑定成功。现在即可开始购买。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_DepositFailed" xml:space="preserve">
@@ -155,5 +155,11 @@
   </data>
   <data name="Sms_WithdrawalResulted" xml:space="preserve">
     <value>您申请金银猫账户提现已被银行受理，银行卡尾号为{0}，金额{1}元。请注意查收。如非本人操作，请致电4008556333</value>
+  </data>
+  <data name="Sms_ResetLoginPawword" xml:space="preserve">
+    <value>您的登录密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】</value>
+  </data>
+  <data name="Sms_ResetPaymentPawword" xml:space="preserve">
+    <value>您的支付密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】</value>
   </data>
 </root>

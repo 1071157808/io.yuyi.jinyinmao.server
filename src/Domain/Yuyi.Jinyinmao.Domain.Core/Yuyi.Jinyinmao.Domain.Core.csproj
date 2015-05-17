@@ -38,7 +38,8 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -93,8 +94,8 @@
       <HintPath>..\..\packages\MoeEntityFramework.2.0.1.0\lib\net45\MoeEntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -168,7 +169,7 @@
     <Compile Include="Saga\ISagaState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RetryPolicyFactory.cs" />
-    <Compile Include="Saga\SagaEntity.cs" />
+    <Compile Include="Saga\SagaStateRecord.cs" />
     <Compile Include="Saga\SagaGrain.cs" />
     <Compile Include="SiloClusterConfig.cs" />
     <Compile Include="StorageProvider\SqlDatabaseProvider.cs" />

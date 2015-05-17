@@ -4,10 +4,10 @@
 // Created          : 2015-05-07  12:19 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  3:11 PM
+// Last Modified On : 2015-05-18  1:57 AM
 // ***********************************************************************
-// <copyright file="User_ReloadData.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -25,29 +25,40 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public partial class User
     {
-        /// <summary>
-        ///     Reloads the bank cards data.
-        /// </summary>
-        private void ReloadBankCardsData()
+        private static Tuple<DateTime, DateTime> lastInvestingConfirmTime = new Tuple<DateTime, DateTime>(DateTime.MinValue, DateTime.UtcNow);
+
+        private static DateTime GetLastInvestingConfirmTime()
         {
-            this.BankCards = this.State.BankCards.ToDictionary(c => c.BankCardNo);
+            if (lastInvestingConfirmTime.Item1 < DateTime.UtcNow.AddHours(8).Date.AddMinutes(20))
+            {
+                DailyConfig todayConfig = DailyConfigHelper.GetTodayDailyConfig();
+                DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(todayConfig.IsWorkDay ? 0 : -1);
+
+                lastInvestingConfirmTime = new Tuple<DateTime, DateTime>(DateTime.UtcNow.AddHours(8), confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1));
+            }
+
+            return lastInvestingConfirmTime.Item2;
         }
 
         private void ReloadJBYAccountData()
         {
-            List<Transcation> debitTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Debit && t.ResultCode == 1).ToList();
-            List<Transcation> creditTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode >= 0).ToList();
-            List<Transcation> creditedTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode == 1).ToList();
-            // ReSharper disable once UnusedVariable
-            List<Transcation> creditingTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode == 0).ToList();
+            List<JBYAccountTranscation> debitTrans = this.State.JBYAccount.Values.Where(t => t.Trade == Trade.Debit && t.ResultCode >= 0).ToList();
+            List<JBYAccountTranscation> debitedTrans = debitTrans.Where(t => t.ResultCode > 0).ToList();
+            List<JBYAccountTranscation> creditTrans = this.State.JBYAccount.Values.Where(t => t.Trade == Trade.Credit && t.ResultCode >= 0).ToList();
+            List<JBYAccountTranscation> creditedTrans = creditTrans.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0).ToList();
 
-            this.JBYAccrualAmount = debitTrans.Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
-            this.JBYWithdrawalableAmount = debitTrans.Sum(t => t.Amount) - creditTrans.Sum(t => t.Amount);
+            DateTime confirmTime = GetLastInvestingConfirmTime();
+
+            this.JBYAccrualAmount = debitTrans.Where(t => t.TransactionTime <= confirmTime).Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
+            this.JBYTotalAmount = debitTrans.Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
+            this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditTrans.Sum(t => t.Amount);
+
+            this.JBYTotalInterest = debitTrans.Where(t => t.ProductId == Guid.Empty).Sum(t => t.Amount);
+            this.JBYTotalPricipal = debitedTrans.Sum(t => t.Amount);
 
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
-            this.TodayJBYWithdrawalAmount = this.State.JBYAccount.Count(t => t.TransactionTime >= todayDate && t.TransactionTime < todayDate.AddDays(1) && t.TradeCode == TradeCodeHelper.TC2001012002);
-
-            this.JBYAccount = this.State.JBYAccount.ToDictionary(t => t.TransactionId);
+            this.TodayJBYWithdrawalAmount = creditTrans.Where(t => t.TransactionTime >= todayDate && t.TransactionTime < todayDate.AddDays(1))
+                .Sum(t => t.Amount);
         }
 
         /// <summary>
@@ -55,15 +66,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadOrderInfosData()
         {
-            List<OrderInfo> paidOrders = this.State.Orders.Where(o => o.ResultCode == 1).ToList();
+            List<OrderInfo> paidOrders = this.State.Orders.Values.Where(o => o.ResultCode == 1).ToList();
             List<OrderInfo> investingOrders = paidOrders.Where(o => !o.IsRepaid).ToList();
 
             this.TotalPrincipal = paidOrders.Sum(o => o.Principal);
             this.TotalInterest = paidOrders.Sum(o => o.Interest + o.ExtraInterest);
             this.InvestingPrincipal = investingOrders.Sum(o => o.Principal);
             this.InvestingInterest = investingOrders.Sum(o => o.Interest + o.ExtraInterest);
-
-            this.Orders = this.State.Orders.ToDictionary(o => o.OrderId);
         }
 
         /// <summary>
@@ -71,26 +80,68 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadSettleAccountData()
         {
-            List<Transcation> debitTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Debit && t.ResultCode == 1).ToList();
-            List<Transcation> creditTrans = this.State.SettleAccount.Where(t => t.Trade == Trade.Credit && t.ResultCode >= 0).ToList();
+            List<SettleAccountTranscation> transcations = this.State.SettleAccount.Values.Where(t => t.ResultCode >= 0).ToList();
+            int settleAccountBalance = 0;
+            int debitingSettleAccountAmount = 0;
+            int creditingSettleAccountAmount = 0;
+            int todayWithdrawalCount = 0;
+            int monthWithdrawalCount = 0;
 
-            this.SettleAccountBalance = debitTrans.Sum(t => t.Amount) - creditTrans.Sum(t => t.Amount);
-            this.DebitingSettleAccountAmount = this.State.SettleAccount.Where(t => t.ResultCode == 0 && t.Trade == Trade.Debit).Sum(t => t.Amount);
-            this.CreditingSettleAccountAmount = this.State.SettleAccount.Where(t => t.ResultCode == 0 && t.Trade == Trade.Credit).Sum(t => t.Amount);
-
-            this.BankCards.Values.ForEach(c =>
-            {
-                c.WithdrawAmount = debitTrans.Where(t => t.BankCardNo == c.BankCardNo).Sum(t => t.Amount)
-                                   - creditTrans.Where(t => t.BankCardNo == c.BankCardNo).Sum(t => t.Amount);
-            });
+            Dictionary<string, int> bankCards = this.State.BankCards.ToDictionary(kv => kv.Key, kv => 0);
+            bankCards.Add(string.Empty, 0);
 
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
-            DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1);
+            DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1).Date;
 
-            this.TodayWithdrawalCount = this.State.SettleAccount.Count(t => t.TransactionTime >= todayDate && t.TransactionTime < todayDate.AddDays(1) && t.TradeCode == TradeCodeHelper.TC1005052001);
-            this.MonthWithdrawalCount = this.State.SettleAccount.Count(t => t.TransactionTime >= monthDate && t.TransactionTime < monthDate.AddMonths(1) && t.TradeCode == TradeCodeHelper.TC1005052001);
+            foreach (SettleAccountTranscation transcation in transcations)
+            {
+                int amount = transcation.Amount;
+                string bankCardNo = transcation.BankCardNo;
+                if (transcation.Trade == Trade.Debit)
+                {
+                    if (transcation.ResultCode > 0)
+                    {
+                        settleAccountBalance += amount;
+                        bankCards[bankCardNo] += amount;
+                    }
+                    else if (transcation.ResultCode == 0)
+                    {
+                        debitingSettleAccountAmount += amount;
+                    }
+                }
+                else if (transcation.Trade == Trade.Credit)
+                {
+                    if (transcation.TradeCode == TradeCodeHelper.TC1005052001)
+                    {
+                        if (transcation.TransactionTime >= todayDate && transcation.TransactionTime < todayDate.AddDays(1))
+                        {
+                            todayWithdrawalCount += 1;
+                        }
 
-            this.SettleAccount = this.State.SettleAccount.ToDictionary(t => t.TransactionId);
+                        if (transcation.TransactionTime >= monthDate && transcation.TransactionTime < monthDate.AddMonths(1))
+                        {
+                            monthWithdrawalCount += 1;
+                        }
+                    }
+
+                    if (transcation.ResultCode == 0)
+                    {
+                        creditingSettleAccountAmount += amount;
+                    }
+
+                    settleAccountBalance -= amount;
+                    bankCards[bankCardNo] -= amount;
+                }
+            }
+
+            this.SettleAccountBalance = settleAccountBalance;
+            this.DebitingSettleAccountAmount = debitingSettleAccountAmount;
+            this.CreditingSettleAccountAmount = creditingSettleAccountAmount;
+
+            this.State.BankCards.Values.ForEach(c => c.WithdrawAmount = bankCards[c.BankCardNo]);
+
+            this.TodayWithdrawalCount = todayWithdrawalCount;
+            this.MonthWithdrawalCount = monthWithdrawalCount;
         }
     }
 }

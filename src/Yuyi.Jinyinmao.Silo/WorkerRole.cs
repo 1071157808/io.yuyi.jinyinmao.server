@@ -1,15 +1,21 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// Author           : Siqi Lu
+// Created          : 2015-04-28  12:59 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-05-12  1:13 PM
+// ***********************************************************************
+// <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using Microsoft.WindowsAzure.Storage;
-using Orleans.Providers;
 using Orleans.Runtime.Configuration;
 using Orleans.Runtime.Host;
 
@@ -18,7 +24,6 @@ namespace Yuyi.Jinyinmao.Silo
     public class WorkerRole : RoleEntryPoint
     {
         private const string DATA_CONNECTION_STRING_KEY = "DataConnectionString";
-
         private AzureSilo orleansAzureSilo;
 
         public WorkerRole()
@@ -32,7 +37,7 @@ namespace Yuyi.Jinyinmao.Silo
 
             Trace.WriteLine("OrleansAzureSilos-OnStart Initializing config", "Information");
 
-            // Set the maximum number of concurrent connections 
+            // Set the maximum number of concurrent connections
             ServicePointManager.DefaultConnectionLimit = 12;
 
             // For information on handling configuration changes see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
@@ -44,25 +49,6 @@ namespace Yuyi.Jinyinmao.Silo
             Trace.WriteLine("OrleansAzureSilos-OnStart called base.OnStart ok=" + ok, "Information");
 
             return ok;
-        }
-
-        public override void Run()
-        {
-            Trace.WriteLine("OrleansAzureSilos-Run entry point called", "Information");
-
-            Trace.WriteLine("OrleansAzureSilos-OnStart Starting Orleans silo", "Information");
-
-            var config = new ClusterConfiguration();
-            config.StandardLoad();
-
-            // It is IMPORTANT to start the silo not in OnStart but in Run.
-            // Azure may not have the firewalls open yet (on the remote silos) at the OnStart phase.
-            this.orleansAzureSilo = new AzureSilo();
-            bool ok = this.orleansAzureSilo.Start(RoleEnvironment.DeploymentId, RoleEnvironment.CurrentRoleInstance, config);
-
-            Trace.WriteLine("OrleansAzureSilos-OnStart Orleans silo started ok=" + ok, "Information");
-
-            this.orleansAzureSilo.Run(); // Call will block until silo is shutdown
         }
 
         public override void OnStop()
@@ -77,6 +63,25 @@ namespace Yuyi.Jinyinmao.Silo
             Trace.WriteLine("OrleansAzureSilos-OnStop finished", "Information");
         }
 
+        public override void Run()
+        {
+            Trace.WriteLine("OrleansAzureSilos-Run entry point called", "Information");
+
+            Trace.WriteLine("OrleansAzureSilos-OnStart Starting Orleans silo", "Information");
+
+            ClusterConfiguration config = new ClusterConfiguration();
+            config.StandardLoad();
+
+            // It is IMPORTANT to start the silo not in OnStart but in Run.
+            // Azure may not have the firewalls open yet (on the remote silos) at the OnStart phase.
+            this.orleansAzureSilo = new AzureSilo();
+            bool ok = this.orleansAzureSilo.Start(RoleEnvironment.DeploymentId, RoleEnvironment.CurrentRoleInstance, config);
+
+            Trace.WriteLine("OrleansAzureSilos-OnStart Orleans silo started ok=" + ok, "Information");
+
+            this.orleansAzureSilo.Run(); // Call will block until silo is shutdown
+        }
+
         private static void RoleEnvironmentChanging(object sender, RoleEnvironmentChangingEventArgs e)
         {
             int i = 1;
@@ -86,7 +91,7 @@ namespace Yuyi.Jinyinmao.Silo
             }
 
             // If a configuration setting is changing);
-            if (e.Changes.Any((RoleEnvironmentChange change) => change is RoleEnvironmentConfigurationSettingChange))
+            if (e.Changes.Any(change => change is RoleEnvironmentConfigurationSettingChange))
             {
                 // Set e.Cancel to true to restart this role instance
                 e.Cancel = true;

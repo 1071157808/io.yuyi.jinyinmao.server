@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:18 PM
+// Last Modified On : 2015-05-18  12:27 AM
 // ***********************************************************************
 // <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,11 +15,10 @@ using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Packages.Helper;
 
-namespace Yuyi.Jinyinmao.Domain
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     UserRegisteredProcessor.

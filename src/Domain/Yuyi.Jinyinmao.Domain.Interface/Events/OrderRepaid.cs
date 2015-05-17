@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  9:49 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  7:28 PM
+// Last Modified On : 2015-05-18  3:11 AM
 // ***********************************************************************
 // <copyright file="OrderRepaid.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,7 +27,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the interest transcation information.
         /// </summary>
         /// <value>The interest transcation information.</value>
-        public TranscationInfo InterestTranscationInfo { get; set; }
+        public SettleAccountTranscationInfo InterestTranscationInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the order information.
@@ -45,12 +45,18 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the principal transcation information.
         /// </summary>
         /// <value>The principal transcation information.</value>
-        public TranscationInfo PrincipalTranscationInfo { get; set; }
+        public SettleAccountTranscationInfo PrincipalTranscationInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the repaid time.
         /// </summary>
         /// <value>The repaid time.</value>
         public DateTime RepaidTime { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public UserInfo UserInfo { get; set; }
     }
 }

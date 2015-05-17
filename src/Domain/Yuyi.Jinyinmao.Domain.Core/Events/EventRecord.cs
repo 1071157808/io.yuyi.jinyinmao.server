@@ -1,21 +1,46 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  2:45 PM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  5:46 PM
+// Last Modified On : 2015-05-15  2:02 PM
 // ***********************************************************************
-// <copyright file="EventRecord.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="EventRecord.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using Microsoft.WindowsAzure.Storage.Table;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Domain
 {
+    /// <summary>
+    ///     EventEx.
+    /// </summary>
+    public static class EventEx
+    {
+        /// <summary>
+        ///     To the record.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <returns>EventRecord.</returns>
+        public static EventRecord ToRecord(this IEvent @event)
+        {
+            return new EventRecord
+            {
+                Event = @event.ToJson(),
+                EventId = @event.EventId,
+                EventName = @event.GetType().Name,
+                PartitionKey = @event.SourceId,
+                RowKey = @event.EventId.ToGuidString(),
+                TimeStamp = @event.TimeStamp
+            };
+        }
+    }
+
     /// <summary>
     ///     EventRecord.
     /// </summary>
@@ -33,12 +58,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// <value>The event identifier.</value>
         public Guid EventId { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the name of the event.
+        /// </summary>
+        /// <value>The name of the event.</value>
         public string EventName { get; set; }
 
         /// <summary>
         ///     Gets or sets the time stamp.
         /// </summary>
         /// <value>The time stamp.</value>
-        public long TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }

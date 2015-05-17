@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:14 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  10:57 AM
+// Last Modified On : 2015-05-12  1:39 AM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     募集总金额，以“分”为单位
         /// </summary>
         [Required, JsonProperty("financingSumAmount")]
-        public int FinancingSumAmount { get; set; }
+        public long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     额外内容，请参考其他文档
@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     已售金额，以“万分之一”为单位
         /// </summary>
         [Required, JsonProperty("paidAmount")]
-        public int PaidAmount { get; set; }
+        public long PaidAmount { get; set; }
 
         /// <summary>
         ///     质押物编号，可以认为是票号、合同号等相关文件的编号

@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:50 PM
+// Last Modified On : 2015-05-18  3:22 AM
 // ***********************************************************************
 // <copyright file="DailyConfigHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -51,10 +51,13 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <summary>
         ///     Gets the last work day configuration.
         /// </summary>
+        /// <param name="offset">The offset.</param>
         /// <returns>DateTime.</returns>
-        public static DailyConfig GetLastWorkDayConfig()
+        public static DailyConfig GetLastWorkDayConfig(int offset = 0)
         {
-            for (int i = 1; i < 100; i++)
+            int beginIndex = 1 - offset;
+
+            for (int i = beginIndex; i < 100; i++)
             {
                 DateTime date = DateTime.UtcNow.AddHours(8).AddDays(-i);
                 DailyConfig config = GetDailyConfig(date);
@@ -70,6 +73,15 @@ namespace Yuyi.Jinyinmao.Packages.Helper
             }
 
             return null;
+        }
+
+        /// <summary>
+        ///     Gets the today daily configuration.
+        /// </summary>
+        /// <returns>DailyConfig.</returns>
+        public static DailyConfig GetTodayDailyConfig()
+        {
+            return GetDailyConfig(DateTime.UtcNow.AddHours(8));
         }
 
         private static readonly CloudStorageAccount Account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));

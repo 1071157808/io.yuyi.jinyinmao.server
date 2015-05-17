@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  11:46 AM
+// Last Modified On : 2015-05-17  10:13 PM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the financing sum count.
         /// </summary>
         /// <value>The financing sum count.</value>
-        public int FinancingSumAmount { get; set; }
+        public long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the information.
@@ -103,5 +103,11 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The value date mode.</value>
         public int ValueDateMode { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the yield.
+        /// </summary>
+        /// <value>The yield.</value>
+        public int Yield { get; set; }
     }
 }

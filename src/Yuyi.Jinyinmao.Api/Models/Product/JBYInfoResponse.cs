@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:47 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  1:18 AM
+// Last Modified On : 2015-05-12  1:44 AM
 // ***********************************************************************
 // <copyright file="JBYInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
         ///     募集总金额，以“分”为单位
         /// </summary>
         [Required, JsonProperty("financingSumAmount")]
-        public int FinancingSumAmount { get; set; }
+        public long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     额外内容，请参考其他文档
@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
         ///     已售金额，以“万分之一”为单位
         /// </summary>
         [Required, JsonProperty("paidAmount")]
-        public int PaidAmount { get; set; }
+        public long PaidAmount { get; set; }
 
         /// <summary>
         ///     产品类别，详细分类参考文档

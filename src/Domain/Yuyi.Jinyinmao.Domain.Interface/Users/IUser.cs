@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  11:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  2:21 PM
+// Last Modified On : 2015-05-18  3:40 AM
 // ***********************************************************************
-// <copyright file="IUser.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -18,7 +18,6 @@ using Moe.Lib;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Service;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -31,31 +30,24 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Adds the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task AddBankCardAsync(AddBankCard command);
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
+        Task<BankCardInfo> AddBankCardAsync(AddBankCard command);
 
         /// <summary>
-        ///     Adds the bank card asynchronous.
-        /// </summary>
-        /// <param name="addBankCardSagaInitDto">The add bank card saga initialize dto.</param>
-        /// <param name="result">The result.</param>
-        /// <returns>Task.</returns>
-        Task AddBankCardResultedAsync(AddBankCardSagaInitDto addBankCardSagaInitDto, YilianRequestResult result);
-
-        /// <summary>
-        ///     Authenticatings the asynchronous.
+        ///     Authenticates the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task AuthenticateAsync(Authenticate command);
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> AuthenticateAsync(Authenticate command);
 
         /// <summary>
         ///     Authenticates the resulted asynchronous.
         /// </summary>
-        /// <param name="authenticateSagaInitDto">The authenticate saga initialize dto.</param>
-        /// <param name="result">The result.</param>
-        /// <returns>Task.</returns>
-        Task AuthenticateResultedAsync(AuthenticateSagaInitDto authenticateSagaInitDto, YilianRequestResult result);
+        /// <param name="command">The command.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> AuthenticateResultedAsync(Authenticate command, bool result, string message);
 
         /// <summary>
         ///     Checks the password asynchronous.
@@ -86,19 +78,20 @@ namespace Yuyi.Jinyinmao.Domain
         Task ClearUnauthenticatedInfo();
 
         /// <summary>
-        ///     Deposits from the settle account asynchronous.
+        ///     Deposits the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task DepositAsync(DepositFromYilian command);
+        /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTranscationInfo&gt;&gt;.</returns>
+        Task<Tuple<UserInfo, SettleAccountTranscationInfo>> DepositAsync(PayByYilian command);
 
         /// <summary>
         ///     Deposits the resulted asynchronous.
         /// </summary>
-        /// <param name="depositFromYilianSagaInitDto">The deposit saga initialize dto.</param>
-        /// <param name="result">The result.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
-        Task DepositResultedAsync(DepositFromYilianSagaInitDto depositFromYilianSagaInitDto, YilianRequestResult result);
+        Task DepositResultedAsync(PayByYilian command, bool result, string message);
 
         /// <summary>
         ///     Gets the bank card information asynchronous.
@@ -112,6 +105,27 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
         Task<List<BankCardInfo>> GetBankCardInfosAsync();
+
+        /// <summary>
+        ///     Gets the jby account information asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;JBYAccountInfo&gt;.</returns>
+        Task<JBYAccountInfo> GetJBYAccountInfoAsync();
+
+        /// <summary>
+        ///     Gets the jby account transcation information asynchronous.
+        /// </summary>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
+        Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid transcationId);
+
+        /// <summary>
+        ///     Gets the jby account transcation infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
         ///     Gets the order infos asynchronous.
@@ -130,19 +144,19 @@ namespace Yuyi.Jinyinmao.Domain
         Task<SettleAccountInfo> GetSettleAccountInfoAsync();
 
         /// <summary>
-        ///     Gets the transcation information asynchronous.
+        ///     Gets the settle account transcation information asynchronous.
         /// </summary>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        Task<TranscationInfo> GetSettleAccountTranscationInfoAsync(Guid transcationId);
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid transcationId);
 
         /// <summary>
         ///     Gets the settle account transcation infos asynchronous.
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<TranscationInfo>> GetSettleAccountTranscationInfosAsync(int pageIndex, int pageSize);
+        /// <returns>Task&lt;PaginatedList&lt;SettleAccountTranscationInfo&gt;&gt;.</returns>
+        Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
         ///     Gets the user information asynchronous.
@@ -158,11 +172,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<OrderInfo> InvestingAsync(RegularInvesting command);
 
         /// <summary>
-        /// Investings the asynchronous.
+        ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        Task<TranscationInfo> InvestingAsync(JBYInvesting command);
+        Task<JBYAccountTranscationInfo> InvestingAsync(JBYInvesting command);
 
         /// <summary>
         ///     Determines whether [is registered] asynchronous.
@@ -199,13 +213,6 @@ namespace Yuyi.Jinyinmao.Domain
         Task ResetLoginPasswordAsync(ResetLoginPassword command);
 
         /// <summary>
-        ///     Sets the default bank card asynchronous.
-        /// </summary>
-        /// <param name="bankCardNo">The bank card no.</param>
-        /// <returns>Task.</returns>
-        Task SetDefaultBankCardAsync(string bankCardNo);
-
-        /// <summary>
         ///     Sets the payment password asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -213,11 +220,34 @@ namespace Yuyi.Jinyinmao.Domain
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
+        ///     Verifies the bank card asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;Tuple&lt;UserInfo, BankCardInfo&gt;&gt;.</returns>
+        Task<Tuple<UserInfo, BankCardInfo>> VerifyBankCardAsync(VerifyBankCard command);
+
+        /// <summary>
+        ///     Verifies the bank card asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
+        Task VerifyBankCardAsync(VerifyBankCard command, bool result, string message);
+
+        /// <summary>
         ///     Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task WithdrawalAsync(Withdrawal command);
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        Task<SettleAccountTranscationInfo> WithdrawalAsync(Withdrawal command);
+
+        /// <summary>
+        ///     Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
+        Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
         ///     Withdrawals the resulted asynchronous.

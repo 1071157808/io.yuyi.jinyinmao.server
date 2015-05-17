@@ -61,6 +61,12 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<JBYProductInfo> GetJBYProductInfoAsync();
 
         /// <summary>
+        /// Gets the jby product paid amount asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int64&gt;.</returns>
+        Task<long> GetJBYProductPaidAmountAsync();
+
+        /// <summary>
         ///     Gets the product information asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
@@ -81,7 +87,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int> GetProductPaidAmountAsync(Guid productId);
+        Task<long> GetProductPaidAmountAsync(Guid productId);
 
         /// <summary>
         ///     Gets the top product infos asynchronous.

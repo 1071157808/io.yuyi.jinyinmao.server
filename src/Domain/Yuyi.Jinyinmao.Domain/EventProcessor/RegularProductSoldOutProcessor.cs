@@ -17,7 +17,7 @@ using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Models;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     RegularProductSoldOutProcessor.
@@ -33,20 +33,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(RegularProductSoldOut @event)
         {
-            await this.ProcessingEventAsync(@event, async e =>
-            {
-                string productIdentifier = e.ProductId.ToGuidString();
-
-                using (JYMDBContext db = new JYMDBContext())
-                {
-                    Models.RegularProduct product = await db.Query<Models.RegularProduct>().FirstAsync(p => p.ProductIdentifier == productIdentifier);
-
-                    product.SoldOut = true;
-                    product.SoldOutTime = @event.SoldOutTime;
-
-                    await db.ExecuteSaveChangesAsync();
-                }
-            });
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncRegularProduct(e.ProductInfo, e.Agreement1, e.Agreement2));
 
             await base.ProcessEventAsync(@event);
         }

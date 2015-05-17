@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:51 PM
+// Last Modified On : 2015-05-17  7:13 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,7 +14,9 @@
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Api.Models.BackOffice;
@@ -86,7 +88,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 StartSellTime = request.StartSellTime,
                 UnitPrice = request.UnitPrice,
                 ValueDateMode = request.ValueDateMode,
-                WithdrawalLimit = config.JBYWithdrawalLimit,
                 Yield = config.JBYYield
             });
 
@@ -113,6 +114,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 return this.BadRequest("上架失败：产品编号已存在");
             }
+
+            this.Trace.Info(this.Request, "Application", "RegularProductIssue. {0}", request.ToJson());
 
             await this.productService.HitShelvesAsync(new IssueRegularProduct
             {
@@ -163,7 +166,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public IHttpActionResult RegularProductRepay(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            this.productService.RepayAsync(productId);
+            this.productService.RepayRegularProductAsync(productId);
 
             return this.Ok();
         }

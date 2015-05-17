@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  10:49 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  10:49 PM
+// Last Modified On : 2015-05-18  12:20 AM
 // ***********************************************************************
 // <copyright file="IWithdrawalAcceptedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,9 +13,8 @@
 
 using System.Threading.Tasks;
 using Orleans;
-using Yuyi.Jinyinmao.Domain.Events;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     Interface IWithdrawalAcceptedProcessor

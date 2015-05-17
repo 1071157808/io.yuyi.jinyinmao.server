@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:13 AM
+// Last Modified On : 2015-05-18  2:48 AM
 // ***********************************************************************
 // <copyright file="JBYTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,12 +27,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string AccountTranscationIdentifier { get; set; }
 
         /// <summary>
-        ///     Gets or sets the agreements information.
-        /// </summary>
-        /// <value>The agreements information.</value>
-        public string AgreementsInfo { get; set; }
-
-        /// <summary>
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
@@ -43,12 +37,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The arguments.</value>
         public string Args { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the cellphone.
-        /// </summary>
-        /// <value>The cellphone.</value>
-        public string Cellphone { get; set; }
 
         /// <summary>
         ///     Gets or sets the information.
@@ -66,7 +54,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the result time.
         /// </summary>
         /// <value>The result time.</value>
-        public Nullable<DateTime> ResultTime { get; set; }
+        public DateTime? ResultTime { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade code.

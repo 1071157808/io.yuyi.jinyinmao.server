@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:18 PM
+// Last Modified On : 2015-05-17  11:15 PM
 // ***********************************************************************
 // <copyright file="IUserState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,103 +29,129 @@ namespace Yuyi.Jinyinmao.Domain
         Dictionary<string, object> Args { get; set; }
 
         /// <summary>
-        ///     绑定的银行卡
+        ///     Gets or sets the bank cards.
         /// </summary>
-        List<BankCard> BankCards { get; set; }
+        /// <value>The bank cards.</value>
+        Dictionary<string, BankCard> BankCards { get; set; }
 
         /// <summary>
-        ///     用户手机号码
+        ///     Gets or sets the cellphone.
         /// </summary>
+        /// <value>The cellphone.</value>
         string Cellphone { get; set; }
 
         /// <summary>
-        ///     客户端标识, 900 => PC, 901 => iPhone, 902 => Android, 903 => M
+        ///     900 => PC, 901 => iPhone, 902 => Android, 903 => M
         /// </summary>
+        /// <value>The type of the client.</value>
         long ClientType { get; set; }
 
         /// <summary>
-        ///     活动编号(推广相关)
+        ///     Gets or sets a value indicating whether this <see cref="IUserState" /> is closed.
         /// </summary>
+        /// <value><c>true</c> if closed; otherwise, <c>false</c>.</value>
+        bool Closed { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the contract identifier.
+        /// </summary>
+        /// <value>The contract identifier.</value>
         long ContractId { get; set; }
 
         /// <summary>
-        ///     证件类型
+        ///     Gets or sets the credential.
         /// </summary>
+        /// <value>The credential.</value>
         Credential Credential { get; set; }
 
         /// <summary>
-        ///     证件编号
+        ///     Gets or sets the credential no.
         /// </summary>
+        /// <value>The credential no.</value>
         string CredentialNo { get; set; }
 
         /// <summary>
-        ///     加密密码
+        ///     Gets or sets the encrypted password.
         /// </summary>
+        /// <value>The encrypted password.</value>
         string EncryptedPassword { get; set; }
 
         /// <summary>
-        ///     加密支付密码
+        ///     Gets or sets the encrypted payment password.
         /// </summary>
+        /// <value>The encrypted payment password.</value>
         string EncryptedPaymentPassword { get; set; }
 
         /// <summary>
-        ///     邀请人
+        ///     Gets or sets the invite by.
         /// </summary>
+        /// <value>The invite by.</value>
         string InviteBy { get; set; }
 
         /// <summary>
-        ///     金包银账户
+        ///     Gets or sets the jby account.
         /// </summary>
-        List<Transcation> JBYAccount { get; set; }
+        /// <value>The jby account.</value>
+        Dictionary<Guid, JBYAccountTranscation> JBYAccount { get; set; }
 
         /// <summary>
-        ///     登录名
+        ///     Gets or sets the login names.
         /// </summary>
+        /// <value>The login names.</value>
         List<string> LoginNames { get; set; }
 
         /// <summary>
-        ///     所有成立的订单
+        ///     Gets or sets the orders.
         /// </summary>
-        List<OrderInfo> Orders { get; set; }
+        /// <value>The orders.</value>
+        Dictionary<Guid, OrderInfo> Orders { get; set; }
 
         /// <summary>
-        ///     金银e家代码
+        ///     Gets or sets the outlet code.
         /// </summary>
+        /// <value>The outlet code.</value>
         string OutletCode { get; set; }
 
         /// <summary>
-        ///     支付密码加密盐
+        ///     Gets or sets the payment salt.
         /// </summary>
+        /// <value>The payment salt.</value>
         string PaymentSalt { get; set; }
 
         /// <summary>
-        ///     真实姓名
+        ///     Gets or sets the name of the real.
         /// </summary>
+        /// <value>The name of the real.</value>
         string RealName { get; set; }
 
         /// <summary>
-        ///     注册时间
+        ///     Gets or sets the register time.
         /// </summary>
+        /// <value>The register time.</value>
         DateTime RegisterTime { get; set; }
 
         /// <summary>
-        ///     密码盐
+        ///     Gets or sets the salt.
         /// </summary>
+        /// <value>The salt.</value>
         string Salt { get; set; }
 
         /// <summary>
-        ///     结算账户
+        ///     Gets or sets the settle account.
         /// </summary>
-        List<Transcation> SettleAccount { get; set; }
+        /// <value>The settle account.</value>
+        Dictionary<Guid, SettleAccountTranscation> SettleAccount { get; set; }
 
         /// <summary>
-        ///     是否通过实名认证
+        ///     Gets or sets a value indicating whether this <see cref="IUserState" /> is verified.
         /// </summary>
+        /// <value><c>true</c> if verified; otherwise, <c>false</c>.</value>
         bool Verified { get; set; }
 
         /// <summary>
-        ///     实名认证时间
+        ///     Gets or sets the verified time.
         /// </summary>
+        /// <value>The verified time.</value>
         DateTime? VerifiedTime { get; set; }
     }
 }

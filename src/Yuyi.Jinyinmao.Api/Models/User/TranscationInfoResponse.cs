@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  6:09 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  10:46 AM
+// Last Modified On : 2015-05-12  2:20 AM
 // ***********************************************************************
 // <copyright file="TranscationInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
 using Moe.Lib;
@@ -27,12 +26,6 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// </summary>
     public class TranscationInfoResponse : IResponse
     {
-        /// <summary>
-        ///     协议内容
-        /// </summary>
-        [Required, JsonProperty("agreementsInfo")]
-        public Dictionary<string, object> AgreementsInfo { get; set; }
-
         /// <summary>
         ///     金额，以分为单位
         /// </summary>
@@ -94,13 +87,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string TransDesc { get; set; }
     }
 
-    internal static class TranscationInfoEx
+    internal static partial class TranscationInfoEx
     {
-        internal static TranscationInfoResponse ToResponse(this TranscationInfo info)
+        internal static TranscationInfoResponse ToTranscationInfoResponse(this TranscationInfo info)
         {
             return new TranscationInfoResponse
             {
-                AgreementsInfo = info.AgreementsInfo,
                 Amount = info.Amount,
                 BankCardNo = info.BankCardNo,
                 ChannelCode = info.ChannelCode,

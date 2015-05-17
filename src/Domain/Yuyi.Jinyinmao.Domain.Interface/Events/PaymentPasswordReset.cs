@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-25  3:22 AM
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {
@@ -21,5 +22,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
     [Immutable]
     public class PaymentPasswordReset : Event
     {
+        /// <summary>
+        /// Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public UserInfo UserInfo { get; set; }
     }
 }

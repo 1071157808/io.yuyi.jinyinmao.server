@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  11:47 AM
+// Last Modified On : 2015-05-17  10:12 PM
 // ***********************************************************************
 // <copyright file="JBYProductMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -59,6 +59,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.SoldOut).HasColumnName("SoldOut");
             this.Property(t => t.SoldOutTime).HasColumnName("SoldOutTime");
             this.Property(t => t.ValueDateMode).HasColumnName("ValueDateMode");
+            this.Property(t => t.Yield).HasColumnName("Yield");
             this.Property(t => t.Info).HasColumnName("Info");
         }
     }

@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  2:39 PM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  11:22 PM
+// Last Modified On : 2015-05-15  2:00 PM
 // ***********************************************************************
-// <copyright file="IEvent.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -37,5 +37,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The type of the source.</value>
         string SourceType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the time stamp.
+        /// </summary>
+        /// <value>The time stamp.</value>
+        DateTime TimeStamp { get; set; }
     }
 }

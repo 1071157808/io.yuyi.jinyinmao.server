@@ -2,12 +2,12 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  1:05 PM
-// 
+//
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  9:12 AM
+// Last Modified On : 2015-05-14  4:26 PM
 // ***********************************************************************
-// <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -46,16 +46,10 @@ namespace Yuyi.Jinyinmao.Api.Filters
         }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether [allow local].
+        ///     Calls when a process requests authorization.
         /// </summary>
-        /// <value><c>true</c> if [allow local]; otherwise, <c>false</c>.</value>
-        public bool AllowInternal { get; set; }
-
-        /// <summary>
-        ///     Occurs before the action method is invoked.
-        /// </summary>
-        /// <param name="actionContext">The action context.</param>
-        public void OnActionExecuting(HttpActionContext actionContext)
+        /// <param name="actionContext">The action context, which encapsulates information for using <see cref="T:System.Web.Http.Filters.AuthorizationFilterAttribute" />.</param>
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
             string token;
 
@@ -69,15 +63,6 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 FormsAuthentication.SetAuthCookie(token, true);
             }
 
-            base.OnAuthorization(actionContext);
-        }
-
-        /// <summary>
-        ///     Calls when a process requests authorization.
-        /// </summary>
-        /// <param name="actionContext">The action context, which encapsulates information for using <see cref="T:System.Web.Http.Filters.AuthorizationFilterAttribute" />.</param>
-        public override void OnAuthorization(HttpActionContext actionContext)
-        {
             base.OnAuthorization(actionContext);
         }
 

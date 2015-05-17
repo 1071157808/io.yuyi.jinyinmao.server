@@ -39,7 +39,8 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -98,8 +99,8 @@
       <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\MoeEntityFramework.2.0.1.0\lib\net45\MoeEntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -137,25 +138,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventProcessor\DepositFromYilianResultedProcessor.cs" />
+    <Compile Include="EventProcessor\DepositResultedProcessor.cs" />
+    <Compile Include="EventProcessor\RegularProductRepaidProcessor.cs" />
+    <Compile Include="Helper\DBSyncHelper.cs" />
+    <Compile Include="EventProcessor\BankCardAddedProcessor.cs" />
     <Compile Include="EventProcessor\JBYProductIssuedProcessor.cs" />
     <Compile Include="EventProcessor\JBYProductSoldOutProcessor.cs" />
     <Compile Include="EventProcessor\JBYProductUpdatedProcessor.cs" />
     <Compile Include="EventProcessor\JBYPurchasedProcessor.cs" />
     <Compile Include="EventProcessor\OrderPaidProcessor.cs" />
     <Compile Include="EventProcessor\OrderRepaidProcessor.cs" />
+    <Compile Include="EventProcessor\PayingByYilianProcessor.cs" />
     <Compile Include="EventProcessor\RegularProductIssuedProcessor.cs" />
     <Compile Include="EventProcessor\RegularProductSoldOutProcessor.cs" />
+    <Compile Include="EventProcessor\VerifyBankCardResultedProcessor.cs" />
     <Compile Include="EventProcessor\WithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\WithdrawalResultedProcessor.cs" />
     <Compile Include="Misc\Cellphone.cs" />
     <Compile Include="EventProcessor\AuthenticateResultedProcessor.cs" />
-    <Compile Include="EventProcessor\AddBankCardResultedProcessor.cs" />
     <Compile Include="EventProcessor\LoginPasswordResetProcessor.cs" />
     <Compile Include="EventProcessor\PaymentPasswordResetProcessor.cs" />
     <Compile Include="EventProcessor\PaymentPasswordSetProcessor.cs" />
     <Compile Include="Misc\SequenceGenerator.cs" />
     <Compile Include="Products\JBYProduct.cs" />
+    <Compile Include="Products\JBYProductWithdrawalManager.cs" />
     <Compile Include="Products\RegularProduct.cs" />
     <Compile Include="Sagas\AddBankCardSaga.cs" />
     <Compile Include="EventProcessor\UserRegisteredProcessor.cs" />
@@ -212,9 +218,7 @@
       <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Transcation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="favicon.ico" />
   </ItemGroup>

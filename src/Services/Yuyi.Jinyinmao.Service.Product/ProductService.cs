@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:26 AM
+// Last Modified On : 2015-05-18  1:05 AM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,7 +22,6 @@ using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Domain.Products;
-using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Service
@@ -80,7 +79,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.String&gt;.</returns>
         public Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex)
         {
-            IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYGrainTypeLongKey());
+            IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             return product.GetAgreementAsync(agreementIndex);
         }
 
@@ -88,10 +87,20 @@ namespace Yuyi.Jinyinmao.Service
         ///     Gets the jby product information asynchronous.
         /// </summary>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
-        public Task<JBYProductInfo> GetJBYProductInfoAsync()
+        public async Task<JBYProductInfo> GetJBYProductInfoAsync()
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030));
-            return jbyProduct.GetProductInfoAsync();
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            return await jbyProduct.GetProductInfoAsync();
+        }
+
+        /// <summary>
+        ///     Gets the jby product paid amount asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int64&gt;.</returns>
+        public async Task<long> GetJBYProductPaidAmountAsync()
+        {
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            return await jbyProduct.GetJBYProductPaidAmountAsync();
         }
 
         /// <summary>
@@ -99,10 +108,10 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
-        public Task<RegularProductInfo> GetProductInfoAsync(Guid productId)
+        public async Task<RegularProductInfo> GetProductInfoAsync(Guid productId)
         {
             IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
-            return regularProduct.GetRegularProductInfoAsync();
+            return await regularProduct.GetRegularProductInfoAsync();
         }
 
         /// <summary>
@@ -139,7 +148,7 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public Task<int> GetProductPaidAmountAsync(Guid productId)
+        public Task<long> GetProductPaidAmountAsync(Guid productId)
         {
             IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
             return regularProduct.GetProductPaidAmountAsync();
@@ -188,43 +197,39 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task HitShelvesAsync(IssueJBYProduct command)
         {
-            Dictionary<string, object> info = new Dictionary<string, object>
-            {
-                { "Aggrement1", command.Agreement1 },
-                { "Agreement2", command.Agreement2 }
-            };
-
-            JBYProduct product = new JBYProduct
-            {
-                EndSellTime = command.EndSellTime,
-                FinancingSumAmount = command.FinancingSumAmount,
-                Info = info.ToJson(),
-                IssueNo = command.IssueNo,
-                IssueTime = command.IssueTime,
-                ProductCategory = command.ProductCategory,
-                ProductIdentifier = command.ProductId.ToGuidString(),
-                ProductName = command.ProductName,
-                ProductNo = command.ProductNo,
-                SoldOutTime = null,
-                SoldOut = false,
-                StartSellTime = command.StartSellTime,
-                UnitPrice = command.UnitPrice
-            };
-
-            using (JYMDBContext db = new JYMDBContext())
-            {
-                if (await db.Query<JBYProduct>().AnyAsync(p => p.ProductIdentifier == product.ProductIdentifier))
-                {
-                    return;
-                }
-
-                db.Add(product);
-
-                await db.ExecuteSaveChangesAsync();
-            }
-
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYGrainTypeLongKey());
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.HitShelvesAsync(command);
+        }
+
+        /// <summary>
+        ///     Refreshes the jyb product asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task RefreshJYBProductAsync()
+        {
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            await jbyProduct.RefreshAsync();
+        }
+
+        /// <summary>
+        ///     Reloads the jby product asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task ReloadJBYProductAsync()
+        {
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            await jbyProduct.ReloadAsync();
+        }
+
+        /// <summary>
+        ///     Reloads the regular product asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task.</returns>
+        public async Task ReloadRegularProductAsync(Guid productId)
+        {
+            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            await product.ReloadAsync();
         }
 
         /// <summary>
@@ -232,10 +237,31 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
-        public Task RepayAsync(Guid productId)
+        public async Task RepayRegularProductAsync(Guid productId)
         {
             IRegularProduct product = RegularProductFactory.GetGrain(productId);
-            return product.RepayAsync();
+            await product.RepayAsync();
+        }
+
+        /// <summary>
+        ///     Sets the current jby product to sold out asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task SetCurrentJBYProductToSoldOutAsync()
+        {
+            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            await jbyProduct.SetToSoldOutAsync();
+        }
+
+        /// <summary>
+        ///     Sets the regular product to sold out asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task.</returns>
+        public async Task SetRegularProductToSoldOutAsync(Guid productId)
+        {
+            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            await product.SetToSoldOutAsync();
         }
 
         #endregion IProductService Members

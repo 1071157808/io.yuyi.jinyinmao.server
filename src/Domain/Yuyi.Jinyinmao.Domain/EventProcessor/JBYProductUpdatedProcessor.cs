@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  12:41 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:44 AM
+// Last Modified On : 2015-05-17  11:46 PM
 // ***********************************************************************
 // <copyright file="JBYProductUpdatedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,7 +17,7 @@ using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Service;
 using Yuyi.Jinyinmao.Service.Interface;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     JBYProductUpdatedProcessor.
@@ -35,12 +35,14 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(JBYProductUpdated @event)
         {
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYProduct(e.ProductInfo, e.Agreement1, e.Agreement2));
+
             await this.ProcessingEventAsync(@event, async e =>
             {
                 await this.productInfoService.GetJBYProductInfoAsync();
                 for (int i = 1; i < 20; i++)
                 {
-                    string agreement = await this.productInfoService.GetJBYAgreementAsync(@event.ProductId, i);
+                    string agreement = await this.productInfoService.GetJBYAgreementAsync(e.ProductInfo.ProductId, i);
                     if (agreement.IsNullOrEmpty())
                     {
                         break;

@@ -4,18 +4,17 @@
 // Created          : 2015-05-04  9:58 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  9:58 AM
+// Last Modified On : 2015-05-18  12:19 AM
 // ***********************************************************************
-// <copyright file="IOrderRepaidProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IOrderRepaidProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System.Threading.Tasks;
 using Orleans;
-using Yuyi.Jinyinmao.Domain.Events;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     Interface IOrderRepaidProcessor

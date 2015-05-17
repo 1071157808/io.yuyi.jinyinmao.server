@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  10:46 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  10:46 PM
+// Last Modified On : 2015-05-18  12:30 AM
 // ***********************************************************************
 // <copyright file="WithdrawalAccepted.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,21 +17,27 @@ using Yuyi.Jinyinmao.Domain.Dtos;
 namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
-    /// WithdrawalAccepted.
+    ///     WithdrawalAccepted.
     /// </summary>
     [Immutable]
     public class WithdrawalAccepted : Event
     {
         /// <summary>
-        /// Gets or sets the charge transcation.
+        ///     Gets or sets the charge transcation.
         /// </summary>
         /// <value>The charge transcation.</value>
-        public TranscationInfo ChargeTranscation { get; set; }
+        public SettleAccountTranscationInfo ChargeTranscation { get; set; }
 
         /// <summary>
-        /// Gets or sets the withdrawal transcation.
+        /// Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public UserInfo UserInfo { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the withdrawal transcation.
         /// </summary>
         /// <value>The withdrawal transcation.</value>
-        public TranscationInfo WithdrawalTranscation { get; set; }
+        public SettleAccountTranscationInfo WithdrawalTranscation { get; set; }
     }
 }

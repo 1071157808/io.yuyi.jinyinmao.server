@@ -4,7 +4,7 @@
 // Created          : 2015-04-27  12:10 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:14 PM
+// Last Modified On : 2015-05-15  2:01 PM
 // ***********************************************************************
 // <copyright file="Event.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,6 +36,12 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public Dictionary<string, object> Args { get; set; }
 
         #region IEvent Members
+
+        /// <summary>
+        ///     Gets or sets the time stamp.
+        /// </summary>
+        /// <value>The time stamp.</value>
+        public DateTime TimeStamp { get; set; }
 
         /// <summary>
         ///     Gets or sets the event identifier.

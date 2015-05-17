@@ -30,6 +30,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Service.User.Interface", "Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj", "{C3B74C74-F4C7-485E-9697-B51B754FCCEE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7-Publish", "7-Publish", "{D91863F8-FB00-4448-AEAC-E1442C17CF17}"
+	ProjectSection(SolutionItems) = preProject
+		Publish\CodeMap.dgml = Publish\CodeMap.dgml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
 	ProjectSection(SolutionItems) = preProject

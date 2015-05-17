@@ -82,11 +82,24 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200"></response>
         /// <response code="500"></response>
         [HttpGet, Route(""), Route("JBY"), ResponseType(typeof(JBYInfoResponse))]
-        public async Task<IHttpActionResult> JBYInfo()
+        public async Task<IHttpActionResult> GetJBYInfo()
         {
             JBYProductInfo info = await this.productInfoService.GetJBYProductInfoAsync();
 
             return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        ///     获取金包银产品的已售金额
+        /// </summary>
+        /// <remarks>该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
+        /// <response code="200"></response>
+        /// <response code="404">无该产品</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Sold/{productIdentifier:length(32)}")]
+        public async Task<IHttpActionResult> GetJBYSaleProcess()
+        {
+            return this.Ok(new { Paid = await this.productInfoService.GetJBYProductPaidAmountAsync() });
         }
     }
 }

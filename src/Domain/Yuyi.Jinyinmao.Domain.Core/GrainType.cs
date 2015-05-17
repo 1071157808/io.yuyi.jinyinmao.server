@@ -4,7 +4,7 @@
 // Created          : 2015-04-21  12:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  12:24 AM
+// Last Modified On : 2015-05-12  10:28 AM
 // ***********************************************************************
 // <copyright file="GrainType.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,7 +29,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The jby
         /// </summary>
-        JBY = 100002
+        JBY = 100002,
+
+        /// <summary>
+        ///     The jby withdrawal manager
+        /// </summary>
+        JBYWithdrawalManager = 100003
     }
 
     /// <summary>
@@ -76,12 +81,21 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Gets the jby grain type long key.
+        ///     Gets the jby grain type long key.
         /// </summary>
         /// <returns>System.Int64.</returns>
-        public static long GetJBYGrainTypeLongKey()
+        public static long GetJBYProductGrainTypeLongKey()
         {
-            return GrainTypeHelper.GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030);
+            return GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030);
+        }
+
+        /// <summary>
+        ///     Gets the jby grain type long key.
+        /// </summary>
+        /// <returns>System.Int64.</returns>
+        public static long GetJBYProductWithdrawalManagerGrainTypeLongKey()
+        {
+            return GetGrainTypeLongKey(GrainType.JBYWithdrawalManager, ProductCategoryCodeHelper.PC100000030);
         }
     }
 }

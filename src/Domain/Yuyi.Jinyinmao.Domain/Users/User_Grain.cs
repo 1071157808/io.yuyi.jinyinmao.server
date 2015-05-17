@@ -4,10 +4,10 @@
 // Created          : 2015-05-07  12:23 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  2:50 AM
+// Last Modified On : 2015-05-18  3:01 AM
 // ***********************************************************************
-// <copyright file="User_Grain.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="User_Grain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -29,8 +29,8 @@ namespace Yuyi.Jinyinmao.Domain
         public override async Task ReloadAsync()
         {
             await this.State.ReadStateAsync();
-            this.ReloadBankCardsData();
             this.ReloadSettleAccountData();
+            this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
         }
 
@@ -44,8 +44,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public override Task OnActivateAsync()
         {
-            this.ReloadBankCardsData();
             this.ReloadSettleAccountData();
+            this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
             return base.OnActivateAsync();
         }

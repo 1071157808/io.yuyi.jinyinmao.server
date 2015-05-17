@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:14 PM
+// Last Modified On : 2015-05-17  3:36 PM
 // ***********************************************************************
 // <copyright file="BankCard.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -55,12 +55,6 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The information.</value>
         public string Info { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether this instance is default.
-        /// </summary>
-        /// <value><c>true</c> if this instance is default; otherwise, <c>false</c>.</value>
-        public bool IsDefault { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

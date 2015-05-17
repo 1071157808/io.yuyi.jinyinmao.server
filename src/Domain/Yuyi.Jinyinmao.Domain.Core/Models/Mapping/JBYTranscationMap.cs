@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:13 AM
+// Last Modified On : 2015-05-17  7:23 PM
 // ***********************************************************************
 // <copyright file="JBYTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,13 +45,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(200);
 
-            this.Property(t => t.Cellphone)
-                .IsRequired()
-                .HasMaxLength(15);
-
-            this.Property(t => t.AgreementsInfo)
-                .IsRequired();
-
             this.Property(t => t.Info)
                 .IsRequired();
 
@@ -69,8 +62,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.ResultCode).HasColumnName("ResultCode");
             this.Property(t => t.ResultTime).HasColumnName("ResultTime");
             this.Property(t => t.TransDesc).HasColumnName("TransDesc");
-            this.Property(t => t.Cellphone).HasColumnName("Cellphone");
-            this.Property(t => t.AgreementsInfo).HasColumnName("AgreementsInfo");
             this.Property(t => t.Info).HasColumnName("Info");
             this.Property(t => t.Args).HasColumnName("Args");
         }

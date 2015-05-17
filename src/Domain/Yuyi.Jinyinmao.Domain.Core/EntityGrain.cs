@@ -2,12 +2,12 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  8:15 AM
-// 
+//
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  3:03 PM
+// Last Modified On : 2015-05-15  2:18 PM
 // ***********************************************************************
-// <copyright file="EntityGrain.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public abstract Task ReloadAsync();
 
-        #endregion
+        #endregion IEntity Members
 
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.
@@ -72,15 +72,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task StoreEventAsync(IEvent @event)
         {
-            EventRecord record = new EventRecord
-            {
-                Event = @event.ToJson(),
-                EventId = @event.EventId,
-                TimeStamp = DateTime.UtcNow.Ticks,
-                EventName = @event.GetType().Name,
-                PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                RowKey = @event.EventId.ToGuidString()
-            };
+            EventRecord record = @event.ToRecord();
             return this.EventStore.StoreEventRecordAsync(record);
         }
 
@@ -89,9 +81,10 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        protected async Task BeginProcessCommandAsync(ICommand command)
+        protected Task BeginProcessCommandAsync(ICommand command)
         {
-            await this.StoreCommandAsync(command);
+            this.StoreCommandAsync(command);
+            return TaskDone.Done;
         }
 
         /// <summary>

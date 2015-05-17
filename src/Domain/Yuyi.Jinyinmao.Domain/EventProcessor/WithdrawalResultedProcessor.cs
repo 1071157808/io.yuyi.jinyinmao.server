@@ -18,7 +18,7 @@ using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Models;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     WithdrawalResultedProcessor.

@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  9:33 AM
+// Last Modified On : 2015-05-17  11:48 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the financing sum amount.
         /// </summary>
         /// <value>The financing sum amount.</value>
-        public int FinancingSumAmount { get; set; }
+        public long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the information.

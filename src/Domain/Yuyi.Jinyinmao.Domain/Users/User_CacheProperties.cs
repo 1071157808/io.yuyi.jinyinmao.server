@@ -4,16 +4,12 @@
 // Created          : 2015-05-07  12:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  2:20 PM
+// Last Modified On : 2015-05-18  2:43 AM
 // ***********************************************************************
-// <copyright file="User_CacheProperties.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="User_CacheProperties.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
-
-using System;
-using System.Collections.Generic;
-using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -24,12 +20,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The error count.</value>
         public int PasswordErrorCount { get; set; }
-
-        /// <summary>
-        ///     用户所有的银行卡，包括未通过认证的
-        /// </summary>
-        /// <value>The bank cards.</value>
-        private Dictionary<string, BankCard> BankCards { get; set; }
 
         /// <summary>
         ///     Gets or sets the crediting settle account amount.
@@ -56,19 +46,31 @@ namespace Yuyi.Jinyinmao.Domain
         private int InvestingPrincipal { get; set; }
 
         /// <summary>
-        /// Gets or sets the jby account.
+        ///     Gets or sets the jby total pricipal.
         /// </summary>
-        /// <value>The jby account.</value>
-        private Dictionary<Guid, Transcation> JBYAccount { get; set; }
+        /// <value>The jby total pricipal.</value>
+        private int JBYTotalPricipal { get; set; }
 
         /// <summary>
-        /// Gets or sets the jby accrual amount.
+        ///     Gets or sets the jby total interest.
+        /// </summary>
+        /// <value>The jby total interest.</value>
+        private int JBYTotalInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the jby total amount.
+        /// </summary>
+        /// <value>The jby total amount.</value>
+        private int JBYTotalAmount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the jby accrual amount.
         /// </summary>
         /// <value>The jby accrual amount.</value>
         private int JBYAccrualAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the jby withdrawalable amount.
+        ///     Gets or sets the jby withdrawalable amount.
         /// </summary>
         /// <value>The jby withdrawalable amount.</value>
         private int JBYWithdrawalableAmount { get; set; }
@@ -80,22 +82,10 @@ namespace Yuyi.Jinyinmao.Domain
         private int MonthWithdrawalCount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the orders.
-        /// </summary>
-        /// <value>The orders.</value>
-        private Dictionary<Guid, OrderInfo> Orders { get; set; }
-
-        /// <summary>
         ///     Gets or sets the payment password error count.
         /// </summary>
         /// <value>The payment password error count.</value>
         private int PaymentPasswordErrorCount { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the settle account.
-        /// </summary>
-        /// <value>The settle account.</value>
-        private Dictionary<Guid, Transcation> SettleAccount { get; set; }
 
         /// <summary>
         ///     Gets or sets the settlement account balance.
@@ -104,7 +94,7 @@ namespace Yuyi.Jinyinmao.Domain
         private int SettleAccountBalance { get; set; }
 
         /// <summary>
-        /// Gets or sets the today jby withdrawal amount.
+        ///     Gets or sets the today jby withdrawal amount.
         /// </summary>
         /// <value>The today jby withdrawal amount.</value>
         private int TodayJBYWithdrawalAmount { get; set; }

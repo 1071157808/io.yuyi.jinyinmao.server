@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:11 PM
+// Last Modified On : 2015-05-17  11:23 PM
 // ***********************************************************************
 // <copyright file="IRegularProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,13 +22,15 @@ namespace Yuyi.Jinyinmao.Domain
     public interface IRegularProductState : IEntityState
     {
         /// <summary>
-        ///     第一份协议内容，一般为委托协议内容
+        ///     Gets or sets the agreement1.
         /// </summary>
+        /// <value>The agreement1.</value>
         string Agreement1 { get; set; }
 
         /// <summary>
-        ///     第二份协议内容，一般为抵押协议内容
+        ///     Gets or sets the agreement2.
         /// </summary>
+        /// <value>The agreement2.</value>
         string Agreement2 { get; set; }
 
         /// <summary>
@@ -38,163 +40,195 @@ namespace Yuyi.Jinyinmao.Domain
         Dictionary<string, object> Args { get; set; }
 
         /// <summary>
-        ///     银行名称
+        ///     Gets or sets the name of the bank.
         /// </summary>
+        /// <value>The name of the bank.</value>
         string BankName { get; set; }
 
         /// <summary>
-        ///     汇票付款人
+        ///     Gets or sets the drawee.
         /// </summary>
+        /// <value>The drawee.</value>
         string Drawee { get; set; }
 
         /// <summary>
-        ///     汇票付款人信息
+        ///     Gets or sets the drawee information.
         /// </summary>
+        /// <value>The drawee information.</value>
         string DraweeInfo { get; set; }
 
         /// <summary>
-        ///     背书图片链接
+        ///     Gets or sets the endorse image link.
         /// </summary>
+        /// <value>The endorse image link.</value>
         string EndorseImageLink { get; set; }
 
         /// <summary>
-        ///     停售时间
+        ///     Gets or sets the end sell time.
         /// </summary>
+        /// <value>The end sell time.</value>
         DateTime EndSellTime { get; set; }
 
         /// <summary>
-        ///     融资企业信息
+        ///     Gets or sets the enterprise information.
         /// </summary>
+        /// <value>The enterprise information.</value>
         string EnterpriseInfo { get; set; }
 
         /// <summary>
-        ///     融资企业的营业执照
+        ///     Gets or sets the enterprise license.
         /// </summary>
+        /// <value>The enterprise license.</value>
         string EnterpriseLicense { get; set; }
 
         /// <summary>
-        ///     融资企业名称
+        ///     Gets or sets the name of the enterprise.
         /// </summary>
+        /// <value>The name of the enterprise.</value>
         string EnterpriseName { get; set; }
 
         /// <summary>
-        ///     最大融资额度，以“分”为单位
+        ///     Gets or sets the financing sum amount.
         /// </summary>
+        /// <value>The financing sum amount.</value>
         int FinancingSumAmount { get; set; }
 
         /// <summary>
-        ///     发行期数，可以重复，必须大于0
+        ///     Gets or sets the issue no.
         /// </summary>
+        /// <value>The issue no.</value>
         int IssueNo { get; set; }
 
         /// <summary>
-        ///     上线时间
+        ///     Gets or sets the issue time.
         /// </summary>
+        /// <value>The issue time.</value>
         DateTime IssueTime { get; set; }
 
         /// <summary>
-        ///     订单
+        ///     Gets or sets the orders.
         /// </summary>
-        List<Order> Orders { get; set; }
+        /// <value>The orders.</value>
+        Dictionary<Guid, Order> Orders { get; set; }
 
         /// <summary>
-        ///     理财周期，主要用于显示
+        ///     Gets or sets the period.
         /// </summary>
+        /// <value>The period.</value>
         int Period { get; set; }
 
         /// <summary>
-        ///     抵押物编号
+        ///     Gets or sets the pledge no.
         /// </summary>
+        /// <value>The pledge no.</value>
         string PledgeNo { get; set; }
 
         /// <summary>
-        ///     产品分类
+        ///     Gets or sets the product category.
         /// </summary>
+        /// <value>The product category.</value>
         long ProductCategory { get; set; }
 
         /// <summary>
-        ///     产品名称
+        ///     Gets or sets the name of the product.
         /// </summary>
+        /// <value>The name of the product.</value>
         string ProductName { get; set; }
 
         /// <summary>
-        ///     产品编号
+        ///     Gets or sets the product no.
         /// </summary>
+        /// <value>The product no.</value>
         string ProductNo { get; set; }
 
         /// <summary>
-        ///     是否已经还款
+        ///     Gets or sets a value indicating whether this <see cref="IRegularProductState" /> is repaid.
         /// </summary>
+        /// <value><c>true</c> if repaid; otherwise, <c>false</c>.</value>
         bool Repaid { get; set; }
 
         /// <summary>
-        ///     实际还款时间
+        ///     Gets or sets the repaid time.
         /// </summary>
+        /// <value>The repaid time.</value>
         DateTime? RepaidTime { get; set; }
 
         /// <summary>
-        ///     最迟还款日
+        ///     Gets or sets the repayment deadline.
         /// </summary>
+        /// <value>The repayment deadline.</value>
         DateTime RepaymentDeadline { get; set; }
 
         /// <summary>
-        ///     风控方
+        ///     Gets or sets the risk management.
         /// </summary>
+        /// <value>The risk management.</value>
         string RiskManagement { get; set; }
 
         /// <summary>
-        ///     风控方信息
+        ///     Gets or sets the risk management information.
         /// </summary>
+        /// <value>The risk management information.</value>
         string RiskManagementInfo { get; set; }
 
         /// <summary>
-        ///     风控措施
+        ///     Gets or sets the risk management mode.
         /// </summary>
+        /// <value>The risk management mode.</value>
         string RiskManagementMode { get; set; }
 
         /// <summary>
-        ///     结息日
+        ///     Gets or sets the settle date.
         /// </summary>
+        /// <value>The settle date.</value>
         DateTime SettleDate { get; set; }
 
         /// <summary>
-        ///     是否售罄
+        ///     Gets or sets a value indicating whether [sold out].
         /// </summary>
+        /// <value><c>true</c> if [sold out]; otherwise, <c>false</c>.</value>
         bool SoldOut { get; set; }
 
         /// <summary>
-        ///     实际售罄时间
+        ///     Gets or sets the sold out time.
         /// </summary>
+        /// <value>The sold out time.</value>
         DateTime? SoldOutTime { get; set; }
 
         /// <summary>
-        ///     开售时间
+        ///     Gets or sets the start sell time.
         /// </summary>
+        /// <value>The start sell time.</value>
         DateTime StartSellTime { get; set; }
 
         /// <summary>
-        ///     单价，以“分”为单位，10000即每份100元
+        ///     Gets or sets the unit price.
         /// </summary>
+        /// <value>The unit price.</value>
         int UnitPrice { get; set; }
 
         /// <summary>
-        ///     融资用途
+        ///     Gets or sets the usage.
         /// </summary>
+        /// <value>The usage.</value>
         string Usage { get; set; }
 
         /// <summary>
-        ///     指定的起息日，可以为空
+        ///     Gets or sets the value date.
         /// </summary>
+        /// <value>The value date.</value>
         DateTime? ValueDate { get; set; }
 
         /// <summary>
-        ///     起息方式
+        ///     Gets or sets the value date mode.
         /// </summary>
+        /// <value>The value date mode.</value>
         int? ValueDateMode { get; set; }
 
         /// <summary>
-        ///     收益率，以“万分之一”为单位
+        ///     Gets or sets the yield.
         /// </summary>
+        /// <value>The yield.</value>
         int Yield { get; set; }
     }
 }

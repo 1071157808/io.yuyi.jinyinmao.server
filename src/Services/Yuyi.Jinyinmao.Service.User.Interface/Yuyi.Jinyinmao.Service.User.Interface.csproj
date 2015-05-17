@@ -42,8 +42,8 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -84,7 +84,7 @@
       <Name>Yuyi.Jinyinmao.Domain.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Interface\Yuyi.Jinyinmao.Domain.Interface.csproj">
-      <Project>{596F9CB8-45FF-4D76-ACD6-037938ED5EEE}</Project>
+      <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
     </ProjectReference>
   </ItemGroup>

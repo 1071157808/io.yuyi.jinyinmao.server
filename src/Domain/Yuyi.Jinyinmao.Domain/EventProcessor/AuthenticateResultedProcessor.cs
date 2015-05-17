@@ -4,20 +4,19 @@
 // Created          : 2015-04-27  6:08 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  7:33 PM
+// Last Modified On : 2015-05-16  1:52 AM
 // ***********************************************************************
 // <copyright file="AuthenticateResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System.Data.Entity;
+using System;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Events;
-using Yuyi.Jinyinmao.Domain.Models;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     AddBankCardResultedProcessor.
@@ -35,20 +34,15 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         {
             await this.ProcessingEventAsync(@event, async e =>
             {
-                string userIdentifier = e.UserId.ToGuidString();
-                using (JYMDBContext db = new JYMDBContext())
+                string message = e.Result ? Resources.Sms_VerifyBankCardSuccessed.FormatWith(e.BankCardInfo.BankCardNo.GetLast(4))
+                    : Resources.Sms_VerifyBankCardFailed.FormatWith(e.BankCardInfo.BankCardNo.GetLast(4), e.TranDesc);
+                if (!await this.SmsService.SendMessageAsync(e.BankCardInfo.Cellphone, message))
                 {
-                    Models.User user = await db.Query<Models.User>().FirstAsync(u => u.UserIdentifier == userIdentifier);
-
-                    user.RealName = e.RealName;
-                    user.Credential = (int)e.Credential;
-                    user.CredentialNo = e.CredentialNo;
-                    user.Verified = true;
-                    user.VerifiedTime = e.VerifiedTime;
-
-                    await db.SaveChangesAsync();
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.BankCardInfo.Cellphone, message));
                 }
             });
+
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUser(e.UserInfo));
 
             await base.ProcessEventAsync(@event);
         }

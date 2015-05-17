@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:26 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:46 AM
+// Last Modified On : 2015-05-18  1:05 AM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -20,8 +21,8 @@ using Newtonsoft.Json;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
+using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Products
 {
@@ -31,46 +32,57 @@ namespace Yuyi.Jinyinmao.Domain.Products
     [StorageProvider(ProviderName = "SqlDatabase")]
     public class JBYProduct : EntityGrain<IJBYProductState>, IJBYProduct
     {
-        private int PaidAmount { get; set; }
+        /// <summary>
+        ///     The event processing
+        /// </summary>
+        private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
+        {
+            { typeof(JBYProductIssued), e => JBYProductIssuedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYProductIssued)e) },
+            { typeof(JBYProductSoldOut), e => JBYProductSoldOutProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYProductSoldOut)e) },
+            { typeof(JBYProductUpdated), e => JBYProductUpdatedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYProductUpdated)e) }
+        };
+
+        private long PaidAmount { get; set; }
 
         #region IJBYProduct Members
 
         /// <summary>
-        ///     Builds the jby transcation asynchronous.
+        ///     build jby transcation as an asynchronous operation.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <returns>Task&lt;Transcation&gt;.</returns>
-        public async Task<Tuple<bool, Guid>> BuildJBYTranscationAsync(TranscationInfo info)
+        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
+        public async Task<Guid?> BuildJBYTranscationAsync(JBYAccountTranscationInfo info)
         {
             if (this.State.SoldOut)
             {
-                return new Tuple<bool, Guid>(false, Guid.Empty);
+                return null;
             }
 
             if (this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
             {
-                return new Tuple<bool, Guid>(false, Guid.Empty);
+                return null;
             }
 
             if (info.Amount > this.State.FinancingSumAmount - this.PaidAmount)
             {
-                return new Tuple<bool, Guid>(false, Guid.Empty);
+                return null;
             }
 
-            this.State.Transcations.Add(info);
+            if (!this.State.Transcations.ContainsKey(info.TransactionId))
+            {
+                this.State.Transcations.Add(info.TransactionId, info);
+            }
 
             await this.State.WriteStateAsync();
 
             this.ReloadTranscationData();
 
-            if (this.PaidAmount == this.State.FinancingSumAmount && !this.State.SoldOut)
+            if (this.PaidAmount >= this.State.FinancingSumAmount && !this.State.SoldOut)
             {
-#pragma warning disable 4014
-                this.SetToSoldOutAsync();
-#pragma warning restore 4014
+                this.SetToSoldOutAsync().Forget();
             }
 
-            return new Tuple<bool, Guid>(true, this.State.Id);
+            return this.State.Id;
         }
 
         /// <summary>
@@ -80,15 +92,26 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task&lt;System.String&gt;.</returns>
         public Task<string> GetAgreementAsync(int agreementIndex)
         {
-            if (agreementIndex == 1)
+            switch (agreementIndex)
             {
-                return Task.FromResult(this.State.Agreement1);
+                case 1:
+                    return Task.FromResult(this.State.Agreement1);
+
+                case 2:
+                    return Task.FromResult(this.State.Agreement2);
+
+                default:
+                    return Task.FromResult(string.Empty);
             }
-            if (agreementIndex == 2)
-            {
-                return Task.FromResult(this.State.Agreement2);
-            }
-            return Task.FromResult(string.Empty);
+        }
+
+        /// <summary>
+        ///     Gets the jby product paid amount asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int64&gt;.</returns>
+        public Task<long> GetJBYProductPaidAmountAsync()
+        {
+            return Task.FromResult(this.PaidAmount);
         }
 
         /// <summary>
@@ -97,11 +120,16 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
         public Task<JBYProductInfo> GetProductInfoAsync()
         {
+            if (this.State.ProductNo.IsNullOrEmpty())
+            {
+                return Task.FromResult<JBYProductInfo>(null);
+            }
+
             JBYProductInfo info = new JBYProductInfo
             {
+                Args = this.State.Args,
                 EndSellTime = this.State.EndSellTime,
                 FinancingSumAmount = this.State.FinancingSumAmount,
-                Info = new Dictionary<string, object>(),
                 IssueNo = this.State.IssueNo,
                 IssueTime = this.State.IssueTime,
                 PaidAmount = this.PaidAmount,
@@ -113,15 +141,14 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 SoldOutTime = this.State.SoldOutTime,
                 StartSellTime = this.State.StartSellTime,
                 UnitPrice = this.State.UnitPrice,
+                UpdateTime = this.State.UpdateTime,
                 ValueDateMode = this.State.ValueDateMode,
                 Yield = this.State.Yield
             };
 
-            if ((info.PaidAmount >= info.FinancingSumAmount || info.EndSellTime < DateTime.UtcNow.AddHours(8)) && !info.SoldOut)
+            if (info.PaidAmount >= info.FinancingSumAmount && !info.SoldOut)
             {
-#pragma warning disable 4014
-                this.SetToSoldOutAsync();
-#pragma warning restore 4014
+                this.SetToSoldOutAsync().Forget();
             }
 
             return Task.FromResult(info);
@@ -132,29 +159,30 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public async Task HitShelvesAsync(IssueJBYProduct command)
         {
-            await this.BeginProcessCommandAsync(command);
+            this.BeginProcessCommandAsync(command).Forget();
 
             if (this.State.Id == Guid.Empty)
             {
+                this.State.Id = command.ProductId;
                 this.State.Agreement1 = command.Agreement1;
                 this.State.Agreement2 = command.Agreement2;
                 this.State.Args = command.Args;
                 this.State.EndSellTime = command.EndSellTime;
                 this.State.FinancingSumAmount = command.FinancingSumAmount;
-                this.State.Info = new Dictionary<string, object>();
                 this.State.IssueNo = command.IssueNo;
                 this.State.IssueTime = command.IssueTime;
-                this.State.Transcations = new List<TranscationInfo>();
                 this.State.ProductCategory = command.ProductCategory;
+                this.State.ProductId = command.ProductId;
                 this.State.ProductName = command.ProductName;
                 this.State.ProductNo = command.ProductNo;
                 this.State.SoldOut = false;
                 this.State.SoldOutTime = null;
                 this.State.StartSellTime = command.StartSellTime;
+                this.State.Transcations = new Dictionary<Guid, JBYAccountTranscationInfo>();
                 this.State.UnitPrice = command.UnitPrice;
+                this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
                 this.State.ValueDateMode = command.ValueDateMode;
                 this.State.Yield = command.Yield;
 
@@ -170,7 +198,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public async Task SetToSoldOutAsync()
         {
-            if (this.State.SoldOut)
+            if (this.State.SoldOut && this.State.SoldOutTime.HasValue)
             {
                 return;
             }
@@ -184,41 +212,56 @@ namespace Yuyi.Jinyinmao.Domain.Products
         }
 
         /// <summary>
-        ///     Updates the sale information asynchronous.
+        ///     refresh as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task UpdateSaleInfoAsync(Models.JBYProduct product)
+        public async Task RefreshAsync()
         {
-            if (this.State.Id.ToGuidString() != product.ProductIdentifier)
+            if (!this.State.SoldOut || !this.State.SoldOutTime.HasValue)
             {
-                Dictionary<string, object> infos = JsonConvert.DeserializeObject<Dictionary<string, object>>(product.Info);
-                infos.Add("UpdateTime", DateTime.UtcNow.AddHours(8));
+                return;
+            }
 
-                this.State.Agreement1 = infos.First(kv => kv.Key == "Agreement1").ToString();
-                this.State.Agreement2 = infos.First(kv => kv.Key == "Agreement2").ToString();
-                this.State.Args = new Dictionary<string, object>();
-                this.State.EndSellTime = product.EndSellTime;
-                this.State.FinancingSumAmount = product.FinancingSumAmount;
-                this.State.Info = infos;
-                this.State.IssueNo = product.IssueNo;
-                this.State.IssueTime = product.IssueTime;
-                this.State.ProductCategory = product.ProductCategory;
-                this.State.ProductName = product.ProductName;
-                this.State.ProductNo = product.ProductNo;
-                this.State.SoldOut = product.SoldOut;
-                this.State.SoldOutTime = product.SoldOutTime;
-                this.State.StartSellTime = product.StartSellTime;
-                this.State.Transcations = new List<TranscationInfo>();
-                this.State.UnitPrice = product.UnitPrice;
-                this.State.ValueDateMode = product.ValueDateMode;
+            string productIdentifier = this.State.ProductId.ToGuidString();
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            Models.JBYProduct nextProduct;
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                nextProduct = await db.ReadonlyQuery<Models.JBYProduct>()
+                    .Where(p => p.ProductIdentifier != productIdentifier && p.IssueNo > this.State.IssueNo && !p.SoldOut && p.EndSellTime > now)
+                    .OrderBy(p => p.IssueNo).ThenBy(p => p.IssueTime).FirstOrDefaultAsync();
+            }
+
+            if (nextProduct != null && this.State.Id.ToGuidString() != nextProduct.ProductIdentifier)
+            {
+                Dictionary<string, object> i = JsonConvert.DeserializeObject<Dictionary<string, object>>(nextProduct.Info);
+
+                this.State.Id = Guid.ParseExact(nextProduct.ProductIdentifier, "N");
+                this.State.Agreement1 = i["Agreement1"].ToString();
+                this.State.Agreement2 = i["Agreement2"].ToString();
+                this.State.Args = JsonConvert.DeserializeObject<Dictionary<string, object>>(i["Args"].ToString());
+                this.State.EndSellTime = nextProduct.EndSellTime;
+                this.State.FinancingSumAmount = nextProduct.FinancingSumAmount;
+                this.State.IssueNo = nextProduct.IssueNo;
+                this.State.IssueTime = nextProduct.IssueTime;
+                this.State.ProductCategory = nextProduct.ProductCategory;
+                this.State.ProductId = Guid.ParseExact(nextProduct.ProductIdentifier, "N");
+                this.State.ProductName = nextProduct.ProductName;
+                this.State.ProductNo = nextProduct.ProductNo;
+                this.State.SoldOut = false;
+                this.State.SoldOutTime = null;
+                this.State.StartSellTime = nextProduct.StartSellTime;
+                this.State.Transcations = new Dictionary<Guid, JBYAccountTranscationInfo>();
+                this.State.UnitPrice = nextProduct.UnitPrice;
+                this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
+                this.State.ValueDateMode = nextProduct.ValueDateMode;
+                this.State.Yield = nextProduct.Yield;
             }
 
             await this.State.WriteStateAsync();
 
             await this.RaiseJBYPorductUpdatedEvent();
         }
-
-        #endregion IJBYProduct Members
 
         /// <summary>
         ///     Reload state data as an asynchronous operation.
@@ -230,6 +273,20 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.ReloadTranscationData();
         }
 
+        #endregion IJBYProduct Members
+
+        /// <summary>
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
+        /// </summary>
+        public override Task OnActivateAsync()
+        {
+            this.ReloadTranscationData();
+
+            return base.OnActivateAsync();
+        }
+
         private async Task RaiseJBYPorductUpdatedEvent()
         {
             JBYProductUpdated @event = new JBYProductUpdated
@@ -237,53 +294,44 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 Agreement1 = this.State.Agreement1,
                 Agreement2 = this.State.Agreement2,
                 Args = this.State.Args,
-                EndSellTime = this.State.EndSellTime,
-                FinancingSumAmount = this.State.FinancingSumAmount,
-                IssueNo = this.State.IssueNo,
-                IssueTime = this.State.IssueTime,
-                ProductCategory = this.State.ProductCategory,
-                ProductName = this.State.ProductName,
-                ProductNo = this.State.ProductNo,
-                ProductId = this.State.Id,
-                SourceId = this.State.Id.ToString(),
-                SourceType = this.GetType().Name,
-                StartSellTime = this.State.StartSellTime,
-                UnitPrice = this.State.UnitPrice,
-                ValueDateMode = this.State.ValueDateMode,
-                Yield = this.State.Yield
+                ProductInfo = await this.GetProductInfoAsync()
             };
 
-            await this.StoreEventAsync(@event);
-
-            await JBYProductUpdatedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         private async Task RaiseJBYProductIssuedEvent(IssueJBYProduct command)
         {
-            JBYProductIssued @event = new JBYProductIssued
+            JBYProductInfo info = new JBYProductInfo
             {
-                Agreement1 = command.Agreement1,
-                Agreement2 = command.Agreement2,
                 Args = command.Args,
                 EndSellTime = command.EndSellTime,
                 FinancingSumAmount = command.FinancingSumAmount,
                 IssueNo = command.IssueNo,
                 IssueTime = command.IssueTime,
+                PaidAmount = 0,
                 ProductCategory = command.ProductCategory,
                 ProductId = command.ProductId,
                 ProductName = command.ProductName,
                 ProductNo = command.ProductNo,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
+                SoldOut = false,
+                SoldOutTime = null,
                 StartSellTime = command.StartSellTime,
                 UnitPrice = command.UnitPrice,
+                UpdateTime = DateTime.MinValue,
                 ValueDateMode = command.ValueDateMode,
                 Yield = command.Yield
             };
 
-            await this.StoreEventAsync(@event);
+            JBYProductIssued @event = new JBYProductIssued
+            {
+                Agreement1 = command.Agreement1,
+                Agreement2 = command.Agreement2,
+                Args = command.Args,
+                ProductInfo = info
+            };
 
-            await JBYProductIssuedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         private async Task RaiseJBYProductSoldOutEvent()
@@ -291,33 +339,32 @@ namespace Yuyi.Jinyinmao.Domain.Products
             JBYProductSoldOut @event = new JBYProductSoldOut
             {
                 Args = this.State.Args,
-                EndSellTime = this.State.EndSellTime,
-                FinancingSumAmount = this.State.FinancingSumAmount,
-                Info = this.State.Info,
-                IssueNo = this.State.IssueNo,
-                IssueTime = this.State.IssueTime,
-                PaidAmount = this.PaidAmount,
-                ProductCategory = this.State.ProductCategory,
-                ProductId = this.State.Id,
-                ProductName = this.State.ProductName,
-                ProductNo = this.State.ProductNo,
-                SoldOut = this.State.SoldOut,
-                SoldOutTime = this.State.SoldOutTime.GetValueOrDefault(),
-                StartSellTime = this.State.StartSellTime,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                Transcations = this.State.Transcations,
-                UnitPrice = this.State.UnitPrice,
-                ValueDateMode = this.State.ValueDateMode,
-                Yield = this.State.Yield
+                ProductInfo = await this.GetProductInfoAsync(),
+                Transcations = this.State.Transcations.Values.ToList()
             };
 
-            await this.StoreEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         private void ReloadTranscationData()
         {
-            this.PaidAmount = this.State.Transcations.Sum(o => o.Amount);
+            this.PaidAmount = this.State.Transcations.Values.Sum(o => Convert.ToInt64(o.Amount));
+        }
+
+        /// <summary>
+        ///     process event as an asynchronous operation.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
+        private async Task ProcessEventAsync(Event @event)
+        {
+            @event.SourceId = this.State.Id.ToGuidString();
+            @event.SourceType = this.GetType().Name;
+            @event.TimeStamp = DateTime.UtcNow;
+
+            this.StoreEventAsync(@event).Forget();
+
+            await EventProcessing[@event.GetType()].Invoke(@event);
         }
     }
 }

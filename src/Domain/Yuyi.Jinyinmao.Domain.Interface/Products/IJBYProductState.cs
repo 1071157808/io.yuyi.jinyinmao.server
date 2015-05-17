@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  11:49 PM
+// Last Modified On : 2015-05-17  8:10 PM
 // ***********************************************************************
 // <copyright file="IJBYProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -23,13 +23,15 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public interface IJBYProductState : IEntityState
     {
         /// <summary>
-        ///     第一份协议内容，一般为委托协议内容
+        ///     Gets or sets the agreement1.
         /// </summary>
+        /// <value>The agreement1.</value>
         string Agreement1 { get; set; }
 
         /// <summary>
-        ///     第二份协议内容，一般为抵押协议内容
+        ///     Gets or sets the agreement2.
         /// </summary>
+        /// <value>The agreement2.</value>
         string Agreement2 { get; set; }
 
         /// <summary>
@@ -39,78 +41,99 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Dictionary<string, object> Args { get; set; }
 
         /// <summary>
-        ///     停售时间
+        ///     Gets or sets the end sell time.
         /// </summary>
+        /// <value>The end sell time.</value>
         DateTime EndSellTime { get; set; }
 
         /// <summary>
-        ///     最大融资额度，以“分”为单位
+        ///     Gets or sets the financing sum amount.
         /// </summary>
-        int FinancingSumAmount { get; set; }
+        /// <value>The financing sum amount.</value>
+        long FinancingSumAmount { get; set; }
 
         /// <summary>
-        ///     额外的业务数据
+        ///     Gets or sets the issue no.
         /// </summary>
-        Dictionary<string, object> Info { get; set; }
-
-        /// <summary>
-        ///     发行期数，可以重复，必须大于0
-        /// </summary>
+        /// <value>The issue no.</value>
         int IssueNo { get; set; }
 
         /// <summary>
-        ///     上线时间
+        ///     Gets or sets the issue time.
         /// </summary>
+        /// <value>The issue time.</value>
         DateTime IssueTime { get; set; }
 
         /// <summary>
-        ///     产品分类
+        ///     Gets or sets the product category.
         /// </summary>
+        /// <value>The product category.</value>
         long ProductCategory { get; set; }
 
         /// <summary>
-        ///     产品名称
+        /// Gets or sets the identifier.
         /// </summary>
+        /// <value>The identifier.</value>
+        Guid ProductId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the name of the product.
+        /// </summary>
+        /// <value>The name of the product.</value>
         string ProductName { get; set; }
 
         /// <summary>
-        ///     产品编号
+        ///     Gets or sets the product no.
         /// </summary>
+        /// <value>The product no.</value>
         string ProductNo { get; set; }
 
         /// <summary>
-        ///     是否售罄
+        ///     Gets or sets a value indicating whether [sold out].
         /// </summary>
+        /// <value><c>true</c> if [sold out]; otherwise, <c>false</c>.</value>
         bool SoldOut { get; set; }
 
         /// <summary>
-        ///     实际售罄时间
+        ///     Gets or sets the sold out time.
         /// </summary>
+        /// <value>The sold out time.</value>
         DateTime? SoldOutTime { get; set; }
 
         /// <summary>
-        ///     开售时间
+        ///     Gets or sets the start sell time.
         /// </summary>
+        /// <value>The start sell time.</value>
         DateTime StartSellTime { get; set; }
 
         /// <summary>
-        ///     JBY交易流水
+        ///     Gets or sets the transcations.
         /// </summary>
-        List<TranscationInfo> Transcations { get; set; }
+        /// <value>The transcations.</value>
+        Dictionary<Guid, JBYAccountTranscationInfo> Transcations { get; set; }
 
         /// <summary>
-        ///     单价，以“分”为单位，10000即每份100元
+        ///     Gets or sets the unit price.
         /// </summary>
+        /// <value>The unit price.</value>
         int UnitPrice { get; set; }
 
         /// <summary>
-        ///     起息方式
+        /// Gets or sets the update time.
         /// </summary>
+        /// <value>The update time.</value>
+        DateTime UpdateTime { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the value date mode.
+        /// </summary>
+        /// <value>The value date mode.</value>
         int ValueDateMode { get; set; }
 
         /// <summary>
-        ///     收益率，以“万分之一”为单位
+        ///     Gets or sets the yield.
         /// </summary>
+        /// <value>The yield.</value>
         int Yield { get; set; }
     }
 }

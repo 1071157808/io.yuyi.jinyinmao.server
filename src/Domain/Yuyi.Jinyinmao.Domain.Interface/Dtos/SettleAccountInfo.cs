@@ -1,21 +1,24 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-04  3:06 AM
+// Created          : 2015-05-18  2:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  1:28 PM
+// Last Modified On : 2015-05-18  2:07 AM
 // ***********************************************************************
-// <copyright file="SettleAccountInfo.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SettleAccountInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
+
+using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
     ///     SettleAccountInfo.
     /// </summary>
+    [Immutable]
     public class SettleAccountInfo
     {
         /// <summary>

@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  2:44 PM
+// Last Modified On : 2015-05-17  7:56 PM
 // ***********************************************************************
-// <copyright file="UserAuthController.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -16,7 +16,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
@@ -52,67 +51,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             this.userInfoService = userInfoService;
             this.userService = userService;
             this.veriCodeService = veriCodeService;
-        }
-
-        /// <summary>
-        ///     实名认证（通过银联）
-        /// </summary>
-        /// <remarks>
-        ///     实名认证必须先设置支付密码
-        ///     <br />
-        ///     实名认证过程会绑定一张银行卡，同时将该卡设置为默认银行卡
-        /// </remarks>
-        /// <param name="request">
-        ///     实名认证请求
-        /// </param>
-        /// <response code="200">认证成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UAA1:无法开通快捷支付功能</response>
-        /// <response code="400">UAA2:请先设置支付密码</response>
-        /// <response code="400">UAA3:已经通过实名认证</response>
-        /// <response code="400">UAA4:正在进行实名认证，请耐心等待</response>
-        /// <response code="401">UAUTH1:请先登录</response>
-        /// <response code="500"></response>
-        [Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> Authenticate(AuthenticationRequest request)
-        {
-            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-
-            if (userInfo == null)
-            {
-                this.Trace.Warn(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UAA1:无法开通快捷支付功能");
-            }
-
-            if (!userInfo.HasSetPaymentPassword)
-            {
-                return this.BadRequest("UAA2:请先设置支付密码");
-            }
-
-            if (userInfo.Verified)
-            {
-                return this.BadRequest("UAA3:已经通过实名认证");
-            }
-
-            if (userInfo.RealName.IsNotNullOrEmpty() && !userInfo.Verified)
-            {
-                return this.BadRequest("UAA4:正在进行实名认证，请耐心等待");
-            }
-
-            await this.userService.AuthenticateAsync(new Authenticate
-            {
-                Args = this.BuildArgs(),
-                BankCardNo = request.BankCardNo,
-                BankName = request.BankName,
-                Cellphone = userInfo.Cellphone,
-                CityName = request.CityName,
-                Credential = request.Credential,
-                CredentialNo = request.CredentialNo,
-                RealName = request.RealName,
-                UserId = this.CurrentUser.Id
-            });
-
-            return this.Ok();
         }
 
         /// <summary>

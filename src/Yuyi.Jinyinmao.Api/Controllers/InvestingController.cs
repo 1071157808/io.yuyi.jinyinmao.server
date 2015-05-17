@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  2:31 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  9:24 PM
+// Last Modified On : 2015-05-12  2:28 AM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -128,7 +128,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI7:购买失败");
             }
 
-            return this.Ok(info.ToResponse());
+            return this.Ok(info.ToTranscationInfoResponse());
         }
 
         /// <summary>

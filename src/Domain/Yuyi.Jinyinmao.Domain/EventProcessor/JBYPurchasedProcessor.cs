@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  9:57 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  10:25 PM
+// Last Modified On : 2015-05-18  2:49 AM
 // ***********************************************************************
 // <copyright file="JBYPurchasedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,14 +12,10 @@
 // ***********************************************************************
 
 using System;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Events;
-using Yuyi.Jinyinmao.Domain.Models;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     JBYPurchasedProcessor.
@@ -37,33 +33,17 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         {
             await this.ProcessingEventAsync(@event, async e =>
             {
-                string message = Resources.Sms_JBYPurchased.FormatWith(e.JBYTranscation.Amount / 100);
-                if (!await this.SmsService.SendMessageAsync(e.JBYTranscation.Cellphone, message))
+                string message = Resources.Sms_JBYPurchased.FormatWith(e.JBYTranscationInfo.Amount / 100);
+                if (!await this.SmsService.SendMessageAsync(e.UserInfo.Cellphone, message))
                 {
-                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.JBYTranscation.Cellphone, message));
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.UserInfo.Cellphone, message));
                 }
             });
 
             await this.ProcessingEventAsync(@event, async e =>
             {
-                JBYTranscation jbyTranscation = e.JBYTranscation.ToDBJBYTranscationModel(e.SettleTranscation.TransactionId, e.Args);
-
-                AccountTranscation accountTranscation = e.SettleTranscation.ToDBAccountTranscationModel(e.Args);
-
-                using (JYMDBContext db = new JYMDBContext())
-                {
-                    if (!await db.ReadonlyQuery<JBYTranscation>().AnyAsync(t => t.TranscationIdentifier == jbyTranscation.TranscationIdentifier))
-                    {
-                        db.Add(jbyTranscation);
-                    }
-
-                    if (!await db.ReadonlyQuery<AccountTranscation>().AnyAsync(t => t.TranscationIdentifier == accountTranscation.TranscationIdentifier))
-                    {
-                        db.Add(accountTranscation);
-                    }
-
-                    await db.ExecuteSaveChangesAsync();
-                }
+                await DBSyncHelper.SyncJBYAccountTranscation(e.JBYTranscationInfo);
+                await DBSyncHelper.SyncSettleAccountTranscation(e.SettleTranscationInfo);
             });
 
             await base.ProcessEventAsync(@event);

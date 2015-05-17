@@ -4,10 +4,10 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  1:54 AM
+// Last Modified On : 2015-05-15  9:52 PM
 // ***********************************************************************
-// <copyright file="EventProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="EventProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -71,9 +71,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="event">The event.</param>
         /// <param name="processing">The processing.</param>
         /// <returns>Task.</returns>
-        protected virtual Task ProcessingEventAsync(TEvent @event, Func<TEvent, Task> processing)
+        protected Task ProcessingEventAsync(TEvent @event, Func<TEvent, Task> processing)
         {
-            return Task.Factory.StartNew(async () =>
+            Task.Factory.StartNew(async () =>
             {
                 try
                 {
@@ -83,7 +83,9 @@ namespace Yuyi.Jinyinmao.Domain
                 {
                     this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
                 }
-            });
+            }).Forget(e => this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e));
+
+            return TaskDone.Done;
         }
     }
 }

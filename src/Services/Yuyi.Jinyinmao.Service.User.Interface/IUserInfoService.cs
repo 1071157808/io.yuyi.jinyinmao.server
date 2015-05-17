@@ -65,6 +65,31 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId);
 
         /// <summary>
+        /// Gets the jby account information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;JBYAccountInfo&gt;.</returns>
+        Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId);
+
+        /// <summary>
+        /// Gets the jby account transcation information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        Task<TranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId);
+
+        /// <summary>
+        /// Gets the jby account transcation infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+
+        Task<PaginatedList<TranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize);
+
+        /// <summary>
         ///     Gets the order infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>

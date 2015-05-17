@@ -129,6 +129,15 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the jby product paid amount asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int64&gt;.</returns>
+        public Task<long> GetJBYProductPaidAmountAsync()
+        {
+            return this.innerService.GetJBYProductPaidAmountAsync();
+        }
+
+        /// <summary>
         ///     Gets the product information asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
@@ -175,7 +184,7 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public Task<int> GetProductPaidAmountAsync(Guid productId)
+        public Task<long> GetProductPaidAmountAsync(Guid productId)
         {
             return this.innerService.GetProductPaidAmountAsync(productId);
         }

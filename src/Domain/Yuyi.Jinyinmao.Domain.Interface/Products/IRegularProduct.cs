@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  12:26 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  1:58 AM
+// Last Modified On : 2015-05-18  12:37 AM
 // ***********************************************************************
-// <copyright file="IRegularProduct.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -26,10 +26,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Builds the order asynchronous.
         /// </summary>
+        /// <param name="commnad">The commnad.</param>
         /// <param name="userInfo">The user information.</param>
         /// <param name="transcationInfo">The transcation information.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> BuildOrderAsync(UserInfo userInfo, TranscationInfo transcationInfo);
+        Task<OrderInfo> BuildOrderAsync(RegularInvesting commnad, UserInfo userInfo, SettleAccountTranscationInfo transcationInfo);
 
         /// <summary>
         ///     Gets the agreement asynchronous.
@@ -42,7 +43,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets the product paid amount asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int> GetProductPaidAmountAsync();
+        Task<long> GetProductPaidAmountAsync();
 
         /// <summary>
         ///     Gets the regular product information asynchronous.
@@ -58,9 +59,21 @@ namespace Yuyi.Jinyinmao.Domain
         Task HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
+        /// Reloads the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task ReloadAsync();
+
+        /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task RepayAsync();
+
+        /// <summary>
+        ///     Sets to sold out asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task SetToSoldOutAsync();
     }
 }

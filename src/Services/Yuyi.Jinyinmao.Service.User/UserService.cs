@@ -4,10 +4,10 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  3:58 PM
+// Last Modified On : 2015-05-12  3:23 AM
 // ***********************************************************************
-// <copyright file="UserService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -156,6 +156,42 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetBankCardInfosAsync();
+        }
+
+        /// <summary>
+        ///     Gets the jby account information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;JBYAccountInfo&gt;.</returns>
+        public Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetJBYAccountInfoAsync();
+        }
+
+        /// <summary>
+        ///     Gets the jby account transcation information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        public Task<TranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetJBYAccountTranscationInfoAsync(transcationId);
+        }
+
+        /// <summary>
+        ///     Gets the jby account transcation infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<TranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetJBYAccountTranscationInfosAsync(pageIndex, pageSize);
         }
 
         /// <summary>
@@ -322,7 +358,18 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The withdrawal.</param>
         /// <returns>Task.</returns>
-        public Task WithdrawalAsync(Withdrawal command)
+        public Task<TranscationInfo> WithdrawalAsync(Withdrawal command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.WithdrawalAsync(command);
+        }
+
+        /// <summary>
+        /// Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
+        public Task<TranscationInfo> WithdrawalAsync(JBYWithdrawal command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.WithdrawalAsync(command);

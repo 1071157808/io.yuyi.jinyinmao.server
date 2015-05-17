@@ -98,6 +98,18 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int InvestingPrincipal { get; set; }
 
         /// <summary>
+        ///     金包银计息金额
+        /// </summary>
+        [Required, JsonProperty("jBYAccrualAmount")]
+        public int JBYAccrualAmount { get; set; }
+
+        /// <summary>
+        ///     金包银可取现金额
+        /// </summary>
+        [Required, JsonProperty("jBYWithdrawalableAmount")]
+        public int JBYWithdrawalableAmount { get; set; }
+
+        /// <summary>
         /// 当月取款次数
         /// </summary>
         [Required, JsonProperty("monthWithdrawalCount")]
@@ -120,6 +132,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("registerTime")]
         public DateTime RegisterTime { get; set; }
+
+        /// <summary>
+        ///     当天金包银已经申请体现的总额
+        /// </summary>
+        [Required, JsonProperty("todayJBYWithdrawalAmount")]
+        public int TodayJBYWithdrawalAmount { get; set; }
 
         /// <summary>
         /// 当天取款次数
@@ -170,13 +188,16 @@ namespace Yuyi.Jinyinmao.Api.Models
                 HasSetPaymentPassword = info.HasSetPaymentPassword,
                 InvestingInterest = info.InvestingInterest,
                 InvestingPrincipal = info.InvestingPrincipal,
+                JBYAccrualAmount = info.JBYAccrualAmount,
+                JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
                 MonthWithdrawalCount = info.MonthWithdrawalCount,
                 PasswordErrorCount = info.PasswordErrorCount,
                 RealName = info.RealName,
                 RegisterTime = info.RegisterTime,
-                TodayWithdrawalCount = info.TodayWithdrawalCount,
                 TotalInterest = info.TotalInterest,
+                TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount,
                 TotalPrincipal = info.TotalPrincipal,
+                TodayWithdrawalCount = info.TodayWithdrawalCount,
                 UserIdentifier = info.UserId.ToGuidString(),
                 Verified = info.Verified
             };

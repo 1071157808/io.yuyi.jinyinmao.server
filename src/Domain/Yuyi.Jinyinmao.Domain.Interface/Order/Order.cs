@@ -29,6 +29,12 @@ namespace Yuyi.Jinyinmao.Domain
         public Guid AccountTranscationId { get; set; }
 
         /// <summary>
+        /// Gets or sets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        public Dictionary<string, object> Args { get; set; }
+
+        /// <summary>
         ///     Gets or sets the cellphone.
         /// </summary>
         /// <value>The cellphone.</value>
@@ -45,12 +51,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The extra yield.</value>
         public int ExtraYield { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the information.
-        /// </summary>
-        /// <value>The information.</value>
-        public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
         ///     Gets or sets the interest.

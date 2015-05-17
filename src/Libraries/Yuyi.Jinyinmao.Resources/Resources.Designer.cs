@@ -61,24 +61,6 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败。失败原因：{1}。如需帮助，请致电4008556333.
-        /// </summary>
-        public static string Sms_AddBankCardFailed {
-            get {
-                return ResourceManager.GetString("Sms_AddBankCardFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功。现在即可开始购买。如非本人操作，请致电4008556333.
-        /// </summary>
-        public static string Sms_AddBankCardSuccessed {
-            get {
-                return ResourceManager.GetString("Sms_AddBankCardSuccessed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】.
         /// </summary>
         public static string Sms_DepositFailed {
@@ -124,6 +106,24 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 您的登录密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】.
+        /// </summary>
+        public static string Sms_ResetLoginPawword {
+            get {
+                return ResourceManager.GetString("Sms_ResetLoginPawword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 您的支付密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】.
+        /// </summary>
+        public static string Sms_ResetPaymentPawword {
+            get {
+                return ResourceManager.GetString("Sms_ResetPaymentPawword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 恭喜您成功注册金银猫。如非本人操作，请致电4008556333.
         /// </summary>
         public static string Sms_SignUpSuccessful {
@@ -165,6 +165,24 @@ namespace Yuyi.Jinyinmao {
         public static string Sms_VeriCode_SignUp {
             get {
                 return ResourceManager.GetString("Sms_VeriCode_SignUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡绑定失败。失败原因：{1}。如需帮助，请致电4008556333.
+        /// </summary>
+        public static string Sms_VerifyBankCardFailed {
+            get {
+                return ResourceManager.GetString("Sms_VerifyBankCardFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功。现在即可开始购买。如非本人操作，请致电4008556333.
+        /// </summary>
+        public static string Sms_VerifyBankCardSuccessed {
+            get {
+                return ResourceManager.GetString("Sms_VerifyBankCardSuccessed", resourceCulture);
             }
         }
         

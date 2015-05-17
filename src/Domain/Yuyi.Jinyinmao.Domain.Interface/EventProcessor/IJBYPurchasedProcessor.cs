@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  9:56 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  9:57 PM
+// Last Modified On : 2015-05-18  12:19 AM
 // ***********************************************************************
 // <copyright file="IJBYPurchasedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,9 +13,8 @@
 
 using System.Threading.Tasks;
 using Orleans;
-using Yuyi.Jinyinmao.Domain.Events;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     Interface IJBYPurchasedProcessor

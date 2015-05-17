@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  10:55 PM
+// Last Modified On : 2015-05-18  3:40 AM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,15 +13,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.EventProcessor;
 using Yuyi.Jinyinmao.Domain.Events;
-using Yuyi.Jinyinmao.Service;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -31,135 +27,107 @@ namespace Yuyi.Jinyinmao.Domain
     public partial class User
     {
         /// <summary>
-        ///     Raises the add bank card resulted event.
+        ///     The event processing
         /// </summary>
-        /// <param name="dto">The AddBankCardSagaInitDto.</param>
-        /// <param name="result">The result.</param>
-        /// <param name="isDefault">if set to <c>true</c> [is default].</param>
-        /// <returns>Task.</returns>
-        private async Task RaiseAddBankCardResultedEvent(AddBankCardSagaInitDto dto, YilianRequestResult result, bool isDefault)
+        private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
         {
-            AddBankCardResulted @event = new AddBankCardResulted
-            {
-                Args = dto.Command.Args,
-                BankCardNo = dto.Command.BankCardNo,
-                BankName = dto.Command.BankName,
-                CanBeUsedByYilian = true,
-                Cellphone = this.State.Cellphone,
-                CityName = dto.Command.CityName,
-                IsDefault = isDefault,
-                Result = result.Result,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                TranDesc = result.Message,
-                UserId = this.State.Id,
-                Verified = result.Result,
-                VerifiedTime = DateTime.UtcNow.AddHours(8)
-            };
-            await this.StoreEventAsync(@event);
+            { typeof(BankCardAdded), e => BankCardAddedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((BankCardAdded)e) },
+            { typeof(AuthenticateResulted), e => AuthenticateResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((AuthenticateResulted)e) },
+            { typeof(VerifyBankCardResulted), e => VerifyBankCardResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((VerifyBankCardResulted)e) },
+            { typeof(PayingByYilian), e => PayingByYilianProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((PayingByYilian)e) },
+            { typeof(DepositResulted), e => DepositResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((DepositResulted)e) },
+            { typeof(JBYPurchased), e => JBYPurchasedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYPurchased)e) },
+            { typeof(OrderPaid), e => OrderPaidProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((OrderPaid)e) },
+            { typeof(UserRegistered), e => UserRegisteredProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((UserRegistered)e) },
+            { typeof(OrderRepaid), e => OrderRepaidProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((OrderRepaid)e) },
+            { typeof(LoginPasswordReset), e => LoginPasswordResetProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((LoginPasswordReset)e) },
+            { typeof(PaymentPasswordReset), e => PaymentPasswordResetProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((PaymentPasswordReset)e) },
+            { typeof(PaymentPasswordSet), e => PaymentPasswordSetProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((PaymentPasswordSet)e) },
+            { typeof(WithdrawalAccepted), e => WithdrawalAcceptedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalAccepted)e) },
+            { typeof(WithdrawalResulted), e => WithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalResulted)e) }
+        };
 
-            await AddBankCardResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        /// <summary>
+        ///     Raises the bank card added event.
+        /// </summary>
+        /// <param name="addBankCardCommand">The add bank card command.</param>
+        /// <param name="bankCardInfo">The bank card information.</param>
+        /// <returns>Task.</returns>
+        public async Task RaiseBankCardAddedEvent(AddBankCard addBankCardCommand, BankCardInfo bankCardInfo)
+        {
+            BankCardAdded @event = new BankCardAdded
+            {
+                Args = addBankCardCommand.Args,
+                BankCardInfo = bankCardInfo,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
-        ///     Raises the apply for authentication resulted event.
+        ///     Stores the event asynchronous.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
+        private async Task ProcessEventAsync(Event @event)
+        {
+            @event.SourceId = this.State.Id.ToGuidString();
+            @event.SourceType = this.GetType().Name;
+            @event.TimeStamp = DateTime.UtcNow;
+
+            this.StoreEventAsync(@event).Forget();
+
+            await EventProcessing[@event.GetType()].Invoke(@event);
+        }
+
+        /// <summary>
+        ///     Raises the authentication resulted event.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <param name="result">The result.</param>
+        /// <param name="bankCardInfo">The bank card information.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseApplyForAuthenticationResultedEvent(Authenticate command, YilianRequestResult result)
+        private async Task RaiseAuthenticationResultedEvent(Authenticate command, BankCardInfo bankCardInfo, bool result, string message)
         {
-            DateTime now = DateTime.UtcNow.AddHours(8);
-
             AuthenticateResulted @event = new AuthenticateResulted
             {
                 Args = command.Args,
-                Cellphone = command.Cellphone,
-                Credential = command.Credential,
-                CredentialNo = command.CredentialNo,
-                RealName = command.RealName,
-                Result = result.Result,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                TranDesc = result.Message,
-                UserId = this.State.Id,
-                Verified = result.Result,
-                VerifiedTime = now
-            };
-
-            await this.StoreEventAsync(@event);
-
-            await AuthenticateResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
-
-            await this.RaiseAddBankCardResultedEvent(new AddBankCardSagaInitDto
-            {
-                Command = new AddBankCard
-                {
-                    Args = command.Args,
-                    BankCardNo = command.BankCardNo,
-                    BankName = command.BankName,
-                    CityName = command.CityName,
-                    CommandId = command.CommandId,
-                    UserId = this.State.Id
-                },
+                BankCardInfo = bankCardInfo,
+                Result = result,
+                TranDesc = message,
                 UserInfo = await this.GetUserInfoAsync()
-            }, result, true);
-        }
-
-        /// <summary>
-        ///     Raises the deposit resulted event.
-        /// </summary>
-        /// <param name="dto">The DepositFromYilianSagaInitDto.</param>
-        /// <param name="result">The result.</param>
-        /// <returns>Task.</returns>
-        private async Task RaiseDepositResultedEvent(DepositFromYilianSagaInitDto dto, YilianRequestResult result)
-        {
-            Transcation transcation = this.State.SettleAccount.First(t => t.TransactionId == dto.TranscationInfo.TransactionId);
-
-            DepositFromYilianResulted @event = new DepositFromYilianResulted
-            {
-                Amount = dto.Command.Amount,
-                Args = dto.Command.Args,
-                BankCardNo = dto.BackCardInfo.BankCardNo,
-                BankName = dto.BackCardInfo.BankName,
-                Cellphone = dto.UserInfo.Cellphone,
-                ChannalCode = transcation.ChannelCode,
-                CityName = dto.BackCardInfo.CityName,
-                Credential = dto.UserInfo.Credential,
-                CredentialNo = dto.UserInfo.CredentialNo,
-                RealName = dto.UserInfo.RealName,
-                Result = result.Result,
-                ResultCode = transcation.ResultCode,
-                ResultTime = transcation.ResultTime.GetValueOrDefault(),
-                SettleAccountBalance = this.SettleAccountBalance,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                Trade = transcation.Trade,
-                TranscationId = transcation.TransactionId,
-                TranscationTime = transcation.TransactionTime,
-                TransDesc = transcation.TransDesc,
-                UserId = this.State.Id
             };
 
-            await this.StoreEventAsync(@event);
-
-            await DepositFromYilianResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseJBYPurchasedEvent(JBYInvesting command, TranscationInfo jbyTranscation, TranscationInfo settleTranscation)
+        private async Task RaiseDepositResultedEvent(Command command, SettleAccountTranscationInfo info, bool result, string message)
+        {
+            DepositResulted @event = new DepositResulted
+            {
+                Args = command.Args,
+                Result = result,
+                TransDesc = message,
+                TranscationInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseJBYPurchasedEvent(JBYInvesting command, JBYAccountTranscationInfo jbyTranscation, SettleAccountTranscationInfo settleTranscation)
         {
             JBYPurchased @event = new JBYPurchased
             {
                 Args = command.Args,
-                JBYTranscation = jbyTranscation,
-                SettleTranscation = settleTranscation,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name
+                JBYTranscationInfo = jbyTranscation,
+                SettleTranscationInfo = settleTranscation,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
-            await this.StoreEventAsync(@event);
-
-            await JBYPurchasedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
@@ -172,35 +140,28 @@ namespace Yuyi.Jinyinmao.Domain
             LoginPasswordReset @event = new LoginPasswordReset
             {
                 Args = command.Args,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name
+                UserInfo = await this.GetUserInfoAsync()
             };
 
-            await this.StoreEventAsync(@event);
-
-            await LoginPasswordResetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
         ///     Raises the order built event.
         /// </summary>
-        /// <param name="order">The order.</param>
-        /// <param name="transcation">The transcation.</param>
+        /// <param name="orderInfo">The order information.</param>
+        /// <param name="transcationInfo">The transcation information.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseOrderPaidEvent(OrderInfo order, TranscationInfo transcation)
+        private async Task RaiseOrderPaidEvent(OrderInfo orderInfo, SettleAccountTranscationInfo transcationInfo)
         {
             OrderPaid @event = new OrderPaid
             {
                 Args = new Dictionary<string, object>(),
-                Order = order,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                Transcation = transcation
+                OrderInfo = orderInfo,
+                TranscationInfo = transcationInfo
             };
 
-            await this.StoreEventAsync(@event);
-
-            await OrderPaidProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
@@ -209,7 +170,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="orderInfo">The order information.</param>
         /// <param name="principalTranscationInfo">The principal transcation information.</param>
         /// <param name="interestTranscationInfo">The interest transcation information.</param>
-        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo, TranscationInfo principalTranscationInfo, TranscationInfo interestTranscationInfo)
+        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo, SettleAccountTranscationInfo principalTranscationInfo, SettleAccountTranscationInfo interestTranscationInfo)
         {
             OrderRepaid @event = new OrderRepaid
             {
@@ -219,13 +180,10 @@ namespace Yuyi.Jinyinmao.Domain
                 PriIntSumAmount = principalTranscationInfo.Amount + interestTranscationInfo.Amount,
                 PrincipalTranscationInfo = principalTranscationInfo,
                 RepaidTime = orderInfo.ResultTime.GetValueOrDefault(),
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name
+                UserInfo = await this.GetUserInfoAsync()
             };
 
-            await this.StoreEventAsync(@event);
-
-            await OrderRepaidProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
@@ -235,80 +193,76 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         private async Task RaisePaymentPasswordSetEvent(SetPaymentPassword command)
         {
+            Event @event;
             if (command.Override)
             {
-                PaymentPasswordReset @event = new PaymentPasswordReset
+                @event = new PaymentPasswordReset
                 {
                     Args = command.Args,
-                    SourceId = this.State.Id.ToGuidString(),
-                    SourceType = this.GetType().Name
+                    UserInfo = await this.GetUserInfoAsync()
                 };
-
-                await this.StoreEventAsync(@event);
-
-                await PaymentPasswordResetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
             }
             else
             {
-                PaymentPasswordSet @event = new PaymentPasswordSet
+                @event = new PaymentPasswordSet
                 {
                     Args = command.Args,
-                    SourceId = this.State.Id.ToGuidString(),
-                    SourceType = this.GetType().Name
+                    UserInfo = await this.GetUserInfoAsync()
                 };
-
-                await this.StoreEventAsync(new PaymentPasswordSet
-                {
-                    Args = command.Args,
-                    SourceId = this.State.Id.ToGuidString(),
-                    SourceType = this.GetType().Name
-                });
-
-                await PaymentPasswordSetProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
             }
+
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
         ///     Raises the user registered event.
         /// </summary>
-        /// <param name="userRegister">The user register.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseUserRegisteredEvent(UserRegister userRegister)
+        private async Task RaiseUserRegisteredEvent(UserRegister command)
         {
             UserRegistered @event = new UserRegistered
             {
-                Args = userRegister.Args,
-                Cellphone = this.State.Cellphone,
-                ClientType = this.State.ClientType,
-                ContractId = this.State.ContractId,
-                InviteBy = this.State.InviteBy,
-                LoginNames = this.State.LoginNames,
-                OutletCode = userRegister.OutletCode,
-                RegisterTime = this.State.RegisterTime,
-                UserId = userRegister.UserId,
-                SourceId = this.GetPrimaryKey().ToGuidString(),
-                SourceType = this.GetType().Name
+                Args = command.Args,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
-            await this.StoreEventAsync(@event);
-
-            await UserRegisteredProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseWithdrawalAcceptedEvent(Withdrawal command, Transcation transcation, Transcation chargeTranscation)
+        /// <summary>
+        ///     Raises the verify bank card resulted event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="bankCardInfo">The bank card information.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseVerifyBankCardResultedEvent(VerifyBankCard command, BankCardInfo bankCardInfo, bool result, string message)
+        {
+            VerifyBankCardResulted @event = new VerifyBankCardResulted
+            {
+                Args = command.Args,
+                BankCardInfo = bankCardInfo,
+                Result = result,
+                TranDesc = message,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseWithdrawalAcceptedEvent(Withdrawal command, SettleAccountTranscationInfo transcation, SettleAccountTranscationInfo chargeTranscation)
         {
             WithdrawalAccepted @event = new WithdrawalAccepted
             {
                 Args = command.Args,
-                ChargeTranscation = chargeTranscation.ToInfo(),
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                WithdrawalTranscation = transcation.ToInfo()
+                ChargeTranscation = chargeTranscation,
+                UserInfo = await this.GetUserInfoAsync(),
+                WithdrawalTranscation = transcation
             };
 
-            await this.StoreEventAsync(@event);
-
-            await WithdrawalAcceptedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+            await this.ProcessEventAsync(@event);
         }
 
         /// <summary>
@@ -316,37 +270,28 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="transcation">The transcation.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseWithdrawalResultedEvent(Transcation transcation)
+        private async Task RaiseWithdrawalResultedEvent(SettleAccountTranscationInfo transcation)
         {
-            BankCardInfo info = await this.GetBankCardInfoAsync(transcation.BankCardNo);
-
             WithdrawalResulted @event = new WithdrawalResulted
             {
-                Amount = transcation.Amount,
                 Args = new Dictionary<string, object>(),
-                BankCardNo = transcation.BankCardNo,
-                BankName = info.BankName,
-                Cellphone = this.State.Cellphone,
-                CityName = info.CityName,
-                Credential = this.State.Credential,
-                CredentialNo = this.State.CredentialNo,
-                RealName = this.State.RealName,
-                Result = transcation.ResultCode == 1,
-                ResultCode = transcation.ResultCode,
-                ResultTime = transcation.ResultTime.GetValueOrDefault(),
-                SettleAccountBalance = this.SettleAccountBalance,
-                SourceId = this.State.Id.ToGuidString(),
-                SourceType = this.GetType().Name,
-                Trade = transcation.Trade,
-                TransDesc = transcation.TransDesc,
-                TranscationId = transcation.TransactionId,
-                TranscationTime = transcation.TransactionTime,
-                UserId = this.State.Id
+                UserInfo = await this.GetUserInfoAsync(),
+                WithdrawalTranscationInfo = transcation
             };
 
-            await this.StoreEventAsync(@event);
+            await this.ProcessEventAsync(@event);
+        }
 
-            await WithdrawalResultedProcessorFactory.GetGrain(@event.EventId).ProcessEventAsync(@event);
+        private async Task RaisePayingByYilianEvent(PayByYilian command, SettleAccountTranscationInfo transcationInfo)
+        {
+            PayingByYilian @event = new PayingByYilian
+            {
+                Args = command.Args,
+                TranscationInfo = transcationInfo,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
         }
     }
 }

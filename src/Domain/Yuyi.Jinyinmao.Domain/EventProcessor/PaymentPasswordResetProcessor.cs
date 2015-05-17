@@ -1,24 +1,48 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:54 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  11:55 PM
+// Last Modified On : 2015-05-18  3:22 AM
 // ***********************************************************************
-// <copyright file="PaymentPasswordResetProcessor.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="PaymentPasswordResetProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using Yuyi.Jinyinmao.Domain.Events;
+using System;
+using System.Threading.Tasks;
+using Moe.Lib;
 
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
     ///     PaymentPasswordResetProcessor.
     /// </summary>
     public class PaymentPasswordResetProcessor : EventProcessor<PaymentPasswordReset>, IPaymentPasswordResetProcessor
     {
+        #region IPaymentPasswordResetProcessor Members
+
+        /// <summary>
+        ///     Processes the event.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
+        public override async Task ProcessEventAsync(PaymentPasswordReset @event)
+        {
+            await this.ProcessingEventAsync(@event, async e =>
+            {
+                string message = Resources.Sms_ResetLoginPawword;
+                if (!await this.SmsService.SendMessageAsync(e.UserInfo.Cellphone, message))
+                {
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.UserInfo.Cellphone, message));
+                }
+            });
+
+            await base.ProcessEventAsync(@event);
+        }
+
+        #endregion IPaymentPasswordResetProcessor Members
     }
 }

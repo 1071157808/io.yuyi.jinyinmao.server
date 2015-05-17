@@ -534,6 +534,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
     using Orleans;
     using Yuyi.Jinyinmao.Domain;
     using System.Runtime.InteropServices;
+    using Yuyi.Jinyinmao.Packages.Helper;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -554,7 +555,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public DateTime @EndSellTime { get; set; }
 
-            public Int32 @FinancingSumAmount { get; set; }
+            public Int64 @FinancingSumAmount { get; set; }
 
             public Dictionary<String,Object> @Info { get; set; }
 
@@ -591,7 +592,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 if (values.TryGetValue("Agreement2", out value)) @Agreement2 = (String) value;
                 if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("EndSellTime", out value)) @EndSellTime = (DateTime) value;
-                if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Info", out value)) @Info = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("IssueNo", out value)) @IssueNo = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueTime", out value)) @IssueTime = (DateTime) value;
@@ -650,7 +651,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.Agreement2 = default(String);
             this.Args = new Dictionary<String,Object>();
             this.EndSellTime = default(DateTime);
-            this.FinancingSumAmount = default(Int32);
+            this.FinancingSumAmount = default(Int64);
             this.Info = new Dictionary<String,Object>();
             this.IssueNo = default(Int32);
             this.IssueTime = default(DateTime);
@@ -684,6 +685,95 @@ namespace Yuyi.Jinyinmao.Domain.Products
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             JBYProductState result = new JBYProductState();
+            result.DeserializeFrom(stream);
+            return result;
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [SerializableAttribute()]
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Products.Yuyi.Jinyinmao.Domain.Products.JBYProductWithdrawa" +
+        "lManager")]
+    public class JBYProductWithdrawalManagerState : global::Orleans.CodeGeneration.GrainState, IJBYProductWithdrawalManagerState
+    {
+        
+
+            public Guid @Id { get; set; }
+
+            public DateTime @Date { get; set; }
+
+            public String @DateString { get; set; }
+
+            public DailyConfig @LastWorkDayConfig { get; set; }
+
+            public DailyConfig @TodayConfig { get; set; }
+
+            public List<TranscationInfo> @WithdrawalTranscations { get; set; }
+
+            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
+            {   
+                object value;
+                if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("Date", out value)) @Date = (DateTime) value;
+                if (values.TryGetValue("DateString", out value)) @DateString = (String) value;
+                if (values.TryGetValue("LastWorkDayConfig", out value)) @LastWorkDayConfig = (DailyConfig) value;
+                if (values.TryGetValue("TodayConfig", out value)) @TodayConfig = (DailyConfig) value;
+                if (values.TryGetValue("WithdrawalTranscations", out value)) @WithdrawalTranscations = (List<TranscationInfo>) value;
+            }
+
+            public override System.String ToString()
+            {
+                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} Date={1} DateString={2} LastWorkDayConfig={3} TodayConfig={4} WithdrawalTranscations={5} )", @Id, @Date, @DateString, @LastWorkDayConfig, @TodayConfig, @WithdrawalTranscations);
+            }
+        
+        public JBYProductWithdrawalManagerState() : 
+                base("Yuyi.Jinyinmao.Domain.Products.JBYProductWithdrawalManager")
+        {
+            this.InitStateFields();
+        }
+        
+        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
+        {
+            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["Id"] = this.Id;
+            result["Date"] = this.Date;
+            result["DateString"] = this.DateString;
+            result["LastWorkDayConfig"] = this.LastWorkDayConfig;
+            result["TodayConfig"] = this.TodayConfig;
+            result["WithdrawalTranscations"] = this.WithdrawalTranscations;
+            return result;
+        }
+        
+        private void InitStateFields()
+        {
+            this.Id = default(Guid);
+            this.Date = default(DateTime);
+            this.DateString = default(String);
+            this.LastWorkDayConfig = new DailyConfig();
+            this.TodayConfig = new DailyConfig();
+            this.WithdrawalTranscations = new List<TranscationInfo>();
+        }
+        
+        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+        public static object _Copier(object original)
+        {
+            JBYProductWithdrawalManagerState input = ((JBYProductWithdrawalManagerState)(original));
+            return input.DeepCopy();
+        }
+        
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            JBYProductWithdrawalManagerState input = ((JBYProductWithdrawalManagerState)(original));
+            input.SerializeTo(stream);
+        }
+        
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            JBYProductWithdrawalManagerState result = new JBYProductWithdrawalManagerState();
             result.DeserializeFrom(stream);
             return result;
         }
@@ -915,6 +1005,84 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             DepositByYilianSagaState result = new DepositByYilianSagaState();
+            result.DeserializeFrom(stream);
+            return result;
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [SerializableAttribute()]
+    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.DepositSaga")]
+    public class DepositSagaState : global::Orleans.CodeGeneration.GrainState, IDepositSagaState
+    {
+        
+
+            public Guid @SagaId { get; set; }
+
+            public String @SagaType { get; set; }
+
+            public DepositSagaInitData @InitData { get; set; }
+
+            public DepositSagaStatus @Status { get; set; }
+
+            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
+            {   
+                object value;
+                if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
+                if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
+                if (values.TryGetValue("InitData", out value)) @InitData = (DepositSagaInitData) value;
+                if (values.TryGetValue("Status", out value)) @Status = (DepositSagaStatus) value;
+            }
+
+            public override System.String ToString()
+            {
+                return System.String.Format("DepositSagaState( SagaId={0} SagaType={1} InitData={2} Status={3} )", @SagaId, @SagaType, @InitData, @Status);
+            }
+        
+        public DepositSagaState() : 
+                base("Yuyi.Jinyinmao.Domain.Sagas.DepositSaga")
+        {
+            this.InitStateFields();
+        }
+        
+        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
+        {
+            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["SagaId"] = this.SagaId;
+            result["SagaType"] = this.SagaType;
+            result["InitData"] = this.InitData;
+            result["Status"] = this.Status;
+            return result;
+        }
+        
+        private void InitStateFields()
+        {
+            this.SagaId = default(Guid);
+            this.SagaType = default(String);
+            this.InitData = new DepositSagaInitData();
+            this.Status = default(DepositSagaStatus);
+        }
+        
+        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
+        public static object _Copier(object original)
+        {
+            DepositSagaState input = ((DepositSagaState)(original));
+            return input.DeepCopy();
+        }
+        
+        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
+        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            DepositSagaState input = ((DepositSagaState)(original));
+            input.SerializeTo(stream);
+        }
+        
+        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
+        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            DepositSagaState result = new DepositSagaState();
             result.DeserializeFrom(stream);
             return result;
         }

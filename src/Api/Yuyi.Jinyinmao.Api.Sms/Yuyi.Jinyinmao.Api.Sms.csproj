@@ -80,8 +80,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\MoeEnsure.2.0.1.0\lib\net45\MoeEnsure.dll</HintPath>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MoeThrow, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -193,7 +193,8 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

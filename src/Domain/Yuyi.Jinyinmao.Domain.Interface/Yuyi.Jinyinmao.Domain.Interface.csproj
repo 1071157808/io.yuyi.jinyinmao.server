@@ -39,7 +39,8 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,8 +55,8 @@
       <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -88,64 +89,74 @@
     <Compile Include="Commands\IssueJBYProduct.cs" />
     <Compile Include="Commands\IssueRegularProduct.cs" />
     <Compile Include="Commands\JBYInvesting.cs" />
+    <Compile Include="Commands\JBYWithdrawal.cs" />
+    <Compile Include="Commands\PayByLianlian.cs" />
+    <Compile Include="Commands\PayByYilian.cs" />
     <Compile Include="Commands\RegularInvesting.cs" />
+    <Compile Include="Commands\VerifyBankCard.cs" />
     <Compile Include="Commands\Withdrawal.cs" />
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
-    <Compile Include="Dtos\DepositFromYilianSagaInitDto.cs" />
-    <Compile Include="Dtos\JBYProductInfo.cs" />
-    <Compile Include="Dtos\OrderInfo.cs" />
-    <Compile Include="Dtos\RegularProductInfo.cs" />
+    <Compile Include="Dtos\JBYAccountInfo.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
-    <Compile Include="Dtos\TranscationInfo.cs" />
-    <Compile Include="EventProcessor\IDepositFromYilianResultedProcessor.cs" />
+    <Compile Include="EventProcessor\IRegularProductRepaid.cs" />
+    <Compile Include="Events\RegularProductRepaid.cs" />
+    <Compile Include="InfoDtos\JBYProductInfo.cs" />
+    <Compile Include="InfoDtos\OrderInfo.cs" />
+    <Compile Include="InfoDtos\RegularProductInfo.cs" />
+    <Compile Include="EventProcessor\IBankCardAddedProcessor.cs" />
+    <Compile Include="EventProcessor\IDepositResultedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYProductIssuedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYProductSoldOutProcessor.cs" />
     <Compile Include="EventProcessor\IJBYProductUpdatedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYPurchasedProcessor.cs" />
     <Compile Include="EventProcessor\IOrderPaidProcessor.cs" />
     <Compile Include="EventProcessor\IOrderRepaidProcessor.cs" />
+    <Compile Include="EventProcessor\IPayingByYilianProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductIssuedProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductSoldOutProcessor.cs" />
+    <Compile Include="EventProcessor\IVerifyBankCardResultedProcessor.cs" />
     <Compile Include="EventProcessor\IWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\IWithdrawalResultedProcessor.cs" />
-    <Compile Include="Events\DepositFromYilianResulted.cs" />
+    <Compile Include="Events\BankCardAdded.cs" />
+    <Compile Include="Events\DepositResulted.cs" />
     <Compile Include="Events\JBYProductIssued.cs" />
     <Compile Include="Events\JBYProductSoldOut.cs" />
     <Compile Include="Events\JBYProductUpdated.cs" />
     <Compile Include="Events\JBYPurchased.cs" />
     <Compile Include="Events\OrderPaid.cs" />
     <Compile Include="Events\OrderRepaid.cs" />
+    <Compile Include="Events\PayingByYilian.cs" />
     <Compile Include="Events\RegularProductIssued.cs" />
     <Compile Include="Events\RegularProductSoldOut.cs" />
+    <Compile Include="Events\VerifyBankCardResulted.cs" />
     <Compile Include="Events\WithdrawalAccepted.cs" />
     <Compile Include="Events\WithdrawalResulted.cs" />
+    <Compile Include="InfoDtos\JBYAccountTranscationInfo.cs" />
+    <Compile Include="InfoDtos\SettleAccountTranscationInfo.cs" />
     <Compile Include="Misc\ISequenceGenerator.cs" />
     <Compile Include="Order\Order.cs" />
     <Compile Include="Order\OrdersSortMode.cs" />
     <Compile Include="Products\IJBYProduct.cs" />
     <Compile Include="Products\IJBYProductState.cs" />
+    <Compile Include="Products\IJBYProductWithdrawalManager.cs" />
+    <Compile Include="Products\IJBYProductWithdrawalManagerState.cs" />
     <Compile Include="Products\IRegularProduct.cs" />
     <Compile Include="Products\IRegularProductState.cs" />
-    <Compile Include="Sagas\IDepositByYilianSaga.cs" />
-    <Compile Include="Sagas\IDepositByYilianSagaState.cs" />
-    <Compile Include="Transcation\JBYAccount.cs" />
-    <Compile Include="Transcation\SettlementAccount.cs" />
+    <Compile Include="Sagas\IDepositSaga.cs" />
+    <Compile Include="Sagas\IDepositSagaState.cs" />
+    <Compile Include="Transcation\JBYAccountTranscation.cs" />
+    <Compile Include="Transcation\SettleAccountTranscation.cs" />
     <Compile Include="Users\BankCard.cs" />
     <Compile Include="Commands\AddBankCard.cs" />
     <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\ResetLoginPassword.cs" />
     <Compile Include="Commands\SetPaymentPassword.cs" />
-    <Compile Include="Dtos\AddBankCardSagaInitDto.cs" />
-    <Compile Include="Dtos\AuthenticateSagaInitDto.cs" />
-    <Compile Include="Dtos\BankCardInfo.cs" />
+    <Compile Include="InfoDtos\BankCardInfo.cs" />
     <Compile Include="Dtos\CellphoneInfo.cs" />
     <Compile Include="Dtos\CheckPasswordResult.cs" />
-    <Compile Include="Dtos\SettlementAccountRegister.cs" />
-    <Compile Include="Dtos\JBYAccountRegister.cs" />
-    <Compile Include="Dtos\UserInfo.cs" />
+    <Compile Include="InfoDtos\UserInfo.cs" />
     <Compile Include="Users\Credential.cs" />
     <Compile Include="EventProcessor\IAuthenticateResultedProcessor.cs" />
-    <Compile Include="EventProcessor\IAddBankCardResultedProcessor.cs" />
     <Compile Include="EventProcessor\ILoginPasswordResetProcessor.cs" />
     <Compile Include="EventProcessor\IPaymentPasswordResetProcessor.cs" />
     <Compile Include="EventProcessor\IPaymentPasswordSetProcessor.cs" />
@@ -163,12 +174,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Commands\UserRegister.cs" />
-    <Compile Include="Sagas\IAddBankCardSaga.cs" />
-    <Compile Include="Sagas\IAddBankCardSagaState.cs" />
-    <Compile Include="Sagas\IAuthenticateSaga.cs" />
-    <Compile Include="Sagas\IAuthenticateSagaState.cs" />
     <Compile Include="Transcation\Trade.cs" />
-    <Compile Include="Transcation\Transcation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

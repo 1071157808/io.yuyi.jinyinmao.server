@@ -37,10 +37,42 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task HitShelvesAsync(IssueJBYProduct command);
 
         /// <summary>
+        /// Refreshes the jyb product asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task RefreshJYBProductAsync();
+
+        /// <summary>
+        /// Reloads the jby product asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task ReloadJBYProductAsync();
+
+        /// <summary>
+        /// Reloads the regular product asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task.</returns>
+        Task ReloadRegularProductAsync(Guid productId);
+
+        /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
-        Task RepayAsync(Guid productId);
+        Task RepayRegularProductAsync(Guid productId);
+
+        /// <summary>
+        /// Sets the current jby product to sold out asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task SetCurrentJBYProductToSoldOutAsync();
+
+        /// <summary>
+        /// Sets the regular product to sold out asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <returns>Task.</returns>
+        Task SetRegularProductToSoldOutAsync(Guid productId);
     }
 }

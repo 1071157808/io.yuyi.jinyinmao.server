@@ -63,19 +63,13 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.0.8.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="OrleansAzureUtils">
-      <HintPath>..\..\packages\Microsoft.Orleans.OrleansAzureUtils.1.0.5\lib\net45\OrleansAzureUtils.dll</HintPath>
-    </Reference>
-    <Reference Include="OrleansRuntime">
-      <HintPath>..\..\packages\Microsoft.Orleans.OrleansRuntime.1.0.5\lib\net45\OrleansRuntime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -105,20 +99,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
-      <Project>{7B420A40-ACEC-4461-AE6E-CA89E2AD65C9}</Project>
-      <Name>Yuyi.Jinyinmao.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj">
-      <Project>{C3B74C74-F4C7-485E-9697-B51B754FCCEE}</Project>
-      <Name>Yuyi.Jinyinmao.Service.User.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.User\Yuyi.Jinyinmao.Service.User.csproj">
-      <Project>{D0C9996F-A7F6-4F7F-A5B8-8657CF4673C9}</Project>
-      <Name>Yuyi.Jinyinmao.Service.User</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
