@@ -1,0 +1,151 @@
+﻿@{
+    dynamic Data = Page.Data;
+}
+<div class="amp-tab-wrap">
+    <div class="amp-tab-title">
+        <ul class="amp-tab-list clearfix">
+            <li><a href="#" class="ui-action" data-action="change-tabs" data-tab="cpl-tab1">担保证明</a></li>
+            <li class="on"><a href="#" class="ui-action" data-action="change-tabs" data-tab="cpl-tab2">融资详情</a></li>
+            <li><a href="#" class="ui-action" data-action="change-tabs" data-tab="cpl-tab3">“商票贷”产品说明</a></li>
+            <li><a href="#" class="ui-action" data-action="change-tabs" data-tab="cpl-tab4">风险提示及安全风控</a></li>
+        </ul>
+    </div>
+    <div class="amp-tab-content">
+        <div class="amp-tab-items" id="cpl-tab2">
+            <div class="amp-pay-items amp-pay-info">
+                <div class="amp-pay-title"><h2>付款方信息</h2></div>
+                <div class="amp-pay-main">
+                    <p>@Html.Raw(Data.DraweeInfo)</p>
+                </div>
+            </div>
+            <div class="amp-pay-check">
+                <table class="amp-pay-tab">
+                    <thead>
+                        <tr><td>银行审核项目</td><th>完成</th><th>备注</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>企业名称</td>
+                            <th><i class="pay-check-ok"></i></th>
+                            <th>@Data.EnterpriseName</th>
+                        </tr>
+                        <tr>
+                            <td>营业执照</td>
+                            <th><i class="pay-check-ok"></i></th>
+                            <th>@Data.EnterpriseLicense</th>
+                        </tr>
+                        <tr>
+                            <td>融资方经营场所实地认证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td>基本账户开户许可证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td>税务登记证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td>组织机构代码证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="amp-pay-items amp-pay-info">
+                <div class="amp-pay-title"><h2>担保方信息</h2></div>
+                <div class="amp-pay-main">
+                    <p>@Html.Raw(Data.SecuredpartyInfo)</p>
+                </div>
+            </div>
+            <div class="amp-pay-items amp-pay-info">
+                <div class="amp-pay-title"><h2>融资方信息</h2></div>
+                <div class="amp-pay-main">
+                    <p>@Html.Raw(Data.EnterpriseInfo)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<textarea style="display: none" id="tpl-cpl-tab1">
+    <div class="amp-tab-items" id="cpl-tab1">
+        <img src="@Data.EndorseImageLink" />
+    </div>
+</textarea>
+<textarea style="display: none" id="tpl-cpl-tab3">
+    <div class="amp-tab-items" id="cpl-tab3">
+        <img src="/static/images/cpl/note1.png" />
+        <img src="/static/images/cpl/note2.png" />
+        <dl class="tab-qa">
+            <dt><img src="/static/images/cpl/qa.png"></dt>
+            <dt class="first">1.什么是商业承兑汇票？</dt>
+            <dd>商业承兑汇票是出票企业签发的，委托付款企业在到期日无条件支付确定的金额给收款人或者持票人的票据，它是由银行以外的付款人承兑。</dd>
+            <dt>2.什么是银行保函？</dt>
+            <dd>由银行为商业承兑汇票提供兑付保证担保，在持票人持有的商业承兑汇票到期后，若付款人不能足额兑付票面金额时，该银行将无条件地代为支付该商业承兑汇票记载的全部票面金额。银行保函保证该票据到期得到如期足额兑付。</dd>
+            <dt>3. 什么是担保承诺函？</dt>
+            <dd>是担保公司、大型企业集团或其他资质优良、实力雄厚的担保方为商业承兑汇票的持票人开立的一种书面信用担保凭证，保证借款到期后，若融资企业不能足额还款时，由担保公司或大型企业集团无条件地代为偿还。大型国有担保公司和大型企业集团资金实力雄厚，担保能力极强。</dd>
+            <dt>4. 商票贷安全吗？</dt>
+            <dd>商业承兑汇票做质押，融资企业到期无条件偿还，如果企业未能足额还款，则由出具保函的银行、国有大型担保公司或大型企业集团到期无条件兑付该商业承兑汇票记载的全部票面金额。</dd>
+            <dt>5. 项目没有募集成功怎么办？</dt>
+            <dd>由快捷支付将已收到的资金按原路径返还给出借人。</dd>
+            <dt>6. 商业承兑汇票由谁验真伪？</dt>
+            <dd>银行和相关担保方。</dd>
+            <dt>7. 票据由谁保管？</dt>
+            <dd>银行或相关担保机构。</dd>
+            <dt>8.到期以后，如果借款企业无法还款，怎么办？</dt>
+            <dd>借款到期后，若借款企业无法还款，我们可以根据保函要求保兑银行/担保公司/企业集团代为偿还。</dd>
+            <dt>9.票据质押合法吗？</dt>
+            <dd>根据《票据法》第三十五条规定：汇票可以设定质押。</dd>
+            <dt>10.到期以后多少天能收到回款？</dt>
+            <dd>还款日为借款到期日后三个工作日，如需启动保函或担保承诺函等处置预案，企业将正常支付最迟还款日至实际还款日期间的利息。</dd>
+        </dl>
+    </div>
+</textarea>
+<textarea style="display: none" id="tpl-cpl-tab4">
+    <div class="amp-tab-items" id="cpl-tab4">
+        <div class="amp-pay-items amp-pay-info">
+            <div class="amp-pay-title"><h2>付款人承兑风险</h2></div>
+            <div class="amp-pay-main">
+                <p>商业承兑汇票到期由付款人无条件兑付，付款人可能无法在到期日足额承兑。</p>
+                <p class="orange">安全风控：由担保机构承担连带保证责任，且金银猫实地考察融资企业、付款方，审核其经营状况，筛选优质项目。去往银行和开票企业实地验证票据真伪，实地核查保函或担保承诺函。</p>
+            </div>
+        </div>
+        <div class="amp-pay-items amp-pay-info">
+            <div class="amp-pay-title"><h2>逾期付款风险</h2></div>
+            <div class="amp-pay-main">
+                <p>在进行本融资项目投资前，投资人应确保自身属于符合法律法规规定可以进行投资的合规投资人，并完全理解本项目的性质和风险。项目到期时，付款方不能按时解付该商票，根据担保方出具的银行保函或担保承诺函，应由担保机构代偿，担保机构在履行该保证函时需要走一定的内部流程，有可能出现逾期付款的风险。本平台有权依法对本项目《委托协议》进行解释，投资人若对本融资项目有任何疑问，可致电客服。</p>
+                <p class="orange">安全风控：企业支付逾期利息、罚息，且第三方担保机构对此承担连带保证责任。</p>
+            </div>
+        </div>
+        <div class="amp-pay-items amp-pay-info">
+            <div class="amp-pay-title"><h2>担保机构担保风险</h2></div>
+            <div class="amp-pay-main">
+                <p>若付款方不能按时足额兑付票面金额，同时担保机构发生被依法撤销、破产或发生其它导致无法履行代偿责任的情形，则担保机构将无法继续履行代偿责任。此时，出借人可能面临无法收回本金和利息。上海金银猫金融服务有限公司不对融资人归还融资本息提供任何形式的担保。</p>
+                <p class="orange">安全风控：金银猫严格审核担保方资质，经财务审核、实地审查、法务审核、风控审核等多重审查工作，筛选出资质优秀的担保方，即股份制银行、评级为AA以上的大型担保公司或财务状况良好的大型企业集团为商业承兑汇票的到期足额兑付提供担保。</p>
+            </div>
+        </div>
+        <div class="amp-pay-items amp-pay-info">
+            <div class="amp-pay-title"><h2>交易安全</h2></div>
+            <div class="amp-pay-main">
+                <p>金银猫承诺不会在网站上透露交易双方的个人信息和隐私</p>
+            </div>
+        </div>
+        <div class="amp-pay-items amp-pay-info">
+            <div class="amp-pay-title"><h2>资金安全</h2></div>
+            <div class="amp-pay-main">
+                <p>金银猫作为撮合借贷双方的平台提供平台服务，由第三方支付机构进行资金保管。投资者可以每日实时查询金银猫账户投资详情。同时金银猫内部制定了严格的管理流程和开发了完善的系统，进行监督监控，降低操作风险。</p>
+            </div>
+        </div>
+        <div class="amp-pay-items amp-pay-info">
+            <div class="amp-pay-title"><h2>数据及信息安全</h2></div>
+            <div class="amp-pay-main">
+                <p>金银猫作为国内首创的P2B金融服务平台，严格遵守国家相关的法律法规以及互联网数据安全保护的行业标准，不仅要为用户提供周到的金融服务，同时也有责任保障每位投资者的账户以及信息数据安全。我们使用各种先进的安全技术保护投资者在金银猫平台账户中存储的个人信息、账户信息以及交易记录，以免用户账户遭受未经授权的访问、使用以及信息泄露。对于投资者的订单管理、个人账户管理、充值取现等涉及敏感信息的操作时，金银猫平台会对其进行高强度的数字签名技术加密，以防止账户、交易信息、数据传输的外泄。同时，金银猫平台内部也设有严格、完善的统一授权管理体系，以保证每一位内部员工都只能查看自己职责和权限之内的数据和信息；并且结合完善的安全监测系统，可以及时发现网站的非正常访问并做相应的安全响应。我们还会持续更新和改进金银猫平台的安全策略，以保证网站安全策略的有效性和健壮性。</p>
+            </div>
+        </div>
+    </div>
+</textarea>

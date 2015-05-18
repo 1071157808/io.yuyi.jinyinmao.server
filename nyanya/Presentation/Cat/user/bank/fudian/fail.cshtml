@@ -1,0 +1,75 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "失败订单 -- 银行理财";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    string bankName ="fudian";
+    dynamic orders = Request.GetData("/Orders/BA/Failed/?category=20");
+    bool hasData = false;
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "bank" })
+<div class="content">
+    <div class="ctt-block page-amp-list">
+        <h3 class="ctt-head"><span>银行理财</span></h3>
+        <ul class="ctt-tabs">
+            <li class="first"><a href="/user/bank/fudian/list">成功订单</a></li>
+            <li class="current"><a href="/user/bank/fudian/fail">失败订单</a></li>
+        </ul>
+        @{
+            if (CatHelper.IsDataSuccess(orders))
+            {
+                <table class="ctt-table">
+                    <thead>
+                        <tr>
+                            <td>订单号</td>
+                            <td>     
+                             <select onchange="self.location.href=options[selectedIndex].value">
+                            @if(CatHelper.IsXYFlag && CatHelper.IsFDFlag)
+                           {
+                                if (bankName == "xingye")
+                                {
+                                    <option value="/user/bank/fail" selected="selected">兴业银行</option>
+                                } else {
+                                    <option value="/user/bank/fail">兴业银行</option>
+                                }
+                                if (bankName == "fudian")
+                                {
+                                    <option value="/user/bank/fudian/fail" selected="selected">富滇银行</option>
+                                } else {
+                                    <option value="/user/bank/fudian/fail">富滇银行</option>
+                                }
+                           }
+                           else if(CatHelper.IsFDFlag)
+                           {
+                                <option value="/user/bank/fudian/fail" selected="selected">富滇银行</option>   
+                           }
+                            </select>
+                        </td>
+                            <td>下单时间</td>
+                            <td>订单金额</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (dynamic o in orders.Data.Orders)
+                        {
+                            hasData = true;
+                            <tr>
+                                <td><a href="/user/bank/fudian/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                                <td><a target="_blank" href="/bank/fudian/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                                <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td>@o.Principal 元</td>
+                                <td><a href="/user/bank/fudian/detail?id=@o.OrderIdentifier">查看原因</a></td>
+                            </tr>
+                        }
+                        @if(hasData == false) {
+                            <tr>
+                                <td colspan="5" class="no-order">对不起，没有符合条件的订单</td>                   
+                            </tr>
+                         }
+                    </tbody>
+                </table>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,61 @@
+﻿@using Cat
+@{
+    string requireMain = Page.RequireMain ?? "";
+    string mainPath = "";
+    if (requireMain != "")
+    {
+        mainPath = "require.paths.main = " + requireMain + ";";
+    }
+    string jym = CatHelper.JsWrapper("<script src='/static/js/jym.js'></script>");
+    string dialog = CatHelper.JsWrapper("<script src='/static/js/jym.dialog.js'></script>");
+    string fullbanner = CatHelper.JsWrapper("<script src='/static/js/plugins/jym.fullbanner.js'></script>");
+    string imgSlider = CatHelper.JsWrapper("<script src='/static/js/plugins/jym.imgSlider.js'></script>");
+    string jsMd5 = CatHelper.JsWrapper("<script src='/static/js/plugins/jym.md5.js'></script>");
+    string bankcard = CatHelper.JsWrapper("<script src='/static/js/bankcard.js'></script>");
+    string jym1118 = CatHelper.JsWrapper("<script src='/static/js/topic/jym1118.js'></script>");
+}
+<script>
+    var ISXYVALID = @(CatHelper.IsXYFlag ? "true" : "false");
+    var require = {
+        paths: {
+            jquery: '/static/js/jquery-1.10.2.min',
+            jym: @Html.Raw(jym),
+            dialog: @Html.Raw(dialog),
+            fullbanner: @Html.Raw(fullbanner),
+            imgSlider: @Html.Raw(imgSlider),
+            jsMd5: @Html.Raw(jsMd5),
+            bankcard: @Html.Raw(bankcard),
+            jym1118: @Html.Raw(jym1118)
+        }
+    };
+    @Html.Raw(mainPath);
+    if (typeof _require_callback !== 'undefined') {
+        require.callback = _require_callback;
+        _require_callback = null;
+    }
+</script>
+<script src="/code/js/Banks"></script>
+@{
+    if (requireMain != "")
+    {
+<script src="/static/js/require.min.js" data-main="main"></script>
+    }
+    else
+    {
+<script src="/static/js/require.min.js"></script>
+    }
+    var OnlineHost1 = "jinyinmao.com.cn";
+    var OnlineHost2 = "www.jinyinmao.com.cn";
+    var ReqHost = HttpContext.Current.Request.Url.Host.ToString();
+    if(OnlineHost1 == ReqHost || OnlineHost2 == ReqHost){
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?edc924571677209a9853121f5b64de80";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    }
+}

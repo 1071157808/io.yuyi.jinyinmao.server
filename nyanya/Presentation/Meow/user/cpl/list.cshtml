@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "商票贷 - 订单列表";
+}
+@section PageScript {
+    <script src="/static/js/user/cpl.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.user.cpl.list.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div id="jqm-list-orders" class="ui-content">
+    <ul id="jqm-user-order"></ul>
+</div>
+<script type="text/tpl" id="jqm-tpl-orders">
+@RenderPage("~/tpl/user/cpl/list.cshtml")
+</script>

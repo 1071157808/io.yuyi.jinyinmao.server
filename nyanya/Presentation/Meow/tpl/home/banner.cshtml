@@ -1,0 +1,13 @@
+﻿<% 
+var i = 0, len = Banners.length, img = null, src = null, style = '';
+for(;i<len;i++){
+    img = Banners[i];
+    src = img.ImgPath.replace(/^http:/i, 'https:');
+    if(img.imgADLinkUrl){
+%>
+<li <%=style%>><a href="<%=decodeURIComponent(img.imgADLinkUrl)%>"><img src="<%=src%>" alt="" /></a></li>
+<% } else { %>
+<li <%=style%>><img src="<%=src%>" alt="" /></li>
+<% }
+    style = 'style="display:none;"';
+} %>

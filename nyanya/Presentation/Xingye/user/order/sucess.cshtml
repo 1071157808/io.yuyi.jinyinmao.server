@@ -1,0 +1,95 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/order.js'></script>");
+    string orderId = CatHelper.Request("id");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+    dynamic orderInfo = Request.GetData("/Orders?orderIdentifier=" + orderId);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "order" })
+<div class="per-right">
+    <div class="my-card-title clearfix">
+        @RenderPage("~/_layout/user/_back_user.cshtml", new { name = "我的订单" })
+    </div>
+    <div class="recly-sale">
+        <ul class="query">
+            <li>
+                <strong>起止日期：</strong>
+                <p class="time font-style"><input type="text" value="2014.06.18" class="first-date common-text" readonly /><i>--</i><input type="text" value="2016.06.18" class="end-date common-text" readonly/></p>
+                <p class="link"><a href="#">今天</a><a href="#" class="sel">最近1个月</a><a href="#">3个月</a><a href="#">1年</a><a href="#">1年前<span class="ico-style">>></span></a> </p>
+            </li>
+            <li>
+                <strong>交易分类：</strong>
+                <p class="link"><a href="#" class="sel">全部</a><a href="#">兴业票</a></p>
+            </li>
+            <li>
+                <strong>交易状态：</strong>
+                <p class="link"><a href="/user/order/">全部</a><a href="javascript:void (0)" class="sel">支付成功</a><a href="/user/order/fail">支付失败</a></p>
+            </li>
+        </ul>
+        @{
+        string pageIndex = CatHelper.Request("page", "1");
+        string sortMode = CatHelper.Request("sort", "1");
+        string api = string.Format("/Orders/BA?pageIndex={0}&sortMode={1}", pageIndex, sortMode);
+        dynamic orders = Request.GetData(api);
+        int iPageCount = 1;
+        <table>
+            <thead>
+            <tr>
+                <th width="130px;" class="frst">订单编号</th>
+                <th width="198px;">项目名称</th>
+                <th width="150px;">下单日期</th>
+                <th width="90px;">购买金额</th>
+                <th width="90px;">状态</th>
+                <th width="80px;" class="last">详情</th>
+            </tr>
+            </thead>
+            @if (CatHelper.IsDataSuccess(orders))
+            {
+            iPageCount = orders.Data.TotalPageCount;
+            foreach (dynamic o in orders.Data.Orders)
+            {
+                <tbody>
+                        @if (o.ShowingStatus == 10){
+                            <tr>
+                                <td><a href="/user/order/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                                <td><a target="_blank" href="/amp/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                                <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td>@o.Principal</td>
+                                <td>支付中</td>
+                                <td><a href="/user/order/detail?id=@o.OrderIdentifier">详情</a></td>
+                            </tr>
+                        }
+                        else if(o.ShowingStatus == 20 || o.ShowingStatus == 30){
+                        <tr>
+                            <td><a href="/user/order/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                            <td><a target="_blank" href="/amp/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                            <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@o.Principal</td>
+                            <td>支付成功</td>
+                            <td><a href="/user/order/detail?id=@o.OrderIdentifier">详情</a></td>
+                        </tr>
+                        }
+                        else if(o.ShowingStatus == 50){
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        }
+                </tbody>
+                }
+            }
+        </table>
+        @RenderPage("~/_layout/base/_Pager.cshtml", new { Length = iPageCount })
+        }
+    </div>
+</div>
+
+
+

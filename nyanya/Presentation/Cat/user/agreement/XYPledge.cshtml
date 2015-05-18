@@ -1,0 +1,10 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/agreement/_SiteMain.cshtml";
+    Page.Title = "借款协议";
+    string id = CatHelper.Request("id");
+    dynamic Pledge = this.Request.GetData("/XYOrders/PledgeAgreement?orderIdentifier=" + id);
+    if(CatHelper.IsDataSuccess(Pledge)){
+        @Html.Raw(Pledge.Data.Content)
+    }
+}

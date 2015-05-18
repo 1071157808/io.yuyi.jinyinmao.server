@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge, Chrome=1, requiresActiveX=true" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="金银猫,P2B,O2O,互联网投融资服务平台,贷款,银行票据,票据贷,抵押贷款,银企众盈,招财宝中小企业贷,金融理财,高收益理财,金银e家,陆金所,招商银行小企业E家,理财,基金,信托,证券,保险" />
+        <meta name="description" content="金银猫系国内首家为个人、企业、银行等机构提供全方位互联网金融服务的平台。其全新的P2B+O2O+社区网点模式开启了互联网金融时代的新篇章。金银猫不仅是一个金融资讯和信息发布的平台，也是一个全方位为个人及机构客户提供涵盖票据贷，银行理财、基金、信托、券商、保险等各类理财业务的金融服务在线交易平台。" />
+        <title>金银猫 - 大金融心服务</title>
+        <style type="text/css">
+            body {
+                font-family: "Microsoft YaHei", \5FAE\8F6F\96C5\9ED1, "微软雅黑", Tahoma, Arial, Helvetica;
+                font-size: 12px;
+            }
+
+            .logo, .page {
+                margin: 0 auto;
+                width: 960px;
+            }
+
+            .logo img { border: 0; }
+
+            .head {
+                border-bottom: 2px solid #cf9438;
+                padding: 40px 0 30px;
+            }
+
+            .cat {
+                background-image: url(/static/images/page/cat.gif);
+                background-position: 100px 50%;
+                background-repeat: no-repeat;
+                height: 300px;
+                padding: 50px 0 50px 400px;
+            }
+
+            .cat h2 {
+                color: #db5629;
+                font-size: 41px;
+            }
+
+            .cat p {
+                background-image: url(/static/images/page/index.png);
+                background-position: 0 0;
+                background-repeat: no-repeat;
+                height: 120px;
+                padding-top: 29px;
+            }
+
+            .cat p em {
+                color: #898989;
+                font-size: 62px;
+                font-style: normal;
+                padding: 0 66px 0 16px;
+                _padding: 0 66px 0 18px;
+            }
+
+            .cat a {
+                color: #45aeda;
+                font-size: 18px;
+                text-decoration: none;
+            }
+
+            .cat a:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <div class="head">
+            <div class="logo"><a href="/"><img src="/static/images/base/logo.png" /></a></div>
+        </div>
+        <div class="page">
+            <div class="cat">
+                <h2>金银猫新版上线倒计时</h2>
+                <p id="timeout"><em>00</em><em>00</em><em>00</em></p>
+                <a href="http://www2.jinyinmao.com.cn/">点击返回老版&gt;&gt;</a>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function() {
+                var _sss = new Date(2014, 8 - 1, 18, 10, 18).getTime() - new Date('@DateTime.Now.ToString()').getTime();
+                var sss = Math.floor(_sss / 1000);
+                var el = document.getElementById('timeout');
+                var to2 = function(s) { return s < 10 ? '0' + s : s; };
+                var getTimeObject = function() {
+                    sss--;
+                    var hour = Math.floor(sss / 3600);
+                    var hour_s = sss % 3600;
+                    var minute = Math.floor(hour_s / 60);
+                    var seconds = hour_s % 60;
+                    return { h: to2(hour), m: to2(minute), s: to2(seconds) };
+                };
+                var id = setInterval(function() {
+                    var o = getTimeObject();
+                    var str = '<em>' + o.h + '</em><em>' + o.m + '</em><em>' + o.s + '</em>';
+                    el.innerHTML = str;
+                }, 1000);
+            }());
+        </script>
+    </body>
+</html>

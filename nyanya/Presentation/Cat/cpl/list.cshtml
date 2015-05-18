@@ -1,0 +1,59 @@
+﻿@using System
+@using System.Web.WebPages
+@{
+    Layout = "~/_layout/cpl/_SiteMain.cshtml";
+    Page.Title = "商票贷 -- 金银猫";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/amp/list.js'></script>");
+    string number = CatHelper.Request("page", "1");
+    dynamic proInfo = Request.GetData("/ProductInfo/TA/Page/" + number);
+    string serverTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+    Response.OutputCache(30);
+    DateTime t = DateTime.Now;
+}
+@section PageStyle{
+    <link rel="stylesheet" type="text/css" href="/static/css/amp.css">
+    <script> var _server_time = "@serverTime"; </script>
+}
+<input type="hidden" value="@t" />
+<div class="site-map ui-wrapper">
+    <div class="site-map-name">
+        <a class="site-home" href="/">首页</a><i class="site-line">&gt;</i><a class="site-amp orange" href="/cpl/list">商票贷</a>
+    </div>
+</div>
+<div class="amp-container wrap-txt clearfix">
+    <div class="amp-inner ">
+        <div class="amp-main">
+            @RenderPage("~/_layout/base/_product_filter.cshtml", new { Type = "cpl" })
+            <div class="amp-main-content">
+                <div class="amp-main-items">
+                    @if (CatHelper.IsDataSuccess(proInfo))
+                    {
+                        <ul class="amp-major-list">
+                            @RenderPage("~/_layout/cpl/_list.cshtml", new { Data = proInfo.Data.Products })
+                        </ul>
+                        @RenderPage("~/_layout/base/_Pager.cshtml", new { Length = proInfo.Data.TotalPageCount })
+                    }
+                </div>
+            </div>
+        </div>
+        <!--/main-->
+        <div class="amp-side">
+            <div class="side-block">
+                <h3>常见问题</h3>
+                <ul class="article-list">
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/77_1.html">我是新手，如何注册成为金银猫会员？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/fresh/70_1.html">首次注册后如何认证成为实名会员？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/fresh/71_1.html">如何添加银行卡？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/73_1.html">在金银猫理财有什么样的安全保障？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/74_1.html">我的金银猫理财账户如何管理？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/75_1.html">金银猫理财平台交易管理流程是什么样的？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/chpl/78_1.html">金银猫支付支持哪些银行卡？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/about/ejia/21_1.html">金银猫的线下店都有哪些？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/chpl/75_1.html">金银猫融资项目收益如何计算？</a></li>
+                    <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/chpl/75_1.html">项目到期后，多久能收到回款？</a></li>
+                </ul>
+            </div>
+        </div>
+        <!--/sider-->
+    </div>
+</div>

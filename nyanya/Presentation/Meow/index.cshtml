@@ -1,0 +1,42 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "喵喵 - 金银猫";
+}
+@section PageScript {
+    <script>
+    document.write('<script src="'+location.protocol+'//cmsadmin.jinyinmao.com.cn/caches/poster_js/19.js?v='+~(-new Date()/6e6)+'"><\/script>');
+    </script>
+    <script src="/static/js/lib/iscroll.min.js"></script>
+    <script src="/static/js/home/index.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.index.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header.cshtml")
+<div class="ui-content">
+    <div id="jqm-gallery" class="jqm-slide-banner">
+        <div id="jqm-slide-gallery" class="jqm-slide-wrapper">
+            <ul id="jqm-slide-banner"><!--tpl--></ul>
+        </div>
+        <ul id="jqm-slide-nav"></ul>
+    </div>
+    <div class="jqm-index-product" id="jqm-index-top"><!--tpl--></div>
+    <div class="jqm-safe-control" id="jqm-index-safe"><!--tpl--></div>
+</div>
+@{
+    string app = CatHelper.Request("app");
+    if(app != "android"){
+        @RenderPage("~/_layout/base/footer.cshtml")
+    }
+}
+<script type="text/tpl" id="jqm-tpl-banner">
+@RenderPage("~/tpl/home/banner.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-top">
+@RenderPage("~/tpl/home/top.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-safe">
+@RenderPage("~/tpl/home/safe.cshtml")
+</script>

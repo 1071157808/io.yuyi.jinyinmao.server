@@ -1,0 +1,22 @@
+﻿<div class="jqm-index-bg">
+    <div class="jqm-index-funds">
+        <div class="funds-block">
+            <% if(Account.ExpectedInterest > 0 || Account.InvestingPrincipal > 0){ %>
+            <label>预期收益</label>
+            <strong><%=zim.autoFixed(Account.ExpectedInterest)%><samp>元</samp></strong>
+            <span>在投资金:<em><%=Account.InvestingPrincipal%><samp>元</samp></em></span>
+            <% } else { %>
+            <p class="jqm-no-funds">您还没有进行任何投资哦！<br>赶快去看看金银猫的产品吧！</p>
+            <% } %>
+        </div>
+        <div class="income-block">已获收益:<em><%=zim.autoFixed(Account.TotalInterest)%><samp>元</samp></em></div>
+    </div>
+</div>
+<div class="ui-grid2 jqm-funds-account">
+    <div class="ui-block-a">用户ID</div>
+    <div class="ui-block-b"><%=User.Cellphone%></div>
+    <div class="ui-block-a">真实姓名</div>
+    <div class="ui-block-b"><%=User.RealName%></div>
+    <div class="ui-block-a"><%=zim.eHash.IdType[User.Credential]%></div>
+    <div class="ui-block-b"><%=User.CredentialNo%></div>
+</div>

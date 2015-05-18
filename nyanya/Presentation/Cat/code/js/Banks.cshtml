@@ -1,0 +1,42 @@
+﻿@functions{
+    public static dynamic Bank(string name, string code, string city, string logo, string limit){
+        return new {
+            name = name,
+            code = code,
+            city = city,
+            logo = logo,
+            limit = limit
+        };
+    }
+    public static string OutputJS(List<dynamic> Banks){
+        string tmp = "var jymBanks = [";
+        int i = 0;
+        foreach(dynamic bank in Banks){
+            if(i > 0){ tmp += ","; } else { i++; }
+            tmp += "{\"name\":\"" + bank.name + "\",\"code\":\"" + bank.code + "\",\"limit\":[" + bank.limit + "],\"defaults\":\"" + bank.city + "\"}";
+        }
+        return tmp + "];";
+    }
+}@{
+    Response.AddHeader("Content-Type","application/x-javascript");
+    List<dynamic> Banks = new List<dynamic>();
+    Banks.Add(Bank("工商银行", "bank-c01", "上海|上海", "bank01@2x.png", "5,5"));
+    Banks.Add(Bank("招商银行", "bank-c02", "上海|上海", "bank02@2x.png", "100,100"));
+    Banks.Add(Bank("广发银行", "bank-c03", "上海|上海", "bank03@2x.png", "100,100"));
+    Banks.Add(Bank("华夏银行", "bank-c04", "上海|上海", "bank04@2x.png", "100,100"));
+    Banks.Add(Bank("海南农信社", "bank-c05", "上海|上海", "bank05@2x.png", "100,100"));
+    Banks.Add(Bank("广州银行", "bank-c06", "广东|广州", "bank06@2x.png", "100,100"));
+    Banks.Add(Bank("中信银行", "bank-c07", "上海|上海", "bank07@2x.png", "100,100"));
+    Banks.Add(Bank("兴业银行", "bank-c08", "上海|上海", "bank08@2x.png", "50,50"));
+    Banks.Add(Bank("浦发银行", "bank-c09", "上海|上海", "bank09@2x.png", "2,5"));
+    Banks.Add(Bank("深发银行", "bank-c10", "上海|上海", "bank10@2x.png", "100,100"));
+    Banks.Add(Bank("建设银行", "bank-c11", "上海|上海", "bank11@2x.png", "100,100"));
+    Banks.Add(Bank("广州农商行", "bank-c12", "上海|上海", "bank12@2x.png", "100,100"));
+    Banks.Add(Bank("农业银行", "bank-c13", "上海|上海", "bank13@2x.png", "100,100"));
+    Banks.Add(Bank("邮储银行", "bank-c14", "上海|上海", "bank14@2x.png", "100,100"));
+    Banks.Add(Bank("光大银行", "bank-c15", "上海|上海", "bank15@2x.png", "100,100"));
+    Banks.Add(Bank("平安银行", "bank-c16", "广东|深圳", "bank16@2x.png", "100,100"));
+    Banks.Add(Bank("民生银行", "bank-c17", "上海|上海", "bank17@2x.png", "100,100"));
+    Banks.Add(Bank("中国银行", "bank-c18", "上海|上海", "bank18@2x.png", "100,100"));
+    string js = OutputJS(Banks);
+}@Html.Raw(js)

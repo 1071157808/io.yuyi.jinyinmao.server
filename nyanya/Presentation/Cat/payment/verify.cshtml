@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/_layout/payment/_SiteMain.cshtml";
+    Page.Title = "下单成功";
+    dynamic[] Datas = Request.GetDatas(
+        "/UserInfo",
+        "/Luckhub/GetUserCanPalyStatu"
+    );
+    dynamic userInfo = Datas[0];
+    dynamic CanPlay = Datas[1];
+    CatHelper.SignInCheck(userInfo);
+    if (userInfo.Data.HasSetPaymentPassword == false)
+    {
+        Response.Redirect("~/");
+    }
+    else if (userInfo.Data.HasDefaultBankCard == false)
+    {
+        Response.Redirect("~/");
+    }
+    string productName = CatHelper.Request("name");
+    string bankName = CatHelper.Request("bank");
+    string productUnit = CatHelper.Request("unit");
+    string productType = CatHelper.Request("type");
+    string productNo = CatHelper.Request("prdNo");
+    string orderCount = CatHelper.Request("count");
+    string orderNo = CatHelper.Request("id");
+    string orderPrice = CatHelper.Request("price");
+    string orderTime = CatHelper.Request("time");
+    string phone = CatHelper.MD5(userInfo.Data.Cellphone);
+}
+<div class="ctt-block page-payment">
+    <h3 class="ctt-head"><span>下单成功</span></h3>
+    <div class="mv20 p20 rds10 ctt-span-detail">
+        <div class="payment-order-success">
+            <h3>项目正在付款中！</h3>
+            <p>我们会以短信通知付款结果！</p>
+        </div>
+        @if(CatHelper.IsDataSuccess(CanPlay) && CanPlay.Data.Status == 20){
+            <div style="display:block;margin:20px auto 0;padding:8px 0;text-align:center;width:400px;border:dashed 1px #dd6137;font-size:16px;">恭喜您，获得一次转盘抽奖机会！<a href="/topic/20141118/lottery" style="color:#db5629;">立即抽奖&gt;</a></div>
+        }
+        <div class="payment-order-btn">
+            @if(productType == "bank"){
+                <a class="ui-btn1" href="/user/@productType/@bankName/list">订单列表</a>
+                <a class="ui-btn" href="/@productType/@bankName/detail?id=@productNo">再下一单</a>
+            } else {
+                <a class="ui-btn1" href="/user/@productType/list">订单列表</a>
+                <a class="ui-btn" href="/@productType/detail?id=@productNo">再下一单</a>
+            }
+            
+        </div>
+    </div>
+    <div class="mv20 p20 payment-order-desc">
+        <p>产品编号：<em>@productNo</em></p>
+        <p>产品名称：<em>@productName</em></p>
+        <p>交易金额：<em>@orderPrice 元</em></p>
+        <p>下单时间：<em>@orderTime</em></p>
+    </div>
+</div>
+<script>
+var _ozsku = ["@productNo","@productUnit","@orderCount","@productType"];
+var _ozprm = "orderid=@(orderNo)&ordertotal=@(orderPrice)&skulist=" + _ozsku.join(",");
+var _ozuid = "@(phone)";
+</script>
+@RenderPage("~/_layout/base/_o_code.cshtml", new{ Type = "ordersuccess" })

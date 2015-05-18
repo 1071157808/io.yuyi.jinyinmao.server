@@ -1,0 +1,41 @@
+﻿<% var sumPrice = item.UnitPrice * count; %>
+<div class="jqm-index-funds">
+    <div class="funds-block">
+        <label>订单金额</label>
+        <strong><%=sumPrice%><samp>元</samp></strong>
+        <span>预期收益:<em><%=zim.sy_price(sumPrice, item.Yield, item.Period)%><samp>元</samp></em><em id="jqm-payment-sy"></em></span>
+        <div id="jym1118"></div>
+    </div>
+</div>
+<div class="jqm-account-view order-create-pay">
+    <h5>支付银行卡</h5>
+    <ul class="jqm-menu-nav">
+        <li>
+            <a href="#" id="jqm-select-bank" class="ui-link-multi" data-action="select-bank" data-bank="<%=card.BankCardNo%>">
+                <div class="<%=zim.page.getBankClass(card.CardBankName)%>">
+                    <span><%=card.CardBankName%>(尾号<%=zim.page.payment.create.cardSlice(card.BankCardNo)%>)</span>
+                    <em>限额单笔<%=card.limit[0]%>万，单日<%=card.limit[1]%>万</em>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="jqm-account-view">
+    <ul class="ui-table jqm-account-span">
+        <li>
+            <span class="ui-td">密码</span>
+            <span class="ui-td">
+                <input type="password" id="jqm-payment-password" placeholder="您的支付密码" />
+            </span>
+        </li>
+    </ul>
+    <div class="jqm-wrapper ui-pr10">
+        <a href="#" id="isAgreement" class="ui-checkbox ui-selected" data-action="checkbox"><i></i>同意</a>
+        <% if(type == "amp"){ %>
+        <a href="/payment/agreement/Pledge?id=<%=item.ProductIdentifier%>" class="ui-inline ui-acolor">《质押借款协议》</a>和<a href="/payment/agreement/Consignment?id=<%=item.ProductIdentifier%>" class="ui-inline ui-acolor">《委托协议》</a>
+        <% } else { %>
+        <a href="/payment/agreement/Pledge?id=<%=item.ProductIdentifier%>" class="ui-inline ui-acolor">《<%=item.PledgeAgreementName%>》</a>和<a href="/payment/agreement/Consignment?id=<%=item.ProductIdentifier%>" class="ui-inline ui-acolor">《<%=item.ConsignmentAgreementName%>》</a>
+        <% } %>
+    </div>
+    <div class="jqm-wrapper"><button id="btnPayment" class="ui-action ui-btn1" data-action="payment-submit">同意协议并付款</button></div>
+</div>

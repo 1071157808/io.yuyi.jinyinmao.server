@@ -1,0 +1,60 @@
+﻿@{
+    dynamic proInfo = Page.Data;
+    foreach (dynamic item in proInfo)
+    {
+        int minPrice = (int)(item.UnitPrice * item.MinShareCount);
+        decimal sumPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+        dynamic valMode = CatHelper.GetValueDate_list(item);
+        dynamic showStatus = CatHelper.GetProductShowingStatus(item.ShowingStatus);
+        dynamic EndSellTime = @item.EndSellTime.ToString("yyyy-MM-dd");
+        <div class="ticket-items">
+            <ul class="ticket-no clearfix">
+                <li class="no">
+                    <div class="ticket-no-main">
+                        <div class="ticket-no-title"><h2><a class="ticket-link" href="/amp/detail?id=@item.ProductNo" target="_blank">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</a></h2></div>
+                        <div class="ticket-no-info">
+                            <dl class="ticket-no-list">
+                                <dd class="date">@EndSellTime 截止</dd>
+                                <dd class="blank">银行兑付</dd>
+                                <dd class="buy">@valMode</dd>
+                                <dd class="one">@(minPrice)元起购</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </li>
+                <li class="remain">
+                    <div class="remain-scale">
+                        <p>剩余额度</p>
+                        @if(item.ShowingStatus > 30){
+                        <div class="remain-rate-wrap"><i data-value="100" style="width: 100%;"></i></div>
+                        } else {
+                        <div class="remain-rate-wrap"><i data-value="@item.PaidPercent" style="width: @(item.PaidPercent)%;"></i></div>
+                        }
+                        <div class="remain-linkwrap"><a class="remain-detail" href="/amp/detail?id=@item.ProductNo" target="_blank">产品详情</a></div>
+                    </div>
+                </li>
+                <li class="in">
+                    <div class="in-wrap">
+                        <div class="in-numer"><i>@CatHelper.GetYieldString(item.Yield)</i>%</div>
+                        <div class="in-txt">年化收益率</div>
+                    </div>
+                </li>
+                <li class="time">
+                    <div class="ticket-time-wrap">
+                        <div class="ticket-date">@(item.Period)天</div>
+                        <div class="ticket-time-info">理财期限</div>
+                    </div>
+                </li>
+                <li class="handle">
+                    <div class="handle-wrap">
+                        @if(item.ShowingStatus > 30){
+                        <span class="handle-btn handle-done">售罄</span>
+                        } else {
+                        <a class="handle-buy" href="/payment/create?id=@item.ProductNo" target="_blank">购买</a>
+                        }
+                    </div>
+                </li>
+            </ul>
+        </div>
+    }
+}

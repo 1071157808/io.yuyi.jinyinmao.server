@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "账户总览";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/index.js'></script>");
+    NyanyaWebData[] datas = Request.GetDatas("/UserInfo", "/UserInfo/Index", "/UserInfo/Index/Settlings");
+    NyanyaWebData userInfo = datas[0];
+    NyanyaWebData userInfoSummery = datas[1];
+    NyanyaWebData indexSettlings = datas[2];
+    CatHelper.SignInCheck(userInfo);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo })
+<div class="content">
+    @{
+        if (CatHelper.IsDataSuccess(userInfoSummery))
+        {
+            <div class="ctt-block">
+                <h3 class="ctt-head"><span>账户总览</span></h3>
+                <script> var incomeMinute = "@((userInfoSummery.Data.IncomePerMinute * 60).ToString())"; </script>
+                <div class="rds10 ctt-summary">
+                    <ul class="clearfix">
+                        <li class="m1">
+                            <span>累计收益</span>
+                            <em>@userInfoSummery.Data.TotalInterest<samp>元</samp></em>
+                        </li>
+                        <li class="m2">
+                            <span>预期收益</span>
+                            <strong>@userInfoSummery.Data.ExpectedInterest<samp>元</samp></strong>
+                        </li>
+                        <li class="m3">
+                            <span>在投资金</span>
+                            <em>@userInfoSummery.Data.InvestingPrincipal<samp>元</samp></em>
+                        </li>
+                    </ul>
+                    <div class="amp-speed">
+                        <p>赚钱速度为 每小时 <em>@((userInfoSummery.Data.IncomePerMinute * 60).ToString())</em> 元<br>要加油哦</p>
+                        <a class="ui-action share-weibo" href="#" data-action="sns-share-weibo"><b class="sns-weibo"></b><span>分享到微博</span></a>
+                        @*<a class="share-pengyou" href="#"><b class="sns-pengyou"></b><span>分享到朋友圈</span></a>*@
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <div class="ctt-block ctt-user-interest">
+        <h3 class="ctt-head"><span>即将结息项目<a href="#" class="qa-help qa-abs">
+                                        <i></i>
+                                        <div class="ui-tip-msg">
+                                            <p>同一项目多笔订单将合并显示。</p>
+                                            <b class="ui-tip-left"></b>
+                                        </div>
+                                    </a></span></h3>
+        <div class="ctt-table-simple">
+            @{
+                if (indexSettlings.Data.Count > 0)
+                {
+                    <table>
+                        <thead>
+                            <tr>
+                                <td class="pl10">结息日期</td>
+                                <td class="pl10">项目名称</td>
+                                <td>订单金额</td>
+                                <td>预期收益</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (dynamic item in indexSettlings.Data)
+                            {
+                                <tr>
+                                    <td class="pl10">@item.SettleDate.ToString("yyyy-MM-dd")</td>
+                                    @if (item.ProductType == 10)
+                                    {
+                                       if(item.ProductCategory == 10){
+                                            <td><a target="_blank" href="/amp/detail?id=@item.ProductNo">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</a></td>
+                                       }
+                                        else if (item.ProductCategory == 20){
+                                            <td><a target="_blank" href="/bank/fudian/detail?id=@item.ProductNo">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</a></td>  
+                                        }
+                                        else if(item.ProductCategory == 1)
+                                        {
+                                            <td><a target="_blank" href="@CatHelper.GetXYDetailUrl(item.ProductNo)">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</a></td>  
+                                        }
+                                    }
+                                    else if (item.ProductType == 20)
+                                    {
+                                        <td><a target="_blank" href="/cpl/detail?id=@item.ProductNo">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td>&nbsp;</td>
+                                    }
+                                    <td>@item.Principal 元</td>
+                                    @if(item.ExtraInterest > 0){
+                                    <td>@item.Interest 元(额外收益+@item.ExtraInterest 元)</td>
+                                    } else {
+                                    <td>@item.Interest 元</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="null-product">目前没有等待结息的产品，<a href="/amp/list">看看产品列表</a></div>
+                }
+            }
+        </div>
+    </div>
+</div>

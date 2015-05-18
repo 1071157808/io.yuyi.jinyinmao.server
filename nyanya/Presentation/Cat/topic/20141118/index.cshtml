@@ -1,0 +1,80 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    Page.Title = "金银猫11.18周年庆，发财季震撼登陆";
+}
+@section RequireCallback{
+    require(['jym', 'dialog'], function(jym, dialog){
+    	$(function(){
+    		var s = '<div class="dialog-pick">';
+    		s += '<h3>恭喜您！</h3>';
+    		s += '<p>您已获得<em>理财本金1000元</em>，请注册后使用！</p>';
+    		s += '<span class="dialog-pick-note">放弃注册将无法获得理财本金。</span>'
+    		s += '</div>';
+    		jym.action.extend({
+    			"jym1118-pick":function(){
+    				dialog.alert.show({
+    					msg:s,
+    					btnOk:'立即注册',
+    					callback:function(s){
+    						location.href = "/passport/register";
+    					}
+    				});
+    			}
+    		});
+    	});
+    });
+}
+<style>
+.home-banner-1{
+	padding-top:277px;
+	background-image:url(/topic/20141118/images/banner1.jpg);
+	background-position:50% 0;
+}
+.home-banner-2{
+	position:relative;height:338px;
+	background-image:url(/topic/20141118/images/banner2.jpg);
+	background-position:50% 100%;
+}
+.home-banner-2 a{
+	display:block;width:325px;height:80px;overflow:hidden;text-indent:-999px;
+	position:absolute;top:183px;left:50%;margin-left:-100px;
+}
+.topic-container{margin-top:18px;background-color:#ffd608;}
+.topic-wrapper{
+	width:960px;margin:0 auto;padding:20px 0 80px;
+	font-size:20px;line-height:50px;color:#313236;
+}
+.dialog-pick{position:relative;}
+.dialog-pick h3{font-size:48px;color:#db5629;}
+.dialog-pick p{padding-top:10px;}
+.dialog-pick em{color:#db5629;}
+.dialog-pick-note{
+	position:absolute;left:140px;top:186px;
+	display:block;padding-left:20px;font-size:12px;
+	background-image:url(/topic/20141118/images/ico.png);
+	background-repeat:no-repeat;
+	background-position:left center;
+}
+.ui-dlg-msg{padding-bottom:10px;}
+.ui-dlg-btn{padding-bottom:40px;}
+</style>
+<div class="home-banner-1">
+	<div class="home-banner-2">
+		<a href="#" class="ui-action" data-action="jym1118-pick">立即领取</a>
+	</div>
+</div>
+<div class="topic-container">
+	<div class="topic-wrapper">
+		<h3>活动规则</h3>
+		<ul>
+			<li>1.在活动期间，新注册即得1000元理财金；</li>
+			<li>2.每个新注册用户仅送1次理财金；</li>
+			<li>3.使用理财金可获收益＝1000*项目利率*实际投资天数/360；</li>
+			<li>4.理财金仅限使用一次，不可拆分，有效期至2014年12月12日；</li>
+			<li>5.理财金不能提现，项目结束后收益归用户所有；可购买“银企众盈”或“商票贷”理财产品；</li>
+            <li>6.理财金仅支持PC端及M版购买。</li>
+		</ul>
+        <p>*本规则解释权归金银猫所有</p>
+	</div>
+</div>

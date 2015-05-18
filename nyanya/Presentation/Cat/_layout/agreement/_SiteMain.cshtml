@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/_layout/base/_BaseMain.cshtml";
+    var Title = Page.Title ?? "协议";
+}<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8" />
+<title>@Title</title>
+<style type="text/css">
+html, body{margin:0;padding:0;}
+body{background-color:#f3f4f8;font-size:14px;font-family:"Microsoft YaHei",\5FAE\8F6F\96C5\9ED1,"微软雅黑",Tahoma,Arial,Helvetica;}
+h1{text-align:center;font-weight:normal;}
+p{}
+.wrapper{position:relative;width:900px;margin:0 auto;}
+.print{position:absolute;right:4px;top:4px;}
+.print img{border:0;}
+.content{
+    padding:10px 20px;line-height:25px;
+    border:1px solid #DBDDDC;
+    background-color:#FFF;
+}
+@@media print{
+    .print{display: none;}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <a href="#" onclick="window.print();return false;" class="print"><img src="/static/images/agreement/print.png" /></a>
+    <div class="content">
+    @RenderBody()
+    </div>
+</div>
+</body>
+</html>

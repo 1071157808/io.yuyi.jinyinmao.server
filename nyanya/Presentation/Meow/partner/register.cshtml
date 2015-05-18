@@ -1,0 +1,25 @@
+﻿@{ 
+    Layout = "~/_layout/partner/Main.cshtml";
+    Page.Title = "注册金银猫";
+}
+@section PageScript {
+    <script src="/static/js/passport/common.js"></script>
+    <script src="/static/js/partner/passport.js"></script>
+    <script>
+    var mobile = zim.storage.snap('partnerMobile');
+    if(zim.isMobile(mobile)){
+        document.getElementById("jqm-register-mobile").value = mobile;
+    }
+    </script>
+}
+<div class="ui-content">
+    <div class="jqm-account-view">
+        <h5>您的手机号将会作为登录用户名使用</h5>
+        <ul class="jqm-account-span">
+            <li>
+                <input type="text" ime-mode="disabled" id="jqm-register-mobile" placeholder="请输入手机号码" >
+            </li>
+        </ul>
+        <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="user-register1">下一步</button></div>
+    </div>
+</div>

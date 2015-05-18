@@ -1,0 +1,40 @@
+# => LaunchBAProduct? => @Product.ProductCommandsHandler(0001) => @Product.BankAcceptanceProduct.LaunchAsync => BAProductLaunched! => &.(CacheUndone)
+
+# => LaunchTAProduct? => @Product.ProductCommandsHandler(0002) => @Product.TradeAcceptanceProduct.LaunchAsync => TAProductLaunched! => .(CacheUndone)
+
+# => BAProductUnShelves? => @Product.ProductCommandsHandler(0003) => @Product.BankAcceptanceProduct.UnShelvesAsync => BAProductUnShelved! => .(SmsNoticeUndone)
+
+# => RegiterANewUser? => @User.UserCommandsHandler(0004) => @User.User.SignUpAsync => RegisteredANewUser! => .(CacheUndone)
+	
+# => SetPaymentPassword? => @User.UserCommandsHandler(0005) => @User.User.SetPaymentPasswordAsync => PaymentPasswordSet! => .(CacheUndone)						
+
+# => SignUpPayment? => @User.UserCommandsHandler(0006) => @User.User.SignUpPaymentAsync => AppliedForSignUpPayment! 
+=> @Yilian.UserEventsHandler => @Yilian.YilianAuthRequest.SendRequestAsync => YilianAuthRequestSended!
+=> @User.YilianEventsHandler => @User.User.GotYilianVerifyResultAsync => |SignUpPaymentFailed! => .(SmsNoticeUndone)
+																	  => .
+																 	  
+# => AddBankCard? => @User.UserCommandsHandler(0007) => @User.User.AddBankCardAsync => AppliedForAddBankCard! => @Yilian.UserEventsHandler
+=> @Yilian.YilianAuthRequest.SendRequestAsync => YilianAuthRequestSended! 
+=> @User.YilianEventsHandler => @User.User.GotYilianVerifyResultAsync => |AddBankCardFailed! => .(SmsNoticeUndone)
+																	  => .
+
+# => BuildInvestingOrder? => @Order.OrderCommandsHandler(0008) => @Order.BuildOrderAsync => OrderBuilded! => @Yilian.OrderEventsHandler
+=> @Yilian.YilianPaymentRequest.SendRequestAsync => YilianPaymentRequestSended! 
+=> @Order.YilianEventsHandler => |. 
+							  => |@Order.GotYilianPaymentResultAsync => OrderPaymentFailed! => @Product.OrderEventsHandler => @Product.Product.UnfreezeShareCount =>.(SmsNoticeUndone)
+
+
+# => ChangeLoginPassword? => @User.UserCommandsHandler(0009) => @User.ChangePasswordAsync => PasswordChanged! => .(CacheUndone)	
+
+# => ProductRepay? => @Product.ProductCommandsHandler(0010) => @Product.Product.RepayAsync => ProductRepaid! => &.(CacheUndone)
+							  																				 => &@Order.ProductEventsHandler => @Order.OrderService.SetOrdersRepaidForProductAsync => .
+
+# => YilianAuthRequestCallbackReceived! => @Yilian.YilianEventsHandler => @Yilian.YilianAuthRequest.ProcessTheReplyAsync => YilianAuthRequestCallbackProcessed! 
+=> @User.YilianEventsHandler => @User.User.GotYilianVerifyResultAsync => |SignUpPaymentSucceeded! => .(SmsNoticeUndone,CacheUndone)
+										 							  => |AddBankCardSucceeded! => .(SmsNoticeUndone,CacheUndone)
+										                              => |SignUpPaymentFailed! => .(SmsNoticeUndone)
+										                              => |AddBankCardFailed! => .(SmsNoticeUndone)
+
+# => YilianPaymentRequestCallbackReceived! => @Yilian.YilianEventsHandler => @Yilian.YilianPaymentRequest.ProcessTheReplyAsync => YilianPaymentRequestCallbackProcessed! 
+=> @Order.YilianEventsHandler => @Order.Order.GotYilianPaymentResultAsync => |OrderPaymentFailed! => @Product.OrderEventsHandler => @Product.Product.UnfreezeShareCount =>.(Undone)
+																		  => |OrderPaymentSuccessed! => @Product.OrderEventsHandler => @Product.Product.Paid => .(Undone)

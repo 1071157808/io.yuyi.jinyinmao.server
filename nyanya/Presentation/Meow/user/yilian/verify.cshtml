@@ -1,0 +1,22 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "添加银行卡";
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div class="jqm-auth-wrap">
+        <h2>请求已受理</h2>
+        <div class="jqm-auth-note">
+            <strong>在10分钟之内您可能接到银联(广州)来电。号码为020-96585。</strong>
+            <p>请您配合语音提示进行操作。<br>如您没有接到此来电，则会绑定失败。</p>
+        </div>
+        <div class="ui-warning-wrap">
+            <i class="ui-warning">!</i>
+            <p>成功之后就可以购买啦！</p>
+        </div>
+    </div>
+    <div class="jqm-wrapper ui-center">
+        <a href="/" class="ui-linkbtn">边逛边等</a>
+    </div>
+    @RenderPage("~/_layout/user/help_phone.cshtml")
+</div>

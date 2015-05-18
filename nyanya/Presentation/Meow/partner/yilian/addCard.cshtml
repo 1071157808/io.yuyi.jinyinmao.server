@@ -1,0 +1,21 @@
+﻿@{ 
+    Layout = "~/_layout/partner/Main.cshtml";
+    Page.Title = "绑定银行卡";
+}
+@section PageScript {
+    <script src="/static/js/partner/yilian.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.yilian.addCard.init();
+    });
+    </script>
+}
+<div class="ui-content">
+    <div id="jqm-addCard-wrap"></div>
+</div>
+<script type="text/tpl" id="jqm-tpl-addCard">
+@RenderPage("~/tpl/user/yilian/addCard.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-banks">
+@RenderPage("~/tpl/user/yilian/banks.cshtml")
+</script>

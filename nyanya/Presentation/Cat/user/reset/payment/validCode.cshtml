@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "重置支付密码";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/reset/payment.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "settings" })
+<script> var _Cellphone = "@userInfo.Data.Cellphone"; </script>
+<div class="content valid-code-only">
+    <div class="ctt-block page-reset-password">
+        <h3 class="ctt-head"><span>重置支付密码</span></h3>
+        <div class="ctt-rows">
+            <label>请点击按钮发送验证码，包含验证码的短信会发送到 @CatHelper.FixCellphone(userInfo.Data.Cellphone)</label>
+        </div>
+        <div class="ctt-rows">
+            <input type="text" class="ui-text pwd-vaildCode" id="code" maxlength="6" placeholder="请输入验证码" />
+            <input id="getCode" type="button" class="ui-btn-simple btn-validCode" value="获取验证码" />
+        </div>
+        <div class="ctt-rows">
+            <button class="ui-btn1 ui-action" data-action="reset-payment1" id="validBtn">下一步</button>
+        </div>
+    </div>
+</div>

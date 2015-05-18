@@ -1,0 +1,27 @@
+﻿@{ 
+    Layout = "~/_layout/app/Main.cshtml";
+    Page.Title = "协议内容";
+}
+@section PageScript{
+<script src="/static/js/lib/zepto.min.js"></script>
+<script src="/static/js/lib/zim.js"></script>
+<script>
+    Zepto(function(){
+        var id = zim.urlQuery('id');
+        var api = "/api/v1/Orders/PledgeAgreement?orderIdentifier={id}";
+        zim.sync({
+            url:api,
+            data:{id:id},
+            success:function(d){
+                $('#agreementContent').html(d.Content);
+            }
+        });
+    });
+</script>
+}
+<style>#agreementContent{padding:1em;font-size:14px;line-height:1.5;}</style>
+<div class="ui-content">
+    <div class="list-content" id="agreementContent">
+        
+    </div>
+</div>

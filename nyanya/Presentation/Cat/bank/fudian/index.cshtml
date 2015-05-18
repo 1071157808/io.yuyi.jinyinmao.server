@@ -1,0 +1,110 @@
+﻿@{
+    Layout = "~/_layout/bank/_SiteMain.cshtml";
+    Page.Title = "富票盈专区--富滇银行 --金银猫";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/amp/list.js'></script>");
+    string number = CatHelper.Request("page", "1");
+    dynamic proInfo = Request.GetData("/ProductInfo/BA/Page/" + number+"/20");
+    string serverTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+    Response.OutputCache(30);
+    DateTime t = DateTime.Now;
+    string valDate="购买成功立刻起息";
+}
+@section PageStyle{
+    <link rel="stylesheet" type="text/css" href="/static/css/bank/fudian.css">
+    <script> var _server_time = "@serverTime"; </script>
+}
+@RenderPage("~/_layout/bank/_base_index.cshtml", new { name = "fudian", intro = "富滇银行 - 票据由富滇银行代为保管和托收" })
+<input type="hidden" value="@t" />
+<div class="bank-sitemap ui-wrapper">
+    <div class="bank-map">
+        <a href="/bank/list" title="银行专区">银行专区</a><i class="sign">&gt;</i><a href="/bank/fudian" title="富滇银行">富滇银行</a>
+    </div>
+</div>
+<div class="ui-wrapper fudian-wrap bg-none">
+   @if (CatHelper.IsDataSuccess(proInfo))
+   {     
+            foreach (dynamic item in proInfo.Data.Products)
+            {
+                int minPrice = (int)(item.UnitPrice * item.MinShareCount);
+                decimal sumPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+                dynamic showStatus = CatHelper.GetProductShowingStatus(item.ShowingStatus);
+                if(item.ShowingStatus<30)
+                {
+                  <a target="_blank" href="/bank/fudian/detail?id=@item.ProductNo" class="pro-list">
+                       <div class="pro-left">
+                          <p><strong>@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</strong><span class="pro-hint"><span class="pro-notice"><em>@minPrice</em>元起投</span><em class="pro-notice">@valDate</em></span></p>
+                          <span class="pro-bank">承兑行：@item.BankName</span>
+                          <ul class="attribute">
+                                <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                <li>周期<b>@item.Period</b>天</li>
+                                <li>总额<b>@sumPrice</b>万</li>
+                            </ul>
+                       </div>
+                       <div class="pro-right">
+                          <span class="text db">开售：@item.StartSellTime.ToString("yyyy-MM-dd")</span>
+                          <span class="thin-green link-btn db">立即抢购</span>
+                       </div>
+                  </a> 
+                }               
+                else if(item.ShowingStatus==30)
+                {
+                  <a target="_blank" href="/bank/fudian/detail?id=@item.ProductNo" class="pro-list">
+                       <div class="pro-left">
+                          <p><strong>@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</strong><span class="pro-hint"><span class="pro-notice"><em>@minPrice</em>元起投</span><em class="pro-notice">@valDate</em></span></p>
+                          <span class="pro-bank">承兑行：@item.BankName</span>
+                          <ul class="attribute">
+                              <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                              <li>周期<b>@item.Period</b>天</li>
+                              <li>总额<b>@sumPrice</b>万</li>
+                          </ul>
+                       </div>
+                       <div class="pro-right">
+                          <div class="total-num"><span class="percent db"><em style="width: 0%;" data-value="@item.PaidPercent"></em></span></div> 
+                          <span class="orange-bg link-btn db">立即抢购</span>
+                       </div>
+                  </a> 
+                 } 
+                 else if(item.ShowingStatus==40)
+                  {
+                    <a target="_blank" href="/bank/fudian/detail?id=@item.ProductNo" class="pro-list sell-out">
+                         <div class="pro-left">
+                            <p><strong>@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</strong><span class="pro-hint"><span class="pro-notice"><em>@minPrice</em>元起投</span><em class="pro-notice">@valDate</em></span></p>
+                            <span class="pro-bank">承兑行：@item.BankName</span>
+                            <ul class="attribute">
+                              <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                              <li>周期<b>@item.Period</b>天</li>
+                              <li>总额<b>@sumPrice</b>万</li>
+                            </ul>
+                         </div>
+                         <div class="pro-right">
+                            <span class="percent db"><em class="sell-out" style="width: 100%;"></em></span>
+                            <span class="gray-bg link-btn db">已售罄</span>
+                         </div>
+                    </a> 
+                  }
+                 else if(item.ShowingStatus==50)
+                {
+                  <a target="_blank" href="/bank/fudian/detail?id=@item.ProductNo" class="pro-list sell-out">
+                     <div class="pro-left">
+                          <p><strong>@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</strong><span class="pro-hint"><span class="pro-notice"><em>@minPrice</em>元起投</span><em class="pro-notice">@valDate</em></span></p>
+                          <span class="pro-bank">承兑行：@item.BankName</span>
+                          <ul class="attribute">
+                            <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                            <li>周期<b>@item.Period</b>天</li>
+                            <li>总额<b>@sumPrice</b>万</li>
+                          </ul>
+                     </div>
+                     <div class="pro-right">
+                        <span class="gray-bg link-btn db">已结束</span>
+                     </div>
+                  </a> 
+                }
+                else
+                {
+                  <a target="_blank" href="#this" class="pro-list sell-out">  
+                  </a>
+                }                                   
+            }
+            @RenderPage("~/_layout/base/_Pager.cshtml", new { Length = proInfo.Data.TotalPageCount })
+   }
+</div>

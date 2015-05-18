@@ -1,0 +1,64 @@
+﻿@{ 
+    Layout = "~/_layout/app/Main.cshtml";
+    Page.Title = "你问喵喵答！";
+}
+<style>
+.app-ask-wrap{padding:1em 0;overflow:hidden;}
+.app-ask-wrap h3,
+.app-ask-wrap p{
+    position:relative;
+    display:block;font-size:28px;padding:1em;
+    margin-top:1.5em;
+    margin-bottom:1.5em;
+    -webkit-border-radius:1em;
+    -moz-border-radius:1em;
+    border-radius:1em;
+}
+.app-ask-wrap h3{
+    margin-left:1.5em;
+    margin-right:4em;
+    background-color:#2fcc71;
+    color:#FFF;
+}
+.app-ask-wrap p{
+    margin-left:4em;
+    margin-right:1.5em;
+    background-color:#f1f1f1;
+}
+.app-ask-wrap h3:before,
+.app-ask-wrap p:before{
+    position:absolute;bottom:.8em;
+    content:"";overflow:hidden;
+    display:block;width:36px;height:33px;
+    background-size:100% auto;
+}
+.app-ask-wrap h3:before{
+    left:-36px;
+    background-image:url(/static/app/images/ask/icon-ask-left.png);
+}
+.app-ask-wrap p:before{
+    right:-36px;
+    background-image:url(/static/app/images/ask/icon-ask-right.png);
+}
+@@media (max-width: 480px) {
+    .app-ask-wrap h3,
+    .app-ask-wrap p{font-size:16px;}
+    .app-ask-wrap h3:before,
+    .app-ask-wrap p:before{width:18px;height:17px;}
+    .app-ask-wrap h3:before{left:-18px;}
+    .app-ask-wrap p:before{right:-18px;}
+}
+</style>
+<div class="ui-content app-page-ask">
+    <div class="app-page-banner"><img src="/static/app/images/ask/banner.jpg" /></div>
+    <div class="app-ask-wrap">
+        <h3>1、App什么时候可以支付？</h3>
+        <p>答：App的支付功能正在火热的开发中！这个夏天喵喵就将带着支付功能与大家见面！</p>
+        <h3>2、手机客户端如何保证安全性？</h3>
+        <p>答：新版的App会增加手势密码功能以及支付密码功能，以保障您的账户安全。</p>
+        <h3>3、金银猫产品的投资周期是如何计算的？</h3>
+        <p>答：金银猫产品的投资周期为产品开售日期至产品结息日期之间的天数。也就是说购买当天就会立刻开始计息。</p>
+        <h3>4、为什么我在结息日当天收不到还款?</h3>
+        <p>答：我们将在结息日之后的三个工作日内将本息归还至您的账户。截止至2014年7月1日14:17:34，在已还款的400多期产品中，喵喵已经能够保证73.5%的订单能在结息后一个工作日内得到还款。</p>
+    </div>
+</div>

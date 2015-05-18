@@ -1,0 +1,17 @@
+﻿@{
+	dynamic userInfo = Request.GetData("/UserInfo");
+    string loginName = userInfo.Data.Cellphone;
+}
+<div class="ui-topbar">
+    <div class="ui-topbar-inner ui-wrap clearfix">
+        <div class="ui-logo-wrap"><a class="ui-logo" title="兴业银行 - 直销银行" href="/"><img src="/static/images/base/home-logo.png" width="302" height="32" alt="兴业银行 - 直销银行"/></a></div>
+        <div class="ui-nav-msg">
+        	<div class="ui-nav-info clearfix">
+                <div class="ui-nav-user">您好！ <span class="ui-top-phone">@CatHelper.FixCellphone(loginName)</span></div>		
+                <div class="ui-exit-wrap">
+                    <i class="nav-line">|</i><a class="back-ticket" href="/">兴业票首页</a><i class="nav-line">|</i><a href="javascript:;" class="exit-user" onclick="jym.load.logout();return false;">退出</a>
+                </div>
+        	</div>
+        </div>
+    </div>
+</div>

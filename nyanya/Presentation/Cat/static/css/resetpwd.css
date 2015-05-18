@@ -1,0 +1,47 @@
+/* gloabl */
+.wrap-txt{ width:960px;margin-left:auto;margin-right:auto;}
+/* reset password */
+.reset-container{ height:650px; margin-top:50px; border:1px solid #dedede;background: #fff;}
+.reset-inner{ padding:40px 55px;}
+.reset-title{ overflow:hidden;border-bottom: 1px solid #e5e5e5;}
+.reset-title h1{ width:135px; padding-bottom:6px; text-indent:3px; font-weight:normal;color: #4b535b;font-size:18px; border-bottom:4px solid #cdcdcd;}
+.reset-main{ padding-top:48px;}
+.reset-info{font-size:16px;}
+.reset-handle{ padding-top:25px;}
+.reset-handle .reset-input{ margin-right:15px;}
+.reset-btn{ height:35px; line-height:35px; padding:0 8px;background: #cf9438;color: #fff;cursor: pointer;border-radius: 3px; border:0;}
+.reset-btn:hover{background: #bf852a;}
+.disable-btn{background: #ccc;color: #fff;}
+.disable-btn:hover{background: #ccc;color: #fff;}
+.next-btn{ width:185px;}
+/* two */
+.reset-two{ padding-top:25px;}
+.reset-warn{ padding:15px; line-height:23px;background: #fcf3ea;color: #6a3906;border-radius: 3px; display:inline-block; *display:inline; *zoom:1;}
+.reset-again{ padding-top:30px;}
+.reset-again-list li{ position:relative; margin-bottom:40px;}
+.reset-again-list .lab{ display:block;font-size:16px;color: #333; margin-bottom:15px;}
+.reset-two-path{}
+.reset-again-list .common-text{ width:300px;}
+.required-fields{ font-family:serif;color: #db5629; margin-right:3px;}
+.required-info{ position:absolute; top:34px;left:335px; padding:10px 15px;background: #f8f8fa; border:1px solid #db5629;border-radius: 5px;font-size:14px;color: #db5629;display:none;}
+.required-info i{ position:absolute; top:14px; left:-10px; width:10px; height:14px; display:block;  background:url(../images/base/base-sign-bg.png) 0 0 no-repeat;}
+.required-info b{font-weight:normal;}
+.required-info .req{ font-family:serif; margin-right:5px;}
+.required-error{position:absolute;top:49px;left:335px;width:15px;height:15px;display:none;background:url(../images/passport/login-error-icons.png) 0 -42px no-repeat;}
+.required-ok{border:0;background:url(../images/passport/login-error-icons.png) 0 0 no-repeat;}
+.required-ok i,.required-ok em{display:none;}
+/* three */
+.reset-three .reset-warn{background: #eefcf5;color: #18b160;font-size:14px; padding:15px 55px 15px 15px;}
+.reset-finish{ padding-top:35px; line-height:27px;font-size:16px; color:#333;}
+.reset-first li{margin-bottom:55px;}
+.reset-first .reset-input{width:186px;}
+.reset-first .phone-txt{width:185px;margin-right:10px;}
+.reset-first .required-info{left:330px;}
+.reset-first .code-li .required-info{left:220px;}
+.reset-first .msg-info{position:absolute;top:81px;left:0;color:#db5629;}
+.btn-code-disabled{background:#d1cfd0;cursor:default;}
+.btn-code-disabled:hover{background:#d1cfd0;}
+
+
+
+

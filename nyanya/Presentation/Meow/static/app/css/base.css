@@ -1,0 +1,70 @@
+@charset 'utf-8';
+/* CSS Reset */
+html{
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;
+}
+html,body{margin:0;height:100%;}
+html, body, div, p, samp{
+    font-family:'HiraginoSansGB W3','Microsoft YaHei',\5FAE\8F6F\96C5\9ED1,Helvetica,Arial,sans-serif;
+}
+button,input,select,textarea{margin:0;font-family:inherit;font-size:100%}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;}
+button[disabled],html input[disabled]{cursor:default;}
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;}
+input,textarea{
+    padding:0;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0;}
+textarea{overflow:auto;vertical-align:top;}
+table{border-collapse:collapse;border-spacing:0;}
+img{border:0;vertical-align:middle;}
+a,img{display:block;}
+/* global css */
+html, body, div, p, a, a:hover{color:#4e4e4e;font-size:14px;}
+body{position:relative;margin:0 auto;}
+body, input, select, textarea, button{line-height:1.3;}
+h1,h2,h3,h4,h5,h6,strong,em,p{font-style:normal;margin:0;padding:0;}
+ul, ol{list-style:none;padding:0;margin:0;}
+a,a:hover{text-decoration:none;}
+a:active,a:focus,
+button:active,button:focus{
+    box-shadow: inset 0 1px 5px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset 0 1px 5px rgba(0,0,0,0.2);
+    -webkit-box-shadow: inset 0 1px 5px rgba(0,0,0,0.2);
+}
+a:visited,button:visited,
+a.ui-disabled:active,
+a.ui-disabled:focus,
+button.ui-disabled:active,
+button.ui-disabled:focus{
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+}
+.clearfix:after{display:block;clear:both;content:"";visibility:hidden;height:0;}
+.clearfix{zoom:1;}
+/* zim css base */
+body,
+.viewport,
+.ui-page,
+.ui-single-page,
+.ui-header,
+.ui-header > .ui-wrapper,
+.ui-footer{max-width:800px;min-width:320px;}
+.viewport{height:100%;}
+.ui-page,.ui-single-page{min-height:100%;background-color:#fbf7ed;}
+.app-page .text-page{padding:10px;}
+.text-page h1,
+.text-page h2,
+.text-page h3,
+.text-page h4,
+.text-page h5,
+.text-page h6,
+.text-page p{margin-top:.6em;margin-bottom:.6em;}
+.app-page-banner img{width:100%;}

@@ -1,0 +1,24 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "下单支付";
+}
+@section PageScript {
+    <script src="/static/js/lib/jsmd5.min.js"></script>
+    <script src="/static/js/payment/index.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.payment.create.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div id="jqm-order-create"></div>
+    @RenderPage("~/_layout/user/help_phone.cshtml")
+</div>
+<script type="text/tpl" id="jqm-tpl-create">
+@RenderPage("~/tpl/payment/create.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-banks">
+@RenderPage("~/tpl/payment/banks.cshtml")
+</script>

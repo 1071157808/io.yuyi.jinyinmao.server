@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  12:56 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:30 AM
+// Last Modified On : 2015-05-18  1:54 PM
 // ***********************************************************************
 // <copyright file="IJBYProductWithdrawalManagerState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -51,6 +51,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Gets or sets the withdrawal transcations.
         /// </summary>
         /// <value>The withdrawal transcations.</value>
-        List<JBYAccountTranscationInfo> WithdrawalTranscations { get; set; }
+        Dictionary<Guid, Tuple<int, JBYAccountTranscationInfo>> WithdrawalTranscations { get; set; }
     }
 }

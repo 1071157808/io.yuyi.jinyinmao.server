@@ -1,0 +1,100 @@
+﻿@{
+    dynamic UserInfo = Page.UserInfo;
+    dynamic ProInfo = Page.ProInfo;
+}
+<div class="buy-main">
+    <div class="buy-main-inner">
+        <div class="buy-step-title clearfix">
+            <h2 class="on"><span class="step-title-num"><i>1.</i>输入手机号</span></h2>
+        </div>
+        <div class="buy-step-main buy-auth-only page-auth-only">
+            <p class="buy-user buy-user-mobile">
+                <span>手机号：@CatHelper.FixCellphone(UserInfo.Cellphone)</span>
+                <em class="tempLogout"><a href="#" class="ui-action" data-action="tempChangeMobile">更换手机号</a></em>
+            </p>
+            <ul class="buy-step-list auth-step-list">
+                <li>
+                    <div class="ui-msg"><p class="ui-warn">正在对您的账户进行认证，请填写您本人的储蓄卡信息，认证通过后才可以进行购买。</p></div>
+                </li>
+                <li style="padding-left:120px;">
+                    <div id="ui-msg-info" class="ui-msg"></div>
+                </li>
+                <li style="position:relative;z-index:9;">
+                    <label class="lab">开户银行：</label>
+                    <div class="buy-plan clearfix">
+                        <div class="ctt-xSelect" id="bankSelect">
+                            <div class="ctt-xSelect-text"><em class="ctt-xSelect-bank bank-c08">兴业银行</em></div>
+                            <div class="ctt-xSelect-drop"><b></b></div>
+                            <div class="ctt-xSelect-span" style="display:none"></div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">储蓄卡卡号：</label>
+                    <div class="buy-plan">
+                        <input class="MsgContext common-text auth-text input-max" type="text" id="ctt-bankcard" maxlength="30" />
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">姓名：</label>
+                    <div class="buy-plan">
+                        @if(UserInfo.HasYSBInfo == true){
+                        <div class="MsgContext common-text auth-text input-max">@UserInfo.YSBRealName</div>
+                        <input type="hidden" id="ctt-name" value="@UserInfo.YSBRealName" />
+                        } else {
+                        <input class="MsgContext common-text auth-text input-max" type="text" id="ctt-name" maxlength="8" />
+                        }
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">证件类型：</label>
+                    <div class="buy-plan">
+                        @if(UserInfo.HasYSBInfo == true){
+                        <div class="MsgContext common-text auth-text input-max">身份证</div>
+                        <input type="hidden" id="ctt-idtype" value="0" />
+                        } else {
+                        <div class="ui-select">
+                            <span>
+                        <select id="ctt-idtype" class="auth-select">
+                            <option value="0">身份证</option>
+                            <option value="1">护照</option>
+                            <option value="2">台湾同胞来往内地通行证</option>
+                            <option value="3">军人证</option>
+                        </select>
+                            </span>
+                        </div>
+                        }
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">证件号码：</label>
+                    <div class="buy-plan">
+                        @if(UserInfo.HasYSBInfo == true){
+                        <div class="MsgContext common-text auth-text input-max">@UserInfo.YSBIdCard</div>
+                        <input type="hidden" id="ctt-idcard" value="@UserInfo.YSBIdCard" />
+                        } else {
+                        <input class="MsgContext common-text auth-text input-max" type="text" id="ctt-idcard" maxlength="30" />
+                        }
+                    </div>
+                </li>
+                @RenderPage("~/_layout/payment/paymentPwd.cshtml")
+                <li>
+                    <label class="lab">&nbsp;</label>
+                    <div class="buy-plan">
+                        <div class="argee-live">
+                            <label class="yetlab">我已经同意<a href="/deal/open" target="_blank">《认证快付开通协议》</a><a href="/deal/personal-register" target="_blank">《个人注册协议》</a></label>
+                        </div>
+                        <button id="btnAuth" class="ui-action btn-common" data-action="bind-bank-card">立即认证</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="buy-step-title">
+            <h2><span class="step-title-num"><i>2.</i>填写支付信息</span></h2>
+        </div>
+        <div class="buy-step-main buy-confirm-only"></div>
+        <div class="buy-step-title">
+            <h2><span class="step-title-num"><i>3.</i>购买成功</span></h2>
+        </div>
+    </div>
+</div>

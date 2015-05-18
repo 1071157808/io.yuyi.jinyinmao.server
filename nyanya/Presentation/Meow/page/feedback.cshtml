@@ -1,0 +1,20 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "信息反馈";
+}
+@section PageScript {
+    <script src="/static/js/home/index.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.feedback.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div id="jqm-feedback" class="ui-content">
+    @*<label for="jqm-feedback-phone">请留下您的手机号码 ( 可选 )</label>
+    <div class="jqm-wrapper"><input type="number" ime-mode="disabled" id="jqm-feedback-phone" /></div>*@
+    <label>请告诉我们您的宝贵意见 ( 不超过200字 )</label>
+    <div class="jqm-wrapper"><textarea id="jqm-feedback-content"></textarea></div>
+    <div class="jqm-wrapper"><button class="ui-btn1" id="jqm-feedback-btn">发送</button></div>
+</div>

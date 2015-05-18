@@ -1,0 +1,310 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "订单抽奖“赚起来” - 金银猫11.18周年庆，发财季震撼登陆";
+}
+@section PageScript {
+    <script>
+    var lottery = {
+        status:0,
+        data:{
+            "10":"特等奖",
+            "20":"一等奖",
+            "30":"二等奖",
+            "40":"三等奖",
+            "50":"四等奖"
+        },
+        none:function(s){
+            var m = s === false ? 'hide' : 'show';
+            $('#dialog-none')[m]();
+        },
+        rotate:function(type){
+            if(type === false){
+                $('#dialog-rotate').hide();
+            } else {
+                var s = '<i class="rotate-'+type+'"></i>';
+                s += '<h3>恭喜您！获得<em>'+this.data[type]+'</em><br>财主，截屏发QQ群炫耀吧！</h3>';
+                s += '<p>说明：奖品以实物为准，工作人员将在5个工作日内与您联系！</p>';
+                s += '<a class="lottery-close" data-action="lottery-rotate-close" href="#">关闭</a>'
+                $('#dialog-rotate').html(s).show();
+            }
+        },
+        getData:function(callback){
+            zim.user.addCallback(function(status){
+                if(!status){
+                    zim.ui.alert({
+                        msg:'您还没有登录哦！',
+                        btnOk:'立即登录',
+                        callback:function(){
+                            lottery.status = 0;
+                            zim.location(zim.user.loginUrl());
+                        }
+                    })
+                } else {
+                    zim.sync({
+                        type:"post",
+                        url:"/api/v1/Luckhub/BuildLuckRecord",
+                        success:function(d){
+                            if(d.Status == 10){
+                                zim.ui.alert({
+                                    msg:'您今日未购买产品，暂时不能参与！',
+                                    btnOk:'1元起购 GO！',
+                                    callback:function(){
+                                        lottery.status = 0;
+                                        location.href = '/amp/list';
+                                    }
+                                });
+                            } else if(d.Status == 30 || d.Status == 50){
+                                zim.ui.alert('您已抽过奖了，谢谢参与！', function(){
+                                    lottery.status = 0;
+                                });
+                            } else if(d.Status == 20){
+                                zim.fire(callback, d.AwardLevel);
+                            } else {
+                                var txt = new Date() > new Date(2014,11-1,18) ? '活动已结束，谢谢您的参与！' : '活动还没开始，谢谢您的参与！';
+                                zim.ui.alert(txt, function(){
+                                    lottery.status = 0;
+                                });
+                            }
+                        },
+                        error:function(d){
+                            if(d.status === 401){
+                                zim.ui.alert({
+                                    msg:'您还没有登录哦！',
+                                    btnOk:'立即登录',
+                                    callback:function(){
+                                        lottery.status = 0;
+                                        zim.location(zim.user.loginUrl());
+                                    }
+                                })
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    };
+    Zepto(function(){
+        zim.action.extend({
+            "tip-close":function(){
+                this.parentNode.style.display = 'none';
+            },
+            "lottery-none-close":function(){
+                lottery.status = 0;
+                lottery.none(false);
+            },
+            "lottery-rotate-close":function(){
+                lottery.status = 0;
+                lottery.rotate(false);
+            }
+        });
+        var rotate = [30, 150, 210, 270, 330, 90];
+        var rotate_base = 1440;
+        var do_rotate = function(r, callback){
+            var i = 0;
+            var fn = function(){
+                i = i + 10;
+                callback(i);
+                if(i < r) setTimeout(fn, 10);
+            };
+            fn();
+        };
+        var btn = $('#startbtn').on('click', function(){
+            if(lottery.status){return;}
+            lottery.status = 1;
+            lottery.getData(function(type){
+                var a = type / 10 - 1;
+                var r = rotate_base + rotate[a];
+                do_rotate(r, function(s){
+                    btn.css('-webkit-transform', 'rotate('+s+'deg)');
+                    setTimeout(function(){
+                        if(s == r){
+                            if(type == 60){
+                                lottery.none()
+                            } else {
+                                lottery.rotate(type)
+                            }
+                        }
+                    }, 800);
+                });
+            });
+        });
+    });
+    </script>
+}
+<style>
+.tip-share{
+    position:absolute;z-index:20;
+    width:100%;height:90px;
+    background-image:url(/static/images/topic/20141118/tip-share.png);
+    background-color:#fff2c0;
+    background-repeat:no-repeat;
+    background-position:0 50%;
+    background-size:auto 100%;
+}
+.tip-share a{
+    position:absolute;right:0;top:0;
+    display:block;width:52px;height:52px;overflow:hidden;text-indent:-999px;
+    background-image:url(/static/images/topic/20141118/tip-close.png);
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size:auto 58%;
+
+}
+.topic-page img{display:block;width:100%;}
+.lottery-page{position:relative;overflow:hidden;}
+#startbtn{
+    position:absolute;top:0;left:0;z-index:9;
+    cursor:pointer;
+}
+.lottery-note{
+    color:#FFF;padding:0 1em 1em;line-height:1.8em;font-size:.8em;
+    background-image:url(/static/images/topic/20141118/lottery/bg.jpg)
+}
+.lottery-note h3{
+    padding-top:.8em;
+}
+.lottery-note table{
+    width:100%;
+}
+.lottery-note p{
+    color:#FFF;font-size:.8em;
+}
+#dialog-none, #dialog-rotate{
+    position:fixed;_position:absolute;
+    top:50%;left:50%;z-index:99999;
+}
+#dialog-none{
+    margin-left:-216px;margin-top:-119px;
+    display:none;width:432px;height:238px;
+}
+.lottery-none{
+    width:432px;height:238px;
+    background-image:url(/static/images/topic/20141118/lottery-none.png);
+    background-size:100% auto;
+}
+.lottery-close{
+    position:absolute;top:64px;right:-24px;
+    width:40px;height:40px;overflow:hidden;text-indent:-999px;
+    background-image:url(/static/images/topic/20141118/lottery-close.png);
+    background-size:100% auto;
+}
+#dialog-rotate{
+    margin-left:-210px;margin-top:-240px;
+    display:none;width:420px;height:120px;padding-top:360px;
+    text-align:center;color:#6a310b;
+    background-image:url(/static/images/topic/20141118/lottery-win.png);
+    background-size:100% auto;
+}
+#dialog-rotate .lottery-close{top:-.6em;right:-.6em;}
+#dialog-rotate h3{font-size:24px;line-height:1.2;font-weight:normal;}
+#dialog-rotate h3 em{color:#d21627;}
+#dialog-rotate p{font-size:14px;color:#6a310b;padding-top:15px;}
+#dialog-rotate i{
+    position:absolute;left:156px;top:166px;
+    display:block;width:110px;height:170px;
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+    background-size:100% auto;
+}
+#dialog-rotate i.rotate-10{
+    background-image:url(/static/images/topic/20141118/lottery/10.png);
+}
+#dialog-rotate i.rotate-20{
+    background-image:url(/static/images/topic/20141118/lottery/20.png);
+}
+#dialog-rotate i.rotate-30{
+    background-image:url(/static/images/topic/20141118/lottery/30.png);
+}
+#dialog-rotate i.rotate-40{
+    background-image:url(/static/images/topic/20141118/lottery/40.png);
+}
+#dialog-rotate i.rotate-50{
+    background-image:url(/static/images/topic/20141118/lottery/50.png);
+}
+@@media(max-width:480px){
+    .tip-share{height:50px;}
+    .tip-share a{width:30px;height:30px;}
+    #dialog-none{
+        margin-left:-140px;margin-top:-77px;
+        width:280px;height:154px;
+    }
+    .lottery-none{
+        width:280px;height:154px;
+    }
+    .lottery-close{
+        top:44px;right:-14px;
+        width:30px;height:30px;
+    }
+    #dialog-rotate{
+        margin-left:-140px;margin-top:-160px;
+        width:280px;height:80px;padding-top:240px;
+    }
+    #dialog-rotate h3{font-size:16px;}
+    #dialog-rotate p{font-size:12px;padding-top:5px;}
+    #dialog-rotate i{
+        left:111px;top:121px;
+        width:60px;height:90px;
+    }
+}
+</style>
+<div class="ui-header">
+    <div class="ui-wrapper">
+        <div class="ui-left"><a class="jqm-logo" href="/">金银猫</a></div>
+        <div class="ui-right">
+            <ul class="jqm-nav-top">
+                <li><a class="jqm-nav-index" href="/">首页</a></li>
+                <li><a class="jqm-nav-cpl" href="/cpl/list">商票贷</a></li>
+                <li><a class="jqm-nav-amp" href="/amp/list">银企众盈</a></li>
+                <li><a class="jqm-nav-login" href="/user/index">用户中心</a></li>
+            </ul>
+        </div>
+        <div class="tip-share">
+            <a href="#" data-action="tip-close">关闭</a>
+        </div>
+    </div>
+</div>
+<div class="ui-content topic-page">
+    <img src="/static/images/topic/20141118/lottery/banner.jpg" />
+    <div class="lottery-page">
+        <img src="/static/images/topic/20141118/lottery.png" />
+        <img id="startbtn" src="/static/images/topic/20141118/lottery-start.png" />
+    </div>
+    <div class="lottery-note">
+        <h2>幸运大转盘：</h2>
+        <strong>2014年11月18日当日投资任意理财项目，即可抽奖。</strong>
+        <h3>奖项设置：</h3>
+        <table>
+            <tr>
+                <td>特等奖</td>
+                <td>价值6088元IPhone6一台</td>
+            </tr>
+            <tr>
+                <td>一等奖</td>
+                <td>价值118元银钞一张</td>
+            </tr>
+            <tr>
+                <td>二等奖</td>
+                <td>价值38元U盘一个</td>
+            </tr>
+            <tr>
+                <td>三等奖</td>
+                <td>5元现金红包一个</td>
+            </tr>
+            <tr>
+                <td>四等奖</td>
+                <td>2元现金红包一个</td>
+            </tr>
+        </table>
+        <h3>活动时间：仅限11月18日当天。</h3>
+        <p>*每个账号仅限旋转一次大转盘，此活动仅支持PC端及M端。</p>
+    </div>
+    <img src="/static/images/topic/20141118/lottery/b1.png" />
+    <a href="/page/topic/1118"><img src="/static/images/topic/20141118/lottery/b2.png" /></a>
+    <img src="/static/images/topic/20141118/lottery/b3.png" />
+    <img src="/static/images/topic/20141118/lottery/b4.png" />
+</div>
+<div id="dialog-none">
+    <div class="lottery-none"></div>
+    <a class="lottery-close" data-action="lottery-none-close" href="#">关闭</a>
+</div>
+<div id="dialog-rotate"></div>

@@ -1,0 +1,65 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/home.js'></script>");
+    string number = CatHelper.Request("page", "1");
+    string api = string.Format("/ProductInfo/BA/Page/?number={0}", number);
+    string yieldSort = CatHelper.Request("yield", "2");
+    string periodSort = CatHelper.Request("period", "1");
+    string yieldClass = "yield-down";
+    string periodClass = "yield-up";
+    if(CatHelper.hasQuery("yield")){
+        api += "&yieldSortModel=" + yieldSort;
+        yieldClass = yieldSort == "1" ? "yield-up" : "yield-down";
+    } else if(CatHelper.hasQuery("period")) {
+        api += "&periodSortModel=" + periodSort;
+        periodClass = periodSort == "1" ? "yield-up" : "yield-down";
+    } else {
+        api += "&yieldSortModel=2&periodSortModel=1";
+    }
+    dynamic proInfo = Request.GetData(api);
+    Response.OutputCache(15);
+    DateTime t = DateTime.Now;
+}
+<input type="hidden" value="@t" />
+<div class="ui-outer">
+    <div class="ui-container ui-wrap">
+        <div class="ui-list-title clearfix">
+            <div class="ui-earn">
+                <div id="ampSort" class="ui-ticket-sort clearfix ticket-sort-on">
+                    <a id="xy-sort-yield" class="sort-items @yieldClass" href="#" data-yield="@yieldSort"><b>收益率</b><i></i></a>
+                    <a id="xy-sort-period" class="sort-items @periodClass sort-limit" href="#" data-period="@periodSort"><b>期限</b><i></i></a>
+                </div>
+            </div>
+            <div class="ui-myhandle"><a href="/user" class="my-ticket-btn">我的兴业票</a></div>
+        </div>
+        <div class="ticket-list-wrap">
+            <div class="ticket-list-title">
+                <ul class="ticket-title-list clearfix">
+                    <li class="base">基本信息</li>
+                    <li class="remain">剩余</li>
+                    <li class="in">收益率</li>
+                    <li class="time">理财期限</li>
+                    <li class="handle">操作</li>
+                </ul>
+            </div>
+            @if (CatHelper.IsDataSuccess(proInfo))
+            {
+                @RenderPage("~/_layout/amp/_list.cshtml", new { Data = proInfo.Data.Products })
+            }
+        </div>
+        <!--/list-->
+        <div class="ticket-bot-wrap list-page">
+            @if (CatHelper.IsDataSuccess(proInfo))
+            {
+                @RenderPage("~/_layout/base/_Pager.cshtml", new { Length = proInfo.Data.TotalPageCount })
+            }
+            <div id="ticketShare" class="ticket-share">
+                
+            </div>
+        </div>
+        <!--/bot-->
+    </div>
+</div>
+<!--/container-->

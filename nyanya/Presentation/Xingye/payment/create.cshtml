@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+}
+@{
+    string ProductNo = CatHelper.Request("id");
+    NyanyaWebData[] datas = Request.GetDatas("/UserInfo", "/ProductInfo/BA?productNo=" + ProductNo);
+    dynamic userInfo = datas[0];
+    dynamic prdInfo = datas[1];
+    if (!CatHelper.IsDataSuccess(prdInfo))
+    {
+        Response.Redirect("~/");
+    }
+}
+<div class="ui-outer">
+    <div class="ui-container ui-wrap">
+        <div class="ui-list-title clearfix">
+            <p class="lisk"><a href="/"> 兴业票</a><i>&gt;</i><a href="/amp/detail?id=@ProductNo">产品详情</a><i>&gt;</i><span>订单购买</span></p>
+            <div class="ui-myhandle"><a class="my-ticket-btn" href="/user">我的兴业票</a></div>
+        </div>
+        <div class="buy-wrap">
+            <div class="buy-wrap-inner clearfix">
+                @RenderPage("~/_layout/payment/silder.cshtml", new{ Data = prdInfo.Data })
+                <!--/side-->
+                @if(CatHelper.IsDataSuccess(userInfo)){
+                    if(userInfo.Data.HasDefaultBankCard == false){
+                        Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/payment/auth.js'></script>");
+                        @RenderPage("~/_layout/payment/auth.cshtml", new{ UserInfo = userInfo.Data, ProInfo = prdInfo.Data })
+                    } else {
+                        string FirstBuy = CatHelper.Request("firstbuy", "0");
+                        dynamic HasPasswordData = FirstBuy == "1" ? true : userInfo.Data.HasLoginPwd;
+                        if(HasPasswordData == false){
+                            Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/payment/password.js'></script>");
+                            @RenderPage("~/_layout/payment/password.cshtml", new{ UserInfo = userInfo.Data })
+                        } else {
+                            Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/payment/index.js'></script>");
+                            dynamic BankCards = Request.GetData("/UserInfo/BankCards");
+                            @RenderPage("~/_layout/payment/create.cshtml", new{ 
+                                UserInfo = userInfo.Data, 
+                                ProductData = prdInfo.Data, 
+                                BankCards = BankCards.Data
+                            })
+                        }
+                    }
+                } else {
+                    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/payment/guest.js'></script>");
+                    @RenderPage("~/_layout/payment/guest.cshtml")
+                }
+                <!--/main-->
+            </div>
+        </div>
+        <!--/buy-->
+    </div>
+</div>
+<!--/container-->
+
+
+
+
+
+
+
+
+

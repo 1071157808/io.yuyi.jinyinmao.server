@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "安全设置";
+}
+@section PageScript {
+    <script src="/static/js/user/index.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.user.settings.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <ul class="jqm-menu-nav">
+        <li><a class="ui-link" href="#" data-action="reset-password-user"><span>重置登录密码</span></a></li>
+        <li><a class="ui-link" href="#" data-action="reset-password-payment"><span>重置支付密码</span></a></li>
+    </ul>
+</div>

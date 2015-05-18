@@ -1,0 +1,36 @@
+﻿@RenderPage("~/_layout/base/_top_nav.cshtml")
+@{
+    string navIndex = Page.navIndex ?? "";
+}
+@functions{
+    public static string setNavIndex(string nav, string index){
+        if(nav == index){
+            return "current";
+        }
+        return "";
+    }
+}
+<script>require(['jym'],function(jym){ jym.load.login() })</script>
+<div class="ui-header">
+    <div class="ui-wrapper">
+        <div class="ui-left"><a href="/" class="ui-logo">金银猫</a></div>
+        <ul class="clearfix ui-right ui-nav">
+            <li><a href="/">首页</a></li>
+            <li><a href="/amp/list" class="@setNavIndex(navIndex, "amp")">银企众盈</a></li>
+            <li><a href="/cpl/list" class="@setNavIndex(navIndex, "cpl")">商票贷</a></li>
+            @if(CatHelper.IsXYFlag || CatHelper.IsFDFlag)
+            {
+                <li><a href="/bank/list" class="@setNavIndex(navIndex, "bank")">银行专区</a></li>
+            }
+            else
+            {
+                <li><a href="http://www2.jinyinmao.com.cn/bank/" target="_blank">银行专区</a></li>
+            }
+            <li><a href="http://source.jinyinmao.com.cn/about/ejia/21_1.html" target="_blank">金银e家</a></li>
+        </ul>
+        <div class="clearfix ui-nav-passport" id="nav-passport-status">
+            <a class="ui-nav-login" href="/passport/login">登录</a>
+            <a class="ui-nav-register" href="/passport/register">注册</a>
+        </div>
+    </div>
+</div>

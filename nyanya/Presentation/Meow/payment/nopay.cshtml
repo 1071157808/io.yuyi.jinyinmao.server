@@ -1,0 +1,16 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "未开通手机支付";
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div class="jqm-auth-wrap jqm-auth-help">
+        <h2>对不起，您没开通手机支付</h2>
+        <div class="jqm-auth-note">
+            <p>请先开通后再进行购买</p>
+        </div>
+    </div>
+    <div class="jqm-wrapper ui-center">
+        <a href="/user/yilian/password" class="ui-linkbtn">马上开通</a>
+    </div>
+</div>

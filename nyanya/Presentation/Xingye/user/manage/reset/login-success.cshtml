@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/resetpwd.js'></script>");
+    NyanyaWebData[] datas = Request.GetDatas("/UserInfo");
+    NyanyaWebData userInfo = datas[0];
+    CatHelper.SignInCheck(userInfo);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "manage" })
+<div class="per-right">
+    <div class="my-card-title clearfix">
+        @RenderPage("~/_layout/user/_back_user.cshtml", new { name = "账户管理" })
+    </div>
+    <div class="my-card-main reset-success-only">
+        <div class="card-pwd-name reset-login-title">
+            <h2><em>重置登录密码</em><span></span></h2>
+        </div>
+        <div class="reset-success-forms">
+            <div class="reset-success-wrap">
+                <h2>重置成功！</h2>
+                <div class="reset-success-info">
+                    <p>您已经重置成功，请下次使用新密码登录。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

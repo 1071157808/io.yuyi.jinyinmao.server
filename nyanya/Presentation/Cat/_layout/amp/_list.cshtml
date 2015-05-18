@@ -1,0 +1,85 @@
+﻿@{
+    dynamic proInfo = Page.Data;
+    foreach (dynamic item in proInfo)
+    {
+        int minPrice = (int)(item.UnitPrice * item.MinShareCount);
+        decimal sumPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+        dynamic valMode = CatHelper.GetValueDate_list(item);
+        dynamic showStatus = CatHelper.GetProductShowingStatus(item.ShowingStatus);
+        <li>
+            <a class="amp-list-only" target="_blank" href="/amp/detail?id=@item.ProductNo">
+                <i class="@showStatus"></i>
+                @if (item.ShowingStatus == 50)
+                {
+                    <i class="amp-finish"></i>
+                }
+                <div class="amp-list-top">
+                    <div class="amp-list-title">
+                        <h1 class="ellipsis">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</h1>
+                    </div>
+                    <div class="amp-list-content clearfix">
+                        <div class="pro-major">
+                            <div class="pro-info clear">
+                                <span class="expected_yield"><span>@CatHelper.GetYieldString(item.Yield)%</span></span>
+                                <div class="time-info clear">
+                                    <ul class="info">
+                                        <li><span class="money">@minPrice</span>元起</li>
+                                        <li><span>@item.Period</span>天</li>
+                                        <li><span>@sumPrice</span>万</li>
+                                    </ul>
+                                    <div class="cur-day">@valMode</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-progress">
+                            @if (item.ShowingStatus == 30)
+                            {
+                                <div class="pro-finish-wrap">
+                                    <div class="total-num clearfix">
+                                        <span class="percent"><em style="width: 0%;" data-value="@item.PaidPercent"></em></span>
+                                        <span class="text"><b>@item.PaidPercent</b>%</span>
+                                    </div>
+                                    <div class="plus-num">还剩余： <i>@item.AvailableShareCount</i>&nbsp;份</div>
+                                </div>
+                            }
+                            else if (item.ShowingStatus < 30)
+                            {
+                                <div class="pro-finish-wrap" style="display: none">
+                                    <div class="total-num clearfix">
+                                        <span class="percent"><em style="width: 0%;"></em></span>
+                                        <span class="text"><b>0</b>%</span>
+                                    </div>
+                                    <div class="plus-num">还剩余： <i>@item.FinancingSumCount</i>&nbsp;份</div>
+                                </div>
+                                <div class="pro-start-wrap">
+                                    <div class="pro-start-time">开售时间：<i>@item.StartSellTime.ToString("yyyy-MM-dd")</i></div>
+                                    <div class="pro-count-down">开始销售倒计时： <i class="timeProgress" data-time="@item.StartSellTime.ToString("yyyy-MM-ddTHH:mm:ss")">00天00时00分00秒</i></div>
+                                </div>
+                            }
+                            else if (item.ShowingStatus == 40)
+                            {
+                                <div class="pro-finish-wrap">
+                                    <div class="pro-start-wrap">
+                                        <div class="pro-start-time">最迟还款日：<i>@item.RepaymentDeadline.ToString("yyyy-MM-dd")</i></div>
+                                        <div class="pro-yet-end">项目募集已结束</div>
+                                    </div>
+                                </div>
+                            }
+                            else if (item.ShowingStatus == 50)
+                            {
+                                <div class="pro-finish-wrap"></div>
+                            }
+                            else
+                            {
+                                <div class="pro-finish-wrap"></div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="amp-list-bot">
+                    <div class="repay-blank"> 抵押担保票据由：<span>@item.BankName</span>无条件兑付</div>
+                </div>
+            </a>
+        </li>
+    }
+}

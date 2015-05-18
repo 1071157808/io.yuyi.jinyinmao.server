@@ -1,0 +1,8 @@
+﻿@using System.Web
+@{
+    var OnlineHost = "m.jinyinmao.com.cn";
+    if (OnlineHost == HttpContext.Current.Request.Url.Host.ToString())
+    {
+        <div><!-- analytics --></div>
+    }
+}

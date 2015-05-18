@@ -1,0 +1,5 @@
+﻿@{
+    Request.GetData("/User/SignOut");
+    string backUrl = CatHelper.Request("backUrl", "~/");
+    Response.Redirect(backUrl);
+}

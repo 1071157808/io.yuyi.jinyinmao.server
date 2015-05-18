@@ -1,0 +1,47 @@
+﻿@using System
+@using System.Web.WebPages
+@{
+    Layout = "~/_layout/bank/_SiteMain.cshtml";
+    Page.Title = "银行专区 -- 金银猫";
+    //dynamic proInfo = this.Request.GetData("/ProductInfo/BA/XY/Index?count=1");
+    string serverTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+    string valDate="购买成功立刻起息";
+}
+@section PageStyle{
+    <link rel="stylesheet" type="text/css" href="/static/css/bank.css">
+    <script> var _server_time = "@serverTime"; </script>
+}
+<div class="bank-wrap wrap-txt clearfix">
+    <ul class="bank-area">
+        @if(CatHelper.IsFDFlag){
+            <li>
+                <a class="bankname" target="_blank" href="/bank/fudian"><img src="/static/images/bank/fudian.gif" /></a>
+                <div class="bankproduct">
+                    <p><span class="pro-name">富票盈专区</span><em class="pro-notice">1元起投</em><em class="pro-notice">@valDate</em></p>
+                    <p class="pro-description">票据由富滇银行代为保管和托收；到期由承兑银行无条件兑付，本息安全，风险趋零</p>
+                    <p class="clearfix pro-attribute">
+                        <span>年化<i>5%~7%</i></span>
+                        <span>周期<b>30~180</b>天</span>
+                        <a target="_blank" href="/bank/fudian" class="fr orange-link link-padding">前往查看</a>
+                    </p>
+                </div>
+            </li>
+        }
+        @if(CatHelper.IsXYFlag){
+            <li>
+                <a class="bankname" target="_blank" href="/bank/redirect?backUrl=https://piao.cib.com.cn"><img src="/static/images/bank/cib.gif" /></a>
+                <div class="bankproduct">
+                    <p><span class="pro-name">兴业银行产品专区</span><em class="pro-notice">1元起投</em><em class="pro-notice">@valDate</em></p>
+                    <p class="pro-description">到期由兴业银行无条件兑付，本息安全，风险趋零</p>
+                    <p class="clearfix pro-attribute">
+                        <span>年化<i>5%~6%</i></span>
+                        <span>周期<b>30~180</b>天</span>
+                        <a target="_blank" href="/bank/redirect?backUrl=https://piao.cib.com.cn" class="fr orange-link link-padding">前往查看</a>
+                    </p>
+                </div>
+            </li>
+        }
+        
+    </ul> 
+    <div class="more-bank"><a href="http://www2.jinyinmao.com.cn/bank/" target="_blank">更多银行理财产品>></a></div>
+</div>

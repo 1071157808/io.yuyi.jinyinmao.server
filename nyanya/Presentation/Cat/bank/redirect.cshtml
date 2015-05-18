@@ -1,0 +1,42 @@
+﻿@using System
+@using System.Web.WebPages
+@{
+    Layout = "~/_layout/bank/_SiteMain.cshtml";
+    Page.Title = "银行专区 -- 金银猫";
+    string productId = CatHelper.Request("id");
+    string backUrl = CatHelper.Request("backUrl");
+    if(productId != ""){
+        backUrl = CatHelper.GetXYDetailUrl(productId);
+    } else {
+        if(backUrl.IndexOf("https://") == 0 || backUrl.IndexOf("http://") == 0){
+            if(backUrl.IndexOf("https://piao.cib.com.cn") != 0){
+                backUrl = "https://piao.cib.com.cn";
+            }
+        }
+    }
+    dynamic userInfo = Request.GetData("/UserInfo");
+}
+@section PageStyle{
+    <link rel="stylesheet" type="text/css" href="/static/css/bank.css">
+}
+<div class="bank-container wrap-txt clearfix h300">
+	@{
+		if(CatHelper.IsDataSuccess(userInfo)){
+			Response.Redirect(backUrl);
+		} else {
+			<div class="login-wrap">
+				<div class="fl jym-login">
+					<h3>使用金银猫账户登录</h3>
+					<p>金银猫用户，可直接购买兴业理财产品</p>
+					<a href="/passport/login?backUrl=@backUrl" class="orange-link link-login">登录</a>
+				</div>
+				<div class="fl jym-reg">
+					<h3>还没有金银猫账户？</h3>
+					<p>赶紧免费注册一个吧！</p>
+					<a href="/passport/register?backUrl=@backUrl" class="gray-link">立即免费注册</a>
+				</div>
+			</div>
+		}
+	}	
+</div>
+

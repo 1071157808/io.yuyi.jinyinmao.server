@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/home.js'></script>");
+    string orderId = CatHelper.Request("id");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+    dynamic orderInfo = Request.GetData("/Orders?orderIdentifier=" + orderId);
+
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "order" })
+
+<div class="per-right">
+    <div class="my-card-title clearfix">
+        @RenderPage("~/_layout/user/_back_user.cshtml", new { name = "我的订单" })
+    </div>
+    <div class="order-cont">
+        @if(orderInfo.Data.ShowingStatus == 10){
+        <div class="order-infle">
+            <p class="state">订单状态：<span>付款中</span></p>
+            <p class="pay-money">付款金额：<span class="font-style">@orderInfo.Data.Principal</span>元 （@orderInfo.Data.ShareCount 份）</p>
+        </div>
+        }
+        else if(orderInfo.Data.ShowingStatus == 20){
+        <div class="order-infle">
+            <p class="state">订单状态：<span>待起息</span></p>
+            <p class="pay-money">付款金额：<span class="font-style">@orderInfo.Data.Principal</span>元 （@orderInfo.Data.ShareCount 份）</p>
+        </div>
+        }
+        else if(orderInfo.Data.ShowingStatus == 30){
+        <div class="order-infle">
+            <p class="state">订单状态：<span>已起息</span></p>
+            <p class="pay-money">付款金额：<span class="font-style">@orderInfo.Data.Principal</span>元 （@orderInfo.Data.ShareCount 份）</p>
+        </div>
+        }
+        else if(orderInfo.Data.ShowingStatus == 40){
+        <div class="order-infle">
+            <p class="state">订单状态：<span>已结息</span></p>
+            <p class="pay-money">付款金额：<span class="font-style">@orderInfo.Data.Principal</span>元 （@orderInfo.Data.ShareCount 份）</p>
+        </div>
+        } else if(orderInfo.Data.ShowingStatus == 50){
+        <div class="order-infle">
+            <p class="fail">订单状态：<em>支付失败</em><br/>失败原因：<em>@orderInfo.Data.Message</em></p>
+            <p class="pay-money">付款金额：<span class="font-style">@orderInfo.Data.Principal</span>元（@orderInfo.Data.ShareCount 份）</p>
+        </div>
+        }
+        <div class="order-infor">
+            <h3>订单信息</h3>
+            <p><i>订单号：</i><em>@orderInfo.Data.OrderNo</em></p>
+            <p><i>预计收益：</i><span class="color-style">@orderInfo.Data.Interest</span>元</p>
+            <p><i>下单时间：</i><em>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</em></p>
+            <p><i>起息日：</i><em>@orderInfo.Data.ValueDate.ToString("yyyy-MM-dd")</em></p>
+            <p><i>结息日：</i><em>@orderInfo.Data.SettleDate.ToString("yyyy-MM-dd")</em></p>
+            <p><i>回款银行：</i><em>@orderInfo.Data.BankName</em> ( 尾号<em>@CatHelper.FixBankCard(orderInfo.Data.BankCardNo)</em>)</p>
+            <p><i></i></p>
+            <h3>项目信息</h3>
+            <p><i>项目名称：</i><em>@CatHelper.GetProductName(orderInfo.Data.ProductName, orderInfo.Data.ProductNumber)</em></p>
+            <p><i>项目编号：</i><em>@orderInfo.Data.ProductNo</em></p>
+            <p><i>年化利率：</i><span class="color-style">@orderInfo.Data.Yield</span>％</p>
+            <p><i>投资周期：</i><span class="color-style">@orderInfo.Data.Period</span>天</p>
+            <!--<p><i>融资金额：</i><span class="color-style">80</span>万</p>-->
+            <p><i>担保物：</i><em>银行承兑汇票</em></p>
+        </div>
+    </div>
+    @if (orderInfo.Data.ShowingStatus == 10 || orderInfo.Data.ShowingStatus == 50){
+        <div class="order-xiey" style="display: none"></div>
+    }else{
+        <div class="order-xiey">
+            《<a target="_blank" href="/user/agreement/Pledge?id=@orderInfo.Data.OrderIdentifier">质押借款协议</a>》
+            《<a target="_blank" href="/user/agreement/Consignment?id=@orderInfo.Data.OrderIdentifier">委托协议</a>》
+        </div>
+    }
+</div>
+
+

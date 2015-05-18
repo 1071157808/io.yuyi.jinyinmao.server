@@ -1,0 +1,108 @@
+﻿@{
+    dynamic UserInfo = Page.UserInfo;
+    dynamic ProductData = Page.ProductData;
+    dynamic BankCards = Page.BankCards;
+}<div class="buy-main">
+    <div class="buy-main-inner">
+        <div class="buy-step-title clearfix">
+            <h2><span class="step-title-num"><i>1.</i>输入手机号</span></h2>
+        </div>
+        <div class="buy-step-main">
+            <p class="buy-user buy-user-mobile">
+                <span>手机号：@CatHelper.FixCellphone(UserInfo.Cellphone)</span><i class="correct-icon"></i>
+                <em class="tempLogout"><a href="#" class="ui-action" data-action="tempChangeMobile">退出</a></em>
+            </p>
+        </div>
+        <div class="buy-step-title">
+            <h2 class="on"><span class="step-title-num"><i>2.</i>填写支付信息</span></h2>
+        </div>
+        <script>
+        var _mobile = "@UserInfo.Cellphone";
+        var _productNo = "@ProductData.ProductNo";
+        var _identifier = "@ProductData.ProductIdentifier";
+        var _available = @ProductData.AvailableShareCount;
+        var _minCount = @ProductData.MinShareCount;
+        var _maxCount = @ProductData.MaxShareCount;
+        var _detail = {
+            period: "@ProductData.Period",
+            yield: "@ProductData.Yield",
+            unit: "@ProductData.UnitPrice"
+        };
+        </script>
+        <div class="buy-step-main buy-confirm-only">
+            <div id="ui-msg-info" class="ui-msg"></div>
+            <ul class="buy-step-list">
+                <li class="buy-num">
+                    <label class="lab">购买份数：</label>
+                    <div class="buy-plan">
+                        <dl class="plan-items clearfix">
+                            <dd class="input msg-buyCount"><input autocomplete="off" class="MsgContext common-text" type="text" maxlength="9" id="ctt-number"/></dd>
+                            <dd class="success">(@CatHelper.GetValueDate_list(ProductData))</dd>
+                        </dl>
+                        <div class="plan-due-wrap">
+                            <p>投资金额：<i class="orange" id="p-pay">0.00元</i></p>
+                            <p>预计收益：<i class="orange" id="p-inp">0.00元</i></p>
+                        </div>
+                        <p class="plan-items">剩余<i class="orange" id="ctt-last-count">@ProductData.AvailableShareCount</i>份，<span class="orange" id="ctt-paying-count">@(ProductData.PayingShareCount)</span>份在付款 <a class="ui-action refersh-part" href="#" data-action="refreshShareCount">刷新</a></p>
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">支付方式：</label>
+                    <div class="buy-plan">
+                        <ul class="pay-bank-list clearfix">
+                            @{
+                                int iCardCount = 0;
+                            }
+                            @foreach(dynamic card in BankCards){
+                                iCardCount++;
+                                if (card.IsDefault == true){
+                                <li>
+                                    <a href="#" class="ui-action selected" data-action="ctt-selected-bank" data-bank="@card.BankCardNo">
+                                        <em class="ctt-xSelect-bank @CatHelper.GetBankCode((string)card.CardBankName)">@card.CardBankName</em>
+                                        <span>尾号：@CatHelper.FixBankCard(card.BankCardNo)</span>
+                                        <i></i>
+                                    </a>
+                                </li>
+                                } else {
+                                <li>
+                                    <a href="#" class="ui-action" data-action="ctt-selected-bank" data-bank="@card.BankCardNo">
+                                        <em class="ctt-xSelect-bank @CatHelper.GetBankCode((string)card.CardBankName)">@card.CardBankName</em>
+                                        <span>尾号：@CatHelper.FixBankCard(card.BankCardNo)</span>
+                                    </a>
+                                </li>
+                                }
+                            }
+                            @{
+                                if(iCardCount < 10){
+                                    <li class="link-bank"><a href="/user/bank/">绑定新的银行卡</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">交易密码：</label>
+                    <div class="buy-plan payment-pwd-tips">
+                        <input class="MsgContext common-text auth-text input-min" type="password" id="payment-password" />
+                        @if(CatHelper.Request("firstbuy") != "1"){
+                            <a target="_blank" class="ml10" href="/user/manage/reset/payment-password-1">忘记密码？</a>
+                        }
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">&nbsp;</label>
+                    <div class="buy-plan">
+                        <div class="argee-live"><label class="yetlab" for="iagree">我已经同意</label>
+                            <a href="/payment/agreement/Pledge?id=@ProductData.ProductIdentifier" target="_blank">《质押借款协议》</a><a href="/payment/agreement/Consignment?id=@ProductData.ProductIdentifier" target="_blank">《委托协议》</a>
+                        </div>
+                        <button id="btnPayment" class="ui-action btn-common" data-action="ctt-payment-submit">立即购买</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="buy-step-title">
+            <h2><span class="step-title-num"><i>3.</i>购买成功</span></h2>
+        </div>
+        <div class="buy-step-main"></div>
+    </div>
+</div>

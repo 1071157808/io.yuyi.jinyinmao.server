@@ -1,0 +1,28 @@
+﻿@using System
+@{
+    Layout = "~/_layout/base/BaseMain.cshtml";
+    string Title = Page.Title ?? "金银猫";
+}<!DOCTYPE html>
+@RenderPage("~/_layout/base/root.cshtml")
+<head>
+    @RenderPage("~/_layout/base/m_code.cshtml", new{ Type = "loadtime" })
+    @RenderPage("~/_layout/base/meta.cshtml")
+    <title>@Title</title>
+    @RenderPage("~/_layout/base/link.cshtml")
+    @RenderSection("PageStyle", required: false)
+</head>
+<body>
+    @RenderPage("~/_layout/base/loading.cshtml")
+    @RenderPage("~/_layout/base/analytics.cshtml")
+    <div class="viewport">
+        <div class="ui-page">@RenderBody()</div>
+    </div>
+    <script>
+        var _timespan = '@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")';
+        var _CheckedLoginStatus = 1;
+    </script>
+    @RenderPage("~/_layout/base/scripts.cshtml")
+    @RenderSection("PageScript", required: false)
+    @RenderPage("~/_layout/base/m_code.cshtml")
+</body>
+</html>

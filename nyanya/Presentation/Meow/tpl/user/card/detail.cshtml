@@ -1,0 +1,21 @@
+﻿<div class="jqm-span-block">
+    <div class="jqm-bank-card" id="jqm-banks-wrap">
+        <span class="<%=zim.page.getBankClass(CardBankName)%>">
+            <strong><%=CardBankName%></strong>
+            <em>尾号<%=CardSlice%></em>
+        </span>
+    </div>
+</div>
+<div class="jqm-index-btn ui-pt10">
+    <div class="jqm-wrapper">
+        <% if(IsDefault){ %>
+        <button class="ui-btn2">设为默认银行卡</button>
+        <% } else { %>
+        <button class="ui-action ui-btn1" data-card="<%=BankCardNo%>" data-action="set-default">设为默认银行卡</button>
+        <% } %>
+    </div>
+</div>
+<div class="ui-warning-wrap ui-pt0">
+    <i class="ui-warning">!</i>
+    <p>为了您的账户安全，我们只会将本息归还至您付款所使用的银行卡中。所以在本息未归还之前，请不要注销相关卡片。</p>
+</div>

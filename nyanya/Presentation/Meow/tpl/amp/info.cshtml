@@ -1,0 +1,41 @@
+﻿<% var number = zim.page.detail.getDefNumber(item); %>
+<div class="jqm-sy-calc">
+    <div class="ui-grid2">
+        <div class="ui-block-a">
+            <div class="jqm-sy-wrapper">
+                <input type="number" ime-mode="disabled" placeholder="投资金额" id="jqm-sy-num" value="<%=number%>" />
+                <samp class="jqm-sy-unit">份</samp>
+            </div>
+        </div>
+        <div class="ui-block-b">
+            <% if(item.ShowingStatus == 30){ %>
+            <button class="ui-action ui-btn3" data-action="buy-product">立即抢购</button>
+            <% } else if(item.ShowingStatus < 30) { %>
+            <button class="ui-action ui-btn1" data-time="<%=item.StartSellTime%>" id="btnBuy">即将开售</button>
+            <% } else if(item.ShowingStatus == 40){ %>
+            <button class="ui-btn2">已售罄</button>
+            <% } else if(item.ShowingStatus == 50){ %>
+            <button class="ui-btn2">已结束</button>
+            <% } %>
+        </div>
+    </div>
+    <div class="jqm-calc-result">投资<span id="jqm-sum-result">0</span>元，预计收益<span id="jqm-sy-result">0</span>元</div>
+</div>
+<div id="jym1118"></div>
+<div class="ui-grid2 jqm-detail-info">
+    <h5><%=item.ProductNo%></h5>
+    <div class="ui-block-a">项目状态</div>
+    <div class="ui-block-b"><%=zim.page.getProductStatus(item.ShowingStatus)%></div>
+    <div class="ui-block-a">投资单位</div>
+    <div class="ui-block-b"><%=item.UnitPrice%>元</div>
+    <div class="ui-block-a">最小投资份数</div>
+    <div class="ui-block-b"><%=item.MinShareCount%>份</div>
+    <div class="ui-block-a">最大投资份数</div>
+    <div class="ui-block-b"><%=item.MaxShareCount%>份</div>
+    <div class="ui-block-a">起息日期</div>
+    <div class="ui-block-b"><%=zim.page.fmtValueDate(item)%></div>
+    <div class="ui-block-a">结息日期</div>
+    <div class="ui-block-b"><%=zim.page.fmtDate(item.SettleDate)%></div>
+    <div class="ui-block-a">最迟还款日</div>
+    <div class="ui-block-b"><%=zim.page.fmtDate(item.RepaymentDeadline)%></div>
+</div>

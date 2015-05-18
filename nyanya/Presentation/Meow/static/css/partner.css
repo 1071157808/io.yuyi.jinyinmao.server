@@ -1,0 +1,6 @@
+@charset 'utf-8';
+.ui-header{display:none;}
+.ui-partner .jqm-account-view{margin-top:0;padding-top:20px;}
+@media(max-width:480px){
+    .ui-partner .jqm-account-view{padding-top:10px;}
+}

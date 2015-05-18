@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "失败订单 -- 银企众盈";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    dynamic orders = Request.GetData("/Orders/BA/Failed");
+    bool hasData=false;
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "amp" })
+<div class="content">
+    <div class="ctt-block page-amp-list">
+        <h3 class="ctt-head"><span>银企众盈</span></h3>
+        <ul class="ctt-tabs">
+            <li class="first"><a href="/user/amp/list">成功订单</a></li>
+            <li class="current"><a href="/user/amp/fail">失败订单</a></li>
+        </ul>
+        @{
+            if (CatHelper.IsDataSuccess(orders))
+            {
+                <table class="ctt-table">
+                    <thead>
+                        <tr>
+                            <td>订单号</td>
+                            <td>项目名称</td>
+                            <td>下单时间</td>
+                            <td>订单金额</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (dynamic o in orders.Data.Orders)
+                        {
+                            hasData=true;
+                            <tr>
+                                <td><a href="/user/amp/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                                <td><a target="_blank" href="/amp/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                                <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td>@o.Principal 元</td>
+                                <td><a href="/user/amp/detail?id=@o.OrderIdentifier">查看原因</a></td>
+                            </tr>
+                        }
+                        @if(hasData==false)
+                        {
+                            <tr>
+                                <td colspan="5" class="no-order">对不起，没有符合条件的订单</td>                          
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    </div>
+</div>

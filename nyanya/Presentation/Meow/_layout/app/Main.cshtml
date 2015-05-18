@@ -1,0 +1,35 @@
+﻿@using System
+@{
+    Layout = "~/_layout/base/BaseMain.cshtml";
+    string Title = Page.Title ?? "金银猫";
+}<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge, Chrome=1, requiresActiveX=true" />
+    <meta http-equiv="x-rim-auto-match" content="none" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="author" content="金银猫" />
+    <meta name="copyright"  content="Copyright &copy;jinyinmao.com.cn 版权所有" />
+    <meta name="revisit-after"  content="1 days" />
+    <meta name="application-name" content="喵喵" />
+    <title>@Title</title>
+    <link rel="stylesheet" href="/static/app/css/base.css" />
+    @RenderSection("PageStyle", required: false)
+</head>
+<body>
+    @RenderPage("~/_layout/base/analytics.cshtml")
+    <div class="viewport">
+        <div class="ui-page"><div class="app-page">@RenderBody()</div></div>
+    </div>
+    <script>
+        var _timespan = '@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")';
+    </script>
+    @RenderSection("PageScript", required: false)
+</body>
+</html>

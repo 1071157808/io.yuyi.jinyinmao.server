@@ -1,0 +1,46 @@
+﻿@using System.Web
+@{
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "下单成功";
+    string ProductNo = CatHelper.Request("id");
+    string ProductType = CatHelper.Request("type");
+    string ProductCode = CatHelper.Request("code");
+    string md5_uid = CatHelper.Request("uid");
+    string RePaymentUrl = string.Format("/{0}/detail?id={1}", ProductType == "amp" ? "amp" : "cpl", ProductNo);
+    string RemoteUrl = ProductType == "amp" ? "/amp/list" : "/cpl/list";
+}
+@section PageScript {
+    <script>
+    Zepto(function(){
+        zim.sync({
+            url:'/api/v1/Luckhub/GetUserCanPalyStatu',
+            success:function(d){
+                if(d.Status == 20){
+                    $('#lotteryBtn').show()
+                }
+            }
+        });
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header.cshtml", new { NavMenu = "no" })
+<div class="ui-content">
+    <div class="jqm-auth-wrap jqm-auth-success">
+        <h2>项目正在付款中！</h2>
+        <div class="jqm-auth-note">
+            <p>我们会以短信方式通知您付款结果！</p>
+        </div>
+    </div>
+    <a id="lotteryBtn" href="/page/topic/1118/lottery" style="display:none;">
+        <img src="/static/images/topic/20141118/lottery-order-btn.png" style="width:70%;margin:0 auto;" />
+    </a>
+    <div class="jqm-wrapper ui-center">
+        <a href="@RePaymentUrl" class="ui-linkbtn">再下一单</a>
+    </div>
+    <div class="jqm-wrapper ui-center">
+        <a href="@RemoteUrl" class="ui-linkbtn">看看别的</a>
+    </div>
+    <script>var _ozprm = "@ProductCode", _ozuid = "@md5_uid";</script>
+    @RenderPage("~/_layout/user/help_phone.cshtml")
+</div>
+@RenderPage("~/_layout/base/m_code.cshtml", new{ Type = "ordersuccess" })

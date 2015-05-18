@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "重置支付密码";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/reset/payment.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "settings" })
+<div class="content">
+    <div class="ctt-block page-reset-password">
+        <h3 class="ctt-head"><span>重置支付密码</span></h3>
+        <div class="ctt-rows">
+            <p class="desc-success rds10">定期更换密码可以让您的账户更加安全！</p>
+        </div>
+        <div class="ctt-rows">
+            <label>密码已重置成功！<br>请保管好您的新密码！</label>
+        </div>
+    </div>
+</div>

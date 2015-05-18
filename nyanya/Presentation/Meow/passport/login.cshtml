@@ -1,0 +1,34 @@
+﻿@{ 
+    Layout = "~/_layout/passport/Main.cshtml";
+    Page.Title = "登录金银猫";
+}
+@section PageScript {
+    <script src="/static/js/lib/jsmd5.min.js"></script>
+    <script src="/static/js/passport/common.js"></script>
+    <script src="/static/js/passport/index.js"></script>
+}
+@RenderPage("~/_layout/base/header.cshtml", new{ NavMenu = "user" })
+<div class="ui-content">
+    <div class="jqm-account-view">
+        <ul class="ui-table jqm-account-span">
+            <li>
+                <span class="ui-td">账号</span>
+                <span class="ui-td">
+                    <input type="text" ime-mode="disabled" id="jqm-login-name" placeholder="手机号码" >
+                </span>
+                <span class="ui-td">&nbsp;</span>
+            </li>
+            <li>
+                <span class="ui-td">密码</span>
+                <span class="ui-td">
+                    <input type="password" id="jqm-login-pass" placeholder="6-18位数字或字母" >
+                </span>
+                <span class="ui-td">
+                    <a class="jqm-forgot-action" href="/passport/reset">?</a>
+                </span>
+            </li>
+        </ul>
+        <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="login-submit">登录</button></div>
+        <div class="jqm-wrapper"><button class="ui-action ui-btn2" data-href="/passport/register">创建金银猫账户</button></div>
+    </div>
+</div>

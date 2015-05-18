@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "银企众盈 - 订单列表";
+}
+@section PageScript {
+    <script src="/static/js/user/amp.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.user.amp.list.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div id="jqm-list-orders" class="ui-content">
+    <ul id="jqm-user-order"></ul>
+</div>
+<script type="text/tpl" id="jqm-tpl-orders">
+@RenderPage("~/tpl/user/amp/list.cshtml")
+</script>

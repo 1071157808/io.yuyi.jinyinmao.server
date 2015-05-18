@@ -1,0 +1,102 @@
+@charset 'utf-8';
+.ui-login-header{ height:112px;background: #fff;}
+.wrapper{ width:1000px;margin: 0 auto;}
+.login-logo-wrap{ float:left;padding-top:43px;}
+.login-info-wrap{ float:right; width:277px; padding-top:68px;}
+.login-info-menu{ float:left; padding:0 20px 0 17px; background:url(../images/passport/login-text-icon.png) 0 2px no-repeat;}
+.login-info-menu .line{ width:1px;color: #666; margin:0 6px 0 10px; font-family:serif;}
+.login-phone{ padding-left:18px; background:url(../images/passport/login-text-icon.png) 0 -82px no-repeat;}
+.login-info-phone{ float:left;}
+.ui-login-wrap{ height:531px;background:url(../images/passport/login-main-bg.png) repeat-x #e55d1f;}
+.ui-login-inner{height: 100%; background:url(../images/passport/login-main-bar.jpg) center 0 no-repeat;}
+.ui-login-adorn{ float:left; padding-top:141px;}
+.ui-login-major{ float:right;margin-top:28px; width:563px; height:462px; background:url(../images/passport/tv-bg.jpg) 0 0 no-repeat;}
+.login-major-one{ width:245px;margin: 0 auto; padding-top:82px;}
+.login-major-title{ margin-bottom:17px;}
+.login-major-title h1{ font-size:16px; font-weight:normal;}
+.login-major-list li{ position:relative; width:268px; height:40px;margin-bottom:20px; clear:both;}
+.login-major-list li.login-btn-li{ margin-bottom:13px;}
+.login-major-list li .login-error{ float:left; margin:12px 0 0 9px;background-position:0 -42px;}
+.login-major-list li .login-ok{background-position:0 0;}
+.login-major-list li .login-info{position:absolute;left:272px; top:3px;}
+.login-major-list li .login-btn{ width:240px;}
+.login-input-text{ float:left; width:210px; height:21px;line-height:21px; padding:8px 0 8px 31px; border:1px solid #939393;border-radius:5px;background-image:url(../images/passport/login-text-icon.png); background-color:#fff; background-repeat:no-repeat;}
+.login-input-text:focus{height:17px; line-height:17px; border:2px solid #db5629;padding:9px 0 9px 30px;}
+.login-user-icon{ background-position:14px -155px;}
+.login-user-icon:focus{background-position:13px -156px;}
+.login-pwd-icon{ background-position:12px -239px; position: relative;}
+.login-pwd-icon:focus{background-position:11px -240px;}
+.login-major-list a.forgot-pwd{ float:left;color: #0990e6;text-decoration:underline;}
+.login-major-list a.forgot-pwd:hover{ text-decoration:none;color: #0684d5;}
+.login-major-list a.once-register{ float:right; padding-right:26px;color: #db5629; text-decoration:underline;}
+.login-major-list a.once-register:hover{ text-decoration:none;color: #db5629;}
+.ui-login-footer{}
+.login-footer-inner{ line-height:20px; text-align:center;color: #666;}
+.login-link .link-line{ margin:0 8px; font-family:serif;}
+/* login slow */
+.login-slow-wrap{ padding-top:135px; text-align:center;}
+.login-slow-info{color: #898989;}
+.login-slow-warn{ padding-top:40px;color: #db5629; font-weight:bold;font-size:14px;}
+.login-slow-reset{ padding-top:25px;}
+.login-reset-btn{ width:238px;}
+.login-slow-link{ width:235px;margin: 0 auto; padding-top:10px;text-align: right;}
+a.login-link{ padding-left:16px;color: #0990e6; display:inline-block; *display:inline; *zoom:1;background:url(../images/base/qq.png) 0 2px no-repeat;}
+a.login-link:hover{color: #db5629;}
+/* personal register */
+.login-personal-inner{ padding-top:40px;}
+.per-title h1{ text-align:center;font-size:16px; font-weight:normal;}
+.per-main{ padding:8px 0 0 73px;}
+.per-main-list li{ position:relative; line-height:40px;height:40px; margin-bottom:10px; clear:both;}
+.per-main-list .lab{ float:left; width:60px; padding-right:8px;text-align: right;}
+.per-main-list .one{ line-height:23px; padding-left:70px;}
+.per-main-list .one input{ margin-right:3px;}
+.per-main-list .one a{color: #0990e6;}
+.per-main-list .one .once-login{color:#db5629;}
+.per-main-list .one a:hover{color: #c0461d; text-decoration:underline;}
+.per-text{ height:18px; line-height:18px; padding:8px 10px;*padding:2px 10px 12px; border:1px solid #939393;box-shadow:0 2px 3px #e9e7df inset;border-radius: 5px;background: #fff;}
+.per-main-list .per-text{ width:290px;}
+.per-main-list .code-text{ width:180px;margin-right:10px;}
+.once-login{ margin-left:15px;}
+.btn-getCode{width:110px;padding:0 5px;font-size:12px;background:#db5629;}
+.btn-getCode:hover{background:#c44e12;}
+.btn-code-disabled{background:#d1cfd0;cursor:default;}
+.btn-code-disabled:hover{background:#d1cfd0;}
+.per-main-list li .login-error{float:left; margin:12px 0 0 9px;background-position:0 -42px;}
+.per-main-list li .login-ok{background-position:0 0;}
+.per-main-list li .login-info{position:absolute;left:412px; top:3px;}
+.per-main-list li .per-text,.per-main-list li .btn-getCode{float:left;line-height:normal;*line-height:30px;}
+.per-main-list li .ajax-info{position:absolute;left:70px;top:21px;width:100%;color:#c02100;}
+.per-main-list li .btn-getCode{width:100px;}
+/* partner register */
+.login-partner-inner{ padding-top:23px;}
+.login-partner-inner .lab{ width:72px;}
+.login-partner-inner .per-main-list li.one{height:30px;line-height:15px;padding-left:80px;}
+.login-partner-inner .per-main-list li{height:37px;line-height:37px;}
+.login-partner-inner li .ajax-info{left:80px;top:19px;}
+.login-partner-inner .per-main-list .login-info{left:422px;}
+/* register success */
+.reg-success-outer{padding:90px 123px 0;}
+.reg-success-top{height:60px;line-height:25px;padding:5px 0 0 80px;background:url(../images/base/success-icon.png) 0 0 no-repeat;}
+.reg-ok-title h1{font-size:16px;font-weight:normal;color:#8ac45f;}
+.reg-success-bot{padding:50px 123px 0;text-align:center;}
+.reg-success-title h2{font-size:16px;font-weight:normal;}
+.reg-success-return{text-align:right;}
+.reg-success-bind{padding:15px 0 17px;}
+a.reg-success-link{display:block;font-size:14px;}
+/* login footer */
+.ui-login-footer .ui-footer{background:#fff;}
+.ui-login-footer .ui-footer a,.ui-login-footer .ui-footer{color:#666;}
+.ui-login-footer .foot-links{border-bottom:1px solid #ccc;}
+.ui-login-footer .foot-about{border-bottom:1px solid #ccc;}
+.ui-login-footer a.nav-weixin,.ui-login-footer a.nav-weibo,.ui-login-footer .nav-kefu{background-image:url(../images/passport/login-weinx-bg.png)}
+.ui-login-footer .about-us a.nav-weixin{background-position:5px -78px;}
+.ui-login-footer .about-us a.nav-weixin:hover{background-position:-77px -78px;}
+.ui-login-footer .about-us a.nav-weibo{background-position:5px 0px;}
+.ui-login-footer .about-us a.nav-weibo:hover{background-position:-77px 0;}
+.ui-login-footer .nav-kefu{background-position:-1px -180px;}
+.ui-login-footer a.kefu-link:hover .nav-kefu{background-position:-81px -180px;}
+
+#capsLockHint { position: absolute; top: 30px;left: 0;z-index: 2;width: 110px;height:39px;line-height: 48px;text-align: center;font-size: 14px;color: #555;background:url(../images/base/tip.png)}
+
+
+

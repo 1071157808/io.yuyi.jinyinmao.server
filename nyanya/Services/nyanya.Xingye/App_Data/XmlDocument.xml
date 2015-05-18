@@ -1,0 +1,3192 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>nyanya.Xingye</name>
+    </assembly>
+    <members>
+        <member name="T:nyanya.Xingye.BundleConfig">
+            <summary>
+                bundles
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.BundleConfig.RegisterBundles(System.Web.Optimization.BundleCollection)">
+            <summary>
+                Registers the bundles.
+            </summary>
+            <param name="bundles">The bundles.</param>
+        </member>
+        <member name="T:nyanya.Xingye.CQRSConfig">
+            <summary>
+                CQRS 配置
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.CQRSConfig.Configurate(Domian.Config.CqrsConfiguration)">
+            <summary>
+                CQRS 配置.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.FilterConfig">
+            <summary>
+                FilterConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.FilterConfig.RegisterGlobalFilters(System.Web.Mvc.GlobalFilterCollection)">
+            <summary>
+                Registers the global filters.
+            </summary>
+            <param name="filters">The filters.</param>
+        </member>
+        <member name="T:nyanya.Xingye.NinjectConfig">
+            <summary>
+                Ninject Configuration
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.NinjectConfig.RegisterDependencyResolver(System.Web.Http.HttpConfiguration)">
+            <summary>
+                RegisterDependencyResolver to HttpConfiguration
+            </summary>
+            <param name="config">HttpConfiguration</param>
+        </member>
+        <member name="M:nyanya.Xingye.NinjectConfig.RegisterServices(Ninject.IKernel)">
+            <summary>
+                Registers the services.
+            </summary>
+            <param name="kernel">The kernel.</param>
+        </member>
+        <member name="T:nyanya.Xingye.RouteConfig">
+            <summary>
+                RouteConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+                Registers the routes.
+            </summary>
+            <param name="routes">The routes.</param>
+        </member>
+        <member name="T:nyanya.Xingye.WebApiConfig">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+                Registers the specified configuration.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+                Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.HelpPageConfig">
+            <summary>
+                Use this class to customize the Help Page.
+                For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+                or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+                Registers the specified configuration.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+                The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController"/> class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController.#ctor(System.Web.Http.HttpConfiguration)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController"/> class.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController.Api(System.String)">
+            <summary>
+                APIs the specified API identifier.
+            </summary>
+            <param name="apiId">The API identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController.Index">
+            <summary>
+                Indexes this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.Controllers.HelpController.Configuration">
+            <summary>
+                Gets the configuration.
+            </summary>
+            <value>
+                The configuration.
+            </value>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+                Describes a type model.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+                Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+                Use this attribute to change the name of the <see cref="T:nyanya.Xingye.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,nyanya.Xingye.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,nyanya.Xingye.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters.
+            First, it will look at the <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create one using <see cref="T:nyanya.Xingye.Areas.HelpPage.ObjectGenerator"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},nyanya.Xingye.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.#ctor(nyanya.Xingye.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,nyanya.Xingye.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:nyanya.Xingye.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.ImageSample">
+            <summary>
+                This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.InvalidSample">
+            <summary>
+                This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Xingye.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.NoticeController">
+            <summary>
+                NoticeController
+            </summary>
+        </member>
+        <member name="T:nyanya.AspDotNet.Common.Controller.XingyeApiControllerBase">
+            <summary>
+                XingyeApiControllerBase
+            </summary>
+        </member>
+        <member name="P:nyanya.AspDotNet.Common.Controller.XingyeApiControllerBase.CurrentUser">
+            <summary>
+                Gets the current user.
+            </summary>
+            <value>
+                The current user.
+            </value>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.NoticeController.GetPublicNotice">
+            <summary>
+                获取公告内容信息
+            </summary>
+            <returns>
+                Content[string]: 公告内容
+            </returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.BAProductInfoController">
+            <summary>
+                银承产品信息
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.BAProductInfoController.#ctor(Xingye.Domain.Products.Services.Interfaces.IBAProductInfoService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.BAProductInfoController"/> class.
+            </summary>
+            <param name="baProductInfoService">The ba product information service.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.BAProductInfoController.Index">
+            <summary>
+                获取首页显示的产品信息（现在数量暂定为6个） => Notice => 字段ShowingStatus已经在服务端计算出了显示需要的状态
+            </summary>
+            <returns>
+                AvailableShareCount[int]: 可购买份额
+                BankName[string]: 银行名称
+                BillNo[string]: 银票编号
+                BusinessLicense[string]: 营业执照号码
+                CurrentValueDate[yyyy-MM-ddTHH:mm:ss]: 计算出的当时购买的起息日期
+                EndorseImageLink[string]: 票据大图链接
+                EndorseImageThumbnailLink[string]: 票据缩略图链接
+                EndSellTime[yyyy-MM-ddTHH:mm:ss]: 售卖结束时间
+                EnterpriseName[string]: 企业名称
+                ExtraYield[deciaml]: 额外收益率
+                FinancingSum[int]: 融资金额
+                FinancingSumCount[int]: 融资总份数,使用该字段显示产品信息
+                LaunchTime[yyyy-MM-ddTHH:mm:ss]: 产品上线时间
+                MaxShareCount[int]: 单笔订单最大购买份数
+                MinShareCount[int]: 单笔订单最小购买份数
+                OnPreSale[bool]: 是否在预售状态
+                OnSale[bool]: 是否在开售状态
+                PaidPercent[int]: 销售百分比
+                PaidShareCount[int]: 已付款份数
+                PayingShareCount[int]: 付款中份数
+                Period[int]: 项目周期
+                PreEndSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买结束时间
+                PreSale[bool]: 是否有提前购买设置
+                PreStartSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买开始时间
+                ProductIdentifier[string]: 产品唯一标识符
+                ProductName[string]: 产品名称
+                ProductNo[string]: 产品编号，银承产品以F开头
+                ProductNumber[int]: 产品期数
+                Repaid[bool]: 是否已经还款
+                RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日期
+                ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
+                SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息时间
+                ShowingStatus[int]: 显示状态 10 => 待售, 20 => 预售, 30 => 在售, 40 => 售罄, 50 => 结束
+                SoldOut[bool]: 是否售罄
+                SoldOutTime[yyyy-MM-ddTHH:mm:ss|""]: 售罄时间
+                StartSellTime[yyyy-MM-ddTHH:mm:ss]: 开售时间
+                SumShareCount[int]: 总销售份数,计算使用,前端计算暂时不会涉及到
+                UnitPrice[int]: 每一份的单价
+                Usage[string]: 融资用途
+                ValueDate[yyyy-MM-ddTHH:mm:ss|""]: 固定起息日期
+                ValueDateMode[int]: 起息方式 10 => 购买当天起息, 20 => 下一日起息, 30 => 指定日期起息（此时ValueDate一定有值）
+                ValueDateString[string]: 备选的起息日显示文案
+                Yield[decimal]: 收益率（保留位数为最小有效位数，即可能是7.3或者7.34）
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.BAProductInfoController.Info(System.String)">
+            <summary>
+                获取产品详情 => Notice => 字段ShowingStatus已经在服务端计算出了显示需要的状态
+            </summary>
+            <param name="productNo">产品编号</param>
+            <returns>
+                AvailableShareCount[int]: 可购买份额
+                BankName[string]: 银行名称
+                BillNo[string]: 银票编号
+                BusinessLicense[string]: 营业执照号码
+                CurrentValueDate[yyyy-MM-ddTHH:mm:ss]: 计算出的当时购买的起息日期
+                EndorseImageLink[string]: 票据大图链接
+                EndorseImageThumbnailLink[string]: 票据缩略图链接
+                EndSellTime[yyyy-MM-ddTHH:mm:ss]: 售卖结束时间
+                EnterpriseName[string]: 企业名称
+                ExtraYield[deciaml]: 额外收益率
+                FinancingSum[int]: 融资金额
+                FinancingSumCount[int]: 融资总份数,使用该字段显示产品信息
+                LaunchTime[yyyy-MM-ddTHH:mm:ss]: 产品上线时间
+                MaxShareCount[int]: 单笔订单最大购买份数
+                MinShareCount[int]: 单笔订单最小购买份数
+                OnPreSale[bool]: 是否在预售状态
+                OnSale[bool]: 是否在开售状态
+                PaidPercent[int]: 销售百分比
+                PaidShareCount[int]: 已付款份数
+                PayingShareCount[int]: 付款中份数
+                Period[int]: 项目周期
+                PreEndSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买结束时间
+                PreSale[bool]: 是否有提前购买设置
+                PreStartSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买开始时间
+                ProductIdentifier[string]: 产品唯一标识符
+                ProductName[string]: 产品名称
+                ProductNo[string]: 产品编号，银承产品以F开头
+                ProductNumber[int]: 产品期数
+                Repaid[bool]: 是否已经还款
+                RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日期
+                ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
+                SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息时间
+                ShowingStatus[int]: 显示状态 10 => 待售, 20 => 预售, 30 => 在售, 40 => 售罄, 50 => 结束
+                SoldOut[bool]: 是否售罄
+                SoldOutTime[yyyy-MM-ddTHH:mm:ss|""]: 售罄时间
+                StartSellTime[yyyy-MM-ddTHH:mm:ss]: 开售时间
+                SumShareCount[int]: 总销售份数,计算使用,前端计算暂时不会涉及到
+                UnitPrice[int]: 每一份的单价
+                Usage[string]: 融资用途
+                ValueDate[yyyy-MM-ddTHH:mm:ss|""]: 固定起息日期
+                ValueDateMode[int]: 起息方式 10 => 购买当天起息, 20 => 下一日起息, 30 => 指定日期起息（此时ValueDate一定有值）
+                ValueDateString[string]: 备选的起息日显示文案
+                Yield[decimal]: 收益率（保留位数为最小有效位数，即可能是7.3或者7.34）
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.BAProductInfoController.Page(System.Int32,System.Int32,System.Int32)">
+            <summary>
+                获取产品信息列表（现在每页数量暂定为10个，只能指定页数，从1开始，可按[收益率]和[项目周期]排序） => Notice => 字段ShowingStatus已经在服务端计算出了显示需要的状态
+            </summary>
+            <param name="number">页码，从1开始</param>
+            <param name="yieldSortModel">收益率排序，1 => 升序，2 => 降序</param>
+            <param name="periodSortModel">项目周期排序，1 => 升序，2 => 降序</param>
+            <returns>
+                TotalPageCount[int]: 总页数
+                TotalCount[int]: 总数据数量
+                HasNextPage[bool]: 是否有下一页
+                PageIndex[int]: 当前页码,从1开始
+                PageSize[int]: 页面大小
+                Products[array]: 产品信息列表
+                - - AvailableShareCount[int]: 可购买份额
+                - - BankName[string]: 银行名称
+                - - BillNo[string]: 银票编号
+                - - BusinessLicense[string]: 营业执照号码
+                - - CurrentValueDate[yyyy-MM-ddTHH:mm:ss]: 计算出的当时购买的起息日期
+                - - EndorseImageLink[string]: 票据大图链接
+                - - EndorseImageThumbnailLink[string]: 票据缩略图链接
+                - - EndSellTime[yyyy-MM-ddTHH:mm:ss]: 售卖结束时间
+                - - EnterpriseName[string]: 企业名称
+                - - ExtraYield[deciaml]: 额外收益率
+                - - FinancingSum[int]: 融资金额
+                - - FinancingSumCount[int]: 融资总份数,使用该字段显示产品信息
+                - - LaunchTime[yyyy-MM-ddTHH:mm:ss]: 产品上线时间
+                - - MaxShareCount[int]: 单笔订单最大购买份数
+                - - MinShareCount[int]: 单笔订单最小购买份数
+                - - OnPreSale[bool]: 是否在预售状态
+                - - OnSale[bool]: 是否在开售状态
+                - - PaidPercent[int]: 销售百分比
+                - - PaidShareCount[int]: 已付款份数
+                - - PayingShareCount[int]: 付款中份数
+                - - Period[int]: 项目周期
+                - - PreEndSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买结束时间
+                - - PreSale[bool]: 是否有提前购买设置
+                - - PreStartSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买开始时间
+                - - ProductIdentifier[string]: 产品唯一标识符
+                - - ProductName[string]: 产品名称
+                - - ProductNo[string]: 产品编号，银承产品以F开头
+                - - ProductNumber[int]: 产品期数
+                - - Repaid[bool]: 是否已经还款
+                - - RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日期
+                - - ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
+                - - SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息时间
+                - - ShowingStatus[int]: 显示状态 10 => 待售, 20 => 预售, 30 => 在售, 40 => 售罄, 50 => 结束
+                - - SoldOut[bool]: 是否售罄
+                - - SoldOutTime[yyyy-MM-ddTHH:mm:ss|""]: 售罄时间
+                - - StartSellTime[yyyy-MM-ddTHH:mm:ss]: 开售时间
+                - - SumShareCount[int]: 总销售份数,计算使用,前端计算暂时不会涉及到
+                - - UnitPrice[int]: 每一份的单价
+                - - Usage[string]: 融资用途
+                - - ValueDate[yyyy-MM-ddTHH:mm:ss|""]: 固定起息日期
+                - - ValueDateMode[int]: 起息方式 10 => 购买当天起息, 20 => 下一日起息, 30 => 指定日期起息（此时ValueDate一定有值）
+                - - ValueDateString[string]: 备选的起息日显示文案
+                - - Yield[decimal]: 收益率（保留位数为最小有效位数，即可能是7.3或者7.34）
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.BAProductInfoController.Top">
+            <summary>
+                获取首个产品信息 => Notice => 字段ShowingStatus已经在服务端计算出了显示需要的状态
+            </summary>
+            <returns>
+                AvailableShareCount[int]: 可购买份额
+                BankName[string]: 银行名称
+                BillNo[string]: 银票编号
+                BusinessLicense[string]: 营业执照号码
+                CurrentValueDate[yyyy-MM-ddTHH:mm:ss]: 计算出的当时购买的起息日期
+                EndorseImageLink[string]: 票据大图链接
+                EndorseImageThumbnailLink[string]: 票据缩略图链接
+                EndSellTime[yyyy-MM-ddTHH:mm:ss]: 售卖结束时间
+                EnterpriseName[string]: 企业名称
+                ExtraYield[deciaml]: 额外收益率
+                FinancingSum[int]: 融资金额
+                FinancingSumCount[int]: 融资总份数,使用该字段显示产品信息
+                LaunchTime[yyyy-MM-ddTHH:mm:ss]: 产品上线时间
+                MaxShareCount[int]: 单笔订单最大购买份数
+                MinShareCount[int]: 单笔订单最小购买份数
+                OnPreSale[bool]: 是否在预售状态
+                OnSale[bool]: 是否在开售状态
+                PaidPercent[int]: 销售百分比
+                PaidShareCount[int]: 已付款份数
+                PayingShareCount[int]: 付款中份数
+                Period[int]: 项目周期
+                PreEndSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买结束时间
+                PreSale[bool]: 是否有提前购买设置
+                PreStartSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买开始时间
+                ProductIdentifier[string]: 产品唯一标识符
+                ProductName[string]: 产品名称
+                ProductNo[string]: 产品编号，银承产品以F开头
+                ProductNumber[int]: 产品期数
+                Repaid[bool]: 是否已经还款
+                RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日期
+                ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
+                SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息时间
+                ShowingStatus[int]: 显示状态 10 => 待售, 20 => 预售, 30 => 在售, 40 => 售罄, 50 => 结束
+                SoldOut[bool]: 是否售罄
+                SoldOutTime[yyyy-MM-ddTHH:mm:ss|""]: 售罄时间
+                StartSellTime[yyyy-MM-ddTHH:mm:ss]: 开售时间
+                SumShareCount[int]: 总销售份数,计算使用,前端计算暂时不会涉及到
+                UnitPrice[int]: 每一份的单价
+                Usage[string]: 融资用途
+                ValueDate[yyyy-MM-ddTHH:mm:ss|""]: 固定起息日期
+                ValueDateMode[int]: 起息方式 10 => 购买当天起息, 20 => 下一日起息, 30 => 指定日期起息（此时ValueDate一定有值）
+                ValueDateString[string]: 备选的起息日显示文案
+                Yield[decimal]: 收益率（保留位数为最小有效位数，即可能是7.3或者7.34）
+            </returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.DevHelperController">
+            <summary>
+                开发辅助接口(非业务接口，用于辅助开发)
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.DevHelperController.Echo">
+            <summary>
+                回声
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.DevHelperController.Ip">
+            <summary>
+                服务器IP
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.DevHelperController.Status">
+            <summary>
+                服务器状态
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.InvestingController">
+            <summary>
+                InvestingController
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.InvestingController.#ctor(Xingye.Domain.Users.Services.Interfaces.IUserService,Domian.Bus.ICommandBus,Xingye.Domain.Products.Services.Interfaces.IExactProductInfoService,Xingye.Domain.Users.Services.Interfaces.IExactUserInfoService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.InvestingController"/> class.
+            </summary>
+            <param name="userService">The user service.</param>
+            <param name="commandBus">The command bus.</param>
+            <param name="productInfoService">The product information service.</param>
+            <param name="userInfoService">The user information service.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.InvestingController.Investing(nyanya.Xingye.Models.InvestingRequest)">
+            <summary>
+                投资理财产品
+            </summary>
+            <param name="request">
+                ProductNo[string]: 产品编号
+                Count[int]: 购买的份数
+                BankCardNo[string]: 银行卡号
+                PaymentPassword[string]: 交易密码
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "您的交易密码错误已超过3次，请重置交易密码后再进行支付。"
+                "交易密码错误，您还有{0}次机会"
+                "银行卡信息错误"
+                "该产品已停止售卖"
+                "对不起，剩余份额已不足！请重新选择！"
+                "该产品未开售或已停止售卖"
+                "购买份额错误"
+                "请稍后再试"
+            </returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.OrderInfoController">
+            <summary>
+                OrderInfoController
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.#ctor(Xingye.Domain.Orders.Services.Interfaces.IBAOrderInfoService,Xingye.Domain.Orders.Services.Interfaces.IXYOrderInfoService,Xingye.Domain.Orders.Services.Interfaces.IOrderInfoService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.OrderInfoController"/> class.
+            </summary>
+            <param name="baOrderInfoService">The ba order information service.</param>
+            <param name="taOrderInfoService">The ta order information service.</param>
+            <param name="orderInfoService">The order information service.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.GetBAFailedOrders">
+            <summary>
+                银票失败订单列表
+            </summary>
+            <returns>
+                HasNextPage: 是否有下一页
+                PageIndex: 页码
+                PageSize: 一页节点数量
+                TotalCount: 所有的节点数量
+                TotalPageCount: 总页数
+                Orders:节点列表
+                -- ExtraInterest[decimal]: 额外收益
+                -- Interest[decimal]: 预期收益
+                -- Message[string]: 提示信息
+                -- OrderIdentifier[string]: 订单唯一标识
+                -- OrderNo[string]: 订单编号
+                -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+                -- Principal[decimal]: 订单金额
+                -- ProductIdentifier[string]: 项目唯一标识
+                -- ProductName[string]: 项目名称
+                -- ProductNo[string]: 项目编号
+                -- ProductNumber[int]: 项目期数
+                -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+                -- ShareCount[int]: 订单的购买份数
+                -- ShowingStatus[int]: 项目状态  10 => 付款中, 20 => 待起息, 30 => 已起息, 40 => 已结息, 50 => 支付失败
+                -- TotalAmount[decimal]: 订单的本息总额
+                -- UseableItemCount[int]: 可用道具数 => -1:已用道具  0:无可用道具  1~999:有可用道具
+                -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+                -- Yield[decimal]: 订单的预期收益率
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.GetBAOrders(System.Int32,System.Int32)">
+            <summary>
+                银票成功订单列表
+            </summary>
+            <param name="pageIndex">pageIndex(int >= 1): 页码</param>
+            <param name="sortMode">排序规则 1 => 按下单时间排序，2 => 按结息日期排序</param>
+            <returns>
+                HasNextPage: 是否有下一页
+                PageIndex: 页码
+                PageSize: 一页节点数量
+                TotalCount: 所有的节点数量
+                TotalPageCount: 总页数
+                Orders:节点列表
+                -- ExtraInterest[decimal]: 额外收益
+                -- Interest[decimal]: 预期收益
+                -- Message[string]: 提示信息
+                -- OrderIdentifier[string]: 订单唯一标识
+                -- OrderNo[string]: 订单编号
+                -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+                -- Principal[decimal]: 订单金额
+                -- ProductIdentifier[string]: 项目唯一标识
+                -- ProductName[string]: 项目名称
+                -- ProductNo[string]: 项目编号
+                -- ProductNumber[int]: 项目期数
+                -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+                -- ShareCount[int]: 订单的购买份数
+                -- ShowingStatus[int]: 项目状态  10 => 付款中, 20 => 待起息, 30 => 已起息, 40 => 已结息, 50 => 支付失败
+                -- TotalAmount[decimal]: 订单的本息总额
+                -- UseableItemCount[int]: 可用道具数 => -1:已用道具  0:无可用道具  1~999:有可用道具
+                -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+                -- Yield[decimal]: 订单的预期收益率
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.GetOrder(System.String)">
+            <summary>
+                订单详情
+            </summary>
+            <param name="orderIdentifier">订单唯一标识</param>
+            <returns>
+                BankCardCity[string]: 开户行城市全称，如 上海|上海
+                BankCardCityName[string]: 开户行城市名
+                BankCardNo[string]: 银行卡号
+                BankName[string]: 银行名称
+                ConsignmentAgreementName[string]: 委托协议名称
+                EndorseImageLink[string]: 质押物链接
+                EndorseImageThumbnailLink[string]: 质押物缩略图链接
+                ExtraInterest[decimal]: 额外收益
+                HasResult[bool]: 是否有支付结果
+                Interest[decimal]: 预期收益
+                InvestorCellphone[string]: 投资人手机号
+                InvestorCredential[string]: 证件类型名称，直接显示
+                InvestorCredentialNo[string]: 证件编号，已加码，可以直接显示
+                InvestorRealName[string]: 投资人真实姓名
+                IsPaid[bool]: 是否支付成功,只有当HasResult为true时，该值有意义，推荐使用ShowingStatus字段
+                Message[string]: 提示信息
+                OrderIdentifier[string]: 订单唯一标识
+                OrderNo[string]: 订单编号
+                OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+                OrderType[int]: 订单类型 10 => 银票订单, 20 => 商票订单
+                Period[int]: 投资周期
+                PledgeAgreementName[string]: 质押借款协议名称
+                Principal[decimal]: 订单金额
+                ProductIdentifier[string]: 项目唯一标识
+                ProductName[string]: 项目名称
+                ProductNo[string]: 项目编号
+                ProductNumber[int]: 项目期数
+                ProductUnitPrice[decimal]: 项目的单价，即每份多少钱
+                ResultTime[yyyy-MM-ddTHH:mm:ss]: 支付清算时间
+                RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日
+                SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+                ShareCount[int]: 订单的购买份数
+                ShowingStatus[int]: 项目状态  10 => 付款中, 20 => 待起息, 30 => 已起息, 40 => 已结息, 50 => 支付失败
+                TotalAmount[decimal]: 订单的本息总额
+                UseableItemCount[int]: 可用道具数 => -1:已用道具  0:无可用道具  1~999:有可用道具
+                ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+                Yield[decimal]: 订单的预期收益率
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.GetOrderConsignmentAgreement(System.String)">
+            <summary>
+                订单委托协议
+            </summary>
+            <param name="orderIdentifier">订单唯一标识</param>
+            <returns>
+                Content[string]: 委托协议内容
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.GetOrderPledgeAgreement(System.String)">
+            <summary>
+                订单质押借款协议
+            </summary>
+            <param name="orderIdentifier">订单唯一标识</param>
+            <returns>
+                Content[string]: 委托协议内容
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.OrderInfoController.GetXingYeOrders(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+                xingye票订单列表
+            </summary>
+            <param name="endDate">endDate(yyyy-MM-dd): 结束日</param>
+            <param name="pageIndex">pageIndex(int >= 1): 页码</param>
+            <param name="startDate">startDate(yyyy-MM-dd): 起始日</param>
+            <param name="orderMode">orderMode(int): 所需订单状态，1=》all, 2=> 成功, 3=> 失败</param>
+            <returns>
+                HasNextPage: 是否有下一页
+                PageIndex: 页码
+                PageSize: 一页节点数量
+                TotalCount: 所有的节点数量
+                TotalPageCount: 总页数
+                Orders:节点列表
+                -- ExtraInterest[decimal]: 额外收益
+                -- Interest[decimal]: 预期收益
+                -- Message[string]: 提示信息
+                -- OrderIdentifier[string]: 订单唯一标识
+                -- OrderNo[string]: 订单编号
+                -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+                -- Principal[decimal]: 订单金额
+                -- ProductIdentifier[string]: 项目唯一标识
+                -- ProductName[string]: 项目名称
+                -- ProductNo[string]: 项目编号
+                -- ProductNumber[int]: 项目期数
+                -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+                -- ShareCount[int]: 订单的购买份数
+                -- ShowingStatus[int]: 项目状态  10 => 付款中, 20 => 待起息, 30 => 已起息, 40 => 已结息, 50 => 支付失败
+                -- TotalAmount[decimal]: 订单的本息总额
+                -- UseableItemCount[int]: 可用道具数 => -1:已用道具  0:无可用道具  1~999:有可用道具
+                -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+                -- Yield[decimal]: 订单的预期收益率
+            </returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.ProductInfoController">
+            <summary>
+                ProductInfo
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.ProductInfoController.#ctor(Xingye.Domain.Products.Services.Interfaces.IProductInfoService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.ProductInfoController"/> class.
+            </summary>
+            <param name="productInfoService">The product information service.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.ProductInfoController.GetConsignmentAgreement(System.String)">
+            <summary>
+                产品协议模板
+            </summary>
+            <param name="productIdentifier">The product identifier.</param>
+            <returns>
+                Content[string]: 协议内容
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.ProductInfoController.GetPledgeAgreement(System.String)">
+            <summary>
+                产品协议模板
+            </summary>
+            <param name="productIdentifier">The product identifier.</param>
+            <returns>
+                Content[string]: 协议内容
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.ProductInfoController.GetSaleProcess(System.String)">
+            <summary>
+                获取产品的销售进度信息
+            </summary>
+            <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
+            <returns>
+                Available[int]: 可购买份额
+                Sum[int]: 融资金额
+                Paid[int]: 已付款份数
+                Paying[int]: 付款中份数
+            </returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.UserController">
+            <summary>
+                UserController
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Controllers.UserController.commandBus">
+            <summary>
+                The command bus
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Controllers.UserController.eventBus">
+            <summary>
+                The event bus
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Controllers.UserController.userInfoService">
+            <summary>
+                The user information service
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Controllers.UserController.userService">
+            <summary>
+                The user service
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Controllers.UserController.veriCodeService">
+            <summary>
+                The veri code service
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.#ctor(Domian.Bus.ICommandBus,Xingye.Domain.Auth.Services.Interfaces.IVeriCodeService,Xingye.Domain.Users.Services.Interfaces.IExactUserInfoService,Xingye.Domain.Users.Services.Interfaces.IUserService,Domian.Bus.IEventBus)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.UserController"/> class.
+            </summary>
+            <param name="commandBus">The command bus.</param>
+            <param name="veriCodeService">The verification code service.</param>
+            <param name="userInfoService">The user information service.</param>
+            <param name="userService">The user service.</param>
+            <param name="eventBus">The event bus.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.AddBankCard(nyanya.Xingye.Models.AddBankCardRequest)">
+            <summary>
+                添加银行卡
+            </summary>
+            <param name="request">BankCardNo[string]: 银行卡号（15-19位） BankName[string]: 银行名称 CityName[string]: 开户行所在城市名称</param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "无法添加银行卡"
+                "请先开通快捷支付功能"
+                "最多只能绑定10张银行卡。"
+                "此卡片已经被绑定"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.AddBankCardStatus(nyanya.Xingye.Models.AddBankCardStatusRequest)">
+            <summary>
+                获取银行卡绑定状态
+            </summary>
+            <param name="request">BankCardNo[string]: 银行卡号（15-19位）</param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                Status: 绑卡状态。0是失败；1是成功；2是绑卡中
+                Message: 绑卡失败的原因。
+                @{h2@} HttpStatusCode:400 @{/h4@}
+                "找不到银行卡"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.CheckCellphone(System.String)">
+            <summary>
+                手机号是否已注册
+            </summary>
+            <param name="cellphone">手机号[必填]</param>
+            <returns>
+                Result[bool]：手机号是否存在 true or false
+                UserType[int]：用户类型 10金银猫用户 1兴业用户 11金银猫和兴业
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.ResetLoginPassword(nyanya.Xingye.Models.ResetPasswordRequest)">
+            <summary>
+                重置登录密码
+            </summary>
+            <param name="request">
+                Password: 用户设置的密码（6-18位）
+                Token: 校验码口令
+                CellPhone: 手机号
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "该手机号不存在或手机号错误"
+                "登录密码不能与交易密码相同"
+                "新密码不能与旧密码相同"
+                "操作超时或校验码已使用过，请重新获取校验码。"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SetLoginPassword(nyanya.Xingye.Models.SetPasswordRequest)">
+            <summary>
+                设置登录密码(用户绑过卡，第二次用交易密码登录后，下定单时使用)
+            </summary>
+            <param name="request">
+                Password: 用户设置的密码（6-18位）
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "登录密码不能与交易密码相同"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.ResetPaymentPassword(nyanya.Xingye.Models.ResetPaymentPasswordRequest)">
+            <summary>
+                重置交易密码
+            </summary>
+            <param name="request">
+                Password: 用户设置的密码（6-18位）
+                Token: 校验码口令
+                CredentialNo: 用户证件号
+                BankCardNo: 默认银行卡卡号
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "请先开通快捷支付"
+                "您输入的信息错误，请重新输入。"
+                "交易密码不能与登录密码相同"
+                "新密码不能与旧密码相同"
+                "操作超时或校验码已使用过，请重新获取校验码。"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.AnyResetPaymentPassword(nyanya.Xingye.Models.AnyRestPaymentPasswordRequest)">
+            <summary>
+                匿名重置交易密码
+            </summary>
+            <param name="request">
+                Password: 用户设置的密码（6-18位）
+                Token: 校验码口令
+                CredentialNo: 用户证件号
+                BankCardNo: 默认银行卡卡号
+                CellphoneNo: 手机号
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "请先开通快捷支付"
+                "您输入的信息错误，请重新输入。"
+                "交易密码不能与登录密码相同"
+                "新密码不能与旧密码相同"
+                "操作超时或校验码已使用过，请重新获取校验码。"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.VerifyPaymentInfo(nyanya.Xingye.Models.VerifyPaymentInfoRequest)">
+            <summary>
+                修改交易密码时验证绑卡信息
+            </summary>
+            <param name="request">
+                CredentialNo: 用户证件号
+                BankCardNo: 默认银行卡卡号
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "您输入的用户证件号错误。"
+                "您输入的默认银行卡卡号错误。"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.AnyVerifyPaymentInfo(nyanya.Xingye.Models.AnyVerifyPaymentInfoRequest)">
+            <summary>
+                匿名修改交易密码时验证绑卡信息
+            </summary>
+            <param name="request">
+                CredentialNo: 用户证件号
+                BankCardNo: 默认银行卡卡号
+                CellphoneNo: 手机号
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "您输入的用户证件号错误。"
+                "您输入的默认银行卡卡号错误。"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SetDefaultBankCard(System.String)">
+            <summary>
+                设置默认银行卡
+            </summary>
+            <param name="bankCardNo">BankCardNo[string]: 银行卡号（15-19位）</param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                Empty Body
+                @{h2@} HttpStatusCode: 400 @{/h2@}
+                "银行卡信息错误"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SetPaymentPassword(nyanya.Xingye.Models.SetPaymentPasswordRequest)">
+            <summary>
+                设定交易密码
+            </summary>
+            <param name="request">Password[string]: 交易密码</param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                Empty Body
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "密码格式不正确"
+                "已设置交易密码"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SignIn(nyanya.Xingye.Models.SignInRequest)">
+            <summary>
+                登录
+            </summary>
+            <param name="request">
+                Name[必填]: 用户名，现在就是手机号码
+                Password[必填]: 用户设置的密码（6-18位）
+            </param>
+            <returns>
+                RemainCount: 今天剩余尝试次数，每天（自然天）只能登录失败5次，重置登录密码后可以重置失败次数
+                Successful: 登录结果
+                UserExist: 用户是否存在
+                Lock: 账户是否被锁定
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SignInByCode(System.String)">
+            <summary>
+                使用加密串登录
+            </summary>
+            <param name="rCode">加密串</param>
+            <returns>
+                RemainCount: 今天剩余尝试次数，每天（自然天）只能登录失败5次，重置登录密码后可以重置失败次数
+                Successful: 登录结果
+                UserExist: 用户是否存在
+                Lock: 账户是否被锁定
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SignOut">
+            <summary>
+                登出
+            </summary>
+            <returns>
+                200
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SignUp(nyanya.Xingye.Models.SignUpRequest)">
+            <summary>
+                注册
+            </summary>
+            <param name="request">
+                Password[string]: 用户设置的密码（6-18位）
+                Token[string]: 校验码口令
+                Code[string]: 识别码
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "请输入正确的校验码"
+                "此号码已注册，请选择登录，如果您忘记密码，请选择重置密码"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.TempSignUp(nyanya.Xingye.Models.TempSignUpRequest)">
+            <summary>
+                未激活用户注册
+            </summary>
+            <param name="request">
+                Token[string]: 校验码口令
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "请输入正确的校验码"
+                "此号码已注册，请选择登录，如果您忘记密码，请选择重置密码"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.HasLoginPassword(System.String)">
+            <summary>
+                是否有登录密码【该方法现支持Jsonp调用，Jsonp参数为callback】
+            </summary>
+            <param name="cellphone">手机号[必填]</param>
+            <returns>
+                是否有 true/false
+                {"Result":true} | {"Result":false}
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SignUpPayment(nyanya.Xingye.Models.SignUpPaymentRequest)">
+            <summary>
+                开通快捷支付，并且绑定第一张借记卡
+            </summary>
+            <param name="request">
+                BankCardNo[string]: 银行卡号（15-19位）
+                BankName[string]: 银行名称
+                CityName[string]: 开户行所在城市名称
+                Credential[int]: 证件类型 0 =&gt; 身份证, 1 =&gt; 护照, 2 =&gt; 台湾, 3 =&gt; 军官
+                CredentialNo[string]: 证件号码
+                RealName[string]: 真实姓名
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                Empty Body
+                @{h2@} HttpStatusCode: 400 @{/h2@}
+                "无法开通快捷支付功能"
+                "请先设定交易密码"
+                "已经开通快捷支付功能"
+                "正在开通快捷支付功能，请耐心等待"
+                "该银行卡已经被绑定"
+                "该证件已经被绑定"
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.BuildAddBankCardCommand(nyanya.Xingye.Models.AddBankCardRequest,Xingye.Domain.Users.ReadModels.UserInfo)">
+            <summary>
+                Builds the add bank card command.
+            </summary>
+            <param name="request">The request.</param>
+            <param name="info">The information.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.BuildSignUpPaymentCommand(nyanya.Xingye.Models.SignUpPaymentRequest,Xingye.Domain.Users.ReadModels.UserInfo)">
+            <summary>
+                Builds the sign up payment command.
+            </summary>
+            <param name="request">The request.</param>
+            <param name="info">The information.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SetCookieInHttpContext(System.String,System.String,System.DateTime,System.String,System.String,System.Boolean)">
+            <summary>
+                Sets the cookie in HTTP context.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+            <param name="expires">The expires.</param>
+            <param name="domain">The domain.</param>
+            <param name="path">The path.</param>
+            <param name="secure">if set to <c>true</c> [secure].</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SetSignInAtOld(System.String)">
+            <summary>
+                Sets the sign in at old.
+            </summary>
+            <param name="userIdentifier">The user identifier.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.SignInAsync(System.String,System.String)">
+            <summary>
+                Signs the in asynchronous.
+            </summary>
+            <param name="loginName">Name of the login.</param>
+            <param name="password">The password.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.TempSignIn(System.String)">
+            <summary>
+                Temp Signs in.
+            </summary>
+            <param name="loginName">Name of the login.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserController.CheckRCode(System.String)">
+            <summary>
+            验证兴业联合登陆加密串
+            </summary>
+            <param name="rCode">加密串</param>
+            <returns>Key:是否正确，Value:UserLoginInfo</returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.UserInfoController">
+            <summary>
+                用户信息
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserInfoController.#ctor(Xingye.Domain.Users.Services.Interfaces.IUserInfoService,Xingye.Domain.Orders.Services.Interfaces.IOrderInfoService,Xingye.Domain.Users.Services.Interfaces.IUserService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.UserInfoController"/> class.
+            </summary>
+            <param name="userInfoService">The user information service.</param>
+            <param name="orderInfoService">The order information service.</param>
+            <param name="userService">The user service</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserInfoController.BankCards">
+            <summary>
+                获取用户银行卡信息
+            </summary>
+            <returns>
+                BankCardNo[string]: 银行卡号
+                CardBankName[string]: 银行名称
+                IsDefault[bool]: 是否是默认银行卡
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserInfoController.GetSettlings">
+            <summary>
+                获取即将结息的产品信息
+            </summary>
+            <returns>
+                - - ExtraInterest[decimal]: 额外收益
+                - - Interest[decimal]: 收益
+                - - Principal[decimal]: 本金
+                - - ProductIdentifier[decimal]: 产品唯一标识
+                - - ProductName[decimal]: 产品名称
+                - - ProductNo[string]: 产品编号
+                - - ProductNumber[int]: 产品期数
+                - - ProductType[int]: 产品类型，10 => 银票、20 => 商票
+                - - SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserInfoController.GetUserInfoIndex">
+            <summary>
+                获取用户账户信息
+            </summary>
+            <returns>
+                TotalInterest[decimal]: 总收益
+                ExpectedInterest[decimal]: 预期收益
+                InvestingPrincipal[decimal]: 在投金额
+                IncomePerMinute[decimal]: 以分钟为单位的赚钱速度
+                DefeatedPercent[int]: 打败的百分比
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserInfoController.Info">
+            <summary>
+                获取用户信息
+            </summary>
+            <returns>
+                BankCardNo[string]: 默认银行卡号
+                BankCardsCount[int]: 银行卡数量
+                CardBankName[string]: 默认银行卡名称
+                Cellphone[string]: 手机
+                Credential[int]: 证件 -1 => 无，0 => 身份证，1 => 护照，2 => 台湾，3 => 军人
+                CredentialNo[string]: 证件编号 (已加码，可以直接显示)
+                HasDefaultBankCard[bool]: 用户是否绑定了默认银行卡,如果绑定了，一定是认证成功了
+                HasSetPaymentPassword[bool]: 是否设定了支付密码
+                HasYSBInfo[bool]: 是否有银生宝的信息
+                LoginName[string]: 登录名
+                RealName[string]: 用户真实姓名
+                SignUpTime[string]: 用户注册时间
+                Verified[bool]: 用户是否通过实名认证，也表示是否开通了支付功能，也表示首张银行卡是否绑定成功
+                Verifing[bool]: 用户是否正在进行实名认证
+                YSBIdCard[string]: 银生宝认证的真实身份证号
+                YSBRealName[string]: 银生宝的认证的真实姓名
+                HasLoginPwd[bool]: 用户是否有登陆密码
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.UserInfoController.LoginInfo">
+            <summary>
+                获取用户登录信息
+            </summary>
+            <returns>
+                Valid[bool]: 用户Cookie是否有效
+                LoginName[string]: 用户的登录名
+            </returns>
+        </member>
+        <member name="T:nyanya.Xingye.Controllers.VeriCodesController">
+            <summary>
+                手机校验码
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.VeriCodesController.#ctor(Xingye.Domain.Auth.Services.Interfaces.IVeriCodeService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Controllers.VeriCodesController"/> class.
+            </summary>
+            <param name="veriCodeService">The veri code service.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.VeriCodesController.Send(nyanya.Xingye.Models.SendVeriCodeRequest)">
+            <summary>
+                发送校验码 -- 一天(自然天)同种类型的校验码只能发送5次（包括验证成功和验证失败）
+            </summary>
+            <param name="request">
+                校验码发送请求：
+                Cellphone[必填]: 手机号码
+                Type[必填]: 校验码用途类型。10 => 注册，20 => 重置登录密码，30 => 重置支付密码, 40 => 未激活用户注册
+            </param>
+            <returns>
+                RemainCount: 今天剩余发送次数，若为-1或者0，则今天不能再次发送该类型校验码
+                Successful: 本次发送结果
+            </returns>
+            <remarks>
+                2014-07-20 13:05 测试 by SiqiLu
+            </remarks>
+        </member>
+        <member name="M:nyanya.Xingye.Controllers.VeriCodesController.VerifyCode(nyanya.Xingye.Models.VerifyVeriCodeRequest)">
+            <summary>
+                验证校验码是否正确 -- 一个校验码只能验证失败3次，并且只能使用一次，校验码有效期为15分钟
+            </summary>
+            <param name="request">
+                校验码验证请求：
+                Cellphone[必填]: 手机号码
+                Code[必填]: 校验码，主要用于验证
+                Type[必填]: 校验码用途类型。10 => 注册，20 => 重置登录密码，30 => 重置支付密码, 40 => 未激活用户注册
+            </param>
+            <returns>
+                RemainCount: 剩余验证次数，若为-1，则该校验码已失效。校验码过期等其他非异常情况也会返回-1。若为0,则该校验码失效，不能再进行验证。
+                Successful: 本次验证结果
+                Token: 校验码口令，如果校验码验证失败，则为空
+            </returns>
+            ///
+            <remarks>
+                2014-07-20 13:05 测试 by SiqiLu
+            </remarks>
+        </member>
+        <member name="T:nyanya.Xingye.Filters.JsonpCallbackAttribute">
+            <summary>
+            Jsonp支持
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Filters.TokenAuthorizeAttribute">
+            <summary>
+                TokenAuthorizeAttribute
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Filters.TokenAuthorizeAttribute.checkPermission">
+            <summary>
+                The check permission
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Filters.TokenAuthorizeAttribute.roles">
+            <summary>
+                The roles
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.#ctor(System.Boolean)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Filters.TokenAuthorizeAttribute"/> class.
+            </summary>
+            <param name="refreshToken">if set to <c>true</c> [refresh token].</param>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+                Occurs before the action method is invoked.
+            </summary>
+            <param name="actionContext">The action context.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.ConfigrateAuthorization">
+            <summary>
+                Configrates the authorization.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.FormatErrorMessage">
+            <summary>
+                Formats the error message.
+            </summary>
+            <returns>string</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+                Processes requests that fail authorization. This default implementation creates a new
+                response with the Unauthorized status code. Override this method to provide your own
+                handling for unauthorized requests.
+            </summary>
+            <param name="actionContext">The context.</param>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.IpIsAuthorized(System.Net.Http.HttpRequestMessage)">
+            <summary>
+                Determines whether the client ip is authorized.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>
+                bool
+            </returns>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.IsAuthorized">
+            <summary>
+                Determines whether this instance is authorized.
+            </summary>
+            <returns>bool</returns>
+        </member>
+        <member name="M:nyanya.Xingye.Filters.TokenAuthorizeAttribute.IsValid(System.Web.Http.Controllers.HttpActionContext,System.String@)">
+            <summary>
+                Determines whether the specified action context is valid.
+            </summary>
+            <param name="actionContext">The action context.</param>
+            <param name="newToken">The new token.</param>
+            <returns>bool</returns>
+            <exception cref="T:System.ArgumentNullException">
+                actionContext;actionContext can not be null
+            </exception>
+        </member>
+        <member name="P:nyanya.Xingye.Filters.TokenAuthorizeAttribute.AllowLocal">
+            <summary>
+                Gets or sets a value indicating whether [allow local].
+            </summary>
+            <value><c>true</c> if [allow local]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:nyanya.Xingye.Filters.TokenAuthorizeAttribute.Roles">
+            <summary>
+                Gets or sets the roles.
+            </summary>
+            <value>The roles.</value>
+        </member>
+        <member name="P:nyanya.Xingye.Filters.TokenAuthorizeAttribute.PermissibleUsers">
+            <summary>
+                Gets or sets the permissible users.
+            </summary>
+            <value>The permissible users.</value>
+        </member>
+        <member name="P:nyanya.Xingye.Filters.TokenAuthorizeAttribute.RefreshToken">
+            <summary>
+                Gets or sets a value indicating whether [refresh token].
+            </summary>
+            <value><c>true</c> if [refresh token]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:nyanya.Xingye.Filters.TokenAuthorizeAttribute.UserName">
+            <summary>
+                Gets or sets the name of the user.
+            </summary>
+            <value>The name of the user.</value>
+        </member>
+        <member name="T:nyanya.Xingye.Helper.BankCardHelper">
+            <summary>
+                BankCardHelper
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Helper.BankCardHelper.CheckDailyLimit(System.String,System.Decimal)">
+            <summary>
+                Checks the daily limit.
+            </summary>
+            <param name="bankName">Name of the bank.</param>
+            <param name="amount">The amount.</param>
+            <returns></returns>
+        </member>
+        <member name="T:nyanya.Xingye.Models.AnyVerifyPaymentInfoRequest">
+            <summary>
+            验证支付信息请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyVerifyPaymentInfoRequest.BankCardNo">
+            <summary>
+                默认银行卡号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyVerifyPaymentInfoRequest.CredentialNo">
+            <summary>
+                用户证件号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyVerifyPaymentInfoRequest.CellphoneNo">
+            <summary>
+                手机号
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.AnyRestPaymentPasswordRequest">
+            <summary>
+            匿名重置支付密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyRestPaymentPasswordRequest.BankCardNo">
+            <summary>
+                默认银行卡号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyRestPaymentPasswordRequest.CredentialNo">
+            <summary>
+                用户证件号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyRestPaymentPasswordRequest.CellphoneNo">
+            <summary>
+                手机号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyRestPaymentPasswordRequest.Password">
+            <summary>
+                用户设置的支付密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AnyRestPaymentPasswordRequest.Token">
+            <summary>
+                校验码验证成功口令
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.InvestingRequest">
+            <summary>
+                投资下单请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.InvestingRequest.BankCardNo">
+            <summary>
+                Gets or sets the bank card no.
+            </summary>
+            <value>
+                The bank card no.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.InvestingRequest.Count">
+            <summary>
+                Gets or sets the count.
+            </summary>
+            <value>
+                The count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.InvestingRequest.PaymentPassword">
+            <summary>
+                Gets or sets the bank card no.
+            </summary>
+            <value>
+                The bank card no.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.InvestingRequest.ProductNo">
+            <summary>
+                Gets or sets the product no.
+            </summary>
+            <value>
+                The product no.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.OrderInfoResponse">
+            <summary>
+                订单信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.BankCardCity">
+            <summary>
+                银行卡开户地
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.BankCardCityName">
+            <summary>
+                开户行城市名
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.BankCardNo">
+            <summary>
+                银行卡号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.BankCardProvinceName">
+            <summary>
+                开户行省份名
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.BankName">
+            <summary>
+                银行名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ConsignmentAgreementName">
+            <summary>
+                委托协议名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.EndorseImageLink">
+            <summary>
+                质押物大图链接
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.EndorseImageThumbnailLink">
+            <summary>
+                质押物缩略图链接
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ExtraInterest">
+            <summary>
+                额外收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.HasResult">
+            <summary>
+                是否已经有支付结果
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.Interest">
+            <summary>
+                收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.InvestorCellphone">
+            <summary>
+                投资者手机号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.InvestorCredential">
+            <summary>
+                投资者证件类型
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.InvestorCredentialNo">
+            <summary>
+                投资者证件编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.InvestorRealName">
+            <summary>
+                投资者真实姓名
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.IsPaid">
+            <summary>
+                是否支付成功
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.Message">
+            <summary>
+                提示信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.OrderIdentifier">
+            <summary>
+                订单唯一标识
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.OrderNo">
+            <summary>
+                订单编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.OrderTime">
+            <summary>
+                下单时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.OrderType">
+            <summary>
+                订单类型
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.PaymentInfoTransDesc">
+            <summary>
+                Gets or sets the payment information trans desc.
+            </summary>
+            <value>
+                The payment information trans desc.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.Period">
+            <summary>
+                投资周期
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.PledgeAgreementName">
+            <summary>
+                质押借款协议名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.Principal">
+            <summary>
+                订单本金
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ProductIdentifier">
+            <summary>
+                项目唯一标识
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ProductName">
+            <summary>
+                项目名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ProductNo">
+            <summary>
+                项目编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ProductNumber">
+            <summary>
+                项目期数
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ProductUnitPrice">
+            <summary>
+                项目的单价，即每份多少钱
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.RepaymentDeadline">
+            <summary>
+                Gets or sets the repayment deadline.
+            </summary>
+            <value>
+                The repayment deadline.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ResultTime">
+            <summary>
+                支付清算时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.SettleDate">
+            <summary>
+                结息日期
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ShareCount">
+            <summary>
+                订单的购买份数
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ShowingStatus">
+            <summary>
+                订单的显示状态
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.TotalAmount">
+            <summary>
+                订单的本息总额
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.UseableItemCount">
+            <summary>
+                可用道具数
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.UserIdentifier">
+            <summary>
+                用户唯一标识
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.ValueDate">
+            <summary>
+                起息日期
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderInfoResponse.Yield">
+            <summary>
+                订单的项目收益率
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.OrderListItem">
+            <summary>
+                OrderListItem
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ExtraInterest">
+            <summary>
+                额外收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.Interest">
+            <summary>
+                预期收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.Message">
+            <summary>
+                提示信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.OrderIdentifier">
+            <summary>
+                订单唯一标识
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.OrderNo">
+            <summary>
+                订单编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.OrderTime">
+            <summary>
+                下单时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.Principal">
+            <summary>
+                订单本金
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ProductIdentifier">
+            <summary>
+                项目唯一标识
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ProductName">
+            <summary>
+                项目名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ProductNo">
+            <summary>
+                项目编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ProductNumber">
+            <summary>
+                项目期数
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.SettleDate">
+            <summary>
+                结息日期
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ShareCount">
+            <summary>
+                订单的购买份数
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ShowingStatus">
+            <summary>
+                订单的显示状态
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.TotalAmount">
+            <summary>
+                订单的本息总额
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.UseableItemCount">
+            <summary>
+                可用道具数量
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.ValueDate">
+            <summary>
+                起息日期
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListItem.Yield">
+            <summary>
+                订单的预期收益率
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.OrderListResponse">
+            <summary>
+                订单列表
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.OrderListResponse.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Models.OrderListResponse"/> class.
+                Only for document.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.OrderListResponse.#ctor(Domian.DTO.IPaginatedDto{Xingye.Domain.Orders.ReadModels.OrderInfo})">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Models.OrderListResponse"/> class.
+            </summary>
+            <param name="model">The orders.</param>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListResponse.HasNextPage">
+            <summary>
+                Gets or sets a value indicating whether this instance has next page.
+            </summary>
+            <value>
+                <c>true</c> if this instance has next page; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListResponse.Orders">
+            <summary>
+                Gets or sets the products.
+            </summary>
+            <value>
+                The products.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListResponse.PageIndex">
+            <summary>
+                Gets or sets the index of the page.
+            </summary>
+            <value>
+                The index of the page.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListResponse.PageSize">
+            <summary>
+                页面大小
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListResponse.TotalCount">
+            <summary>
+                总数据数量
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.OrderListResponse.TotalPageCount">
+            <summary>
+                Gets or sets the total page count.
+            </summary>
+            <value>
+                The total page count.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.OrderShowingStatus">
+            <summary>
+                OrderShowingStatus
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.OrderShowingStatus.Paying">
+            <summary>
+                付款中
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.OrderShowingStatus.WaitForInterest">
+            <summary>
+                待起息
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.OrderShowingStatus.Interesting">
+            <summary>
+                已起息
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.OrderShowingStatus.Interested">
+            <summary>
+                已结息
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.OrderShowingStatus.Failed">
+            <summary>
+                支付失败
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.BAProductInfoResponse">
+            <summary>
+                银承产品详情
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.ProductInfoResponse">
+            <summary>
+                产品信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.AvailableShareCount">
+            <summary>
+                Gets or sets the available share count.
+            </summary>
+            <value>
+                The available share count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.CurrentValueDate">
+            <summary>
+                Gets or sets the current value date.
+            </summary>
+            <value>
+                The current value date.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.EndorseImageLink">
+            <summary>
+                Gets or sets the endorse image link.
+            </summary>
+            <value>
+                The endorse image link.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.EndorseImageThumbnailLink">
+            <summary>
+                Gets or sets the endorse image thumbnail link.
+            </summary>
+            <value>
+                The endorse image thumbnail link.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.EndSellTime">
+            <summary>
+                Gets or sets the end sell time.
+            </summary>
+            <value>
+                The end sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ExtraYield">
+            <summary>
+                额外收益率
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.FinancingSum">
+            <summary>
+                Gets or sets the financing sum.
+            </summary>
+            <value>
+                The financing sum.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.FinancingSumCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+            <value>
+                The financing sum count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.LaunchTime">
+            <summary>
+                Gets or sets the launch time.
+            </summary>
+            <value>
+                The launch time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.MaxShareCount">
+            <summary>
+                Gets or sets the maximum share count.
+            </summary>
+            <value>
+                The maximum share count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.MinShareCount">
+            <summary>
+                Gets or sets the minimum share count.
+            </summary>
+            <value>
+                The minimum share count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.OnPreSale">
+            <summary>
+                Gets or sets a value indicating whether [on pre sale].
+            </summary>
+            <value>
+                <c>true</c> if [on pre sale]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.OnSale">
+            <summary>
+                Gets or sets a value indicating whether [on sale].
+            </summary>
+            <value>
+                <c>true</c> if [on sale]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.PaidPercent">
+            <summary>
+                销售百分比
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.PaidShareCount">
+            <summary>
+                Gets or sets the paid share count.
+            </summary>
+            <value>
+                The paid share count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.PayingShareCount">
+            <summary>
+                Gets or sets the paying share count.
+            </summary>
+            <value>
+                The paying share count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.Period">
+            <summary>
+                Gets or sets the period.
+            </summary>
+            <value>
+                The period.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.PreEndSellTime">
+            <summary>
+                Gets or sets the pre end sell time.
+            </summary>
+            <value>
+                The pre end sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.PreSale">
+            <summary>
+                Gets or sets a value indicating whether [pre sale].
+            </summary>
+            <value>
+                <c>true</c> if [pre sale]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.PreStartSellTime">
+            <summary>
+                Gets or sets the pre start sell time.
+            </summary>
+            <value>
+                The pre start sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ProductIdentifier">
+            <summary>
+                Gets or sets the product identifier.
+            </summary>
+            <value>
+                The product identifier.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ProductName">
+            <summary>
+                Gets or sets the name of the product.
+            </summary>
+            <value>
+                The name of the product.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ProductNo">
+            <summary>
+                Gets or sets the product no.
+            </summary>
+            <value>
+                The product no.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ProductNumber">
+            <summary>
+                Gets or sets the product number.
+            </summary>
+            <value>
+                The product number.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.Repaid">
+            <summary>
+                Gets or sets a value indicating whether this <see cref="T:nyanya.Xingye.Models.BAProductInfoResponse"/> is repaid.
+            </summary>
+            <value>
+                <c>true</c> if repaid; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.RepaymentDeadline">
+            <summary>
+                Gets or sets the repayment deadline.
+            </summary>
+            <value>
+                The repayment deadline.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ServerTime">
+            <summary>
+                Gets or sets the server time.
+            </summary>
+            <value>
+                The server time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.SettleDate">
+            <summary>
+                Gets or sets the settle date.
+            </summary>
+            <value>
+                The settle date.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ShowingStatus">
+            <summary>
+                Gets or sets the showing status.
+            </summary>
+            <value>
+                The showing status.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.SoldOut">
+            <summary>
+                Gets or sets a value indicating whether [sold out].
+            </summary>
+            <value>
+                <c>true</c> if [sold out]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.SoldOutTime">
+            <summary>
+                Gets or sets the sold out time.
+            </summary>
+            <value>
+                The sold out time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.StartSellTime">
+            <summary>
+                Gets or sets the start sell time.
+            </summary>
+            <value>
+                The start sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.SumShareCount">
+            <summary>
+                Gets or sets the sum share count.
+            </summary>
+            <value>
+                The sum share count.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.UnitPrice">
+            <summary>
+                Gets or sets the unit price.
+            </summary>
+            <value>
+                The unit price.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ValueDate">
+            <summary>
+                Gets or sets the value date.
+            </summary>
+            <value>
+                The value date.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ValueDateMode">
+            <summary>
+                Gets or sets the value date mode.
+            </summary>
+            <value>
+                The value date mode.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.ValueDateString">
+            <summary>
+                Gets or sets the value date string.
+            </summary>
+            <value>
+                The value date string.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductInfoResponse.Yield">
+            <summary>
+                Gets or sets the yield.
+            </summary>
+            <value>
+                The yield.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BAProductInfoResponse.BankName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+            <value>
+                The name of the bank.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BAProductInfoResponse.BillNo">
+            <summary>
+                Gets or sets the bill no.
+            </summary>
+            <value>
+                The bill no.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BAProductInfoResponse.BusinessLicense">
+            <summary>
+                Gets or sets the business license.
+            </summary>
+            <value>
+                The business license.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BAProductInfoResponse.EnterpriseName">
+            <summary>
+                Gets or sets the name of the enterprise.
+            </summary>
+            <value>
+                The name of the enterprise.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BAProductInfoResponse.Usage">
+            <summary>
+                Gets or sets the usage.
+            </summary>
+            <value>
+                The usage.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.PaginatedBAProductInfosResponse">
+            <summary>
+                银承产品列表
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Models.PaginatedBAProductInfosResponse"/> class.
+                Only for document.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.#ctor(Domian.DTO.IPaginatedDto{Xingye.Domain.Products.Services.DTO.ProductWithSaleInfo{Xingye.Domain.Products.ReadModels.BAProductInfo}})">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Models.PaginatedBAProductInfosResponse"/> class.
+            </summary>
+            <param name="model">The model.</param>
+        </member>
+        <member name="P:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.HasNextPage">
+            <summary>
+                Gets or sets a value indicating whether this instance has next page.
+            </summary>
+            <value>
+                <c>true</c> if this instance has next page; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.PageIndex">
+            <summary>
+                Gets or sets the index of the page.
+            </summary>
+            <value>
+                The index of the page.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.PageSize">
+            <summary>
+                页面大小
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.Products">
+            <summary>
+                Gets or sets the products.
+            </summary>
+            <value>
+                The products.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.TotalCount">
+            <summary>
+                总数据数量
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.PaginatedBAProductInfosResponse.TotalPageCount">
+            <summary>
+                Gets or sets the total page count.
+            </summary>
+            <value>
+                The total page count.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.ProductShowingStatus">
+            <summary>
+                用于显示的状态
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.ProductShowingStatus.BeforeSale">
+            <summary>
+                The before sale
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.ProductShowingStatus.OnPreSale">
+            <summary>
+                The on pre sale
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.ProductShowingStatus.OnSale">
+            <summary>
+                The on sale
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.ProductShowingStatus.SoldOut">
+            <summary>
+                The sold out
+            </summary>
+        </member>
+        <member name="F:nyanya.Xingye.Models.ProductShowingStatus.Finished">
+            <summary>
+                The finished
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.ProductShareCacheModelExtensions">
+            <summary>
+                ProductShareCacheModelExtensions
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.ProductShareCacheModelExtensions.ToProductSaleProcessResponse(Infrastructure.Cache.Couchbase.ProductShareCacheModel)">
+            <summary>
+                To the product sale process response.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="T:nyanya.Xingye.Models.ProductSaleProcessResponse">
+            <summary>
+                ProductSaleProcessResponse
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductSaleProcessResponse.Available">
+            <summary>
+                Gets or sets the available.
+            </summary>
+            <value>
+                The available.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductSaleProcessResponse.Paid">
+            <summary>
+                Gets or sets the paid.
+            </summary>
+            <value>
+                The paid.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductSaleProcessResponse.Paying">
+            <summary>
+                Gets or sets the paying.
+            </summary>
+            <value>
+                The paying.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ProductSaleProcessResponse.Sum">
+            <summary>
+                Gets or sets the sum.
+            </summary>
+            <value>
+                The sum.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.BankCardInfoResponse">
+            <summary>
+                用户信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BankCardInfoResponse.BankCardNo">
+            <summary>
+                银行卡密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BankCardInfoResponse.CardBankName">
+            <summary>
+                银行名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.BankCardInfoResponse.IsDefault">
+            <summary>
+                是否是默认银行卡
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.LoginInfoResponse">
+            <summary>
+                用户登录信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.LoginInfoResponse.LoginName">
+            <summary>
+                Gets or sets the name of the login.
+            </summary>
+            <value>
+                The name of the login.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.LoginInfoResponse.Valid">
+            <summary>
+                Gets or sets a value indicating whether this <see cref="T:nyanya.Xingye.Models.LoginInfoResponse"/> is valid.
+            </summary>
+            <value>
+                <c>true</c> if valid; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SettlingProductInfoResponse">
+            <summary>
+                SettlingProductInfoResponse
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.ExtraInterest">
+            <summary>
+            额外收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.Interest">
+            <summary>
+                Gets or sets the interest.
+            </summary>
+            <value>
+                The interest.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.Principal">
+            <summary>
+                Gets or sets the principal.
+            </summary>
+            <value>
+                The principal.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.ProductIdentifier">
+            <summary>
+                Gets or sets the product identifier.
+            </summary>
+            <value>
+                The product identifier.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.ProductName">
+            <summary>
+                Gets or sets the name of the product.
+            </summary>
+            <value>
+                The name of the product.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.ProductNo">
+            <summary>
+                Gets or sets the product no.
+            </summary>
+            <value>
+                The product no.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.ProductNumber">
+            <summary>
+                Gets or sets the product number.
+            </summary>
+            <value>
+                The product number.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.ProductType">
+            <summary>
+                Gets or sets the type of the product.
+            </summary>
+            <value>
+                The type of the product.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SettlingProductInfoResponse.SettleDate">
+            <summary>
+                Gets or sets the settle date.
+            </summary>
+            <value>
+                The settle date.
+            </value>
+        </member>
+        <member name="T:nyanya.Xingye.Models.UserInfoResponse">
+            <summary>
+                用户信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.BankCardNo">
+            <summary>
+                默认银行卡密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.BankCardsCount">
+            <summary>
+                银行卡数量
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.CardBankName">
+            <summary>
+                默认银行卡名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.Cellphone">
+            <summary>
+                手机号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.Credential">
+            <summary>
+                证件
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.CredentialNo">
+            <summary>
+                证件编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.HasDefaultBankCard">
+            <summary>
+                用户是否绑定了默认银行卡，也即是是否开通了手机支付
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.HasSetPaymentPassword">
+            <summary>
+                是否设定了支付密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.HasYSBInfo">
+            <summary>
+                是否有银生宝的信息
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.LoginName">
+            <summary>
+                登录名
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.RealName">
+            <summary>
+                用户真实姓名.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.SignUpTime">
+            <summary>
+                用户注册时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.Verified">
+            <summary>
+                用户是否通过实名认证.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.Verifing">
+            <summary>
+                用户是否正在进行实名认证.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.YSBIdCard">
+            <summary>
+                银生宝认证的真实身份证号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.YSBRealName">
+            <summary>
+                银生宝的认证的真实姓名
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInfoResponse.HasLoginPwd">
+            <summary>
+                用户是否有登陆密码
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.UserInvestingInfoResponse">
+            <summary>
+                UserInvestingInfoResponse
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.UserInvestingInfoResponse.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Models.UserInvestingInfoResponse"/> class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Xingye.Models.UserInvestingInfoResponse.#ctor(System.Decimal,System.Decimal,Xingye.Domain.Orders.Services.DTO.InvestingInfo)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Xingye.Models.UserInvestingInfoResponse"/> class.
+            </summary>
+            <param name="maxIncomeSpeed">The maximum income speed.</param>
+            <param name="userIncomeSpeed">The user income speed.</param>
+            <param name="investingInfo">The investing information.</param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInvestingInfoResponse.DefeatedPercent">
+            <summary>
+                打败的百分比
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInvestingInfoResponse.ExpectedInterest">
+            <summary>
+                预期收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInvestingInfoResponse.IncomePerMinute">
+            <summary>
+                每分钟赚取的收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInvestingInfoResponse.InvestingPrincipal">
+            <summary>
+                在投金额
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.UserInvestingInfoResponse.TotalInterest">
+            <summary>
+                已获收益
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.YSBUserInfoResponse">
+            <summary>
+                银生宝用户数据
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.YSBUserInfoResponse.IdCard">
+            <summary>
+                Gets or sets the identifier card.
+            </summary>
+            <value>
+                The identifier card.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.YSBUserInfoResponse.RealName">
+            <summary>
+                Gets or sets the name of the real.
+            </summary>
+            <value>
+                The name of the real.
+            </value>
+        </member>
+        <member name="P:nyanya.Xingye.Models.YSBUserInfoResponse.Verified">
+            <summary>
+                是否有银生宝数据
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.AddBankCardRequest">
+            <summary>
+                添加银行卡请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AddBankCardRequest.BankCardNo">
+            <summary>
+                Gets or sets the bank card no.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AddBankCardRequest.BankName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AddBankCardRequest.CityName">
+            <summary>
+                Gets or sets the name of the city.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.AddBankCardStatusRequest">
+            <summary>
+                添加银行卡状态请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.AddBankCardStatusRequest.BankCardNo">
+            <summary>
+                Gets or sets the bank card no.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.ResetPasswordRequest">
+            <summary>
+                重置密码请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPasswordRequest.Password">
+            <summary>
+                用户设置的密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPasswordRequest.Token">
+            <summary>
+                校验码验证成功口令
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPasswordRequest.CellPhone">
+            <summary>
+                手机号
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.ResetPaymentPasswordRequest">
+            <summary>
+                重置交易密码请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPaymentPasswordRequest.BankCardNo">
+            <summary>
+                默认银行卡号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPaymentPasswordRequest.CredentialNo">
+            <summary>
+                用户证件号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPaymentPasswordRequest.Password">
+            <summary>
+                用户设置的交易密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.ResetPaymentPasswordRequest.Token">
+            <summary>
+                校验码验证成功口令
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SetPasswordRequest">
+            <summary>
+                置登陆密码请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SetPasswordRequest.Password">
+            <summary>
+                用户设置的密码
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SetPaymentPasswordRequest">
+            <summary>
+                设定交易密码请求模型
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SetPaymentPasswordRequest.Password">
+            <summary>
+                密码
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SignInRequest">
+            <summary>
+                登陆请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignInRequest.Name">
+            <summary>
+                用户名
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignInRequest.Password">
+            <summary>
+                密码
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SignInResponse">
+            <summary>
+                登陆结果
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignInResponse.Lock">
+            <summary>
+                账户是否被锁定
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignInResponse.RemainCount">
+            <summary>
+                剩余登陆次数
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignInResponse.Successful">
+            <summary>
+                登陆结果
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignInResponse.UserExist">
+            <summary>
+                用户是否存在
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SignUpPaymentRequest">
+            <summary>
+                开通移动支付使用的请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpPaymentRequest.BankCardNo">
+            <summary>
+                Gets or sets the bank card no.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpPaymentRequest.BankName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpPaymentRequest.CityName">
+            <summary>
+                Gets or sets the name of the city.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpPaymentRequest.Credential">
+            <summary>
+                证件类型。0 => 身份证， 1 => 护照，2 => 台湾， 3=> 军官证
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpPaymentRequest.CredentialNo">
+            <summary>
+                Gets or sets the credential no.
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpPaymentRequest.RealName">
+            <summary>
+                Gets or sets the name of the real.
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SignUpRequest">
+            <summary>
+                注册请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpRequest.Code">
+            <summary>
+                识别码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpRequest.Password">
+            <summary>
+                用户设置的密码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SignUpRequest.Token">
+            <summary>
+                校验码验证成功口令
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.TempSignUpRequest">
+            <summary>
+                注册请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.TempSignUpRequest.Token">
+            <summary>
+                校验码验证成功口令
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SendVeriCodeRequest">
+            <summary>
+                校验码发送请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SendVeriCodeRequest.Cellphone">
+            <summary>
+                手机号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SendVeriCodeRequest.Type">
+            <summary>
+                校验码用途类型。10 => 注册，20 => 忘记密码，30 => 修改密码, 40 => 未激活用户注册
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.SendVeriCodeResponse">
+            <summary>
+                校验码发送结果
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SendVeriCodeResponse.RemainCount">
+            <summary>
+                今天剩余发送次数，若为-1，则今天不能再次发送该类型校验码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.SendVeriCodeResponse.Successful">
+            <summary>
+                本次发送结果
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.VerifyVeriCodeRequest">
+            <summary>
+                校验码验证请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyVeriCodeRequest.Cellphone">
+            <summary>
+                手机号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyVeriCodeRequest.Code">
+            <summary>
+                校验码
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyVeriCodeRequest.Type">
+            <summary>
+                校验码用途类型。10 => 注册，20 => 重置登录密码，30 => 重置支付密码, 40 => 未激活用户注册
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.VerifyVeriCodeResponse">
+            <summary>
+                校验码验证结果
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyVeriCodeResponse.RemainCount">
+            <summary>
+                剩余验证次数，若为-1，则该校验码已失效
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyVeriCodeResponse.Successful">
+            <summary>
+                本次验证结果
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyVeriCodeResponse.Token">
+            <summary>
+                校验码口令，如果校验码验证失败，则为空
+            </summary>
+        </member>
+        <member name="T:nyanya.Xingye.Models.VerifyPaymentInfoRequest">
+            <summary>
+            验证支付信息请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyPaymentInfoRequest.BankCardNo">
+            <summary>
+                默认银行卡号
+            </summary>
+        </member>
+        <member name="P:nyanya.Xingye.Models.VerifyPaymentInfoRequest.CredentialNo">
+            <summary>
+                用户证件号
+            </summary>
+        </member>
+    </members>
+</doc>

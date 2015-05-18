@@ -1,0 +1,85 @@
+﻿<%
+    var status_class = "";
+    if(item.ShowingStatus == 50){
+        status_class = " jqm-detail-over";
+    } else if(item.ShowingStatus == 40){
+        status_class = " jqm-detail-noSale";
+    }
+%>
+<div class="jqm-detail-product-wrap">
+    <div class="jqm-detail-product<%=status_class%>">
+        <div class="jqm-block-a">
+            <% if(item.ShowingStatus == 50){ %>
+            <div class="jqm-detail-slider">
+                <div class="jqm-round-over">项目完成<br/>本息已全部返还</div>
+            </div>
+            <div class="jqm-detail-date">
+                <em>最迟还款日</em>
+                <strong><%=zim.page.fmtDate(item.RepaymentDeadline)%></strong>
+            </div>
+            <% } else if(item.ShowingStatus == 40){ %>
+            <div class="jqm-detail-slider">
+                <div class="jqm-round-wrap">
+                    <div class="jqm-round-bg"></div>
+                    <canvas id="jqm-round-sector"></canvas>
+                    <div class="jqm-round-circle"><strong>距还款</strong><%=zim.page.getOverDay(item.RepaymentDeadline)%><samp>天</samp></div>
+                </div>
+            </div>
+            <div class="jqm-detail-date">
+                <em>最迟还款日</em>
+                <strong><%=zim.page.fmtDate(item.RepaymentDeadline)%></strong>
+            </div>
+            <% } else if(item.ShowingStatus == 30){ %>
+            <div class="jqm-detail-slider">
+                <div class="jqm-round-wrap">
+                    <div class="jqm-round-bg"></div>
+                    <canvas id="jqm-round-sector"></canvas>
+                    <div class="jqm-round-circle"><strong>已售出</strong><%=item.PaidPercent%><samp>%</samp></div>
+                </div>
+            </div>
+            <div class="jqm-detail-date">
+                <em>起息日期</em>
+                <strong><%=zim.page.fmtValueDate(item)%></strong>
+            </div>
+            <% } else if(item.ShowingStatus < 30){ %>
+            <div class="jqm-detail-slider">
+                <div class="jqm-round-wrap">
+                    <div class="jqm-round-bg"></div>
+                    <div class="jqm-round-circle"><strong>未开售</strong>0<samp>%</samp></div>
+                </div>
+            </div>
+            <div class="jqm-detail-date" id="jqm-detail-date1">
+                <em>开售时间</em>
+                <strong><%=zim.page.fmtDateTime(item.StartSellTime)%></strong>
+            </div>
+            <div class="jqm-detail-date" id="jqm-detail-date2" style="display:none">
+                <em>起息日期</em>
+                <strong><%=zim.page.fmtValueDate(item)%></strong>
+            </div>
+            <% } %>
+            <b></b>
+        </div>
+        <div class="jqm-block-b">
+            <div class="jqm-detail-property">
+                <span class="jqm-detail-yeild">年化利率</span>
+                <strong><%=item.Yield%><samp>%</samp></strong>
+                <span>投资周期<em><%=item.Period%></em>天</span>
+                <span>融资金额<em><%=item.FinancingSum/10000%></em>万</span>
+            </div>
+            <div class="jqm-detail-bank">
+                <em>无条件承兑行</em>
+                <strong><%=item.BankName%></strong>
+            </div>
+        </div>
+    </div>
+    <% if(item.ShowingStatus < 40){ %>
+    <div class="jqm-block-num">
+        <ul class="ui-table">
+            <li>
+                <span class="ui-td">剩余份额：(<%=item.UnitPrice%>元/份)<strong><em id="jqm-available"><%=item.AvailableShareCount%></em><samp>份</samp></strong></span>
+                <span class="ui-td"><a href="#" class="jqm-num-reload" data-action="num-reload">刷新</a></span>
+            </li>
+        </ul>
+    </div>
+    <% } %>
+</div>

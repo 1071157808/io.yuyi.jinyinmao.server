@@ -1,0 +1,32 @@
+﻿@{ 
+    Layout = "~/_layout/partner/Main.cshtml";
+    Page.Title = "校验验证码";
+}
+@section PageScript {
+    <script src="/static/js/passport/common.js"></script>
+    <script src="/static/js/partner/passport.js"></script>
+    <script>
+    Zepto(function(){
+        var mobile = zim.page.checkQuery('mobile');
+        if(!zim.isMobile(mobile)){ zim.page.back(); }
+        $('#sn-reg-mobile').text(mobile);
+        zim.sms.countSend();
+    });
+    </script>
+}
+<div class="ui-content">
+    <div class="jqm-account-view">
+        <h5>包含验证码的短信已经发送到<span id="sn-reg-mobile"></span></h5>
+        <ul class="ui-table jqm-account-span">
+            <li>
+                <span class="ui-td">
+                    <input type="text" ime-mode="disabled" id="jqm-register-code" placeholder="请输入六位短信验证码" >
+                </span>
+                <span class="ui-td">
+                    <a class="jqm-count-back" href="#" data-action="user-register-sent">0</a>
+                </span>
+            </li>
+        </ul>
+        <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="user-register2">下一步</button></div>
+    </div>
+</div>

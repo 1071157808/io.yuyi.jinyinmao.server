@@ -1,0 +1,13 @@
+﻿@{
+    // 将非https的页面直接重定向到https相关的页面，对于允许http访问的页面，不要引用该模板
+    if (!Request.IsSecureConnection)
+    {
+        string redirectUrl = "https://www.jinyinmao.com.cn";
+        if (Request.Url != null)
+        {
+            redirectUrl = Request.Url.ToString().Replace("http:", "https");
+        }
+
+        Response.Redirect(redirectUrl);
+    }
+}

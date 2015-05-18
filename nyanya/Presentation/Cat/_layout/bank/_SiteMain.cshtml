@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/_layout/base/_BaseMain.cshtml";
+    var title = Page.Title ?? "金银猫 - 大金融心服务";
+}<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        @RenderPage("~/_layout/base/_o_code.cshtml", new{ Type = "loadtime" })
+        @RenderPage("~/_layout/base/_meta.cshtml")
+        <title>@title</title>
+        <link rel="stylesheet" href="/static/css/base.css" />
+        @RenderSection("PageStyle", false)
+        @if (IsSectionDefined("RequireCallback"))
+        {
+            <script>var _require_callback = function () {@RenderSection("RequireCallback") };</script>
+        }
+        @RenderPage("~/_layout/base/_scripts.cshtml")
+    </head>
+    <body>
+        @RenderPage("~/_layout/base/_header.cshtml", new { navIndex = "bank" })
+        @RenderBody()
+        @RenderPage("~/_layout/base/_footer.cshtml")
+    </body>
+</html>

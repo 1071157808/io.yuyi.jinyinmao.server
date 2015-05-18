@@ -1,0 +1,103 @@
+﻿@{
+    string menuText = Page.SilderMenu ?? "index";
+    dynamic uData = Page.Data;
+    string paymentUrl = "/bankcard/setPassword";
+    string paymentDisabled = uData.Data.HasDefaultBankCard == true ? "" : "payment-disabled";
+    if (uData.Data.HasSetPaymentPassword == true)
+    {
+        paymentUrl = "/bankcard/identity";
+    }
+    if(uData.Data.Verifing == true){
+        paymentUrl = "#";
+    }
+}
+<div class="silder">
+    <div class="account">
+        <div class="head-image"><img src="/static/images/user/head-image.png" /></div>
+        <div class="user-mobile">@CatHelper.FixCellphone(uData.Data.Cellphone)</div>
+        <div class="payment-status @paymentDisabled">
+            @if (uData.Data.HasYSBInfo == true)
+            {
+                if (uData.Data.HasDefaultBankCard == true)
+                {
+                    <a class="old-ico-payment" href="/user/bankcards">
+                        <div class="ui-tip-msg">
+                            <p>快捷支付已开通</p>
+                            <b class="ui-tip-top"></b>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <a class="old-ico-payment" href="@paymentUrl">
+                        <div class="ui-tip-msg">
+                            <p>点击立即开通快捷支付</p>
+                            <b class="ui-tip-top"></b>
+                        </div>
+                    </a>
+                }
+                <span class="ph10">|</span>
+                <a class="old-ico-amp" target="_blank" href="http://www2.jinyinmao.com.cn/">
+                    <div class="ui-tip-msg">
+                        <p>点击进入旧版</p>
+                        <b class="ui-tip-top"></b>
+                    </div>
+                </a>
+            }
+            else
+            {
+                if (uData.Data.HasDefaultBankCard == true)
+                {
+                    <b class="ui-ico-payment"></b>
+                    <span class="ph10">|</span>
+                    <a href="/user/bankcards">快捷支付已开通</a>
+                }
+                else
+                {
+                    <b class="ui-ico-payment"></b>
+                    <span class="ph10">|</span>
+                    <a href="@paymentUrl">开通快捷支付</a>
+                }
+            }
+        </div>
+    </div>
+    <div id="jym1118" style="display:none;">
+        <div style="margin-bottom:10px;">
+            <a href="/user/topic-1118"><img style="display:block;" src="/static/images/topic/1118/user-slider.png" /></a>
+        </div>
+    </div>
+    <script>
+    require(['jym1118'], function(o){
+        o.gift1000.setUserStatus('#jym1118');
+    });
+    </script>
+    @functions{
+
+        public static string MenuChk(string text, string key)
+        {
+            if (text == key)
+            {
+                return "selected";
+            }
+            return "";
+        }
+
+    }
+    <div class="nav-menu">
+        <h3><a class="@MenuChk(menuText, "index")" href="/user/index"><b class="ui-ico-rmb"></b>账户总览<i>&gt;</i></a></h3>
+        <h4>我的订单</h4>
+        <a class="@MenuChk(menuText, "amp")" href="/user/amp/list"><b class="ui-ico-amp"></b>银企众盈<i>&gt;</i></a>
+        <a class="@MenuChk(menuText, "cpl")" href="/user/cpl/list"><b class="ui-ico-cpl"></b>商票贷<i>&gt;</i></a>
+         @if(CatHelper.IsFDFlag)
+         {
+            <a class="@MenuChk(menuText, "bank")" href="/user/bank/fudian/list"><b class="ui-ico-bank"></b>银行理财<i>&gt;</i></a>
+         }
+         else if(CatHelper.IsXYFlag || CatHelper.IsFDFlag)
+         {
+            <a class="@MenuChk(menuText, "bank")" href="/user/bank/list"><b class="ui-ico-bank"></b>银行理财<i>&gt;</i></a>
+         }
+        <h4>账户管理</h4>
+        <a class="@MenuChk(menuText, "bankcards")" href="/user/bankcards"><b class="ui-ico-card"></b>我的银行卡<i>&gt;</i></a>
+        <a class="@MenuChk(menuText, "settings")" href="/user/settings"><b class="ui-ico-lock"></b>安全设置<i>&gt;</i></a>
+    </div>
+</div>

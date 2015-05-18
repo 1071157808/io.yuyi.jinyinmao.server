@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/_layout/passport/_SiteMain.cshtml";
+    PageData["Title"] = "金银猫 - 大金融心服务 - 合作商客户注册";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/passport/register.js'></script>");
+}
+@section PageStyle {
+    <link rel="stylesheet" href="/static/css/login.css" />
+}
+<div class="login-partner-inner">
+    <div class="per-title">
+        <h1>合作商客户注册</h1>
+    </div>
+    <div class="per-main">
+        <ul class="per-main-list">
+            <li>
+                <label class="lab" for="">账户：</label>
+                <input class="per-text" type="text" placeholder="请输入您的手机号" name="" id="username" />
+                <span class="error"></span>
+                <span class="login-error"></span>
+                <span class="login-info"></span>
+            </li>
+            <li>
+                <label class="lab" for="">验证码：</label>
+                <input class="per-text code-text" type="text" placeholder="请输入您获取的验证码" name="" id="code" />
+                <input class="btn btn-min btn-getCode" type="button" id="getCode" value="获取验证码" />
+                <span class="login-error"></span>
+                <span class="login-info"></span>
+            </li>
+            <li>
+                <label class="lab" for="">密码：</label>
+                <input class="per-text" type="password" placeholder="请设置您6-18位的密码" name="" id="password" />
+                <span class="login-error"></span>
+                <span class="login-info"></span>
+            </li>
+            <li>
+                <label class="lab" for="">确认密码：</label>
+                <input class="per-text" type="password" placeholder="请再次输入您的密码" name="" id="vpassword" />
+                <span class="login-error"></span>
+                <span class="login-info"></span>
+            </li>
+            <li>
+                <label class="lab" for="">区域注册码：</label>
+                <input class="per-text" type="text" placeholder="请输入区域注册码" name="" id="vip_code" />
+                <span class="login-error"></span>
+                <span class="login-info"></span>
+            </li>
+            <li class="one">
+                <input type="checkbox" checked="checked" id="iAgree" /><label for="iAgree">我同意</label><a target="_blank" href="http://source.jinyinmao.com.cn/deal/bala/5_1.html">《金银猫会员注册协议》</a>和<a target="_blank" href="http://source.jinyinmao.com.cn/yisi/1_1.html">《隐私政策》</a>条款
+                <div id="agreeInfo" class="ajax-info"></div>
+            </li>
+            <li class="one">
+                <button class="btn btn-common ui-action" id="registerBtn" data-action="partner-submit">同意协议并注册</button><a class="once-login" href="/passport/login">立即登录</a>
+            </li>
+        </ul>
+    </div>
+</div>

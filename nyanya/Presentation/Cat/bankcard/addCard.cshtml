@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/_layout/payment/_SiteMain.cshtml";
+    Page.Title = "添加银行卡";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    if (userInfo.Data.HasSetPaymentPassword == false)
+    {
+        Response.Redirect("~/bankcard/setPassword");
+    }
+    else if (userInfo.Data.HasDefaultBankCard == true)
+    {
+        Response.Redirect("~/bankcard/add");
+    }
+    string realName;
+    string idCard;
+    string idCardType;
+    String idCardTypeName;
+    if (userInfo.Data.HasYSBInfo == false)
+    {
+        realName = CatHelper.Request("r");
+        idCard = CatHelper.Request("d");
+        idCardType = CatHelper.Request("t");
+        idCardTypeName = CatHelper.GetIdCardName(idCardType);
+    }
+    else
+    {
+        realName = userInfo.Data.YSBRealName;
+        idCard = userInfo.Data.YSBIdCard;
+        idCardType = "0";
+        idCardTypeName = "身份证";
+    }
+}
+@section RequireCallback{
+    require(['bankcard'], function(b){ b.addCard.init() });
+}
+<script>
+    var _user_info = {
+        RealName: "@realName",
+        CredentialNo: "@idCard",
+        Credential: "@idCardType"
+    };
+</script>
+<div class="ctt-block page-identity">
+    <h3 class="ctt-head"><span>添加银行卡</span></h3>
+    @RenderPage("~/_layout/payment/_identity_step.cshtml", new { StepIndex = 3 })
+    <div class="rds10 p20 mv20 ctt-span-detail">
+        <p class="identity-notify">认证时会从卡内试扣 @CatHelper.addCardTryPrice 元，认证结束后即归还原卡。</p>
+        <p>请保持身份信息与该银行卡开户信息一致，否则将认证失败。</p>
+        <p>手机号码：<em>@userInfo.Data.Cellphone</em></p>
+        <p>姓名：<em>@realName</em></p>
+        <p>@idCardTypeName：<em>@idCard</em></p>
+        <b class="ctt-span-detail-p"></b>
+    </div>
+    <div class="ph60">
+        <div class="ctt-rows">
+            <div class="ctt-rows-label"><span class="ui-asterisk">*</span>开户银行</div>
+            <div class="ctt-bSelect" id="bankSelect">
+                <div class="ctt-bSelect-text">请选择开户行</div>
+                <div class="ctt-bSelect-span" style="display: none"></div>
+            </div>
+        </div>
+        <div class="ctt-rows">
+            <div class="ctt-rows-label"><span class="ui-asterisk">*</span>银行卡号</div>
+            <input type="text" class="ui-text text-input" id="bankcard" placeholder="银行借记卡卡号" />
+        </div>
+        <div class="ctt-rows">
+            <div class="ctt-link-protocol"><input type="checkbox" id="isAgreement" checked="checked" />接受<a target="_blank" href="http://source.jinyinmao.com.cn/deal/application/9_1.html">《认证快付开通协议》</a></div>
+            <button class="ui-action ui-btn" data-action="addCardSubmit" id="btnAddCard">同意协议并提交</button>
+        </div>
+        <div class="rds10 p20 ctt-msg-important"><p class="ui-highlight-warning">重要提示：为了您的账户安全，我们只会将本息汇入您的付款所使用的银行卡中。<br>所以在本息未归还之前，请不要注销相关卡片。<br>如有紧急需要，请致电金银猫客服：<em>4008-556-333</em>。</p></div>
+    </div>
+    @RenderPage("~/_layout/base/_UnionPay.cshtml")
+</div>

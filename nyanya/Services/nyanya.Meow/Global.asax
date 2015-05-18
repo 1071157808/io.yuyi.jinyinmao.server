@@ -1,0 +1,1 @@
+﻿<%@ Application CodeBehind="Global.asax.cs" Inherits="nyanya.Meow.WebApiApplication" Language="C#" %>

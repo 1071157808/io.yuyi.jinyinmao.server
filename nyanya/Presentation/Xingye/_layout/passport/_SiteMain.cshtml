@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/_layout/base/_BaseMain.cshtml";
+    var Title = @PageData["Title"] ?? "金银猫 - 大金融心服务";
+}<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    @RenderPage("~/_layout/base/_meta.cshtml")
+    <title>@Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/passport.css" />
+    @RenderSection("PageStyle", required: false)
+    @if(IsSectionDefined("RequireCallback")){<script>var _require_callback = function(){@RenderSection("RequireCallback")};</script>}
+    @RenderPage("~/_layout/base/_scripts.cshtml")
+</head>
+<body>
+@RenderPage("~/_layout/passport/_header.cshtml")
+@RenderBody()
+<!--/container-->
+<div class="ui-login-footer">
+    @RenderPage("~/_layout/base/_footer.cshtml")
+</div>
+</body>
+</html>

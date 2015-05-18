@@ -1,0 +1,22 @@
+﻿<% var i = 0, len = items.length, item; %>
+<div class="jqm-account-view">
+    <% if(len > 0){ %>
+    <ul class="jqm-menu-nav">
+        <% for(;i<len;i++){ %>
+        <% item = items[i]; %>
+        <li><a href="#card/<%=item.BankCardNo%>" id="card-<%=item.BankCardNo%>" class="ui-link-multi">
+            <div class="<%=zim.page.getBankClass(item.CardBankName)%>">
+                <span><%=item.CardBankName%></span>
+                <em>尾号<%=zim.page.user.card.list.getSlice(item.BankCardNo)%></em>
+            </div>
+            <% if(item.IsDefault){ %><samp class="bankcard-default">默认</samp><% } %>
+        </a></li>
+        <% } %>
+    </ul>
+    <% } %>
+</div>
+<% if(len < 10){ %>
+<div class="jqm-index-btn">
+    <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="add-new-card">添加新银行卡</button></div>
+</div>
+<% } %>

@@ -1,0 +1,15 @@
+﻿<div id="jqm-banks-wrap">
+    <div class="jqm-bank-items">
+        <ul class="jqm-menu-nav">
+            <% var i = 0, len = banks.length, b, cls = ""; %>
+            <% for(;i<len;i++){ %>
+            <% b = banks[i]; %>
+            <% cls = b.name == def_bank ? " ui-selected" : ""; %>
+            <% city = b.defaults || "上海|上海" %>
+            <li><a href="#" class="ui-link ui-link-select<%=cls%>" data-action="selected-bank" data-bank="<%=b.name%>" data-city="<%=city%>">
+                <span class="<%=b.code%>"><%=b.name%></span>
+            </a></li>
+            <% } %>
+        </ul>
+    </div>
+</div>

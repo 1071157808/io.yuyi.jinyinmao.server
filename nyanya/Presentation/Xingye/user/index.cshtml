@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/index.js'></script>");
+    NyanyaWebData[] datas = Request.GetDatas("/UserInfo", "/UserInfo/Index", "/UserInfo/Index/Settlings");
+    NyanyaWebData userInfo = datas[0];
+    NyanyaWebData userInfoSummery = datas[1];
+    NyanyaWebData indexSettlings = datas[2];
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo })
+<div class="per-right">
+    <div class="per-name none">您好，<span>@CatHelper.FixCellphone(userInfo.Data.Cellphone)</span>，<a href="javascript:;" onclick="jym.load.logout();return false;">退出兴业票</a></div>
+    <div class="per-data">
+        <div class="cust-infor">
+            <h2 class="cust-tite"><span class="bgy"></span>投资人信息</h2>
+            <p>投资人姓名：<span> @userInfo.Data.RealName </span></p>
+            <P>证件类型：<span>@CatHelper.GetIdCardName(userInfo.Data.Credential)</span></P>
+            <p>证件号：<span>@userInfo.Data.CredentialNo</span></p>
+        </div>
+        <div class="cust-infor cust-total">
+            <h2 class="cust-tite"><span class="bgy"></span>投资统计</h2>
+            <p>投资中的资金：<em class="font-style">@userInfoSummery.Data.InvestingPrincipal</em>元</p>
+            <p>预期投资收益：<i class="font-style">@userInfoSummery.Data.ExpectedInterest</i>元</p>
+            <p>历史总收益：<span>@userInfoSummery.Data.TotalInterest 元</span></p>
+        </div>
+    </div>
+    <div class="recly-sale">
+        <h2><span>我的近期订单</span><a id="user-order-more" href="/user/order/" class="near-more">更多 <em class="ico-style">>></em></a></h2>
+        @{
+        string today = DateTime.Now.ToString("yyyy-MM-dd");
+        string year = DateTime.Now.AddYears(-10).ToString("yyyy-MM-dd");
+        string api = string.Format("/Orders/XingYe/Page?startDate={0}&endDate={1}&pageIndex=1&orderMode=1", year, today);
+        dynamic orders = Request.GetData(api);
+        int iPageCount = 1;
+        int n = 0, iLen = 0;
+
+        <table>
+            <thead>
+            <tr>
+                <th width="130px;" class="frst">订单编号</th>
+                <th width="198px;">项目名称</th>
+                <th width="150px;">下单日期</th>
+                <th width="90px;">购买金额</th>
+                <th width="90px;">状态</th>
+                <th width="80px;" class="last">详情</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (CatHelper.IsDataSuccess(orders))
+            {
+                iLen = orders.Data.Orders.Count;
+                foreach (dynamic o in orders.Data.Orders)
+                {
+                    if(n < 5){
+                        <tr>
+                            <td><a href="/user/order/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                            <td><a target="_blank" href="/amp/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                            <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@o.Principal</td>
+                            <td>@CatHelper.GetOrderShowingStatus(o.ShowingStatus)</td>
+                            <td><a href="/user/order/detail?id=@o.OrderIdentifier">详情</a></td>
+                        </tr>
+                        n++;
+                    }
+                }
+            }
+            @if(n == 0){
+                <tr>
+                    <td colspan="6" class="tc">对不起，您还没有近期订单。</td>                    
+                </tr>
+            }
+            </tbody>
+        </table>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

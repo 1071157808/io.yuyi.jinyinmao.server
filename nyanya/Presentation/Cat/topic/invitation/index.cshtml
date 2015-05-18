@@ -1,0 +1,119 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    Page.Title = "邀请函 - 参会嘉宾报名";
+}
+@section RequireCallback{
+    require(['jym', 'dialog'], function(jym, dialog){
+        var submit_invit = function(){
+            var company = $.trim($('#company').val());
+            if(!company){
+                dialog.alert.show('企业名称不能为空');
+                return false;
+            }
+            var name = $.trim($('#name').val());
+            if(!name){
+                dialog.alert.show('姓名不能为空');
+                return false;
+            }
+            var num = $.trim($('#number').val());
+            if(!num){
+                dialog.alert.show('参会人数不能为空');
+                return false;
+            }
+            var mobile = $.trim($('#mobile').val());
+            if(!mobile){
+                dialog.alert.show('手机号码不能为空');
+                return false;
+            } else if(!jym.isMobile(mobile)){
+                dialog.alert.show('请输入您的真实手机号码');
+                return false;
+            }
+            var d = [company, name, num, mobile].join('|');
+            jym.sync({
+                type:'post',
+                url:'/api/v1/Meow/Feedbacks',
+                data:{Content:d},
+                success:function(){
+                    var msg = [
+                        '感谢您报名参会！稍后我们将有工作人员联系',
+                        '您确认相关的参会事项，谢谢您的支持！'
+                    ].join('<br>');
+                    dialog.alert.show(msg, function(){
+                        location.href = "/";
+                    });
+                },
+                error:function(){
+                    dialog.alert.show('提交失败！');
+                }
+            });
+        };
+    	jym.action.extend({
+            "submit-invit":function(){
+                submit_invit();
+            }
+        })
+    });
+}
+<style>
+.topic-container{
+    width:1024px;margin:0 auto;padding-top:400px;
+    background-image:url(/topic/invitation/images/b1.png);
+    background-position:50% 0;
+    background-repeat:no-repeat;
+}
+.topic-wrapper{
+	height:320px;padding-top:48px;
+    background-image:url(/topic/invitation/images/b2.png);
+    background-position:50% 100%;
+    background-repeat:no-repeat;
+}
+.topic-wrapper table{
+    width:360px;color:#4e4e4e;
+    margin:0 auto;
+}
+.topic-wrapper table th,
+.topic-wrapper table td{
+    padding:8px 0;
+}
+.topic-wrapper table th{font-size:20px;font-weight:normal;text-align:right;}
+.topic-wrapper table input{
+    width:250px;
+    font-size:20px;
+    border-width:0 0 1px;
+    border-style:solid;
+    border-color:#898989;
+}
+.topic-wrapper table .btn-submit{
+    display:block;width:160px;height:40px;overflow:hidden;text-indent:-999px;
+    background-image:url(/topic/invitation/images/btn.png);
+    background-position:50% 100%;
+    background-repeat:no-repeat;
+}
+</style>
+<div class="topic-container">
+	<div class="topic-wrapper">
+		<table>
+            <tr>
+                <th>企业名称：</th>
+                <td><input type="text" id="company" maxlength="30" /></td>
+            </tr>
+            <tr>
+                <th>姓名：</th>
+                <td><input type="text" id="name" maxlength="10" /></td>
+            </tr>
+            <tr>
+                <th>参会人数：</th>
+                <td><input type="text" id="number" maxlength="5" /></td>
+            </tr>
+            <tr>
+                <th>手机号码：</th>
+                <td><input type="text" id="mobile" maxlength="11" /></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td><a href="#" class="ui-action btn-submit" data-action="submit-invit">提交信息</a></td>
+            </tr>
+        </table>
+	</div>
+</div>

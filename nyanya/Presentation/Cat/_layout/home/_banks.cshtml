@@ -1,0 +1,77 @@
+﻿@{
+    dynamic XYProduct = Page.XYData;
+    dynamic FDProduct = Page.FDData;
+    bool isShowFD = false;
+    bool isShowXY = false;
+    if(CatHelper.IsFDFlag && CatHelper.IsDataSuccess(FDProduct) && FDProduct.Data.Count > 0){
+        isShowFD = true;
+    }
+    if(CatHelper.IsXYFlag && CatHelper.IsDataSuccess(XYProduct) && XYProduct.Data.Count > 0){
+        isShowXY = true;
+    }
+}
+@if(isShowFD || isShowXY){
+<div class="main-items bank-only">
+    <div id="bankBanner" class="main-banner slide-mid-banner slideBanner">
+        <div class="slide-mid-bar"></div>
+    </div>
+    <div class="main-pro">
+        @if(isShowFD){
+            foreach(dynamic item in FDProduct.Data){
+            decimal financingPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+<div class="pro-items">
+    <a class="pro-inner pro-link" href="/bank/fudian" target="_blank">
+        <div class="pro-title">
+            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@item.BankName 承兑</span><span class="pro-hint"><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+        </div>
+        <div class="pro-box clearfix">
+            <div class="pro-info">
+                <ul class="pro-info-list">
+                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                    <li>周期<b>@item.Period</b>天</li>
+                    <li>总额<b>@financingPrice</b>万</li>
+                </ul>
+            </div>
+            <div class="pro-handler">
+                <div class="pro-handler-inner">
+                    <div class="pro-start"></div>
+                    <div class="pro-handler-btn"><span class="btn-link future-link">前往查看</span></div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+            }
+        }
+        @if(isShowXY)
+        {
+            foreach(dynamic item in XYProduct.Data)
+            {
+            decimal financingPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+<div class="pro-items">
+    <a class="pro-inner pro-link" href="/bank/redirect?backUrl=https://piao.cib.com.cn" target="_blank">
+        <div class="pro-title">
+            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@item.BankName 承兑</span><span class="pro-hint"><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+        </div>
+        <div class="pro-box clearfix">
+            <div class="pro-info">
+                <ul class="pro-info-list">
+                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                    <li>周期<b>@item.Period</b>天</li>
+                    <li>总额<b>@financingPrice</b>万</li>
+                </ul>
+            </div>
+            <div class="pro-handler">
+                <div class="pro-handler-inner">
+                    <div class="pro-start"></div>
+                    <div class="pro-handler-btn"><span class="btn-link future-link">前往查看</span></div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+            }
+        }
+    </div>
+</div>
+}

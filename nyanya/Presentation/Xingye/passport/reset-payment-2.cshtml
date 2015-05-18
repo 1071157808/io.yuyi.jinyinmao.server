@@ -1,0 +1,51 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/passport/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/passport/payment.js'></script>");
+    string bankCardNo = CatHelper.Request("bankcard");
+    string credentialNo = CatHelper.Request("idcard");
+    string mobile = CatHelper.Request("mobile");
+    string token = CatHelper.Request("token");
+    if(String.IsNullOrEmpty(bankCardNo) || String.IsNullOrEmpty(credentialNo) || String.IsNullOrEmpty(token) || String.IsNullOrEmpty(mobile)){
+        Response.Redirect("~/passport/reset-payment-1");
+    }
+}
+<style>.reset-step-list .lab{width:150px;}</style>
+<script>
+    var _BankCard = "@bankCardNo";
+    var _IdCard = "@credentialNo";
+    var _mobile = "@mobile";
+    var _token = "@token";
+</script>
+<div class="reset-outer reset-pwd-2">
+    <div class="reset-inner">
+        <div class="reset-title" id="resetTitle">
+            <h1>找回交易密码</h1>
+        </div>
+        <div class="reset-main">
+            @*<div id="reset-payment-password-step" class="reset-payment-password-step" style="display:none"></div>*@
+            <div id="ui-msg-info" class="ui-msg"></div>
+            <ul class="buy-step-list reset-step-list" id="reset-step-1">
+                <li>
+                    <label class="lab">新密码：</label>
+                    <div class="buy-plan clearfix">
+                        <input type="password" id="password" maxlength="18" class="common-text input-min">
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">确认密码：</label>
+                    <div class="buy-plan clearfix">
+                        <input type="password" id="vpassword" maxlength="18" class="common-text input-min">
+                    </div>
+                </li>
+                <li class="btn-li">
+                    <label class="lab">&nbsp;</label>
+                    <div class="buy-plan clearfix">
+                        <button data-action="reset-payment2" id="resetBtn1" class="btn-common ui-action">确定</button><a href="#" class="ui-action back-link" data-action="prev-page">返回上一步</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

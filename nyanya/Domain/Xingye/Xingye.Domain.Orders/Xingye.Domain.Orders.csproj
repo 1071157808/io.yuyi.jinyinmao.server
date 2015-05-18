@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5BF68725-F235-494F-84D2-5BE30F9B6882}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Xingye.Domain.Orders</RootNamespace>
+    <AssemblyName>Xingye.Domain.Orders</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling">
+      <HintPath>..\..\..\packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.Data">
+      <HintPath>..\..\..\packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\..\packages\ServiceStack.Interfaces.4.0.31\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid\ServiceStack.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandHandlers\OrderCommandsHandler.cs" />
+    <Compile Include="Database\Mapping\AgreementsInfoMap.cs" />
+    <Compile Include="Database\Mapping\BAOrderInfoMap.cs" />
+    <Compile Include="Database\Mapping\InvestorInfoMap.cs" />
+    <Compile Include="Database\Mapping\OrderInfoMap.cs" />
+    <Compile Include="Database\Mapping\OrderMap.cs" />
+    <Compile Include="Database\Mapping\PaymentInfoMap.cs" />
+    <Compile Include="Database\Mapping\ProductInfoMap.cs" />
+    <Compile Include="Database\Mapping\ProductSnapshotMap.cs" />
+    <Compile Include="Database\Mapping\SettlingOrderMap.cs" />
+    <Compile Include="Database\Mapping\TAOrderInfoMap.cs" />
+    <Compile Include="Database\OrderContext.cs" />
+    <Compile Include="EventHandlers\ProductEventsHandler.cs" />
+    <Compile Include="EventHandlers\YilianEventsHandler.cs" />
+    <Compile Include="Models\AgreementsInfo.cs" />
+    <Compile Include="Models\BAOrder.cs" />
+    <Compile Include="Models\ProductSnapshot.cs" />
+    <Compile Include="Models\Behavior\Order.cs" />
+    <Compile Include="Models\InvestorInfo.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\PaymentInfo.cs" />
+    <Compile Include="Models\ProductInfo.cs" />
+    <Compile Include="Models\TAOrder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadModels\OrderInfo.cs" />
+    <Compile Include="ReadModels\BAOrderInfo.cs" />
+    <Compile Include="ReadModels\SettlingOrder.cs" />
+    <Compile Include="ReadModels\TAOrderInfo.cs" />
+    <Compile Include="Services\BAOrderInfoService.cs" />
+    <Compile Include="Services\DTO\InvestingInfo.cs" />
+    <Compile Include="Services\DTO\SettlingProductInfo.cs" />
+    <Compile Include="Services\Interfaces\IBAOrderInfoService.cs" />
+    <Compile Include="Services\Interfaces\IOrderInfoService.cs" />
+    <Compile Include="Services\Interfaces\ITAOrderInfoService.cs" />
+    <Compile Include="Services\Interfaces\IOrderService.cs" />
+    <Compile Include="Services\Interfaces\IXYOrderInfoService.cs" />
+    <Compile Include="Services\OrderInfoService.cs" />
+    <Compile Include="Services\OrderInfoServiceBase.cs" />
+    <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\TAOrderInfoService.cs" />
+    <Compile Include="Services\XYOrderInfoService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\Cache\Infrastructure.Cache.Couchbase\Infrastructure.Cache.Couchbase.csproj">
+      <Project>{F0C90EF2-76FF-4AB5-BF99-F33284F2003B}</Project>
+      <Name>Infrastructure.Cache.Couchbase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\EnterpriseLibrary\Infrastructure.EL.TransientFaultHandling\Infrastructure.EL.TransientFaultHandling.csproj">
+      <Project>{8B22DA28-97A9-4F59-A07C-768813B3A54E}</Project>
+      <Name>Infrastructure.EL.TransientFaultHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\Lib\Infrastructure.Lib\Infrastructure.Lib.csproj">
+      <Project>{C4B983E3-1506-4F1E-9615-8E863E864336}</Project>
+      <Name>Infrastructure.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\SMS\Infrastructure.SMS\Infrastructure.SMS.csproj">
+      <Project>{62274FC5-6C40-4803-BA92-DFD5F261C01F}</Project>
+      <Name>Infrastructure.SMS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\nyanya.Domian\nyanya.Domian.csproj">
+      <Project>{4E8DA591-CF20-49BC-BBE0-A47E624D92C8}</Project>
+      <Name>nyanya.Domian</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Commands.Orders\Xingye.Commands.Orders.csproj">
+      <Project>{5DDE3A35-50B5-41C5-B1B9-F34914647200}</Project>
+      <Name>Xingye.Commands.Orders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Commands.Products\Xingye.Commands.Products.csproj">
+      <Project>{D9B62B05-9BF3-46F2-A780-F65CF06032A3}</Project>
+      <Name>Xingye.Commands.Products</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Commands.Users\Xingye.Commands.Users.csproj">
+      <Project>{4EBD6810-D713-4EEF-905E-FFFA6E51DD9B}</Project>
+      <Name>Xingye.Commands.Users</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Domain.Products\Xingye.Domain.Products.csproj">
+      <Project>{2BD7BB26-5406-4FE5-BAC2-7EB5854F91EA}</Project>
+      <Name>Xingye.Domain.Products</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Domain.Users\Xingye.Domain.Users.csproj">
+      <Project>{B3FF3BE0-46D4-4A5A-BBEE-7FBBF6FC7385}</Project>
+      <Name>Xingye.Domain.Users</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Events.Orders\Xingye.Events.Orders.csproj">
+      <Project>{3AC8270F-5B3A-47B3-861B-0359EF9B2DF7}</Project>
+      <Name>Xingye.Events.Orders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Events.Products\Xingye.Events.Products.csproj">
+      <Project>{7030F14B-3764-4B5F-8823-E8D5E6D6DF1B}</Project>
+      <Name>Xingye.Events.Products</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xingye.Events.Yilian\Xingye.Events.Yilian.csproj">
+      <Project>{352B31B0-C9DC-4A51-B3C2-4432CFB0C946}</Project>
+      <Name>Xingye.Events.Yilian</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

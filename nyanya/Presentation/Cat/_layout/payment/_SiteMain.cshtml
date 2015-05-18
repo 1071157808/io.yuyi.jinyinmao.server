@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/_layout/base/_BaseMain.cshtml";
+    var Title = Page.Title ?? "支付中心";
+}<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    @RenderPage("~/_layout/base/_o_code.cshtml", new{ Type = "loadtime" })
+    @RenderPage("~/_layout/base/_meta.cshtml")
+    <title>@Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/css/user.css" />
+    @if(IsSectionDefined("RequireCallback")){<script>var _require_callback = function(){@RenderSection("RequireCallback")};</script>}
+    @RenderPage("~/_layout/base/_scripts.cshtml")
+</head>
+<body>
+@RenderPage("~/_layout/base/_header.cshtml")
+<div class="ui-main">
+    <div class="ui-wrapper">
+        @RenderBody()
+    </div>
+</div>
+@RenderPage("~/_layout/payment/_footer.cshtml")
+</body>
+</html>

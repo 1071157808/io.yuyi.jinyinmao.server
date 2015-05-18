@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "添加银行卡";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/addBank.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "blank" })
+<div class="per-right">
+    @RenderPage("~/_layout/user/bank/add.cshtml", new { Data = userInfo })
+    <div class="my-card-title clearfix">
+        <h1>我的银行卡<span>暂不支持删除银行卡，最多可以绑定10张卡。</span></h1>
+        <div class="my-card-more">
+            <a class="back-myuser" href="/user">返回到个人中心</a>
+        </div>
+    </div>
+    <div class="my-card-main">
+    	@if (userInfo.Data.BankCardsCount > 0)
+    	{
+    		dynamic bankCards = Request.GetData("/UserInfo/BankCards");
+    		<ul class="my-card-list clearfix">
+    			@if (CatHelper.IsDataSuccess(bankCards))
+                {
+                    foreach (dynamic card in bankCards.Data)
+                    {
+                        <li>
+			                <a class="my-card-link ui-action" href="#" data-action="setDefault" data-card="@card.BankCardNo">
+			                    <div class="card-link-top">
+			                        <div class="card-top-inner">
+			                            <div class="card-blank">
+			                                <div class="card-img"><i class="bank-add @CatHelper.GetBankCode(card.CardBankName)"></i></div>
+			                                <div class="card-lastnum">尾号：@CatHelper.FixBankCard(card.BankCardNo)</div>
+			                            </div>
+			                            <div class="card-set-wrap">
+			                            	@if (card.IsDefault == true)
+			                                {
+			                                	<span class="card-yet">默认卡</span>
+			                                }
+			                                else
+			                                {
+			                                    <span class="card-set">设为默认卡</span>
+			                                }
+			                                
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="card-link-bot">
+			                        <div class="card-open none">
+			                            <p>状态：<i class="open">已开通</i></p>
+			                        </div>
+			                    </div>
+			                </a>
+			            </li>
+                    }
+                }
+                @if (userInfo.Data.BankCardsCount < 10)
+                {
+                    <li class="add">
+		                <a class="ui-action add-new-blank" data-action="add-new-bank" href="#"><i>添加银行卡</i></a>
+		            </li>
+                }
+	        </ul>
+    	} else {
+            <ul class="my-card-list clearfix">
+                <li class="add">
+                    <a class="ui-action add-new-blank" data-action="add-new-bank" href="#"><i>添加银行卡</i></a>
+                </li>
+            </ul>
+        }
+        <div class="my-card-info">
+            <div class="card-tips-main">
+                <h2>提示：</h2>
+                <p>为保证资金安全，我们只会将本息归还至付款银行卡，所以在还款未完成之前，请不要随意到柜台注销相关卡，如有紧急情况，请立即联系兴业票客服。客服热线：4008-556-333</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

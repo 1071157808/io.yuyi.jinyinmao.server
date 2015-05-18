@@ -1,0 +1,22 @@
+﻿@{
+    string menuText = Page.SilderMenu ?? "index";
+    dynamic uData = Page.Data;
+}
+<div class="per-left">
+    <div class="public"><h1><a class="my-amp" href="/user/">我的兴业票</a></h1></div>
+    @functions{
+        public static string MenuChk(string text, string key)
+        {
+            if (text == key)
+            {
+                return "on";
+            }
+            return "";
+        }
+    }
+    <ul class="menu">
+        <li class="first"><a class="@MenuChk(menuText, "order")" href="/user/order/">我的订单</a> </li>
+        <li class="second"><a class="@MenuChk(menuText, "blank")" href="/user/bank/">我的银行卡</a> </li>
+        <li class="third"><a class="@MenuChk(menuText, "manage")" href="/user/manage/">账户管理</a> </li>
+    </ul>
+</div>

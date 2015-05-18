@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+}
+<style type="text/css">
+    .bad-service {
+        background-image: url(/static/images/page/500.png);
+        background-position: 250px 50%;
+        background-repeat: no-repeat;
+        padding: 150px 0 150px 500px;
+    }
+
+    .bad-service h2 {
+        color: #db5629;
+        font-size: 49px;
+    }
+
+    .bad-service p { font-size: 18px; }
+
+    .bad-service p a { color: #45aeda; }
+</style>
+<div class="ui-main">
+    <div class="ui-wrapper">
+        <div class="bad-service">
+            <h2>对不起，我犯错了！</h2>
+            <p><span id="timeout">5</span>秒后自动返回首页 <a href="/">立即返回&gt;&gt;</a></p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function(){
+    var count = 5, el = document.getElementById("timeout");
+    var id = setInterval(function(){
+    el.innerHTML = count--;
+    if(count < 0){
+    clearInterval(id);
+    id = null;
+    location.href = "/";
+    }
+    }, 1000);
+    }())
+</script>

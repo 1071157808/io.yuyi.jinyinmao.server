@@ -1,0 +1,51 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "校验验证码";
+}
+@section PageScript {
+    <script src="/static/js/passport/common.js"></script>
+    <script src="/static/js/passport/index.js"></script>
+    <script>
+    Zepto(function(){
+        zim.passport.PaymentCodeRender();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div id="jqm-payment-code"></div>
+</div>
+<script type="text/tpl" id="jqm-tpl-code">
+<div class="jqm-account-view">
+    <h5>填写尾号为<%=BankCardNo.substr(BankCardNo.length-4,4)%>的<%=CardBankName%>卡号</h5>
+    <ul class="ui-table jqm-account-span">
+        <li>
+            <span class="ui-td">卡号</span>
+            <span class="ui-td">
+                <input type="text" id="jqm-bank-card" placeholder="15-19位银行卡号" >
+            </span>
+        </li>
+        <li>
+            <span class="ui-td">证件号</span>
+            <span class="ui-td">
+                <input type="text" id="jqm-id-card" placeholder="银行卡开户的证件" >
+            </span>
+        </li>
+    </ul>
+</div>
+<div class="jqm-account-view">
+    <h5>包含验证码的短信已经发送到<%=Cellphone%></h5>
+    <ul class="ui-table jqm-account-span">
+        <li>
+            <span class="ui-td">验证码</span>
+            <span class="ui-td">
+                <input type="text" ime-mode="disabled" id="jqm-valid-code" placeholder="六位短信验证码" >
+            </span>
+            <span class="ui-td">
+                <a class="jqm-count-back" href="#" data-action="user-payment-sent">0</a>
+            </span>
+        </li>
+    </ul>
+    <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="reset-payment-pwd2">下一步</button></div>
+</div>
+</script>

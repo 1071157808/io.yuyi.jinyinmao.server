@@ -1,0 +1,159 @@
+
+.ui-outer{min-height:500px; }
+.ui-list-title{ height:75px; line-height:75px; overflow:hidden;}
+/* sitemap */
+.ui-earn{ float:left; padding-top:20px;}
+.ui-ticket-sort,.ticket-sort-on{ width:161px; height:36px; background:url(../images/amp/ticket-sort-bg.png) 0 0 no-repeat;}
+.ui-ticket-sort .sort-items{ float:left; width:77px; height:34px; line-height:34px;text-align:center;font-size:15px; zoom:1; }
+.ui-ticket-sort .sort-items b{ float:left; padding-left:10px;font-weight:normal;}
+.ui-ticket-sort .sort-limit b{ padding-left:20px;}
+.ui-ticket-sort .sort-items i{ float:right;zoom:1; width:10px; height:15px; margin:9px 7px 0 0; background:url(../images/amp/ticket-sort-bg.png) 0 -47px no-repeat;}
+.ticket-sort-on{ background:url(../images/base/ticket-sort-on.png) 0 0 no-repeat;}
+.ticket-sort-on a,.ticket-sort-on a:visited{color: #fff;}
+.ticket-sort-on .sort-items i{margin:13px 4px 0 0;width:12px; height:7px;background:url(../images/base/up.png) 0 0 no-repeat; }
+.ticket-sort-on .yield-up i{background:url(../images/base/up.png) 0 0 no-repeat;}
+.ticket-sort-on .yield-down i{background:url(../images/base/down.png) 0 0 no-repeat;}
+/* ticket list */
+.ticket-list-wrap{ border:1px solid #bfd2e1; border-bottom:none;background: #f5faff;}
+.ticket-list-title{ height:34px; line-height:34px;border-bottom: 1px solid #cbd9e4;background: #ecf5fc;color: #327cd3;}
+.ticket-title-list li{float:left;font-size:14px; }
+.ticket-title-list li.base{ width:546px; text-indent:20px;}
+.ticket-title-list li.remain{ width:115px;}
+.ticket-title-list li.in{ width:98px;}
+.ticket-title-list li.time{ width:118px; padding-left:23px;}
+.ticket-title-list li.handle{ width:65px;}
+.ticket-items{border-bottom: 1px solid #bbd0e5; background:url(../images/amp/list-li-bg.png) 0 23px no-repeat; zoom:1;}
+.ticket-no li{ float:left; padding:8px 0;color: #666;}
+.ticket-no li.no{ width:546px;}
+.ticket-no li.remain{ width:118px;}
+.ticket-no li.in{ width:93px;}
+.ticket-no li.time{ width:143px; overflow:hidden;}
+.ticket-no li.handle{ width:90px;}
+.ticket-no-main{ padding:10px 0 5px 20px;}
+.ticket-no-title h2{ font-size:16px; font-weight:normal;}
+.ticket-link{ width:470px; height:25px; display:block; overflow:hidden;}
+.ticket-no-info{ padding-top:7px;}
+.ticket-no-list dd{ float:left; margin-right:12px; padding-left:18px;color: #6f6e6c; background:url(../images/amp/ticke-list-icon.png) 0 0 no-repeat;}
+.ticket-no-list dd.date{ background-position:0 2px;}
+.ticket-no-list dd.blank{ background-position:0 -40px; padding-left:16px;}
+.ticket-no-list dd.buy{background-position:0 -81px;}
+.ticket-no-list dd.one{background-position:0 -122px;}
+.remain-detail{ display:block; width:60px; height:22px; line-height:22px; text-align:center; background:url(../images/base/gray-btnbg.png) 0 0 no-repeat;}
+.remain-detail:hover{ text-decoration:none;}
+.in-numer{color: #e3674d;font-size:24px; line-height:20px;}
+.in-numer i{margin-right:3px; font-family:arial;}
+.ticket-time-wrap{ padding-top:10px;line-height:25px;}
+.ticket-date{color: #4a4849; font-size:24px;}
+.in-wrap{ width:60px; height:47px; margin-top:5px; padding:10px 20px 5px 0; text-align:left;border-right: 1px dashed #ccc;}
+.in-txt{ padding-top:3px;}
+.handle-wrap{ padding-top:10px;}
+a.handle-buy{ width:80px; height:46px; line-height:46px; text-align:center; display:block;text-shadow:0 1px 1px #235888;font-size:15px;color: #fff; background:url(../images/base/handle-buy.png) 0 0 no-repeat;}
+a.handle-buy:hover{ background-position:0 bottom; text-decoration:none;}
+a.handle-buy:visited{color: #fff;}
+.ticket-time-wrap{ padding-left:25px;}
+.remain-scale{ padding-top:4px;}
+.remain-linkwrap{ padding-top:5px;}
+.remain-rate-wrap{ width:58px; height:14px; margin-top:4px; margin-left:-1px; border:1px solid #d7e1eb;border-radius:1px;background:url(../images/base/rate-bg.png) 0 0 repeat-x; overflow:hidden;}
+.remain-rate-wrap i{ display:block;height:14px;background: #f6f9ff;}
+.ticket-bot-wrap{padding:20px 0 0;}
+.list-page .ui-pager{float:left;}
+.ticket-share{float:right;}
+.ticket-share a{display:inline-block;width:16px;height:16px; margin-left:5px;*display:inline;*zoom:1;}
+.ticket-share .qzon{background:url(../images/user/share.png) no-repeat 0 0;}
+.ticket-share .sina{background:url(../images/user/share.png) no-repeat 0 -52px;}
+.ticket-share .tx-wb{background:url(../images/user/share.png) no-repeat 0 -156px;}
+.ticket-share .tx-win{background:url(../images/user/share.png) no-repeat 0 -104px;}
+/* buy */
+.buy-wrap{ border-left:1px solid #d8caa1;border-right: 1px solid #c5d7e6; background:url(../images/payment/buy-main-bg.png) 0 0 repeat-y;}
+.buy-wrap-inner{min-height:500px; padding-bottom:5px; background:url(../images/payment/buy-inner-bg.png) 0 bottom no-repeat;_background:url(../images/payment/buy-inner-bg.png) -1px bottom no-repeat;}
+.buy-side-img{ position:absolute; z-index:1;top:188px; left:15px; display:none;}
+.buy-side-img dd{ width:243px; font-size: 0;margin-bottom:26px;border-bottom: 1px solid #f0edd7;}
+/*.buy-info-main{ position:absolute; z-index:2; top:160px; left:30px;}*/
+.buy-info-main{ padding:10px 0 20px;}
+.buy-side{ float:left; width:278px; border-top:1px solid #d8caa1;}
+.buy-main{ float:right; width:717px; background:url(../images/payment/buy-top-bg.png) 0 top repeat-x;}
+.buy-side-inner{ padding:20px 10px 0 30px;}
+.buy-info-title{ padding-bottom:18px;border-bottom: 1px solid #c0c0c0;}
+.buy-info-title h1{font-size:16px;color: #616067; font-weight:normal;}
+.buy-info-txt{line-height:27px;font-size:14px;color: #616067; margin:0px 0 0 -10px;}
+.buy-info-txt p{ padding-left:27px; border-bottom: 1px solid #f0edd7;}
+.buy-info-txt i{color: #ff6000; font-family:arial;font-size:16px;}
+.buy-info-btn{ padding-left:16px;}
+.buy-link{ width:117px; height:33px; line-height:33px;}
+.buy-main-inner{ padding:50px;}
+.buy-main-inner .ui-tip-msg{ left:15px;}
+.buy-step-title{ position:relative; height:36px; line-height:36px;background: #efefef;color: #cacaca; }
+.buy-step-title h2{ font-weight:normal; clear:both;}
+.buy-step-title .on .step-title-num{ padding-right:30px;color: #fff; background:url(../images/payment/buy-title-slitbg.png) #48a6e4 right 0 no-repeat;}
+.step-title-num{ padding-left:48px; float:left;font-size:16px; }
+.step-title-num i{ position:absolute;top: 0; left:18px;font-style:oblique; font-family:arial; font-size:30px;}
+.buy-step-main{ padding:15px 0;font-size:14px; zoom:1;color: #424242;}
+.buy-user span{ margin-right:15px;font-size:16px;}
+.buy-user-desc{display:inline-block;*display:inline;*zoom:1;margin-top:10px;padding:3px 10px;font-size:12px;border-radius:3px;background-color:#ECFFD6;border:solid 2px #97DA56;}
+.buy-user-desc i{float:left;margin-top:2px;}
+.buy-user-desc span{padding-left:10px;color:#80CC30;}
+.tempLogout,
+.tempLogout a{color: #168ACA;}
+.plan-items dd{ float:left; margin-right:13px; display:inline;}
+.plan-items .due{ position:relative; padding-left:6px;}
+.plan-items .due-flag{ position:absolute; top:19px;left: 0; width:7px; height:13px; background:url(../images/payment/buy-due-sj.png) 0 0 no-repeat;}
+.plan-items .success{ line-height:36px;}
+.plan-due-wrap{ position:relative;width:172px;font-size:14px;line-height:20px;padding-top:10px; }
+.plan-due-wrap i{position:absolute;right:0;}
+.msg-buyCount .ui-tip-span .ui-tip-msg{left:15px;top:-7px;*top:3px;}
+.payment-pwd-tips .ui-tip-span .ui-tip-msg{ left:15px;top:-7px;*top:3px;}
+.buy-confirm-only .gray-input{ width:65px; float:left;}
+.buy-select-blank{ float:left; height:33px; border:1px solid #c9d8e7;  margin-right:10px;}
+.last-no{ float:left; line-height:33px;color: #8b8b8b;}
+.phone-plan{ padding-top:18px;}
+.buy-info-btn{ padding-top:10px;}
+.plan-items{ padding-top:5px;}
+a.refersh-part{ margin-left:10px;color:#168ACA;}
+a.forgot-password{color: #168ACA;}
+/* lan */
+/* 产品详情 */
+.main .detail-title{ height: 74px; line-height: 74px;}
+.lisk{ float: left; padding-left: 10px; color: #995513}
+.lisk i{ font-family: serif; margin: 0 6px;color: #434343;}
+.lisk a{ color: #434343;}
+.detail-title .bute{ float: right; line-height: 46px; text-align: center; font-size: 20px; padding-top: 17px;}
+.detail-title .bute a{display: block; width: 137px; height: 46px; background:url(../images/amp/wd-bg.png) no-repeat; color: #FFF;}
+.detail-title .bute a:hover{ text-decoration: none;}
+.detail{min-height: 430px;}
+/* chrome hack */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .detail{min-height: 477px;}
+    .logn{ margin-bottom:234px; }
+}
+.h2-detl{height:62px;font-size:16px;color:#545454;font-weight:normal;background:url(../images/amp/loh2_bg.jpg) repeat-x;}
+.h2-detl span{display:block;height:59px;width:150px;border-bottom:2px #fd9b27 solid;text-indent:24px;line-height:59px;}
+.detl-cont{padding:30px 40px 80px;border:1px #bbcedd solid;border-top:none;background:#FFF;border-bottom:2px #bbcedd solid;}
+.detl-cont .proj-tlte{height:70px;border-bottom:1px #dcdcdc dashed;}
+.proj-tlte .proj-name{display:block;float:left;font-size:20px;color:#333;font-weight:normal;line-height:60px;padding-left:15px;}
+.proj-tlte .proj-num{float:right;width:262px;}
+.proj-tlte .proj-num .total{ width:203px;text-align:center;font-size:12px;height:30px;color:#737373;line-height:30px;}
+.proj-tlte .proj-num .total span{font-size:24px;color:#2cb2d3;margin-right:5px;}
+.proj-tlte .proj-num .rate{height:30px;}
+.proj-tlte .proj-num .rate span{display:block;float:left;width:200px;height:12px;border:1px #e1e1e1 solid;margin-top:7px;}
+.proj-tlte .proj-num .rate span i{display:block;height:12px;background:#2cb2d3;}
+.proj-tlte .proj-num .rate em{font-size:13px;margin-left:10px;line-height:23px;}
+.detl-cont .xinq{padding-bottom:80px;}
+.detl-cont .xinq li{height:40px;border-bottom:1px #dcdcdc dashed;line-height:40px;padding:0 15px;}
+.detl-cont .xinq li p{width:296px;display:inline-block;*display:inline;*zoom:1;font-size:14px;}
+.detl-cont .xinq li p span{font-size:18px;color:#fc6b21;margin-right:3px;font-family:Arial;}
+.detl-cont .butn{text-align:center;}
+/* 委托协议 */
+.xiey-color{background:#FFF;border:1px #bbcedd solid;border-bottom:2px #bbcedd solid;}
+.main .xiey-title{height:60px;line-height:60px;width:900px;margin:0 auto;padding-top:20px;border-bottom:1px #dbdbdb solid;color:#626262;text-align:center;font-size:16px;}
+.main .xiey-cont{width:880px;margin:0 auto;line-height:25px;font-family:"Microsoft YaHei",\5FAE\8F6F\96C5\9ED1,serif;color:#4e4e4e;padding:30px;}
+#payment-password,
+#ctt-number{ width:160px;}
+.page-guest-only .auth-text{ width:160px;}
+
+
+.pay-bank-list li.link-bank{width:auto;margin-left:4px;}
+.pay-bank-list li.link-bank a{border-width:0;font-size:14px;color:#168ACA;background-color:#F9FBFD;}
+.pay-bank-list li.link-bank a:hover{text-decoration:underline;}
+
+
+

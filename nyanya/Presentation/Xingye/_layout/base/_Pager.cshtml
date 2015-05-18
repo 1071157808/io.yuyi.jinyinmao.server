@@ -1,0 +1,107 @@
+﻿@{
+    int iCount = PageData["Length"] ?? 1;
+    if(iCount > 1){
+        int i = 1;
+        int iPageIndex = 1;
+        int iPagePrev = 1;
+        int iPageNext = 2;
+        string PagerKey = PageData["Key"] ?? "page";
+        string Url = this.Request.Url.ToString();
+        if(this.Request.QueryString[PagerKey] != null){
+            string p = this.Request.QueryString[PagerKey].ToString();
+            if(p.Length > 9){
+                iPageIndex = iCount;
+            } else {
+                iPageIndex = Convert.ToInt32(p);
+                if(iPageIndex < 1) { iPageIndex = 1; } else if(iPageIndex > iCount) { iPageIndex = iCount; }
+            }
+        }
+        if(iPageIndex > 1) { iPagePrev = iPageIndex - 1; }
+        if(iPageIndex < iCount) {
+            iPageNext = iPageIndex + 1;
+        } else if(iPageIndex == iCount){
+            iPageNext = iCount;
+        }
+<script>
+    var _maxPager = @iCount, _indexPager = @iPageIndex;
+    function _jumpPager(event){
+        var e = event || window.event, keyCode = e.keyCode || e.which;
+        if(keyCode == 13 || e.type.toLowerCase() == 'blur'){
+            var value = (e.srcElement || e.target).value;
+            if(!value){ return false; }
+            var i = parseInt(value) || 1;
+            if(i > _maxPager){ i = _maxPager; } else if(i < 1){ i = 1; }
+            _onPager(i);
+        }
+    }
+    function _onPager(i){
+        if(_indexPager == 1 && i <= 1){ return false; }
+        if(_indexPager == _maxPager && i >= _maxPager){ return false; }
+        var url = ("@Url").replace(/&amp;/g, "&");
+        var key = "@PagerKey", c = "?", regx = /(\?|\&)([\w]+)=([^\?\&]*)/g;
+        if(url.indexOf(c) == -1){
+            url = url + c + key + "=" + i;
+        } else {
+            var p = [], o = {};
+            url = url.replace(regx, function(a,b,c,d){
+                if(c != key && !o[c]){ o[c] = d; p.push(c+'='+d); }
+                return "";
+            });
+            p.push(key+'='+i);
+            url = url + c + p.join('&');
+        }
+        location.href = url;
+    }
+</script>
+<div class="ui-pager">
+    <a href="#" onclick="_onPager(@iPagePrev);return false;">上一页</a>
+    @if(iCount < 6){
+        for(i=1;i<=iCount;i++){
+            if(iPageIndex == i){
+                <a href="#" onclick="return false;" class="current">@i</a>
+            } else {
+                <a href="#" onclick="_onPager(@i);return false;">@i</a>
+            }
+        }
+    } else {
+        if(iPageIndex <= 3){
+            for(i=1;i<6;i++){
+                if(iPageIndex == i){
+                    <a href="#" onclick="return false;" class="current">@i</a>
+                } else {
+                    <a href="#" onclick="_onPager(@i);return false;">@i</a>
+                }
+            }
+            <span>...</span>
+            <a href="#" onclick="_onPager(@iCount);return false;">@iCount</a>
+        } else if(iPageIndex > 3 && iPageIndex < iCount - 3){
+            <a href="#" onclick="_onPager(1);return false;">1</a>
+            <span>...</span>
+            for(i=iPageIndex-2;i<=iPageIndex+2;i++){
+                if(iPageIndex == i){
+                    <a href="#" onclick="return false;" class="current">@i</a>
+                } else {
+                    <a href="#" onclick="_onPager(@i);return false;">@i</a>
+                }
+            }
+            <span>...</span>
+            <a href="#" onclick="_onPager(@iCount);return false;">@iCount</a>
+        } else {
+            <a href="#" onclick="_onPager(1);return false;">1</a>
+            <span>...</span>
+            for(i=iCount-4;i<=iCount;i++){
+                if(iPageIndex == i){
+                    <a href="#" onclick="return false;" class="current">@i</a>
+                } else {
+                    <a href="#" onclick="_onPager(@i);return false;">@i</a>
+                }
+            }
+        }
+    }
+    <a href="#" onclick="_onPager(@iPageNext);return false;">下一页</a>
+    <span class="ml10">
+        跳转到 <input type="text" class="jumpPager" onkeydown="_jumpPager(event)" onblur="_jumpPager(event)" /> 页
+    </span>
+</div>
+    }
+}

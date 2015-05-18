@@ -1,0 +1,70 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "金银猫11.18周年庆，发财季震撼登陆";
+}
+@section PageScript {
+    <script>
+    Zepto(function(){
+        zim.action.extend({
+            "tip-close":function(){
+                this.parentNode.style.display = 'none';
+            },
+            "go-lottery":function(){
+                zim.ui.alert('活动暂未开始！');
+            }
+        });
+    });
+    </script>
+}
+<style>
+.tip-share{
+    position:absolute;z-index:20;
+    width:100%;height:90px;
+    background-image:url(/static/images/topic/20141118/tip-share.png);
+    background-color:#fff2c0;
+    background-repeat:no-repeat;
+    background-position:0 50%;
+    background-size:auto 100%;
+}
+.tip-share a{
+    position:absolute;right:0;top:0;
+    display:block;width:52px;height:52px;overflow:hidden;text-indent:-999px;
+    background-image:url(/static/images/topic/20141118/tip-close.png);
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size:auto 58%;
+
+}
+.topic-page img{display:block;width:100%;}
+@@media(max-width:480px){
+    .tip-share{height:50px;}
+    .tip-share a{width:30px;height:30px;}
+}
+</style>
+<div class="ui-header">
+    <div class="ui-wrapper">
+        <div class="ui-left"><a class="jqm-logo" href="/">金银猫</a></div>
+        <div class="ui-right">
+            <ul class="jqm-nav-top">
+                <li><a class="jqm-nav-index" href="/">首页</a></li>
+                <li><a class="jqm-nav-cpl" href="/cpl/list">商票贷</a></li>
+                <li><a class="jqm-nav-amp" href="/amp/list">银企众盈</a></li>
+                <li><a class="jqm-nav-login" href="/user/index">用户中心</a></li>
+            </ul>
+        </div>
+        <div class="tip-share">
+            <a href="#" data-action="tip-close">关闭</a>
+        </div>
+    </div>
+</div>
+<div class="ui-content topic-page">
+    <img src="/static/images/topic/20141118/home-b1.png" />
+    <a href="/page/topic/1118">
+        <img src="/static/images/topic/20141118/home-b2.png" />
+    </a>
+    @*<a href="#" data-action="go-lottery">*@
+    <a href="/page/topic/1118/lottery">
+        <img src="/static/images/topic/20141118/home-b3.png" />
+    </a>
+    <img src="/static/images/topic/20141118/home-b4.png" />
+</div>

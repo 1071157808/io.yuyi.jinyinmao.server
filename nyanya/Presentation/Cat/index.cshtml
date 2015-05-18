@@ -1,0 +1,332 @@
+﻿@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    PageData["Title"] = "金银猫 - 大金融心服务";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/home.js'></script>");
+    // 统计信息
+    NyanyaWebData[] datas = Request.GetDatas(
+        "/Meow/IndexStatistics",
+        "/ProductInfo/BA/Index/3",
+        "/ProductInfo/TA/Index/3",
+        "/ProductInfo/BA/XY/Index/1",
+        "/ProductInfo/BA/Index?count=1&category=20"
+    );
+    dynamic indexStatistics = datas[0];
+    dynamic ampProduct = datas[1];
+    dynamic cplProduct = datas[2];
+    dynamic XYProduct = datas[3];
+    dynamic FDProduct = datas[4];
+    if(CatHelper.Request("NoCache") != "1"){
+        Response.OutputCache(30);
+    }
+    DateTime t = DateTime.Now;
+}
+@section HeadScript{
+    <script>
+    (function(ua, ls){
+    ua = navigator.userAgent.toLowerCase();
+    ls = location.search.toLowerCase();
+    if(/mobile|tablet|ip(ad|hone|od)|android/.test(ua)){
+        if(!/(\?|\&)m=f/.test(ls)){
+            top.location.href = "https://m.jinyinmao.com.cn";
+        }
+    }
+    }());
+    </script>
+}
+<input type="hidden" value="@t" />
+<div class="home-banner-1">
+    <div id="flashBg" class="home-inner-b1">
+        <div class="flashLine">
+            <div class="flash">
+                <div class="btn-pos ui-wrapper">
+                    <a class="prev" href="javascript:;"></a>
+                    <a class="next" href="javascript:;"></a>
+                </div>
+                <div id="flash_sub" class="flash_bar"></div>
+                <div class="img-loading"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/banner1-->
+<div class="home-container ui-wrapper">
+    <div class="home-about-top">
+        <ul class="about-top-list clearfix">
+            <li><a class="safe" target="_blank" title="银行承兑 本息安全" href="http://source.jinyinmao.com.cn/about/gaik/17_1.html"><b></b><p>银行承兑 本息安全</p></a></li>
+            <li><a class="income" target="_blank" title="固定收益 稳盈安心" href="http://source.jinyinmao.com.cn/about/gaik/17_1.html"><b></b><p>固定收益 稳盈安心</p></a></li>
+            <li><a class="ensurve" target="_blank" title="三大保险 保驾护航" href="http://source.jinyinmao.com.cn/about/gaik/17_1.html"><b></b><p>三大保险 保驾护航</p></a></li>
+        </ul>
+    </div>
+    <!--/about-->
+    <div class="home-major clearfix">
+        <div class="home-main">
+            @RenderPage("~/_layout/home/_banks.cshtml", new{ XYData = XYProduct, FDData = FDProduct })
+            <div class="main-items amp-only">
+                <div id="ampBanner" class="main-banner slide-mid-banner slideBanner">
+                    <div class="slide-mid-bar"></div>
+                </div>
+                <div class="main-pro">
+                    @if(CatHelper.IsDataSuccess(ampProduct))
+                    {
+                        foreach(dynamic item in ampProduct.Data) 
+                        {
+                            decimal financingPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+                            if(item.ShowingStatus < 30)
+                            {
+                                <div class="pro-items">
+                                    <a class="pro-inner pro-link start-link" href="/amp/detail?id=@item.ProductNo" target="_blank">
+                                        <div class="pro-title">
+                                            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@item.BankName 承兑</span><span class="pro-hint"><em class="pro-notice">@(item.MinShareCount*item.UnitPrice)元起投</em><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+                                        </div>
+                                        <div class="pro-box clearfix">
+                                            <div class="pro-info">
+                                                <ul class="pro-info-list">
+                                                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                                    <li>周期<b>@item.Period</b>天</li>
+                                                    <li>总额<b>@financingPrice</b>万</li>
+                                                </ul>
+                                            </div>
+                                            <div class="pro-handler">
+                                                <div class="pro-handler-inner">
+                                                    <div class="pro-start">
+                                                        <p>开售：@item.StartSellTime.ToString("MM-dd HH:mm")</p>
+                                                    </div>
+                                                    <div class="pro-handler-btn"><span class="btn-link right-link">即将开始</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                            else if(item.ShowingStatus == 30)
+                            {
+                                <div class="pro-items">
+                                    <a class="pro-inner pro-link" href="/amp/detail?id=@item.ProductNo" target="_blank">
+                                        <div class="pro-title">
+                                            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@item.BankName 承兑</span><span class="pro-hint"><em class="pro-notice">@(item.MinShareCount*item.UnitPrice)元起投</em><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+                                        </div>
+                                        <div class="pro-box clearfix">
+                                            <div class="pro-info">
+                                                <ul class="pro-info-list">
+                                                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                                    <li>周期<b>@item.Period</b>天</li>
+                                                    <li>总额<b>@financingPrice</b>万</li>
+                                                </ul>
+                                            </div>
+                                            <div class="pro-handler">
+                                                <div class="pro-handler-inner">
+                                                    <div class="pro-start bank-process">
+                                                        <span class="percent"><em data-value="@item.PaidPercent" style="width: 0%;"></em></span>
+                                                    </div>
+                                                    <div class="pro-handler-btn"><span class="btn-link future-link">立即抢购</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                            else if(item.ShowingStatus == 40)
+                            {
+                                <div class="pro-items">
+                                    <a class="pro-inner out-link" href="/amp/detail?id=@item.ProductNo" target="_blank">
+                                        <div class="pro-title">
+                                            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@item.BankName 承兑</span><span class="pro-hint"><em class="pro-notice">@(item.MinShareCount*item.UnitPrice)元起投</em><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+                                        </div>
+                                        <div class="pro-box clearfix">
+                                            <div class="pro-info">
+                                                <ul class="pro-info-list">
+                                                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                                    <li>周期<b>@item.Period</b>天</li>
+                                                    <li>总额<b>@financingPrice</b>万</li>
+                                                </ul>
+                                            </div>
+                                            <div class="pro-handler">
+                                                <div class="pro-handler-inner">
+                                                    <div class="pro-start bank-process sell-out-bar">
+                                                        <span class="percent"><em style="width: @item.PaidPercent%;"></em></span>
+                                                    </div>
+                                                    <div class="pro-handler-btn"><span class="btn-link sell-out-link">已售罄</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <div class="main-items cpl-only">
+                <div id="cplBanner" class="main-banner slide-mid-banner slideBanner">
+                    <div class="slide-mid-bar"></div>
+                </div>
+                <div class="main-pro">
+                    @if(CatHelper.IsDataSuccess(cplProduct))
+                    {
+                        foreach(dynamic item in cplProduct.Data)
+                        {
+                            decimal financingPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+                            if(item.ShowingStatus < 30)
+                            {
+                                <div class="pro-items">
+                                    <a class="pro-inner pro-link start-link" href="/cpl/detail?id=@item.ProductNo" target="_blank">
+                                        <div class="pro-title">
+                                            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@CatHelper.GetGuaranteeMode(item.GuaranteeMode)</span><span class="pro-hint"><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+                                        </div>
+                                        <div class="pro-box clearfix">
+                                            <div class="pro-info">
+                                                <ul class="pro-info-list">
+                                                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                                    <li>周期<b>@item.Period</b>天</li>
+                                                    <li>总额<b>@financingPrice</b>万</li>
+                                                </ul>
+                                            </div>
+                                            <div class="pro-handler">
+                                                <div class="pro-handler-inner">
+                                                    <div class="pro-start">
+                                                        <p>开售：@item.StartSellTime.ToString("MM-dd HH:mm")</p>
+                                                    </div>
+                                                    <div class="pro-handler-btn"><span class="btn-link right-link">即将开始</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                            else if(item.ShowingStatus == 30)
+                            {
+                                <div class="pro-items">
+                                    <a class="pro-inner pro-link" href="/cpl/detail?id=@item.ProductNo" target="_blank">
+                                        <div class="pro-title">
+                                            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@CatHelper.GetGuaranteeMode(item.GuaranteeMode)</span><span class="pro-hint"><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+                                        </div>
+                                        <div class="pro-box clearfix">
+                                            <div class="pro-info">
+                                                <ul class="pro-info-list">
+                                                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                                    <li>周期<b>@item.Period</b>天</li>
+                                                    <li>总额<b>@financingPrice</b>万</li>
+                                                </ul>
+                                            </div>
+                                            <div class="pro-handler">
+                                                <div class="pro-handler-inner">
+                                                    <div class="pro-start bank-process">
+                                                        <span class="percent"><em data-value="@item.PaidPercent" style="width: 0%;"></em></span>
+                                                    </div>
+                                                    <div class="pro-handler-btn"><span class="btn-link future-link">立即抢购</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                            else if(item.ShowingStatus == 40)
+                            {
+                                <div class="pro-items">
+                                    <a class="pro-inner out-link" href="/cpl/detail?id=@item.ProductNo" target="_blank">
+                                        <div class="pro-title">
+                                            <strong class="pro-name">第  <i>@item.ProductNumber</i>  期</strong><span class="pro-bank">－@CatHelper.GetGuaranteeMode(item.GuaranteeMode)</span><span class="pro-hint"><em class="pro-notice">@CatHelper.GetValueDate_Note(item)</em></span>
+                                        </div>
+                                        <div class="pro-box clearfix">
+                                            <div class="pro-info">
+                                                <ul class="pro-info-list">
+                                                    <li>年化<i>@CatHelper.GetYieldString(item.Yield)</i>%</li>
+                                                    <li>周期<b>@item.Period</b>天</li>
+                                                    <li>总额<b>@financingPrice</b>万</li>
+                                                </ul>
+                                            </div>
+                                            <div class="pro-handler">
+                                                <div class="pro-handler-inner">
+                                                    <div class="pro-start bank-process sell-out-bar">
+                                                        <span class="percent"><em style="width: @item.PaidPercent%;"></em></span>
+                                                    </div>
+                                                    <div class="pro-handler-btn"><span class="btn-link sell-out-link">已售罄</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!--/main-->
+        <div class="home-side">
+            <div class="side-items home-count-only">
+                <div class="side-title">
+                    <div class="side-title-inner clearfix">
+                        <h2>喵喵统计</h2>
+                    </div>
+                </div>
+                <div class="side-box">
+                    <div class="side-inner">
+                        <ul class="side-count">
+                            <li class="sum">
+                                <h3>累计购买订单</h3>
+                                <div class="side-info">
+                                    <p><strong>@indexStatistics.Data.OrderCount</strong> 单</p>
+                                </div>
+                            </li>
+                            <li class="total">
+                                <h3>累计还款期数</h3>
+                                <div class="side-info">
+                                    <p><strong>@indexStatistics.Data.ProductCount</strong> 期</p>
+                                </div>
+                            </li>
+                            <li class="create">
+                                <h3>累计创造收益</h3>
+                                <div class="side-info">
+                                    <p><strong>@indexStatistics.Data.TotalInterest</strong> 元</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="side-items home-state-only">
+                <div class="side-title">
+                    <div class="side-title-inner clearfix">
+                        <h2>喵喵动态</h2>
+                        <a class="side-more" target="_blank" href="http://source.jinyinmao.com.cn/news/mdta/">更多<i>&gt;&gt;</i></a>
+                    </div>
+                </div>
+                <div class="side-box">
+                    <div class="state-inner">
+                        <ul id="homeState" class="news-list">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="side-items jym-house"><a class="jym-point-link" title="金银e家 - 金银猫专属线下网点" href="http://source.jinyinmao.com.cn/about/ejia/21_1.html" target="_blank"><img src="/static/images/home/jym-home.jpg" alt=""/></a></div>
+            <div class="side-items home-qa-only">
+                <div class="side-title">
+                    <div class="side-title-inner clearfix">
+                        <h2>常见问题</h2>
+                        <a class="side-more" target="_blank" href="http://source.jinyinmao.com.cn/chpl/">更多<i>&gt;&gt;</i></a>
+                    </div>
+                </div>
+                <div class="side-box">
+                    <div class="state-inner">
+                        <ul id="homeMsg2" class="news-list">
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/77_1.html">我是新手，如何注册成为金银猫会员？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/fresh/70_1.html">首次注册后如何认证成为实名会员？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/fresh/71_1.html">如何添加银行卡？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/73_1.html">在金银猫理财有什么样的安全保障？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/74_1.html">我的金银猫理财账户如何管理？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/miao/problem/75_1.html">金银猫理财平台交易管理流程是什么样的？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/chpl/78_1.html">金银猫支付支持哪些银行卡？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/about/ejia/21_1.html">金银猫的线下店都有哪些？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/chpl/75_1.html">金银猫融资项目收益如何计算？</a></li>
+                            <li class="ellipsis"><a target="_blank" href="http://source.jinyinmao.com.cn/chpl/75_1.html">项目到期后，多久能收到回款？</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!--/side-->
+    </div>
+    <!--/major-->
+</div>

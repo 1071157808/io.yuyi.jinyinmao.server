@@ -1,0 +1,50 @@
+﻿@using System
+@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    string productNo = CatHelper.Request("id");
+    NyanyaWebData proInfo = Request.GetData("/ProductInfo/BA?productNo=" + productNo);
+    if (!CatHelper.IsDataSuccess(proInfo))
+    {
+        Response.Redirect("~/");
+    }
+    string productName = CatHelper.GetProductName(proInfo.Data.ProductName, proInfo.Data.ProductNumber);
+    Page.Title = productName + "- 兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/home.js'></script>");
+    decimal sumPrice = CatHelper.ToDecimalSafely(proInfo.Data.FinancingSum) / 10000m;
+    string serverTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+}
+<div class="main ui-wrap">
+    <div class="detail-title">
+        <p class="lisk"><a href="/"> 兴业票</a><i>></i><span>产品详情</span></p>
+        <div class="ui-myhandle"><a href="/user" class="my-ticket-btn">我的兴业票</a></div>
+    </div>
+    <div class="detail">
+        <h2 class="h2-detl"><span>产品详情</span></h2>
+        <div class="detl-cont">
+            <div class="proj-tlte">
+                <h3 class="proj-name">@productName</h3>
+                <div class="proj-num">
+                    @if (proInfo.Data.ShowingStatus > 30){
+                    <p class="total">已售：<span class="font-style">@proInfo.Data.SumShareCount</span>份</p>
+                    <p class="rate"><span class="percent"><i style="width: 100%;"></i></span><em class="font-style">100%</em></p>
+                    } else {
+                    <p class="total">已售：<span class="font-style">@proInfo.Data.PaidShareCount</span>份</p>
+                    <p class="rate"><span class="percent"><i style="width: @(proInfo.Data.PaidPercent)%;"></i></span><em class="font-style">@(proInfo.Data.PaidPercent)%</em></p>
+                    }
+                </div>
+            </div>
+            <ul class="xinq">
+                <li><p>年化利率：<span>@CatHelper.GetYieldString(proInfo.Data.Yield)</span>%</p><p>融资金额：<span>@sumPrice </span>万</p><p>项目编号：<em>@proInfo.Data.ProductNo</em></p></li>
+                <li><p>投资周期：<span>@proInfo.Data.Period</span>天</p><p>最小投资份数：<span>@proInfo.Data.MinShareCount</span>份</p></li>
+                <li><p>投资单位：<span>@proInfo.Data.UnitPrice</span>元/份</p><p>最大投资份数：<span>@proInfo.Data.MaxShareCount</span>份</p></li>
+            </ul>
+            <div class="butn">
+                @if (proInfo.Data.ShowingStatus > 30){
+                    <button class="out-btn">售罄</button>
+                } else {
+                    <a class="vie-btn" href="/payment/create?id=@proInfo.Data.ProductNo" target="_blank">立即抢购</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

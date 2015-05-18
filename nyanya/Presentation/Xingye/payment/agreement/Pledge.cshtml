@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/_layout/agreement/_SiteMain.cshtml";
+    Page.Title = "质押借款协议";
+    string id = CatHelper.Request("id");
+    dynamic pledge = Request.GetData("/ProductInfo/PledgeAgreement?productIdentifier=" + id);
+    if (CatHelper.IsDataSuccess(pledge))
+    {
+        @Html.Raw(pledge.Data.Content)
+    }
+}

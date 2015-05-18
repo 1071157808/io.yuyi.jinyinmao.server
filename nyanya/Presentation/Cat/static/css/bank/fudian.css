@@ -1,0 +1,196 @@
+/* base */
+.fudian{height:240px;position:relative;background:url(/static/images/bank/fudian/fudian.png) center 0 #ce312d no-repeat;color:#fff;}
+.bank-sitemap{margin-top:-155px;text-align:right;}
+.fudian-wrap{ margin-bottom:50px;background:#fff;border-radius:5px 5px 0 0;}
+.back-index{display:block;width:498px;height:57px;text-indent:-9999em;}
+.bank-intro{width:520px;}
+.bank-intro{position:relative;padding:50px 0 0 20px;z-index:5;}
+.bank-map{padding-bottom:30px;font-size:14px;color:#fff;}
+.bank-map a,.bank-map a:visited{color:#fff;}
+.bank-map a:hover{color:#fff;text-decoration:underline;}
+.bank-map .sign{font-family:serif;margin:0 5px;}
+/* list */
+.db{display: block;}
+.bg-none{background: none}
+a.pro-list,a.sell-out{transition:700ms border;}
+a.pro-list:link,a.pro-list:visited {display:block;width:958px;margin-bottom:18px;height: 144px;border: 1px solid #dedede;border-radius:4px;background: #fff;text-decoration: none;}
+a.pro-list:hover,a.pro-list:active{border: 1px solid #e95d01;}
+a.sell-out:hover{border: 1px solid #a8a8a8;}
+a.pro-list:hover .orange-bg{background: #fe6a09}
+
+.pro-left{float:left;margin:10px 0 0 30px;padding-top:10px;width: 610px;display:inline;height:115px;border-right: 1px dashed #ddd;color: #565656;font-size: 14px;}
+.pro-left p{width:600px;overflow:hidden;word-wrap:normal;white-space:nowrap;text-overflow:ellipsis;}
+.pro-left strong{font-size: 18px;font-weight: normal;margin-right: 10px}
+.pro-left .pro-bank{display:block;width:600px;color:#898989;margin-right: 6px;overflow:hidden;word-wrap:normal;white-space:nowrap;text-overflow:ellipsis;}
+
+.attribute{padding-top: 10px}
+.attribute li{float: left;margin-right:40px;}
+.attribute li i{padding:0 5px;font:bold 45px "Arial";color: #e95d01}
+.attribute li b{padding:0 5px;font:bold 26px/64px "Arial";}
+
+.pro-right{float: left;margin:60px 0 0 95px;width: 140px;}
+.pro-right .percent{display:block;margin-bottom: 8px; width:100%;height:10px;overflow:hidden;background: #dadada;border-radius:5px;}
+.pro-right .percent em{ display:block; height:10px;background: #33cc99;border-radius:5px;}
+.pro-right .percent em.sell-out{ background: #b9ecdb;}
+.pro-right .text{text-align: center;font-size: 14px;color: #565656;margin-bottom: 6px;_line-height: 16px}
+
+.link-btn{width: 140px;height: 40px;line-height:40px;border-radius: 4px;text-align: center;color: #fff;font-size: 20px;}
+.orange-bg{background: #e95d01}
+.gray-bg{background: #d1cfd0;color: #fff}
+.thin-green{background: #3c9}
+/* detail */
+.bank-inner{padding:20px;}
+.bank-detail-info{float:left;width:540px; padding-right:35px; margin-top:-2px;border-right:1px dashed #ccc;color: #565656;font-size:14px; overflow:hidden;}
+.bank-info-title h2{font-size:18px; color:#333; font-weight:normal;}
+.bank-detail-reduce{float:right;width:340px;}
+.bank-reduce-inner{ padding:5px 20px 0 35px;font-size:14px;color:#565656;}
+.bank-project-rest{display:block;padding-left:25px;background:url(/static/images/base/amp-detail-icons.png) 0 -113px no-repeat;}
+.bank-info-rate{padding:27px 0 6px;border-bottom: 1px dashed #ccc;}
+.bank-rate-title h2{font-weight:normal;}
+.pro-info-list{margin-right:-40px;}
+.pro-info-list li{float:left;margin-right:38px;font-size:14px;color:#565656;}
+.pro-info-list i{font-weight:bold;color:#e95d01;font-size:46px;margin:0 3px;line-height:46px;font-family:arial;}
+.pro-info-list b{margin:0 3px;font-size:26px;line-height:57px;font-family:arial;}
+.bank-rate-content{padding-top:10px;}
+.bank-rate-info b{color:#fd6c01;font-size:30px;}
+.bank-rate-sign{display:inline-block;*display:inline;*zoom:1;width:13px;height:13px;margin-left:2px;background:url(/static/images/base/amp-detail-icons.png) 0 -239px no-repeat;}
+.bank-info-add{padding:0 18px;}
+.bank-add-inner{padding:0 0 9px 24px;border-bottom:1px solid #e4e4e4;background:url(/static/images/base/amp-time-icons.png) 0 -130px no-repeat;}
+.bank-info-min{padding:35px 0 0;}
+.convert-name{ margin-bottom:12px;}
+.convert-name i{color: #e95d01;}
+.bank-min-list li{float:left;width:50%;margin-bottom:7px;}
+.qa-help{position:relative;margin-left:3px;margin-top:2px;}
+.qa-abs,.qa-in{position:absolute;margin-left:-15px; *margin-top:0;}
+.qa-term{ position:absolute; margin:22px 0 0 -18px;*margin:9px 0 0 -18px;}
+.qa-help i{position:absolute;top:3px;left:0;display:block;width:13px;height:13px;background-image:url(/static/images/base/amp-detail-icons.png);background-repeat:no-repeat;background-position:0 -239px;}
+.qa-help .ui-tip-msg{position:absolute;width:210px;left:-108px;top:25px;padding:0.5em 0.8em;font-size:12px;text-align:center;color:#DC551B;visibility:hidden;}
+.qa-abs .ui-tip-msg{ width:180px; left:-94px;}
+.qa-term .ui-tip-msg{ width:195px; left:-99px;}
+.qa-in .ui-tip-msg{ width:240px; left:-123px;}
+.qa-help:hover{border:0;text-decoration:none;}
+.qa-help:hover i{background-position:0 -351px;}
+.qa-help:hover .ui-tip-msg{visibility:visible;}
+/* info right */
+.bank-reduce-num{margin-bottom:15px;line-height:23px;}
+.bank-reduce-num b{margin-left:5px;color:#e95d01;font-family:arial;}
+.bank-reduce-progress{margin-bottom:25px; position:relative;}
+.bank-reduce-progress .percent{width:265px;float:left;height:10px;overflow: hidden;background: #dadada;border-radius:5px;}
+.bank-reduce-progress .percent em{margin:-1px 0;border-radius:5px;display:block;height:11px;background:#3c9;}
+.bank-reduce-progress .text{ position:absolute;top: 0; left:266px;padding-left:3px;line-height:11px;*font-size:12px;}
+.all-choice{margin-left:15px;}
+.all-choice input{ position:relative; top:-2px; *top:0px;margin-right:5px;}
+.bank-invest-wrap{margin-bottom:14px;}
+.bank-invest-unit{position:absolute;font-size:17px;}
+.bank-detail-input{width:256px;height:20px;line-height:20px;margin-right:4px;padding:6px 3px 4px;*padding:4px 3px;text-indent:2px;border:1px solid #e4e4e4;border-radius:2px;box-shadow:0 1px 0 #bebebe inset;background:#f6f6f6;}
+.bank-money-list li{clear:both;overflow:hidden;margin-bottom:9px;}
+.bank-money-list .lab{float:left;font-size:14px;}
+.bank-money-list .money{float:right;}
+.bank-money-list .money{float:right;}
+.bank-money-list .money i{font-size:14px;margin-right:10px;}
+.bank-input-wrap{margin-bottom:17px;}
+.bank-tab-wrap{padding:35px 20px 20px;}
+.bank-reduce-part{float:left;}
+.bank-reduce-refresh{float:right;}
+a.bank-refresh{display:block;padding:0px 6px;font-size:14px;color:#e95d01;border:1px solid #e95d01;border-radius:15px;}
+a.bank-refresh:hover{background:#f2f2f2; text-decoration:none;border:1px solid #db5629;}
+.bank-tab-title{height:36px;line-height:36px;border-bottom:1px solid #ccc;}
+.bank-tab-list li{float:left;}
+.bank-tab-list li a{float:left;line-height:28px;border-top:4px solid #fff;border-left:1px solid #fff;font-size:14px;border-right:1px solid #fff;padding:0 40px;}
+.bank-tab-list li a:hover{ text-decoration:none;}
+.bank-tab-list li.on a{ position:relative; _bottom:-1px;line-height:33px;border-top:4px solid #db5629;color: #e95d01;border-left:1px solid #ccc;border-right:1px solid #ccc;background:#fff;}
+.bank-tab-content{padding:30px 0;}
+.bank-tab-items{_width:900px;overflow:hidden;font-size:14px;color: #565656;}
+.bank-tab-items img{max-width:900px;border:0;}
+.bank-tab-items .tab-qa{background-color:#fee;padding:0 30px 30px;line-height:25px;font-size:14px;}
+.bank-tab-items .tab-qa dt{color:#b05253;padding-top:25px;font-weight:bold;}
+.bank-tab-items .tab-qa dd{text-indent:2em;}
+.bank-pay-items{margin:20px 0;border:1px solid #ccc;}
+.bank-pay-title{height:40px;line-height:40px;background:#f5f4f4;border-bottom:1px solid #ccc;}
+.bank-pay-title h2{text-indent:10px;font-size:14px;color:#595757;}
+.bank-pay-main{padding:15px;line-height:23px;}
+.bank-pay-check{}
+.bank-pay-tab{width:100%;border:1px solid #ccc;font-size:14px;color:#595757;}
+.bank-pay-tab th,.bank-pay-tab td{border:1px solid #ccc;padding:0 15px;}
+.bank-pay-tab th{text-align:center;}
+.bank-pay-tab thead th,.bank-pay-tab thead td{background:#f5f4f4;font-weight:bold;height:40px;}
+.bank-pay-tab tbody th,.bank-pay-tab tbody td{height:35px;font-weight:normal;}
+/* tab */
+.tc{ text-align:center;}
+.pro-img-info{ padding-top:10px;text-align:center;}
+.service-list{ margin-left:50px;}
+.service-list li{ float:left; text-align:center;}
+.service-list li.f{ margin-right:100px;}
+.service-list li.s{ margin-right:150px;}
+.pro-solve{ padding:80px 30px 0;}
+.solve-info dt{font-size:18px;margin-bottom:5px;padding-left:20px; background:url(/static/images/base/icons-yellow.png) 0 7px no-repeat;}
+.solve-info .f{ width:400px;}
+.solve-info dd{ padding-left:20px; margin-bottom:50px; line-height:23px;}
+.pro-goodness{ padding:65px 30px 0;}
+.pro-goodness-title{border-bottom: 1px solid #ccc;}
+.pro-goodness-title h2{ padding:0 50px 10px 0; font-size:24px;border-bottom:3px solid #ccc; display:inline-block; *display:inline; *zoom:1;}
+.goodness-main{ padding-top:60px; background:url(/static/images/bank/fudian/fpy-img-01.png) right 20px no-repeat;}
+.unique-list li{ padding-left:25px; line-height:35px;font-size:18px; background:url(/static/images/base/right-green.png) 0 11px no-repeat;}
+.goodness-pb{ padding-top:65px;}
+.common-inner{ padding-top:45px;}
+.convert-info dt{padding-left:38px; font-size:20px;margin-bottom:5px;color: #e95d01;background:url(/static/images/base/q-icons.png) 0 5px no-repeat;}
+.convert-info dd{padding-left:38px;color: #333; padding-bottom:20px; margin-bottom:20px;border-bottom: 1px dashed #d4d4d4;background:url(/static/images/base/a-icons.png) 0 2px no-repeat;}
+.convert-info dd.last{ border-bottom:none;}
+.pay-check-ok{display:inline-block;*display:inline;*zoom:1;background-image:url(/static/images/base/amp-detail-icons.png);background-repeat:no-repeat;background-position:0 -574px;width:18px;height:18px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

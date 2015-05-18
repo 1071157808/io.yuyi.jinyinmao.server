@@ -1,0 +1,39 @@
+﻿@using System.Web
+@functions{
+    public static string ReqQuery(string name, string defValue = "")
+    {
+        if (HttpContext.Current.Request.QueryString[name] != null)
+        {
+            defValue = HttpUtility.UrlDecode(HttpContext.Current.Request.QueryString[name].ToString());
+        }
+        return defValue;
+    }
+}
+@{
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "下单成功";
+    string ProductNo = ReqQuery("id");
+    string ProductType = ReqQuery("type");
+    string ProductCode = ReqQuery("code");
+    string md5_uid = ReqQuery("uid");
+    string RePaymentUrl = string.Format("/{0}/detail?id={1}", ProductType == "amp" ? "amp" : "cpl", ProductNo);
+    string RemoteUrl = ProductType == "amp" ? "/amp/list" : "/cpl/list";
+}
+@RenderPage("~/_layout/base/header.cshtml", new { NavMenu = "no" })
+<div class="ui-content">
+    <div class="jqm-auth-wrap jqm-auth-success">
+        <h2>项目正在付款中！</h2>
+        <div class="jqm-auth-note">
+            <p>我们会以短信方式通知您付款结果！</p>
+        </div>
+    </div>
+    <div class="jqm-wrapper ui-center">
+        <a href="@RePaymentUrl" class="ui-linkbtn">再下一单</a>
+    </div>
+    <div class="jqm-wrapper ui-center">
+        <a href="@RemoteUrl" class="ui-linkbtn">看看别的</a>
+    </div>
+    <script>var _ozprm = "@ProductCode", _ozuid = "@md5_uid";</script>
+    @RenderPage("~/_layout/user/help_phone.cshtml")
+</div>
+@RenderPage("~/_layout/base/m_code.cshtml", new{ Type = "ordersuccess" })

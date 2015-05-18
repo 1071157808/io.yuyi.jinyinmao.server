@@ -24,6 +24,10 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     /// </summary>
     public static class DailyConfigHelper
     {
+        private static readonly CloudStorageAccount Account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+        private static readonly CloudTable Table = Account.CreateCloudTableClient().GetTableReference("DailyConfig");
+
         /// <summary>
         ///     Gets the daily configuration.
         /// </summary>
@@ -76,6 +80,36 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         }
 
         /// <summary>
+        /// Gets the next work day configuration.
+        /// </summary>
+        /// <param name="offset">The offset.</param>
+        /// <returns>DailyConfig.</returns>
+        public static DailyConfig GetNextWorkDayConfig(int offset = 0)
+        {
+            offset = offset < 0 ? 0 : offset;
+            int nextIndex = 1 + offset;
+
+            DailyConfig config = GetTodayDailyConfig();
+
+            for (int i = 1; i < 100; i++)
+            {
+                DateTime date = DateTime.UtcNow.AddHours(8).AddDays(i);
+                config = GetDailyConfig(date);
+                if (config != null && config.IsWorkDay)
+                {
+                    nextIndex -= 1;
+                }
+
+                if (nextIndex == 0)
+                {
+                    break;
+                }
+            }
+
+            return config;
+        }
+
+        /// <summary>
         ///     Gets the today daily configuration.
         /// </summary>
         /// <returns>DailyConfig.</returns>
@@ -83,9 +117,6 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         {
             return GetDailyConfig(DateTime.UtcNow.AddHours(8));
         }
-
-        private static readonly CloudStorageAccount Account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-        private static readonly CloudTable Table = Account.CreateCloudTableClient().GetTableReference("DailyConfig");
     }
 
     /// <summary>

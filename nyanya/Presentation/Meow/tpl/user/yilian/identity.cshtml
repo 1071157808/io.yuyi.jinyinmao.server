@@ -1,0 +1,45 @@
+﻿<div class="jqm-index-funds">
+    <div class="funds-block">
+        <label>手机号码</label>
+        <strong><%=Cellphone%></strong>
+    </div>
+</div>
+<div class="jqm-account-view">
+    <ul class="ui-table jqm-account-span">
+        <li>
+            <span class="ui-td">姓名</span>
+            <span class="ui-td">
+                <% if(HasYSBInfo){ %>
+                <span class="ui-span"><%=YSBRealName%></span>
+                <input type="hidden" id="jqm-realName" value="<%=YSBRealName%>" />
+                <% } else { %>
+                <input type="text" id="jqm-realName" placeholder="证件所属人姓名" />
+                <% } %>
+            </span>
+        </li>
+        <li>
+            <span class="ui-td">证件类型</span>
+            <span class="ui-td">
+                <% if(HasYSBInfo){ %>
+                <span id="jqm-idType" class="ui-span" data-idType="0">身份证</span>
+                <% } else { %>
+                <a href="#" id="jqm-idType" class="ui-link" data-action="select-idtype" data-idType="0"><span>身份证</span></a>
+                <% } %>
+            </span>
+        </li>
+        <li>
+            <span class="ui-td">证件号码</span>
+            <span class="ui-td">
+                <% if(HasYSBInfo){ %>
+                <span class="ui-span"><%=YSBIdCard%></span>
+                <input type="hidden" id="jqm-idCard" value="<%=YSBIdCard%>" />
+                <% } else { %>
+                <input type="text" id="jqm-idCard" placeholder="认证后不可更改" />
+                <% } %>
+            </span>
+        </li>
+    </ul>
+</div>
+<div class="jqm-index-btn">
+    <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="next-addCard">下一步</button></div>
+</div>

@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/home.js'></script>");
+    NyanyaWebData[] datas = Request.GetDatas("/UserInfo", "/UserInfo/Index", "/UserInfo/Index/Settlings");
+    NyanyaWebData userInfo = datas[0];
+    NyanyaWebData userInfoSummery = datas[1];
+    NyanyaWebData indexSettlings = datas[2];
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "manage" })
+<div class="per-right">
+    <div class="my-card-title clearfix">
+        @RenderPage("~/_layout/user/_back_user.cshtml", new { name = "账户管理" })
+    </div>
+    <div class="my-card-main my-card-pwd">
+        <div class="card-pwd-item ">
+            <div class="card-pwd-inner clearfix">
+                <div class="card-pwd-name">
+                    <h2><i>1.</i><em>重置登录密码</em><span>（通过手机号验证，修改登录密码）</span></h2>
+                </div>
+                <div class="card-pwd-handle"><a href="/user/manage/reset/login-password-1" class="reset-btn">重置登录密码</a></div>
+            </div>
+        </div>
+        <div class="card-pwd-item">
+            <div class="card-pwd-inner clearfix">
+                <div class="card-pwd-name">
+                    <h2><i>2.</i><em>重置交易密码</em><span>（通过首张认证银行卡、身份证、手机号）</span></h2>
+                </div>
+                <div class="card-pwd-handle"><a href="/user/manage/reset/payment-password-1" class="reset-btn">重置交易密码</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+

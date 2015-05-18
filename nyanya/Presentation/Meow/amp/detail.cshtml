@@ -1,0 +1,27 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "产品详情";
+}
+@section PageScript {
+    <script src="/static/js/home/amp.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.detail.init('amp');
+        zim.fixIOS.onPageShow(function(){
+            location.reload(true);
+        });
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div id="jqm-product-detail"><!--tpl--></div>
+    <div id="jqm-product-info"><!--tpl--></div>
+</div>
+<!-- tpl -->
+<script type="text/tpl" id="jqm-tpl-detail">
+@RenderPage("~/tpl/amp/detail.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-info">
+@RenderPage("~/tpl/amp/info.cshtml")
+</script>

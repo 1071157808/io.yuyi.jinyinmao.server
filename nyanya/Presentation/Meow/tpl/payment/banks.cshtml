@@ -1,0 +1,22 @@
+﻿<div class="jqm-account-view">
+    <h5>您可以在 <em>我的银行卡</em> 中绑定新卡</h5>
+    <ul class="jqm-menu-nav jqm-selected-bank">
+        <% var i = 0, len = banks.length, item, cls; %>
+        <% for(;i<len;i++){ %>
+        <% item = banks[i]; cls = item.BankCardNo == def_bank ? " ui-selected" : ""; %>
+        <li>
+            <a href="#" class="ui-link-multi<%=cls%>" data-action="selected-bank" data-bank="<%=item.BankCardNo%>">
+                <div class="<%=zim.page.getBankClass(item.CardBankName)%>">
+                    <span><%=item.CardBankName%>(尾号<%=zim.page.payment.create.cardSlice(item.BankCardNo)%>)</span>
+                    <em>限额单笔<%=item.limit[0]%>万，单日<%=item.limit[1]%>万</em>
+                </div>
+            </a>
+        </li>
+        <% } %>
+    </ul>
+    <div class="ui-warning-wrap">
+        <i class="ui-warning">!</i>
+        <p>为了您的账户安全，我们只会将本息归还至您付款所使用的银行卡中。所以在本息未归还之前，请不要注销相关卡片。</p>
+    </div>
+</div>
+@RenderPage("~/_layout/user/help_phone.cshtml")

@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "活动状态";
+    dynamic[] Data = Request.GetDatas(
+        "/UserInfo",
+        "/Orders/GetActivityStatus1000",
+        "/Luckhub/GetUserCanPalyStatu"
+    );
+    dynamic userInfo = Data[0];
+    dynamic hd = Data[1].Data;
+    dynamic lottery = Data[2];
+    CatHelper.SignInCheck(userInfo);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "1118" })
+<div class="content">
+    <div class="ctt-block page-1118">
+        <h3 class="ctt-head"><span>活动状态</span></h3>
+        <div class="ctt-rows clearfix">
+            <div class="ctt-act-items act-line">
+                <div class="ctt-act-inner">
+                    @if(!CatHelper.IsDataSuccess(lottery)){
+                    <div class="act-main"><img src="/static/images/user/1118/user-help.png" alt="神秘活动，尽情期待！"/></div>
+                    <div class="act-desc wait-info">
+                        <div class="act-txt-wrap">
+                            <p class="wait-msg">神秘活动，尽情期待！</p>
+                        </div>
+                    </div>
+                    } else {
+                    <div class="act-main">
+                        <a target="_blank" href="/topic/20141118/lottery"><img src="/static/images/user/1118/lottery.png" alt=""/></a>
+                    </div>
+                    <div class="act-desc wait-info">
+                        @if(lottery.Data.Status == 10){
+                        <div class="act-txt-wrap">
+                            <p class="wait-use" style="line-height:25px;padding-top:8px;">您今日未购买产品，暂时不能参与<br><a class="orange" href="/amp/list" title="立即使用" target="_blank">1元起购！GO！</a></p>
+                        </div>
+                        <div class="act-tips"><p>提醒：抽奖只在2014年11月18日有效哦！</p></div>
+                        } else if(lottery.Data.Status == 20){
+                        <div class="act-txt-wrap">
+                            <p class="wait-use">您获得1次抽奖机会，<a class="orange" href="/topic/20141118/lottery" title="立即抽奖" target="_blank">立即抽奖</a></p>
+                        </div>
+                        <div class="act-tips"><p>提醒：抽奖只在2014年11月18日有效哦！</p></div>
+                        } else if(lottery.Data.Status == 30){
+                        <div class="act-txt-wrap">
+                            @if(lottery.Data.AwardLevel == 60){
+                            <p class="wait-use">未中奖！谢谢您的参与！</p>
+                            } else if(lottery.Data.AwardLevel == 50){
+                            <p class="wait-use"><img src="/topic/20141118/images/lottery/50.png" style="height:50px;margin-bottom:-20px;margin-right:8px;" />恭喜！您抽到的是2元现金红包一个！</p>
+                            } else if(lottery.Data.AwardLevel == 40){
+                            <p class="wait-use"><img src="/topic/20141118/images/lottery/40.png" style="height:50px;margin-bottom:-20px;margin-right:8px;" />恭喜！您抽到的是5元现金红包一个！</p>
+                            } else if(lottery.Data.AwardLevel == 30){
+                            <p class="wait-use"><img src="/topic/20141118/images/lottery/30.png" style="height:50px;margin-bottom:-20px;margin-right:8px;" />恭喜！您抽到的是U盘一个！</p>
+                            } else if(lottery.Data.AwardLevel == 20){
+                            <p class="wait-use"><img src="/topic/20141118/images/lottery/20.png" style="width:50px;margin-bottom:-8px;margin-right:8px;" />恭喜！您抽到的是银钞一张！</p>
+                            } else if(lottery.Data.AwardLevel == 10){
+                            <p class="wait-use"><img src="/topic/20141118/images/lottery/10.png" style="height:50px;margin-bottom:-20px;margin-right:8px;" />恭喜！您抽到的是iPhone6一台！</p>
+                            }
+                        </div>
+                        <div class="act-tips"><p>提醒：获奖后工作人员会在5个工作日内与您联系，请保持手机畅通。</p></div>
+                        } else if(lottery.Data.Status == 40){
+                            dynamic dNow = DateTime.Now;
+                            dynamic dStart = new DateTime(2014, 11, 18);
+                            string lottery_text = DateTime.Compare(dNow, dStart) < 0 ? "活动还没开始！" : "活动已过期！";
+                        <div class="act-txt-wrap">
+                            <p class="wait-use">@lottery_text</p>
+                        </div>
+                        <div class="act-tips"><p>提醒：抽奖只在2014年11月18日有效哦！</p></div>
+                        } else if(lottery.Data.Status == 50){
+                        <div class="act-txt-wrap">
+                            <p class="wait-use">抽奖无效！<a class="orange" href="/topic/20141118/lottery" title="查看活动规则" target="_blank">查看活动规则</a></p>
+                        </div>
+                        <div class="act-tips"><p>提醒：抽奖只在2014年11月18日有效哦！</p></div>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="ctt-act-items">
+                <div class="ctt-act-inner">
+                    <div class="act-main"><a target="_blank" href="/topic/20141118/"><img src="/static/images/user/1118/give-1000.jpg" alt="1000元理财本金 - 送钱咯！"/></a></div>
+                    <div class="act-desc">
+                        @if(hd.Status == 30) // 已使用
+                        {
+                            <div class="act-txt-wrap">
+                                <p class="wait-use">您已使用理财本金，增加收益 <i>@hd.ExtraInterest</i> 元</p>
+                            </div>
+                            <div class="act-tips"><p>提醒：收益将在项目到期后自动打入您绑定的银行卡。</p></div>
+                        } 
+                        else if(hd.Status == 20) // 未使用
+                        {
+                            <div class="act-txt-wrap">
+                                <p class="wait-use">你理财，我出钱！ <a class="orange" href="/" title="立即使用" target="_blank">立即使用</a></p>
+                            </div>
+                            <div class="act-tips">
+                                <p>说明：</p>
+                                <p>理财金仅限在1118发财季期间注册的新用户使用。产品到期即可获得相对应的收益！</p>
+                                <p>新用户注册时间：2014年11月12日-12月12日</p>
+                            </div>
+                        }
+                        else // 其它情况
+                        {
+                            <div class="act-tips act-noallow">
+                                <p>说明：</p>
+                                <p>理财金仅限在1118发财季期间注册的新用户使用。产品到期即可获得相对应的收益！</p>
+                                <p>新用户注册时间：2014年11月12日-12月12日</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+﻿@{
+    dynamic proInfo = Page.Data;
+    foreach (dynamic item in proInfo)
+    {
+        int minPrice = (int)(item.UnitPrice * item.MinShareCount);
+        decimal sumPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+        dynamic valMode = CatHelper.GetValueDate_Note(item);
+        dynamic showStatus = CatHelper.GetProductShowingStatus(item.ShowingStatus);
+        string valDate="购买成功立刻起息";
+     
+         <li>
+            <a class="bankname" target="_blank" href="/bank/fudian"><img src="/static/images/bank/fudian.gif" /></a>
+            <div class="bankproduct">
+                <p><span class="pro-name">@CatHelper.GetProductName(item.ProductName, item.ProductNumber)</span><em class="pro-notice">@(item.UnitPrice*item.MinShareCount)元起投</em><em class="pro-notice">@valMode</em></p>
+                <p class="pro-description">到期由@(item.BankName)银行无条件兑付，本息安全，风险趋零</p>
+                <p class="mt27 clearfix">
+                    <span class="fl pro-message">点亮财富新生活 回家也能接着赚</span>
+                    <a target="_blank" href="/bank/fudian" class="fr orange-link link-padding">前往查看</a>
+                </p>
+            </div>
+        </li>
+
+        <li>
+            <a class="bankname" target="_blank" href="/bank/redirect?backUrl=https://piao.cib.com.cn"><img src="/static/images/bank/cib.gif" /></a>
+            <div class="bankproduct">
+                <p><span class="pro-name">兴业银行产品专区</span><em class="pro-notice">1元起投</em><em class="pro-notice">@valDate</em></p>
+                <p class="pro-description">到期由兴业银行无条件兑付，本息安全，风险趋零</p>
+                <p class="clearfix pro-attribute">
+                    <span>年化<i>5%~6%</i></span>
+                    <span>周期<b>30~180</b>天</span>
+                    <a target="_blank" href="/bank/redirect?backUrl=https://piao.cib.com.cn" class="fr orange-link link-padding">前往查看</a>
+                </p>
+            </div>
+        </li>
+    }
+        <li>
+            <p class="bank-coming-soon">更多银行理财产品，敬请期待</p>
+        </li>
+}
+

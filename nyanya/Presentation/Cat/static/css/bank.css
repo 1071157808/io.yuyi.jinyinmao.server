@@ -1,0 +1,42 @@
+a.orange-link:link,a.orange-link:visited{color:#fff;font-size:20px;text-decoration:none;border-radius:4px;background: #e95d01;}
+a.orange-link:hover,a.orange-link:active{background: #fe6a09}
+
+a.gray-link:link,a.gray-link:visited{display:inline-block;width:138px;height:28px;line-height:28px;text-align:center;color:#565656;font-size:14px;text-decoration:none;border:1px solid #ccc;border-radius:4px;background: #f4f4f4;}
+a.gray-link:hover,a.gray-link:active{background: #ebebeb}
+
+.link-padding{padding:5px 20px;margin-top: 10px;}
+.link-login{display: inline-block;width: 250px;height:50px;line-height: 50px;}
+
+.fl{float: left}
+.fr{float: right}
+.bg-white{background: #fff;}
+.h300{height: 300px;}
+
+.bank-container{margin: 20px auto;background:#fff;border: 1px solid #ccc;}
+.bank-wrap{margin:0 auto 20px ;}
+.bank-area{width:958px;}
+.bank-area li{margin-top:18px;height: 160px;border: 1px solid #dedede;border-radius:4px;background: #fff;}
+
+.bankname{float:left;width: 310px;height: 160px;border-radius: 4px 0 0 4px;overflow: hidden;}
+.bankproduct{float:left;margin:8px 0 0 28px;width: 590px;color:#565656;}
+.pro-name{margin-right: 20px;font-size: 26px;}
+
+.pro-description,.pro-message{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pro-description{width:578px;font-size: 14px;text-indent:23px;background:url(../images/bank/time.gif) no-repeat 3px 3px;}
+.pro-attribute{margin-top: 22px}
+.pro-attribute span{float:left;margin-right: 30px;}
+.pro-attribute i{padding:0 5px;font:bold 50px "Arial";color: #e95d01}
+.pro-attribute b{padding:0 5px;font:bold 26px/64px "Arial";}
+
+.bank-coming-soon{margin:30px auto auto;width:260px;height:82px;line-height:128px;text-align:center;font-size: 18px;color: #afafaf;background: url(../images/bank/bank-coming-soon.png) no-repeat center top}
+.more-bank{text-align: right;padding:10px 0;}
+.more-bank a:link,.more-bank a:visited{color:#e95d01;font-size: 14px;}
+
+.login-wrap{margin:70px 0 0 86px;}
+.jym-login{padding-right:30px;width:400px;height:176px;color:#666;text-align:center;background: url(../images/base/line.png) no-repeat right center;}
+.jym-login h3{font-size: 32px;font-weight: normal;}
+.jym-login p{margin-bottom: 18px;font-size: 16px;}
+
+.jym-reg{margin:20px 0 0 86px;width:300px;height:176px;color:#666;text-align:left;}
+.jym-reg h3{font:italic normal 24px "Microsoft YaHei"; }
+.jym-reg p{margin-bottom: 18px;font:italic bold 16px "Microsoft YaHei"; }

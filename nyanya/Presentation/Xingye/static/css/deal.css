@@ -1,0 +1,8 @@
+.reset-outer{ width:1000px;min-height:650px;margin:20px auto; border:1px solid #bbcedd;background: #fff;box-shadow:0 2px 1px #b3c6d6;}
+.reset-inner{ padding:5px 50px;}
+.reset-title{ height:70px; line-height:70px;border-bottom: 1px solid #d9d9d9;box-shadow:0 2px 1px #ececec;}
+.reset-title h1{ font-size:24px; font-weight:normal;color: #626262;}
+.deal-wrap-only{ line-height:30px; color:#475058;}
+.deal-wrap-only .reset-title h1{ text-align:center;}
+.deal-wrap-only .reset-main{ padding:20px 0 40px;font-size:14px;}
+

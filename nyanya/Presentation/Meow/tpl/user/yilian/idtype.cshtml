@@ -1,0 +1,7 @@
+﻿<ul class="jqm-menu-nav">
+    <% var cls = ""; %>
+    <% for(var id in types){ %>
+    <% cls = id == def_type ? " ui-selected" : ""; %>
+    <li><a href="#" class="ui-link ui-link-select<%=cls%>" data-action="selected-idtype" data-idType="<%=id%>" data-text="<%=types[id]%>"><span><%=types[id]%></span></a></li>
+    <% } %>
+</ul>

@@ -1,0 +1,138 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "我的银行卡";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/bankcards.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+}
+@section RequireCallback{
+    require(['jym', 'dialog'], function(jym, dialog){
+    var setDefaultBank = function(obj){
+    $('.bank-item b').after('<i></i>').remove();
+    obj.append('<b></b>').find('i').remove();
+    };
+    var bankDefaultSend = function(o){
+    var obj = $(o);
+    if(obj.find('b').length){return false;}
+    var card = o.getAttribute('data-card');
+    jym.sync({
+    url:jym.api.bankcard.SetDefault,
+    data:{bankCardNo:card},
+    success:function(){ setDefaultBank(obj); },
+    error:function(d){ dialog.alert.show(d.responseJSON.Message); }
+    });
+    };
+    jym.action.extend({
+    "setDefault":function(){
+    bankDefaultSend(this);
+    }
+    });
+    });
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "bankcards" })
+<div class="content">
+    <div class="ctt-block page-bankcards">
+        <h3 class="ctt-head">
+            <span>我的银行卡(@userInfo.Data.BankCardsCount)</span>
+            <a class="ctt-back payment-limit" href="#">
+                <div>查看支付限额</div>
+                <div class="bank-limit">
+<script>
+var fmtEach = function(d, callback){
+    var i = 0, l = d.length;
+    if(l !== undefined){
+        for(;i<l;i++){
+            if(false === callback.call(d[i],i,d[i])){break;}
+        }
+    } else {
+        for(i in d){
+            if(false === callback.call(d[i],i,d[i])){break;}
+        }
+    }
+};
+var fmtBanks = function(){
+    var o = {}, t, s = '<table><thead><tr><th>银行</th><th>限额</th></tr></thead><tbody>';
+    fmtEach(jymBanks, function(i, v){
+        t = v.limit.join(',');
+        if(!o[t]){o[t] = [v];}else{
+            o[t].push(v);
+        }
+    });
+    fmtEach(o, function(k, v){
+        fmtEach(v, function(i, b){
+            s += '<tr><td>'+b.name+'</td>';
+            if(i == 0){s += '<th rowspan="'+v.length+'">单笔'+b.limit[0]+'万，单日'+b.limit[1]+'万</th>';}
+            s += '</tr>';
+        });
+    });
+    s += '</tbody></table>';
+    document.write(s);
+};
+fmtBanks();
+</script>
+                </div>
+            </a>
+        </h3>
+        @if (userInfo.Data.BankCardsCount > 0)
+        {
+            dynamic bankCards = Request.GetData("/UserInfo/BankCards");
+            <div class="bankcard-list">
+                <ul class="clearfix">
+                    @if (CatHelper.IsDataSuccess(bankCards))
+                    {
+                        foreach (dynamic card in bankCards.Data)
+                        {
+                            <li class="bank-item @CatHelper.GetBankCode(card.CardBankName)">
+                                <a href="#" class="ui-action" data-action="setDefault" data-card="@card.BankCardNo">
+                                    <em>**** **** **** **** @CatHelper.FixBankCard(card.BankCardNo)</em>
+                                    @if (card.IsDefault == true)
+                                    {
+                                        <b></b>
+                                    }
+                                    else
+                                    {
+                                        <i></i>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    }
+                    @if (userInfo.Data.BankCardsCount < 10)
+                    {
+                        <li class="bank-add"><a href="/bankcard/add"></a></li>
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            if (userInfo.Data.Verifing == true)
+            {
+                <div class="bankcard-list-none">
+                    <h3>正在为您开通快捷支付，请耐心等待</h3>
+                </div>
+            }
+            else
+            {
+                <div class="bankcard-list-none">
+                    <h3>绑定银行卡之后即可进行购买，<a href="/bankcard/setPassword">立即绑定</a></h3>
+                </div>
+            }
+        }
+        <div class="rds10 p20 bankcard-highlight"><p class="ui-highlight-warning">为了您的账户安全，我们只会将本息汇入您付款所使用的银行卡中。所以在本息未归还之前，请不要注销相关卡片。如有紧急需要，请致电金银猫客服：4008-556-333。</p></div>
+    </div>
+    @if (userInfo.Data.HasDefaultBankCard == true)
+    {
+        <div class="ctt-block page-bankcards">
+            <h3 class="ctt-head"><span>持卡人信息</span></h3>
+            <ul class="ctt-grid1">
+                <li>手机号码：<em>@CatHelper.FixCellphone(userInfo.Data.Cellphone)</em></li>
+                <li>姓名：<em>@userInfo.Data.RealName</em></li>
+                <li>证件类型：<em>@CatHelper.GetIdCardName(userInfo.Data.Credential)</em></li>
+                <li>证件号码：<em>@userInfo.Data.CredentialNo</em></li>
+            </ul>
+        </div>
+    }
+    @RenderPage("~/_layout/base/_UnionPay.cshtml")
+</div>

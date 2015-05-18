@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/payment.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "manage" })
+<div class="per-right">
+    <div class="my-card-title clearfix">
+        @RenderPage("~/_layout/user/_back_user.cshtml", new { name = "账户管理" })
+    </div>
+    <div class="my-card-main reset-success-only">
+        <div class="card-pwd-name reset-login-title">
+            <h2><em>重置交易密码</em><span></span></h2>
+        </div>
+        <div id="ui-msg-info" class="ui-msg"></div>
+        <div class="reset-success-forms">
+            <div class="reset-success-wrap">
+                <h2>重置成功！</h2>
+                <div class="reset-success-info">
+                    <p>您已经重置成功，请下次使用新的交易密码支付。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

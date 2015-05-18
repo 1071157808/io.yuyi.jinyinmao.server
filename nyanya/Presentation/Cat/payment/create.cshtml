@@ -1,0 +1,135 @@
+﻿@{
+    Layout = "~/_layout/payment/_SiteMain.cshtml";
+    Page.Title = "提交订单";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/payment/create.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    if (userInfo.Data.HasSetPaymentPassword == false)
+    {
+        Response.Redirect("~/bankcard/setPassword");
+    }
+    else if (userInfo.Data.HasDefaultBankCard == false)
+    {
+        Response.Redirect("~/bankcard/identity");
+    }
+}
+@{
+    string proId = CatHelper.RequestForm("ProductNo");
+    string proType = CatHelper.RequestForm("ProductType", "amp");
+    string bankName = CatHelper.RequestForm("bankName");
+    string count = CatHelper.RequestForm("Count");
+    string api = "";
+    if(proType == "amp" || proType == "bank")
+    {
+        api = "ProductInfo/BA?productNo=";
+    }
+    else 
+    {
+        api = "ProductInfo/TA?productNo=";
+    }
+    if (proId == "")
+    {
+        Response.Redirect("~/");
+    }
+    dynamic productInfo = Request.GetData(api + proId);
+    if (!CatHelper.IsDataSuccess(productInfo))
+    {
+        Response.Redirect("~/");
+    }
+    int iCount = CatHelper.ConvertInt(count, productInfo.Data.MinShareCount, productInfo.Data.MaxShareCount);
+    int orderPrice = iCount * (int)(productInfo.Data.UnitPrice);
+    decimal orderSy = CatHelper.SyPrice(orderPrice, productInfo.Data.Yield, productInfo.Data.Period);
+    decimal otherSy = CatHelper.SyPrice(1000, productInfo.Data.Yield, productInfo.Data.Period);
+    string productName = CatHelper.GetProductName(productInfo.Data.ProductName, productInfo.Data.ProductNumber);
+    string orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+}
+<script>
+    var _productInfo = { Count: "@iCount", ProductNo: "@proId" };
+    var _productName = '@Html.Raw(productName)';
+    var _bankName = '@bankName';
+    var _productPrice = '@productInfo.Data.UnitPrice';
+    var _productType = "@proType";
+    var _orderPrice = "@orderPrice";
+    var _orderTime = "@orderTime";
+    var _orderSy = @orderSy;
+    var _otherSy = @otherSy;
+</script>
+<script>
+require(['jym1118'], function(o){
+    o.gift1000.setPaymentStatus('#jym1118');
+});
+</script>
+<div class="ctt-block page-payment">
+    <h3 class="ctt-head"><span>提交订单</span></h3>
+    <div class="mv20 p20 rds10 clearfix payment-order">
+        <div class="ui-left">
+            <p>订单金额：<strong>@orderPrice</strong>元</p>
+            <p>预期收益：<strong>@orderSy</strong>元<span id="ctt-payment-sy"></span></p>
+        </div>
+        <div class="ui-right">
+            <p class="mt10">产品名称：<em>@productName</em></p>
+            <p class="mt15">下单时间：<em>@orderTime</em></p>
+        </div>
+        <div id="jym1118"></div>
+    </div>
+    @{
+        dynamic bankCards = Request.GetData("/UserInfo/BankCards");
+    }
+    <div class="ctt-rows">
+        <div class="ctt-rows-label">请选择银行卡</div>
+        <ul class="ctt-payment-list">
+            @if (CatHelper.IsDataSuccess(bankCards))
+            {
+                foreach (dynamic card in bankCards.Data)
+                {
+                    if (card.IsDefault == true)
+                    {
+                        <li>
+                            <a href="#" class="ui-action current" data-action="select-bank">
+                                <input type="radio" name="payment-card" data-bank="@card.BankCardNo" value="@card.CardBankName" checked="checked" />
+                                <i class="ctt-bSelect-bank @CatHelper.GetBankCode((string)card.CardBankName)"></i>
+                                <em class="payment-card-no">** @CatHelper.FixBankCard(card.BankCardNo)</em>
+                                <span class="payment-card-default">默认</span>
+                                <span class="payment-card-limit" data-bank="@card.CardBankName"></span>
+                                <span class="payment-price">支付：<strong>@orderPrice</strong>元</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li style="display: none">
+                            <a href="#" class="ui-action" data-action="select-bank">
+                                <input type="radio" name="payment-card" data-bank="@card.BankCardNo" value="@card.CardBankName" />
+                                <i class="ctt-bSelect-bank @CatHelper.GetBankCode((string)card.CardBankName)"></i>
+                                <em class="payment-card-no">** @CatHelper.FixBankCard(card.BankCardNo)</em>
+                                <span class="payment-card-limit" data-bank="@card.CardBankName"></span>
+                                <span class="payment-price">支付：<strong>@orderPrice</strong>元</span>
+                            </a>
+                        </li>
+                    }
+                }
+            }
+        </ul>
+        <a class="payment-card-more" href="#">选择其他银行卡</a>
+    </div>
+    <div class="ctt-rows">
+        <div class="ctt-rows-label">请输入支付密码</div>
+        <input type="password" class="ui-text pwd-input" id="pwdPayment" maxlength="18" />
+    </div>
+    @if (proType == "TA")
+    {
+        <div class="ctt-rows">
+            <div class="ctt-link-protocol"><input type="checkbox" id="isAgreement" checked="checked" />同意<a target="_blank" href="/payment/agreement/Pledge?id=@productInfo.Data.ProductIdentifier">《@productInfo.Data.PledgeAgreementName》</a>及<a target="_blank" href="/payment/agreement/Consignment?id=@productInfo.Data.ProductIdentifier">《@productInfo.Data.ConsignmentAgreementName》</a></div>
+            <button class="ui-action ui-btn" data-action="submitPayment" id="btnPayment">同意协议并付款</button>
+        </div>
+    }
+    else
+    {
+        <div class="ctt-rows">
+            <div class="ctt-link-protocol"><input type="checkbox" id="isAgreement" checked="checked" />同意<a target="_blank" href="/payment/agreement/Pledge?id=@productInfo.Data.ProductIdentifier">《质押借款协议》</a>及<a target="_blank" href="/payment/agreement/Consignment?id=@productInfo.Data.ProductIdentifier">《委托协议》</a></div>
+            <button class="ui-action ui-btn" data-action="submitPayment" id="btnPayment">同意协议并付款</button>
+        </div>
+    }
+
+    @RenderPage("~/_layout/base/_kefu.cshtml")
+</div>

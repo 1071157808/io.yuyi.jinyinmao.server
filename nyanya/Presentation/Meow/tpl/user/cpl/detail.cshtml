@@ -1,0 +1,33 @@
+﻿<div class="jqm-index-funds">
+    <div class="funds-block">
+        <label>订单金额</label>
+        <strong><%=item.Principal%><samp>元</samp></strong>
+        <span>预计收益:<em><%=zim.autoFixed(item.Interest)%><samp>元</samp></em></span>
+        <ins><%=item.OrderTime.split('T').join(' ')%></ins>
+        <del><%=zim.page.getOrderStatus(item.ShowingStatus)%></del>
+    </div>
+    <div class="income-block">订单号: <%=item.OrderNo%></div>
+</div>
+<% if(item.ExtraInterest > 0){ %>
+<div class="jqm-index-funds jqm-amp-order">
+    <div class="props-block">
+        <span>额外收益</span>
+        <em>+<%=zim.autoFixed(item.ExtraInterest)%><samp>元</samp></em>
+    </div>
+</div>
+<% } %>
+<div class="ui-grid2 jqm-detail-info">
+    <h5><%=zim.page.getProductName(item.ProductName, item.ProductNumber)%></h5>
+    <div class="ui-block-a">项目编号</div>
+    <div class="ui-block-b"><%=item.ProductNo%></div>
+    <div class="ui-block-a">年化利率</div>
+    <div class="ui-block-b"><%=item.Yield%>%</div>
+    <div class="ui-block-a">投资周期</div>
+    <div class="ui-block-b"><%=item.Period%>天</div>
+    <div class="ui-block-a">起息日期</div>
+    <div class="ui-block-b"><%=zim.page.fmtDate(item.ValueDate)%></div>
+    <div class="ui-block-a">结息日期</div>
+    <div class="ui-block-b"><%=zim.page.fmtDate(item.SettleDate)%></div>
+    <div class="ui-block-a">最迟还款日</div>
+    <div class="ui-block-b"><%=zim.page.fmtDate(item.RepaymentDeadline)%></div>
+</div>

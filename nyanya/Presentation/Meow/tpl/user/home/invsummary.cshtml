@@ -1,0 +1,25 @@
+﻿<div class="jqm-index-bg">
+    <div class="jqm-index-funds">
+        <div class="funds-block">
+            <p class="jqm-span-funds">当前您的赚钱速度为<br>每小时<em><%=zim.page.user.index.fixPrice(IncomePerMinute*60)%></em>元。</p>
+        </div>
+        <div class="jqm-pr1 income-block">
+            <p>累计收益<%=TotalInterest%>元</p>
+            <a href="#" class="jqm-funds-fixed" data-action="jqm-funds-share">分享</a>
+        </div>
+    </div>
+</div>
+<div id="jymlottery"></div>
+<div id="jym1118"></div>
+<ul class="jqm-menu-nav jqm-index-nav">
+    <li><a class="ui-link" href="/user/myOrder"><span>我的订单</span></a></li>
+    <li><a class="ui-link" href="/user/funds"><span>资金账户</span></a></li>
+    <li><a class="ui-link" href="/user/card/list"><span>我的银行卡</span></a></li>
+</ul>
+<ul class="jqm-menu-nav jqm-index-nav">
+    <li><a class="ui-link" href="/user/settings"><span>密码设置</span></a></li>
+    <li><a class="ui-link" href="/page/feedback"><span>用户反馈</span></a></li>
+</ul>
+<div class="jqm-index-btn">
+    <div class="jqm-wrapper"><button class="ui-action ui-btn2" data-action="index-logout">登出</button></div>
+</div>

@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/_layout/payment/_SiteMain.cshtml";
+    Page.Title = "添加银行卡";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    if (userInfo.Data.HasSetPaymentPassword == false)
+    {
+        Response.Redirect("~/bankcard/setPassword");
+    }
+}
+@section RequireCallback{
+    require(['bankcard'], function(b){ b.verify.init() });
+}
+<div class="ctt-block page-identity">
+    <h3 class="ctt-head"><span>添加银行卡</span></h3>
+    @if (userInfo.Data.HasDefaultBankCard != true)
+    {
+        @RenderPage("~/_layout/payment/_identity_step.cshtml", new { StepIndex = 4 })
+    }
+    <div class="m20 ctt-identity-map">
+        <button class="ui-action ui-btn" data-action="gotoLook">看看产品，边逛边等</button>
+    </div>
+    @RenderPage("~/_layout/base/_UnionPay.cshtml")
+</div>

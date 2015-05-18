@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "~/_layout/payment/_SiteMain.cshtml";
+    Page.Title = "首次认证";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    if (userInfo.Data.HasSetPaymentPassword == false)
+    {
+        Response.Redirect("~/bankcard/setPassword");
+    }
+    else if (userInfo.Data.HasDefaultBankCard == true)
+    {
+        Response.Redirect("~/bankcard/add");
+    }
+}
+@section RequireCallback{
+    require(['bankcard'], function(b){ b.identity.init() });
+}
+<div class="ctt-block page-identity">
+    <h3 class="ctt-head"><span>首次认证</span></h3>
+    @RenderPage("~/_layout/payment/_identity_step.cshtml", new { StepIndex = 2 })
+    <div class="ctt-rows">
+        <div class="ctt-rows-label">手机号码</div>
+        <div class="ctt-rows-label">@userInfo.Data.Cellphone</div>
+    </div>
+    <div class="ctt-rows ctt-disable">
+        <div class="ctt-rows-label"><span class="ui-asterisk">*</span>姓名</div>
+        @if (userInfo.Data.HasYSBInfo == true)
+        {
+            <input type="hidden" id="realName" value="@userInfo.Data.YSBRealName" />
+            <div class="ui-text text-input">@userInfo.Data.YSBRealName</div>
+        }
+        else
+        {
+            <input type="text" class="ui-text text-input" id="realName" maxlength="20" placeholder="用户姓名" />
+        }
+    </div>
+    <div class="ctt-rows ctt-disable">
+        <div class="ctt-rows-label"><span class="ui-asterisk">*</span>证件号</div>
+        @if (userInfo.Data.HasYSBInfo == true)
+        {
+            <div class="ui-select">
+                <span>
+                    <select id="idCardType">
+                        <option value="0">身份证</option>
+                    </select>
+                </span>
+            </div>
+            <input type="hidden" id="idCard" value="@userInfo.Data.YSBIdCard" />
+            <div class="ui-text text-input">@userInfo.Data.YSBIdCard</div>
+        }
+        else
+        {
+            <div class="ui-select">
+                <span>
+                    <select id="idCardType">
+                        <option value="0">身份证</option>
+                        <option value="1">护照</option>
+                        <option value="2">台湾同胞来往内地通行证</option>
+                        <option value="3">军人证</option>
+                    </select>
+                </span>
+            </div>
+            <input type="text" class="ui-text text-input" id="idCard" placeholder="310000198008181234" />
+        }
+    </div>
+    <div class="ctt-rows">
+        <button class="ui-action ui-btn" data-action="submitIdentity">下一步</button>
+    </div>
+    @RenderPage("~/_layout/base/_UnionPay.cshtml")
+</div>

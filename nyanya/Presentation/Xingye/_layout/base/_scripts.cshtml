@@ -1,0 +1,39 @@
+﻿@using System.Web
+@using Cat
+@{
+    string requireMain = Page.RequireMain ?? "";
+    string mainPath = "";
+    if (requireMain != "")
+    {
+        mainPath = "require.paths.main = " + requireMain + ";";
+    }
+    string jym = CatHelper.JsWrapper("<script src='/static/js/jym.js'></script>");
+    string dialog = CatHelper.JsWrapper("<script src='/static/js/jym.dialog.js'></script>");
+}
+<script>
+    var ISCATVALID = @(CatHelper.IsCatFlag ? "true" : "false");
+    var require = {
+        paths: {
+            jquery: '/static/js/jquery-1.10.2.min',
+            WdatePicker: '/static/js/calendar/WdatePicker',
+            jym: @Html.Raw(jym),
+            dialog: @Html.Raw(dialog)
+        }
+    };
+    @Html.Raw(mainPath);
+    if (typeof _require_callback !== 'undefined') {
+        require.callback = _require_callback;
+        _require_callback = null;
+    }
+</script>
+<script src="/code/js/Banks"></script>
+@{
+    if (requireMain != "")
+    {
+        <script src="/static/js/require.min.js" data-main="main"></script>
+    }
+    else
+    {
+        <script src="/static/js/require.min.js"></script>
+    }
+}

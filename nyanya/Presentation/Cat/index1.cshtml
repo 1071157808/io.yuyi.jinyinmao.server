@@ -1,0 +1,388 @@
+﻿@using System
+@using System.Web.WebPages
+@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    PageData["Title"] = "金银猫 - 大金融心服务";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/home.js'></script>");
+    // 统计信息
+    NyanyaWebData[] datas = Request.GetDatas("/Meow/IndexStatistics", "/ProductInfo/BA/Index", "/ProductInfo/TA/Top");
+    dynamic indexStatistics = datas[0];
+    dynamic ampProduct = datas[1];
+    dynamic cplProduct = datas[2];
+    Response.OutputCache(30);
+    DateTime t = DateTime.Now;
+}
+@section HeadScript{
+    <script>
+    (function(ua, ls){
+    ua = navigator.userAgent.toLowerCase();
+    ls = location.search.toLowerCase();
+    if(/mobile|tablet|ip(ad|hone|od)|android/.test(ua)){
+        if(!/(\?|\&)m=f/.test(ls)){
+            top.location.href = "https://m.jinyinmao.com.cn";
+        }
+    }
+    }());
+    </script>
+}
+<input type="hidden" value="@t" />
+<div class="home-banner-1">
+    <div id="flashBg" class="home-inner-b1">
+        <div class="flashLine">
+            <div class="flash">
+                <a class="prev" href="javascript:;"></a>
+                <a class="next" href="javascript:;"></a>
+                <div id="flash_sub" class="flash_bar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/banner1-->
+<div class="home-container wrap-home">
+    <div class="home-count">
+        <ul class="home-count-list clearfix">
+            <li class="yet">
+                <div class="home-count-img"><img src="/static/images/home/home-count-img01.png" alt="" /></div>
+                <div class="home-count-info">
+                    <h2>@indexStatistics.Data.OrderCount</h2>
+                    <p>累计购买订单数</p>
+                </div>
+            </li>
+            <li class="sum">
+                <div class="home-count-img"><img src="/static/images/home/home-count-img02.png" alt="" /></div>
+                <div class="home-count-info">
+                    <h2>@indexStatistics.Data.ProductCount</h2>
+                    <p>累计还款期数</p>
+                </div>
+            </li>
+            <li class="off">
+                <div class="home-count-img"><img src="/static/images/home/home-count-img03.png" alt="" /></div>
+                <div class="home-count-info">
+                    <h2>50+</h2>
+                    <p>线下网点数量</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--/count-->
+    <div class="home-amp">
+        <div class="home-items-title">
+            <h1>“银企众盈”融资项目<i>银行无条件承兑，风险趋零</i></h1>
+            <a class="home-items-views home-items-more" href="/amp/list">查看更多<i>&gt;&gt;</i></a>
+        </div>
+        <div id="homeAmpSlide" class="home-amp-outer">
+            @if (CatHelper.IsDataSuccess(ampProduct))
+            {
+                <a href="javascript:;" id="btn-left" class="btnLeft"></a>
+                <a href="javascript:;" id="btn-right" class="btnRight"></a>
+            }
+            <div class="home-amp-inner">
+                <ul class="home-amp-list clearfix">
+                    @if (CatHelper.IsDataSuccess(ampProduct))
+                    {
+                        foreach (dynamic item in ampProduct.Data)
+                        {
+                            int minPrice = (int)(item.MinShareCount * item.UnitPrice);
+                            string strValueDate = CatHelper.GetValueDate_list(item);
+                            decimal financingPrice = CatHelper.ToDecimalSafely(item.FinancingSum) / 10000m;
+                            if (item.ShowingStatus < 30)
+                            {
+                                <li>
+                                    <div class="home-amp-subtitle">
+                                        <h2>第 @item.ProductNumber 期</h2>
+                                    </div>
+                                    <a class="home-amp-link" target="_blank" href="/amp/detail?id=@item.ProductNo">
+                                        <div class="amp-link-inner">
+                                            <div class="amp-link-income clearfix">
+                                                <i class="amp-income">@CatHelper.GetYieldString(item.Yield)%</i><span class="amp-day"><i>@item.Period</i>天</span>
+                                            </div>
+                                            <div class="amp-link-gain">
+                                                <div class="amp-gain-txt">
+                                                    <p>@minPrice 元起投</p>
+                                                    <p>融资金额：@financingPrice 万</p>
+                                                    <p>@strValueDate</p>
+                                                </div>
+                                            </div>
+                                            <div class="amp-link-cash">
+                                                <p>无条件兑付行</p>
+                                                <p class="blank">@item.BankName</p>
+                                            </div>
+                                            <div class="amp-link-go amp-link-start">
+                                                <div class="amp-start-buy">开售时间 @item.StartSellTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                            else if (item.ShowingStatus == 30)
+                            {
+                                <li>
+                                    <div class="home-amp-subtitle">
+                                        <h2>第 @item.ProductNumber 期</h2>
+                                    </div>
+                                    <a class="home-amp-link home-amp-once" target="_blank" href="/amp/detail?id=@item.ProductNo">
+                                        <div class="amp-link-inner">
+                                            <div class="amp-link-income clearfix">
+                                                <i class="amp-income">@CatHelper.GetYieldString(item.Yield)%</i><span class="amp-day"><i>@item.Period</i>天</span>
+                                            </div>
+                                            <div class="amp-link-gain">
+                                                <div class="amp-gain-txt">
+                                                    <p>@minPrice 元起投</p>
+                                                    <p>融资金额：@financingPrice 万</p>
+                                                    <p>@strValueDate</p>
+                                                </div>
+                                            </div>
+                                            <div class="amp-process amp-link-money clearfix">
+                                                <span class="percent"><em style="width: @item.PaidPercent%;"></em></span>
+                                                <span class="text"><b>@item.PaidPercent</b>%</span>
+                                            </div>
+                                            <div class="amp-link-cash">
+                                                <p>无条件兑付行</p>
+                                                <p class="blank">@item.BankName</p>
+                                            </div>
+                                            <div class="amp-link-go amp-link-once">
+                                                <div class="amp-start-buy">立即抢购</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                            else if (item.ShowingStatus == 40)
+                            {
+                                <li>
+                                    <div class="home-amp-subtitle">
+                                        <h2>第 @item.ProductNumber 期</h2>
+                                    </div>
+                                    <a class="home-amp-link home-amp-over" target="_blank" href="/amp/detail?id=@item.ProductNo">
+                                        <div class="amp-link-inner">
+                                            <div class="amp-link-income clearfix">
+                                                <i class="amp-income">@CatHelper.GetYieldString(item.Yield)%</i><span class="amp-day"><i>@item.Period</i>天</span>
+                                            </div>
+                                            <div class="amp-link-gain">
+                                                <div class="amp-gain-txt">
+                                                    <p>@minPrice 元起投</p>
+                                                    <p>融资金额：@financingPrice 万</p>
+                                                    <p>@strValueDate</p>
+                                                </div>
+                                            </div>
+                                            <div class="amp-link-cash">
+                                                <p>无条件兑付行</p>
+                                                <p class="blank">@item.BankName</p>
+                                            </div>
+                                            <div class="amp-link-go amp-link-over">
+                                                <div class="amp-start-buy">售罄</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--/amp-->
+    <div class="home-partner home-items">
+        <h3><span>票据托管与承保合作单位</span></h3>
+    </div>
+    <!--/partner-->
+    @if (CatHelper.IsDataSuccess(cplProduct) && cplProduct.Data != null)
+    {
+        <div class="home-cpl">
+            <div class="home-items-title">
+                <h1>“商票贷”融资项目</h1>
+                <a class="home-items-views home-items-more" href="/cpl/list">查看更多<i>&gt;&gt;</i></a>
+            </div>
+            <div class="home-items-main">
+                <div class="home-cpl-title">
+                    <h2>第 @cplProduct.Data.ProductNumber 期</h2>
+                </div>
+                @{
+                    decimal cplFinancingPrice = CatHelper.ToDecimalSafely(cplProduct.Data.FinancingSum) / 10000m;
+                }
+                @if (cplProduct.Data.ShowingStatus < 30)
+                {
+                    // 待售 10
+                    <a class="home-cpl-host home-cpl-wait" target="_blank" href="/cpl/detail?id=@cplProduct.Data.ProductNo">
+                        <div class="home-host-top clearfix">
+                            <div class="home-host-num">
+                                <ul class="home-host-list clearfix">
+                                    <li class="percent">
+                                        <i class="orange">@CatHelper.GetYieldString(cplProduct.Data.Yield)%</i>
+                                    </li>
+                                    <li class="day">
+                                        <span class="cpl-day"><i class="orange">@cplProduct.Data.Period</i>天</span>
+                                    </li>
+                                    <li class="start">
+                                        <div class="cpl-start-list">
+                                            <p><i>@cplProduct.Data.UnitPrice</i>元起投</p>
+                                            <p><i>@cplFinancingPrice</i>万</p>
+                                            <p>@CatHelper.GetValueDate_list(cplProduct.Data)</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="home-host-side">
+                                <div class="home-host-blank">
+                                    <p>担保方式：<i>@CatHelper.GetGuaranteeMode(cplProduct.Data.GuaranteeMode)</i></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="home-host-bot clearfix">
+                            <div class="host-bot-process">
+                                <div class="host-start-time">开售时间  @cplProduct.Data.StartSellTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                            </div>
+                            <div class="host-hot-once">
+                                <div class="hot-once-hot">待售中</div>
+                            </div>
+                        </div>
+                    </a>
+                }
+                else if (cplProduct.Data.ShowingStatus == 30)
+                {
+                    // 抢购 30
+                    <a class="home-cpl-host" target="_blank" href="/cpl/detail?id=@cplProduct.Data.ProductNo">
+                        <div class="home-host-top clearfix">
+                            <div class="home-host-num">
+                                <ul class="home-host-list clearfix">
+                                    <li class="percent">
+                                        <i class="orange">@CatHelper.GetYieldString(cplProduct.Data.Yield)%</i>
+                                    </li>
+                                    <li class="day">
+                                        <span class="cpl-day"><i class="orange">@cplProduct.Data.Period</i>天</span>
+                                    </li>
+                                    <li class="start">
+                                        <div class="cpl-start-list">
+                                            <p><i>@cplProduct.Data.UnitPrice</i>元起投</p>
+                                            <p><i>@cplFinancingPrice</i>万</p>
+                                            <p>@CatHelper.GetValueDate_list(cplProduct.Data)</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="home-host-side">
+                                <div class="home-host-blank">
+                                    <p>担保方式：<i>@CatHelper.GetGuaranteeMode(cplProduct.Data.GuaranteeMode)</i></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="home-host-bot clearfix">
+                            <div class="host-bot-process">
+                                <div class="amp-process host-porcess-wrap">
+                                    <span class="percent"><em style="width: @cplProduct.Data.PaidPercent%;"></em></span>
+                                    <span class="text"><b>@cplProduct.Data.PaidPercent</b>%</span>
+                                </div>
+                            </div>
+                            <div class="host-hot-once">
+                                <div class="hot-once-hot">立即抢购</div>
+                            </div>
+                        </div>
+                    </a>
+                }
+                else if (cplProduct.Data.ShowingStatus > 30)
+                {
+                    // 售罄 40
+                    <a class="home-cpl-host home-cpl-over" target="_blank" href="/cpl/detail?id=@cplProduct.Data.ProductNo">
+                        <div class="home-host-top clearfix">
+                            <div class="home-host-num">
+                                <ul class="home-host-list clearfix">
+                                    <li class="percent">
+                                        <i class="orange">@CatHelper.GetYieldString(cplProduct.Data.Yield)%</i>
+                                    </li>
+                                    <li class="day">
+                                        <span class="cpl-day"><i class="orange">@cplProduct.Data.Period</i>天</span>
+                                    </li>
+                                    <li class="start">
+                                        <div class="cpl-start-list">
+                                            <p><i>@cplProduct.Data.UnitPrice</i>元起投</p>
+                                            <p><i>@cplFinancingPrice</i>万</p>
+                                            <p>@CatHelper.GetValueDate_list(cplProduct.Data)</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="home-host-side">
+                                <div class="home-host-blank">
+                                    <p>担保方式：<i>@CatHelper.GetGuaranteeMode(cplProduct.Data.GuaranteeMode)</i></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="home-host-bot clearfix">
+                            <div class="host-bot-process">
+                                <div class="amp-process host-porcess-wrap">
+                                    <span class="percent"><em style="width: @cplProduct.Data.PaidPercent%;"></em></span>
+                                    <span class="text"><b>@cplProduct.Data.PaidPercent</b>%</span>
+                                </div>
+                            </div>
+                            <div class="host-hot-once">
+                                <div class="hot-once-hot">已售罄</div>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+        <!--/cpl-->
+    }
+</div>
+<div id="flash_mid_sub" class="home-banner-2 wrap-home">
+    <div class="flashLine">
+        <div class="flash">
+            <a class="prev" href="javascript:;"></a>
+            <a class="next" href="javascript:;"></a>
+            <div id="flash_sub_2" class="flash_bar">
+            </div>
+        </div>
+    </div>
+</div>
+<!--/banner2-->
+<div class="home-container-2 wrap-home">
+    <div class="home-about home-items">
+        <div class="home-items-title">
+            <h1>关于金银猫</h1>
+            <a class="home-items-views home-items-more" target="_blank" href="http://source.jinyinmao.com.cn/">查看更多<i>&gt;&gt;</i></a>
+        </div>
+        <div class="home-items-main">
+            <ul class="home-about-list clearfix">
+                <li>
+                    <div class="home-about-title"><img src="/static/images/home/home-about-1.png" alt=""></div>
+                    <div class="home-about-info">
+                        <p>银行承兑</p>
+                        <p>本息安全</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="home-about-title"><img src="/static/images/home/home-about-2.png" alt="商票贷"></div>
+                    <div class="home-about-info">
+                        <p>全国首推</p>
+                        <p>高年利率</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="home-about-title"><img src="/static/images/home/home-about-3.png" alt="金银e家"></div>
+                    <div class="home-about-info">
+                        <p>线下网点</p>
+                        <p>便捷亲民</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--/about-->
+    <div class="home-news home-items">
+        <div class="home-items-title">
+            <h1>喵喵新闻</h1>
+            <a class="home-items-views home-items-more" target="_blank" href="http://source.jinyinmao.com.cn/news/mdta/">查看更多<i>&gt;&gt;</i></a>
+        </div>
+        <div class="home-items-main">
+            <div class="home-news-act">
+                <ul id="homeState" class="home-news-list"></ul>
+            </div>
+            <div class="home-news-refet">
+                <ul id="homeMsg" class="home-news-list"></ul>
+            </div>
+        </div>
+    </div>
+    <!--/news-->
+</div>

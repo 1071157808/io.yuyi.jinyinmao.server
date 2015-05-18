@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "找回支付密码";
+}
+@section PageScript {
+    <script src="/static/js/passport/common.js"></script>
+    <script src="/static/js/passport/index.js"></script>
+    <script>
+    Zepto(function(){ zim.passport.PaymentRender() });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div class="jqm-account-view" id="jqm-payment-mobile"></div>
+</div>
+<script type="text/tpl" id="jqm-tpl-mobile">
+<h5>发送短信验证码至您的注册手机号<br><%=Cellphone%></h5>
+<div class="jqm-wrapper"><button class="ui-action ui-btn1" data-action="reset-payment-pwd1">发送</button></div>
+</script>

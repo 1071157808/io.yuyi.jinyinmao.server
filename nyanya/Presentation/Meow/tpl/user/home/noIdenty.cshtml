@@ -1,0 +1,7 @@
+﻿<% var url = User.HasSetPaymentPassword ? '/user/yilian/identity' : '/user/yilian/password'; %>
+<div class="jqm-no-Identy">
+    <strong>用户：<%=User.Cellphone%></strong>
+    <h2>对不起，您还没有开通快捷支付</h2>
+    <p>开通快捷支付后才可进行购买！</p>
+    <div class="jqm-wrapper"><button class="ui-action ui-btn1" data-href="<%=url%>">马上开通</button></div>
+</div>

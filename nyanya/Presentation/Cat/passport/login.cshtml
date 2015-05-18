@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/_layout/passport/_SiteMain.cshtml";
+    PageData["Title"] = "金银猫 - 大金融心服务 - 个人登录";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/passport/login.js'></script>");
+    dynamic loginInfo = Request.GetData("/UserInfo/Login");
+    string backUrl = CatHelper.Request("backUrl", "/user/index");
+    if (loginInfo.Data.Valid == true)
+    {
+        Response.Redirect("~/user/index");
+    }
+    string cat_status = "";
+    string xy_status = "display:none";
+    string mobile = CatHelper.Request("mobile");
+    if(CatHelper.Request("action") == "xy"){
+        xy_status = "";
+        cat_status = "display:none";
+    }
+}
+@section PageStyle {
+    <link rel="stylesheet" href="/static/css/login.css" />
+    <script> var _backUrl = "@backUrl"; </script>
+}
+<div class="login-major-inner">
+    <div class="login-major-one" id="cat-login-span" style="@cat_status">
+        <div class="login-major-title"><h1>个人登录</h1></div>
+        <div class="login-major-content">
+            <ul class="login-major-list">
+                <li>
+                    <input class="login-input-text login-user-icon" type="text" placeholder="请输入手机号" id="username" value="@mobile" />
+                    <span class="login-error" style="display: none"></span>
+                    <span class="login-info" style="display: none"></span>
+                </li>
+                <li>
+                    <input class="login-input-text login-pwd-icon" placeholder="请输入密码" type="password" id="password" />
+                    <span class="login-error" style="display: none"></span>
+                    <span class="login-info" style="display: none"></span>
+                    <p style="display: none;" id="capsLockHint">大写锁定已打开</p>
+                </li>
+                <li class="login-btn-li"><input type="button" class="ui-action login-btn" data-action="login-submit" value="登录" /></li>
+                <li class="gray6">
+                    <a href="/passport/reset/password1" class="forgot-pwd">忘记密码</a>
+                    <a href="/passport/register" class="once-register">立即注册 &gt;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="login-major-one" id="xy-login-span" style="@xy_status">
+        <div class="login-major-title"><h1>升级为金银猫账户</h1></div>
+        <div class="login-major-content">
+            <ul class="login-major-list">
+                <li>
+                    <input class="login-input-text login-user-icon" type="text" placeholder="兴业票注册手机号" id="xy_username" value="@mobile" />
+                    <span class="login-error" style="display: none"></span>
+                    <span class="login-info" style="display: none"></span>
+                </li>
+                <li>
+                    <input class="login-input-text login-pwd-icon" placeholder="兴业票登录密码" type="password" id="xy_password" />
+                    <span class="login-error" style="display: none"></span>
+                    <span class="login-info" style="display: none"></span>
+                </li>
+                <li style="height:auto;margin-bottom:10px;">
+                    <input type="checkbox" checked="checked" id="rd_register" />
+                    <label for="rd_register">同意</label><a target="_blank" href="http://source.jinyinmao.com.cn/deal/bala/5_1.html">《金银猫会员注册协议》</a>和<a target="_blank" href="http://source.jinyinmao.com.cn/yisi/1_1.html">《隐私政策》</a>
+                </li>
+                <li class="login-btn-li">
+                    <input type="button" class="ui-action login-btn" data-action="upgrade-submit" value="一键升级" />
+                    <a href="#" class="ui-action" data-action="xy-to-cat" style="position:absolute;white-space:nowrap;margin:8px 0 0 8px;">暂不升级</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<iframe id="frmlogin" name="frmlogin" width="1" height="1" style="position:absolute;left:-999px;top:-999px;" src="javascript:''"></iframe>

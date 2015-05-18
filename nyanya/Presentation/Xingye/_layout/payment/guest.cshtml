@@ -1,0 +1,46 @@
+﻿<div class="buy-main">
+    <div class="buy-main-inner">
+        <div class="buy-step-title clearfix">
+            <h2 class="on"><span class="step-title-num"><i>1.</i>输入手机号</span></h2>
+        </div>
+        <div class="buy-step-main buy-auth-only page-guest-only">
+            <div id="ui-msg-info" class="ui-msg"></div>
+            <ul class="buy-step-list auth-step-list">
+                <li>
+                    <label class="lab">手机号：</label>
+                    <div class="buy-plan">
+                        <input class="MsgContext common-text auth-text" id="auth-mobile" type="text" maxlength="11" />
+                    </div>
+                </li>
+                <li id="password-wrap" style="display:none">
+                    <label class="lab">登录密码：</label>
+                    <div class="buy-plan">
+                        <input class="MsgContext common-text auth-text" id="auth-password" type="password" maxlength="18" />
+                        &nbsp;&nbsp;<a id="forgot-password" class="ui-action forgot-password" data-action="reset-password" href="/passport/reset-password-1">忘记密码？</a>
+                        <div id="jymMsg" style="display:none;padding-top:5px;color:#999;"></div>
+                        <div class="phone-plan">
+                            <button class="ui-action btn-common" data-action="auth-login-checked">登录</button>
+                        </div>
+                    </div>
+                </li>
+                <li id="verifyCode-wrap" style="display:none">
+                    <label class="lab">短信校验码：</label>
+                    <div class="buy-plan">
+                        <input type="button" class="ui-action code-btn" id="getAuthCode" value="获取校验码" data-action="send-auth-code" /><input class="MsgContext common-text auth-code" id="auth-code" type="text" maxlength="6" />
+                        <div class="phone-plan">
+                            <button class="ui-action btn-common" data-action="auth-login-checked">确认</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="buy-step-title">
+            <h2><span class="step-title-num"><i>2.</i>填写支付信息</span></h2>
+        </div>
+        <div class="buy-step-main buy-confirm-only">
+        </div>
+        <div class="buy-step-title">
+            <h2><span class="step-title-num"><i>3.</i>购买成功</span></h2>
+        </div>
+    </div>
+</div>

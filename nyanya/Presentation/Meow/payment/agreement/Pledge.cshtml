@@ -1,0 +1,26 @@
+﻿@{ 
+    Layout = "~/_layout/passport/Main.cshtml";
+    Page.Title = "协议内容";
+}
+@section PageScript{
+<script>
+    Zepto(function(){
+        var id = zim.urlQuery('id');
+        var api = zim.api.agreement.Pledge;
+        zim.sync({
+            url:api,
+            data:{id:id},
+            success:function(d){
+                $('#agreementContent').html(d.Content);
+            }
+        });
+    });
+</script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<style>#agreementContent{padding:1em;font-size:14px;line-height:1.5;}</style>
+<div class="ui-content">
+    <div class="list-content" id="agreementContent">
+        
+    </div>
+</div>

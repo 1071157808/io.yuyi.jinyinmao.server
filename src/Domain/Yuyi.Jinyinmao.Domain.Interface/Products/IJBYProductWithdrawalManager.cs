@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  12:55 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:30 AM
+// Last Modified On : 2015-05-18  2:01 PM
 // ***********************************************************************
 // <copyright file="IJBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,6 +27,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info);
+        Task<int?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info);
     }
 }

@@ -1,0 +1,18 @@
+﻿@{
+    int i = Page.StepIndex ?? 1;
+}
+@functions{
+
+    public static string StepChk(int stepIndex, int chkIndex)
+    {
+        return stepIndex == chkIndex ? "current" : "";
+    }
+
+}<div class="ctt-identity-step">
+     <ul class="clearfix">
+         <li class="start @StepChk(i, 1)"><span>设定支付密码</span></li>
+         <li class="@StepChk(i, 2)"><span>确认身份信息</span></li>
+         <li class="@StepChk(i, 3)"><span>绑定银行卡</span></li>
+         <li class="@StepChk(i, 4)"><span>提交审核</span></li>
+     </ul>
+ </div>

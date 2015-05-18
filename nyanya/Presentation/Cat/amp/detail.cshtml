@@ -1,0 +1,320 @@
+﻿@using System
+@{
+    Layout = "~/_layout/amp/_SiteMain.cshtml";
+    string productNo = CatHelper.Request("id");
+    NyanyaWebData proInfo = Request.GetData("/ProductInfo/BA?productNo=" + productNo);
+    if (!CatHelper.IsDataSuccess(proInfo))
+    {
+        Response.Redirect("~/amp/list");
+    }
+    string productName = CatHelper.GetProductName(proInfo.Data.ProductName, proInfo.Data.ProductNumber);
+    Page.Title = productName + " - 银企众盈 -- 金银猫";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/amp/detail.js'></script>");
+    decimal sumPrice = CatHelper.ToDecimalSafely(proInfo.Data.FinancingSum) / 10000m;
+    string serverTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+}
+@section PageStyle{
+    <link rel="stylesheet" type="text/css" href="/static/css/amp.css">
+    <script> var _server_time = "@serverTime"; </script>
+}
+<script>
+    var _productNo = "@proInfo.Data.ProductNo";
+    var _identifier = "@proInfo.Data.ProductIdentifier";
+    var _available = @proInfo.Data.AvailableShareCount;
+    var _minCount = @proInfo.Data.MinShareCount;
+    var _maxCount = @proInfo.Data.MaxShareCount;
+    var _detail = {
+        period: "@proInfo.Data.Period",
+        yield: "@proInfo.Data.Yield",
+        unit: "@proInfo.Data.UnitPrice"
+    };
+    var _paid = 0;
+    var _sum = 0;
+</script>
+<div class="site-map ui-wrapper">
+    <div class="site-map-name">
+        <a class="site-home" href="/">首页</a><i class="site-line">&gt;</i><a class="site-amp" href="/amp/list">银企众盈</a><i class="site-line">&gt;</i><a class="site-amp orange" href="/amp/detail?id=@proInfo.Data.ProductNo">项目详情</a>
+    </div>
+</div>
+<div class="amp-container wrap-txt">
+    <div class="amp-inner">
+        <div class="amp-detail-wrap">
+            <div class="amp-detail-title clearfix">
+                <h1>@productName</h1>
+                <div class="amp-project-keep"><i class="amp-project-rest">本息安全</i></div>
+            </div>
+            <div class="amp-detail-content clearfix">
+                <div class="amp-detail-info">
+                    <div class="amp-info-rate">
+                        <ul class="amp-rate-list clearfix">
+                            <li>
+                                <div class="amp-rate-title">
+                                    <h2>
+                                        投资周期<a href="#" class="qa-help">
+                                            <i></i>
+                                            <div class="ui-tip-msg">
+                                                <p>实际投资天数与各产品起息规则有关</p>
+                                                <b class="ui-tip-top"></b>
+                                            </div>
+                                        </a>
+                                    </h2>
+                                </div>
+                                <div class="amp-rate-content">
+                                    <div class="amp-rate-info"><b>@proInfo.Data.Period</b>天</div>
+                                </div>
+                            </li>
+                            <li class="year">
+                                <div class="amp-rate-title">
+                                    <h2>年化利率</h2>
+                                </div>
+                                <div class="amp-rate-content">
+                                    <div class="amp-rate-info"><b>@CatHelper.GetYieldString(proInfo.Data.Yield)%</b></div>
+                                </div>
+                            </li>
+                            <li class="last">
+                                <div class="amp-rate-title">
+                                    <h2>融资金额</h2>
+                                </div>
+                                <div class="amp-rate-content">
+                                    <div class="amp-rate-info"><b>@sumPrice</b>万</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="amp-info-add">
+                        <div class="amp-add-inner">到期由<i class="orange">@proInfo.Data.BankName</i>无条件兑付</div>
+                    </div>
+                    <div class="amp-info-min">
+                        <ul class="amp-min-list clearfix">
+                            <li>最小投资份数：<i>@proInfo.Data.MinShareCount 份</i></li>
+                            <li>起息日期：<i>@CatHelper.GetValueDate_detail(proInfo)</i></li>
+                            <li>最大投资份数：<i>@proInfo.Data.MaxShareCount 份</i></li>
+                            <li>结息日期：<i>@proInfo.Data.SettleDate.ToString("yyyy-MM-dd")</i></li>
+                            <li>投资单位：<i>@proInfo.Data.UnitPrice 元/份</i></li>
+                            <li>
+                                <a href="#" class="qa-help qa-abs">
+                                    <i></i>
+                                    <div class="ui-tip-msg">
+                                        <p>我们将在结息日后的3个工作日内<br>将本息返还至您的付款银行卡中</p>
+                                        <b class="ui-tip-top"></b>
+                                    </div>
+                                </a>最迟还款日：<i>@proInfo.Data.RepaymentDeadline.ToString("yyyy-MM-dd")</i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                @if (proInfo.Data.ShowingStatus == 30)
+                {
+                    <div class="amp-detail-reduce amp-buy-wrap">
+                        <div class="amp-reduce-inner">
+                            <div class="amp-reduce-num clearfix">
+                                <div class="amp-reduce-part">剩余份额：<b>@proInfo.Data.AvailableShareCount</b>份</div>
+                                <div class="amp-reduce-refresh"><a class="ui-action amp-refresh" href="#" data-action="refreshShareCount">刷新</a></div>
+                            </div>
+                            <div class="amp-reduce-progress clearfix">
+                                <span class="percent"><em style="width: 0%;" data-value="@proInfo.Data.PaidPercent"></em></span>
+                                <span class="text"><b>@proInfo.Data.PaidPercent</b>%</span>
+                            </div>
+                            <div class="amp-invest-wrap">投资份额 <span class="all-choice"><input type="checkbox" id="pay-all" /><label class="lab" for="pay-all">全选</label></span></div>
+                            <script>require(['jym1118'], function(o){ o.gift1000.setDetailStatus('.amp-invest-wrap') })</script>
+                            <div class="amp-input-wrap">
+                                <input class="amp-detail-input" maxlength="9" type="text" id="paymentCount" placeholder="每份 @proInfo.Data.UnitPrice 元" data-fixholder="false" />
+                                <i class="amp-invest-unit">份</i>
+                            </div>
+                            <ul class="amp-money-list">
+                                <li><label class="lab" for="">投资金额：</label><span class="money"><i id="p-pay">0.00</i>元</span></li>
+                                <li>
+                                    <label class="lab" for="">
+                                        <a href="#" class="qa-help qa-abs">
+                                            <i></i>
+                                            <div class="ui-tip-msg">
+                                                <p>投资金额 X 年化利率 X 实际投资天数 / 360</p>
+                                                <b class="ui-tip-top"></b>
+                                            </div>
+                                        </a>预期收益：
+                                    </label><span class="money"><i id="p-inp">0.00</i>元</span>
+                                </li>
+                            </ul>
+                            <div class="amp-once-wrap">
+                                <button class="ui-action btn btn-common btn-block" data-action="GotoPayment">立即抢购</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (proInfo.Data.ShowingStatus < 30)
+                {
+                    <div class="amp-detail-reduce">
+                        <div class="amp-reduce-inner">
+                            <div class="amp-reduce-num">剩余份额：<b>@proInfo.Data.AvailableShareCount</b>份</div>
+                            <div class="amp-reduce-progress clearfix">
+                                <span class="percent"><em style="width: 0%;" data-value="@proInfo.Data.PaidPercent"></em></span>
+                                <span class="text"><b>@proInfo.Data.PaidPercent</b>%</span>
+                            </div>
+                            <div class="amp-invest-wrap">投资份额 <span class="all-choice"><input type="checkbox" id="pay-all" /><label class="lab" for="pay-all">全选</label></span></div>
+                            <script>require(['jym1118'], function(o){ o.gift1000.setDetailStatus('.amp-invest-wrap') })</script>
+                            <div class="amp-input-wrap">
+                                <input class="amp-detail-input" maxlength="9" type="text" id="paymentCount" placeholder="每份 @proInfo.Data.UnitPrice 元" data-fixholder="false" />
+                                <i class="amp-invest-unit">份</i>
+                            </div>
+                            <ul class="amp-money-list">
+                                <li><label class="lab" for="">投资金额：</label><span class="money"><i id="p-pay">0.00</i>元</span></li>
+                                <li>
+                                    <label class="lab" for="">
+                                        <a href="#" class="qa-help qa-abs">
+                                            <i></i>
+                                            <div class="ui-tip-msg">
+                                                <p>投资金额 X 年化利率 X 实际投资天数 / 360</p>
+                                                <b class="ui-tip-top"></b>
+                                            </div>
+                                        </a>预期收益：
+                                    </label><span class="money"><i id="p-inp">0.00</i>元</span>
+                                </li>
+                            </ul>
+                            <div class="amp-once-wrap">
+                                <button class="btn btn-success btn-block" id="saleOver" data-time="@proInfo.Data.StartSellTime.ToString()">即将开售</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (proInfo.Data.ShowingStatus == 40)
+                {
+                    <div class="amp-detail-reduce">
+                        <div class="amp-reduce-inner amp-finish-wrap">
+                            <div class="amp-reduce-num">剩余份额：<b>0</b>份</div>
+                            <div class="amp-reduce-progress clearfix">
+                                <span class="percent"><em style="width: 0%;" data-value="@proInfo.Data.PaidPercent"></em></span>
+                                <span class="text"><b>@proInfo.Data.PaidPercent</b>%</span>
+                            </div>
+                            <div class="amp-invest-wrap">投资份额 <span class="all-choice"><input type="checkbox" id="pay-all" /><label class="lab" for="pay-all">全选</label></span></div>
+                            <div class="amp-input-wrap">
+                                <input class="amp-detail-input" maxlength="9" type="text" id="paymentCount" placeholder="每份 @proInfo.Data.UnitPrice 元" data-fixholder="false" />
+                                <i class="amp-invest-unit">份</i>
+                            </div>
+                            <ul class="amp-money-list">
+                                <li><label class="lab" for="">投资金额：</label><span class="money"><i id="p-pay">0.00</i>元</span></li>
+                                <li>
+                                    <label class="lab" for="">
+                                        <a href="#" class="qa-help qa-abs">
+                                            <i></i>
+                                            <div class="ui-tip-msg">
+                                                <p>投资金额 X 年化利率 X 实际投资天数 / 360</p>
+                                                <b class="ui-tip-top"></b>
+                                            </div>
+                                        </a>预期收益：
+                                    </label><span class="money"><i id="p-inp">0.00</i>元</span>
+                                </li>
+                            </ul>
+                            <div class="amp-once-wrap">
+                                <button class="btn btn-block">已售罄</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (proInfo.Data.ShowingStatus == 50)
+                {
+                    <div class="amp-detail-reduce">
+                        <div class="amp-project-finish"><i></i></div>
+                    </div>
+                }
+                else
+                {
+                    <div class="amp-detail-reduce">
+                        <div class="amp-project-finish"><i></i></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="amp-tab-wrap">
+        <div class="amp-tab-title">
+            <ul class="amp-tab-list clearfix">
+                <li><a href="#" class="ui-action" data-action="change-tabs" data-tab="amp-tab1">担保物</a></li>
+                <li class="on"><a href="#" class="ui-action" data-action="change-tabs" data-tab="amp-tab2">融资详情</a></li>
+                <li><a href="#" class="ui-action" data-action="change-tabs" data-tab="amp-tab3">“银企众盈”产品说明</a></li>
+            </ul>
+        </div>
+        <div class="amp-tab-content">
+            <div class="amp-tab-items" id="amp-tab2">
+                <div class="amp-pay-check">
+                    <table class="amp-pay-tab">
+                        <thead>
+                            <tr><td>审核项目</td><th>已审核</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>企业名称</td>
+                                <th><i class="pay-check-ok"></i></th>
+                                @*<th>@proInfo.Data.EnterpriseName</th>*@
+                            </tr>
+                            <tr>
+                                <td>营业执照</td>
+                                <th><i class="pay-check-ok"></i></th>
+                                @*<th>@proInfo.Data.BusinessLicense</th>*@
+                            </tr>
+                            <tr>
+                                <td>融资方经营场所实地认证</td>
+                                <th><i class="pay-check-ok"></i></th>
+                            </tr>
+                            <tr>
+                                <td>基本账户开户许可证</td>
+                                <th><i class="pay-check-ok"></i></th>
+                            </tr>
+                            <tr>
+                                <td>税务登记证</td>
+                                <th><i class="pay-check-ok"></i></th>
+                            </tr>
+                            <tr>
+                                <td>组织机构代码证</td>
+                                <th><i class="pay-check-ok"></i></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<textarea style="display: none" id="tpl-amp-tab1">
+    <div class="amp-tab-items" id="amp-tab1">
+        <img src="@proInfo.Data.EndorseImageLink" />
+    </div>
+</textarea>
+<textarea style="display: none" id="tpl-amp-tab3">
+    <div class="amp-tab-items" id="amp-tab3">
+        <img src="/static/images/amp/note1.png" />
+        <img src="/static/images/amp/note2.png" />
+        <img src="/static/images/amp/note3-1.png" />
+        <img src="/static/images/amp/note4.png" />
+        <img src="/static/images/amp/note5.png" />
+        <dl class="tab-qa">
+            <dt><img src="/static/images/cpl/qa.png"></dt>
+            <dt class="first">1.什么是银行承兑汇票？</dt>
+            <dd>银行承兑汇票是由银行开具的到期兑付的书面凭证。根据《票据法》第七十三条规定：银行承兑汇票由银行承兑，银行承诺到期后会无条件兑付该票据金额给予该银承的所有人。在金银猫的银企众盈模式中，银承作为担保财产之一，在借款人不能按期清偿的情况下，抵押权人可以通过行使抵押权，实现权利。</dd>
+            <dt>2.什么是电子银行承兑汇票</dt>
+            <dd>是出票人以数据电文形式制作的银行承兑汇票，委托承兑行在指定日期无条件支付确定的金额给收款人或者持票人的票据。</dd>
+            <dt>3.电子银行承兑汇票与纸质银行承兑汇票的区别</dt>
+            <dd>a) 电子银行承兑汇票所体现的票据权利义务关系与纸质银行承兑汇票没有区别；</dd>
+            <dd>b) 电子银行承兑汇票以数据电文形式签发、流转，方便快捷，客户依据网上银行为实现渠道，降低企业结算成本、提升结算效率；</dd>
+            <dd>c) 电子银行承兑汇票以电子签名取代纸质银行承兑汇票的实体签章，所以无假票、克隆票、瑕疵票、遗失等风险；</dd>
+            <dd>d) 电子银行承兑汇票付款期限最长为一年，而纸质银行承兑汇票付款期限最长为半年。</dd>
+            <dt>4.什么叫无条件兑付？</dt>
+            <dd>根据《票据法》相关规定：商业汇票是出票人签发的，委托付款人在指定日期无条件支付确定的金额给收款人或者持票人的票据。在金银猫的银企众盈模式中，该票据是银行承兑汇票，所以根据该条文规定，由银行无条件兑付。票据到期后，银行将按照票据金额无条件支付给该票据的所有人。</dd>
+            <dt>5.银企众盈项目安全吗？</dt>
+            <dd>安全，企业以自有资产及合法持有的银行承兑汇票做抵押担保，银行到期无条件兑付该银行承兑汇票，资金有保障。</dd>
+            <dt>6.项目没有募集成功怎么办？</dt>
+            <dd>金银猫通知易联将已收到的资金按原路径返还给投资人。</dd>
+            <dt>7.银行承兑汇票由谁验真伪？</dt>
+            <dd>银行。</dd>
+            <dt>8.票据由谁保管？</dt>
+            <dd>银行，金银猫和银行签订托管协议，将所有平台上所涉及的票据都保管在该银行。</dd>
+            <dt>9.到期以后，票据如何抵押权？</dt>
+            <dd>投资人委托金银猫将票据交由银行托收解付，再将解付款打入第三方支付的账户，再由第三方支付将款项还给投资人。</dd>
+            <dt>10.资金如何给到企业？</dt>
+            <dd>融资成功后，金银猫将通知易联将资金统一给到融资企业。</dd>
+            <dt>11.融资企业是票据上的哪家？</dt>
+            <dd>最后一手背书人。</dd>
+            <dt>12.到期以后多少天能收到回款？</dt>
+            <dd>到期日后三个工作日。</dd>
+        </dl>
+    </div>
+</textarea>

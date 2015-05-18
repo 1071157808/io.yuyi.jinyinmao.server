@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/_layout/agreement/_SiteMain.cshtml";
+    Page.Title = "委托协议";
+    string id = CatHelper.Request("id");
+    dynamic consignment = Request.GetData("/ProductInfo/ConsignmentAgreement?productIdentifier=" + id);
+    if (CatHelper.IsDataSuccess(consignment))
+    {
+        @Html.Raw(consignment.Data.Content)
+    }
+}

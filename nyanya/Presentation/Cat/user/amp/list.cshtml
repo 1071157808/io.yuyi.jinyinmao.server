@@ -1,0 +1,99 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "订单列表 -- 银企众盈";
+    dynamic userInfo = this.Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    bool hasData = false;
+}
+@section RequireCallback{
+    require(['jquery'], function($){
+        var obj = $('#sortMode').change(function(){
+            var url = location.href, val = obj.val();
+            if(/[\?|\&](sort=[^\&]+)/.test(url)){
+                url = url.replace(RegExp.$1, 'sort=' + val);
+            } else {
+                url = url + (url.indexOf("?") == -1 ? "?sort=" : "&sort=") + val;
+            }
+            location.href = url;
+        });
+    });
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "amp" })
+<div class="content">
+    <div class="ctt-block page-amp-list">
+        <h3 class="ctt-head"><span>银企众盈</span></h3>
+        <ul class="ctt-tabs">
+            <li class="first current"><a href="/user/amp/list">成功订单</a></li>
+            <li><a href="/user/amp/fail">失败订单</a></li>
+        </ul>
+        @{
+            string pageIndex = CatHelper.Request("page", "1");
+            string sortMode = CatHelper.Request("sort", "1");
+            string api = string.Format("/Orders/BA?pageIndex={0}&sortMode={1}", pageIndex, sortMode);
+            dynamic orders = Request.GetData(api);
+            int iPageCount = 1;
+            <table class="ctt-table">
+                <thead>
+                    <tr>
+                        <td>订单号</td>
+                        <td>项目名称</td>
+                        <td>
+                            <select id="sortMode">
+                                @if (sortMode == "1")
+                                {
+                                    <option value="1" selected="selected">下单时间</option>
+                                } else {
+                                    <option value="1">下单时间</option>
+                                }
+                                @if (sortMode == "2")
+                                {
+                                    <option value="2" selected="selected">结息日期</option>
+                                } else {
+                                    <option value="2">结息日期</option>
+                                }
+                            </select>
+                        </td>
+                        <td>订单金额</td>
+                        <td>订单状态</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (CatHelper.IsDataSuccess(orders))
+                    {
+                        iPageCount = orders.Data.TotalPageCount;
+                        foreach (dynamic o in orders.Data.Orders)
+                        {
+                            hasData = true;
+                            <tr>
+                                <td><a href="/user/amp/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                                <td><a target="_blank" href="/amp/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                                @if (sortMode == "1"){
+                                    <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                } else if(sortMode == "2"){
+                                    <td>@o.SettleDate.ToString("yyyy-MM-dd")</td>
+                                } else {
+                                    <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                }
+                                <td>@o.Principal 元</td>
+                                @if(o.ShowingStatus == 30){
+                                    <td><em>@CatHelper.GetOrderShowingStatus(o.ShowingStatus)</em></td>
+                                } else if(o.ShowingStatus == 10){
+                                    <td><i>@CatHelper.GetOrderShowingStatus(o.ShowingStatus)</i></td>
+                                }else{
+                                    <td>@CatHelper.GetOrderShowingStatus(o.ShowingStatus)</td>
+                                }
+                            </tr>
+                        }
+                    }
+                    @if(hasData == false) {
+                        <tr>
+                             <td colspan="6" class="no-order">您目前没有投资过银行理财的产品，<a href="/" target="_blank">看看产品吧</a></td>            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @RenderPage("~/_layout/base/_Pager.cshtml", new { Length = iPageCount })
+        }
+    </div>
+</div>

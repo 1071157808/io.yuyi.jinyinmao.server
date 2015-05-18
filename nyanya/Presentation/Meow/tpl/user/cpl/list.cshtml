@@ -1,0 +1,28 @@
+﻿<%
+    var i = 0, len = Orders.length, o = null;
+    if(len>0){
+        for(;i<len;i++){
+        o = Orders[i];
+%>
+<li>
+    <div class="jqm-index-funds">
+        <a href="/user/cpl/detail?id=<%=o.OrderIdentifier%>">
+            <div class="funds-block">
+                <label>订单金额</label>
+                <strong><%=o.Principal%><samp>元</samp></strong>
+                <% if(o.ExtraInterest > 0){ %>
+                <span>预期收益:<em><%=zim.autoFixed(o.Interest)%><samp>元</samp></em><em>(+<%=zim.autoFixed(o.ExtraInterest)%><samp>元</samp>)</em></span>
+                <% } else { %>
+                <span>预期收益:<em><%=zim.autoFixed(o.Interest)%><samp>元</samp></em></span>
+                <% } %>
+                <ins><%=o.OrderTime.split('T').join(' ')%></ins>
+                <del><%=zim.page.getOrderStatus(o.ShowingStatus)%></del>
+            </div>
+        </a>
+        <div class="income-block">订单号: <%=o.OrderNo%></div>
+    </div>
+</li>
+        <% }
+    } else { %>
+<li class="no-orders"><p>您还没有下过订单哦！<br>去看看我们超给力的产品吧！</p><button class="ui-action ui-btn2" data-href="/cpl/list">查看产品列表</button></li>
+    <% } %>

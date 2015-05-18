@@ -1,0 +1,9 @@
+﻿@{
+    if (!Request.IsSecureConnection){
+        string redirectUrl = "https://m.jinyinmao.com.cn";
+        if (Request.Url != null){
+            redirectUrl = Request.Url.ToString().Replace("http:", "https:");
+        }
+        Response.Redirect(redirectUrl);
+    }
+}@RenderBody()

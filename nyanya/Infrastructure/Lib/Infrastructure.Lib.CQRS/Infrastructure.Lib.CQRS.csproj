@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AF0E692D-BFFC-42B3-82CE-B6BEAC66308F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Infrastructure.Lib.CQRS</RootNamespace>
+    <AssemblyName>Infrastructure.Lib.CQRS</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\..\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper">
+      <HintPath>..\..\..\packages\Dapper.1.27\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling">
+      <HintPath>..\..\..\packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8\Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\packages\MySql.Data.6.8.3\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.1.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\App.cs" />
+    <Compile Include="Application\AppInitEventArgs.cs" />
+    <Compile Include="Application\AppRuntime.cs" />
+    <Compile Include="Application\IApp.cs" />
+    <Compile Include="Bus\IBus.cs" />
+    <Compile Include="Bus\ICommand.cs" />
+    <Compile Include="Bus\ICommandBus.cs" />
+    <Compile Include="Bus\IEvent.cs" />
+    <Compile Include="Bus\IEventBus.cs" />
+    <Compile Include="Bus\ILocalBus.cs" />
+    <Compile Include="Bus\IMessage.cs" />
+    <Compile Include="Bus\Implementation\CommandBus.cs" />
+    <Compile Include="Bus\Implementation\EventBus.cs" />
+    <Compile Include="Config\CommandHandlerElement.cs" />
+    <Compile Include="Config\ConfigException.cs" />
+    <Compile Include="Config\ConfigSection.cs" />
+    <Compile Include="Config\ConfigSource.cs" />
+    <Compile Include="Config\CQRSConfigration.cs" />
+    <Compile Include="Config\EventHandlerElement.cs" />
+    <Compile Include="Config\HandlerElement.cs" />
+    <Compile Include="Config\HandlerElementCollection.cs" />
+    <Compile Include="Config\IConfigSource.cs" />
+    <Compile Include="Config\LogSection.cs" />
+    <Compile Include="DefaultServices.cs" />
+    <Compile Include="DisposableObject.cs" />
+    <Compile Include="EmptyResolver.cs" />
+    <Compile Include="Exceptions\CommandExcuteException.cs" />
+    <Compile Include="MessageLogs\CommandLog.cs" />
+    <Compile Include="MessageLogs\EventLog.cs" />
+    <Compile Include="MessageLogs\EventLogStore.cs" />
+    <Compile Include="MessageLogs\ICommandLogStore.cs" />
+    <Compile Include="MessageLogs\IMessageLog.cs" />
+    <Compile Include="MessageLogs\IMessageLogStore.cs" />
+    <Compile Include="MessageLogs\CommandLogStore.cs" />
+    <Compile Include="Exceptions\UnexpectedCodePathException.cs" />
+    <Compile Include="Interception\AdditionalInterfaceToProxyAttribute.cs" />
+    <Compile Include="Interception\BaseTypeForInterfaceProxyAttribute.cs" />
+    <Compile Include="Interception\InterceptorSelector.cs" />
+    <Compile Include="IObjectContainer.cs" />
+    <Compile Include="IServiceLocator.cs" />
+    <Compile Include="IServiceRegister.cs" />
+    <Compile Include="Log\ILogger.cs" />
+    <Compile Include="Log\Implementation\NLogger.cs" />
+    <Compile Include="MessageLogs\MessageLog.cs" />
+    <Compile Include="MessageLogs\MessageLogStore.cs" />
+    <Compile Include="Messages\ICommandDispatcher.cs" />
+    <Compile Include="Messages\ICommandHandler.cs" />
+    <Compile Include="Messages\IEventDispatcher.cs" />
+    <Compile Include="Messages\IEventHandler.cs" />
+    <Compile Include="Messages\IHandler.cs" />
+    <Compile Include="Messages\IMessageDispatcher.cs" />
+    <Compile Include="Messages\IMessageDispatcherEventHandler.cs" />
+    <Compile Include="Messages\Implementation\CommandDispatcher.cs" />
+    <Compile Include="Messages\Implementation\CommandHandlerBase.cs" />
+    <Compile Include="Messages\Implementation\EventDispatcher.cs" />
+    <Compile Include="Messages\Implementation\EventHandlerBase.cs" />
+    <Compile Include="Messages\Implementation\MessageDispatcher.cs" />
+    <Compile Include="Messages\Implementation\MessageDispatcherEventHandler.cs" />
+    <Compile Include="Messages\MessageDispatchEventArgs.cs" />
+    <Compile Include="Messages\RegisterCommandDispatchAttribute.cs" />
+    <Compile Include="Messages\RegisterDispatchAttribute.cs" />
+    <Compile Include="Messages\RegisterEventDispatchAttribute.cs" />
+    <Compile Include="ObjectContainer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EnterpriseLibrary\Infrastructure.EL.TransientFaultHandling\Infrastructure.EL.TransientFaultHandling.csproj">
+      <Project>{8B22DA28-97A9-4F59-A07C-768813B3A54E}</Project>
+      <Name>Infrastructure.EL.TransientFaultHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Lib\Infrastructure.Lib.csproj">
+      <Project>{C4B983E3-1506-4F1E-9615-8E863E864336}</Project>
+      <Name>Infrastructure.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

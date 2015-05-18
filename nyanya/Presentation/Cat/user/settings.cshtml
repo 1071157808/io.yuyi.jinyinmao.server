@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "安全设置";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+}
+@section RequireCallback{
+    var cellPhone = @userInfo.Data.Cellphone ;
+    require(['jym', 'dialog'], function(jym, dialog){
+    jym.action.extend({
+    "setPaymentPassword":function(){
+    dialog.confirm.show({
+    btnOk:'立即开通',
+    btnCancel:'取消',
+    msg:'您还未开通快捷支付，暂时无法使用此功能。',
+    callback:function(t){
+    if(t){ location.href = "/bankcard/setPassword"; }
+    }
+    });
+    }
+    });
+    });
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "settings" })
+<div class="content">
+    <div class="ctt-block page-settings">
+        <h3 class="ctt-head"><span>安全设置</span></h3>
+        <div class="ctt-rows">
+            <h5>登录密码</h5>
+            <p class="rds10">密码为6~18位，支持数字，字母，区分大小写。</p>
+            <a href="/passport/reset/password1">重置</a>
+        </div>
+        <div class="ctt-rows">
+            <h5>支付密码</h5>
+            <p class="rds10">建议支付密码与登录密码不相同！<br>建议支付密码采用字母+数字+符号的混合式密码，且长度为8~18位。</p>
+            @if (userInfo.Data.Verified == true && userInfo.Data.HasSetPaymentPassword == true)
+            {
+                <a href="/user/reset/payment/validCode">重置</a>
+            }
+            else
+            {
+                <a href="#" class="ui-action" data-action="setPaymentPassword">重置</a>
+            }
+        </div>
+    </div>
+</div>

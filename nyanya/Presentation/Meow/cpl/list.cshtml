@@ -1,0 +1,20 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "商票贷";
+}
+@section PageScript {
+    <script src="/static/js/home/amp.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.list.init('cpl');
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header.cshtml", new{ NavMenu = "cpl" })
+<div id="jqm-product-list" class="ui-content">
+    <ul id="jqm-list-products" class="ui-listview"><!--tpl--></ul>
+</div>
+<!-- tpl -->
+<script type="text/tpl" id="jqm-tpl-products">
+@RenderPage("~/tpl/cpl/list.cshtml")
+</script>

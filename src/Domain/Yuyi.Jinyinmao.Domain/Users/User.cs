@@ -783,8 +783,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task WithdrawalResultedAsync(Guid transcationId)
         {
-            Transcation transcation = this.State.SettleAccount.FirstOrDefault(t => t.TransactionId == transcationId);
-            if (transcation == null || transcation.ResultCode != 0 || transcation.TradeCode != TradeCodeHelper.TC1005052001)
+            SettleAccountTranscation transcation;
+            if (!this.State.SettleAccount.TryGetValue(transcationId, out transcation))
+            {
+                return;
+            }
+
+            if (transcation.ResultCode != 0 || transcation.TradeCode != TradeCodeHelper.TC1005052001)
             {
                 return;
             }
@@ -796,7 +801,7 @@ namespace Yuyi.Jinyinmao.Domain
             await this.State.WriteStateAsync();
             this.ReloadSettleAccountData();
 
-            await this.RaiseWithdrawalResultedEvent(transcation);
+            await this.RaiseWithdrawalResultedEvent(transcation.ToInfo(this.State.BankCards[transcation.BankCardNo].ToInfo()));
         }
 
         /// <summary>
@@ -968,7 +973,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.ReloadSettleAccountData();
                 this.ReloadJBYAccountData();
 
-                await this.RaiseJBYPurchasedEvent(command, jbyTranscation.ToInfo(), settleTranscation.ToInfo());
+                await this.RaiseJBYPurchasedEvent(command, jbyTranscation.ToInfo(), settleTranscation.ToInfo(null));
 
                 return jbyTranscation.ToInfo();
             }
@@ -983,19 +988,20 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public async Task<TranscationInfo> WithdrawalAsync(Withdrawal command)
+        public async Task<SettleAccountTranscationInfo> WithdrawalAsync(Withdrawal command)
         {
             if (!this.State.Verified)
             {
                 return null;
             }
 
-            if (!this.BankCards.ContainsKey(command.BankCardNo))
+            BankCard card;
+            if (!this.State.BankCards.TryGetValue(command.BankCardNo, out card))
             {
                 return null;
             }
 
-            if (this.State.SettleAccount.Any(t => t.TransactionId == command.CommandId))
+            if (this.State.SettleAccount.ContainsKey(command.CommandId))
             {
                 return null;
             }
@@ -1011,50 +1017,53 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
+            if (!info.VerifiedByYilian)
+            {
+                return null;
+            }
+
             if (this.TodayWithdrawalCount >= DailyWithdrawalLimitCount)
             {
                 return null;
             }
 
-            await this.BeginProcessCommandAsync(command);
+            this.BeginProcessCommandAsync(command).Forget();
 
-            Transcation transcation = new Transcation
+            SettleAccountTranscation transcation = new SettleAccountTranscation
             {
-                AgreementsInfo = new Dictionary<string, object>(),
                 Amount = command.Amount,
+                Args = command.Args,
                 BankCardNo = command.BankCardNo,
                 ChannelCode = ChannelCodeHelper.Yilian,
-                Info = new Dictionary<string, object>(),
                 ResultCode = 0,
                 ResultTime = null,
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005052001,
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
-                TransDesc = "取现申请"
+                TransDesc = "取现申请",
+                UserId = this.State.Id
             };
 
-            Transcation chargeTranscation = this.BuildChargeTranscation(transcation);
+            SettleAccountTranscation chargeTranscation = this.BuildChargeTranscation(command, transcation);
 
-            this.State.SettleAccount.Add(transcation);
-            this.State.SettleAccount.Add(chargeTranscation);
+            this.State.SettleAccount.Add(transcation.TransactionId, transcation);
+            this.State.SettleAccount.Add(chargeTranscation.TransactionId, chargeTranscation);
 
             await this.State.WriteStateAsync();
             this.ReloadSettleAccountData();
 
-            await this.RaiseWithdrawalAcceptedEvent(command, transcation, chargeTranscation);
+            await this.RaiseWithdrawalAcceptedEvent(command, transcation.ToInfo(card.ToInfo()), chargeTranscation.ToInfo(null));
 
-            return transcation.ToInfo();
+            return transcation.ToInfo(null);
         }
 
-        /// <summary>
-        ///     Withdrawals the asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        public async Task<TranscationInfo> WithdrawalAsync(JBYWithdrawal command)
+  
+        public async Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command)
         {
-            if (this.State.JBYAccount.Any(t => t.TransactionId == command.CommandId))
+            // TODO: 金包银的起息和赎回
+            JBYAccountTranscation transcation;
+            if (this.State.JBYAccount.TryGetValue(command.CommandId, out transcation))
             {
                 return null;
             }
@@ -1066,20 +1075,19 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.BeginProcessCommandAsync(command);
 
-            Transcation transcation = new Transcation
+            transcation = new JBYAccountTranscation
             {
-                AgreementsInfo = new Dictionary<string, object>(),
                 Amount = command.Amount,
-                BankCardNo = string.Empty,
-                ChannelCode = ChannelCodeHelper.Jinyinmao,
-                Info = new Dictionary<string, object>(),
+                Args = command.Args,
+                ProductId = Guid.NewGuid(),
                 ResultCode = 0,
                 ResultTime = null,
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005052001,
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
-                TransDesc = "赎回申请"
+                TransDesc = "赎回申请",
+                
             };
 
             IJBYProductWithdrawalManager manager = JBYProductWithdrawalManagerFactory.GetGrain(GrainTypeHelper.GetJBYProductWithdrawalManagerGrainTypeLongKey());
@@ -1096,11 +1104,12 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Builds the charge transcation.
+        /// Builds the charge transcation.
         /// </summary>
+        /// <param name="command">The command.</param>
         /// <param name="transcation">The transcation.</param>
         /// <returns>Transcation.</returns>
-        private Transcation BuildChargeTranscation(Transcation transcation)
+        private SettleAccountTranscation BuildChargeTranscation(Withdrawal command, SettleAccountTranscation transcation)
         {
             DateTime now = DateTime.UtcNow.AddHours(8);
             int chargeAmount;
@@ -1116,20 +1125,20 @@ namespace Yuyi.Jinyinmao.Domain
 
             chargeAmount = chargeAmount > WithdrawalChargeFee ? WithdrawalChargeFee : chargeAmount;
 
-            return new Transcation
+            return new SettleAccountTranscation
             {
-                AgreementsInfo = new Dictionary<string, object>(),
                 Amount = chargeAmount,
+                Args = command.Args,
                 BankCardNo = string.Empty,
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
-                Info = new Dictionary<string, object>(),
                 ResultCode = 1,
                 ResultTime = now,
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005012102,
                 TransDesc = "账户取现手续费",
                 TransactionId = Guid.NewGuid(),
-                TransactionTime = now
+                TransactionTime = now,
+                UserId = this.State.Id
             };
         }
     }

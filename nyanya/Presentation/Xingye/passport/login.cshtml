@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/_layout/passport/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行 - 登录";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/passport/login.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    string backUrl = CatHelper.Request("backUrl");
+    if(userInfo.Data.HasDefaultBankCard == true){
+        Response.Redirect("/user/index");
+    }
+}
+@section PageStyle {
+    <script> var _backUrl = "@backUrl"; </script>
+}
+<div class="main logn">
+    <div class="img-left"><img src="/static/images/passport/banner.jpg" /></div>
+    <div class="login">
+        <h2 class="public">我的兴业票</h2>
+        <div class="cont">
+            <div class="tips-content">
+                <div id="loginInfo" class="ui-login-warn"></div>
+                <div id="jymMsg" class="ui-login-warn"></div>
+            </div>
+            <p>
+                <label>手机号：</label><input type="text" id="username" maxlength="11" value="" class="infd"/>
+                <span class="login-error login-ok"></span>
+            </p>
+            <p>
+                <label id="loginPwd">登录密码：</label><input type="password" id="password" maxlength="18" value="" class="infd"/>
+                <span class="login-error login-ok"></span>
+            </p>
+            <p class="form">
+                <button class="login-btn ui-action" data-action="login-submit">登 录</button>
+            </p>
+            <p class="new-person clearfix">
+                <a class="new-user-link" href="/">新用户购买</a>
+                <a id="forgotPwd" href="/passport/reset-password-1" target="_blank" data-action="forgotPwd" class="ui-action forgot-pwd">忘记密码？</a>
+            </p>
+        </div>
+    </div>
+</div>

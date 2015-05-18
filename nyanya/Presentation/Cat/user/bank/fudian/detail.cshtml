@@ -1,0 +1,145 @@
+﻿@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    Page.Title = "订单详情 -- 银行理财";
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    string orderId = CatHelper.Request("id");
+    dynamic orderInfo = Request.GetData("/Orders?orderIdentifier=" + orderId);
+    if (!CatHelper.IsDataSuccess(orderInfo))
+    {
+        var backUrl = "~/user/bank/fudian/list";
+        if(Request.UrlReferrer != null){
+            backUrl = Request.UrlReferrer.ToString();
+        }
+        Response.Redirect(backUrl);
+    }
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "bank" })
+<div class="content">
+    <div class="ctt-block page-amp-detail">
+        <h3 class="ctt-head"><span>订单详情</span><a class="ctt-back" href="javascript:history.back(-1);">返回上一页&gt;</a></h3>
+        @if (orderInfo.Data.ShowingStatus == 50)
+        {
+            <div class="clearfix ctt-order-status">
+                <span class="ctt-ico-fail"></span>
+                <strong>购买失败</strong><br><em>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</em>
+                <b class="ctt-span-detail-p"></b>
+            </div>
+        }
+        else if (orderInfo.Data.ShowingStatus == 10)
+        {
+            <ul class="ctt-timeline-status">
+                <li class="m1">
+                    <strong>支付中</strong>
+                    <span>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                    <b class="ctt-span-detail-p"></b>
+                </li>
+                <li class="m2"><label>项目起息</label></li>
+                <li class="m3"><label>项目结息</label></li>
+            </ul>
+        }
+        else if (orderInfo.Data.ShowingStatus == 20)
+        {
+            <ul class="ctt-timeline-status ctt-timeline-s1">
+                <li class="m1">
+                    <strong>支付成功</strong>
+                    <span>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                    <b class="ctt-span-detail-p"></b>
+                </li>
+                <li class="m2">
+                    <strong>等待起息</strong>
+                    <span>@orderInfo.Data.ValueDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                </li>
+                <li class="m3"><label>项目结息</label></li>
+            </ul>
+        }
+        else if (orderInfo.Data.ShowingStatus == 30)
+        {
+            <ul class="ctt-timeline-status ctt-timeline-s2">
+                <li class="m1">
+                    <strong>支付成功</strong>
+                    <span>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                    <b class="ctt-span-detail-p"></b>
+                </li>
+                <li class="m2">
+                    <strong>项目起息</strong>
+                    <span>@orderInfo.Data.ValueDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                </li>
+                <li class="m3">
+                    <em>项目结息</em>
+                    <span>@orderInfo.Data.SettleDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                </li>
+            </ul>
+        }
+        else if (orderInfo.Data.ShowingStatus == 40)
+        {
+            <ul class="ctt-timeline-status ctt-timeline-s3">
+                <li class="m1">
+                    <strong>支付成功</strong>
+                    <span>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                    <b class="ctt-span-detail-p"></b>
+                </li>
+                <li class="m2">
+                    <strong>项目起息</strong>
+                    <span>@orderInfo.Data.ValueDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                </li>
+                <li class="m3">
+                    <strong>项目结息</strong>
+                    <span>@orderInfo.Data.SettleDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <div class="clearfix ctt-order-status">
+                <span class="ctt-ico-fail"></span>
+                <strong>购买失败</strong><br><em>@orderInfo.Data.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</em>
+                <b class="ctt-span-detail-p"></b>
+            </div>
+        }
+        <div class="rds10 p20 ctt-span-detail">
+            <h3><a target="_blank" href="/bank/fudian/detail?id=@orderInfo.Data.ProductNo">@CatHelper.GetProductName(orderInfo.Data.ProductName, orderInfo.Data.ProductNumber)</a></h3>
+            <strong>订单号：@orderInfo.Data.OrderNo</strong>
+            <p>订单金额：<em>@orderInfo.Data.Principal</em>元</p>
+            @if (orderInfo.Data.ShowingStatus == 50){
+            <p><em>失败原因：@orderInfo.Data.Message</em></p>
+            } else {
+            <p>预计收益：<em>@orderInfo.Data.Interest</em>元</p>
+            <p>支付渠道：@orderInfo.Data.BankName @CatHelper.FixBankCard(orderInfo.Data.BankCardNo)</p>
+            }
+        </div>
+        @if (orderInfo.Data.ShowingStatus == 10 || orderInfo.Data.ShowingStatus == 50)
+        {
+            <div class="ctt-grid2">
+                <div class="ctt-grid-a">项目编号</div>
+                <div class="ctt-grid-b">@orderInfo.Data.ProductNo</div>
+                <div class="ctt-grid-a">年化利率</div>
+                <div class="ctt-grid-b">@orderInfo.Data.Yield%</div>
+                <div class="ctt-grid-a">投资周期</div>
+                <div class="ctt-grid-b">@orderInfo.Data.Period 天</div>
+            </div>
+        }
+        else
+        {
+            <div class="ctt-grid2">
+                <div class="ctt-grid-a">项目编号</div>
+                <div class="ctt-grid-b">@orderInfo.Data.ProductNo</div>
+                <div class="ctt-grid-a">年化利率</div>
+                <div class="ctt-grid-b">@CatHelper.GetYieldString(orderInfo.Data.Yield)%</div>
+                <div class="ctt-grid-a">投资周期</div>
+                <div class="ctt-grid-b">@orderInfo.Data.Period 天</div>
+                <div class="ctt-grid-a">起息日期</div>
+                <div class="ctt-grid-b">@orderInfo.Data.ValueDate.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                <div class="ctt-grid-a">结息日期</div>
+                <div class="ctt-grid-b">@orderInfo.Data.SettleDate.ToString("yyyy-MM-dd HH:mm:ss")</div>
+                <div class="ctt-grid-a">最迟还款日</div>
+                <div class="ctt-grid-b">@orderInfo.Data.RepaymentDeadline.ToString("yyyy-MM-dd")</div>
+            </div>
+            <ul class="ctt-grid1">
+                <li>查看协议：<a target="_blank" href="/user/agreement/Consignment?id=@orderInfo.Data.OrderIdentifier">@orderInfo.Data.ConsignmentAgreementName</a> <a target="_blank" href="/user/agreement/Pledge?id=@orderInfo.Data.OrderIdentifier">@orderInfo.Data.PledgeAgreementName</a></li>
+                <li>抵押担保物：<a target="_blank" href="@orderInfo.Data.EndorseImageLink">查看</a></li>
+            </ul>
+        }
+        @RenderPage("~/_layout/base/_kefu.cshtml")
+    </div>
+</div>

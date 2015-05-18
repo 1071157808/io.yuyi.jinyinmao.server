@@ -1,0 +1,54 @@
+﻿@using Cat
+@{
+    Layout = "~/_layout/passport/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/passport/payment.js'></script>");
+    string mobile = CatHelper.Request("mobile");
+}
+<style>.reset-step-list .lab{width:150px;}</style>
+<div class="reset-outer reset-pwd-2">
+    <div class="reset-inner">
+        <div class="reset-title" id="resetTitle">
+            <h1>找回交易密码</h1>
+        </div>
+        <div class="reset-main">
+            @*<div id="reset-payment-password-step" class="reset-payment-password-step" style="display:none"></div>*@
+            <div id="ui-msg-info" class="ui-msg"></div>
+            <ul class="buy-step-list reset-step-list" id="reset-step-1">
+                <li>
+                    <label class="lab">默认银行卡卡号：</label>
+                    <div class="buy-plan clearfix">
+                        <input type="text" id="bankCard" maxlength="30" class="common-text auth-text">
+                        <div class="send-tips">请填写您首次绑定成功的储蓄卡卡号</div>
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">请填写持卡人证件号：</label>
+                    <div class="buy-plan clearfix">
+                        <input type="text" id="idCard" maxlength="30" class="common-text auth-text">
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">手机号：</label>
+                    <div class="buy-plan clearfix">
+                        <input type="text" id="mobile" maxlength="11" class="common-text input-min" value="@mobile">
+                    </div>
+                </li>
+                <li>
+                    <label class="lab">短信校验码：</label>
+                    <div class="buy-plan clearfix">
+                        <div class="buy-code">
+                            <input type="button" value="获取校验码" id="getCode" class="code-btn"><input type="text" maxlength="6" class="common-text auth-code" id="code">
+                        </div>
+                    </div>
+                </li>
+                <li class="btn-li">
+                    <label class="lab">&nbsp;</label>
+                    <div class="buy-plan clearfix">
+                        <button data-action="reset-payment1" id="resetBtn1" class="btn-common ui-action">下一步</button><a href="#" class="ui-action back-link" data-action="prev-page">返回上一页</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

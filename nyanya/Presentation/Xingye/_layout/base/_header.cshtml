@@ -1,0 +1,37 @@
+﻿@RenderPage("~/_layout/base/_top_nav.cshtml")
+@{
+    string navIndex = Page.navIndex ?? "";
+    dynamic notice = Request.GetData("/Notice/Public");
+}
+@functions{
+    public static string setNavIndex(string nav, string index){
+        if(nav == index){
+            return "current";
+        }
+        return "";
+    }
+}
+<div class="ui-header">
+    <div class="ui-header-l">
+        <div class="ui-header-r">
+            <div class="ui-header-c">
+                <div class="ui-header-inner ui-wrap">
+                    <div class="ui-blankname"><a title="兴业票-银行承兑汇票，到期银行无条件兑付" href="/"><img src="/static/images/base/xy-ticket.png" alt="兴业票-银行承兑汇票，到期银行无条件兑付"/></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if(CatHelper.IsDataSuccess(notice) && notice.Data.Content != ""){
+    <div class="ui-notice-wrap">
+        <div class="ui-notice ui-wrap">
+            <div class="ui-notice-outer">
+                <div class="ui-notice-pos">
+                    <div id="top-marquee" class="ui-notice-txt">@notice.Data.Content</div>
+                </div>
+                <a id="noticeHide" class="ui-notice-close" href="javascript:;"></a>
+            </div>
+        </div>
+    </div>
+}
+<!--/header-->

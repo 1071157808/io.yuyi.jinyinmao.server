@@ -1,0 +1,1797 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>nyanya.Internal</name>
+    </assembly>
+    <members>
+        <member name="T:nyanya.Internal.BundleConfig">
+            <summary>
+                BundleConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.BundleConfig.RegisterBundles(System.Web.Optimization.BundleCollection)">
+            <summary>
+                Registers the bundles.
+            </summary>
+            <param name="bundles">The bundles.</param>
+        </member>
+        <member name="T:nyanya.Internal.App_Start.CQRSConfig">
+            <summary>
+                CQRS 配置
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.App_Start.CQRSConfig.Configurate(Domian.Config.CqrsConfiguration)">
+            <summary>
+                CQRS 配置.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.App_Start.NinjectConfig">
+            <summary>
+                Ninject Configuration
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.App_Start.NinjectConfig.RegisterDependencyResolver(System.Web.Http.HttpConfiguration)">
+            <summary>
+                RegisterDependencyResolver to HttpConfiguration
+            </summary>
+            <param name="config">HttpConfiguration</param>
+        </member>
+        <member name="M:nyanya.Internal.App_Start.NinjectConfig.RegisterServices(Ninject.IKernel)">
+            <summary>
+                Registers the services.
+            </summary>
+            <param name="kernel">The kernel.</param>
+        </member>
+        <member name="T:nyanya.Internal.App_Start.WebApiConfig">
+            <summary>
+                WebApiConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.App_Start.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+                Register WebApiConfig
+            </summary>
+            <param name="config">HttpConfiguration</param>
+        </member>
+        <member name="T:nyanya.Internal.FilterConfig">
+            <summary>
+                FilterConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.FilterConfig.RegisterGlobalFilters(System.Web.Mvc.GlobalFilterCollection)">
+            <summary>
+                Registers the global filters.
+            </summary>
+            <param name="filters">The filters.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Registers the specified configuration.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+                The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.Controllers.HelpController.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Areas.HelpPage.Controllers.HelpController" /> class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.Controllers.HelpController.#ctor(System.Web.Http.HttpConfiguration)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Areas.HelpPage.Controllers.HelpController" /> class.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.Controllers.HelpController.Configuration">
+            <summary>
+                Gets the configuration.
+            </summary>
+            <value>
+                The configuration.
+            </value>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.Controllers.HelpController.Api(System.String)">
+            <summary>
+                APIs the specified API identifier.
+            </summary>
+            <param name="apiId">The API identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.Controllers.HelpController.Index">
+            <summary>
+                Indexes this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:nyanya.Internal.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,nyanya.Internal.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,nyanya.Internal.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters.
+            First, it will look at the <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create one using <see cref="T:nyanya.Internal.Areas.HelpPage.ObjectGenerator"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},nyanya.Internal.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.#ctor(nyanya.Internal.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,nyanya.Internal.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:nyanya.Internal.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.ImageSample">
+            <summary>
+                This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Areas.HelpPage.ImageSample" /> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.InvalidSample">
+            <summary>
+                This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Internal.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="T:nyanya.Internal.Controllers.CommonController">
+            <summary>
+                CommonController
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.CommonController.#ctor(Cat.Domain.Meow.Services.Interfaces.IStatisticsService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Controllers.CommonController" /> class.
+            </summary>
+            <param name="statisticsService">The statistics service.</param>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.CommonController.GetStatistics(System.Int32)">
+            <summary>
+            获取某段时间内的统计信息
+            </summary>
+            <param name="intervalTime">
+            间隔时间，以分钟计算[多少分钟内的数据 intervalTime=1440]
+            例如1440就是一天内的数据， 默认是1440 ， 取值范围【1 - 1440】之间
+            </param>
+            <returns>
+            RegisterUserNum[int]：用户注册成功数
+            SuccessLoginNum[int]：成功登录数
+            FailedLoginNum[int]：失败登录数
+            SuccessBankCardNum[int]：成功绑卡数
+            FailedBankCardNum[int]：失败绑卡数
+            SuccessOrderNum[int]：成功订单数
+            FailedOrderNum[int]：失败订单数（不包含“余额不足”）
+            OnSaleProductNum[int]：在售产品数
+            </returns>
+        </member>
+        <member name="T:nyanya.Internal.Controllers.ProductController">
+            <summary>
+                ProductController
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.#ctor(Cat.Domain.Products.Services.Interfaces.IProductService,Domian.Bus.ICommandBus,Cat.Domain.Products.Services.Interfaces.IZCBProductInfoService)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Controllers.ProductController" /> class.
+            </summary>
+            <param name="productService">The product service.</param>
+            <param name="commandBus">The command bus.</param>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.HitShelves(nyanya.Internal.Models.BAHitShelvesRequest)">
+            <summary>
+                银承产品上架
+            </summary>
+            <param name="request">
+                BankName[string]: 银行名称
+                BillNo[string]: 银票编号
+                BusinessLicense[string]: 营业执照号码
+                EndorseImageLink[string]: 票据大图链接
+                EndorseImageThumbnailLink[string]: 票据缩略图链接
+                EndSellTime[yyyy-MM-ddTHH:mm:ss]: 售卖结束时间
+                EnterpriseName[string]: 企业名称
+                ConsignmentAgreement[string]: 委托协议
+                FinancingSumCount[int]: 融资总份数
+                MaxShareCount[int]: 单笔订单最大购买份数
+                MinShareCount[int]: 单笔订单最小购买份数
+                Period[int]: 项目周期
+                PreEndSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买结束时间
+                PreStartSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买开始时间
+                PledgeAgreement[string]:担保协议
+                ProductName[string]: 产品名称
+                ProductNo[string]: 产品编号，银承产品以F开头
+                ProductNumber[int]: 产品期数
+                RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日期
+                StartSellTime[yyyy-MM-ddTHH:mm:ss]: 开售时间
+                UnitPrice[int]: 每一份的单价
+                Usage[string]: 融资用途
+                ValueDate[yyyy-MM-ddTHH:mm:ss|""]: 固定起息日期
+                ValueDateMode[int]: 起息方式 10 => 购买当天起息, 20 => 指定日期起息
+                Yield[decimal]: 收益率（保留位数为最小有效位数，即可能是7.3或者7.34）
+                SettleDate[yyyy-MM-ddTHH:mm:ss]:结息日
+                ProductCategory[int]：产品分类 10 => 金银猫产品 20 => 富滇产品 40 => 阜新产品（默认金银猫产品）
+            </param>
+            <returns>200 | 400</returns>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.HitShelves(nyanya.Internal.Models.TAHitShelvesRequest)">
+            <summary>
+                商承产品上架
+            </summary>
+            <param name="request">
+                SecuredpartyInfo[string]: 担保方信息（还款来源）
+                Securedparty[string]: 担保方
+                BillNo[string]: 编号
+                EnterpriseLicense[string]: 营业执照号码
+                EndorseImageLink[string]: 票据大图链接
+                EndorseImageThumbnailLink[string]: 票据缩略图链接
+                EndSellTime[yyyy-MM-ddTHH:mm:ss]: 售卖结束时间
+                EnterpriseName[string]: 企业名称
+                ConsignmentAgreement[string]: 委托协议
+                FinancingSumCount[int]: 融资总份数
+                MaxShareCount[int]: 单笔订单最大购买份数
+                MinShareCount[int]: 单笔订单最小购买份数
+                Period[int]: 项目周期
+                PreEndSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买结束时间
+                PreStartSellTime[yyyy-MM-ddTHH:mm:ss]: 提前购买开始时间
+                PledgeAgreement[string]:担保协议
+                ProductName[string]: 产品名称
+                ProductNo[string]: 产品编号，银承产品以F开头
+                ProductNumber[int]: 产品期数
+                RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日期
+                StartSellTime[yyyy-MM-ddTHH:mm:ss]: 开售时间
+                UnitPrice[int]: 每一份的单价
+                Usage[string]: 融资用途
+                ValueDate[yyyy-MM-ddTHH:mm:ss|""]: 固定起息日期
+                ValueDateMode[int]: 起息方式 10 => 购买当天起息, 20 => 指定日期起息
+                Yield[decimal]: 收益率（保留位数为最小有效位数，即可能是7.3或者7.34）
+                Drawee[string]：付款方
+                DraweeInfo[string]:付款方信息
+                EnterpriseInfo[string]:融资方信息
+                PledgeAgreementName[string]:担保协议题目
+                ConsignmentAgreementName[string]:委托协议题名
+                SettleDate[yyyy-MM-ddTHH:mm:ss]:结息日
+                GuaranteeMode[int]：担保方式
+                ProductCategory[int]：产品分类 10 => 金银猫产品 30 => 施秉金鼎产品 （默认金银猫产品）
+            </param>
+            <returns>200</returns>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.UnShelves(nyanya.Internal.Models.UnShelvesRequest)">
+            <summary>
+                银承产品下架
+            </summary>
+            <param name="request">
+                ProductNo[string]:产品编号，银承产品以F开头
+            </param>
+            <returns>200 | 400</returns>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.UnShelves(nyanya.Internal.Models.RepayRequest)">
+            <summary>
+                产品还款通知接口
+            </summary>
+            <param name="request">
+                ProductNo[string]:产品编号
+            </param>
+            <returns>200 | 400</returns>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.UpdateShareCountShelves(nyanya.Internal.Models.ZCBUpdateShelvesRequest)">
+            <summary>
+                更新资产包产品可售份额
+                可以更新的条件（在售卖期，份额已买完；不在售买期；没有开启售卖）
+            </summary>
+            <param name="request">
+                ProductNo[string]：产品编号(目前只有一个产品，约定产品编号为: ZCB0001)
+                ProductName[string]：产品名称
+                FinancingSumCount[int]：融资总份数
+                UnitPrice[int]：每一份的单价
+                NextStartSellTime[yyyy-MM-dd HH:mm:ss]: 下次开售时间
+                NextEndSellTime[yyyy-MM-dd HH:mm:ss]: 下次售卖结束时间
+                NextYield[decimal]: 下次售卖年化收益
+                EnableSale[int]：是否开启售卖（0否 1是）
+                PledgeAgreementName[string]:投资协议名称
+                PledgeAgreement[string]:投资协议
+                ConsignmentAgreementName[string]:授权委托书名称
+                ConsignmentAgreement[string]: 授权委托书
+                PerRemainRedeemAmount[decimal]：产品下次可取款额度
+            </param>
+            <returns>
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "有未卖完的份额或有正在购买的份额，稍后再试"
+            </returns>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.ProductController.SetZCBRedeemBillResult(nyanya.Internal.Models.ZCBRedeemBillRequest)">
+            <summary>
+               后台回款后返回结果接口
+            </summary>
+            <param name="request">
+             SN[list] : 打款成功的列表
+            </param>
+        </member>
+        <member name="T:nyanya.Internal.Controllers.YilianCallbackController">
+            <summary>
+                易联支付回调接口
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.YilianCallbackController.#ctor(Domian.Bus.IEventBus)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Controllers.YilianCallbackController" /> class.
+            </summary>
+            <param name="eventBus">The event bus.</param>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.YilianCallbackController.Payment">
+            <summary>
+                易联支付代收请求回调接口
+            </summary>
+            <returns>200</returns>
+        </member>
+        <member name="M:nyanya.Internal.Controllers.YilianCallbackController.UserAuth">
+            <summary>
+                易联支付实名认证回调接口
+            </summary>
+            <returns>200</returns>
+        </member>
+        <member name="T:nyanya.Internal.Hangfire.HangfireConfig">
+            <summary>
+                HangfireConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.HangfireConfig.Configurate">
+            <summary>
+                Configurates this instance.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Hangfire.CronJobs">
+            <summary>
+                CronJobs
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Internal.Hangfire.CronJobs"/> class.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Hangfire.CronJobs.Logger">
+            <summary>
+            Gets the logger.
+            </summary>
+            <value>
+            The logger.
+            </value>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.SetProductSoldOut">
+            <summary>
+            Sets the product sold out.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.VerifyOrder">
+            <summary>
+            Verifies the order.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.VerifyYilianAuth">
+            <summary>
+            Verifies the yilian authentication.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.ProductStatistics">
+            <summary>
+            产品统计信息（累计售出、累计收益、累计赎回、当日剩余取款金额、更新资产包用户收益）（今天之前）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.SetZcbUserInterest(System.String)">
+            <summary>
+            更新资产包用户收益
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.UpdateZcbPorduct(System.String)">
+            <summary>
+            更新产品累计售出、累计收益、累计赎回、当日剩余取款金额（今天之前）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:nyanya.Internal.Hangfire.DashboardAuthorizationFilter">
+            <summary>
+                DashboardAuthorizationFilter
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Hangfire.DashboardAuthorizationFilter.Authorize(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+                Authorizes the specified owin environment.
+            </summary>
+            <param name="owinEnvironment">The owin environment.</param>
+            <returns></returns>
+        </member>
+        <member name="T:nyanya.Internal.RouteConfig">
+            <summary>
+                RouteConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+                Registers the routes.
+            </summary>
+            <param name="routes">The routes.</param>
+        </member>
+        <member name="T:nyanya.Internal.Models.StatisticsReponse">
+            <summary>
+            StatisticsReponse
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.RegisterUserNum">
+            <summary>
+            用户注册成功数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.SuccessLoginNum">
+            <summary>
+            成功登录数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.FailedLoginNum">
+            <summary>
+            失败登录数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.SuccessBankCardNum">
+            <summary>
+            成功绑卡数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.FailedBankCardNum">
+            <summary>
+            失败绑卡数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.SuccessOrderNum">
+            <summary>
+            成功订单数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.FailedOrderNum">
+            <summary>
+            失败订单数（不包含“余额不足”）
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.StatisticsReponse.OnSaleProductNum">
+            <summary>
+            在售产品数
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Models.ZCBHitShelvesRequest">
+            <summary>
+            资产包产品上架请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.EndorseImageLink">
+            <summary>
+                票据大图链接
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.EndorseImageThumbnailLink">
+            <summary>
+                票据缩略图链接
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.EndSellTime">
+            <summary>
+                售卖结束时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ConsignmentAgreement">
+            <summary>
+                委托协议
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.FinancingSumCount">
+            <summary>
+                融资总份数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.MaxShareCount">
+            <summary>
+                单笔订单最大购买份数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.MinShareCount">
+            <summary>
+                单笔订单最小购买份数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.Period">
+            <summary>
+                项目周期
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.PreEndSellTime">
+            <summary>
+                提前购买结束时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.PreStartSellTime">
+            <summary>
+                提前购买开始时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.PledgeAgreement">
+            <summary>
+                担保协议
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ProductName">
+            <summary>
+                产品名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ProductNo">
+            <summary>
+                产品编号，资产包产品以ZCB开头
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.SubProductNo">
+            <summary>
+                项目子编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ProductNumber">
+            <summary>
+                产品期数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.RepaymentDeadline">
+            <summary>
+                最迟还款日期
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.StartSellTime">
+            <summary>
+                开售时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.UnitPrice">
+            <summary>
+                每一份的单价
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ValueDate">
+            <summary>
+                固定起息日期
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ValueDateMode">
+            <summary>
+                起息方式 10=>购买当天起息，20=>指定日期起息
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.Yield">
+            <summary>
+                收益率（保留位数为最小有效位数）
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.SettleDate">
+            <summary>
+                结息日
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.ConsignmentAgreementName">
+            <summary>
+                授权委托书名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.PledgeAgreementName">
+            <summary>
+                投资协议名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBHitShelvesRequest.PerRemainRedeemAmount">
+            <summary>
+                产品下次可取现额度
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Models.ZCBUpdateShelvesRequest">
+            <summary>
+                ZCBUpdateShelvesRequest
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.ProductNo">
+            <summary>
+                产品编号
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.ProductName">
+            <summary>
+                产品名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.FinancingSumCount">
+            <summary>
+                增加份额数
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.UnitPrice">
+            <summary>
+                每一份的单价
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.NextStartSellTime">
+            <summary>
+                下次开售时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.NextEndSellTime">
+            <summary>
+                下次售卖结束时间
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.NextYield">
+            <summary>
+                下次售卖年华收益
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.EnableSale">
+            <summary>
+                是否开启售卖 （0否 1是）
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.ConsignmentAgreementName">
+            <summary>
+                授权委托书名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.PledgeAgreementName">
+            <summary>
+                投资协议名称
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.ConsignmentAgreement">
+            <summary>
+                授权委托书
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.PledgeAgreement">
+            <summary>
+                投资协议
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.ZCBUpdateShelvesRequest.PerRemainRedeemAmount">
+            <summary>
+                产品下次可取现额度
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Models.BAHitShelvesRequest">
+            <summary>
+                上架请求
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.BankName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.BillNo">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.BusinessLicense">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ConsignmentAgreement">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.EndorseImageLink">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.EndorseImageThumbnailLink">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.EndSellTime">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.EnterpriseName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.FinancingSumCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.MaxShareCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.MinShareCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.Period">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.PledgeAgreement">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.PreEndSellTime">
+            <summary>
+                Gets or sets the pre end sell time.
+            </summary>
+            <value>
+                The pre end sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.PreStartSellTime">
+            <summary>
+                Gets or sets the pre start sell time.
+            </summary>
+            <value>
+                The pre start sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ProductName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ProductNo">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ProductNumber">
+            <summary>
+                Gets or sets the product number.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.RepaymentDeadline">
+            <summary>
+                Gets or sets the repayment deadline.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.SettleDate">
+            <summary>
+                Gets or sets the settle date.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.StartSellTime">
+            <summary>
+                Gets or sets the start sell time.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.UnitPrice">
+            <summary>
+                Gets or sets the unit price.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.Usage">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ValueDate">
+            <summary>
+                Gets or sets the value date.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ValueDateMode">
+            <summary>
+                Gets or sets the value date mode.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.Yield">
+            <summary>
+                Gets or sets the yield.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.BAHitShelvesRequest.ProductCategory">
+            <summary>
+            产品分类 10金银猫产品 20富滇产品 40阜新产品
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Models.RepayRequest">
+            <summary>
+                RepayRequest
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.RepayRequest.ProductNo">
+            <summary>
+                Gets or sets the product no.
+            </summary>
+            <value>
+                The product no.
+            </value>
+        </member>
+        <member name="T:nyanya.Internal.Models.TAHitShelvesRequest">
+            <summary>
+                TAHitShelvesRequest
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.BillNo">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ConsignmentAgreement">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ConsignmentAgreementName">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.Drawee">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.DraweeInfo">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.EndorseImageLink">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.EndorseImageThumbnailLink">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.EndSellTime">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.EnterpriseInfo">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.EnterpriseLicense">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.EnterpriseName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.FinancingSumCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.GuaranteeMode">
+            <summary>
+                担保方式
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.MaxShareCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.MinShareCount">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.Period">
+            <summary>
+                Gets or sets the financing sum count.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.PledgeAgreement">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.PledgeAgreementName">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.PreEndSellTime">
+            <summary>
+                Gets or sets the pre end sell time.
+            </summary>
+            <value>
+                The pre end sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.PreStartSellTime">
+            <summary>
+                Gets or sets the pre start sell time.
+            </summary>
+            <value>
+                The pre start sell time.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ProductCategory">
+            <summary>
+                产品分类 10金银猫产品 30施秉金鼎产品
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ProductName">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ProductNo">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ProductNumber">
+            <summary>
+                Gets or sets the product number.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.RepaymentDeadline">
+            <summary>
+                Gets or sets the repayment deadline.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.Securedparty">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.SecuredpartyInfo">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.SettleDate">
+            <summary>
+                Gets or sets the settle date.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.StartSellTime">
+            <summary>
+                Gets or sets the start sell time.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.UnitPrice">
+            <summary>
+                Gets or sets the unit price.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.Usage">
+            <summary>
+                Gets or sets the name of the bank.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ValueDate">
+            <summary>
+                Gets or sets the value date.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.ValueDateMode">
+            <summary>
+                Gets or sets the value date mode.
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.TAHitShelvesRequest.Yield">
+            <summary>
+                Gets or sets the yield.
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Models.UnShelvesRequest">
+            <summary>
+                UnShelvesRequest
+            </summary>
+        </member>
+        <member name="P:nyanya.Internal.Models.UnShelvesRequest.ProductNo">
+            <summary>
+                Gets or sets the product no.
+            </summary>
+            <value>
+                The product no.
+            </value>
+        </member>
+        <member name="T:nyanya.Internal.Service.CommandHandlerService">
+            <summary>
+                CommandHandlerService
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Products.LaunchBAProduct)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Products.LaunchTAProduct)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Orders.SetZCBRedeemBillsResult)">
+             <summary>
+            
+             </summary>
+             <param name="command"></param>
+             <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Products.BAProductUnShelves)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Users.RegisterANewUser)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Users.SetPaymentPassword)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Users.SignUpPayment)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Users.AddBankCard)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Orders.BuildInvestingOrder)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Users.ChangeLoginPassword)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Products.ProductRepay)">
+            <summary>
+                Anies the specified command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Products.LaunchZCBProduct)">
+            <summary>
+                资产包产品上架
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Products.ZCBUpdateShareCount)">
+            <summary>
+                资产包产品可售份额更新
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.Any(Cat.Commands.Orders.BuildRedeemPrincipal)">
+            <summary>
+                取回金额
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.CommandHandlerService.#ctor(Domian.Config.CqrsConfiguration)">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Service.CommandHandlerService" /> class.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="T:nyanya.Internal.Service.Config.AppHost">
+            <summary>
+                AppHost
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.AppHost.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:nyanya.Internal.Service.Config.AppHost" /> class.
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.AppHost.Configure(Funq.Container)">
+            <summary>
+                Configures the specified container.
+            </summary>
+            <param name="container">The container.</param>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.AppHost.CreateServiceRunner``1(ServiceStack.Host.ActionContext)">
+            <summary>
+                Create a service runner for IService actions
+            </summary>
+        </member>
+        <member name="T:nyanya.Internal.Service.Config.CQRSConfig">
+            <summary>
+                CQRSConfig
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.CQRSConfig.Configurate(Domian.Config.CqrsConfiguration)">
+            <summary>
+                Configurates the specified configuration.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.CQRSConfig.LogsConfigure(Domian.Config.CqrsConfiguration)">
+            <summary>
+                Logses the configure.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.CQRSConfig.NinjectConfigure(Domian.Config.CqrsConfiguration)">
+            <summary>
+                Ninjects the configure.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="T:nyanya.Internal.Service.Config.DtoRegistry">
+            <summary>
+                DtoRegistry
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.DtoRegistry.RegisterCommandDtos(Funq.Container,Domian.Config.CqrsConfiguration)">
+            <summary>
+                Registers the dtos.
+            </summary>
+            <param name="container">The container.</param>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:nyanya.Internal.Service.Config.DtoRegistry.RegisterDtos(nyanya.Internal.Service.Config.AppHost,ServiceStack.RabbitMq.RabbitMqServer,Funq.Container,Domian.Config.CqrsConfiguration)">
+            <summary>
+                Registers the dtos.
+            </summary>
+            <param name="host">The host.</param>
+            <param name="mqServer">The mq server.</param>
+            <param name="container">The container.</param>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="T:nyanya.Internal.Service.EventHandlerService">
+            <summary>
+                EventHandlerService
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Orders.OrderBuilded)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Orders.OrderPaymentFailed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Orders.OrderPaymentSuccessed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Products.ProductRepaid)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.AppliedForAddBankCard)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.AppliedForSignUpPayment)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianAuthRequestSended)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianAuthRequestCallbackReceived)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianAuthRequestCallbackProcessed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianQueryAuthRequestProcessed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianPaymentRequestSended)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianPaymentRequestCallbackReceived)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianPaymentRequestCallbackProcessed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Yilian.YilianQueryPaymentRequestProcessed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.UserSignInSucceeded)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.RegisteredANewUser)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.SignUpPaymentSucceeded)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.AddBankCardSucceeded)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.SignUpPaymentFailed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Users.AddBankCardFailed)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Products.ZCBProductLaunched)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Products.ZCBUpdateShareCounted)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.Any(Cat.Events.Orders.SetRedeemBillResult)">
+            <summary>
+                Anies the specified event.
+            </summary>
+            <param name="event">The event.</param>
+            <returns></returns>
+        </member>
+        <member name="M:nyanya.Internal.Service.EventHandlerService.#ctor(Domian.Config.CqrsConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:nyanya.Internal.Service.EventHandlerService" /> class.
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="P:nyanya.Internal.Service.EventHandlerService.EventHandlers">
+            <summary>
+            Gets the event handlers.
+            </summary>
+            <value>
+            The event handlers.
+            </value>
+        </member>
+        <member name="P:nyanya.Internal.Service.EventHandlerService.Logger">
+            <summary>
+            Gets the logger.
+            </summary>
+            <value>
+            The logger.
+            </value>
+        </member>
+        <member name="T:nyanya.Internal.Filters.IpAuthorizeAttribute">
+            <summary>
+                TokenAuthorizeAttribute
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.Filters.IpAuthorizeAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+                Occurs before the action method is invoked.
+            </summary>
+            <param name="actionContext">The action context.</param>
+        </member>
+        <member name="M:nyanya.Internal.Filters.IpAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+                Processes requests that fail authorization. This default implementation creates a new response with the
+                Unauthorized status code. Override this method to provide your own handling for unauthorized requests.
+            </summary>
+            <param name="actionContext">The context.</param>
+        </member>
+        <member name="M:nyanya.Internal.Filters.IpAuthorizeAttribute.IpIsAuthorized(System.Net.Http.HttpRequestMessage)">
+            <summary>
+                Determines whether the client ip is authorized.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>
+                bool
+            </returns>
+        </member>
+        <member name="T:nyanya.Internal.WebApiApplication">
+            <summary>
+                WebApiApplication
+            </summary>
+        </member>
+        <member name="M:nyanya.Internal.WebApiApplication.Application_Start">
+            <summary>
+                Application_s the start.
+            </summary>
+        </member>
+        <member name="T:nyanya.Cat.Startup">
+            <summary>
+                Startup
+            </summary>
+        </member>
+        <member name="M:nyanya.Cat.Startup.Configuration(Owin.IAppBuilder)">
+            <summary>
+                Configurations the specified application.
+            </summary>
+            <param name="app">The application.</param>
+        </member>
+    </members>
+</doc>

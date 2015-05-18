@@ -1,0 +1,127 @@
+﻿@functions{
+    public static string OnSel(string a, string b){
+        if(a == b){
+            return "sel";
+        }
+        return "";
+    }
+    public static string ShowStatus(dynamic status){
+        int iStatus = Convert.ToInt32(status);
+        switch(iStatus){
+            case 10: return "付款中";
+            case 20: return "待起息";
+            case 30: return "已起息";
+            case 40: return "已结息";
+            case 50: return "支付失败";
+        }
+        return "异常订单";
+    }
+}
+@{
+    Layout = "~/_layout/user/_SiteMain.cshtml";
+    PageData["Title"] = "兴业银行 - 直销银行";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/user/order.js'></script>");
+    dynamic userInfo = Request.GetData("/UserInfo");
+    CatHelper.SignInCheck(userInfo);
+    CatHelper.UserPasswordCheck(userInfo.Data);
+    string today = DateTime.Now.ToString("yyyy-MM-dd");
+    string month1 = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
+    string month3 = DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd");
+    string year = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd");
+}
+@{
+    string startDate = CatHelper.Request("start", month1);
+    string endDate = CatHelper.Request("end", today);
+    string timeType = CatHelper.Request("time", "m1");
+    string orderType = CatHelper.Request("type", "all");
+    string orderMode = CatHelper.Request("status", "1");
+}
+@RenderPage("~/_layout/user/_Silder.cshtml", new { Data = userInfo, SilderMenu = "order" })
+<script>var _today = "@today", _year = "@year";</script>
+<div class="per-right">
+    <div class="my-card-title clearfix">
+        @RenderPage("~/_layout/user/_back_user.cshtml", new { name = "我的订单" })
+    </div>
+    <div class="recly-sale">
+        <ul class="query">
+            <li>
+                <strong>起止日期：</strong>
+                <p class="time font-style">
+                    <input type="text" class="first-date common-text" value="@startDate" readonly/>
+                    <i>--</i>
+                    <input type="text" class="end-date common-text" value="@endDate" readonly/>
+                </p>
+                <p id="findDataTime" class="link">
+                    <a class="ui-action @OnSel(timeType, "t")" data-action="sort-datetime" data-type="t" data-value="@today" href="#">今天</a>
+                    <a class="ui-action @OnSel(timeType, "m1")" data-action="sort-datetime" data-type="m1" data-value="@month1" href="#">最近1个月</a>
+                    <a class="ui-action @OnSel(timeType, "m3")" data-action="sort-datetime" data-type="m3" data-value="@month3" href="#">3个月</a>
+                    <a class="ui-action @OnSel(timeType, "y")" data-action="sort-datetime" data-type="y" data-value="@year" href="#">1年</a>
+                    <a class="ui-action @OnSel(timeType, "by")" data-action="sort-datatime-before-year" href="#">1年前<span class="ico-style">>></span></a>
+                </p>
+            </li>
+            <li>
+                <strong>交易分类：</strong>
+                <p class="link sort-type">
+                    <a class="ui-action @OnSel(orderType, "all")" data-action="sort-type" data-value="all" href="#">全部</a>
+                    <a class="ui-action @OnSel(orderType, "xyp")" data-action="sort-type" data-value="xyp" href="#">兴业票</a>
+                </p>
+            </li>
+            <li>
+                <strong>交易状态：</strong>
+                <p class="link sort-status">
+                    <a class="ui-action @OnSel(orderMode, "1")" data-action="sort-status" data-value="1" href="#">全部</a>
+                    <a class="ui-action @OnSel(orderMode, "2")" data-action="sort-status" data-value="2" href="#">支付成功</a>
+                    <a class="ui-action @OnSel(orderMode, "3")" data-action="sort-status" data-value="3" href="#">支付失败</a>
+                </p>
+            </li>
+        </ul>
+        @{
+            string pageIndex = CatHelper.Request("page", "1");
+            string api = string.Format(
+                "/Orders/XingYe/Page?startDate={0}&endDate={1}&pageIndex={2}&orderMode={3}", 
+                startDate, endDate, pageIndex, orderMode
+            );
+            dynamic orders = Request.GetData(api);
+            int iPageCount = 1;
+            bool hasData = false;
+            <table>
+                <thead>
+                <tr>
+                    <th width="130px;" class="frst">订单编号</th>
+                    <th width="198px;">项目名称</th>
+                    <th width="150px;">下单日期</th>
+                    <th width="90px;" style="text-align:right;padding-right:5px;">购买金额</th>
+                    <th width="90px;">状态</th>
+                    <th width="80px;" class="last">详情</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (CatHelper.IsDataSuccess(orders))
+                {
+                    iPageCount = orders.Data.TotalPageCount;
+                    foreach (dynamic o in orders.Data.Orders)
+                    {
+                        hasData = true;
+                        <tr>
+                            <td><a href="/user/order/detail?id=@o.OrderIdentifier">@o.OrderNo</a></td>
+                            <td><a target="_blank" href="/amp/detail?id=@o.ProductNo">@CatHelper.GetProductName(o.ProductName, o.ProductNumber)</a></td>
+                            <td>@o.OrderTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td style="text-align:right;padding-right:5px;">@o.Principal</td>
+                            <td>@ShowStatus(o.ShowingStatus)</td>
+                            <td><a href="/user/order/detail?id=@o.OrderIdentifier">详情</a> </td>
+                        </tr>
+                    }
+                } 
+                @if(hasData == false) {
+                    <tr>
+                        <td colspan="6">对不起，没有符合条件的订单。</td>                    
+                    </tr>
+                }
+                </tbody>
+            </table>
+            @RenderPage("~/_layout/base/_Pager.cshtml", new { Length = iPageCount })
+        }
+    </div>
+</div>
+
+

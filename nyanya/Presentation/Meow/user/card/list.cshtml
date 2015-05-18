@@ -1,0 +1,23 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "我的银行卡";
+}
+@section PageScript {
+    <script src="/static/js/lib/mRoute.js"></script>
+    <script src="/static/js/user/card.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.user.card.list.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div id="jqm-bank-cards"></div>
+</div>
+<script type="text/tpl" id="jqm-tpl-cards">
+@RenderPage("~/tpl/user/card/list.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-detail">
+@RenderPage("~/tpl/user/card/detail.cshtml")
+</script>

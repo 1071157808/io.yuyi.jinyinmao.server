@@ -1,0 +1,24 @@
+﻿@{
+    string navIndex = Page.NavMenu ?? "index";
+}
+@functions{
+    public static string setNavIndex(string nav, string index){
+        if(nav == index){
+            return "current";
+        }
+        return "";
+    }
+}
+<div class="ui-header">
+    <div class="ui-wrapper">
+        <div class="ui-left"><a class="jqm-logo" href="/">金银猫</a></div>
+        <div class="ui-right">
+            <ul class="jqm-nav-top">
+                <li class='@setNavIndex(navIndex,"index")'><a class="jqm-nav-index" href="/">首页</a></li>
+                <li class='@setNavIndex(navIndex,"cpl")'><a class="jqm-nav-cpl" href="/cpl/list">商票贷</a></li>
+                <li class='@setNavIndex(navIndex,"amp")'><a class="jqm-nav-amp" href="/amp/list">银企众盈</a></li>
+                <li class='@setNavIndex(navIndex,"user")'><a class="jqm-nav-login" id="topNav-user" href="/user/index">用户中心</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

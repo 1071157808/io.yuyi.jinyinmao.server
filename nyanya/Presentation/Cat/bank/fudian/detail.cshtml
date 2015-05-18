@@ -1,0 +1,344 @@
+﻿@using System
+@{
+    Layout = "~/_layout/bank/_SiteMain.cshtml";
+    string productNo = CatHelper.Request("id");
+    NyanyaWebData proInfo = Request.GetData("/ProductInfo/BA?productNo=" + productNo);
+    if (!CatHelper.IsDataSuccess(proInfo))
+    {
+        Response.Redirect("~/bank/fudian");
+    }
+    string productName = CatHelper.GetProductName(proInfo.Data.ProductName, proInfo.Data.ProductNumber);
+    Page.Title = productName + " - 富滇银行 - 银行专区 -- 金银猫";
+    Page.RequireMain = CatHelper.JsWrapper("<script src='/static/js/bank/fudian/detail.js'></script>");
+    decimal sumPrice = CatHelper.ToDecimalSafely(proInfo.Data.FinancingSum) / 10000m;
+    string serverTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+}
+@section PageStyle{
+    <link rel="stylesheet" type="text/css" href="/static/css/bank/fudian.css">
+    <script> var _server_time = "@serverTime"; </script>
+}
+<script>
+    var _productNo = "@proInfo.Data.ProductNo";
+    var _identifier = "@proInfo.Data.ProductIdentifier";
+    var _available = @proInfo.Data.AvailableShareCount;
+    var _minCount = @proInfo.Data.MinShareCount;
+    var _maxCount = @proInfo.Data.MaxShareCount;
+    var _detail = {
+        period: "@proInfo.Data.Period",
+        yield: "@proInfo.Data.Yield",
+        unit: "@proInfo.Data.UnitPrice"
+    };
+    var _paid = 0;
+    var _sum = 0;
+</script>
+@RenderPage("~/_layout/bank/_base_index.cshtml", new { name = "fudian", intro = "富滇银行 - 票据由富滇银行代为保管和托收" })
+<div class="bank-sitemap ui-wrapper">
+    <div class="bank-map">
+        <a href="/bank/list" title="银行专区">银行专区</a><i class="sign">&gt;</i><a href="/bank/fudian" title="富滇银行">富滇银行</a><i class="sign">&gt;</i>详情
+    </div>
+</div>
+<div class="ui-wrapper fudian-wrap">
+    <div class="bank-inner">
+        <div class="bank-detail-wrap clearfix">
+            <div class="bank-detail-info">
+                <div class="bank-info-title">
+                    <h2>@productName</h2>
+                </div>
+                <div class="bank-info-rate">
+                    <ul class="pro-info-list clearfix">
+                        <li>年化<i>@CatHelper.GetYieldString(proInfo.Data.Yield)%</i>%</li>
+                        <li>
+                            <a class="qa-help qa-term" href="#">
+                                <i></i>
+                                <div class="ui-tip-msg">
+                                    <p>实际投资天数与各产品起息规则有关</p>
+                                    <b class="ui-tip-top"></b>
+                                </div>
+                            </a>
+                            周期<b>@proInfo.Data.Period</b>天
+                        </li>
+                        <li>总额<b>@sumPrice</b>万</li>
+                    </ul>
+                </div>
+                <div class="bank-info-min">
+                    <div class="convert-name">承兑行：<i>@proInfo.Data.BankName</i></div>
+                    <ul class="bank-min-list clearfix">
+                        <li>最小投资份数：<i>@proInfo.Data.MinShareCount 份</i></li>
+                        <li>起息日期：<i>@CatHelper.GetValueDate_detail(proInfo)</i></li>
+                        <li>最大投资份数：<i>@proInfo.Data.MaxShareCount 份</i></li>
+                        <li>结息日期：<i>@proInfo.Data.SettleDate.ToString("yyyy-MM-dd")</i></li>
+                        <li>投资单位：<i>@proInfo.Data.UnitPrice 元/份</i></li>
+                        <li>
+                            <a class="qa-help qa-abs" href="#">
+                                <i></i>
+                                <div class="ui-tip-msg">
+                                    <p>我们将在结息日后的3个工作日内<br>将本息返还至您的付款银行卡中</p>
+                                    <b class="ui-tip-top"></b>
+                                </div>
+                            </a>最迟还款日：<i>@proInfo.Data.RepaymentDeadline.ToString("yyyy-MM-dd")</i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--/info-->
+            @if (proInfo.Data.ShowingStatus == 30)
+            {
+                <div class="bank-detail-reduce">
+                    <div class="bank-reduce-inner">
+                        <div class="bank-reduce-num clearfix">
+                            <div class="bank-reduce-part">剩余份额：<b>@proInfo.Data.AvailableShareCount</b>份</div>
+                            <div class="bank-reduce-refresh"><a data-action="refreshShareCount" href="#" class="ui-action bank-refresh">刷新</a></div>
+                        </div>
+                        <div class="bank-reduce-progress clearfix">
+                            <span class="percent"><em data-value="@proInfo.Data.PaidPercent" style="width: 0%;"></em></span>
+                            <span class="text"><i>@proInfo.Data.PaidPercent</i>%</span>
+                        </div>
+                        <div class="bank-invest-wrap">
+                            投资份额 <span class="all-choice"><input type="checkbox" id="pay-all"><label for="pay-all" class="lab">全选</label></span>
+                        </div>
+                        <div class="bank-input-wrap">
+                            <input type="text" data-fixholder="false" placeholder="每份 @proInfo.Data.UnitPrice 元" id="paymentCount" maxlength="9" class="bank-detail-input">
+                            <i class="bank-invest-unit">份</i>
+                        </div>
+                        <ul class="bank-money-list">
+                            <li><label for="" class="lab">投资金额：</label><span class="money"><i id="p-pay">0.00</i>元</span></li>
+                            <li>
+                                <label for="" class="lab">
+                                    <a class="qa-help qa-in" href="#">
+                                        <i></i>
+                                        <div class="ui-tip-msg">
+                                            <p>投资金额 X 年化利率 X 实际投资天数 / 360</p>
+                                            <b class="ui-tip-top"></b>
+                                        </div>
+                                    </a>预期收益：
+                                </label>
+                                <span class="money"><i id="p-inp">0.00</i>元</span>
+                            </li>
+                        </ul>
+                        <div class="bank-once-wrap">
+                            <button data-action="GotoPayment" class="ui-action btn btn-common btn-block">立即抢购</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (proInfo.Data.ShowingStatus < 30)
+            {
+                <div class="bank-detail-reduce">
+                    <div class="bank-reduce-inner">
+                        <div class="bank-reduce-num clearfix">
+                            <div class="bank-reduce-part">剩余份额：<b>@proInfo.Data.AvailableShareCount</b>份</div>
+                            <div class="bank-reduce-refresh"><a data-action="refreshShareCount" href="#" class="ui-action bank-refresh">刷新</a></div>
+                        </div>
+                        <div class="bank-reduce-progress clearfix">
+                            <span class="percent"><em data-value="@proInfo.Data.PaidPercent" style="width: 0%;"></em></span>
+                            <span class="text"><i>@proInfo.Data.PaidPercent</i>%</span>
+                        </div>
+                        <div class="bank-invest-wrap">
+                            投资份额 <span class="all-choice"><input type="checkbox" id="pay-all"><label for="pay-all" class="lab">全选</label></span>
+                        </div>
+                        <div class="bank-input-wrap">
+                            <input type="text" data-fixholder="false" placeholder="每份 @proInfo.Data.UnitPrice 元" id="paymentCount" maxlength="9" class="bank-detail-input">
+                            <i class="bank-invest-unit">份</i>
+                        </div>
+                        <ul class="bank-money-list">
+                            <li><label for="" class="lab">投资金额：</label><span class="money"><i id="p-pay">0.00</i>元</span></li>
+                            <li>
+                                <label for="" class="lab">
+                                    <a class="qa-help qa-in" href="#">
+                                        <i></i>
+                                        <div class="ui-tip-msg">
+                                            <p>投资金额 X 年化利率 X 实际投资天数 / 360</p>
+                                            <b class="ui-tip-top"></b>
+                                        </div>
+                                    </a>预期收益：
+                                </label>
+                                <span class="money"><i id="p-inp">0.00</i>元</span>
+                            </li>
+                        </ul>
+                        <div class="bank-once-wrap">
+                            <button class="btn btn-success btn-block" id="saleOver" data-time="@proInfo.Data.StartSellTime.ToString()">即将开售</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (proInfo.Data.ShowingStatus == 40)
+            {
+                <div class="bank-detail-reduce">
+                    <div class="bank-reduce-inner">
+                        <div class="bank-reduce-num clearfix">
+                            <div class="bank-reduce-part">剩余份额：<b>@proInfo.Data.AvailableShareCount</b>份</div>
+                            <div class="bank-reduce-refresh"><a data-action="refreshShareCount" href="#" class="ui-action bank-refresh">刷新</a></div>
+                        </div>
+                        <div class="bank-reduce-progress clearfix">
+                            <span class="percent"><em data-value="@proInfo.Data.PaidPercent" style="width: 0%;"></em></span>
+                            <span class="text"><i>@proInfo.Data.PaidPercent</i>%</span>
+                        </div>
+                        <div class="bank-invest-wrap">
+                            投资份额 <span class="all-choice"><input type="checkbox" id="pay-all"><label for="pay-all" class="lab">全选</label></span>
+                        </div>
+                        <div class="bank-input-wrap">
+                            <input type="text" data-fixholder="false" placeholder="每份 @proInfo.Data.UnitPrice 元" id="paymentCount" maxlength="9" class="bank-detail-input">
+                            <i class="bank-invest-unit">份</i>
+                        </div>
+                        <ul class="bank-money-list">
+                            <li><label for="" class="lab">投资金额：</label><span class="money"><i id="p-pay">0.00</i>元</span></li>
+                            <li>
+                                <label for="" class="lab">
+                                    <a class="qa-help qa-in" href="#">
+                                        <i></i>
+                                        <div class="ui-tip-msg">
+                                            <p>投资金额 X 年化利率 X 实际投资天数 / 360</p>
+                                            <b class="ui-tip-top"></b>
+                                        </div>
+                                    </a>预期收益：
+                                </label>
+                                <span class="money"><i id="p-inp">0.00</i>元</span>
+                            </li>
+                        </ul>
+                        <div class="bank-once-wrap">
+                            <button class="btn btn-block">已售罄</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (proInfo.Data.ShowingStatus == 50)
+            {
+                <div class="bank-detail-reduce">
+                    <div class="bank-project-finish"><i></i></div>
+                </div>
+            }
+            else
+            {
+                <div class="bank-detail-reduce">
+                    <div class="bank-project-finish"><i></i></div>
+                </div>
+            }
+            <!--/reduce-->
+        </div>
+    </div>
+    <div class="bank-tab-wrap">
+        <div class="bank-tab-title">
+            <ul class="bank-tab-list clearfix">
+                <li><a data-tab="bank-tab1" data-action="change-tabs" class="ui-action" href="#">担保物</a></li>
+                <li class="on"><a data-tab="bank-tab2" data-action="change-tabs" class="ui-action" href="#">融资详情</a></li>
+                <li><a data-tab="bank-tab3" data-action="change-tabs" class="ui-action" href="#">“富票盈”产品说明</a></li>
+            </ul>
+        </div>
+        <div class="bank-tab-content">
+            <div id="bank-tab2" class="bank-tab-items">
+                <div class="bank-pay-check">
+                    <table class="bank-pay-tab">
+                        <thead>
+                            <tr><td>审核项目</td><th>已审核</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>企业名称</td>
+                            <th><i class="pay-check-ok"></i></th>
+                        </tr>
+                        <tr>
+                            <td>营业执照</td>
+                            <th><i class="pay-check-ok"></i></th>
+                        </tr>
+                        <tr>
+                            <td>融资方经营场所实地认证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                        </tr>
+                        <tr>
+                            <td>基本账户开户许可证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                        </tr>
+                        <tr>
+                            <td>税务登记证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                        </tr>
+                        <tr>
+                            <td>组织机构代码证</td>
+                            <th><i class="pay-check-ok"></i></th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<textarea style="display: none" id="tpl-bank-tab1">
+    <div class="bank-tab-items" id="bank-tab1">
+        <img src="@proInfo.Data.EndorseImageLink" />
+    </div>
+</textarea>
+<textarea style="display: none" id="tpl-bank-tab3">
+    <div class="bank-tab-items" id="bank-tab3">
+        <div class="pro-img-info">
+            <img src="/static/images/bank/fudian/pro-img-01.png" alt=""/>
+            <ul class="service-list clearfix">
+                <li class="f">无需服务费，最低1元起投<br/>远高于同期银行活期利率的理财收益</li>
+                <li class="s">企业现有资产及银行承兑汇票<br/>作为抵押担保财产</li>
+                <li>抵押担保资产可靠<br/>风险趋近于零</li>
+            </ul>
+        </div>
+        <div class="pro-solve">
+            <dl class="solve-info">
+                <dt>什么是银行承兑汇票？</dt>
+                <dd>银行承兑汇票是由银行开具的到期兑付的书面凭证。根据《票据法》第七十三条规定：银行承兑汇票由银行承兑，银行承诺到期后会无条件兑付该票据金额给予该银承的所有人。在金银猫的银企众盈模式中，银承作为担保财产之一，在借款人不能按期清偿的情况下，抵押权人可以通过行使抵押权，实现权利。</dd>
+                <dt>什么是无条件兑付？</dt>
+                <dd>根据《票据法》相关规定：商业汇票是出票人签发的，委托付款人在指定日期无条件支付确定的金额给收款人或者持票人的票据。在金银猫的银企众盈模式中，该票据是银行承兑汇票，所以根据该条文规定，由银行无条件兑付。票据到期后，银行将按照票据金额无条件支付给该票据的所有人。</dd>
+            </dl>
+        </div>
+        <div class="tc"><img src="/static/images/bank/fudian/piao-img-01.jpg" alt=""/></div>
+        <div class="pro-goodness">
+            <div class="pro-goodness-title">
+                <h2>富票盈的独特优势</h2>
+            </div>
+            <div class="goodness-main">
+                <ul class="unique-list">
+                    <li>富票盈项目，具有高收益、低风险的独特优势</li>
+                    <li>亚太首创模式</li>
+                    <li>线下实体店支持</li>
+                    <li>2000多家国内合作银行</li>
+                </ul>
+                <div class="goodness-pb">
+                    <dl class="solve-info">
+                        <dt>什么是P2B？</dt>
+                        <dd class="f">P2B（Person-to-Business），是个人对企业的一种借款模式。富票盈项目，是由持有银行承兑汇票的借款企业将票据质押给出借人，若到期借款企业未还款，则出借人可以实现质权，兑付该银行承兑汇票。</dd>
+                        <dt>P2B与P2P的区别？</dt>
+                        <dd>
+                            <p>P2B：融资主题为中小微企业。因P2B模式具有担保、抵押或者质押，从投资风险角度分析，与P2P相比，P2B具有更低信用风险和高安全性</p>
+                            <p>P2P：主要只依靠单个人信用状况，如工资收入，而没有资产作为抵押等。</p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="common-qa">
+                <div class="pro-goodness-title">
+                    <h2>常见问题解答</h2>
+                </div>
+                <div class="common-inner">
+                    <dl class="convert-info">
+                        <dt>什么是银行承兑汇票？</dt>
+                        <dd>银行承兑汇票是由银行开具的到期兑付的书面凭证。根据《票据法》第七十三条规定：银行承兑汇票由银行承兑，银行承诺到期后会无条件兑付该票据金额给予该银承的所有人。在富票盈模式中，银承作为担保财产之一，在借款人不能按期清偿的情况下，质押权人可以通过行使质押权，实现权利。</dd>
+                        <dt>什么是无条件兑付？</dt>
+                        <dd>根据《票据法》相关规定：商业汇票是出票人签发的，委托付款人在指定日期无条件支付确定的金额给收款人或者持票人的票据。在富票盈专区中，该票据是银行承兑汇票，所以根据该条文规定，由银行无条件兑付。票据到期后，银行将按照票据金额无条件支付给该票据的所有人。</dd>
+                        <dt>富票盈项目安全吗？</dt>
+                        <dd>安全，企业以自有资产及合法持有的银行承兑汇票做质押担保，银行到期无条件兑付该银行承兑汇票，资金有保障。</dd>
+                        <dt>项目没有募集成功怎么办？</dt>
+                        <dd>金银猫通知易联将已收到的资金按原路径返还给投资人。</dd>
+                        <dt>银行承兑汇票由谁验真伪？</dt>
+                        <dd>富滇银行。</dd>
+                        <dt>票据由谁保管？</dt>
+                        <dd>富滇银行。融资企业和富滇银行签订托管协议，将富票盈专区内所涉及的票据都保管在该银行。</dd>
+                        <dt>到期以后，如何实现托收解付？</dt>
+                        <dd>投资人委托银行办理票据质押手续，企业委托银行在票据到期时，按时托收解付，再将解付款打入第三方支付的账户，由第三方支付将款项还给投资人。</dd>
+                        <dt>募集资金如何给到企业？</dt>
+                        <dd>募集成功后，金银猫和富滇银行共同通知易联将资金统一打给融资企业。</dd>
+                        <dt>融资企业是票据上的哪家？</dt>
+                        <dd>汇票上最后一手背书人。</dd>
+                        <dt>借款到期以后多少天投资者能收到回款？</dt>
+                        <dd class="last">到期日后三个工作日内打款至投资者账户。</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</textarea>

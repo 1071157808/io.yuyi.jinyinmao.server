@@ -1,0 +1,107 @@
+﻿@{ 
+    Layout = "~/_layout/base/Main.cshtml";
+    Page.Title = "你理财 我掏钱 1000元理财金大放送 - 金银猫11.18周年庆，发财季震撼登陆";
+    dynamic dNow = DateTime.Now;
+    dynamic dStart = new DateTime(2014, 11, 14);
+    dynamic dEnd = new DateTime(2014, 11, 19);
+    bool isStart = DateTime.Compare(dNow, dStart) > 0;
+    bool isEnd = DateTime.Compare(dNow, dEnd) > 0;
+}
+@section PageScript {
+    <script>
+    Zepto(function(){
+        zim.action.extend({
+            "tip-close":function(){
+                this.parentNode.style.display = 'none';
+            },
+            "pick-msg":function(){
+                $('#tip-dialog').addClass('show');
+            }
+        });
+    });
+    </script>
+}
+<style>
+.tip-share{
+    position:absolute;z-index:20;
+    width:100%;height:90px;
+    background-image:url(/static/images/topic/20141118/tip-share.png);
+    background-color:#fff2c0;
+    background-repeat:no-repeat;
+    background-position:0 50%;
+    background-size:auto 100%;
+}
+.tip-share a{
+    position:absolute;right:0;top:0;
+    display:block;width:52px;height:52px;overflow:hidden;text-indent:-999px;
+    background-image:url(/static/images/topic/20141118/tip-close.png);
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size:auto 58%;
+
+}
+.topic-page img{display:block;width:100%;}
+.tip-pick{
+    position:fixed;bottom:0;z-index:99;
+    display:block;width:100%;overflow:hidden;text-indent:-999px;
+    max-width:800px;min-width:320px;
+}
+.tip-dialog{
+    position:fixed;top:50%;left:50%;z-index:999;
+    margin-left:-270px;margin-top:1800px;
+    display:block;overflow:hidden;text-indent:-999px;
+    width:1px;height:360px;max-width:800px;min-width:320px;
+    background-image:url(/static/images/topic/20141118/tip-dialog.png);
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size:auto 100%;
+    -webkit-transition:all .3s ease-out;
+}
+.tip-dialog.show{
+    margin-top:-180px;width:540px;
+}
+@@media(max-width:480px){
+    .tip-share{height:50px;}
+    .tip-share a{width:30px;height:30px;}
+    .tip-dialog{
+        margin-left:-160px;height:180px;
+    }
+    .tip-dialog.show{
+        margin-top:-90px;width:270px;
+    }
+}
+</style>
+<div class="ui-header">
+    <div class="ui-wrapper">
+        <div class="ui-left"><a class="jqm-logo" href="/">金银猫</a></div>
+        <div class="ui-right">
+            <ul class="jqm-nav-top">
+                <li><a class="jqm-nav-index" href="/">首页</a></li>
+                <li><a class="jqm-nav-cpl" href="/cpl/list">商票贷</a></li>
+                <li><a class="jqm-nav-amp" href="/amp/list">银企众盈</a></li>
+                <li><a class="jqm-nav-login" href="/user/index">用户中心</a></li>
+            </ul>
+        </div>
+        <div class="tip-share">
+            <a href="#" data-action="tip-close">关闭</a>
+        </div>
+    </div>
+</div>
+<div class="ui-content topic-page">
+    <a href="#" data-action="pick-msg"><img src="/static/images/topic/20141118/banner.png" /></a>
+    @if(!isEnd){
+    <img src="/static/images/topic/20141118/b1.png" />
+    if(isStart){
+    <img src="/static/images/topic/20141118/b2-1.png" />
+    } else {
+    <img src="/static/images/topic/20141118/b2.png" />
+    }
+    }
+    <img src="/static/images/topic/20141118/b3.png" />
+    <img src="/static/images/topic/20141118/b4.png" />
+    <img src="/static/images/topic/20141118/b5.png" />
+    <a href="#" data-action="pick-msg" class="ui-wrapper tip-pick">
+        <img src="/static/images/topic/20141118/tip-pick.png" />
+    </a>
+    <a id="tip-dialog" class="tip-dialog" href="/passport/register">注册金银猫</a>
+</div>

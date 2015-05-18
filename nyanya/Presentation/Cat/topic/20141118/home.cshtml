@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "~/_layout/home/_SiteMain.cshtml";
+    Page.Title = "金银猫11.18周年庆，发财季震撼登陆";
+}
+@section RequireCallback{
+    require(['jym', 'dialog'], function(jym, dialog){
+        jym.action.extend({
+            "go-lottery":function(){
+                dialog.alert.show('活动暂未开始！');
+            }
+        });
+    });
+}
+<style>
+.home-banner-1{
+    height:380px;
+    background-image:url(/topic/20141118/images/home/b1.jpg);
+    background-position:50% 0;
+}
+.home-banner-2{
+    height:75px;padding-top:375px;
+    background-image:url(/topic/20141118/images/home/b2.jpg);
+    background-position:50% 0;
+}
+.home-banner-2 a{
+    display:block;width:190px;height:45px;margin:0 auto;
+    overflow:hidden;text-indent:-999px;
+}
+.home-banner-3{
+    height:55px;padding-top:489px;
+    background-image:url(/topic/20141118/images/home/b3.jpg);
+    background-position:50% 0;
+}
+.home-banner-3 a{
+    display:block;width:190px;height:45px;margin:0 auto;
+    overflow:hidden;text-indent:-999px;
+}
+.home-banner-4{
+    height:524px;
+    background-image:url(/topic/20141118/images/home/b4.jpg);
+    background-position:50% 0;
+}
+</style>
+<div class="home-banner-1"></div>
+<div class="home-banner-2">
+    <a href="/topic/20141118/">去拿钱</a>
+</div>
+<div class="home-banner-3">
+    <a href="/topic/20141118/lottery">去抽奖</a>
+    @*<a href="#" class="ui-action" data-action="go-lottery">去抽奖</a>*@
+</div>
+<div class="home-banner-4"></div>

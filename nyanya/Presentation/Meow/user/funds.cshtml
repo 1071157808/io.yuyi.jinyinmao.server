@@ -1,0 +1,22 @@
+﻿@{ 
+    Layout = "~/_layout/user/Main.cshtml";
+    Page.Title = "资金账户";
+}
+@section PageScript {
+    <script src="/static/js/user/index.js"></script>
+    <script>
+    Zepto(function(){
+        zim.page.user.funds.init();
+    });
+    </script>
+}
+@RenderPage("~/_layout/base/header_back.cshtml")
+<div class="ui-content">
+    <div id="jqm-funds-view"></div>
+</div>
+<script type="text/tpl" id="jqm-tpl-view">
+@RenderPage("~/tpl/user/home/view.cshtml")
+</script>
+<script type="text/tpl" id="jqm-tpl-noIdenty">
+@RenderPage("~/tpl/user/home/noIdenty.cshtml")
+</script>

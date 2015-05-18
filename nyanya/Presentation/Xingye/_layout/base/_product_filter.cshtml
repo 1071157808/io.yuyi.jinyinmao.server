@@ -1,0 +1,35 @@
+﻿@functions{
+    public static string ChkStatus(string status, int s)
+    {
+        if (status == s.ToString())
+        {
+            return "on";
+        }
+        return "";
+    }
+    public static string getName(string type)
+    {
+        switch (type)
+        {
+            case "amp": return "银企众盈";
+            case "cpl": return "商票贷";
+            default: return "银企众盈";
+        }
+    }
+}
+@{
+    string type = Page.Type ?? "amp";
+    string status = CatHelper.Request("status", "0");
+}<div class="amp-main-title clearfix">
+    <h1>@getName(type)</h1>
+    @*
+        <div class="amp-main-nav">
+            <ul class="amp-nav-list">
+                <li><a class="@ChkStatus(status, 0)" href="/@type/list">全部</a></li>
+                <li><a class="@ChkStatus(status, 30)" href="/@type/list?status=30">抢购</a></li>
+                <li><a class="@ChkStatus(status, 10)" href="/@type/list?status=10">待售</a></li>
+                <li><a class="@ChkStatus(status, 40)" href="/@type/list?status=40">售罄</a></li>
+                <li><a class="@ChkStatus(status, 50)" href="/@type/list?status=50">结束</a></li>
+            </ul>
+        </div>*@
+</div>

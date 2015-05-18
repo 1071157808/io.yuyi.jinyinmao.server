@@ -1,0 +1,52 @@
+﻿@{
+    dynamic userInfo = Page.Data;
+    string realName = userInfo.Data.RealName;
+    string idCard = userInfo.Data.CredentialNo;
+    string idCardType = userInfo.Data.Credential.ToString();
+    string idCardTypeName = CatHelper.GetIdCardName(idCardType);
+}
+<script>
+    var _user_info = {
+        RealName: "@realName",
+        CredentialNo: "@idCard",
+        Credential: "@idCardType"
+    };
+</script>
+<script type="text/tpl" id="addBankList-tpl">
+<div id="addBankList">
+    <div id="ui-msg-info" class="ui-msg"></div>
+    <ul class="buy-step-list addbank-step-list">
+        <li class="bind-bank">
+            <label class="lab">绑定银行：</label>
+            <div id="bankSelect" class="buy-plan clearfix"></div>
+        </li>
+        <li>
+            <label class="lab">姓名：</label>
+            <div class="buy-plan clearfix">
+                @realName
+            </div>
+        </li>
+        <li>
+            <label class="lab">证件号：</label>
+            <div class="buy-plan clearfix">
+                @userInfo.Data.CredentialNo
+            </div>
+        </li>
+        <li class="bank-items">
+            <label class="lab">储蓄卡卡号：</label>
+            <div class="buy-plan clearfix">
+                <input type="text" id="ctt-bankcard" class="common-text auth-text" maxlength="30">
+                <div class="argee-live">
+                    <label class="yetlab" for="iagree">我已经同意</label><a href="/deal/open" target="_blank">《认证签约协议》</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <label class="lab">&nbsp;</label>
+            <div class="buy-plan clearfix">
+                <button class="btn-common ui-action" data-action="addCardSubmit" id="btnAddCard">确认</button>
+            </div>
+        </li>
+    </ul>
+</div>
+</script>

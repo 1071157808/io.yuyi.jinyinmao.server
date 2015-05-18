@@ -1,0 +1,10 @@
+﻿@{
+    var PageType = Page.Type ?? "";
+    if(PageType == "loadtime"){
+<script>var _oztime = (new Date()).getTime();</script>
+    } else if(PageType == "ordersuccess"){
+<script>var _ozurltail = "#ordersuccess99";</script>
+    } else {
+<script src="/static/js/lib/m_code.min.js"></script>
+    }
+}
