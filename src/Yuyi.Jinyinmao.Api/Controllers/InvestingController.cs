@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  2:31 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  2:28 AM
+// Last Modified On : 2015-05-19  1:39 AM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -115,7 +115,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI8:该产品已售罄");
             }
 
-            TranscationInfo info = await this.userService.InvestingAsync(new JBYInvesting
+            JBYAccountTranscationInfo info = await this.userService.InvestingAsync(new JBYInvesting
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),

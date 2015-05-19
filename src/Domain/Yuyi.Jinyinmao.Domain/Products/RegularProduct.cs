@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:39 AM
+// Last Modified On : 2015-05-19  1:30 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -289,7 +289,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.State.WriteStateAsync();
 
-            await this.RaiseRegularProductIssuedEvent(command);
+            await this.RaiseRegularProductIssuedEvent();
         }
 
         /// <summary>

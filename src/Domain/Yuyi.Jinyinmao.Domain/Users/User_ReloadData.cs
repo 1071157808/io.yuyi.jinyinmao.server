@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:19 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  1:57 AM
+// Last Modified On : 2015-05-18  11:06 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,13 +45,14 @@ namespace Yuyi.Jinyinmao.Domain
             List<JBYAccountTranscation> debitTrans = this.State.JBYAccount.Values.Where(t => t.Trade == Trade.Debit && t.ResultCode >= 0).ToList();
             List<JBYAccountTranscation> debitedTrans = debitTrans.Where(t => t.ResultCode > 0).ToList();
             List<JBYAccountTranscation> creditTrans = this.State.JBYAccount.Values.Where(t => t.Trade == Trade.Credit && t.ResultCode >= 0).ToList();
-            List<JBYAccountTranscation> creditedTrans = creditTrans.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0).ToList();
+            List<JBYAccountTranscation> creditedTrans = creditTrans.Where(t => t.ResultCode > 0).ToList();
+            List<JBYAccountTranscation> creditingTrans = creditTrans.Where(t => t.ResultCode == 0).ToList();
 
             DateTime confirmTime = GetLastInvestingConfirmTime();
 
             this.JBYAccrualAmount = debitTrans.Where(t => t.TransactionTime <= confirmTime).Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
             this.JBYTotalAmount = debitTrans.Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
-            this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditTrans.Sum(t => t.Amount);
+            this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditingTrans.Sum(t => t.Amount);
 
             this.JBYTotalInterest = debitTrans.Where(t => t.ProductId == Guid.Empty).Sum(t => t.Amount);
             this.JBYTotalPricipal = debitedTrans.Sum(t => t.Amount);

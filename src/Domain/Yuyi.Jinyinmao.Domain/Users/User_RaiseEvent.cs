@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:40 AM
+// Last Modified On : 2015-05-18  11:26 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -44,7 +44,9 @@ namespace Yuyi.Jinyinmao.Domain
             { typeof(PaymentPasswordReset), e => PaymentPasswordResetProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((PaymentPasswordReset)e) },
             { typeof(PaymentPasswordSet), e => PaymentPasswordSetProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((PaymentPasswordSet)e) },
             { typeof(WithdrawalAccepted), e => WithdrawalAcceptedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalAccepted)e) },
-            { typeof(WithdrawalResulted), e => WithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalResulted)e) }
+            { typeof(WithdrawalResulted), e => WithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalResulted)e) },
+            { typeof(JBYWithdrawalAccepted), e => JBYWithdrawalAcceptedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalAccepted)e) },
+            { typeof(JBYWithdrawalResulted), e => JBYWithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) }
         };
 
         /// <summary>
@@ -292,6 +294,36 @@ namespace Yuyi.Jinyinmao.Domain
             };
 
             await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseJBYWithdrawalAcceptedEvent(JBYWithdrawal command, JBYAccountTranscationInfo info)
+        {
+            JBYWithdrawalAccepted @event = new JBYWithdrawalAccepted
+            {
+                Args = command.Args,
+                TranscationInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseJBYWithdrawalResultedEvent(JBYAccountTranscationInfo jbyAccountTranscationInfo, SettleAccountTranscationInfo settleAccountTranscationInfo)
+        {
+            JBYWithdrawalResulted @event = new JBYWithdrawalResulted
+            {
+                Args = new Dictionary<string, object>(),
+                JBYAccountTranscationInfo = jbyAccountTranscationInfo,
+                SettleAccountTranscationInfo = settleAccountTranscationInfo,
+                UserInfo = await this.GetUserInfoAsync(),
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private Task RaiseJBYReinvestedEvent(JBYAccountTranscationInfo toInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

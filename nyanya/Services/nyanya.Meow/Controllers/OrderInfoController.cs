@@ -1,7 +1,14 @@
-﻿// FileInformation: nyanya/nyanya.Meow/OrderInfoController.cs
+// FileInformation: nyanya/nyanya.Meow/OrderInfoController.cs
 // CreatedTime: 2014/08/29   2:26 PM
 // LastUpdatedTime: 2014/09/01   5:27 PM
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
 using Cat.Commands.Orders;
 using Cat.Commands.Products;
 using Cat.Domain.Orders.Models;
@@ -22,13 +29,6 @@ using nyanya.AspDotNet.Common.Controller;
 using nyanya.AspDotNet.Common.Filters;
 using nyanya.Meow.Filters;
 using nyanya.Meow.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
 
 namespace nyanya.Meow.Controllers
 {
@@ -39,13 +39,13 @@ namespace nyanya.Meow.Controllers
     public class OrderInfoController : ApiControllerBase
     {
         private readonly IBAOrderInfoService baOrderInfoService;
+        private readonly ICommandBus commandBus;
         private readonly IOrderInfoService orderInfoService;
+        private readonly IProductInfoService productService;
         private readonly ITAOrderInfoService taOrderInfoService;
         private readonly IExactUserInfoService userInfoService;
-        private readonly IZCBOrderService zcbOrderService;
-        private readonly ICommandBus commandBus;
         private readonly IUserService userService;
-        private readonly IProductInfoService productService;
+        private readonly IZCBOrderService zcbOrderService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OrderInfoController" /> class.
@@ -68,6 +68,30 @@ namespace nyanya.Meow.Controllers
             this.commandBus = commandBus;
             this.userService = userService;
             this.productService = productService;
+        }
+
+        /// <summary>
+        /// 获取用户【500元本金活动】状态
+        /// </summary>
+        /// <returns>
+        /// Status：状态(10=>不符合，20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
+        /// ExtraInterest：额外收益
+        /// MiniCash: 起投金额
+        /// </returns>
+        [HttpGet, Route("GetActivityStatus1000")]
+        [TokenAuthorize]
+        [ResponseType(typeof(UserActivityResponse))]
+        public async Task<IHttpActionResult> GetActivityStatus1000()
+        {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
+
+            if (userInfo == null)
+            {
+                this.Warning("Can not load user date.{0}".FormatWith(this.CurrentUser.Identifier));
+                return this.BadRequest("无法获取用户信息");
+            }
+
+            return this.Ok(await GetUserActivityStatu_1000(userInfo));
         }
 
         /// <summary>
@@ -267,6 +291,28 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
+        ///     用户资产包提现所需参数
+        /// </summary>
+        /// <returns>
+        /// RedeemCount：用户当日已提现次数
+        /// TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
+        /// InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
+        /// AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
+        /// </returns>
+        [HttpGet, Route("ZCB/RedeemParameter")]
+        [TokenAuthorize]
+        [ResponseType(typeof(RedeemParametersResponse))]
+        public async Task<IHttpActionResult> GetRedeemParameters()
+        {
+            Task<int> RedeemCount = this.zcbOrderService.CheckRedeemPrincipalCount(this.CurrentUser.Identifier);
+            Task<decimal> UserTodayInvesting = this.zcbOrderService.GetUserTodayInvesting(this.CurrentUser.Identifier);
+            Task<decimal> UnRedeemPrincipal = this.zcbOrderService.GetUnRedeemPrincipal(this.CurrentUser.Identifier);
+            await Task.WhenAll(RedeemCount, UserTodayInvesting, UnRedeemPrincipal);
+
+            return this.Ok(new RedeemParametersResponse(RedeemCount.Result, UserTodayInvesting.Result > 0 ? 10 : 20, UserTodayInvesting.Result + UnRedeemPrincipal.Result));
+        }
+
+        /// <summary>
         ///     商票失败订单列表
         /// </summary>
         /// <returns>
@@ -353,6 +399,40 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
+        /// 资产包认购/提现流程列表
+        /// </summary>
+        /// <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
+        /// <returns>
+        /// HasNextPage: 是否有下一页
+        /// PageIndex: 页码
+        /// PageSize: 一页节点数量
+        /// TotalCount: 所有的节点数量
+        /// TotalPageCount: 总页数
+        /// ZCBBills：节点列表
+        /// -- BillIdentifier[string]：流水标示号
+        /// -- ProductIdentifier[string]：项目唯一标识
+        /// -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
+        /// -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
+        /// -- Principal[decimal]：交易金额
+        /// -- BankCardNo[string]：银行卡号
+        /// -- BankName[string]：银行名称
+        /// -- BankCardCity[string]：开户行城市全称，如 上海|上海
+        /// -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
+        /// -- Remark[string]：流水信息描述
+        /// -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
+        /// -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
+        /// </returns>
+        [HttpGet, Route("ZCB/ZCBBill"), Route("ZCB/ZCBBill/{pageIndex:min(1):int=1}")]
+        [RangeFilter("pageIndex", 1)]
+        [TokenAuthorize]
+        [ResponseType(typeof(List<ZCBBillListResponse>))]
+        public async Task<IHttpActionResult> GetZCBBills(int pageIndex = 1)
+        {
+            IPaginatedDto<ZCBBill> zcbBills = await this.zcbOrderService.GetZCBBillListAsync(this.CurrentUser.Identifier, pageIndex, 10);
+            return this.Ok(new ZCBBillListResponse(zcbBills));
+        }
+
+        /// <summary>
         /// 资产包订单用户总览
         /// </summary>
         /// ProductIdentifier[string]: 产品唯一标示符
@@ -394,40 +474,6 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// 资产包认购/提现流程列表
-        /// </summary>
-        /// <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
-        /// <returns>
-        /// HasNextPage: 是否有下一页
-        /// PageIndex: 页码
-        /// PageSize: 一页节点数量
-        /// TotalCount: 所有的节点数量
-        /// TotalPageCount: 总页数
-        /// ZCBBills：节点列表
-        /// -- BillIdentifier[string]：流水标示号
-        /// -- ProductIdentifier[string]：项目唯一标识
-        /// -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
-        /// -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
-        /// -- Principal[decimal]：交易金额
-        /// -- BankCardNo[string]：银行卡号
-        /// -- BankName[string]：银行名称
-        /// -- BankCardCity[string]：开户行城市全称，如 上海|上海
-        /// -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
-        /// -- Remark[string]：流水信息描述
-        /// -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
-        /// -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
-        /// </returns>
-        [HttpGet, Route("ZCB/ZCBBill"), Route("ZCB/ZCBBill/{pageIndex:min(1):int=1}")]
-        [RangeFilter("pageIndex", 1)]
-        [TokenAuthorize]
-        [ResponseType(typeof(List<ZCBBillListResponse>))]
-        public async Task<IHttpActionResult> GetZCBBills(int pageIndex = 1)
-        {
-            IPaginatedDto<ZCBBill> zcbBills = await this.zcbOrderService.GetZCBBillListAsync(this.CurrentUser.Identifier, pageIndex, 10);
-            return this.Ok(new ZCBBillListResponse(zcbBills));
-        }
-
-        /// <summary>
         ///     资产包用户每日收益列表
         /// </summary>
         /// <param name="pageIndex">pageIndex(int =1)：页码</param>
@@ -458,28 +504,6 @@ namespace nyanya.Meow.Controllers
             }
             IPaginatedDto<ZCBUserBill> zcbUserBills = await this.zcbOrderService.GetZCBUserBillListAsync(this.CurrentUser.Identifier, startTime.GetValueOrDefault().Date, endTime.GetValueOrDefault().Date, pageIndex, 10);
             return this.Ok(new ZCBUserBillListResponse(zcbUserBills));
-        }
-
-        /// <summary>
-        ///     用户资产包提现所需参数
-        /// </summary>
-        /// <returns>
-        /// RedeemCount：用户当日已提现次数
-        /// TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
-        /// InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和 
-        /// AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
-        /// </returns>
-        [HttpGet, Route("ZCB/RedeemParameter")]
-        [TokenAuthorize]
-        [ResponseType(typeof(RedeemParametersResponse))]
-        public async Task<IHttpActionResult> GetRedeemParameters()
-        {
-            Task<int> RedeemCount = this.zcbOrderService.CheckRedeemPrincipalCount(this.CurrentUser.Identifier);
-            Task<decimal> UserTodayInvesting = this.zcbOrderService.GetUserTodayInvesting(this.CurrentUser.Identifier);
-            Task<decimal> UnRedeemPrincipal = this.zcbOrderService.GetUnRedeemPrincipal(this.CurrentUser.Identifier);
-            await Task.WhenAll(RedeemCount, UserTodayInvesting, UnRedeemPrincipal);
-
-            return this.Ok(new RedeemParametersResponse(RedeemCount.Result, UserTodayInvesting.Result > 0 ? 10 : 20, UserTodayInvesting.Result + UnRedeemPrincipal.Result));
         }
 
         /// <summary>
@@ -579,7 +603,7 @@ namespace nyanya.Meow.Controllers
                 }
                 return this.Ok(new RedeemBillResponse()
                 {
-                    RedeemDays = redeemDays
+                    RedeemDays = redeemDays + 1
                 });
             }
             catch (Exception e)
@@ -604,30 +628,6 @@ namespace nyanya.Meow.Controllers
                 ProductIdentifier = productResult.ProductIdentifier,
                 FinallyRedeem = info.TodayPrincipal <= 0 && (request.RedeemPrincipal >= info.RemainPrincipal && request.RedeemPrincipal <= (info.RemainPrincipal + info.RemainRedeemInterest)) //最后一笔的标志
             };
-        }
-
-        /// <summary>
-        /// 获取用户【500元本金活动】状态
-        /// </summary>
-        /// <returns>
-        /// Status：状态(10=>不符合，20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
-        /// ExtraInterest：额外收益
-        /// MiniCash: 起投金额
-        /// </returns>
-        [HttpGet, Route("GetActivityStatus1000")]
-        [TokenAuthorize]
-        [ResponseType(typeof(UserActivityResponse))]
-        public async Task<IHttpActionResult> GetActivityStatus1000()
-        {
-            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
-
-            if (userInfo == null)
-            {
-                this.Warning("Can not load user date.{0}".FormatWith(this.CurrentUser.Identifier));
-                return this.BadRequest("无法获取用户信息");
-            }
-
-            return this.Ok(await GetUserActivityStatu_1000(userInfo));
         }
 
         /// <summary>

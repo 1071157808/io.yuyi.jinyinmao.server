@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:22 AM
+// Last Modified On : 2015-05-18  11:34 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
+using Orleans;
 using Orleans.Providers;
+using Orleans.Runtime;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
@@ -29,7 +31,7 @@ namespace Yuyi.Jinyinmao.Domain
     ///     Class User.
     /// </summary>
     [StorageProvider(ProviderName = "SqlDatabase")]
-    public partial class User : EntityGrain<IUserState>, IUser
+    public partial class User : EntityGrain<IUserState>, IUser, IRemindable
     {
         /// <summary>
         ///     The daily withdrawal limit count
@@ -40,11 +42,6 @@ namespace Yuyi.Jinyinmao.Domain
         ///     The month free withrawal limit count
         /// </summary>
         private static readonly int MonthFreeWithrawalLimitCount = 4;
-
-        /// <summary>
-        ///     The waiting days key name
-        /// </summary>
-        private static readonly string WaitingDaysKeyName = "WaitingDays";
 
         /// <summary>
         ///     The withdrawal charge fee
@@ -543,17 +540,17 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public async Task RegisterAsync(UserRegister command)
+        public async Task<UserInfo> RegisterAsync(UserRegister command)
         {
             if (this.State.Id == command.UserId)
             {
-                return;
+                return null;
             }
 
             if (this.State.Id != Guid.Empty)
             {
                 this.GetLogger().Warn(1, "Conflict user id: UserId {0}, UserRegisterCommand.UserId {1}", this.State.Id, command.UserId);
-                return;
+                return null;
             }
 
             await this.BeginProcessCommandAsync(command);
@@ -583,7 +580,11 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.State.WriteStateAsync();
 
+            await this.RegisterOrUpdateReminder("DailyWork", TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(10));
+
             await this.RaiseUserRegisteredEvent(command);
+
+            return await this.GetUserInfoAsync();
         }
 
         /// <summary>
@@ -805,6 +806,97 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        /// jby withdrawal resulted as an asynchronous operation.
+        /// </summary>
+        /// <param name="transcationId">The transcation identifier.</param>
+        /// <returns>Task.</returns>
+        public async Task JBYWithdrawalResultedAsync(Guid transcationId)
+        {
+            JBYAccountTranscation transcation;
+            if (!this.State.JBYAccount.TryGetValue(transcationId, out transcation))
+            {
+                return;
+            }
+
+            if (transcation.ResultCode != 0 || transcation.TradeCode != TradeCodeHelper.TC2001012002)
+            {
+                return;
+            }
+
+            DateTime now = DateTime.UtcNow.AddHours(8);
+
+            transcation.ResultCode = 1;
+            transcation.ResultTime = now;
+            transcation.TransDesc = "赎回成功";
+
+            SettleAccountTranscation settleAccountTranscation = new SettleAccountTranscation
+            {
+                Amount = transcation.Amount,
+                Args = transcation.Args,
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                ResultCode = 1,
+                ResultTime = now,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC1005011103,
+                TransactionId = transcation.SettleAccountTranscationId,
+                TransactionTime = now,
+                TransDesc = "金包银赎回资金到账",
+                UserId = this.State.Id
+            };
+
+            this.State.SettleAccount.Add(settleAccountTranscation.TransactionId, settleAccountTranscation);
+
+            await this.State.WriteStateAsync();
+            this.ReloadJBYAccountData();
+            this.ReloadSettleAccountData();
+
+            await this.RaiseJBYWithdrawalResultedEvent(transcation.ToInfo(), settleAccountTranscation.ToInfo(null));
+        }
+
+        /// <summary>
+        /// jby compute interest as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task JBYReinvestingAsync()
+        {
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            if (this.State.JBYAccount.Values.Any(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0
+                && t.TransactionTime.Date == now.Date))
+            {
+                return;
+            }
+
+            int yield = DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield;
+
+            int interest = this.JBYAccrualAmount * yield / 3600000;
+
+            JBYAccountTranscation jbyTranscation = new JBYAccountTranscation
+            {
+                Amount = interest,
+                Args = new Dictionary<string, object> { { "Yield", yield } },
+                PredeterminedResultDate = now,
+                ProductId = Guid.Empty,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleAccountTranscationId = Guid.Empty,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC2001011106,
+                TransDesc = "利息复投成功",
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                UserId = this.State.Id
+            };
+
+            this.State.JBYAccount.Add(jbyTranscation.TransactionId, jbyTranscation);
+
+            await this.State.WriteStateAsync();
+            this.ReloadJBYAccountData();
+
+            await this.RaiseJBYReinvestedEvent(jbyTranscation.ToInfo());
+        }
+
+        /// <summary>
         ///     Adds bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -951,6 +1043,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 Amount = command.Amount,
                 Args = command.Args,
+                PredeterminedResultDate = now,
                 ResultCode = 1,
                 ResultTime = now,
                 SettleAccountTranscationId = settleTranscation.TransactionId,
@@ -966,6 +1059,7 @@ namespace Yuyi.Jinyinmao.Domain
             Guid? result = await product.BuildJBYTranscationAsync(jbyTranscation.ToInfo());
             if (result.HasValue)
             {
+                jbyTranscation.ProductId = result.Value;
                 this.State.SettleAccount.Add(settleTranscation.TransactionId, settleTranscation);
                 this.State.JBYAccount.Add(jbyTranscation.TransactionId, jbyTranscation);
 
@@ -980,8 +1074,6 @@ namespace Yuyi.Jinyinmao.Domain
 
             return null;
         }
-
-        #endregion IUser Members
 
         /// <summary>
         ///     Withdrawals the asynchronous.
@@ -1058,10 +1150,8 @@ namespace Yuyi.Jinyinmao.Domain
             return transcation.ToInfo(null);
         }
 
-  
         public async Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command)
         {
-            // TODO: 金包银的起息和赎回
             JBYAccountTranscation transcation;
             if (this.State.JBYAccount.TryGetValue(command.CommandId, out transcation))
             {
@@ -1073,45 +1163,56 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
-            await this.BeginProcessCommandAsync(command);
+            this.BeginProcessCommandAsync(command).Forget();
 
             transcation = new JBYAccountTranscation
             {
                 Amount = command.Amount,
                 Args = command.Args,
+                PredeterminedResultDate = null,
                 ProductId = Guid.NewGuid(),
                 ResultCode = 0,
                 ResultTime = null,
+                SettleAccountTranscationId = Guid.NewGuid(),
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005052001,
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
                 TransDesc = "赎回申请",
-                
+                UserId = this.State.Id
             };
 
             IJBYProductWithdrawalManager manager = JBYProductWithdrawalManagerFactory.GetGrain(GrainTypeHelper.GetJBYProductWithdrawalManagerGrainTypeLongKey());
-            int waitingDays = await manager.BuildWithdrawalTranscationAsync(transcation.ToInfo());
+            DateTime? predeterminedResultDate = await manager.BuildWithdrawalTranscationAsync(transcation.ToInfo());
 
-            transcation.Info.Add(WaitingDaysKeyName, waitingDays);
+            if (predeterminedResultDate == null)
+            {
+                return null;
+            }
 
-            this.State.JBYAccount.Add(transcation);
+            transcation.PredeterminedResultDate = predeterminedResultDate;
+
+            this.State.JBYAccount.Add(transcation.TransactionId, transcation);
 
             await this.State.WriteStateAsync();
             this.ReloadJBYAccountData();
 
+            await this.RaiseJBYWithdrawalAcceptedEvent(command, transcation.ToInfo());
+
             return transcation.ToInfo();
         }
 
+        #endregion IUser Members
+
         /// <summary>
-        /// Builds the charge transcation.
+        ///     Builds the charge transcation.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="transcation">The transcation.</param>
         /// <returns>Transcation.</returns>
         private SettleAccountTranscation BuildChargeTranscation(Withdrawal command, SettleAccountTranscation transcation)
         {
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime now = DateTime.UtcNow.AddHours(8).AddSeconds(1);
             int chargeAmount;
 
             if (this.MonthWithdrawalCount < MonthFreeWithrawalLimitCount)

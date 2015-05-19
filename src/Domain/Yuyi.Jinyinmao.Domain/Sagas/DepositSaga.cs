@@ -4,7 +4,7 @@
 // Created          : 2015-05-03  11:48 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  5:44 PM
+// Last Modified On : 2015-05-18  11:30 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -18,7 +18,6 @@ using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.InfoDtos;
 using Yuyi.Jinyinmao.Service;
 
 namespace Yuyi.Jinyinmao.Domain.Sagas
@@ -156,7 +155,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 this.Waiting = false;
                 this.State.Status = DepositSagaStatus.Finished;
 
-                await this.User.DepositResultedAsync(this.State.InitData.PayByYilianCommand, result);
+                await this.User.DepositResultedAsync(this.State.InitData.PayByYilianCommand, result.Result, result.Message);
             }
         }
 
@@ -227,9 +226,9 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 if (transcationInfo != null)
                 {
                     PaymentRequestParameter parameter = await this.BuildRequestParameterAsync(transcationInfo.TransactionId.ToGuidString(),
-                    transcationInfo.BankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, transcationInfo.BankCardInfo.BankName,
-                    (int)userInfo.Credential, userInfo.CredentialNo, transcationInfo.BankCardInfo.Cellphone,
-                    userInfo.UserId.ToGuidString(), transcationInfo.Amount);
+                        transcationInfo.BankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, transcationInfo.BankCardInfo.BankName,
+                        (int)userInfo.Credential, userInfo.CredentialNo, transcationInfo.BankCardInfo.Cellphone,
+                        userInfo.UserId.ToGuidString(), transcationInfo.Amount);
 
                     YilianRequestResult result = await this.YilianService.PaymentRequestAsync(parameter);
                     this.Info.Add("Request-{0}".FormatWith(DateTime.UtcNow.ToString("O")), new { result.Message, result.ResponseString });

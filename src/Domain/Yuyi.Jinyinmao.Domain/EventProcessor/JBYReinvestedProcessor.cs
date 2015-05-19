@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-11  11:01 PM
+// Created          : 2015-05-19  1:05 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  11:10 PM
+// Last Modified On : 2015-05-19  1:07 AM
 // ***********************************************************************
-// <copyright file="WithdrawalAcceptedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYReinvestedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -16,29 +16,24 @@ using System.Threading.Tasks;
 namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
-    ///     WithdrawalAcceptedProcessor.
+    ///     JBYReinvestedProcessor.
     /// </summary>
-    public class WithdrawalAcceptedProcessor : EventProcessor<WithdrawalAccepted>, IWithdrawalAcceptedProcessor
+    public class JBYReinvestedProcessor : EventProcessor<JBYReinvested>, IJBYReinvestedProcessor
     {
-        #region IWithdrawalAcceptedProcessor Members
+        #region IJBYReinvestedProcessor Members
 
         /// <summary>
         ///     Processes the event.
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public override async Task ProcessEventAsync(WithdrawalAccepted @event)
+        public override async Task ProcessEventAsync(JBYReinvested @event)
         {
-            await this.ProcessingEventAsync(@event, async e =>
-            {
-                await DBSyncHelper.SyncSettleAccountTranscation(e.WithdrawalTranscation);
-
-                await DBSyncHelper.SyncSettleAccountTranscation(e.ChargeTranscation);
-            });
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYAccountTranscation(e.TranscationInfo));
 
             await base.ProcessEventAsync(@event);
         }
 
-        #endregion IWithdrawalAcceptedProcessor Members
+        #endregion IJBYReinvestedProcessor Members
     }
 }

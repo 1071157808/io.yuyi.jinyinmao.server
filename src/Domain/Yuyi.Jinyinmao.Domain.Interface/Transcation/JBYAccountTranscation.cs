@@ -34,6 +34,12 @@ namespace Yuyi.Jinyinmao.Domain
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
+        /// Gets or sets the predetermined result date.
+        /// </summary>
+        /// <value>The predetermined result date.</value>
+        public DateTime? PredeterminedResultDate { get; set; }
+
+        /// <summary>
         ///     Gets or sets the product identifier.
         /// </summary>
         /// <value>The product identifier.</value>

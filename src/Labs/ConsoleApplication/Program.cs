@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  10:06 PM
+// Last Modified On : 2015-05-18  11:42 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,6 +22,10 @@ namespace ConsoleApplication
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine(DateTime.UtcNow.AddHours(8).Hour);
+            Console.WriteLine(DateTime.UtcNow.AddHours(9).Hour);
+            Console.WriteLine(DateTime.UtcNow.AddHours(10).Hour);
+
             List<string> r = new List<string>();
             r.Add("1");
             r.Add("2");

@@ -1079,6 +1079,16 @@
             <param name="userService">The user service.</param>
             <param name="productService"></param>
         </member>
+        <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetActivityStatus1000">
+            <summary>
+            获取用户【500元本金活动】状态
+            </summary>
+            <returns>
+            Status：状态(10=>不符合，20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
+            ExtraInterest：额外收益
+            MiniCash: 起投金额
+            </returns>
+        </member>
         <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetBAFailedOrders(System.Int32)">
             <summary>
                 银票失败订单列表
@@ -1215,6 +1225,17 @@
                 Content[string]: 委托协议内容
             </returns>
         </member>
+        <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetRedeemParameters">
+            <summary>
+                用户资产包提现所需参数
+            </summary>
+            <returns>
+            RedeemCount：用户当日已提现次数
+            TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
+            InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
+            AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
+            </returns>
+        </member>
         <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetTAFailedOrders">
             <summary>
                 商票失败订单列表
@@ -1282,20 +1303,6 @@
                 -- RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日
             </returns>
         </member>
-        <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetZCBUser">
-            <summary>
-            资产包订单用户总览
-            </summary>
-            ProductIdentifier[string]: 产品唯一标示符
-            ProductNo[string]: 产品编号
-            TotalPrincipal[decimal]: 投资总金额
-            CurrentPrincipal[decimal]: 当前正在投资总额
-            TotalInterest[decimal]: 累计总收益
-            TotalRedeemInterest[decimal]: 累计提现收益
-            YesterdayInterest[decimal]: 昨日收益
-            Yield[decimal]: 今日利率
-            <returns></returns>
-        </member>
         <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetZCBBills(System.Int32)">
             <summary>
             资产包认购/提现流程列表
@@ -1322,6 +1329,20 @@
             -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
             </returns>
         </member>
+        <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetZCBUser">
+            <summary>
+            资产包订单用户总览
+            </summary>
+            ProductIdentifier[string]: 产品唯一标示符
+            ProductNo[string]: 产品编号
+            TotalPrincipal[decimal]: 投资总金额
+            CurrentPrincipal[decimal]: 当前正在投资总额
+            TotalInterest[decimal]: 累计总收益
+            TotalRedeemInterest[decimal]: 累计提现收益
+            YesterdayInterest[decimal]: 昨日收益
+            Yield[decimal]: 今日利率
+            <returns></returns>
+        </member>
         <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetZCBUserBills(System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Int32)">
             <summary>
                 资产包用户每日收益列表
@@ -1341,17 +1362,6 @@
             -- Yield[decimal]：收益率
             -- Interest[decimal]：收益
             -- Remark[string]：备注
-            </returns>
-        </member>
-        <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetRedeemParameters">
-            <summary>
-                用户资产包提现所需参数
-            </summary>
-            <returns>
-            RedeemCount：用户当日已提现次数
-            TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
-            InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和 
-            AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
             </returns>
         </member>
         <member name="M:nyanya.Meow.Controllers.OrderInfoController.RedeemPrincipal(nyanya.Meow.Models.RedeemPrincipalRequest)">
@@ -1387,16 +1397,6 @@
             <param name="info">The information.</param>
             <param name="productResult">The product result.</param>
             <returns></returns>
-        </member>
-        <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetActivityStatus1000">
-            <summary>
-            获取用户【500元本金活动】状态
-            </summary>
-            <returns>
-            Status：状态(10=>不符合，20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
-            ExtraInterest：额外收益
-            MiniCash: 起投金额
-            </returns>
         </member>
         <member name="M:nyanya.Meow.Controllers.OrderInfoController.GetUserActivityStatu_1000(Cat.Domain.Users.ReadModels.UserInfo)">
             <summary>

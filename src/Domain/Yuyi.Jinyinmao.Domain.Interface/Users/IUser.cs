@@ -189,7 +189,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command"></param>
         /// <returns>Task.</returns>
-        Task RegisterAsync(UserRegister command);
+        Task<UserInfo> RegisterAsync(UserRegister command);
 
         /// <summary>
         ///     Reloads the asynchronous.

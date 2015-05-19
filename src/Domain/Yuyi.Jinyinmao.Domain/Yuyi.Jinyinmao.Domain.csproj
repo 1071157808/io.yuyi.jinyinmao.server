@@ -139,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventProcessor\DepositResultedProcessor.cs" />
+    <Compile Include="EventProcessor\JBYReinvestedProcessor.cs" />
+    <Compile Include="EventProcessor\JBYWithdrawalAcceptedProcessor.cs" />
+    <Compile Include="EventProcessor\JBYWithdrawalResultedProcessor.cs" />
     <Compile Include="EventProcessor\RegularProductRepaidProcessor.cs" />
     <Compile Include="Helper\DBSyncHelper.cs" />
     <Compile Include="EventProcessor\BankCardAddedProcessor.cs" />
@@ -163,18 +166,16 @@
     <Compile Include="Products\JBYProduct.cs" />
     <Compile Include="Products\JBYProductWithdrawalManager.cs" />
     <Compile Include="Products\RegularProduct.cs" />
-    <Compile Include="Sagas\AddBankCardSaga.cs" />
     <Compile Include="EventProcessor\UserRegisteredProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\orleans.codegen.cs" />
-    <Compile Include="Sagas\AuthenticateSaga.cs" />
-    <Compile Include="Sagas\DepositByYilianSaga.cs" />
     <Compile Include="Sagas\DepositSaga.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\User_CacheProperties.cs" />
     <Compile Include="Users\User_Grain.cs" />
     <Compile Include="Users\User_RaiseEvent.cs" />
     <Compile Include="Users\User_ReloadData.cs" />
+    <Compile Include="Users\User_Reminder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

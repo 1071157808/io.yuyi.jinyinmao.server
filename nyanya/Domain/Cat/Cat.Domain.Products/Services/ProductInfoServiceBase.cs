@@ -1,7 +1,21 @@
-﻿// FileInformation: nyanya/Cat.Domain.Products/ProductInfoServiceBase.cs
-// CreatedTime: 2014/09/01   2:44 PM
-// LastUpdatedTime: 2014/09/09   4:35 PM
+// ***********************************************************************
+// Project          : nyanya
+// Author           : Siqi Lu
+// Created          : 2015-05-18  2:53 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-05-19  10:17 AM
+// ***********************************************************************
+// <copyright file="ProductInfoServiceBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
 
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using Cat.Commands.Products;
 using Cat.Domain.Products.Database;
 using Cat.Domain.Products.Models;
@@ -9,11 +23,6 @@ using Cat.Domain.Products.ReadModels;
 using Cat.Domain.Products.Services.DTO;
 using Domian.DTO;
 using Infrastructure.Cache.Couchbase;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cat.Domain.Products.Services
 {
@@ -27,7 +36,7 @@ namespace Cat.Domain.Products.Services
         public async Task<IList<ProductWithSaleInfo<T>>> GetBeingSoldOutProductWithSaleInfosAsync()
         {
             IList<T> products = await this.GetOnSaleProductInfosAsync();
-            IList<ProductWithSaleInfo<T>> infos = BuildProductWithSaleInfos(products.Where(i => !i.SoldOut).ToList());
+            IList<ProductWithSaleInfo<T>> infos = this.BuildProductWithSaleInfos(products.Where(i => !i.SoldOut).ToList());
             return infos.Where(Product.ShouldBeSetSoldOut).ToList();
         }
 
@@ -80,13 +89,13 @@ namespace Cat.Domain.Products.Services
             return this.BuildProductWithSaleInfo(productInfo);
         }
 
-        public async Task<ProductWithSaleInfo<T>> GetProductWithSaleInfoByNoAsync(string productNo)
+        public virtual async Task<ProductWithSaleInfo<T>> GetProductWithSaleInfoByNoAsync(string productNo)
         {
             T productInfo = await this.GetProductInfoByNoAsync(productNo);
             return this.BuildProductWithSaleInfo(productInfo);
         }
 
-        public async Task<IPaginatedDto<ProductWithSaleInfo<T>>> GetProductWithSaleInfosAsync(int pageIndex, ProductCategory productCategory = ProductCategory.JINYINMAO, int pageSize = 10)
+        public virtual async Task<IPaginatedDto<ProductWithSaleInfo<T>>> GetProductWithSaleInfosAsync(int pageIndex, ProductCategory productCategory = ProductCategory.JINYINMAO, int pageSize = 10)
         {
             IPaginatedDto<T> dtos = await this.GetProductInfosAsync(pageIndex, pageSize, productCategory);
             IPaginatedDto<ProductWithSaleInfo<T>> items = this.BuildProductWithSaleInfos(dtos);
@@ -115,7 +124,7 @@ namespace Cat.Domain.Products.Services
             return this.BuildProductWithSaleInfo(productInfo);
         }
 
-        public async Task<IList<ProductWithSaleInfo<T>>> GetTopProductWithSaleInfosAsync(int topPageCount = 6, ProductCategory productCategory = ProductCategory.JINYINMAO)
+        public virtual async Task<IList<ProductWithSaleInfo<T>>> GetTopProductWithSaleInfosAsync(int topPageCount = 6, ProductCategory productCategory = ProductCategory.JINYINMAO)
         {
             IList<T> infos = await this.GetTopProductInfosAsync(topPageCount, productCategory);
             return this.BuildProductWithSaleInfos(infos);

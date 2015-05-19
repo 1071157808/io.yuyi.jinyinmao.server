@@ -911,52 +911,52 @@
         </member>
         <member name="T:nyanya.Cat.Controllers.OrderInfoController">
             <summary>
-            OrderInfoController
+                OrderInfoController
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.baOrderInfoService">
             <summary>
-            The ba order information service
+                The ba order information service
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.commandBus">
             <summary>
-            The command bus
+                The command bus
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.orderInfoService">
             <summary>
-            The order information service
+                The order information service
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.productService">
             <summary>
-            The product service
+                The product service
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.taOrderInfoService">
             <summary>
-            The ta order information service
+                The ta order information service
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.userInfoService">
             <summary>
-            The user information service
+                The user information service
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.userService">
             <summary>
-            The user service
+                The user service
             </summary>
         </member>
         <member name="F:nyanya.Cat.Controllers.OrderInfoController.zcbOrderService">
             <summary>
-            The ZCB order service
+                The ZCB order service
             </summary>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.#ctor(Cat.Domain.Orders.Services.Interfaces.IBAOrderInfoService,Cat.Domain.Orders.Services.Interfaces.ITAOrderInfoService,Cat.Domain.Orders.Services.Interfaces.IOrderInfoService,Cat.Domain.Users.Services.Interfaces.IExactUserInfoService,Cat.Domain.Orders.Services.Interfaces.IZCBOrderService,Domian.Bus.ICommandBus,Cat.Domain.Users.Services.Interfaces.IUserService,Cat.Domain.Products.Services.Interfaces.IProductInfoService)">
             <summary>
-            Initializes a new instance of the <see cref="T:nyanya.Cat.Controllers.OrderInfoController" /> class.
+                Initializes a new instance of the <see cref="T:nyanya.Cat.Controllers.OrderInfoController" /> class.
             </summary>
             <param name="baOrderInfoService">The ba order information service.</param>
             <param name="taOrderInfoService">The ta order information service.</param>
@@ -969,50 +969,50 @@
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetActivityStatus1000">
             <summary>
-            获取用户【500元本金活动】状态
+                获取用户【500元本金活动】状态
             </summary>
             <returns>
-            Status：状态(10=&gt;不符合，20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
-            ExtraInterest：额外收益
-            MiniCash: 起投金额
+                Status：状态(10=&gt;不符合，20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
+                ExtraInterest：额外收益
+                MiniCash: 起投金额
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetBAFailedOrders(System.Int32)">
             <summary>
-            银票失败订单列表
+                银票失败订单列表
             </summary>
             <param name="category">产品分类(10金银猫产品 20富滇产品)</param>
             <returns>
-            HasNextPage: 是否有下一页
-            PageIndex: 页码
-            PageSize: 一页节点数量
-            TotalCount: 所有的节点数量
-            TotalPageCount: 总页数
-            Orders:节点列表
-            -- ExtraInterest[decimal]: 额外收益
-            -- Interest[decimal]: 预期收益
-            -- Message[string]: 提示信息
-            -- OrderIdentifier[string]: 订单唯一标识
-            -- OrderNo[string]: 订单编号
-            -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
-            -- Principal[decimal]: 订单金额
-            -- ProductIdentifier[string]: 项目唯一标识
-            -- ProductName[string]: 项目名称
-            -- ProductNo[string]: 项目编号
-            -- ProductNumber[int]: 项目期数
-            -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
-            -- ShareCount[int]: 订单的购买份数
-            -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
-            -- TotalAmount[decimal]: 订单的本息总额
-            -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
-            -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
-            -- Yield[decimal]: 订单的预期收益率
-            -- ProductCategory[int]: 产品分类 10 =&gt; 金银猫产品，20 =&gt; 富滇产品，40 =&gt; 阜新产品
+                HasNextPage: 是否有下一页
+                PageIndex: 页码
+                PageSize: 一页节点数量
+                TotalCount: 所有的节点数量
+                TotalPageCount: 总页数
+                Orders:节点列表
+                -- ExtraInterest[decimal]: 额外收益
+                -- Interest[decimal]: 预期收益
+                -- Message[string]: 提示信息
+                -- OrderIdentifier[string]: 订单唯一标识
+                -- OrderNo[string]: 订单编号
+                -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+                -- Principal[decimal]: 订单金额
+                -- ProductIdentifier[string]: 项目唯一标识
+                -- ProductName[string]: 项目名称
+                -- ProductNo[string]: 项目编号
+                -- ProductNumber[int]: 项目期数
+                -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+                -- ShareCount[int]: 订单的购买份数
+                -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
+                -- TotalAmount[decimal]: 订单的本息总额
+                -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
+                -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+                -- Yield[decimal]: 订单的预期收益率
+                -- ProductCategory[int]: 产品分类 10 =&gt; 金银猫产品，20 =&gt; 富滇产品，40 =&gt; 阜新产品
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetBAOrders(System.Int32,System.Int32,System.Int32)">
             <summary>
-            银票成功订单列表
+                银票成功订单列表
             </summary>
             <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
             <param name="sortMode">排序规则 1 =&gt; 按下单时间排序，2 =&gt; 按结息日期排序</param>
@@ -1050,7 +1050,7 @@
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetOrder(System.String)">
             <summary>
-            订单详情
+                订单详情
             </summary>
             <param name="orderIdentifier">订单唯一标识</param>
             <returns>
@@ -1097,20 +1097,20 @@
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetOrderConsignmentAgreement(System.String)">
             <summary>
-            订单委托协议
+                订单委托协议
             </summary>
             <param name="orderIdentifier">订单唯一标识</param>
             <returns>
-            Content[string]: 委托协议内容
+                Content[string]: 委托协议内容
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetOrderPledgeAgreement(System.String)">
             <summary>
-            订单质押借款协议
+                订单质押借款协议
             </summary>
             <param name="orderIdentifier">订单唯一标识</param>
             <returns>
-            Content[string]: 委托协议内容
+                Content[string]: 委托协议内容
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetRedeemParameters">
@@ -1118,48 +1118,48 @@
                 用户资产包提现所需参数
             </summary>
             <returns>
-            RedeemCount：用户当日已提现次数
-            TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
-            InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
-            AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
+                RedeemCount：用户当日已提现次数
+                TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
+                InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
+                AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetTAFailedOrders(System.Int32)">
             <summary>
-            商票失败订单列表
+                商票失败订单列表
             </summary>
             <param name="category">产品分类(10金银猫产品 30施秉金鼎产品)</param>
             <returns>
-            HasNextPage: 是否有下一页
-            PageIndex: 页码
-            PageSize: 一页节点数量
-            TotalCount: 所有的节点数量
-            TotalPageCount: 总页数
-            Orders:节点列表
-            -- ExtraInterest[decimal]: 额外收益
-            -- Interest[decimal]: 预期收益
-            -- Message[string]: 提示信息
-            -- OrderIdentifier[string]: 订单唯一标识
-            -- OrderNo[string]: 订单编号
-            -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
-            -- Principal[decimal]: 订单金额
-            -- ProductIdentifier[string]: 项目唯一标识
-            -- ProductName[string]: 项目名称
-            -- ProductNo[string]: 项目编号
-            -- ProductNumber[int]: 项目期数
-            -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
-            -- ShareCount[int]: 订单的购买份数
-            -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
-            -- TotalAmount[decimal]: 订单的本息总额
-            -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
-            -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
-            -- Yield[decimal]: 订单的预期收益率
-            -- ProductCategory[int]：产品分类 10金银猫产品 30施秉金鼎产品
+                HasNextPage: 是否有下一页
+                PageIndex: 页码
+                PageSize: 一页节点数量
+                TotalCount: 所有的节点数量
+                TotalPageCount: 总页数
+                Orders:节点列表
+                -- ExtraInterest[decimal]: 额外收益
+                -- Interest[decimal]: 预期收益
+                -- Message[string]: 提示信息
+                -- OrderIdentifier[string]: 订单唯一标识
+                -- OrderNo[string]: 订单编号
+                -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+                -- Principal[decimal]: 订单金额
+                -- ProductIdentifier[string]: 项目唯一标识
+                -- ProductName[string]: 项目名称
+                -- ProductNo[string]: 项目编号
+                -- ProductNumber[int]: 项目期数
+                -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+                -- ShareCount[int]: 订单的购买份数
+                -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
+                -- TotalAmount[decimal]: 订单的本息总额
+                -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
+                -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+                -- Yield[decimal]: 订单的预期收益率
+                -- ProductCategory[int]：产品分类 10金银猫产品 30施秉金鼎产品
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetTAOrders(System.Int32,System.Int32,System.Int32)">
             <summary>
-            商票成功订单列表
+                商票成功订单列表
             </summary>
             <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
             <param name="sortMode">排序规则 1 =&gt; 按下单时间排序，2 =&gt; 按结息日期排序</param>
@@ -1197,33 +1197,33 @@
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetZCBBills(System.Int32)">
             <summary>
-            资产包认购/提现流程列表
+                资产包认购/提现流程列表
             </summary>
             <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
             <returns>
-            HasNextPage: 是否有下一页
-            PageIndex: 页码
-            PageSize: 一页节点数量
-            TotalCount: 所有的节点数量
-            TotalPageCount: 总页数
-            ZCBBills：节点列表
-            -- BillIdentifier[string]：流水标示号
-            -- ProductIdentifier[string]：项目唯一标识
-            -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
-            -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
-            -- Principal[decimal]：交易金额
-            -- BankCardNo[string]：银行卡号
-            -- BankName[string]：银行名称
-            -- BankCardCity[string]：开户行城市全称，如 上海|上海
-            -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
-            -- Remark[string]：流水信息描述
-            -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
-            -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
+                HasNextPage: 是否有下一页
+                PageIndex: 页码
+                PageSize: 一页节点数量
+                TotalCount: 所有的节点数量
+                TotalPageCount: 总页数
+                ZCBBills：节点列表
+                -- BillIdentifier[string]：流水标示号
+                -- ProductIdentifier[string]：项目唯一标识
+                -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
+                -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
+                -- Principal[decimal]：交易金额
+                -- BankCardNo[string]：银行卡号
+                -- BankName[string]：银行名称
+                -- BankCardCity[string]：开户行城市全称，如 上海|上海
+                -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
+                -- Remark[string]：流水信息描述
+                -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
+                -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetZCBUser">
             <summary>
-            资产包订单用户总览
+                资产包订单用户总览
             </summary>
             ProductIdentifier[string]: 产品唯一标示符
             ProductNo[string]: 产品编号
@@ -1243,47 +1243,47 @@
             <param name="startTime">startTime(yyyy-MM-dd)：开始时间</param>
             <param name="endTime">endTime(yyyy-MM-dd)：结束时间</param>
             <returns>
-            HasNextPage：是否有下一页
-            PageIndex：页码
-            PageSize：一页节点数量
-            TotalCount：所有的节点数量
-            TotalPageCount：总页数
-            ZCBUserBills：节点列表
-            -- BillDate[yyyy-MM-dd]：日期
-            -- Principal[decimal]：投资总额
-            -- Yield[decimal]：收益率
-            -- Interest[decimal]：收益
-            -- Remark[string]：备注
+                HasNextPage：是否有下一页
+                PageIndex：页码
+                PageSize：一页节点数量
+                TotalCount：所有的节点数量
+                TotalPageCount：总页数
+                ZCBUserBills：节点列表
+                -- BillDate[yyyy-MM-dd]：日期
+                -- Principal[decimal]：投资总额
+                -- Yield[decimal]：收益率
+                -- Interest[decimal]：收益
+                -- Remark[string]：备注
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.RedeemPrincipal(nyanya.Cat.Models.RedeemPrincipalRequest)">
             <summary>
-            赎回本金
+                赎回本金
             </summary>
             <param name="request">
-            ProductNo[string]：产品编号
-            BankCardNo[string]：银行卡号
-            RedeemPrincipal[decimal]：赎回本金
-            PaymentPassword[string]：支付密码
+                ProductNo[string]：产品编号
+                BankCardNo[string]：银行卡号
+                RedeemPrincipal[decimal]：赎回本金
+                PaymentPassword[string]：支付密码
             </param>
             <returns>
-            @{h2@} HttpStatusCode:200 @{/h2@}
-            No Content
-            @{h2@} HttpStatusCode:400 @{/h2@}
-            "提现金额不能有小数"
-            "为保障您的资金账户安全，请重置支付密码后再试"
-            "支付密码错误，您还有{0}次机会"
-            "订单不存在"
-            "购买当日不能取款"
-            "当日取款次数已满2次"
-            "输入金额大于可取回金额"
-            "输入金额大于单次取款限额"
-            "输入金额大于项目可取限额"
+                @{h2@} HttpStatusCode:200 @{/h2@}
+                No Content
+                @{h2@} HttpStatusCode:400 @{/h2@}
+                "提现金额不能有小数"
+                "为保障您的资金账户安全，请重置支付密码后再试"
+                "支付密码错误，您还有{0}次机会"
+                "订单不存在"
+                "购买当日不能取款"
+                "当日取款次数已满2次"
+                "输入金额大于可取回金额"
+                "输入金额大于单次取款限额"
+                "输入金额大于项目可取限额"
             </returns>
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.BuildRedeemPrincipalCommand(nyanya.Cat.Models.RedeemPrincipalRequest,Cat.Domain.Orders.Services.DTO.ZCBUserRemainRedeemInfo,Cat.Domain.Products.Models.Product)">
             <summary>
-            Builds the redeem principal command.
+                Builds the redeem principal command.
             </summary>
             <param name="request">The request.</param>
             <param name="info">The information.</param>
@@ -1292,13 +1292,13 @@
         </member>
         <member name="M:nyanya.Cat.Controllers.OrderInfoController.GetUserActivityStatu_1000(Cat.Domain.Users.ReadModels.UserInfo)">
             <summary>
-            获取用户【500元本金活动】状态
+                获取用户【500元本金活动】状态
             </summary>
             <param name="userInfo">用户信息</param>
             <returns>
-            Status：状态(20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
-            ExtraInterest：额外收益
-            MiniCash: 起投金额
+                Status：状态(20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
+                ExtraInterest：额外收益
+                MiniCash: 起投金额
             </returns>
         </member>
         <member name="T:nyanya.Cat.Controllers.ProductInfoController">

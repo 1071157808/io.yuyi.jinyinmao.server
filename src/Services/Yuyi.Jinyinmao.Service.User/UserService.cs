@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  3:23 AM
+// Last Modified On : 2015-05-19  1:38 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -125,17 +125,6 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Deposits from the settle account.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        public Task DepositAsync(DepositFromYilian command)
-        {
-            IUser user = UserFactory.GetGrain(command.UserId);
-            return user.DepositAsync(command);
-        }
-
-        /// <summary>
         ///     Gets the bank card information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -174,8 +163,8 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        public Task<TranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
+        public Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId)
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetJBYAccountTranscationInfoAsync(transcationId);
@@ -187,8 +176,8 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<TranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetJBYAccountTranscationInfosAsync(pageIndex, pageSize);
@@ -225,22 +214,21 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public Task<TranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        public Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId)
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetSettleAccountTranscationInfoAsync(transcationId);
         }
 
         /// <summary>
-        ///     Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transcation infos asynchronous.
         /// </summary>
-        /// <param name="userId">The useri identifier.</param>
+        /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;IPaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<TranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        /// <returns>Task&lt;PaginatedList&lt;SettleAccountTranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetSettleAccountTranscationInfosAsync(pageIndex, pageSize);
@@ -289,9 +277,9 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     Investings the asynchronous.
         /// </summary>
-        /// <param name="command">The regular investing.</param>
-        /// <returns>Task.</returns>
-        public Task<TranscationInfo> InvestingAsync(JBYInvesting command)
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
+        public Task<JBYAccountTranscationInfo> InvestingAsync(JBYInvesting command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.InvestingAsync(command);
@@ -331,18 +319,6 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Sets the default bank card asynchronous.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <param name="bankCardNo">The bank card no.</param>
-        /// <returns>Task.</returns>
-        public Task SetDefaultBankCardAsync(Guid userId, string bankCardNo)
-        {
-            IUser user = UserFactory.GetGrain(userId);
-            return user.SetDefaultBankCardAsync(bankCardNo);
-        }
-
-        /// <summary>
         ///     Sets the payment password asynchronous.
         /// </summary>
         /// <param name="command"></param>
@@ -356,20 +332,20 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     Withdrawals the asynchronous.
         /// </summary>
-        /// <param name="command">The withdrawal.</param>
-        /// <returns>Task.</returns>
-        public Task<TranscationInfo> WithdrawalAsync(Withdrawal command)
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        public Task<SettleAccountTranscationInfo> WithdrawalAsync(Withdrawal command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.WithdrawalAsync(command);
         }
 
         /// <summary>
-        /// Withdrawals the asynchronous.
+        ///     Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        public Task<TranscationInfo> WithdrawalAsync(JBYWithdrawal command)
+        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
+        public Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.WithdrawalAsync(command);

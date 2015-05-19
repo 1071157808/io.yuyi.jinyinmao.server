@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:44 AM
+// Last Modified On : 2015-05-19  1:35 AM
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -53,13 +53,6 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task ClearUnauthenticatedInfo(Guid userId);
 
         /// <summary>
-        ///     Deposits from the settle account asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task DepositAsync(DepositFromYilian command);
-
-        /// <summary>
         ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The regular investing.</param>
@@ -93,14 +86,6 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
         Task ResetLoginPasswordAsync(ResetLoginPassword command);
-
-        /// <summary>
-        ///     Sets the default bank card asynchronous.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <param name="bankCardNo">The bank card no.</param>
-        /// <returns>Task.</returns>
-        Task SetDefaultBankCardAsync(Guid userId, string bankCardNo);
 
         /// <summary>
         ///     Sets the payment password asynchronous.

@@ -34,6 +34,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             {
                 Amount = transcation.Amount,
                 Args = transcation.Args,
+                PredeterminedResultDate = transcation.PredeterminedResultDate,
                 ProductId = transcation.ProductId,
                 ResultCode = transcation.ResultCode,
                 ResultTime = transcation.ResultTime,
@@ -59,7 +60,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <param name="transcationModel">The transcation model.</param>
         public static void MapToDBModel(this JBYAccountTranscationInfo info, JBYTranscation transcationModel)
         {
-            Dictionary<string, object> i = BuidJBYTranscationModelInfo();
+            Dictionary<string, object> i = BuidJBYTranscationModelInfo(info);
 
             transcationModel.AccountTranscationIdentifier = info.SettleAccountTranscationId.ToGuidString();
             transcationModel.Amount = info.Amount;
@@ -80,7 +81,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <returns>JBYTranscation.</returns>
         public static JBYTranscation ToDBModel(this JBYAccountTranscationInfo info)
         {
-            Dictionary<string, object> i = BuidJBYTranscationModelInfo();
+            Dictionary<string, object> i = BuidJBYTranscationModelInfo(info);
 
             return new JBYTranscation
             {
@@ -98,9 +99,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             };
         }
 
-        private static Dictionary<string, object> BuidJBYTranscationModelInfo()
+        private static Dictionary<string, object> BuidJBYTranscationModelInfo(JBYAccountTranscationInfo info)
         {
-            Dictionary<string, object> i = new Dictionary<string, object>();
+            Dictionary<string, object> i = new Dictionary<string, object>
+            {
+                { "PredeterminedResultDate", info.PredeterminedResultDate }
+            };
             return i;
         }
     }
@@ -121,6 +125,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The arguments.</value>
         public Dictionary<string, object> Args { get; set; }
+
+        /// <summary>
+        /// Gets or sets the predetermined result date.
+        /// </summary>
+        /// <value>The predetermined result date.</value>
+        public DateTime? PredeterminedResultDate { get; set; }
 
         /// <summary>
         ///     Gets or sets the product identifier.

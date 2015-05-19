@@ -1,32 +1,16 @@
-﻿// FileInformation: nyanya/nyanya.Cat/OrderInfoController.cs
-// CreatedTime: 2014/08/29   2:51 PM
-// LastUpdatedTime: 2014/09/01   4:30 PM
+// ***********************************************************************
+// Project          : nyanya
+// Author           : Siqi Lu
+// Created          : 2015-05-18  2:54 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-05-18  4:57 PM
+// ***********************************************************************
+// <copyright file="OrderInfoController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
 
-using Cat.Commands.Orders;
-using Cat.Commands.Products;
-using Cat.Domain.Orders.Models;
-using Cat.Domain.Orders.ReadModels;
-using Cat.Domain.Orders.Services.DTO;
-using Cat.Domain.Orders.Services.Interfaces;
-using Cat.Domain.Products.Models;
-using Cat.Domain.Products.ReadModels;
-using Cat.Domain.Products.Services.DTO;
-using Cat.Domain.Products.Services.Interfaces;
-using Cat.Domain.Users.ReadModels;
-using Cat.Domain.Users.Services.DTO;
-using Cat.Domain.Users.Services.Interfaces;
-using Domian.Bus;
-using Domian.Commands;
-using Domian.DTO;
-using Infrastructure.Lib.Extensions;
-using Infrastructure.Lib.Utility;
-using Newtonsoft.Json;
-using nyanya.AspDotNet.Common.Controller;
-using nyanya.AspDotNet.Common.Filters;
-using nyanya.Cat.Filters;
-using nyanya.Cat.Models;
-using nyanya.Cat.Models.Luckhub;
-using nyanya.Cat.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,57 +18,77 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Cat.Commands.Orders;
+using Cat.Commands.Products;
+using Cat.Domain.Orders.Models;
+using Cat.Domain.Orders.ReadModels;
+using Cat.Domain.Orders.Services.DTO;
+using Cat.Domain.Orders.Services.Interfaces;
+using Cat.Domain.Products.Models;
+using Cat.Domain.Products.Services.Interfaces;
+using Cat.Domain.Users.ReadModels;
+using Cat.Domain.Users.Services.DTO;
+using Cat.Domain.Users.Services.Interfaces;
+using Domian.Bus;
+using Domian.DTO;
+using Infrastructure.Lib.Extensions;
+using Newtonsoft.Json;
+using nyanya.AspDotNet.Common.Controller;
+using nyanya.AspDotNet.Common.Filters;
+using nyanya.Cat.Filters;
+using nyanya.Cat.Models;
+using nyanya.Cat.Order;
 
 namespace nyanya.Cat.Controllers
 {
     /// <summary>
-    /// OrderInfoController
+    ///     OrderInfoController
     /// </summary>
     [RoutePrefix("Orders")]
     public class OrderInfoController : ApiControllerBase
     {
         /// <summary>
-        /// The ba order information service
+        ///     The ba order information service
         /// </summary>
         private readonly IBAOrderInfoService baOrderInfoService;
 
         /// <summary>
-        /// The command bus
+        ///     The command bus
         /// </summary>
         private readonly ICommandBus commandBus;
 
         /// <summary>
-        /// The order information service
+        ///     The order information service
         /// </summary>
         private readonly IOrderInfoService orderInfoService;
 
         /// <summary>
-        /// The product service
+        ///     The product service
         /// </summary>
         private readonly IProductInfoService productService;
 
         /// <summary>
-        /// The ta order information service
+        ///     The ta order information service
         /// </summary>
         private readonly ITAOrderInfoService taOrderInfoService;
 
         /// <summary>
-        /// The user information service
+        ///     The user information service
         /// </summary>
         private readonly IExactUserInfoService userInfoService;
 
         /// <summary>
-        /// The user service
+        ///     The user service
         /// </summary>
         private readonly IUserService userService;
 
         /// <summary>
-        /// The ZCB order service
+        ///     The ZCB order service
         /// </summary>
         private readonly IZCBOrderService zcbOrderService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderInfoController" /> class.
+        ///     Initializes a new instance of the <see cref="OrderInfoController" /> class.
         /// </summary>
         /// <param name="baOrderInfoService">The ba order information service.</param>
         /// <param name="taOrderInfoService">The ta order information service.</param>
@@ -107,16 +111,14 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 获取用户【500元本金活动】状态
+        ///     获取用户【500元本金活动】状态
         /// </summary>
         /// <returns>
-        /// Status：状态(10=&gt;不符合，20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
-        /// ExtraInterest：额外收益
-        /// MiniCash: 起投金额
+        ///     Status：状态(10=&gt;不符合，20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
+        ///     ExtraInterest：额外收益
+        ///     MiniCash: 起投金额
         /// </returns>
-        [HttpGet, Route("GetActivityStatus1000")]
-        [TokenAuthorize]
-        [ResponseType(typeof(UserActivityResponse))]
+        [HttpGet, Route("GetActivityStatus1000"), TokenAuthorize, ResponseType(typeof(UserActivityResponse))]
         public async Task<IHttpActionResult> GetActivityStatus1000()
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
@@ -127,44 +129,41 @@ namespace nyanya.Cat.Controllers
                 return this.BadRequest("无法获取用户信息");
             }
 
-            return this.Ok(await GetUserActivityStatu_1000(userInfo));
+            return this.Ok(await this.GetUserActivityStatu_1000(userInfo));
         }
 
         /// <summary>
-        /// 银票失败订单列表
+        ///     银票失败订单列表
         /// </summary>
         /// <param name="category">产品分类(10金银猫产品 20富滇产品)</param>
         /// <returns>
-        /// HasNextPage: 是否有下一页
-        /// PageIndex: 页码
-        /// PageSize: 一页节点数量
-        /// TotalCount: 所有的节点数量
-        /// TotalPageCount: 总页数
-        /// Orders:节点列表
-        /// -- ExtraInterest[decimal]: 额外收益
-        /// -- Interest[decimal]: 预期收益
-        /// -- Message[string]: 提示信息
-        /// -- OrderIdentifier[string]: 订单唯一标识
-        /// -- OrderNo[string]: 订单编号
-        /// -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
-        /// -- Principal[decimal]: 订单金额
-        /// -- ProductIdentifier[string]: 项目唯一标识
-        /// -- ProductName[string]: 项目名称
-        /// -- ProductNo[string]: 项目编号
-        /// -- ProductNumber[int]: 项目期数
-        /// -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
-        /// -- ShareCount[int]: 订单的购买份数
-        /// -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
-        /// -- TotalAmount[decimal]: 订单的本息总额
-        /// -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
-        /// -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
-        /// -- Yield[decimal]: 订单的预期收益率
-        /// -- ProductCategory[int]: 产品分类 10 =&gt; 金银猫产品，20 =&gt; 富滇产品，40 =&gt; 阜新产品
+        ///     HasNextPage: 是否有下一页
+        ///     PageIndex: 页码
+        ///     PageSize: 一页节点数量
+        ///     TotalCount: 所有的节点数量
+        ///     TotalPageCount: 总页数
+        ///     Orders:节点列表
+        ///     -- ExtraInterest[decimal]: 额外收益
+        ///     -- Interest[decimal]: 预期收益
+        ///     -- Message[string]: 提示信息
+        ///     -- OrderIdentifier[string]: 订单唯一标识
+        ///     -- OrderNo[string]: 订单编号
+        ///     -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+        ///     -- Principal[decimal]: 订单金额
+        ///     -- ProductIdentifier[string]: 项目唯一标识
+        ///     -- ProductName[string]: 项目名称
+        ///     -- ProductNo[string]: 项目编号
+        ///     -- ProductNumber[int]: 项目期数
+        ///     -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+        ///     -- ShareCount[int]: 订单的购买份数
+        ///     -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
+        ///     -- TotalAmount[decimal]: 订单的本息总额
+        ///     -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
+        ///     -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+        ///     -- Yield[decimal]: 订单的预期收益率
+        ///     -- ProductCategory[int]: 产品分类 10 =&gt; 金银猫产品，20 =&gt; 富滇产品，40 =&gt; 阜新产品
         /// </returns>
-        [HttpGet, Route("BA/Failed"), Route("BA/Failed/{category:int=10:min(10)}")]
-        [RangeFilter("category", 10)]
-        [TokenAuthorize]
-        [ResponseType(typeof(OrderListResponse))]
+        [HttpGet, Route("BA/Failed"), Route("BA/Failed/{category:int=10:min(10)}"), RangeFilter("category", 10), TokenAuthorize, ResponseType(typeof(OrderListResponse))]
         public async Task<IHttpActionResult> GetBAFailedOrders(int category = 10)
         {
             ProductCategory productCategory = category == 20 ? ProductCategory.FUDIAN : category == 40 ? ProductCategory.FUXIN : ProductCategory.JINYINMAO;
@@ -174,7 +173,7 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 银票成功订单列表
+        ///     银票成功订单列表
         /// </summary>
         /// <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
         /// <param name="sortMode">排序规则 1 =&gt; 按下单时间排序，2 =&gt; 按结息日期排序</param>
@@ -209,10 +208,7 @@ namespace nyanya.Cat.Controllers
         ///     -- ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
         ///     -- RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日
         /// </returns>
-        [HttpGet, Route("BA"), Route("BA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}"), Route("BA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}/{category:int=10}")]
-        [RangeFilter("pageIndex", 1), RangeFilter("category", 10)]
-        [TokenAuthorize]
-        [ResponseType(typeof(OrderListResponse))]
+        [HttpGet, Route("BA"), Route("BA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}"), Route("BA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}/{category:int=10}"), RangeFilter("pageIndex", 1), RangeFilter("category", 10), TokenAuthorize, ResponseType(typeof(OrderListResponse))]
         public async Task<IHttpActionResult> GetBAOrders(int pageIndex = 1, int sortMode = 1, int category = 10)
         {
             OrderSortingStrategy sortingStrategy = sortMode == 1 ? OrderSortingStrategy.ByOrderTime : OrderSortingStrategy.BySettleDate;
@@ -225,7 +221,7 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 订单详情
+        ///     订单详情
         /// </summary>
         /// <param name="orderIdentifier">订单唯一标识</param>
         /// <returns>
@@ -269,10 +265,7 @@ namespace nyanya.Cat.Controllers
         ///     IsRepaid[bool]: 是否已经操作还款
         ///     ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
         /// </returns>
-        [HttpGet, Route("")]
-        [ParameterRequire("orderIdentifier")]
-        [TokenAuthorize]
-        [ResponseType(typeof(OrderInfoResponse))]
+        [HttpGet, Route(""), ParameterRequire("orderIdentifier"), TokenAuthorize, ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> GetOrder(string orderIdentifier)
         {
             OrderInfo order = await this.orderInfoService.GetOrderInfoAsync(this.CurrentUser.Identifier, orderIdentifier);
@@ -286,15 +279,13 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 订单委托协议
+        ///     订单委托协议
         /// </summary>
         /// <param name="orderIdentifier">订单唯一标识</param>
         /// <returns>
-        /// Content[string]: 委托协议内容
+        ///     Content[string]: 委托协议内容
         /// </returns>
-        [HttpGet, Route("ConsignmentAgreement/")]
-        [ParameterRequire("orderIdentifier")]
-        [TokenAuthorize]
+        [HttpGet, Route("ConsignmentAgreement/"), ParameterRequire("orderIdentifier"), TokenAuthorize]
         public async Task<IHttpActionResult> GetOrderConsignmentAgreement(string orderIdentifier)
         {
             string content = await this.orderInfoService.GetConsignmentAgreementAsync(orderIdentifier);
@@ -308,15 +299,13 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 订单质押借款协议
+        ///     订单质押借款协议
         /// </summary>
         /// <param name="orderIdentifier">订单唯一标识</param>
         /// <returns>
-        /// Content[string]: 委托协议内容
+        ///     Content[string]: 委托协议内容
         /// </returns>
-        [HttpGet, Route("PledgeAgreement/")]
-        [ParameterRequire("orderIdentifier")]
-        [TokenAuthorize]
+        [HttpGet, Route("PledgeAgreement/"), ParameterRequire("orderIdentifier"), TokenAuthorize]
         public async Task<IHttpActionResult> GetOrderPledgeAgreement(string orderIdentifier)
         {
             string content = await this.orderInfoService.GetPledgeAgreementAsync(orderIdentifier);
@@ -333,14 +322,12 @@ namespace nyanya.Cat.Controllers
         ///     用户资产包提现所需参数
         /// </summary>
         /// <returns>
-        /// RedeemCount：用户当日已提现次数
-        /// TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
-        /// InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
-        /// AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
+        ///     RedeemCount：用户当日已提现次数
+        ///     TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
+        ///     InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
+        ///     AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
         /// </returns>
-        [HttpGet, Route("ZCB/RedeemParameter")]
-        [TokenAuthorize]
-        [ResponseType(typeof(RedeemParametersResponse))]
+        [HttpGet, Route("ZCB/RedeemParameter"), TokenAuthorize, ResponseType(typeof(RedeemParametersResponse))]
         public async Task<IHttpActionResult> GetRedeemParameters()
         {
             Task<int> RedeemCount = this.zcbOrderService.CheckRedeemPrincipalCount(this.CurrentUser.Identifier);
@@ -352,40 +339,37 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 商票失败订单列表
+        ///     商票失败订单列表
         /// </summary>
         /// <param name="category">产品分类(10金银猫产品 30施秉金鼎产品)</param>
         /// <returns>
-        /// HasNextPage: 是否有下一页
-        /// PageIndex: 页码
-        /// PageSize: 一页节点数量
-        /// TotalCount: 所有的节点数量
-        /// TotalPageCount: 总页数
-        /// Orders:节点列表
-        /// -- ExtraInterest[decimal]: 额外收益
-        /// -- Interest[decimal]: 预期收益
-        /// -- Message[string]: 提示信息
-        /// -- OrderIdentifier[string]: 订单唯一标识
-        /// -- OrderNo[string]: 订单编号
-        /// -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
-        /// -- Principal[decimal]: 订单金额
-        /// -- ProductIdentifier[string]: 项目唯一标识
-        /// -- ProductName[string]: 项目名称
-        /// -- ProductNo[string]: 项目编号
-        /// -- ProductNumber[int]: 项目期数
-        /// -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
-        /// -- ShareCount[int]: 订单的购买份数
-        /// -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
-        /// -- TotalAmount[decimal]: 订单的本息总额
-        /// -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
-        /// -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
-        /// -- Yield[decimal]: 订单的预期收益率
-        /// -- ProductCategory[int]：产品分类 10金银猫产品 30施秉金鼎产品
+        ///     HasNextPage: 是否有下一页
+        ///     PageIndex: 页码
+        ///     PageSize: 一页节点数量
+        ///     TotalCount: 所有的节点数量
+        ///     TotalPageCount: 总页数
+        ///     Orders:节点列表
+        ///     -- ExtraInterest[decimal]: 额外收益
+        ///     -- Interest[decimal]: 预期收益
+        ///     -- Message[string]: 提示信息
+        ///     -- OrderIdentifier[string]: 订单唯一标识
+        ///     -- OrderNo[string]: 订单编号
+        ///     -- OrderTime[yyyy-MM-ddTHH:mm:ss]: 下单时间
+        ///     -- Principal[decimal]: 订单金额
+        ///     -- ProductIdentifier[string]: 项目唯一标识
+        ///     -- ProductName[string]: 项目名称
+        ///     -- ProductNo[string]: 项目编号
+        ///     -- ProductNumber[int]: 项目期数
+        ///     -- SettleDate[yyyy-MM-ddTHH:mm:ss]: 结息日期
+        ///     -- ShareCount[int]: 订单的购买份数
+        ///     -- ShowingStatus[int]: 项目状态  10 =&gt; 付款中, 20 =&gt; 待起息, 30 =&gt; 已起息, 40 =&gt; 已结息, 50 =&gt; 支付失败
+        ///     -- TotalAmount[decimal]: 订单的本息总额
+        ///     -- UseableItemCount[int]: 可用道具数 =&gt; -1:已用道具  0:无可用道具  1~999:有可用道具
+        ///     -- ValueDate[yyyy-MM-ddTHH:mm:ss]: 起息日期
+        ///     -- Yield[decimal]: 订单的预期收益率
+        ///     -- ProductCategory[int]：产品分类 10金银猫产品 30施秉金鼎产品
         /// </returns>
-        [HttpGet, Route("TA/Failed"), Route("TA/Failed/{category:int=10:min(10)}")]
-        [RangeFilter("category", 10)]
-        [TokenAuthorize]
-        [ResponseType(typeof(OrderListResponse))]
+        [HttpGet, Route("TA/Failed"), Route("TA/Failed/{category:int=10:min(10)}"), RangeFilter("category", 10), TokenAuthorize, ResponseType(typeof(OrderListResponse))]
         public async Task<IHttpActionResult> GetTAFailedOrders(int category = 10)
         {
             ProductCategory productCategory = category == 30 ? ProductCategory.SHIBING : ProductCategory.JINYINMAO;
@@ -396,7 +380,7 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 商票成功订单列表
+        ///     商票成功订单列表
         /// </summary>
         /// <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
         /// <param name="sortMode">排序规则 1 =&gt; 按下单时间排序，2 =&gt; 按结息日期排序</param>
@@ -431,10 +415,7 @@ namespace nyanya.Cat.Controllers
         ///     -- ServerTime[yyyy-MM-ddTHH:mm:ss]: 服务器当前时间
         ///     -- RepaymentDeadline[yyyy-MM-ddTHH:mm:ss]: 最迟还款日
         /// </returns>
-        [HttpGet, Route("TA"), Route("TA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}"), Route("TA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}/{category:int=10}")]
-        [RangeFilter("pageIndex", 1), RangeFilter("category", 10)]
-        [TokenAuthorize]
-        [ResponseType(typeof(OrderListResponse))]
+        [HttpGet, Route("TA"), Route("TA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}"), Route("TA/{pageIndex:min(1):int=1}/{sortMode:min(1):int=1}/{category:int=10}"), RangeFilter("pageIndex", 1), RangeFilter("category", 10), TokenAuthorize, ResponseType(typeof(OrderListResponse))]
         public async Task<IHttpActionResult> GetTAOrders(int pageIndex = 1, int sortMode = 1, int category = 10)
         {
             OrderSortingStrategy sortingStrategy = sortMode == 1 ? OrderSortingStrategy.ByOrderTime : OrderSortingStrategy.BySettleDate;
@@ -447,33 +428,30 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 资产包认购/提现流程列表
+        ///     资产包认购/提现流程列表
         /// </summary>
         /// <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
         /// <returns>
-        /// HasNextPage: 是否有下一页
-        /// PageIndex: 页码
-        /// PageSize: 一页节点数量
-        /// TotalCount: 所有的节点数量
-        /// TotalPageCount: 总页数
-        /// ZCBBills：节点列表
-        /// -- BillIdentifier[string]：流水标示号
-        /// -- ProductIdentifier[string]：项目唯一标识
-        /// -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
-        /// -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
-        /// -- Principal[decimal]：交易金额
-        /// -- BankCardNo[string]：银行卡号
-        /// -- BankName[string]：银行名称
-        /// -- BankCardCity[string]：开户行城市全称，如 上海|上海
-        /// -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
-        /// -- Remark[string]：流水信息描述
-        /// -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
-        /// -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
+        ///     HasNextPage: 是否有下一页
+        ///     PageIndex: 页码
+        ///     PageSize: 一页节点数量
+        ///     TotalCount: 所有的节点数量
+        ///     TotalPageCount: 总页数
+        ///     ZCBBills：节点列表
+        ///     -- BillIdentifier[string]：流水标示号
+        ///     -- ProductIdentifier[string]：项目唯一标识
+        ///     -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
+        ///     -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
+        ///     -- Principal[decimal]：交易金额
+        ///     -- BankCardNo[string]：银行卡号
+        ///     -- BankName[string]：银行名称
+        ///     -- BankCardCity[string]：开户行城市全称，如 上海|上海
+        ///     -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
+        ///     -- Remark[string]：流水信息描述
+        ///     -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
+        ///     -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
         /// </returns>
-        [HttpGet, Route("ZCB/ZCBBill"), Route("ZCB/ZCBBill/{pageIndex:min(1):int=1}")]
-        [RangeFilter("pageIndex", 1)]
-        [TokenAuthorize]
-        [ResponseType(typeof(List<ZCBBillListResponse>))]
+        [HttpGet, Route("ZCB/ZCBBill"), Route("ZCB/ZCBBill/{pageIndex:min(1):int=1}"), RangeFilter("pageIndex", 1), TokenAuthorize, ResponseType(typeof(List<ZCBBillListResponse>))]
         public async Task<IHttpActionResult> GetZCBBills(int pageIndex = 1)
         {
             IPaginatedDto<ZCBBill> zcbBills = await this.zcbOrderService.GetZCBBillListAsync(this.CurrentUser.Identifier, pageIndex, 10);
@@ -481,7 +459,7 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 资产包订单用户总览
+        ///     资产包订单用户总览
         /// </summary>
         /// ProductIdentifier[string]: 产品唯一标示符
         /// ProductNo[string]: 产品编号
@@ -492,9 +470,7 @@ namespace nyanya.Cat.Controllers
         /// YesterdayInterest[decimal]: 昨日收益
         /// Yield[decimal]: 今日利率
         /// <returns></returns>
-        [HttpGet, Route("ZCBUser")]
-        [TokenAuthorize]
-        [ResponseType(typeof(ZCBUserResponse))]
+        [HttpGet, Route("ZCBUser"), TokenAuthorize, ResponseType(typeof(ZCBUserResponse))]
         public async Task<IHttpActionResult> GetZCBUser()
         {
             ZCBUser zcbUser = await this.zcbOrderService.GetZCBUserAsync(this.CurrentUser.Identifier);
@@ -528,22 +504,19 @@ namespace nyanya.Cat.Controllers
         /// <param name="startTime">startTime(yyyy-MM-dd)：开始时间</param>
         /// <param name="endTime">endTime(yyyy-MM-dd)：结束时间</param>
         /// <returns>
-        /// HasNextPage：是否有下一页
-        /// PageIndex：页码
-        /// PageSize：一页节点数量
-        /// TotalCount：所有的节点数量
-        /// TotalPageCount：总页数
-        /// ZCBUserBills：节点列表
-        /// -- BillDate[yyyy-MM-dd]：日期
-        /// -- Principal[decimal]：投资总额
-        /// -- Yield[decimal]：收益率
-        /// -- Interest[decimal]：收益
-        /// -- Remark[string]：备注
+        ///     HasNextPage：是否有下一页
+        ///     PageIndex：页码
+        ///     PageSize：一页节点数量
+        ///     TotalCount：所有的节点数量
+        ///     TotalPageCount：总页数
+        ///     ZCBUserBills：节点列表
+        ///     -- BillDate[yyyy-MM-dd]：日期
+        ///     -- Principal[decimal]：投资总额
+        ///     -- Yield[decimal]：收益率
+        ///     -- Interest[decimal]：收益
+        ///     -- Remark[string]：备注
         /// </returns>
-        [HttpGet, Route("ZCB/ZCBUserBill"), Route("ZCB/ZCBUserBill/{pageIndex:min(1):int=1}")]
-        [RangeFilter("pageIndex", 1)]
-        [TokenAuthorize]
-        [ResponseType(typeof(List<ZCBUserBillListResponse>))]
+        [HttpGet, Route("ZCB/ZCBUserBill"), Route("ZCB/ZCBUserBill/{pageIndex:min(1):int=1}"), RangeFilter("pageIndex", 1), TokenAuthorize, ResponseType(typeof(List<ZCBUserBillListResponse>))]
         public async Task<IHttpActionResult> GetZCBUserBills(DateTime? startTime, DateTime? endTime, int pageIndex = 1)
         {
             if (startTime > endTime)
@@ -555,35 +528,32 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 赎回本金
+        ///     赎回本金
         /// </summary>
         /// <param name="request">
-        /// ProductNo[string]：产品编号
-        /// BankCardNo[string]：银行卡号
-        /// RedeemPrincipal[decimal]：赎回本金
-        /// PaymentPassword[string]：支付密码
+        ///     ProductNo[string]：产品编号
+        ///     BankCardNo[string]：银行卡号
+        ///     RedeemPrincipal[decimal]：赎回本金
+        ///     PaymentPassword[string]：支付密码
         /// </param>
         /// <returns>
-        /// @{h2@} HttpStatusCode:200 @{/h2@}
-        /// No Content
-        /// @{h2@} HttpStatusCode:400 @{/h2@}
-        /// "提现金额不能有小数"
-        /// "为保障您的资金账户安全，请重置支付密码后再试"
-        /// "支付密码错误，您还有{0}次机会"
-        /// "订单不存在"
-        /// "购买当日不能取款"
-        /// "当日取款次数已满2次"
-        /// "输入金额大于可取回金额"
-        /// "输入金额大于单次取款限额"
-        /// "输入金额大于项目可取限额"
+        ///     @{h2@} HttpStatusCode:200 @{/h2@}
+        ///     No Content
+        ///     @{h2@} HttpStatusCode:400 @{/h2@}
+        ///     "提现金额不能有小数"
+        ///     "为保障您的资金账户安全，请重置支付密码后再试"
+        ///     "支付密码错误，您还有{0}次机会"
+        ///     "订单不存在"
+        ///     "购买当日不能取款"
+        ///     "当日取款次数已满2次"
+        ///     "输入金额大于可取回金额"
+        ///     "输入金额大于单次取款限额"
+        ///     "输入金额大于项目可取限额"
         /// </returns>
-        [HttpPost, Route("RedeemPrincipal")]
-        [TokenAuthorize]
-        [EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2)]
-        [ResponseType(typeof(RedeemBillResponse))]
+        [HttpPost, Route("RedeemPrincipal"), TokenAuthorize, EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2), ResponseType(typeof(RedeemBillResponse))]
         public async Task<IHttpActionResult> RedeemPrincipal(RedeemPrincipalRequest request)
         {
-            if (!IsInt(request.RedeemPrincipal.ToString()))
+            if (!this.IsInt(request.RedeemPrincipal.ToString()))
             {
                 return this.BadRequest("提现金额不能有小数");
             }
@@ -608,9 +578,9 @@ namespace nyanya.Cat.Controllers
             {
                 return this.BadRequest("当日取款次数已满2次");
             }
-            Product productResult = await productService.GetProductByNo(request.ProductNo);
+            Product productResult = await this.productService.GetProductByNo(request.ProductNo);
             if (productResult == null || productResult.ProductIdentifier == "" ||
-                    productResult.ProductType != ProductType.ZCBAcceptance)
+                productResult.ProductType != ProductType.ZCBAcceptance)
             {
                 return this.BadRequest("产品错误");
             }
@@ -647,14 +617,14 @@ namespace nyanya.Cat.Controllers
             {
                 return this.BadRequest("请稍后再试");
             }
-            return this.Ok(new RedeemBillResponse()
+            return this.Ok(new RedeemBillResponse
             {
-                RedeemDays = redeemDays
+                RedeemDays = redeemDays + 1
             });
         }
 
         /// <summary>
-        /// Builds the redeem principal command.
+        ///     Builds the redeem principal command.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="info">The information.</param>
@@ -672,13 +642,13 @@ namespace nyanya.Cat.Controllers
         }
 
         /// <summary>
-        /// 获取用户【500元本金活动】状态
+        ///     获取用户【500元本金活动】状态
         /// </summary>
         /// <param name="userInfo">用户信息</param>
         /// <returns>
-        /// Status：状态(20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
-        /// ExtraInterest：额外收益
-        /// MiniCash: 起投金额
+        ///     Status：状态(20=&gt;符合但没有下单，30=&gt;符合且已经下单，40=&gt;已过期)
+        ///     ExtraInterest：额外收益
+        ///     MiniCash: 起投金额
         /// </returns>
         private async Task<UserActivityResponse> GetUserActivityStatu_1000(UserInfo userInfo)
         {

@@ -11,6 +11,7 @@
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -27,6 +28,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info);
+        Task<DateTime?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info);
     }
 }

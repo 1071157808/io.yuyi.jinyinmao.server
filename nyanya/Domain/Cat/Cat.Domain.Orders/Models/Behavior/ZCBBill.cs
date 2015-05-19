@@ -1,4 +1,10 @@
-﻿using Cat.Commands.Orders;
+using System;
+using System.Data;
+using System.Data.Entity;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using Cat.Commands.Orders;
 using Cat.Domain.Orders.Database;
 using Cat.Domain.Products.Database;
 using Cat.Domain.Products.Models;
@@ -8,17 +14,11 @@ using Cat.Domain.Products.Services.Interfaces;
 using Cat.Domain.Users.ReadModels;
 using Cat.Domain.Users.Services;
 using Cat.Domain.Users.Services.Interfaces;
-using Infrastructure.Lib.Extensions;
-using Infrastructure.Lib.Utility;
+using Cat.Events.Orders;
 using Domian.Bus;
 using Domian.Config;
-using Cat.Events.Orders;
-using System;
-using System.Data;
-using System.Data.Entity;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using Infrastructure.Lib.Extensions;
+using Infrastructure.Lib.Utility;
 
 namespace Cat.Domain.Orders.Models
 {
@@ -28,6 +28,11 @@ namespace Cat.Domain.Orders.Models
         {
             this.UserIdentifier = userIdentifier;
             this.ProductIdentifier = productIdentifier;
+        }
+
+        protected IEventBus EventBus
+        {
+            get { return CqrsDomainConfig.Configuration.EventBus; }
         }
 
         private IUserInfoService UserInfoService
@@ -40,9 +45,63 @@ namespace Cat.Domain.Orders.Models
             get { return new ZCBProductInfoService(); }
         }
 
-        protected IEventBus EventBus
+        public async Task<bool> SetZCBRedeemBillResult()
         {
-            get { return CqrsDomainConfig.Configuration.EventBus; }
+            if (SN.IsNullOrEmpty())
+            {
+                return false;
+            }
+            ZCBProductInfo product = null;
+            ZCBBill bill = null;
+            using (OrderContext context = new OrderContext())
+            {
+                bill = await context.Query<ZCBBill>().FirstOrDefaultAsync(p => p.SN == this.SN);
+                if (bill != null && bill.Status == ZCBBillStatus.RedeemApplication && bill.Type == 20 &&
+                    bill.ResultTime == null)
+                {
+                    product = await zcbProductInfoService.GetProductInfoByIdentifierAsync(bill.ProductIdentifier);
+                    if (product == null) return true;
+                    bill.ResultTime = DateTime.Now;
+                    bill.Status = ZCBBillStatus.RedeemSuccess;
+                    bill.AgreementName = product.ConsignmentAgreementName;
+                    context.Add(bill);
+
+                    var agreementsInfo = BuildAgreementsInfo(product.ConsignmentAgreementId, product.ConsignmentAgreementName, bill);
+                    InvestorInfo investorInfo = await context.ReadonlyQuery<InvestorInfo>().FirstOrDefaultAsync(p => p.UserIdentifier == bill.UserIdentifier);
+                    string content = this.FillAgreementWithData(agreementsInfo.ConsignmentAgreementContent, investorInfo, bill.CreateTime);
+                    agreementsInfo.ConsignmentAgreementContent = content;
+                    context.Add(agreementsInfo);
+
+                    using (var tran = context.Database.BeginTransaction(IsolationLevel.RepeatableRead))
+                    {
+                        try
+                        {
+                            ZCBUser user = await context.Query<ZCBUser>().FirstOrDefaultAsync(p => p.ProductIdentifier == bill.ProductIdentifier && p.UserIdentifier == bill.UserIdentifier);
+                            user.CurrentPrincipal -= bill.Principal;
+                            user.TotalRedeemInterest += bill.RedeemInterest;
+                            context.Add(user);
+                            await context.SaveChangesAsync();
+                            tran.Commit();
+                        }
+                        catch (Exception e)
+                        {
+                            tran.Rollback();
+                            throw;
+                        }
+                    }
+
+                    this.EventBus.Publish(new SetRedeemBillResult(bill.OrderIdentifier, this.GetType())
+                    {
+                        Principal = bill.Principal,
+                        RedeemInterest = bill.RedeemInterest,
+                        BankCardNo = bill.BankCardNo,
+                        BankName = bill.BankName,
+                        Cellphone = investorInfo.Cellphone,
+                        SN = bill.SN
+                    });
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -110,7 +169,7 @@ namespace Cat.Domain.Orders.Models
                     zcbBill.DelayDate = preRemain - principal - zcbBill.Principal < 0 ? maxDate.AddDays(1).Date : maxDate;
                     delayCount += (int)(zcbBill.DelayDate - dateTime).GetValueOrDefault().TotalDays;
                 }
-                zcbBill.Remark = "预计{0}日内到帐，节假日顺延".FormatWith(delayCount);
+                zcbBill.Remark = "预计{0}日内到帐，节假日顺延".FormatWith(delayCount + 1);
 
                 context.Add(zcbBill);
                 await context.SaveChangesAsync();
@@ -138,22 +197,12 @@ namespace Cat.Domain.Orders.Models
             AgreementsInfo agreementsInfo = new AgreementsInfo()
             {
                 OrderIdentifier = bill.OrderIdentifier,
-                ConsignmentAgreementContent =content,
+                ConsignmentAgreementContent = content,
                 ConsignmentAgreementName = consignmentAgreementName,
                 PledgeAgreementContent = "",
                 PledgeAgreementName = ""
             };
             return agreementsInfo;
-        }
-
-        private string FillAgreementWithData(string content,InvestorInfo investorInfo,DateTime createTime)
-        {
-            return content
-                .Replace("<--证件号码-->", investorInfo.CredentialNo.WithHtmlUnderline())
-                .Replace("<--用户姓名-->", investorInfo.RealName.WithHtmlUnderline())
-                .Replace("<--用户ID-->", investorInfo.Cellphone.WithHtmlUnderline())
-                .Replace("<--订单生成日期-->", "{0}年{1}月{2}日".FmtWith(createTime.Year, createTime.Month, createTime.Day).WithHtmlUnderline())
-                ;
         }
 
         /// <summary>
@@ -189,63 +238,14 @@ namespace Cat.Domain.Orders.Models
             return this;
         }
 
-        public async Task<bool> SetZCBRedeemBillResult()
+        private string FillAgreementWithData(string content, InvestorInfo investorInfo, DateTime createTime)
         {
-            if (SN.IsNullOrEmpty())
-            {
-                return false;
-            }
-            ZCBProductInfo product = null;
-            ZCBBill bill = null;
-            using (OrderContext context = new OrderContext())
-            {
-                bill = await context.Query<ZCBBill>().FirstOrDefaultAsync(p => p.SN == this.SN);
-                if (bill != null && bill.Status == ZCBBillStatus.RedeemApplication && bill.Type == 20 &&
-                    bill.ResultTime == null)
-                {
-                    product = await zcbProductInfoService.GetProductInfoByIdentifierAsync(bill.ProductIdentifier);
-                    if (product == null) return true;
-                    bill.ResultTime = DateTime.Now;
-                    bill.Status = ZCBBillStatus.RedeemSuccess;
-                    bill.AgreementName = product.ConsignmentAgreementName;
-                    context.Add(bill);
-
-                    var agreementsInfo = BuildAgreementsInfo(product.ConsignmentAgreementId, product.ConsignmentAgreementName, bill);
-                    InvestorInfo investorInfo = await context.ReadonlyQuery<InvestorInfo>().FirstOrDefaultAsync(p => p.UserIdentifier == bill.UserIdentifier);
-                    string content = this.FillAgreementWithData(agreementsInfo.ConsignmentAgreementContent, investorInfo, bill.CreateTime);
-                    agreementsInfo.ConsignmentAgreementContent = content;
-                    context.Add(agreementsInfo);
-                    
-                    using (var tran = context.Database.BeginTransaction(IsolationLevel.RepeatableRead))
-                    {
-                        try
-                        {
-                            ZCBUser user = await context.Query<ZCBUser>().FirstOrDefaultAsync(p => p.ProductIdentifier == bill.ProductIdentifier && p.UserIdentifier == bill.UserIdentifier);
-                            user.CurrentPrincipal -= bill.Principal;
-                            user.TotalRedeemInterest += bill.RedeemInterest;
-                            context.Add(user);
-                            await context.SaveChangesAsync();
-                            tran.Commit();
-                        }
-                        catch (Exception e)
-                        {
-                            tran.Rollback();
-                            throw;
-                        }
-                    }
-
-                    this.EventBus.Publish(new SetRedeemBillResult(bill.OrderIdentifier, this.GetType())
-                    {
-                        Principal = bill.Principal,
-                        RedeemInterest = bill.RedeemInterest,
-                        BankCardNo = bill.BankCardNo,
-                        BankName = bill.BankName,
-                        Cellphone = investorInfo.Cellphone,
-                        SN = bill.SN
-                    });
-                }
-            }
-            return true;
+            return content
+                .Replace("<--证件号码-->", investorInfo.CredentialNo.WithHtmlUnderline())
+                .Replace("<--用户姓名-->", investorInfo.RealName.WithHtmlUnderline())
+                .Replace("<--用户ID-->", investorInfo.Cellphone.WithHtmlUnderline())
+                .Replace("<--订单生成日期-->", "{0}年{1}月{2}日".FmtWith(createTime.Year, createTime.Month, createTime.Day).WithHtmlUnderline())
+                ;
         }
     }
 }
