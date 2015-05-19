@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:03 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  3:07 AM
+// Last Modified On : 2015-05-19  4:23 PM
 // ***********************************************************************
 // <copyright file="ProductInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -71,14 +71,14 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "agreement";
             string cacheId = "{0}-{1}".FormatWith(productId.ToGuidString(), agreementIndex);
-            string agreement = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
+            string agreement = SiloClusterConfig.CacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
 
             if (agreement.IsNullOrEmpty())
             {
                 agreement = await this.innerService.GetAgreementAsync(productId, agreementIndex);
                 if (agreement.IsNotNullOrEmpty())
                 {
-                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
+                    await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
                 }
             }
 
@@ -86,7 +86,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the jby agreement asynchronous.
+        ///     Gets the jby agreement asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <param name="agreementIndex">Index of the agreement.</param>
@@ -95,14 +95,14 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "jby-agreement";
             string cacheId = "{0}-{1}".FormatWith(productId.ToGuidString(), agreementIndex);
-            string agreement = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
+            string agreement = SiloClusterConfig.CacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
 
             if (agreement.IsNullOrEmpty())
             {
                 agreement = await this.innerService.GetJBYAgreementAsync(productId, agreementIndex);
                 if (agreement.IsNotNullOrEmpty())
                 {
-                    await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
+                    await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, agreement);
                 }
             }
 
@@ -117,19 +117,19 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "jby";
             string cacheId = ProductCategoryCodeHelper.PC100000030.ToString();
-            JBYProductInfo product = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<JBYProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+            JBYProductInfo product = SiloClusterConfig.CacheTable.ReadDataFromTableCache<JBYProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (product == null)
             {
                 product = await this.innerService.GetJBYProductInfoAsync();
-                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, product);
+                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, product);
             }
 
             return product;
         }
 
         /// <summary>
-        /// Gets the jby product paid amount asynchronous.
+        ///     Gets the jby product paid amount asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int64&gt;.</returns>
         public Task<long> GetJBYProductPaidAmountAsync()
@@ -146,12 +146,12 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "product";
             string cacheId = productId.ToGuidString();
-            RegularProductInfo product = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<RegularProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+            RegularProductInfo product = SiloClusterConfig.CacheTable.ReadDataFromTableCache<RegularProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (product == null)
             {
                 product = await this.innerService.GetProductInfoAsync(productId);
-                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, product);
+                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, product);
             }
 
             return product;
@@ -168,12 +168,12 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "product-page";
             string cacheId = "{0}-{1}-{2}".FormatWith(pageIndex, pageSize, productCategories.Join("-"));
-            PaginatedList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<PaginatedList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+            PaginatedList<RegularProductInfo> infos = SiloClusterConfig.CacheTable.ReadDataFromTableCache<PaginatedList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (infos == null)
             {
                 infos = await this.innerService.GetProductInfosAsync(pageIndex, pageSize, productCategories);
-                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
+                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
             }
 
             return infos;
@@ -199,12 +199,12 @@ namespace Yuyi.Jinyinmao.Service
         {
             string cacheName = "product-top";
             string cacheId = "{0}-{1}".FormatWith(number, productCategories.Join("-"));
-            IList<RegularProductInfo> infos = SiloClusterConfig.ProductCacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+            IList<RegularProductInfo> infos = SiloClusterConfig.CacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
             if (infos == null)
             {
                 infos = await this.innerService.GetTopProductInfosAsync(number, productCategories);
-                await SiloClusterConfig.ProductCacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
+                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, infos);
             }
 
             return infos;

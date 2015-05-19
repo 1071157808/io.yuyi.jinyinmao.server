@@ -10,10 +10,21 @@
 #if !EXCLUDE_CODEGEN
 #pragma warning disable 162
 #pragma warning disable 219
+#pragma warning disable 414
+#pragma warning disable 649
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
 
+namespace Yuyi.Jinyinmao.Domain.Events
+{
+    using Orleans.CodeGeneration;
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+}
 namespace Yuyi.Jinyinmao.Domain.EventProcessor
 {
     using Orleans.CodeGeneration;
@@ -146,7 +157,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public DateTime @IssueTime { get; set; }
 
-            public List<Order> @Orders { get; set; }
+            public Dictionary<Guid,Order> @Orders { get; set; }
 
             public Int32 @Period { get; set; }
 
@@ -207,7 +218,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueNo", out value)) @IssueNo = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueTime", out value)) @IssueTime = (DateTime) value;
-                if (values.TryGetValue("Orders", out value)) @Orders = (List<Order>) value;
+                if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,Order>) value;
                 if (values.TryGetValue("Period", out value)) @Period = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("PledgeNo", out value)) @PledgeNo = (String) value;
                 if (values.TryGetValue("ProductCategory", out value)) @ProductCategory = value is Int32 ? (Int32)value : (Int64)value;
@@ -300,7 +311,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.FinancingSumAmount = default(Int32);
             this.IssueNo = default(Int32);
             this.IssueTime = default(DateTime);
-            this.Orders = new List<Order>();
+            this.Orders = new Dictionary<Guid,Order>();
             this.Period = default(Int32);
             this.PledgeNo = default(String);
             this.ProductCategory = default(Int64);
@@ -358,11 +369,13 @@ namespace Yuyi.Jinyinmao.Domain
 
             public Dictionary<String,Object> @Args { get; set; }
 
-            public List<BankCard> @BankCards { get; set; }
+            public Dictionary<String,BankCard> @BankCards { get; set; }
 
             public String @Cellphone { get; set; }
 
             public Int64 @ClientType { get; set; }
+
+            public Boolean @Closed { get; set; }
 
             public Int64 @ContractId { get; set; }
 
@@ -376,11 +389,11 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @InviteBy { get; set; }
 
-            public List<Transcation> @JBYAccount { get; set; }
+            public Dictionary<Guid,JBYAccountTranscation> @JBYAccount { get; set; }
 
             public List<String> @LoginNames { get; set; }
 
-            public List<OrderInfo> @Orders { get; set; }
+            public Dictionary<Guid,OrderInfo> @Orders { get; set; }
 
             public String @OutletCode { get; set; }
 
@@ -392,7 +405,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @Salt { get; set; }
 
-            public List<Transcation> @SettleAccount { get; set; }
+            public Dictionary<Guid,SettleAccountTranscation> @SettleAccount { get; set; }
 
             public Boolean @Verified { get; set; }
 
@@ -404,31 +417,32 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
                 if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
-                if (values.TryGetValue("BankCards", out value)) @BankCards = (List<BankCard>) value;
+                if (values.TryGetValue("BankCards", out value)) @BankCards = (Dictionary<String,BankCard>) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
                 if (values.TryGetValue("ClientType", out value)) @ClientType = value is Int32 ? (Int32)value : (Int64)value;
+                if (values.TryGetValue("Closed", out value)) @Closed = (Boolean) value;
                 if (values.TryGetValue("ContractId", out value)) @ContractId = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Credential", out value)) @Credential = (Credential) value;
                 if (values.TryGetValue("CredentialNo", out value)) @CredentialNo = (String) value;
                 if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
                 if (values.TryGetValue("EncryptedPaymentPassword", out value)) @EncryptedPaymentPassword = (String) value;
                 if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
-                if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (List<Transcation>) value;
+                if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (Dictionary<Guid,JBYAccountTranscation>) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
-                if (values.TryGetValue("Orders", out value)) @Orders = (List<OrderInfo>) value;
+                if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,OrderInfo>) value;
                 if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
                 if (values.TryGetValue("PaymentSalt", out value)) @PaymentSalt = (String) value;
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
                 if (values.TryGetValue("Salt", out value)) @Salt = (String) value;
-                if (values.TryGetValue("SettleAccount", out value)) @SettleAccount = (List<Transcation>) value;
+                if (values.TryGetValue("SettleAccount", out value)) @SettleAccount = (Dictionary<Guid,SettleAccountTranscation>) value;
                 if (values.TryGetValue("Verified", out value)) @Verified = (Boolean) value;
                 if (values.TryGetValue("VerifiedTime", out value)) @VerifiedTime = (Nullable<DateTime>) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( Id={0} Args={1} BankCards={2} Cellphone={3} ClientType={4} ContractId={5} Credential={6} CredentialNo={7} EncryptedPassword={8} EncryptedPaymentPassword={9} InviteBy={10} JBYAccount={11} LoginNames={12} Orders={13} OutletCode={14} PaymentSalt={15} RealName={16} RegisterTime={17} Salt={18} SettleAccount={19} Verified={20} VerifiedTime={21} )", @Id, @Args, @BankCards, @Cellphone, @ClientType, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @Orders, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( Id={0} Args={1} BankCards={2} Cellphone={3} ClientType={4} Closed={5} ContractId={6} Credential={7} CredentialNo={8} EncryptedPassword={9} EncryptedPaymentPassword={10} InviteBy={11} JBYAccount={12} LoginNames={13} Orders={14} OutletCode={15} PaymentSalt={16} RealName={17} RegisterTime={18} Salt={19} SettleAccount={20} Verified={21} VerifiedTime={22} )", @Id, @Args, @BankCards, @Cellphone, @ClientType, @Closed, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @Orders, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -445,6 +459,7 @@ namespace Yuyi.Jinyinmao.Domain
             result["BankCards"] = this.BankCards;
             result["Cellphone"] = this.Cellphone;
             result["ClientType"] = this.ClientType;
+            result["Closed"] = this.Closed;
             result["ContractId"] = this.ContractId;
             result["Credential"] = this.Credential;
             result["CredentialNo"] = this.CredentialNo;
@@ -469,24 +484,25 @@ namespace Yuyi.Jinyinmao.Domain
         {
             this.Id = default(Guid);
             this.Args = new Dictionary<String,Object>();
-            this.BankCards = new List<BankCard>();
+            this.BankCards = new Dictionary<String,BankCard>();
             this.Cellphone = default(String);
             this.ClientType = default(Int64);
+            this.Closed = default(Boolean);
             this.ContractId = default(Int64);
             this.Credential = default(Credential);
             this.CredentialNo = default(String);
             this.EncryptedPassword = default(String);
             this.EncryptedPaymentPassword = default(String);
             this.InviteBy = default(String);
-            this.JBYAccount = new List<Transcation>();
+            this.JBYAccount = new Dictionary<Guid,JBYAccountTranscation>();
             this.LoginNames = new List<String>();
-            this.Orders = new List<OrderInfo>();
+            this.Orders = new Dictionary<Guid,OrderInfo>();
             this.OutletCode = default(String);
             this.PaymentSalt = default(String);
             this.RealName = default(String);
             this.RegisterTime = default(DateTime);
             this.Salt = default(String);
-            this.SettleAccount = new List<Transcation>();
+            this.SettleAccount = new Dictionary<Guid,SettleAccountTranscation>();
             this.Verified = default(Boolean);
             this.VerifiedTime = default(Nullable<DateTime>);
         }
@@ -534,7 +550,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
     using Orleans;
     using Yuyi.Jinyinmao.Domain;
     using System.Runtime.InteropServices;
-    using Yuyi.Jinyinmao.Packages.Helper;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
@@ -557,13 +572,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public Int64 @FinancingSumAmount { get; set; }
 
-            public Dictionary<String,Object> @Info { get; set; }
-
             public Int32 @IssueNo { get; set; }
 
             public DateTime @IssueTime { get; set; }
 
             public Int64 @ProductCategory { get; set; }
+
+            public Guid @ProductId { get; set; }
 
             public String @ProductName { get; set; }
 
@@ -575,9 +590,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public DateTime @StartSellTime { get; set; }
 
-            public List<TranscationInfo> @Transcations { get; set; }
+            public Dictionary<Guid,JBYAccountTranscationInfo> @Transcations { get; set; }
 
             public Int32 @UnitPrice { get; set; }
+
+            public DateTime @UpdateTime { get; set; }
 
             public Int32 @ValueDateMode { get; set; }
 
@@ -593,24 +610,25 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("EndSellTime", out value)) @EndSellTime = (DateTime) value;
                 if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int32 ? (Int32)value : (Int64)value;
-                if (values.TryGetValue("Info", out value)) @Info = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("IssueNo", out value)) @IssueNo = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueTime", out value)) @IssueTime = (DateTime) value;
                 if (values.TryGetValue("ProductCategory", out value)) @ProductCategory = value is Int32 ? (Int32)value : (Int64)value;
+                if (values.TryGetValue("ProductId", out value)) @ProductId = (Guid) value;
                 if (values.TryGetValue("ProductName", out value)) @ProductName = (String) value;
                 if (values.TryGetValue("ProductNo", out value)) @ProductNo = (String) value;
                 if (values.TryGetValue("SoldOut", out value)) @SoldOut = (Boolean) value;
                 if (values.TryGetValue("SoldOutTime", out value)) @SoldOutTime = (Nullable<DateTime>) value;
                 if (values.TryGetValue("StartSellTime", out value)) @StartSellTime = (DateTime) value;
-                if (values.TryGetValue("Transcations", out value)) @Transcations = (List<TranscationInfo>) value;
+                if (values.TryGetValue("Transcations", out value)) @Transcations = (Dictionary<Guid,JBYAccountTranscationInfo>) value;
                 if (values.TryGetValue("UnitPrice", out value)) @UnitPrice = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("UpdateTime", out value)) @UpdateTime = (DateTime) value;
                 if (values.TryGetValue("ValueDateMode", out value)) @ValueDateMode = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("Yield", out value)) @Yield = value is Int64 ? (Int32)(Int64)value : (Int32)value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} EndSellTime={4} FinancingSumAmount={5} Info={6} IssueNo={7} IssueTime={8} ProductCategory={9} ProductName={10} ProductNo={11} SoldOut={12} SoldOutTime={13} StartSellTime={14} Transcations={15} UnitPrice={16} ValueDateMode={17} Yield={18} )", @Id, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @Info, @IssueNo, @IssueTime, @ProductCategory, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transcations, @UnitPrice, @ValueDateMode, @Yield);
+                return System.String.Format("JBYProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} EndSellTime={4} FinancingSumAmount={5} IssueNo={6} IssueTime={7} ProductCategory={8} ProductId={9} ProductName={10} ProductNo={11} SoldOut={12} SoldOutTime={13} StartSellTime={14} Transcations={15} UnitPrice={16} UpdateTime={17} ValueDateMode={18} Yield={19} )", @Id, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @IssueNo, @IssueTime, @ProductCategory, @ProductId, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transcations, @UnitPrice, @UpdateTime, @ValueDateMode, @Yield);
             }
         
         public JBYProductState() : 
@@ -628,10 +646,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
             result["Args"] = this.Args;
             result["EndSellTime"] = this.EndSellTime;
             result["FinancingSumAmount"] = this.FinancingSumAmount;
-            result["Info"] = this.Info;
             result["IssueNo"] = this.IssueNo;
             result["IssueTime"] = this.IssueTime;
             result["ProductCategory"] = this.ProductCategory;
+            result["ProductId"] = this.ProductId;
             result["ProductName"] = this.ProductName;
             result["ProductNo"] = this.ProductNo;
             result["SoldOut"] = this.SoldOut;
@@ -639,6 +657,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             result["StartSellTime"] = this.StartSellTime;
             result["Transcations"] = this.Transcations;
             result["UnitPrice"] = this.UnitPrice;
+            result["UpdateTime"] = this.UpdateTime;
             result["ValueDateMode"] = this.ValueDateMode;
             result["Yield"] = this.Yield;
             return result;
@@ -652,17 +671,18 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.Args = new Dictionary<String,Object>();
             this.EndSellTime = default(DateTime);
             this.FinancingSumAmount = default(Int64);
-            this.Info = new Dictionary<String,Object>();
             this.IssueNo = default(Int32);
             this.IssueTime = default(DateTime);
             this.ProductCategory = default(Int64);
+            this.ProductId = default(Guid);
             this.ProductName = default(String);
             this.ProductNo = default(String);
             this.SoldOut = default(Boolean);
             this.SoldOutTime = default(Nullable<DateTime>);
             this.StartSellTime = default(DateTime);
-            this.Transcations = new List<TranscationInfo>();
+            this.Transcations = new Dictionary<Guid,JBYAccountTranscationInfo>();
             this.UnitPrice = default(Int32);
+            this.UpdateTime = default(DateTime);
             this.ValueDateMode = default(Int32);
             this.Yield = default(Int32);
         }
@@ -701,31 +721,19 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public Guid @Id { get; set; }
 
-            public DateTime @Date { get; set; }
-
-            public String @DateString { get; set; }
-
-            public DailyConfig @LastWorkDayConfig { get; set; }
-
-            public DailyConfig @TodayConfig { get; set; }
-
-            public List<TranscationInfo> @WithdrawalTranscations { get; set; }
+            public Dictionary<Guid,JBYAccountTranscationInfo> @WithdrawalTranscations { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("Date", out value)) @Date = (DateTime) value;
-                if (values.TryGetValue("DateString", out value)) @DateString = (String) value;
-                if (values.TryGetValue("LastWorkDayConfig", out value)) @LastWorkDayConfig = (DailyConfig) value;
-                if (values.TryGetValue("TodayConfig", out value)) @TodayConfig = (DailyConfig) value;
-                if (values.TryGetValue("WithdrawalTranscations", out value)) @WithdrawalTranscations = (List<TranscationInfo>) value;
+                if (values.TryGetValue("WithdrawalTranscations", out value)) @WithdrawalTranscations = (Dictionary<Guid,JBYAccountTranscationInfo>) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} Date={1} DateString={2} LastWorkDayConfig={3} TodayConfig={4} WithdrawalTranscations={5} )", @Id, @Date, @DateString, @LastWorkDayConfig, @TodayConfig, @WithdrawalTranscations);
+                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} WithdrawalTranscations={1} )", @Id, @WithdrawalTranscations);
             }
         
         public JBYProductWithdrawalManagerState() : 
@@ -738,10 +746,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["Id"] = this.Id;
-            result["Date"] = this.Date;
-            result["DateString"] = this.DateString;
-            result["LastWorkDayConfig"] = this.LastWorkDayConfig;
-            result["TodayConfig"] = this.TodayConfig;
             result["WithdrawalTranscations"] = this.WithdrawalTranscations;
             return result;
         }
@@ -749,11 +753,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         private void InitStateFields()
         {
             this.Id = default(Guid);
-            this.Date = default(DateTime);
-            this.DateString = default(String);
-            this.LastWorkDayConfig = new DailyConfig();
-            this.TodayConfig = new DailyConfig();
-            this.WithdrawalTranscations = new List<TranscationInfo>();
+            this.WithdrawalTranscations = new Dictionary<Guid,JBYAccountTranscationInfo>();
         }
         
         [global::Orleans.CodeGeneration.CopierMethodAttribute()]
@@ -782,233 +782,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
 namespace Yuyi.Jinyinmao.Domain.Sagas
 {
     using System;
+    using System.Runtime.Serialization;
     using System.Collections;
     using System.Collections.Generic;
-    using Yuyi.Jinyinmao.Domain.Dtos;
     using Orleans.CodeGeneration;
     using Orleans;
     using System.Runtime.InteropServices;
-    using System.Runtime.Serialization;
     
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.AddBankCardSaga")]
-    public class AddBankCardSagaState : global::Orleans.CodeGeneration.GrainState, IAddBankCardSagaState
-    {
-        
-
-            public Guid @SagaId { get; set; }
-
-            public String @SagaType { get; set; }
-
-            public AddBankCardSagaInitDto @InitData { get; set; }
-
-            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
-            {   
-                object value;
-                if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
-                if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
-                if (values.TryGetValue("InitData", out value)) @InitData = (AddBankCardSagaInitDto) value;
-            }
-
-            public override System.String ToString()
-            {
-                return System.String.Format("AddBankCardSagaState( SagaId={0} SagaType={1} InitData={2} )", @SagaId, @SagaType, @InitData);
-            }
-        
-        public AddBankCardSagaState() : 
-                base("Yuyi.Jinyinmao.Domain.Sagas.AddBankCardSaga")
-        {
-            this.InitStateFields();
-        }
-        
-        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
-        {
-            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["SagaId"] = this.SagaId;
-            result["SagaType"] = this.SagaType;
-            result["InitData"] = this.InitData;
-            return result;
-        }
-        
-        private void InitStateFields()
-        {
-            this.SagaId = default(Guid);
-            this.SagaType = default(String);
-            this.InitData = new AddBankCardSagaInitDto();
-        }
-        
-        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-        public static object _Copier(object original)
-        {
-            AddBankCardSagaState input = ((AddBankCardSagaState)(original));
-            return input.DeepCopy();
-        }
-        
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            AddBankCardSagaState input = ((AddBankCardSagaState)(original));
-            input.SerializeTo(stream);
-        }
-        
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            AddBankCardSagaState result = new AddBankCardSagaState();
-            result.DeserializeFrom(stream);
-            return result;
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.AuthenticateSaga")]
-    public class AuthenticateSagaState : global::Orleans.CodeGeneration.GrainState, IAuthenticateSagaState
-    {
-        
-
-            public Guid @SagaId { get; set; }
-
-            public String @SagaType { get; set; }
-
-            public AuthenticateSagaInitDto @InitData { get; set; }
-
-            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
-            {   
-                object value;
-                if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
-                if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
-                if (values.TryGetValue("InitData", out value)) @InitData = (AuthenticateSagaInitDto) value;
-            }
-
-            public override System.String ToString()
-            {
-                return System.String.Format("AuthenticateSagaState( SagaId={0} SagaType={1} InitData={2} )", @SagaId, @SagaType, @InitData);
-            }
-        
-        public AuthenticateSagaState() : 
-                base("Yuyi.Jinyinmao.Domain.Sagas.AuthenticateSaga")
-        {
-            this.InitStateFields();
-        }
-        
-        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
-        {
-            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["SagaId"] = this.SagaId;
-            result["SagaType"] = this.SagaType;
-            result["InitData"] = this.InitData;
-            return result;
-        }
-        
-        private void InitStateFields()
-        {
-            this.SagaId = default(Guid);
-            this.SagaType = default(String);
-            this.InitData = new AuthenticateSagaInitDto();
-        }
-        
-        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-        public static object _Copier(object original)
-        {
-            AuthenticateSagaState input = ((AuthenticateSagaState)(original));
-            return input.DeepCopy();
-        }
-        
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            AuthenticateSagaState input = ((AuthenticateSagaState)(original));
-            input.SerializeTo(stream);
-        }
-        
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            AuthenticateSagaState result = new AuthenticateSagaState();
-            result.DeserializeFrom(stream);
-            return result;
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
-    [SerializableAttribute()]
-    [global::Orleans.CodeGeneration.GrainStateAttribute("Yuyi.Jinyinmao.Domain.Sagas.Yuyi.Jinyinmao.Domain.Sagas.DepositByYilianSaga")]
-    public class DepositByYilianSagaState : global::Orleans.CodeGeneration.GrainState, IDepositByYilianSagaState
-    {
-        
-
-            public Guid @SagaId { get; set; }
-
-            public String @SagaType { get; set; }
-
-            public DepositFromYilianSagaInitDto @InitData { get; set; }
-
-            public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
-            {   
-                object value;
-                if (values == null) { InitStateFields(); return; }
-                if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
-                if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
-                if (values.TryGetValue("InitData", out value)) @InitData = (DepositFromYilianSagaInitDto) value;
-            }
-
-            public override System.String ToString()
-            {
-                return System.String.Format("DepositByYilianSagaState( SagaId={0} SagaType={1} InitData={2} )", @SagaId, @SagaType, @InitData);
-            }
-        
-        public DepositByYilianSagaState() : 
-                base("Yuyi.Jinyinmao.Domain.Sagas.DepositByYilianSaga")
-        {
-            this.InitStateFields();
-        }
-        
-        public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
-        {
-            System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
-            result["SagaId"] = this.SagaId;
-            result["SagaType"] = this.SagaType;
-            result["InitData"] = this.InitData;
-            return result;
-        }
-        
-        private void InitStateFields()
-        {
-            this.SagaId = default(Guid);
-            this.SagaType = default(String);
-            this.InitData = new DepositFromYilianSagaInitDto();
-        }
-        
-        [global::Orleans.CodeGeneration.CopierMethodAttribute()]
-        public static object _Copier(object original)
-        {
-            DepositByYilianSagaState input = ((DepositByYilianSagaState)(original));
-            return input.DeepCopy();
-        }
-        
-        [global::Orleans.CodeGeneration.SerializerMethodAttribute()]
-        public static void _Serializer(object original, global::Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
-        {
-            DepositByYilianSagaState input = ((DepositByYilianSagaState)(original));
-            input.SerializeTo(stream);
-        }
-        
-        [global::Orleans.CodeGeneration.DeserializerMethodAttribute()]
-        public static object _Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
-        {
-            DepositByYilianSagaState result = new DepositByYilianSagaState();
-            result.DeserializeFrom(stream);
-            return result;
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.0.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -1017,6 +797,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     public class DepositSagaState : global::Orleans.CodeGeneration.GrainState, IDepositSagaState
     {
         
+
+            public DateTime @BeginTime { get; set; }
 
             public Guid @SagaId { get; set; }
 
@@ -1030,6 +812,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
+                if (values.TryGetValue("BeginTime", out value)) @BeginTime = (DateTime) value;
                 if (values.TryGetValue("SagaId", out value)) @SagaId = (Guid) value;
                 if (values.TryGetValue("SagaType", out value)) @SagaType = (String) value;
                 if (values.TryGetValue("InitData", out value)) @InitData = (DepositSagaInitData) value;
@@ -1038,7 +821,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
             public override System.String ToString()
             {
-                return System.String.Format("DepositSagaState( SagaId={0} SagaType={1} InitData={2} Status={3} )", @SagaId, @SagaType, @InitData, @Status);
+                return System.String.Format("DepositSagaState( BeginTime={0} SagaId={1} SagaType={2} InitData={3} Status={4} )", @BeginTime, @SagaId, @SagaType, @InitData, @Status);
             }
         
         public DepositSagaState() : 
@@ -1050,6 +833,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         public override System.Collections.Generic.IDictionary<string, object> AsDictionary()
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
+            result["BeginTime"] = this.BeginTime;
             result["SagaId"] = this.SagaId;
             result["SagaType"] = this.SagaType;
             result["InitData"] = this.InitData;
@@ -1059,6 +843,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         
         private void InitStateFields()
         {
+            this.BeginTime = default(DateTime);
             this.SagaId = default(Guid);
             this.SagaType = default(String);
             this.InitData = new DepositSagaInitData();
@@ -1090,6 +875,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 }
 #pragma warning restore 162
 #pragma warning restore 219
+#pragma warning restore 414
+#pragma warning restore 649
 #pragma warning restore 693
 #pragma warning restore 1591
 #pragma warning restore 1998

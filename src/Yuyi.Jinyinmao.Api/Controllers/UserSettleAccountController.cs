@@ -85,7 +85,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAD3:该银行卡不能用于易联支付");
             }
 
-            await this.userService.DepositAsync(new DepositFromYilian
+            await this.userService.DepositAsync(new PayByYilian
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),

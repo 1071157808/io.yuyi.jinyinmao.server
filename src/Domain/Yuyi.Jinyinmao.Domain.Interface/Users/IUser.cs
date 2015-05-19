@@ -78,20 +78,20 @@ namespace Yuyi.Jinyinmao.Domain
         Task ClearUnauthenticatedInfo();
 
         /// <summary>
-        ///     Deposits the asynchronous.
+        /// Deposits the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTranscationInfo&gt;&gt;.</returns>
-        Task<Tuple<UserInfo, SettleAccountTranscationInfo>> DepositAsync(PayByYilian command);
+        Task<Tuple<UserInfo, SettleAccountTranscationInfo>> DepositAsync(PayCommand command);
 
         /// <summary>
-        ///     Deposits the resulted asynchronous.
+        /// Deposits the resulted asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
-        Task DepositResultedAsync(PayByYilian command, bool result, string message);
+        Task DepositResultedAsync(PayCommand command, bool result, string message);
 
         /// <summary>
         ///     Gets the bank card information asynchronous.

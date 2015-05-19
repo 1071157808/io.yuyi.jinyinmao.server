@@ -37,7 +37,7 @@ namespace Yuyi.Jinyinmao.Domain
             CommandStoreTable = tableClient.GetTableReference("CommandStore");
             EventProcessingErrorsTable = tableClient.GetTableReference("EventProcessingErrors");
             EventStoreTable = tableClient.GetTableReference("EventStore");
-            ProductCacheTable = tableClient.GetTableReference("ProductCache");
+            CacheTable = tableClient.GetTableReference("Cache");
             SagasTable = tableClient.GetTableReference("Sagas");
 
             CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
@@ -47,6 +47,12 @@ namespace Yuyi.Jinyinmao.Domain
 
             ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
         }
+
+        /// <summary>
+        /// Gets the cache table.
+        /// </summary>
+        /// <value>The product cache table.</value>
+        public static CloudTable CacheTable { get; }
 
         /// <summary>
         ///     Gets the cloud storage account.
@@ -78,12 +84,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The private file container.</value>
         public static CloudBlobContainer PrivateFileContainer { get; }
-
-        /// <summary>
-        ///     Gets the product cache table.
-        /// </summary>
-        /// <value>The product cache table.</value>
-        public static CloudTable ProductCacheTable { get; }
 
         /// <summary>
         ///     Gets the public file container.
@@ -131,9 +131,9 @@ namespace Yuyi.Jinyinmao.Domain
                 throw new ApplicationException("Can not connect to Event Store");
             }
 
-            if (!ProductCacheTable.Exists())
+            if (!CacheTable.Exists())
             {
-                throw new ApplicationException("Can not connect to Product Cache");
+                throw new ApplicationException("Can not connect to Cache");
             }
 
             if (!SagasTable.Exists())
@@ -155,61 +155,6 @@ namespace Yuyi.Jinyinmao.Domain
             if (namespaceManager == null)
             {
                 throw new ApplicationException("Can not connect to Events Service Bus");
-            }
-
-            if (!namespaceManager.TopicExists("add_bank_card_resulted"))
-            {
-                throw new ApplicationException("Can not connect to topic add_bank_card_resulted");
-            }
-
-            if (!namespaceManager.TopicExists("authenticate_resulted"))
-            {
-                throw new ApplicationException("Can not connect to topic authenticate_resulted");
-            }
-
-            if (!namespaceManager.TopicExists("deposit_from_yilian_resulted"))
-            {
-                throw new ApplicationException("Can not connect to topic deposit_from_yilian_resulted");
-            }
-
-            if (!namespaceManager.TopicExists("login_password_reset"))
-            {
-                throw new ApplicationException("Can not connect to topic login_password_reset");
-            }
-
-            if (!namespaceManager.TopicExists("order_built"))
-            {
-                throw new ApplicationException("Can not connect to topic order_built");
-            }
-
-            if (!namespaceManager.TopicExists("order_repaid"))
-            {
-                throw new ApplicationException("Can not connect to topic order_repaid");
-            }
-
-            if (!namespaceManager.TopicExists("payment_password_reset"))
-            {
-                throw new ApplicationException("Can not connect to topic payment_password_reset");
-            }
-
-            if (!namespaceManager.TopicExists("payment_password_set"))
-            {
-                throw new ApplicationException("Can not connect to topic payment_password_set");
-            }
-
-            if (!namespaceManager.TopicExists("regular_product_issued"))
-            {
-                throw new ApplicationException("Can not connect to topic regular_product_issued");
-            }
-
-            if (!namespaceManager.TopicExists("user_registered"))
-            {
-                throw new ApplicationException("Can not connect to topic user_registered");
-            }
-
-            if (!namespaceManager.TopicExists("withdrawal_resulted"))
-            {
-                throw new ApplicationException("Can not connect to topic withdrawal_resulted");
             }
         }
     }

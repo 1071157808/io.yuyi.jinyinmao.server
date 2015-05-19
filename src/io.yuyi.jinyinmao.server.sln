@@ -40,6 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E
 		Publish\dev\InitFrontTables.sql = Publish\dev\InitFrontTables.sql
 		Publish\dev\InitGrainDBs.sql = Publish\dev\InitGrainDBs.sql
 		Publish\dev\InitGrainTables.sql = Publish\dev\InitGrainTables.sql
+		Publish\dev\ServerConfig.json = Publish\dev\ServerConfig.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-LocalHost", "3-LocalHost", "{A10B2E6B-7856-4EA5-AF60-816879A740BE}"
@@ -76,8 +77,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Api", "Yuyi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Silo", "Yuyi.Jinyinmao.Silo\Yuyi.Jinyinmao.Silo.csproj", "{AEBD2562-06AD-4757-B083-C54D0CECB195}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBusExplorer", "Application\ServiceBusExplorer\ServiceBusExplorer.csproj", "{32754F39-E353-4607-94FE-B9B9ACFD58EF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{12B7369E-296E-4C4D-BB0A-3B76C8102D96}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -86,6 +85,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{12B736
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyConfigInitApp", "Application\DailyConfigInitApp\DailyConfigInitApp.csproj", "{2E7053E7-1822-4052-86A8-FB671579735E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureInit", "Application\AzureInit\AzureInit.csproj", "{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -280,14 +281,6 @@ Global
 		{AEBD2562-06AD-4757-B083-C54D0CECB195}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEBD2562-06AD-4757-B083-C54D0CECB195}.Release|x86.ActiveCfg = Release|Any CPU
 		{AEBD2562-06AD-4757-B083-C54D0CECB195}.Release|x86.Build.0 = Release|Any CPU
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Debug|x86.ActiveCfg = Debug|x86
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Debug|x86.Build.0 = Debug|x86
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|x86.ActiveCfg = Release|x86
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF}.Release|x86.Build.0 = Release|x86
 		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E7053E7-1822-4052-86A8-FB671579735E}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -296,6 +289,14 @@ Global
 		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|x86.ActiveCfg = Release|Any CPU
 		{2E7053E7-1822-4052-86A8-FB671579735E}.Release|x86.Build.0 = Release|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Debug|x86.Build.0 = Debug|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Release|x86.ActiveCfg = Release|Any CPU
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -322,8 +323,8 @@ Global
 		{A2075913-20FC-496C-9F53-BCA0762ECEF1} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{596F9CB8-45FF-4D76-ACD6-037938ED5EEE} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
 		{BD85B692-CB20-481B-9628-452D41971A92} = {6B30F856-2589-4217-BA6C-92E4B5DA49B6}
-		{32754F39-E353-4607-94FE-B9B9ACFD58EF} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{2E7053E7-1822-4052-86A8-FB671579735E} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
+		{3366FAC6-A60E-4575-84DF-10B5FA8B1F8D} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45

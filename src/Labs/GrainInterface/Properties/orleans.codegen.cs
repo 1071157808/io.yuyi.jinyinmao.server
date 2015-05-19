@@ -10,6 +10,8 @@
 #if !EXCLUDE_CODEGEN
 #pragma warning disable 162
 #pragma warning disable 219
+#pragma warning disable 414
+#pragma warning disable 649
 #pragma warning disable 693
 #pragma warning disable 1591
 #pragma warning disable 1998
@@ -132,19 +134,19 @@ namespace GrainInterface
             System.Threading.Tasks.Task<int> GrainInterface.IEmployee.GetLevel()
             {
 
-                return base.InvokeMethodAsync<System.Int32>(312402437, new object[] {} );
+                return base.InvokeMethodAsync<System.Int32>(312402437, null );
             }
             
             System.Threading.Tasks.Task<GrainInterface.IManager> GrainInterface.IEmployee.GetManager()
             {
 
-                return base.InvokeMethodAsync<GrainInterface.IManager>(940043127, new object[] {} );
+                return base.InvokeMethodAsync<GrainInterface.IManager>(940043127, null );
             }
             
             System.Threading.Tasks.Task GrainInterface.IEmployee.Greeting(GrainInterface.IEmployee @from, string @message)
             {
 
-                return base.InvokeMethodAsync<object>(-1319124596, new object[] {@from is global::Orleans.Grain ? GrainInterface.EmployeeFactory.Cast(@from.AsReference()) : @from, @message} );
+                return base.InvokeMethodAsync<object>(-1319124596, new object[] {@from is global::Orleans.Grain ? @from.AsReference<GrainInterface.IEmployee>() : @from, @message} );
             }
             
             System.Threading.Tasks.Task GrainInterface.IEmployee.Promote(int @newLevel)
@@ -156,7 +158,7 @@ namespace GrainInterface
             System.Threading.Tasks.Task GrainInterface.IEmployee.SetManager(GrainInterface.IManager @manager)
             {
 
-                return base.InvokeMethodAsync<object>(-159913581, new object[] {@manager is global::Orleans.Grain ? GrainInterface.ManagerFactory.Cast(@manager.AsReference()) : @manager} );
+                return base.InvokeMethodAsync<object>(-159913581, new object[] {@manager is global::Orleans.Grain ? @manager.AsReference<GrainInterface.IManager>() : @manager} );
             }
         }
     }
@@ -345,19 +347,19 @@ namespace GrainInterface
             System.Threading.Tasks.Task GrainInterface.IManager.AddDirectReport(GrainInterface.IEmployee @employee)
             {
 
-                return base.InvokeMethodAsync<object>(-1731443267, new object[] {@employee is global::Orleans.Grain ? GrainInterface.EmployeeFactory.Cast(@employee.AsReference()) : @employee} );
+                return base.InvokeMethodAsync<object>(-1731443267, new object[] {@employee is global::Orleans.Grain ? @employee.AsReference<GrainInterface.IEmployee>() : @employee} );
             }
             
             System.Threading.Tasks.Task<GrainInterface.IEmployee> GrainInterface.IManager.AsEmployee()
             {
 
-                return base.InvokeMethodAsync<GrainInterface.IEmployee>(-1701259070, new object[] {} );
+                return base.InvokeMethodAsync<GrainInterface.IEmployee>(-1701259070, null );
             }
             
             System.Threading.Tasks.Task<System.Collections.Generic.List<GrainInterface.IEmployee>> GrainInterface.IManager.GetDirectReports()
             {
 
-                return base.InvokeMethodAsync<System.Collections.Generic.List<GrainInterface.IEmployee>>(-675836216, new object[] {} );
+                return base.InvokeMethodAsync<System.Collections.Generic.List<GrainInterface.IEmployee>>(-675836216, null );
             }
         }
     }
@@ -435,6 +437,8 @@ namespace GrainInterface
 }
 #pragma warning restore 162
 #pragma warning restore 219
+#pragma warning restore 414
+#pragma warning restore 649
 #pragma warning restore 693
 #pragma warning restore 1591
 #pragma warning restore 1998
