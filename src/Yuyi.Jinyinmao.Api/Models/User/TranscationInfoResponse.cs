@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  6:09 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  2:20 AM
+// Last Modified On : 2015-05-19  11:47 AM
 // ***********************************************************************
 // <copyright file="TranscationInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,7 +24,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     TranscationInfoResponse.
     /// </summary>
-    public class TranscationInfoResponse : IResponse
+    public class SettleAccountTranscationInfoResponse : IResponse
     {
         /// <summary>
         ///     金额，以分为单位
@@ -87,11 +87,11 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string TransDesc { get; set; }
     }
 
-    internal static partial class TranscationInfoEx
+    internal static class SettleAccountTranscationInfoEx
     {
-        internal static TranscationInfoResponse ToTranscationInfoResponse(this TranscationInfo info)
+        internal static SettleAccountTranscationInfoResponse ToResponse(this SettleAccountTranscationInfo info)
         {
-            return new TranscationInfoResponse
+            SettleAccountTranscationInfoResponse response = new SettleAccountTranscationInfoResponse
             {
                 Amount = info.Amount,
                 BankCardNo = info.BankCardNo,
@@ -104,6 +104,8 @@ namespace Yuyi.Jinyinmao.Api.Models
                 TransactionTime = info.TransactionTime,
                 TransDesc = info.TransDesc
             };
+
+            return response;
         }
     }
 }

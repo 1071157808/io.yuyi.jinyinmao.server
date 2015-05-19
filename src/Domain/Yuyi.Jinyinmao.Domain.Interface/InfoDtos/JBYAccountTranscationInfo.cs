@@ -4,7 +4,7 @@
 // Created          : 2015-05-17  7:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  2:15 AM
+// Last Modified On : 2015-05-19  11:38 AM
 // ***********************************************************************
 // <copyright file="JBYAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -127,7 +127,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
-        /// Gets or sets the predetermined result date.
+        ///     Gets or sets the predetermined result date.
         /// </summary>
         /// <value>The predetermined result date.</value>
         public DateTime? PredeterminedResultDate { get; set; }

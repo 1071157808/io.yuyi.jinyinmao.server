@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  2:07 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  2:20 AM
+// Last Modified On : 2015-05-19  11:39 AM
 // ***********************************************************************
 // <copyright file="JBYTranscationInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Newtonsoft.Json;
@@ -34,16 +33,10 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int Amount { get; set; }
 
         /// <summary>
-        ///     银行卡号
+        ///     金包银流水预定的结算时间，根据业务情况，该值可能为无意义值
         /// </summary>
-        [Required, JsonProperty("bankCardNo")]
-        public string BankCardNo { get; set; }
-
-        /// <summary>
-        ///     渠道号
-        /// </summary>
-        [Required, JsonProperty("channelCode")]
-        public int ChannelCode { get; set; }
+        [Required, JsonProperty("predeterminedResultDate")]
+        public DateTime PredeterminedResultDate { get; set; }
 
         /// <summary>
         ///     对应的金包银产品唯一标识
@@ -62,6 +55,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("resultTime")]
         public DateTime ResultTime { get; set; }
+
+        /// <summary>
+        ///     对应的钱包流水唯一标识，如果没有相对应的流水，则该值为一串0
+        /// </summary>
+        [Required, JsonProperty("settleAccountTranscationId")]
+        public string SettleAccountTranscationId { get; set; }
 
         /// <summary>
         ///     交易代码
@@ -94,31 +93,26 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string TransDesc { get; set; }
     }
 
-    internal static partial class TranscationInfoEx
+    internal static class JBYAccountTranscationInfoEx
     {
-        internal static JBYTranscationInfoResponse ToJBYTranscationInfoResponse(this TranscationInfo info)
+        internal static JBYTranscationInfoResponse ToResponse(this JBYAccountTranscationInfo info)
         {
-            string productIdentifier = string.Empty;
-            string productId = info.Info.FirstOrDefault(kv => kv.Key == "ProductId").ToString();
-            if (productId.IsNotNullOrEmpty())
-            {
-                productIdentifier = Guid.Parse(productId).ToGuidString();
-            }
-
-            return new JBYTranscationInfoResponse
+            JBYTranscationInfoResponse response = new JBYTranscationInfoResponse
             {
                 Amount = info.Amount,
-                BankCardNo = info.BankCardNo,
-                ChannelCode = info.ChannelCode,
-                ProductIdentifier = productIdentifier,
+                PredeterminedResultDate = info.PredeterminedResultDate.GetValueOrDefault(),
+                ProductIdentifier = info.ProductId.ToGuidString(),
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime.GetValueOrDefault(),
+                SettleAccountTranscationId = info.SettleAccountTranscationId.ToGuidString(),
                 Trade = info.Trade,
                 TradeCode = info.TradeCode,
                 TransactionIdentifier = info.TransactionId.ToGuidString(),
                 TransactionTime = info.TransactionTime,
                 TransDesc = info.TransDesc
             };
+
+            return response;
         }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-14  5:30 PM
+// Last Modified On : 2015-05-19  11:40 AM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -160,35 +160,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(cards.Select(c => c.ToResponse()).ToList());
-        }
-
-        /// <summary>
-        ///     设置默认银行卡
-        /// </summary>
-        /// <remarks>
-        ///     参数传递直接传递银行卡号，后续需要修改
-        /// </remarks>
-        /// <param name="bankCardNo">bankCardNo[string]:银行卡号（15-19位）</param>
-        /// <response code="200">重置成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UBCSDBC:银行卡信息错误</response>
-        /// <response code="401">UAUTH1:请先登录</response>
-        /// <response code="500"></response>
-        [HttpGet, Route("SetDefaultBankCard/{bankCardNo}"), CookieAuthorize]
-        public async Task<IHttpActionResult> SetDefaultBankCard(string bankCardNo)
-        {
-            BankCardInfo info = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, bankCardNo);
-            if (info == null)
-            {
-                return this.BadRequest("UBCSDBC:银行卡信息错误");
-            }
-
-            if (!info.IsDefault)
-            {
-                await this.userService.SetDefaultBankCardAsync(this.CurrentUser.Id, bankCardNo);
-            }
-
-            return this.Ok();
         }
     }
 }

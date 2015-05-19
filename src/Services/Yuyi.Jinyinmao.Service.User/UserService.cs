@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  1:38 AM
+// Last Modified On : 2015-05-19  12:38 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -18,6 +18,7 @@ using Moe.Lib;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.Sagas;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -122,6 +123,28 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.ClearUnauthenticatedInfo();
+        }
+
+        /// <summary>
+        ///     Deposits the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public async Task DepositAsync(PayByYilian command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            UserInfo userInfo = await user.GetUserInfoAsync();
+
+            IDepositSaga saga = DepositSagaFactory.GetGrain(command.CommandId);
+            await saga.BeginProcessAsync(new DepositSagaInitData
+            {
+                AddBankCardCommand = null,
+                AuthenticateCommand = null,
+                InitUserInfo = userInfo,
+                PayByLianlianCommand = null,
+                PayByYilianCommand = command,
+                VerifyBankCardCommand = null
+            });
         }
 
         /// <summary>

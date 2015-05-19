@@ -4,7 +4,7 @@
 // Created          : 2015-05-08  2:57 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  10:51 AM
+// Last Modified On : 2015-05-19  12:00 PM
 // ***********************************************************************
 // <copyright file="OrderInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
 using Moe.Lib;
@@ -43,12 +42,6 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         /// </summary>
         [Required, JsonProperty("extraYield")]
         public int ExtraYield { get; set; }
-
-        /// <summary>
-        ///     额外信息
-        /// </summary>
-        [Required, JsonProperty("info")]
-        public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
         ///     预期收益，以“分”为单位
@@ -156,7 +149,6 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
                 AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
                 ExtraInterest = info.ExtraInterest,
                 ExtraYield = info.ExtraYield,
-                Info = info.Info,
                 Interest = info.Interest,
                 IsRepaid = info.IsRepaid,
                 OrderIdentifier = info.OrderId.ToGuidString(),

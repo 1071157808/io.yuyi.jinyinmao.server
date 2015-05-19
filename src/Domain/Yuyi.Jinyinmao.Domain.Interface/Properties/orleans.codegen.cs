@@ -7415,6 +7415,9 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Orleans.Serialization.SerializationManager.SerializeInner(input.InvestingPrincipal, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.InviteBy, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.JBYAccrualAmount, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTotalAmount, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTotalInterest, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTotalPricipal, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.JBYWithdrawalableAmount, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.LoginNames, stream, typeof(System.Collections.Generic.List<System.String>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.MonthWithdrawalCount, stream, typeof(int));
@@ -7451,6 +7454,9 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.InvestingPrincipal = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.InviteBy = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.JBYAccrualAmount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.JBYTotalAmount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.JBYTotalInterest = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.JBYTotalPricipal = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.JBYWithdrawalableAmount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.LoginNames = ((System.Collections.Generic.List<System.String>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.List<System.String>), stream)));
             result.MonthWithdrawalCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));

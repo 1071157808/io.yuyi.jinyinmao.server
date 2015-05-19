@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  1:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  3:12 AM
+// Last Modified On : 2015-05-19  11:40 AM
 // ***********************************************************************
 // <copyright file="UserJBYController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -89,14 +89,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UJT1:交易流水不存在");
             }
 
-            TranscationInfo info = await this.userInfoService.GetJBYAccountTranscationInfoAsync(this.CurrentUser.Id, transcationId);
+            JBYAccountTranscationInfo info = await this.userInfoService.GetJBYAccountTranscationInfoAsync(this.CurrentUser.Id, transcationId);
 
             if (info == null)
             {
                 return this.BadRequest("UJT1:交易流水不存在");
             }
 
-            return this.Ok(info.ToJBYTranscationInfoResponse());
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -114,14 +114,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
 
-            PaginatedList<TranscationInfo> infos = await this.userInfoService.GetJBYAccountTranscationInfosAsync(this.CurrentUser.Id, pageIndex, 10);
+            PaginatedList<JBYAccountTranscationInfo> infos = await this.userInfoService.GetJBYAccountTranscationInfosAsync(this.CurrentUser.Id, pageIndex, 10);
 
             if (infos == null)
             {
                 return this.BadRequest("USAT1:交易流水不存在");
             }
 
-            return this.Ok(infos.ToPaginated(i => i.ToJBYTranscationInfoResponse()).ToResponse());
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
         }
 
         /// <summary>
@@ -171,14 +171,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UJW4:赎回金额已经达到今日上限");
             }
 
-            TranscationInfo info = await this.userService.WithdrawalAsync(new JBYWithdrawal
+            JBYAccountTranscationInfo info = await this.userService.WithdrawalAsync(new JBYWithdrawal
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
                 UserId = this.CurrentUser.Id
             });
 
-            return this.Ok(info.ToJBYTranscationInfoResponse());
+            return this.Ok(info.ToResponse());
         }
     }
 }

@@ -111,6 +111,12 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
         public int UnitPrice { get; set; }
 
         /// <summary>
+        ///     上一次更新时间
+        /// </summary>
+        [Required, JsonProperty("updateTime")]
+        public DateTime UpdateTime { get; set; }
+
+        /// <summary>
         ///     先判断是否是指定日期起息；为0，则为购买当日起息，为n，则为T+n日起息；为-n，则为T-n日起息
         /// </summary>
         [Required, JsonProperty("valueDateMode")]
@@ -131,7 +137,6 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
             {
                 EndSellTime = info.EndSellTime,
                 FinancingSumAmount = info.FinancingSumAmount,
-                Info = info.Info,
                 IssueNo = info.IssueNo,
                 IssueTime = info.IssueTime,
                 PaidAmount = info.PaidAmount,
@@ -142,6 +147,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
                 SoldOut = info.SoldOut,
                 SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
                 StartSellTime = info.StartSellTime,
+                UpdateTime = info.UpdateTime,
                 UnitPrice = info.UnitPrice,
                 ValueDateMode = info.ValueDateMode,
                 Yield = info.Yield

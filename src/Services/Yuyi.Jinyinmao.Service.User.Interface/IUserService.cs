@@ -53,6 +53,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task ClearUnauthenticatedInfo(Guid userId);
 
         /// <summary>
+        /// Deposits the asynchronous.
+        /// </summary>
+        /// <param name="payByYilian">The pay by yilian.</param>
+        /// <returns>Task.</returns>
+        Task DepositAsync(PayByYilian payByYilian);
+
+        /// <summary>
         ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The regular investing.</param>

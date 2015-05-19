@@ -323,7 +323,7 @@ namespace nyanya.Meow.Models
                 PreSale = info.ProductInfo.PreSale,
                 PreStartSellTime = info.ProductInfo.PreStartSellTime.ToMeowFormat(),
                 ProductIdentifier = info.ProductInfo.ProductIdentifier,
-                ProductName = info.ProductInfo.ProductName,
+                ProductName = info.ProductInfo.ProductName + " 第" + info.ProductInfo.ProductNumber.ToString() + "期",
                 ProductNo = info.ProductInfo.ProductNo,
                 ProductNumber = info.ProductInfo.ProductNumber,
                 ServerTime = DateTime.Now.AddSeconds(2).ToMeowFormat(),

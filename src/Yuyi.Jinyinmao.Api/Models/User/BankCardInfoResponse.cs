@@ -37,10 +37,10 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string BankName { get; set; }
 
         /// <summary>
-        ///     是否可以用于易联充值
+        ///     银行卡关联的手机号
         /// </summary>
-        [Required, JsonProperty("canBeUsedForYilian")]
-        public bool CanBeUsedForYilian { get; set; }
+        [Required, JsonProperty("cellphone")]
+        public string Cellphone { get; set; }
 
         /// <summary>
         ///     开户地，格式应该为  **|**
@@ -49,16 +49,16 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string CityName { get; set; }
 
         /// <summary>
-        ///     是否是默认银行卡
-        /// </summary>
-        [Required, JsonProperty("isDefault")]
-        public bool IsDefault { get; set; }
-
-        /// <summary>
         ///     是否已经认证
         /// </summary>
         [Required, JsonProperty("verified")]
         public bool Verified { get; set; }
+
+        /// <summary>
+        ///     是否可以用于易联充值
+        /// </summary>
+        [Required, JsonProperty("verifiedByYilian")]
+        public bool VerifiedByYilian { get; set; }
 
         /// <summary>
         ///     认证时间
@@ -81,10 +81,10 @@ namespace Yuyi.Jinyinmao.Api.Models
             {
                 BankCardNo = info.BankCardNo,
                 BankName = info.BankName,
-                CanBeUsedForYilian = info.CanBeUsedForYilian,
+                Cellphone = info.Cellphone,
                 CityName = info.CityName,
-                IsDefault = info.IsDefault,
                 Verified = info.Verified,
+                VerifiedByYilian = info.VerifiedByYilian,
                 VerifiedTime = info.VerifiedTime,
                 WithdrawAmount = info.WithdrawAmount
             };

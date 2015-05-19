@@ -198,6 +198,24 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public int JBYAccrualAmount { get; set; }
 
         /// <summary>
+        ///     Gets or sets the jby total amount.
+        /// </summary>
+        /// <value>The jby total amount.</value>
+        public int JBYTotalAmount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the jby total interest.
+        /// </summary>
+        /// <value>The jby total interest.</value>
+        public int JBYTotalInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the jby total pricipal.
+        /// </summary>
+        /// <value>The jby total pricipal.</value>
+        public int JBYTotalPricipal { get; set; }
+
+        /// <summary>
         ///     Gets or sets the jby withdrawalable amount.
         /// </summary>
         /// <value>The jby withdrawalable amount.</value>

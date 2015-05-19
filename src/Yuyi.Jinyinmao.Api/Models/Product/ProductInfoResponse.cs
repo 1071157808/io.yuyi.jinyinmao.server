@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:14 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  1:39 AM
+// Last Modified On : 2015-05-19  12:00 PM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
 using Moe.Lib;
@@ -27,22 +26,58 @@ namespace Yuyi.Jinyinmao.Api.Models
     public class RegularProductInfoResponse : IResponse
     {
         /// <summary>
+        ///     银行名称，可能为空
+        /// </summary>
+        [JsonProperty("bankName")]
+        public string BankName { get; set; }
+
+        /// <summary>
+        ///     付款人名称，可能为空
+        /// </summary>
+        [JsonProperty("drawee")]
+        public string Drawee { get; set; }
+
+        /// <summary>
+        ///    付款人信息，可能为空
+        /// </summary>
+        [JsonProperty("draweeInfo")]
+        public string DraweeInfo { get; set; }
+
+        /// <summary>
+        ///     图片地址，绝对路径
+        /// </summary>
+        [Required, JsonProperty("endorseImageLink")]
+        public string EndorseImageLink { get; set; }
+
+        /// <summary>
         ///     停售时间（北京时间）
         /// </summary>
         [Required, JsonProperty("endSellTime")]
         public DateTime EndSellTime { get; set; }
 
         /// <summary>
+        ///    融资企业信息，可能为空
+        /// </summary>
+        [JsonProperty("enterpriseInfo")]
+        public string EnterpriseInfo { get; set; }
+
+        /// <summary>
+        ///    融资企业营业执照，可能为空
+        /// </summary>
+        [JsonProperty("enterpriseLicense")]
+        public string EnterpriseLicense { get; set; }
+
+        /// <summary>
+        ///    融资企业名称，可能为空
+        /// </summary>
+        [JsonProperty("enterpriseName")]
+        public string EnterpriseName { get; set; }
+
+        /// <summary>
         ///     募集总金额，以“分”为单位
         /// </summary>
         [Required, JsonProperty("financingSumAmount")]
         public long FinancingSumAmount { get; set; }
-
-        /// <summary>
-        ///     额外内容，请参考其他文档
-        /// </summary>
-        [Required, JsonProperty("info")]
-        public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
         ///     发行编号，即期数，可以重复
@@ -61,6 +96,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("paidAmount")]
         public long PaidAmount { get; set; }
+
+        /// <summary>
+        ///    融资周期，用于显示，可能为空
+        /// </summary>
+        [JsonProperty("period")]
+        public int Period { get; set; }
 
         /// <summary>
         ///     质押物编号，可以认为是票号、合同号等相关文件的编号
@@ -111,6 +152,24 @@ namespace Yuyi.Jinyinmao.Api.Models
         public DateTime RepaymentDeadline { get; set; }
 
         /// <summary>
+        ///    风控方名称，可能为空
+        /// </summary>
+        [JsonProperty("riskManagement")]
+        public string RiskManagement { get; set; }
+
+        /// <summary>
+        ///    风控信息，可能为空
+        /// </summary>
+        [JsonProperty("riskManagementInfo")]
+        public string RiskManagementInfo { get; set; }
+
+        /// <summary>
+        ///    风控方式，可能为空
+        /// </summary>
+        [JsonProperty("riskManagementMode")]
+        public string RiskManagementMode { get; set; }
+
+        /// <summary>
         ///     结息日
         /// </summary>
         [Required, JsonProperty("settleDate")]
@@ -147,6 +206,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int UnitPrice { get; set; }
 
         /// <summary>
+        ///    融资用途，可能为空
+        /// </summary>
+        [JsonProperty("usage")]
+        public string Usage { get; set; }
+
+        /// <summary>
         ///     起息日
         /// </summary>
         [Required, JsonProperty("valueDate")]
@@ -171,12 +236,19 @@ namespace Yuyi.Jinyinmao.Api.Models
         {
             return new RegularProductInfoResponse
             {
+                BankName = info.BankName,
+                Drawee = info.Drawee,
+                DraweeInfo = info.DraweeInfo,
+                EndorseImageLink = info.EndorseImageLink,
                 EndSellTime = info.EndSellTime,
+                EnterpriseInfo = info.EnterpriseInfo,
+                EnterpriseLicense = info.EnterpriseLicense,
+                EnterpriseName = info.EndorseImageLink,
                 FinancingSumAmount = info.FinancingSumAmount,
-                Info = info.Info,
                 IssueNo = info.IssueNo,
                 IssueTime = info.IssueTime,
                 PaidAmount = info.PaidAmount,
+                Period = info.Period,
                 PledgeNo = info.PledgeNo,
                 ProductCategory = info.ProductCategory,
                 ProductIdentifier = info.ProductId.ToGuidString(),
@@ -185,12 +257,16 @@ namespace Yuyi.Jinyinmao.Api.Models
                 Repaid = info.Repaid,
                 RepaidTime = info.RepaidTime.GetValueOrDefault(),
                 RepaymentDeadline = info.RepaymentDeadline,
+                RiskManagement = info.RiskManagement,
+                RiskManagementInfo = info.RiskManagementInfo,
+                RiskManagementMode = info.RiskManagementMode,
                 SettleDate = info.SettleDate,
                 SoldOut = info.SoldOut,
                 SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
                 SpecifyValueDate = !info.ValueDateMode.HasValue,
                 StartSellTime = info.StartSellTime,
                 UnitPrice = info.UnitPrice,
+                Usage = info.Usage,
                 ValueDate = info.ValueDate.GetValueOrDefault(),
                 ValueDateMode = info.ValueDateMode.GetValueOrDefault(),
                 Yield = info.Yield

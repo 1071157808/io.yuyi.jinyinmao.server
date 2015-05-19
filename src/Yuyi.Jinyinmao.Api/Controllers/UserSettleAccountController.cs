@@ -4,7 +4,7 @@
 // Created          : 2015-05-03  3:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-14  3:42 PM
+// Last Modified On : 2015-05-19  12:12 PM
 // ***********************************************************************
 // <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -80,7 +80,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
 
-            if (bankCardInfo == null || !bankCardInfo.Verified || !bankCardInfo.CanBeUsedForYilian)
+            if (bankCardInfo == null || !bankCardInfo.Verified || !bankCardInfo.VerifiedByYilian)
             {
                 return this.BadRequest("USAD3:该银行卡不能用于易联支付");
             }
@@ -129,7 +129,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAT1:交易流水不存在</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transcation/{transcationIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(TranscationInfoResponse))]
+        [HttpGet, Route("Transcation/{transcationIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(SettleAccountTranscationInfoResponse))]
         public async Task<IHttpActionResult> Transcation(string transcationIdentifier)
         {
             Guid transcationId;
@@ -138,14 +138,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAT1:交易流水不存在");
             }
 
-            TranscationInfo info = await this.userInfoService.GetSettleAccountTranscationInfoAsync(this.CurrentUser.Id, transcationId);
+            SettleAccountTranscationInfo info = await this.userInfoService.GetSettleAccountTranscationInfoAsync(this.CurrentUser.Id, transcationId);
 
             if (info == null)
             {
                 return this.BadRequest("USAT1:交易流水不存在");
             }
 
-            return this.Ok(info.ToTranscationInfoResponse());
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -158,19 +158,19 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAT1:交易流水不存在</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transcations/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<TranscationInfoResponse>))]
+        [HttpGet, Route("Transcations/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<SettleAccountTranscationInfoResponse>))]
         public async Task<IHttpActionResult> Transcations(int pageIndex = 0)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
 
-            PaginatedList<TranscationInfo> infos = await this.userInfoService.GetSettleAccountTranscationInfosAsync(this.CurrentUser.Id, pageIndex, 10);
+            PaginatedList<SettleAccountTranscationInfo> infos = await this.userInfoService.GetSettleAccountTranscationInfosAsync(this.CurrentUser.Id, pageIndex, 10);
 
             if (infos == null)
             {
                 return this.BadRequest("USAT1:交易流水不存在");
             }
 
-            return this.Ok(infos.ToPaginated(i => i.ToTranscationInfoResponse()).ToResponse());
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAW7:取现失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(TranscationInfoResponse))]
+        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SettleAccountTranscationInfoResponse))]
         public async Task<IHttpActionResult> Withdrawal(WithdrawalRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
@@ -233,7 +233,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAW4:取现额度超过限制");
             }
 
-            TranscationInfo info = await this.userService.WithdrawalAsync(new Withdrawal
+            SettleAccountTranscationInfo info = await this.userService.WithdrawalAsync(new Withdrawal
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
@@ -246,7 +246,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAW7:取现失败");
             }
 
-            return this.Ok(info.ToTranscationInfoResponse());
+            return this.Ok(info.ToResponse());
         }
     }
 }

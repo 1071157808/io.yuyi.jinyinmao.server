@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  11:26 PM
+// Last Modified On : 2015-05-19  12:34 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -284,7 +284,13 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaisePayingByYilianEvent(PayByYilian command, SettleAccountTranscationInfo transcationInfo)
+        /// <summary>
+        ///     Raises the paying by yilian event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="transcationInfo">The transcation information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaisePayingByYilianEvent(Command command, SettleAccountTranscationInfo transcationInfo)
         {
             PayingByYilian @event = new PayingByYilian
             {
@@ -315,7 +321,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Args = new Dictionary<string, object>(),
                 JBYAccountTranscationInfo = jbyAccountTranscationInfo,
                 SettleAccountTranscationInfo = settleAccountTranscationInfo,
-                UserInfo = await this.GetUserInfoAsync(),
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             await this.ProcessEventAsync(@event);

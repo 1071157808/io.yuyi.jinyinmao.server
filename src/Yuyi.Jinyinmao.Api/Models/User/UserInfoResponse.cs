@@ -32,28 +32,22 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int Balance { get; set; }
 
         /// <summary>
-        ///     默认银行卡号
-        /// </summary>
-        [Required, JsonProperty("bankCardNo")]
-        public string BankCardNo { get; set; }
-
-        /// <summary>
         ///     银行卡数量
         /// </summary>
         [Required, JsonProperty("bankCardsCount")]
         public int BankCardsCount { get; set; }
 
         /// <summary>
-        ///     默认银行卡银行名称
-        /// </summary>
-        [Required, JsonProperty("bankName")]
-        public string BankName { get; set; }
-
-        /// <summary>
         ///     手机号
         /// </summary>
         [Required, JsonProperty("cellphone")]
         public string Cellphone { get; set; }
+
+        /// <summary>
+        ///     账户是否已经注销
+        /// </summary>
+        [Required, JsonProperty("closed")]
+        public bool Closed { get; set; }
 
         /// <summary>
         ///     证件类型。0 => 身份证， 1 => 护照，2 => 台湾， 3=> 军官证
@@ -102,6 +96,24 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("jBYAccrualAmount")]
         public int JBYAccrualAmount { get; set; }
+
+        /// <summary>
+        ///     金包银总资产，在途及已经确认的入账减去已经确认的出账
+        /// </summary>
+        [Required, JsonProperty("jBYTotalAmount")]
+        public int JBYTotalAmount { get; set; }
+
+        /// <summary>
+        ///     金包银累积收益
+        /// </summary>
+        [Required, JsonProperty("jBYTotalInterest")]
+        public int JBYTotalInterest { get; set; }
+
+        /// <summary>
+        ///     金包银累积入账投资
+        /// </summary>
+        [Required, JsonProperty("jBYTotalPricipal")]
+        public int JBYTotalPricipal { get; set; }
 
         /// <summary>
         ///     金包银可取现金额
@@ -168,6 +180,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("verified")]
         public bool Verified { get; set; }
+
+        /// <summary>
+        ///     实名认证通过时间
+        /// </summary>
+        [Required, JsonProperty("verifiedTime")]
+        public DateTime VerifiedTime { get; set; }
     }
 
     internal static partial class UserInfoEx
@@ -177,10 +195,9 @@ namespace Yuyi.Jinyinmao.Api.Models
             return new UserInfoResponse
             {
                 Balance = info.Balance,
-                BankCardNo = info.BankCardNo,
                 BankCardsCount = info.BankCardsCount,
-                BankName = info.BankName,
                 Cellphone = info.Cellphone,
+                Closed = info.Closed,
                 Credential = (int)info.Credential,
                 CredentialNo = info.CredentialNo,
                 Crediting = info.Crediting,
@@ -189,17 +206,21 @@ namespace Yuyi.Jinyinmao.Api.Models
                 InvestingInterest = info.InvestingInterest,
                 InvestingPrincipal = info.InvestingPrincipal,
                 JBYAccrualAmount = info.JBYAccrualAmount,
+                JBYTotalAmount = info.JBYTotalAmount,
+                JBYTotalInterest = info.JBYTotalInterest,
+                JBYTotalPricipal = info.JBYTotalPricipal,
                 JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
                 MonthWithdrawalCount = info.MonthWithdrawalCount,
                 PasswordErrorCount = info.PasswordErrorCount,
                 RealName = info.RealName,
                 RegisterTime = info.RegisterTime,
-                TotalInterest = info.TotalInterest,
                 TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount,
-                TotalPrincipal = info.TotalPrincipal,
                 TodayWithdrawalCount = info.TodayWithdrawalCount,
+                TotalInterest = info.TotalInterest,
+                TotalPrincipal = info.TotalPrincipal,
                 UserIdentifier = info.UserId.ToGuidString(),
-                Verified = info.Verified
+                Verified = info.Verified,
+                VerifiedTime = info.VerifiedTime.GetValueOrDefault()
             };
         }
     }
