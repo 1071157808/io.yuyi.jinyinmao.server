@@ -4,7 +4,7 @@
 // Created          : 2015-05-17  8:08 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  10:13 PM
+// Last Modified On : 2015-05-23  3:32 PM
 // ***********************************************************************
 // <copyright file="JBYProductInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using Moe.Lib;
+using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -92,7 +93,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
 
             for (int j = 1; j <= agreements.Length; j++)
             {
-                i.Add("Agreement" + j, agreements[j]);
+                i.Add("Agreement" + j, agreements[j - 1]);
             }
 
             return i;
@@ -102,6 +103,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     /// <summary>
     ///     JBYProductInfo.
     /// </summary>
+    [Immutable]
     public class JBYProductInfo
     {
         /// <summary>

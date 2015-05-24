@@ -1,10 +1,10 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  12:38 PM
+// Last Modified On : 2015-05-22  11:52 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,10 +36,33 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public Task AddBankCardAsync(AddBankCard command)
+        public Task<BankCardInfo> AddBankCardAsync(AddBankCard command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.AddBankCardAsync(command);
+        }
+
+        /// <summary>
+        ///     Adds the bank card asynchronous.
+        /// </summary>
+        /// <param name="addBankCardCommand">The add bank card command.</param>
+        /// <param name="verifyBankCardCommand">The verify bank card command.</param>
+        /// <returns>Task.</returns>
+        public async Task AddBankCardAsync(AddBankCard addBankCardCommand, VerifyBankCard verifyBankCardCommand)
+        {
+            IUser user = UserFactory.GetGrain(addBankCardCommand.UserId);
+            UserInfo userInfo = await user.GetUserInfoAsync();
+
+            IDepositSaga saga = DepositSagaFactory.GetGrain(addBankCardCommand.CommandId);
+            await saga.BeginProcessAsync(new DepositSagaInitData
+            {
+                AddBankCardCommand = addBankCardCommand,
+                AuthenticateCommand = null,
+                InitUserInfo = userInfo,
+                PayByLianlianCommand = null,
+                PayByYilianCommand = null,
+                VerifyBankCardCommand = verifyBankCardCommand
+            });
         }
 
         /// <summary>
@@ -51,6 +74,29 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.AuthenticateAsync(command);
+        }
+
+        /// <summary>
+        ///     Authenticates the asynchronous.
+        /// </summary>
+        /// <param name="addBankCardCommand">The add bank card command.</param>
+        /// <param name="authenticateCommand">The authenticate command.</param>
+        /// <returns>Task.</returns>
+        public async Task AuthenticateAsync(AddBankCard addBankCardCommand, Authenticate authenticateCommand)
+        {
+            IUser user = UserFactory.GetGrain(addBankCardCommand.UserId);
+            UserInfo userInfo = await user.GetUserInfoAsync();
+
+            IDepositSaga saga = DepositSagaFactory.GetGrain(addBankCardCommand.CommandId);
+            await saga.BeginProcessAsync(new DepositSagaInitData
+            {
+                AddBankCardCommand = addBankCardCommand,
+                AuthenticateCommand = authenticateCommand,
+                InitUserInfo = userInfo,
+                PayByLianlianCommand = null,
+                PayByYilianCommand = null,
+                VerifyBankCardCommand = null
+            });
         }
 
         /// <summary>
@@ -122,7 +168,7 @@ namespace Yuyi.Jinyinmao.Service
         public Task ClearUnauthenticatedInfo(Guid userId)
         {
             IUser user = UserFactory.GetGrain(userId);
-            return user.ClearUnauthenticatedInfo();
+            return user.ClearUnauthenticatedInfoAsync();
         }
 
         /// <summary>
@@ -207,6 +253,18 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Gets the order information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public Task<OrderInfo> GetOrderInfoAsync(Guid userId, Guid orderId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetOrderInfoAsync(orderId);
+        }
+
+        /// <summary>
         ///     Gets the order infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -287,6 +345,28 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Gets the withdrawalable bank card infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
+        public Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync(Guid userId)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetWithdrawalableBankCardInfosAsync();
+        }
+
+        /// <summary>
+        ///     Hides the bank card asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        public Task HideBankCardAsync(HideBankCard command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.HideBankCardAsync(command);
+        }
+
+        /// <summary>
         ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The regular investing.</param>
@@ -312,11 +392,10 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
-        public async Task<UserInfo> RegisterUserAsync(UserRegister command)
+        public Task<UserInfo> RegisterUserAsync(UserRegister command)
         {
             IUser user = UserFactory.GetGrain(command.UserId);
-            await user.RegisterAsync(command);
-            return await user.GetUserInfoAsync();
+            return user.RegisterAsync(command);
         }
 
         /// <summary>
@@ -350,6 +429,28 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(command.UserId);
             return user.SetPaymentPasswordAsync(command);
+        }
+
+        /// <summary>
+        ///     Verifies the bank card asynchronous.
+        /// </summary>
+        /// <param name="verifyBankCardCommand">The verify bank card command.</param>
+        /// <returns>Task.</returns>
+        public async Task VerifyBankCardAsync(VerifyBankCard verifyBankCardCommand)
+        {
+            IUser user = UserFactory.GetGrain(verifyBankCardCommand.UserId);
+            UserInfo userInfo = await user.GetUserInfoAsync();
+
+            IDepositSaga saga = DepositSagaFactory.GetGrain(verifyBankCardCommand.CommandId);
+            await saga.BeginProcessAsync(new DepositSagaInitData
+            {
+                AddBankCardCommand = null,
+                AuthenticateCommand = null,
+                InitUserInfo = userInfo,
+                PayByLianlianCommand = null,
+                PayByYilianCommand = null,
+                VerifyBankCardCommand = verifyBankCardCommand
+            });
         }
 
         /// <summary>

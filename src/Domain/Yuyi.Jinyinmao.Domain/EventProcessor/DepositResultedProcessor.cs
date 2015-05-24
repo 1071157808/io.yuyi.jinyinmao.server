@@ -36,9 +36,9 @@ namespace Yuyi.Jinyinmao.Domain.Events
             {
                 string message = e.Result ? Resources.Sms_DepositSuccessed.FormatWith(e.TranscationInfo.BankCardNo.GetLast(4), e.TranscationInfo.Amount / 100)
                     : Resources.Sms_DepositFailed.FormatWith(e.TranscationInfo.BankCardNo.GetLast(4), e.TranscationInfo.Amount / 100, e.TransDesc);
-                if (!await this.SmsService.SendMessageAsync(e.TranscationInfo.BankCardInfo.Cellphone, message))
+                if (!await this.SmsService.SendMessageAsync(e.UserInfo.Cellphone, message))
                 {
-                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.TranscationInfo.BankCardInfo.Cellphone, message));
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.UserInfo.Cellphone, message));
                 }
             });
 

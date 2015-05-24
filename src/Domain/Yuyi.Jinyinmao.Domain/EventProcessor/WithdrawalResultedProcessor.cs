@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  2:22 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  11:16 PM
+// Last Modified On : 2015-05-22  3:11 PM
 // ***********************************************************************
 // <copyright file="WithdrawalResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -34,9 +34,9 @@ namespace Yuyi.Jinyinmao.Domain.Events
             await this.ProcessingEventAsync(@event, async e =>
             {
                 string message = Resources.Sms_WithdrawalResulted.FormatWith(e.WithdrawalTranscationInfo.BankCardNo.GetLast(4), e.WithdrawalTranscationInfo.Amount / 100);
-                if (!await this.SmsService.SendMessageAsync(e.WithdrawalTranscationInfo.BankCardInfo.Cellphone, message))
+                if (!await this.SmsService.SendMessageAsync(e.UserInfo.Cellphone, message))
                 {
-                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.WithdrawalTranscationInfo.BankCardInfo.Cellphone, message));
+                    throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.UserInfo.Cellphone, message));
                 }
             });
 

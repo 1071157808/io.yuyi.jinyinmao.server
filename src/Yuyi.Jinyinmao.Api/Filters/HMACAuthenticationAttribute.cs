@@ -80,14 +80,15 @@ namespace Yuyi.Jinyinmao.Api.Filters
         private static readonly string ApiKeyName = "ApiAdmin";
         private static readonly string AuthenticationScheme = "jas";
 
+        private static readonly bool EnableAuth;
+
         private static readonly TableQuery<App> Query = new TableQuery<App>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey",
-            QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "{0} eq true".FormatWith(ApiKeyName)));
+                    QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "{0} eq true".FormatWith(ApiKeyName)));
 
         private static readonly long RequestMaxAgeInSeconds = 300;
         private static readonly CloudStorageAccount StorageAccount;
         private static Dictionary<Guid, App> allowedApps = new Dictionary<Guid, App>();
         private static DateTime configLoadTime = DateTime.MinValue;
-        private static bool EnableAuth;
 
         /// <summary>
         ///     Initializes static members of the <see cref="HMACAuthenticationAttribute" /> class.
@@ -101,7 +102,6 @@ namespace Yuyi.Jinyinmao.Api.Filters
             if (EnableAuth)
             {
                 StorageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-                LoadAppKeysConfig();
             }
         }
 
@@ -132,6 +132,11 @@ namespace Yuyi.Jinyinmao.Api.Filters
             {
                 GenericPrincipal currentPrincipal = new GenericPrincipal(new GenericIdentity("HMAC is disabled."), null);
                 context.Principal = currentPrincipal;
+                return Task.FromResult(0);
+            }
+
+            if (CookieAuthorizeAttribute.IsAdmin(context.Principal))
+            {
                 return Task.FromResult(0);
             }
 

@@ -4,7 +4,7 @@
 // Created          : 2015-04-27  6:08 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-16  1:52 AM
+// Last Modified On : 2015-05-21  2:15 PM
 // ***********************************************************************
 // <copyright file="AuthenticateResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,7 +14,6 @@
 using System;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Domain.Events;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {
@@ -43,6 +42,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             });
 
             await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUser(e.UserInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncBankCard(e.BankCardInfo, e.UserInfo.UserId.ToGuidString()));
 
             await base.ProcessEventAsync(@event);
         }

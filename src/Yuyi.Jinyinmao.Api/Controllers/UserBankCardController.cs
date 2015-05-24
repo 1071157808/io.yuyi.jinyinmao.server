@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  11:40 AM
+// Last Modified On : 2015-05-25  1:04 AM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,6 +21,7 @@ using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
@@ -51,7 +52,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     添加新银行卡
         /// </summary>
         /// <remarks>
-        ///     该接口知会添加银行卡信息，不会对银行卡的信息进行校验
+        ///     该接口只会添加银行卡信息，不会对银行卡的信息进行校验
         /// </remarks>
         /// <param name="request">
         ///     添加银行卡请求
@@ -60,10 +61,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">请求格式不合法</response>
         /// <response code="400">UBCABC1:无法添加银行卡</response>
         /// <response code="400">UBCABC2:最多绑定10张银行卡</response>
+        /// <response code="400">UBCABC3:银行卡添加失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> AddBankCard(AddBankCardRequest request)
+        [HttpGet, Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(BankCardInfoResponse))]
+        public async Task<IHttpActionResult> AddBankCard([FromUri] AddBankCardRequest request)
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
@@ -78,7 +80,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UBCABC2:最多绑定10张银行卡");
             }
 
-            await this.userService.AddBankCardAsync(new AddBankCard
+            BankCardInfo info = await this.userService.AddBankCardAsync(new AddBankCard
             {
                 BankCardNo = request.BankCardNo,
                 BankName = request.BankName,
@@ -87,7 +89,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Args = this.BuildArgs()
             });
 
-            return this.Ok();
+            if (info == null)
+            {
+                return this.BadRequest("UBCABC3:银行卡添加失败");
+            }
+
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -106,8 +113,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UBCABCBY3:最多绑定10张银行卡</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("AddBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> AddBankCardByYilian(AddBankCardRequest request)
+        [HttpGet, Route("AddBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> AddBankCardByYilian([FromUri] AddBankCardRequest request)
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
@@ -127,14 +134,26 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UBCABC3:最多绑定10张银行卡");
             }
 
-            await this.userService.AddBankCardAsync(new AddBankCard
+            AddBankCard addBankCardCommand = new AddBankCard
             {
+                Args = this.BuildArgs(),
                 BankCardNo = request.BankCardNo,
                 BankName = request.BankName,
                 CityName = request.CityName,
-                UserId = this.CurrentUser.Id,
-                Args = this.BuildArgs()
-            });
+                UserId = this.CurrentUser.Id
+            };
+
+            VerifyBankCard verifyBankCardCommand = new VerifyBankCard
+            {
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                BankName = request.BankName,
+                CityName = request.CityName,
+                Cellphone = this.CurrentUser.Cellphone,
+                UserId = this.CurrentUser.Id
+            };
+
+            await this.userService.AddBankCardAsync(addBankCardCommand, verifyBankCardCommand);
 
             return this.Ok();
         }
@@ -143,10 +162,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取用户银行卡信息
         /// </summary>
         /// <remarks>
-        ///     会获取所有的银行卡信息，无分页功能，无排序
+        ///     会获取所有的银行卡信息，无分页功能，排序规则为易联认证的优先，然后按添加时间倒序
+        ///     <br />
+        ///     这里的银行卡的可提现额为只考虑单卡进出的体现额度
         /// </remarks>
         /// <response code="200">注册成功</response>
-        /// <response code="400">UBCI:无法获取用户信息</response>
+        /// <response code="400">UBI1:无法获取用户信息</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Index"), CookieAuthorize, ResponseType(typeof(List<BankCardInfoResponse>))]
@@ -156,10 +177,161 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (cards == null)
             {
                 this.Trace.Warn(this.Request, "Application", "User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBCI:无法获取用户信息");
+                return this.BadRequest("UBI1:无法获取用户信息");
             }
 
-            return this.Ok(cards.Select(c => c.ToResponse()).ToList());
+            return this.Ok(cards.OrderByDescending(c => c.VerifiedByYilian).ThenByDescending(c => c.AddingTime).Select(c => c.ToResponse()).ToList());
+        }
+
+        /// <summary>
+        ///     获取用户可以用于取现的银行卡信息
+        /// </summary>
+        /// <remarks>
+        ///     会获取所有的银行卡信息，无分页功能，排序规则为按可体现额度从大到小排序
+        /// </remarks>
+        /// <response code="200">注册成功</response>
+        /// <response code="400">UBI2:无该银行卡信息</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Info/{bankCardNo:length(15,19)}"), CookieAuthorize, ResponseType(typeof(BankCardInfoResponse))]
+        public async Task<IHttpActionResult> Info(string bankCardNo)
+        {
+            BankCardInfo card = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, bankCardNo);
+            if (card == null || !card.Dispaly)
+            {
+                return this.BadRequest("UBI2:无该银行卡信息");
+            }
+
+            return this.Ok(card.ToResponse());
+        }
+
+        /// <summary>
+        ///     隐藏银行卡
+        /// </summary>
+        /// <remarks>
+        ///     银行卡会隐藏，重新添加会再次还原
+        /// </remarks>
+        /// <param name="request">
+        ///     隐藏银行卡请求
+        /// </param>
+        /// <response code="200">成功</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">UBCDBC1:无法添加银行卡</response>
+        /// <response code="400">UBCDBC2:银行卡不存在</response>
+        /// <response code="400">UBCDBC3:该银行卡尚有资金未完全取出</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Remove"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> RemoveBankCard([FromUri] DeleteBankCardRequest request)
+        {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (userInfo == null)
+            {
+                this.Trace.Warn(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UBCDBC1:无法删除银行卡");
+            }
+
+            BankCardInfo info = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
+
+            if (info == null || !info.Dispaly)
+            {
+                return this.BadRequest("UBCDBC2:银行卡不存在");
+            }
+
+            if (info.VerifiedByYilian && info.WithdrawAmount != 0)
+            {
+                return this.BadRequest("UBCDBC3:该银行卡尚有资金未完全取出");
+            }
+
+            await this.userService.HideBankCardAsync(new HideBankCard
+            {
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                UserId = this.CurrentUser.Id
+            });
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     易联认证银行卡
+        /// </summary>
+        /// <remarks>
+        ///     该接口只适合已经绑定过实名信息的用户再次认证其他新银行卡
+        /// </remarks>
+        /// <param name="request">
+        ///     添加银行卡请求
+        /// </param>
+        /// <response code="200">成功</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">UBCABCBY1:无法添加银行卡</response>
+        /// <response code="400">UBCABCBY2:请先进行实名认证</response>
+        /// <response code="400">UBCABCBY3:最多绑定10张银行卡</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("VerifyBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> VerifyBankCardByYilian([FromUri] VerifyBankCardRequest request)
+        {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (userInfo == null)
+            {
+                this.Trace.Warn(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UBCVBC1:无法添加银行卡");
+            }
+
+            if (!userInfo.Verified)
+            {
+                return this.BadRequest("UBCVBC2:请先进行实名认证");
+            }
+
+            BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(userInfo.UserId, request.BankCardNo);
+
+            if (bankCardInfo == null)
+            {
+                return this.BadRequest("UBCVBC3:请先添加银行卡");
+            }
+
+            if (bankCardInfo.VerifiedByYilian)
+            {
+                return this.BadRequest("UBCVBC4:该银行卡已经通过认证，请直接使用");
+            }
+
+            VerifyBankCard verifyBankCardCommand = new VerifyBankCard
+            {
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                Cellphone = this.CurrentUser.Cellphone,
+                UserId = this.CurrentUser.Id
+            };
+
+            await this.userService.VerifyBankCardAsync(verifyBankCardCommand);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     获取用户可以用于取现的银行卡信息
+        /// </summary>
+        /// <remarks>
+        ///     会获取所有的银行卡信息，无分页功能，排序规则为按可体现额度从大到小排序
+        /// </remarks>
+        /// <response code="200">注册成功</response>
+        /// <response code="400">UBWCI:无法获取用户信息</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Withdrawalable"), CookieAuthorize, ResponseType(typeof(List<BankCardInfoResponse>))]
+        public async Task<IHttpActionResult> WithdrawalableCardInfos()
+        {
+            List<BankCardInfo> cards = await this.userInfoService.GetWithdrawalableBankCardInfosAsync(this.CurrentUser.Id);
+            if (cards == null)
+            {
+                this.Trace.Warn(this.Request, "Application", "User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UBWCI:无法获取用户信息");
+            }
+
+            return this.Ok(cards.OrderByDescending(c => c.WithdrawAmount).Select(c => c.ToResponse()).ToList());
         }
     }
 }

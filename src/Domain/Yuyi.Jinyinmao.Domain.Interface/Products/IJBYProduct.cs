@@ -32,6 +32,12 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task<Guid?> BuildJBYTranscationAsync(JBYAccountTranscationInfo info);
 
         /// <summary>
+        /// Checks the sale status asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task CheckSaleStatusAsync();
+
+        /// <summary>
         ///     Gets the agreement asynchronous.
         /// </summary>
         /// <param name="agreementIndex">Index of the agreement.</param>

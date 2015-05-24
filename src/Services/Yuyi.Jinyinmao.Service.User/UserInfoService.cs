@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  12:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  1:33 AM
+// Last Modified On : 2015-05-22  2:26 PM
 // ***********************************************************************
 // <copyright file="UserInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Helper;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -127,6 +128,27 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Gets the order information asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public async Task<OrderInfo> GetOrderInfoAsync(Guid userId, Guid orderId)
+        {
+            string cacheName = "User-Order";
+            string cacheId = "{0}-{1}".FormatWith(userId.ToGuidString(), orderId.ToGuidString());
+            OrderInfo order = SiloClusterConfig.CacheTable.ReadDataFromTableCache<OrderInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+
+            if (order == null)
+            {
+                order = await this.innerService.GetOrderInfoAsync(userId, orderId);
+                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, order);
+            }
+
+            return order;
+        }
+
+        /// <summary>
         ///     Gets the order infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -191,6 +213,16 @@ namespace Yuyi.Jinyinmao.Service
         public Task<UserInfo> GetUserInfoAsync(Guid userId)
         {
             return this.innerService.GetUserInfoAsync(userId);
+        }
+
+        /// <summary>
+        ///     Gets the withdrawalable bank card infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
+        public Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync(Guid userId)
+        {
+            return this.innerService.GetWithdrawalableBankCardInfosAsync(userId);
         }
 
         #endregion IUserInfoService Members

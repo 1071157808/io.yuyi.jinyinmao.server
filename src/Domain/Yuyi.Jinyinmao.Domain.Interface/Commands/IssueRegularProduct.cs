@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  12:17 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:31 AM
+// Last Modified On : 2015-05-20  11:00 AM
 // ***********************************************************************
-// <copyright file="IssueRegularProduct.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IssueRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -75,7 +75,7 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// <summary>
         ///     最大融资额度，以“分”为单位
         /// </summary>
-        public int FinancingSumCount { get; set; }
+        public long FinancingSumCount { get; set; }
 
         /// <summary>
         ///     发行期数，可以重复，必须大于0

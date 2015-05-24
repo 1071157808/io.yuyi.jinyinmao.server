@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  2:42 AM
+// Last Modified On : 2015-05-20  11:00 AM
 // ***********************************************************************
 // <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -86,8 +86,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     最大融资额度，以“分”为单位
         /// </summary>
-        [Required, Range(1, int.MaxValue), JsonProperty("financingSumAmount")]
-        public int FinancingSumAmount { get; set; }
+        [Required, Range(1, long.MaxValue), JsonProperty("financingSumAmount")]
+        public long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     发行期数，可以重复，必须大于0

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  11:15 PM
+// Last Modified On : 2015-05-23  9:50 PM
 // ***********************************************************************
 // <copyright file="IUserState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -104,7 +103,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the orders.
         /// </summary>
         /// <value>The orders.</value>
-        Dictionary<Guid, OrderInfo> Orders { get; set; }
+        Dictionary<Guid, Order> Orders { get; set; }
 
         /// <summary>
         ///     Gets or sets the outlet code.

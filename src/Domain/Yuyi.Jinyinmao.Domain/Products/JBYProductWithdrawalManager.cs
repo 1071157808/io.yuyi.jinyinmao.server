@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  1:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  10:53 PM
+// Last Modified On : 2015-05-25  2:09 AM
 // ***********************************************************************
 // <copyright file="JBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Orleans;
+using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
 
@@ -24,9 +24,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
     /// <summary>
     ///     JBYProductWithdrawalManager.
     /// </summary>
+    [StorageProvider(ProviderName = "SqlDatabase")]
     public class JBYProductWithdrawalManager : EntityGrain<IJBYProductWithdrawalManagerState>, IJBYProductWithdrawalManager
     {
         private static Tuple<DateTime, DailyConfig> todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.MinValue, null);
+
         private long WithdrawalAmount { get; set; }
 
         #region IJBYProductWithdrawalManager Members
@@ -36,26 +38,41 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public Task<DateTime?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info)
+        public async Task<DateTime?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info)
         {
             DailyConfig dailyConfig = GetTodayConfig();
             JBYAccountTranscationInfo transcation;
             if (!this.State.WithdrawalTranscations.TryGetValue(info.TransactionId, out transcation))
             {
-                transcation = info;
-
                 int waitingDays = (int)((this.WithdrawalAmount + info.Amount) / dailyConfig.JBYWithdrawalLimit) + 1;
 
-                DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays);
+                DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
 
-                transcation.PredeterminedResultDate = config.Date.Date;
+                transcation = new JBYAccountTranscationInfo
+                {
+                    Amount = info.Amount,
+                    Args = info.Args,
+                    PredeterminedResultDate = config.Date,
+                    ProductId = info.ProductId,
+                    ResultCode = info.ResultCode,
+                    ResultTime = info.ResultTime,
+                    SettleAccountTranscationId = info.SettleAccountTranscationId,
+                    Trade = info.Trade,
+                    TradeCode = info.TradeCode,
+                    TransDesc = info.TransDesc,
+                    TransactionId = info.TransactionId,
+                    TransactionTime = info.TransactionTime,
+                    UserId = info.UserId
+                };
 
                 this.State.WithdrawalTranscations.Add(transcation.TransactionId, transcation);
+
+                await this.SaveStateAsync();
 
                 this.ReloadTranscationData();
             }
 
-            return Task.FromResult(transcation.PredeterminedResultDate);
+            return transcation.PredeterminedResultDate;
         }
 
         #endregion IJBYProductWithdrawalManager Members
@@ -67,27 +84,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         public override Task OnActivateAsync()
         {
-            this.RemovePastTranscations();
-
-            this.RegisterTimer(o => this.RemovePastTranscations(), new object(), TimeSpan.FromMinutes(5), TimeSpan.FromHours(1));
+            this.RegisterTimer(o => this.RemovePastTranscationsAsync(), new object(), TimeSpan.FromMinutes(5), TimeSpan.FromHours(1));
 
             this.ReloadTranscationData();
 
             return base.OnActivateAsync();
-        }
-
-        private Task RemovePastTranscations()
-        {
-            List<Guid> toRemove = this.State.WithdrawalTranscations.Values
-                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8))
-                .Select(t => t.TransactionId).ToList();
-
-            foreach (Guid id in toRemove)
-            {
-                this.State.WithdrawalTranscations.Remove(id);
-            }
-
-            return TaskDone.Done;
         }
 
         /// <summary>
@@ -100,11 +101,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.ReloadTranscationData();
         }
 
-        private void ReloadTranscationData()
-        {
-            this.WithdrawalAmount = this.State.WithdrawalTranscations.Values.Sum(t => Convert.ToInt64(t.Amount));
-        }
-
         private static DailyConfig GetTodayConfig()
         {
             if (todayConfig.Item1 < DateTime.UtcNow.AddHours(8).Date.AddMinutes(20) || todayConfig.Item1 < DateTime.UtcNow.AddHours(8).AddMinutes(-10))
@@ -115,6 +111,28 @@ namespace Yuyi.Jinyinmao.Domain.Products
             }
 
             return todayConfig.Item2;
+        }
+
+        private void ReloadTranscationData()
+        {
+            this.WithdrawalAmount = this.State.WithdrawalTranscations.Values
+                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8)).Sum(t => Convert.ToInt64(t.Amount));
+        }
+
+        private async Task RemovePastTranscationsAsync()
+        {
+            List<Guid> toRemove = this.State.WithdrawalTranscations.Values
+                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8))
+                .Select(t => t.TransactionId).ToList();
+
+            foreach (Guid id in toRemove)
+            {
+                this.State.WithdrawalTranscations.Remove(id);
+            }
+
+            this.ReloadTranscationData();
+
+            await this.SaveStateAsync();
         }
     }
 }

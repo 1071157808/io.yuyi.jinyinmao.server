@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  12:34 PM
+// Last Modified On : 2015-05-21  5:51 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -46,7 +46,9 @@ namespace Yuyi.Jinyinmao.Domain
             { typeof(WithdrawalAccepted), e => WithdrawalAcceptedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalAccepted)e) },
             { typeof(WithdrawalResulted), e => WithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((WithdrawalResulted)e) },
             { typeof(JBYWithdrawalAccepted), e => JBYWithdrawalAcceptedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalAccepted)e) },
-            { typeof(JBYWithdrawalResulted), e => JBYWithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) }
+            { typeof(JBYWithdrawalResulted), e => JBYWithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) },
+            { typeof(JBYReinvested), e => JBYReinvestedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYReinvested)e) },
+            { typeof(BankCardHiden), e => BankCardHidenProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((BankCardHiden)e) }
         };
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace Yuyi.Jinyinmao.Domain
             @event.SourceType = this.GetType().Name;
             @event.TimeStamp = DateTime.UtcNow;
 
-            this.StoreEventAsync(@event).Forget();
+            this.StoreEventAsync(@event);
 
             await EventProcessing[@event.GetType()].Invoke(@event);
         }
@@ -99,6 +101,24 @@ namespace Yuyi.Jinyinmao.Domain
                 BankCardInfo = bankCardInfo,
                 Result = result,
                 TranDesc = message,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the bank card hiden event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="bankCardInfo">The bank card information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseBankCardHidenEvent(HideBankCard command, BankCardInfo bankCardInfo)
+        {
+            BankCardHiden @event = new BankCardHiden
+            {
+                Args = command.Args,
+                BankCardInfo = bankCardInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -126,6 +146,43 @@ namespace Yuyi.Jinyinmao.Domain
                 Args = command.Args,
                 JBYTranscationInfo = jbyTranscation,
                 SettleTranscationInfo = settleTranscation,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseJBYReinvestedEvent(JBYAccountTranscationInfo jbyAccountTranscationInfo)
+        {
+            JBYReinvested @event = new JBYReinvested
+            {
+                Args = new Dictionary<string, object>(),
+                TranscationInfo = jbyAccountTranscationInfo,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseJBYWithdrawalAcceptedEvent(JBYWithdrawal command, JBYAccountTranscationInfo info)
+        {
+            JBYWithdrawalAccepted @event = new JBYWithdrawalAccepted
+            {
+                Args = command.Args,
+                TranscationInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseJBYWithdrawalResultedEvent(JBYAccountTranscationInfo jbyAccountTranscationInfo, SettleAccountTranscationInfo settleAccountTranscationInfo)
+        {
+            JBYWithdrawalResulted @event = new JBYWithdrawalResulted
+            {
+                Args = new Dictionary<string, object>(),
+                JBYAccountTranscationInfo = jbyAccountTranscationInfo,
+                SettleAccountTranscationInfo = settleAccountTranscationInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -182,6 +239,24 @@ namespace Yuyi.Jinyinmao.Domain
                 PriIntSumAmount = principalTranscationInfo.Amount + interestTranscationInfo.Amount,
                 PrincipalTranscationInfo = principalTranscationInfo,
                 RepaidTime = orderInfo.ResultTime.GetValueOrDefault(),
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the paying by yilian event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="transcationInfo">The transcation information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaisePayingByYilianEvent(Command command, SettleAccountTranscationInfo transcationInfo)
+        {
+            PayingByYilian @event = new PayingByYilian
+            {
+                Args = command.Args,
+                TranscationInfo = transcationInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -282,54 +357,6 @@ namespace Yuyi.Jinyinmao.Domain
             };
 
             await this.ProcessEventAsync(@event);
-        }
-
-        /// <summary>
-        ///     Raises the paying by yilian event.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="transcationInfo">The transcation information.</param>
-        /// <returns>Task.</returns>
-        private async Task RaisePayingByYilianEvent(Command command, SettleAccountTranscationInfo transcationInfo)
-        {
-            PayingByYilian @event = new PayingByYilian
-            {
-                Args = command.Args,
-                TranscationInfo = transcationInfo,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-
-            await this.ProcessEventAsync(@event);
-        }
-
-        private async Task RaiseJBYWithdrawalAcceptedEvent(JBYWithdrawal command, JBYAccountTranscationInfo info)
-        {
-            JBYWithdrawalAccepted @event = new JBYWithdrawalAccepted
-            {
-                Args = command.Args,
-                TranscationInfo = info,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-
-            await this.ProcessEventAsync(@event);
-        }
-
-        private async Task RaiseJBYWithdrawalResultedEvent(JBYAccountTranscationInfo jbyAccountTranscationInfo, SettleAccountTranscationInfo settleAccountTranscationInfo)
-        {
-            JBYWithdrawalResulted @event = new JBYWithdrawalResulted
-            {
-                Args = new Dictionary<string, object>(),
-                JBYAccountTranscationInfo = jbyAccountTranscationInfo,
-                SettleAccountTranscationInfo = settleAccountTranscationInfo,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-
-            await this.ProcessEventAsync(@event);
-        }
-
-        private Task RaiseJBYReinvestedEvent(JBYAccountTranscationInfo toInfo)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -56,8 +56,8 @@
       <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.9.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\HideBankCard.cs" />
     <Compile Include="Commands\IssueJBYProduct.cs" />
     <Compile Include="Commands\IssueRegularProduct.cs" />
     <Compile Include="Commands\JBYInvesting.cs" />
@@ -100,10 +101,12 @@
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
     <Compile Include="Dtos\JBYAccountInfo.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
+    <Compile Include="EventProcessor\IBankCardHidenProcessor.cs" />
     <Compile Include="EventProcessor\IJBYReinvestedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalResultedProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductRepaid.cs" />
+    <Compile Include="Events\BankCardHiden.cs" />
     <Compile Include="Events\JBYReinvested.cs" />
     <Compile Include="Events\JBYWithdrawalAccepted.cs" />
     <Compile Include="Events\JBYWithdrawalResulted.cs" />
@@ -168,7 +171,6 @@
     <Compile Include="EventProcessor\ILoginPasswordResetProcessor.cs" />
     <Compile Include="EventProcessor\IPaymentPasswordResetProcessor.cs" />
     <Compile Include="EventProcessor\IPaymentPasswordSetProcessor.cs" />
-    <Compile Include="Events\AddBankCardResulted.cs" />
     <Compile Include="Events\AuthenticateResulted.cs" />
     <Compile Include="Events\LoginPasswordReset.cs" />
     <Compile Include="Events\PaymentPasswordReset.cs" />

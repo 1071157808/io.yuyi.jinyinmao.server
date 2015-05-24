@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:22 AM
+// Last Modified On : 2015-05-24  11:33 PM
 // ***********************************************************************
 // <copyright file="DailyConfigHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,7 @@
 
 using System;
 using System.Linq;
-using Microsoft.WindowsAzure;
+using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -24,9 +24,8 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     /// </summary>
     public static class DailyConfigHelper
     {
-        private static readonly CloudStorageAccount Account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-
-        private static readonly CloudTable Table = Account.CreateCloudTableClient().GetTableReference("DailyConfig");
+        private static readonly CloudStorageAccount Account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
+        private static readonly CloudTable Table = Account.CreateCloudTableClient().GetTableReference("Config");
 
         /// <summary>
         ///     Gets the daily configuration.
@@ -36,7 +35,13 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         {
             date = date.Date;
             string dateString = date.ToString("yyyyMMdd");
-            ConfigEntity config = Table.ExecuteQuery(new TableQuery<ConfigEntity>().Where("RowKey eq " + dateString)).FirstOrDefault();
+
+            string query = TableQuery.CombineFilters(
+                TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "jinyinmao-daily-config"), TableOperators.And,
+                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, dateString));
+
+            ConfigEntity config = Table.ExecuteQuery(new TableQuery<ConfigEntity>().Where(query)).FirstOrDefault();
+
             if (config == null)
             {
                 return null;
@@ -59,35 +64,38 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <returns>DateTime.</returns>
         public static DailyConfig GetLastWorkDayConfig(int offset = 0)
         {
-            int beginIndex = 1 - offset;
+            offset = offset < 0 ? 0 : offset;
+            offset += 1;
 
-            for (int i = beginIndex; i < 100; i++)
+            DailyConfig config = GetTodayDailyConfig();
+
+            for (int i = 1; i < 100; i++)
             {
                 DateTime date = DateTime.UtcNow.AddHours(8).AddDays(-i);
-                DailyConfig config = GetDailyConfig(date);
-                if (config == null)
+                config = GetDailyConfig(date);
+                if (config != null && config.IsWorkDay)
                 {
-                    return null;
+                    offset -= 1;
                 }
 
-                if (config.IsWorkDay)
+                if (offset == 0)
                 {
-                    return config;
+                    break;
                 }
             }
 
-            return null;
+            return config;
         }
 
         /// <summary>
-        /// Gets the next work day configuration.
+        ///     Gets the next work day configuration.
         /// </summary>
         /// <param name="offset">The offset.</param>
         /// <returns>DailyConfig.</returns>
         public static DailyConfig GetNextWorkDayConfig(int offset = 0)
         {
             offset = offset < 0 ? 0 : offset;
-            int nextIndex = 1 + offset;
+            offset += 1;
 
             DailyConfig config = GetTodayDailyConfig();
 
@@ -97,10 +105,10 @@ namespace Yuyi.Jinyinmao.Packages.Helper
                 config = GetDailyConfig(date);
                 if (config != null && config.IsWorkDay)
                 {
-                    nextIndex -= 1;
+                    offset -= 1;
                 }
 
-                if (nextIndex == 0)
+                if (offset == 0)
                 {
                     break;
                 }

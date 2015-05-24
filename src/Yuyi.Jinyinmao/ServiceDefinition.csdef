@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
+
+<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
+                   schemaVersion="2014-06.2.4">
   <WebRole name="Yuyi.Jinyinmao.Api" vmsize="Medium">
     <Sites>
       <Site name="Web">
@@ -15,11 +17,18 @@
     </Endpoints>
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
-      <Setting name="Microsoft.ServiceBus.ConnectionString" />
-      <Setting name="StorageConnectionString" />
+      <Setting name="ServiceBusConnectionString" />
     </ConfigurationSettings>
   </WebRole>
   <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Medium">
+    <Startup>
+      <Task commandLine="ServerGC.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="UseServerGC" value="True" />
+          <Variable name="UseBackgroundGC" value="True" />
+        </Environment>
+      </Task>
+    </Startup>
     <Endpoints>
       <InternalEndpoint name="OrleansSiloEndpoint" protocol="tcp" port="11111" />
       <InternalEndpoint name="OrleansProxyEndpoint" protocol="tcp" port="30000" />
@@ -29,7 +38,7 @@
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
-      <Setting name="StorageConnectionString" />
+      <Setting name="ServiceBusConnectionString" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

@@ -4,13 +4,14 @@
 // Created          : 2015-04-28  12:26 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:37 AM
+// Last Modified On : 2015-05-23  9:50 PM
 // ***********************************************************************
 // <copyright file="IRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
@@ -26,11 +27,21 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Builds the order asynchronous.
         /// </summary>
-        /// <param name="commnad">The commnad.</param>
-        /// <param name="userInfo">The user information.</param>
-        /// <param name="transcationInfo">The transcation information.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> BuildOrderAsync(RegularInvesting commnad, UserInfo userInfo, SettleAccountTranscationInfo transcationInfo);
+        Task<OrderInfo> BuildOrderAsync(OrderInfo orderInfo);
+
+        /// <summary>
+        ///     Cancels the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> CancelOrderAsync(Guid orderId);
+
+        /// <summary>
+        ///     Checks the sale status asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task CheckSaleStatusAsync();
 
         /// <summary>
         ///     Gets the agreement asynchronous.
@@ -59,7 +70,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
-        /// Reloads the asynchronous.
+        ///     Reloads the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task ReloadAsync();
@@ -69,6 +80,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task.</returns>
         Task RepayAsync();
+
+        /// <summary>
+        ///     Sets to on sale asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task SetToOnSaleAsync();
 
         /// <summary>
         ///     Sets to sold out asynchronous.

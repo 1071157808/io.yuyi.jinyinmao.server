@@ -4,10 +4,10 @@
 // Created          : 2015-05-08  1:54 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-09  12:37 AM
+// Last Modified On : 2015-05-22  2:26 PM
 // ***********************************************************************
-// <copyright file="UserOrderController.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserOrderController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -69,6 +69,35 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             PaginatedList<OrderInfo> infos = await this.userInfoService.GetOrderInfosAsync(this.CurrentUser.Id, index, 10, ordersSortMode, categories);
 
             return this.Ok(infos.ToPaginated(t => t.ToResponse()).ToResponse());
+        }
+
+        /// <summary>
+        ///     订单详情
+        /// </summary>
+        /// <remarks>
+        ///     订单详情。订单详情数据会有1分钟缓存时间。
+        /// </remarks>
+        /// <param name="orderIdentifier">订单唯一标识</param>
+        /// <response code="200">UOI:订单不存在</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Index/{orderIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> Info(string orderIdentifier)
+        {
+            Guid orderId;
+            if (!Guid.TryParseExact(orderIdentifier, "N", out orderId))
+            {
+                return this.BadRequest("UOI:订单不存在");
+            }
+
+            OrderInfo info = await this.userInfoService.GetOrderInfoAsync(this.CurrentUser.Id, orderId);
+            if (info == null)
+            {
+                return this.BadRequest("UOI:订单不存在");
+            }
+
+            return this.Ok(info.ToResponse());
         }
     }
 }

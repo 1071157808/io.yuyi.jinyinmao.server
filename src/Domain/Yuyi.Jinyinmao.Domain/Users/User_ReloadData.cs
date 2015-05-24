@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:19 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  11:06 PM
+// Last Modified On : 2015-05-24  11:33 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -32,7 +31,7 @@ namespace Yuyi.Jinyinmao.Domain
             if (lastInvestingConfirmTime.Item1 < DateTime.UtcNow.AddHours(8).Date.AddMinutes(20))
             {
                 DailyConfig todayConfig = DailyConfigHelper.GetTodayDailyConfig();
-                DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(todayConfig.IsWorkDay ? 0 : -1);
+                DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(todayConfig.IsWorkDay ? 0 : 1);
 
                 lastInvestingConfirmTime = new Tuple<DateTime, DateTime>(DateTime.UtcNow.AddHours(8), confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1));
             }
@@ -42,24 +41,64 @@ namespace Yuyi.Jinyinmao.Domain
 
         private void ReloadJBYAccountData()
         {
-            List<JBYAccountTranscation> debitTrans = this.State.JBYAccount.Values.Where(t => t.Trade == Trade.Debit && t.ResultCode >= 0).ToList();
-            List<JBYAccountTranscation> debitedTrans = debitTrans.Where(t => t.ResultCode > 0).ToList();
-            List<JBYAccountTranscation> creditTrans = this.State.JBYAccount.Values.Where(t => t.Trade == Trade.Credit && t.ResultCode >= 0).ToList();
-            List<JBYAccountTranscation> creditedTrans = creditTrans.Where(t => t.ResultCode > 0).ToList();
-            List<JBYAccountTranscation> creditingTrans = creditTrans.Where(t => t.ResultCode == 0).ToList();
-
             DateTime confirmTime = GetLastInvestingConfirmTime();
-
-            this.JBYAccrualAmount = debitTrans.Where(t => t.TransactionTime <= confirmTime).Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
-            this.JBYTotalAmount = debitTrans.Sum(t => t.Amount) - creditedTrans.Sum(t => t.Amount);
-            this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditingTrans.Sum(t => t.Amount);
-
-            this.JBYTotalInterest = debitTrans.Where(t => t.ProductId == Guid.Empty).Sum(t => t.Amount);
-            this.JBYTotalPricipal = debitedTrans.Sum(t => t.Amount);
-
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
-            this.TodayJBYWithdrawalAmount = creditTrans.Where(t => t.TransactionTime >= todayDate && t.TransactionTime < todayDate.AddDays(1))
-                .Sum(t => t.Amount);
+
+            int debitTransAmount = 0;
+            int debitedTransAmount = 0;
+            int creditedTransAmount = 0;
+            int creditingTransAmount = 0;
+
+            int todayJBYWithdrawalAmount = 0;
+            int investingConfirmTransAmount = 0;
+            int jBYTotalInterest = 0;
+
+            foreach (JBYAccountTranscation transcation in this.State.JBYAccount.Values)
+            {
+                if (transcation.Trade == Trade.Debit)
+                {
+                    debitTransAmount += transcation.Amount;
+
+                    if (transcation.ResultCode > 0)
+                    {
+                        debitedTransAmount += transcation.Amount;
+                        if (transcation.TransactionTime <= confirmTime)
+                        {
+                            investingConfirmTransAmount += transcation.Amount;
+                        }
+
+                        if (transcation.ProductId == SpecialIdHelper.ReinvestingJBYTranscationProductId)
+                        {
+                            jBYTotalInterest += transcation.Amount;
+                        }
+                    }
+                }
+                else
+                {
+                    if (transcation.ResultCode > 0)
+                    {
+                        creditedTransAmount += transcation.Amount;
+                    }
+                    else if (transcation.ResultCode == 0)
+                    {
+                        creditingTransAmount += transcation.Amount;
+                    }
+
+                    if (transcation.TransactionTime >= todayDate && transcation.TransactionTime < todayDate.AddDays(1) && transcation.ResultCode >= 0)
+                    {
+                        todayJBYWithdrawalAmount += transcation.Amount;
+                    }
+                }
+            }
+
+            this.JBYAccrualAmount = investingConfirmTransAmount - creditedTransAmount;
+            this.JBYTotalAmount = debitTransAmount - creditedTransAmount;
+            this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditingTransAmount;
+
+            this.JBYTotalInterest = jBYTotalInterest;
+            this.JBYTotalPricipal = debitedTransAmount;
+
+            this.TodayJBYWithdrawalAmount = todayJBYWithdrawalAmount;
         }
 
         /// <summary>
@@ -67,13 +106,30 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadOrderInfosData()
         {
-            List<OrderInfo> paidOrders = this.State.Orders.Values.Where(o => o.ResultCode == 1).ToList();
-            List<OrderInfo> investingOrders = paidOrders.Where(o => !o.IsRepaid).ToList();
+            int totalPrincipal = 0;
+            int totalInterest = 0;
+            int investingPrincipal = 0;
+            int investingInterest = 0;
 
-            this.TotalPrincipal = paidOrders.Sum(o => o.Principal);
-            this.TotalInterest = paidOrders.Sum(o => o.Interest + o.ExtraInterest);
-            this.InvestingPrincipal = investingOrders.Sum(o => o.Principal);
-            this.InvestingInterest = investingOrders.Sum(o => o.Interest + o.ExtraInterest);
+            foreach (Order order in this.State.Orders.Values)
+            {
+                if (order.ResultCode > 0)
+                {
+                    totalPrincipal += order.Principal;
+                    totalInterest += (order.Interest + order.ExtraInterest);
+
+                    if (!order.IsRepaid)
+                    {
+                        investingPrincipal += order.Principal;
+                        investingInterest += (order.Interest + order.ExtraInterest);
+                    }
+                }
+            }
+
+            this.TotalPrincipal = totalPrincipal;
+            this.TotalInterest = totalInterest;
+            this.InvestingPrincipal = investingPrincipal;
+            this.InvestingInterest = investingInterest;
         }
 
         /// <summary>
@@ -81,7 +137,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadSettleAccountData()
         {
-            List<SettleAccountTranscation> transcations = this.State.SettleAccount.Values.Where(t => t.ResultCode >= 0).ToList();
             int settleAccountBalance = 0;
             int debitingSettleAccountAmount = 0;
             int creditingSettleAccountAmount = 0;
@@ -94,7 +149,7 @@ namespace Yuyi.Jinyinmao.Domain
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
             DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1).Date;
 
-            foreach (SettleAccountTranscation transcation in transcations)
+            foreach (SettleAccountTranscation transcation in this.State.SettleAccount.Values)
             {
                 int amount = transcation.Amount;
                 string bankCardNo = transcation.BankCardNo;
@@ -110,7 +165,7 @@ namespace Yuyi.Jinyinmao.Domain
                         debitingSettleAccountAmount += amount;
                     }
                 }
-                else if (transcation.Trade == Trade.Credit)
+                else if (transcation.Trade == Trade.Credit && transcation.ResultCode > 0)
                 {
                     if (transcation.TradeCode == TradeCodeHelper.TC1005052001)
                     {

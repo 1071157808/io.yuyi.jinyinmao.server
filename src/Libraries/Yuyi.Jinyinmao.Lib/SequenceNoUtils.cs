@@ -4,10 +4,10 @@
 // Created          : 2015-04-26  1:41 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  4:21 PM
+// Last Modified On : 2015-05-24  10:06 PM
 // ***********************************************************************
-// <copyright file="SequenceNoUtils.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SequenceNoUtils.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -28,15 +28,9 @@ namespace Yuyi.Jinyinmao.Packages
         /// <summary>
         ///     Generates the no.
         /// </summary>
-        /// <param name="sequencePrefix">The sequence prefix.</param>
         /// <returns>System.String.</returns>
-        public static string GenerateNo(char sequencePrefix)
+        public static string GenerateNo()
         {
-            // A => auth for yilian
-            // B => add bank card for yilian
-            // O => common order
-            // S => common sequence number
-            // D => deposit
             DateTime currentTime;
             lock (lockObject)
             {
@@ -57,10 +51,10 @@ namespace Yuyi.Jinyinmao.Packages
             string dayChar = characters[day].ToString(CultureInfo.InvariantCulture);
             string hourChar = characters[hour].ToString(CultureInfo.InvariantCulture);
 
-            string time = currentTime.ToString("mmssffff");
+            string time = currentTime.ToString("mmssffffff");
 
             StringBuilder sb = new StringBuilder();
-            sb.Append(sequencePrefix).Append("X").Append(yearChar).Append(monthChar).Append(dayChar).Append(hourChar).Append(time);
+            sb.Append(yearChar).Append(monthChar).Append(dayChar).Append(hourChar).Append(time);
             return sb.ToString().ToUpperInvariant();
         }
     }

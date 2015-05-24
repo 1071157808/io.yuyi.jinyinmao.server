@@ -4,7 +4,7 @@
 // Created          : 2015-05-17  11:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:58 AM
+// Last Modified On : 2015-05-20  11:20 AM
 // ***********************************************************************
 // <copyright file="RegularProductInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using Moe.Lib;
 using Newtonsoft.Json;
+using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -113,9 +114,9 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 { "Usage", info.Usage }
             };
 
-            for (int j = 1; j <= agreements.Length; j++)
+            for (int j = 1; j < agreements.Length; j++)
             {
-                i.Add("Agreement" + j, agreements[j]);
+                i.Add("Agreement" + j, agreements[j - 1]);
             }
 
             return i;
@@ -183,6 +184,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     /// <summary>
     ///     RegularProductInfo.
     /// </summary>
+    [Immutable]
     public class RegularProductInfo
     {
         /// <summary>

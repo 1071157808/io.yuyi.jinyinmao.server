@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  6:21 PM
+// Last Modified On : 2015-05-22  5:10 PM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
@@ -29,10 +30,28 @@ namespace Yuyi.Jinyinmao.Domain
     public abstract class SagaGrain<TState> : Grain<TState>, ISaga, IRemindable where TState : class, ISagaState
     {
         /// <summary>
+        ///     Gets or sets the information.
+        /// </summary>
+        /// <value>The information.</value>
+        protected Dictionary<string, object> Info { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        protected string Message { get; set; }
+
+        /// <summary>
         ///     Gets or sets the saga entity.
         /// </summary>
         /// <value>The saga entity.</value>
         protected SagaStateRecord SagaStateRecord { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="SagaGrain{TState}" /> is waiting.
+        /// </summary>
+        /// <value><c>true</c> if waiting; otherwise, <c>false</c>.</value>
+        protected bool Waiting { get; set; }
 
         #region IRemindable Members
 
@@ -80,7 +99,23 @@ namespace Yuyi.Jinyinmao.Domain
                 this.State.SagaId = this.GetPrimaryKey();
                 this.State.SagaType = this.GetType().Name;
             }
+
+            this.Info = this.Info ?? new Dictionary<string, object>();
+            this.Message = this.Message ?? string.Empty;
+
             return base.OnActivateAsync();
+        }
+
+        /// <summary>
+        ///     Logs the error.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="message">The message.</param>
+        protected void LogError(Exception exception, string message = null)
+        {
+            message = message ?? exception.Message;
+
+            this.GetLogger().Error(0, message, exception);
         }
 
         /// <summary>
@@ -102,13 +137,26 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected async Task RunIntoError(Exception exception, string message = null, int currentProcessingStatus = 0, Dictionary<string, object> info = null)
         {
-            message = message ?? exception.Message;
-            info = info ?? new Dictionary<string, object>();
-            info.Add("Exception", exception.GetExceptionString());
+            try
+            {
+                message = message ?? exception.Message;
+                info = info ?? new Dictionary<string, object>();
+                info.Add("Exception", exception.GetExceptionString());
 
-            await this.StoreSagaStateAsync(currentProcessingStatus, message, info, -1);
+                await this.StoreSagaStateAsync(currentProcessingStatus, message, info, -1);
 
-            await this.UnregisterReminder();
+                await this.UnregisterReminder();
+            }
+            catch (Exception e)
+            {
+                SiloClusterErrorLogger.Log(new ErrorLog
+                {
+                    Exception = e.GetExceptionString(),
+                    Message = e.Message,
+                    PartitionKey = this.State.SagaId.ToGuidString(),
+                    RowKey = "SagaErrorLogingError"
+                });
+            }
         }
 
         /// <summary>
@@ -152,7 +200,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected virtual async Task UnregisterReminder()
         {
-            IGrainReminder reminder = await this.GetReminder(this.GetType().Name);
+            IGrainReminder reminder = (await this.GetReminders()).FirstOrDefault(r => r.ReminderName == this.GetType().Name);
 
             if (reminder != null)
             {

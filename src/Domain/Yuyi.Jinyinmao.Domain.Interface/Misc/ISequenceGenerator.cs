@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:16 AM
+// Last Modified On : 2015-05-24  10:26 PM
 // ***********************************************************************
-// <copyright file="ISequenceGenerator.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ISequenceGenerator.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -24,8 +24,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Generates the no asynchronous.
         /// </summary>
-        /// <param name="sequencePrefix">The sequence prefix.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
-        Task<string> GenerateNoAsync(char sequencePrefix);
+        Task<string> GenerateNoAsync();
     }
 }

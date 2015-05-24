@@ -4,7 +4,7 @@
 // Created          : 2015-05-15  7:14 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  4:32 PM
+// Last Modified On : 2015-05-24  10:10 PM
 // ***********************************************************************
 // <copyright file="SettleAccountTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -46,6 +46,12 @@ namespace Yuyi.Jinyinmao.Domain
         public int ChannelCode { get; set; }
 
         /// <summary>
+        ///     Gets or sets the order identifier.
+        /// </summary>
+        /// <value>The order identifier.</value>
+        public Guid OrderId { get; set; }
+
+        /// <summary>
         ///     Gets or sets the result code.
         /// </summary>
         /// <value>The result code.</value>
@@ -56,6 +62,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The result time.</value>
         public DateTime? ResultTime { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the sequence no.
+        /// </summary>
+        /// <value>The sequence no.</value>
+        public string SequenceNo { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade.

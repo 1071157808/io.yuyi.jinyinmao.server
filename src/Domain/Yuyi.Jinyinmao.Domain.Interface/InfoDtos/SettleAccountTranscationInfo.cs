@@ -4,7 +4,7 @@
 // Created          : 2015-05-15  7:43 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  8:20 PM
+// Last Modified On : 2015-05-24  10:29 PM
 // ***********************************************************************
 // <copyright file="SettleAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -28,19 +28,19 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     To the information.
         /// </summary>
         /// <param name="transcation">The transcation.</param>
-        /// <param name="bankCardInfo">The bank card information.</param>
         /// <returns>SettleAccountTranscationInfo.</returns>
-        public static SettleAccountTranscationInfo ToInfo(this SettleAccountTranscation transcation, BankCardInfo bankCardInfo)
+        public static SettleAccountTranscationInfo ToInfo(this SettleAccountTranscation transcation)
         {
             return new SettleAccountTranscationInfo
             {
                 Amount = transcation.Amount,
                 Args = transcation.Args,
-                BankCardInfo = bankCardInfo,
                 BankCardNo = transcation.BankCardNo,
                 ChannelCode = transcation.ChannelCode,
+                OrderId = transcation.OrderId,
                 ResultCode = transcation.ResultCode,
                 ResultTime = transcation.ResultTime,
+                SequenceNo = transcation.SequenceNo,
                 Trade = transcation.Trade,
                 TradeCode = transcation.TradeCode,
                 TransactionId = transcation.TransactionId,
@@ -67,12 +67,13 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
 
             transcationModel.Amount = info.Amount;
             transcationModel.Args = info.Args.ToJson();
-            transcationModel.BankCardInfo = info.BankCardInfo.ToJson();
-            transcationModel.Cellphone = info.BankCardInfo.Cellphone;
+            transcationModel.BankCardNo = info.BankCardNo;
             transcationModel.ChannelCode = info.ChannelCode;
             transcationModel.Info = i.ToJson();
+            transcationModel.OrderIdentifier = info.OrderId.ToGuidString();
             transcationModel.ResultCode = info.ResultCode;
             transcationModel.ResultTime = info.ResultTime;
+            transcationModel.SequenceNo = info.SequenceNo;
             transcationModel.TradeCode = info.TradeCode;
             transcationModel.TransDesc = info.TransDesc;
             transcationModel.TranscationTime = info.TransactionTime;
@@ -92,12 +93,13 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             {
                 Amount = info.Amount,
                 Args = info.Args.ToJson(),
-                BankCardInfo = info.BankCardInfo.ToJson(),
-                Cellphone = info.BankCardInfo.Cellphone,
+                BankCardNo = info.BankCardNo,
                 ChannelCode = info.ChannelCode,
                 Info = i.ToJson(),
+                OrderIdentifier = info.OrderId.ToGuidString(),
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime,
+                SequenceNo = info.SequenceNo,
                 TradeCode = info.TradeCode,
                 TransDesc = info.TransDesc,
                 TranscationIdentifier = info.TransactionId.ToGuidString(),
@@ -132,12 +134,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
-        ///     Gets or sets the bank card information.
-        /// </summary>
-        /// <value>The bank card information.</value>
-        public BankCardInfo BankCardInfo { get; set; }
-
-        /// <summary>
         ///     Gets or sets the bank card no.
         /// </summary>
         /// <value>The bank card no.</value>
@@ -150,6 +146,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public int ChannelCode { get; set; }
 
         /// <summary>
+        ///     Gets or sets the order identifier.
+        /// </summary>
+        /// <value>The order identifier.</value>
+        public Guid OrderId { get; set; }
+
+        /// <summary>
         ///     Gets or sets the result code.
         /// </summary>
         /// <value>The result code.</value>
@@ -160,6 +162,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The result time.</value>
         public DateTime? ResultTime { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the sequence no.
+        /// </summary>
+        /// <value>The sequence no.</value>
+        public string SequenceNo { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade.

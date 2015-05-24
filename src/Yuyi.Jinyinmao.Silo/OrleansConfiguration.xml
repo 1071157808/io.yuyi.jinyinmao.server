@@ -2,12 +2,30 @@
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
     <StorageProviders>
-      <Provider Type="Moe.Actor.StorageProvider.SqlDatabaseProvider" Name="SqlDatabase"
-                DataConnectionString="Server=tcp:oj5tefr55h.database.chinacloudapi.cn,1433;Database=jym-dev-db-front;User ID=db-user-apiapp@oj5tefr55h;Password={此处为你的密码};Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Provider Type="Yuyi.Jinyinmao.Domain.SqlDatabaseProvider" Name="SqlDatabase"
+                DataConnectionString="Server=tcp:l564pygdev.database.chinacloudapi.cn,1433;Database=jym-dev-grains-{0};User ID=db-user-front@l564pygdev;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
+    <SeedNode Address="localhost" Port="11111" />
+    <SystemStore ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" DataConnectionString="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+    <Networking />
+    <Messaging ResendOnTimeout="true" MaxResendCount="10" />
+    <Caching />
     <Liveness LivenessType="AzureTable" />
+    <ReminderService />
   </Globals>
   <Defaults>
-    <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" />
+    <!--
+	  To turn tracing off, set DefaultTraceLevel="Off" and have no overrides. To see a minimum of messages, set DefaultTraceLevel="Error".
+      For the trace log file name, {0} is the silo name and {1} is the current time.
+      Setting WriteTraces to true will cause detailed performance information to be collected and logged about the individual steps in the
+      message lifecycle. This may be useful debugging performance issues.
+      -->
+    <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log">
+      <!--
+	    To get more detailed application logging, you can change the TraceLevel attribute value to "Verbose" or "Verbose2".
+	    Depending on the log levels you have used in your code, this will cause additional messages to be written to the log.
+	    -->
+      <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
+    </Tracing>
   </Defaults>
 </OrleansConfiguration>

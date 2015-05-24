@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  12:41 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  11:46 PM
+// Last Modified On : 2015-05-23  1:33 PM
 // ***********************************************************************
 // <copyright file="JBYProductUpdatedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System.Threading.Tasks;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Service;
 using Yuyi.Jinyinmao.Service.Interface;
 

@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-15  2:02 PM
+// Last Modified On : 2015-05-22  5:47 PM
 // ***********************************************************************
 // <copyright file="EventRecord.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using Microsoft.WindowsAzure.Storage.Table;
 using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -33,10 +32,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 Event = @event.ToJson(),
                 EventId = @event.EventId,
-                EventName = @event.GetType().Name,
-                PartitionKey = @event.SourceId,
-                RowKey = @event.EventId.ToGuidString(),
-                TimeStamp = @event.TimeStamp
+                EventName = @event.GetType().Name
             };
         }
     }
@@ -44,7 +40,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     EventRecord.
     /// </summary>
-    public class EventRecord : TableEntity
+    public class EventRecord
     {
         /// <summary>
         ///     Gets or sets the event.
@@ -63,11 +59,5 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The name of the event.</value>
         public string EventName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the time stamp.
-        /// </summary>
-        /// <value>The time stamp.</value>
-        public DateTime TimeStamp { get; set; }
     }
 }

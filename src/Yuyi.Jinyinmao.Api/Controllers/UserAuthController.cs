@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  7:56 PM
+// Last Modified On : 2015-05-25  1:04 AM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
@@ -51,6 +52,72 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             this.userInfoService = userInfoService;
             this.userService = userService;
             this.veriCodeService = veriCodeService;
+        }
+
+        /// <summary>
+        ///     实名认证（通过银联）
+        /// </summary>
+        /// <remarks>
+        ///     实名认证必须先设置支付密码
+        ///     <br />
+        ///     实名认证过程会绑定一张银行卡，同时将该卡设置为默认银行卡
+        /// </remarks>
+        /// <param name="request">
+        ///     实名认证请求
+        /// </param>
+        /// <response code="200">认证成功</response>
+        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">UAA1:无法开通快捷支付功能</response>
+        /// <response code="400">UAA2:请先设置支付密码</response>
+        /// <response code="400">UAA3:已经通过实名认证</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> Authenticate([FromUri] AuthenticationRequest request)
+        {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+
+            if (userInfo == null)
+            {
+                this.Trace.Warn(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UAA1:无法开通快捷支付功能");
+            }
+
+            if (!userInfo.HasSetPaymentPassword)
+            {
+                return this.BadRequest("UAA2:请先设置支付密码");
+            }
+
+            if (userInfo.Verified)
+            {
+                return this.BadRequest("UAA3:已经通过实名认证");
+            }
+
+            AddBankCard addBankCardCommand = new AddBankCard
+            {
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                BankName = request.BankName,
+                CityName = request.CityName,
+                UserId = this.CurrentUser.Id
+            };
+
+            Authenticate authenticateCommand = new Authenticate
+            {
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                BankName = request.BankName,
+                Cellphone = this.CurrentUser.Cellphone,
+                CityName = request.CityName,
+                Credential = request.Credential,
+                CredentialNo = request.CredentialNo,
+                RealName = request.RealName,
+                UserId = this.CurrentUser.Id
+            };
+
+            await this.userService.AuthenticateAsync(addBankCardCommand, authenticateCommand);
+
+            return this.Ok();
         }
 
         /// <summary>
@@ -94,8 +161,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("CheckPaymentPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> CheckPaymentPassword(CheckPaymentPasswordRequest request)
+        [HttpGet, Route("CheckPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> CheckPaymentPassword([FromUri] CheckPaymentPasswordRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.Password);
 
@@ -121,7 +188,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200"></response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("ClearUnauthenticatedInfo"), CookieAuthorize]
+        [HttpGet, Route("ClearUnauthenticatedInfo"), CookieAuthorize]
         public async Task<IHttpActionResult> ClearUnauthenticatedInfo()
         {
             await this.userService.ClearUnauthenticatedInfo(this.CurrentUser.Id);
@@ -144,8 +211,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UARLP2:手机号码不存在，密码修改失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
+        [HttpGet, Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> ResetLoginPassword([FromUri] ResetPasswordRequest request)
         {
             UseVeriCodeResult veriCodeResult = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetLoginPassword);
             if (!veriCodeResult.Result)
@@ -187,8 +254,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UARPP3:支付密码不能与登录密码一致，请选择新的支付密码</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
+        [HttpGet, Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> ResetPaymentPassword([FromUri] ResetPaymentPasswordRequest request)
         {
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetPaymentPassword);
             if (!result.Result)
@@ -199,7 +266,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             UserInfo info = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (info == null || !info.HasSetPaymentPassword ||
-                !(info.Verified && info.RealName == request.UserRealName && info.CredentialNo.ToUpperInvariant() == request.CredentialNo.ToUpperInvariant()))
+                (info.Verified && (info.RealName != request.UserRealName || !string.Equals(info.CredentialNo, request.CredentialNo, StringComparison.InvariantCultureIgnoreCase))))
             {
                 return this.BadRequest("UARPP2:您输入的身份信息错误！请重新输入");
             }
@@ -236,8 +303,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UASPP2: 支付密码已经设置，请直接使用</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
+        [HttpGet, Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> SetPaymentPassword([FromUri] SetPaymentPasswordRequest request)
         {
             if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
             {
@@ -275,8 +342,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200">登录成功</response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="500"></response>
-        [Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
-        public async Task<IHttpActionResult> SignIn(SignInRequest request)
+        [HttpGet, Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
+        public async Task<IHttpActionResult> SignIn([FromUri] SignInRequest request)
         {
             SignInResult signInResult = await this.userService.CheckPasswordViaCellphoneAsync(request.LoginName, request.Password);
 
@@ -295,7 +362,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     客户端可以通过直接清除Cookie MA的值实现注销
         /// </remarks>
         /// <response code="200">注销成功</response>
-        [Route("SignOut")]
+        [HttpGet, Route("SignOut")]
         public IHttpActionResult SignOut()
         {
             FormsAuthentication.SignOut();
@@ -318,8 +385,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UAS01:请输入正确的验证码</response>
         /// <response code="400">UAS02:此号码已注册，请直接登录</response>
         /// <response code="500"></response>
-        [Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
-        public async Task<IHttpActionResult> SignUp(SignUpRequest request)
+        [HttpGet, Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
+        public async Task<IHttpActionResult> SignUp([FromUri] SignUpRequest request)
         {
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.SignUp);
 
@@ -361,7 +428,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         private void SetCookie(Guid userId, string cellphone)
         {
             bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
-            DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddMinutes(30);
+            DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1);
             FormsAuthentication.SetAuthCookie(string.Format("{0},{1},{2}", userId, cellphone, expiry.ToBinary()), true);
         }
     }

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  7:13 PM
+// Last Modified On : 2015-05-22  1:27 AM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
@@ -21,6 +22,7 @@ using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Api.Models.BackOffice;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -29,7 +31,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     /// <summary>
     ///     BackOfficeController.
     /// </summary>
-    [Route("BackOffice"), HMACAuthentication, IpAuthorize]
+    [RoutePrefix("BackOffice"), HMACAuthentication, IpAuthorize]
     public class BackOfficeController : ApiControllerBase
     {
         private readonly IProductInfoService productInfoService;
@@ -50,6 +52,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     用户信息
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="403">未授权</response>
+        /// <response code="500"></response>
+        [Route("UserInfo/{userIdentifier:length(32)}"), ResponseType(typeof(UserInfoResponse))]
+        public async Task<IHttpActionResult> GetUserInfo(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+
+            UserInfo info = await this.userService.GetUserInfoAsync(userId);
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
         ///     发行金包银理财产品
         /// </summary>
         /// <param name="request">
@@ -58,10 +77,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200">上架成功</response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="400">上架失败：产品编号已存在</response>
-        /// <response code="401">未授权</response>
+        /// <response code="403">未授权</response>
         /// <response code="500"></response>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("RegularProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("CurrentProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> JBYProductIssue(IssueJBYProductRequest request)
         {
             bool result = await this.productInfoService.CheckProductNoExistsAsync(request.ProductNo);
@@ -103,7 +122,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200">上架成功</response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="400">上架失败：产品编号已存在</response>
-        /// <response code="401">未授权</response>
+        /// <response code="403">未授权</response>
         /// <response code="500"></response>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
         [Route("RegularProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
@@ -160,9 +179,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="401">未授权</response>
+        /// <response code="403">未授权</response>
         /// <response code="500"></response>
-        [Route("RegularProduct/Repay/{productIdentifier:length(32)}}")]
+        [Route("RegularProduct/Repay/{productIdentifier:length(32)}")]
         public IHttpActionResult RegularProductRepay(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
@@ -178,7 +197,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="transcationIdentifier">交易流水唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="401">未授权</response>
+        /// <response code="403">未授权</response>
         /// <response code="500"></response>
         [Route("Withdrawal/{userIdentifier:length(32)}-{transcationIdentifier:length(32)}")]
         public async Task<IHttpActionResult> WithdrawalTranscationFinished(string userIdentifier, string transcationIdentifier)

@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  6:36 PM
+// Last Modified On : 2015-05-24  10:21 PM
 // ***********************************************************************
 // <copyright file="AccountTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,6 +33,10 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
+            this.Property(t => t.SequenceNo)
+                .IsRequired()
+                .HasMaxLength(30);
+
             this.Property(t => t.UserIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -41,11 +45,10 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(200);
 
-            this.Property(t => t.Cellphone)
-                .IsRequired()
-                .HasMaxLength(15);
+            this.Property(t => t.OrderIdentifier)
+                .IsRequired();
 
-            this.Property(t => t.BankCardInfo)
+            this.Property(t => t.BankCardNo)
                 .IsRequired();
 
             this.Property(t => t.Info)
@@ -57,7 +60,10 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             // Table & Column Mappings
             this.ToTable("AccountTranscations");
             this.Property(t => t.TranscationIdentifier).HasColumnName("TranscationIdentifier");
+            this.Property(t => t.SequenceNo).HasColumnName("SequenceNo");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
+            this.Property(t => t.OrderIdentifier).HasColumnName("OrderIdentifier");
+            this.Property(t => t.BankCardNo).HasColumnName("BankCardNo");
             this.Property(t => t.TradeCode).HasColumnName("TradeCode");
             this.Property(t => t.Amount).HasColumnName("Amount");
             this.Property(t => t.TranscationTime).HasColumnName("TranscationTime");
@@ -65,8 +71,6 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.ResultCode).HasColumnName("ResultCode");
             this.Property(t => t.ResultTime).HasColumnName("ResultTime");
             this.Property(t => t.TransDesc).HasColumnName("TransDesc");
-            this.Property(t => t.Cellphone).HasColumnName("Cellphone");
-            this.Property(t => t.BankCardInfo).HasColumnName("BankCardInfo");
             this.Property(t => t.Info).HasColumnName("Info");
             this.Property(t => t.Args).HasColumnName("Args");
         }

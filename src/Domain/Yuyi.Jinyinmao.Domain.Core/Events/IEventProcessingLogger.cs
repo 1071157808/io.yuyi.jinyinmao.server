@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-24  6:00 PM
+// Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  6:01 PM
+// Last Modified On : 2015-05-22  5:04 PM
 // ***********************************************************************
-// <copyright file="IEventProcessingLogger.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IEventProcessingLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -24,9 +24,8 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Logs the error.
         /// </summary>
         /// <param name="EventId">The event identifier.</param>
-        /// <param name="event">The event.</param>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        void LogError(Guid EventId, IEvent @event, string message, Exception exception = null);
+        void LogError(Guid EventId, string message, Exception exception = null);
     }
 }

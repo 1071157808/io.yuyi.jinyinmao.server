@@ -4,10 +4,10 @@
 // Created          : 2015-04-28  10:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  11:04 AM
+// Last Modified On : 2015-05-20  4:01 PM
 // ***********************************************************************
-// <copyright file="IProductInfoService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IProductInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -47,7 +47,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<string> GetAgreementAsync(Guid productId, int agreementIndex);
 
         /// <summary>
-        /// Gets the jby agreement asynchronous.
+        ///     Gets the jby agreement asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <param name="agreementIndex">Index of the agreement.</param>
@@ -55,13 +55,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex);
 
         /// <summary>
-        /// Gets the jby product information asynchronous.
+        ///     Gets the jby product information asynchronous.
         /// </summary>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
         Task<JBYProductInfo> GetJBYProductInfoAsync();
 
         /// <summary>
-        /// Gets the jby product paid amount asynchronous.
+        ///     Gets the jby product paid amount asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int64&gt;.</returns>
         Task<long> GetJBYProductPaidAmountAsync();

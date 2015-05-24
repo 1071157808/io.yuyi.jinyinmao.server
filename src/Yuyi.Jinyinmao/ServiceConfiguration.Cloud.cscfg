@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+
+<ServiceConfiguration serviceName="Yuyi.Jinyinmao"
+                      xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4"
+                      osVersion="*" schemaVersion="2014-06.2.4">
   <Role name="Yuyi.Jinyinmao.Api">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="DataConnectionString" value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=Ncs6GkKRDHbhYIi0wCbPHWuHjt4S9Q1Uox/lTWE0YVCcx5XmIHnKxpQWKdxZHguqAyYHhFlRgPlh7zXbRFsDpA==" />
-      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://cn-com-jinyinmao-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=AppSharedAccessKey;SharedAccessKey=YNEF4f/lVPCS1p7iKl7XnqBOaCfsc3PhV8NijPviVz4=" />
-      <Setting name="StorageConnectionString" value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+      <Setting name="DataConnectionString"
+               value="DefaultEndpointsProtocol=https;AccountName=jymdev;AccountKey=Ncs6GkKRDHbhYIi0wCbPHWuHjt4S9Q1Uox/lTWE0YVCcx5XmIHnKxpQWKdxZHguqAyYHhFlRgPlh7zXbRFsDpA==" />
+      <Setting name="ServiceBusConnectionString"
+               value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
     </ConfigurationSettings>
   </Role>
   <Role name="Yuyi.Jinyinmao.Silo">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="DataConnectionString" value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=Ncs6GkKRDHbhYIi0wCbPHWuHjt4S9Q1Uox/lTWE0YVCcx5XmIHnKxpQWKdxZHguqAyYHhFlRgPlh7zXbRFsDpA==" />
-      <Setting name="StorageConnectionString" value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+      <Setting name="DataConnectionString"
+               value="DefaultEndpointsProtocol=https;AccountName=jymdev;AccountKey=Ncs6GkKRDHbhYIi0wCbPHWuHjt4S9Q1Uox/lTWE0YVCcx5XmIHnKxpQWKdxZHguqAyYHhFlRgPlh7zXbRFsDpA==" />
+      <Setting name="ServiceBusConnectionString"
+               value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

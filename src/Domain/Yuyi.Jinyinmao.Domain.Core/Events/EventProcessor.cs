@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-15  9:52 PM
+// Last Modified On : 2015-05-23  9:02 PM
 // ***********************************************************************
 // <copyright file="EventProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -73,17 +73,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected Task ProcessingEventAsync(TEvent @event, Func<TEvent, Task> processing)
         {
-            Task.Factory.StartNew(async () =>
-            {
-                try
-                {
-                    await processing.Invoke(@event);
-                }
-                catch (Exception e)
-                {
-                    this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e);
-                }
-            }).Forget(e => this.ErrorLogger.LogError(@event.EventId, @event, e.Message, e));
+            Task.Factory.StartNew(() => processing.Invoke(@event).Forget(e => this.ErrorLogger.LogError(@event.EventId, e.Message, e)));
 
             return TaskDone.Done;
         }

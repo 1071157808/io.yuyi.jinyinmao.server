@@ -4,7 +4,7 @@
 // Created          : 2015-05-19  2:22 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  4:18 PM
+// Last Modified On : 2015-05-22  6:45 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,7 @@ namespace AzureInit
         {
             CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
             CloudTableClient client = account.CreateCloudTableClient();
-            CloudTable table = client.GetTableReference("DailyConfig");
+            CloudTable table = client.GetTableReference("Config");
 
             DateTime baseDay = new DateTime(2015, 5, 1);
 
@@ -47,7 +47,7 @@ namespace AzureInit
                     IsWorkday = isWorkDay,
                     JBYWithdrawalLimit = isWorkDay ? 1000 : 0,
                     JBYYield = 700,
-                    PartitionKey = Guid.NewGuid().ToString("N"),
+                    PartitionKey = "jinyinmao-daily-config",
                     RowKey = day.ToString("yyyyMMdd")
                 };
                 table.Execute(TableOperation.Insert(config));
@@ -117,6 +117,17 @@ namespace AzureInit
             CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
 
             CloudBlobClient blobClient = account.CreateCloudBlobClient();
+
+            CloudBlobContainer commandsBlob = blobClient.GetContainerReference("commands");
+
+            commandsBlob.CreateIfNotExists(BlobContainerPublicAccessType.Off);
+            Console.WriteLine("Created Storage BlobContainer {0}".FormatWith(commandsBlob.Name));
+
+            CloudBlobContainer eventsBlob = blobClient.GetContainerReference("events");
+
+            eventsBlob.CreateIfNotExists(BlobContainerPublicAccessType.Off);
+            Console.WriteLine("Created Storage BlobContainer {0}".FormatWith(eventsBlob.Name));
+
             CloudBlobContainer privateFilesBlob = blobClient.GetContainerReference("privatefiles");
 
             privateFilesBlob.CreateIfNotExists(BlobContainerPublicAccessType.Off);
@@ -132,10 +143,8 @@ namespace AzureInit
             string[] tables =
             {
                 "Cache",
-                "CommandStore",
-                "DailyConfig",
-                "EventProcessingErrors",
-                "EventStore",
+                "Config",
+                "Errors",
                 "Sagas",
                 "ApiKeys",
                 "Sms"

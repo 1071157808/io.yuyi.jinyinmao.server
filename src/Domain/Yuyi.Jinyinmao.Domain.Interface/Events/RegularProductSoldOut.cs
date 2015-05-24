@@ -4,7 +4,7 @@
 // Created          : 2015-05-09  1:18 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:17 AM
+// Last Modified On : 2015-05-22  6:54 PM
 // ***********************************************************************
 // <copyright file="RegularProductSoldOut.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,7 +45,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the paid orders.
         /// </summary>
         /// <value>The paid orders.</value>
-        public List<OrderInfo> PaidOrders { get; set; }
+        public List<string> PaidOrders { get; set; }
 
         /// <summary>
         ///     Gets or sets the product information.

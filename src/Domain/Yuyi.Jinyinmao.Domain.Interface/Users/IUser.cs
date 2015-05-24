@@ -75,14 +75,14 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Clears the unauthenticated information.
         /// </summary>
         /// <returns>Task.</returns>
-        Task ClearUnauthenticatedInfo();
+        Task ClearUnauthenticatedInfoAsync();
 
         /// <summary>
         /// Deposits the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTranscationInfo&gt;&gt;.</returns>
-        Task<Tuple<UserInfo, SettleAccountTranscationInfo>> DepositAsync(PayCommand command);
+        /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTranscationInfo, BankCardInfo&gt;&gt;.</returns>
+        Task<Tuple<UserInfo, SettleAccountTranscationInfo, BankCardInfo>> DepositAsync(PayCommand command);
 
         /// <summary>
         /// Deposits the resulted asynchronous.
@@ -92,6 +92,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
         Task DepositResultedAsync(PayCommand command, bool result, string message);
+
+        /// <summary>
+        /// Does the daily work asynchronous.
+        /// </summary>
+        /// <param name="force">if set to <c>true</c> [force].</param>
+        /// <returns>Task.</returns>
+        Task DoDailyWorkAsync(bool force = false);
 
         /// <summary>
         ///     Gets the bank card information asynchronous.
@@ -126,6 +133,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="pageSize">Size of the page.</param>
         /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
         Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(int pageIndex, int pageSize);
+
+        /// <summary>
+        /// Gets the order information asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> GetOrderInfoAsync(Guid orderId);
 
         /// <summary>
         ///     Gets the order infos asynchronous.
@@ -163,6 +177,19 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         Task<UserInfo> GetUserInfoAsync();
+
+        /// <summary>
+        /// Gets the withdrawalable bank card infos asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
+        Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync();
+
+        /// <summary>
+        /// Hides the bank card asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task.</returns>
+        Task HideBankCardAsync(HideBankCard command);
 
         /// <summary>
         ///     Investings the asynchronous.

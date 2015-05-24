@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-14  4:26 PM
+// Last Modified On : 2015-05-23  8:37 PM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -40,7 +40,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
         ///     Initializes a new instance of the <see cref="CookieAuthorizeAttribute" /> class.
         /// </summary>
         /// <param name="refreshToken">if set to <c>true</c> [refresh token].</param>
-        public CookieAuthorizeAttribute(bool refreshToken = true)
+        public CookieAuthorizeAttribute(bool refreshToken = false)
         {
             this.refreshToken = refreshToken;
         }
@@ -64,6 +64,38 @@ namespace Yuyi.Jinyinmao.Api.Filters
             }
 
             base.OnAuthorization(actionContext);
+        }
+
+        internal static bool IsAdmin(IPrincipal user)
+        {
+            if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            // Token 格式检验，必须由3部分组成
+            if (String.IsNullOrWhiteSpace(user.Identity.Name) || user.Identity.Name.Split(',').Count() != 3)
+            {
+                return false;
+            }
+
+            string[] tokenContents = user.Identity.Name.Split(',');
+
+            // Identifier
+            string guid = tokenContents[0];
+            if (String.IsNullOrWhiteSpace(guid) || guid.Length != 36)
+            {
+                return false;
+            }
+
+            // 用户名检验，必须是手机号格式
+            string cellphone = tokenContents[1];
+            if (String.IsNullOrWhiteSpace(cellphone))
+            {
+                return false;
+            }
+
+            return cellphone == "15800780728";
         }
 
         /// <summary>
@@ -109,7 +141,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 throw new ArgumentNullException("actionContext", "actionContext can not be null");
             }
 
-            IPrincipal user = actionContext.ControllerContext.RequestContext.Principal;
+            IPrincipal user = actionContext.RequestContext.Principal;
             if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
             {
                 return false;

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  12:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  11:23 PM
+// Last Modified On : 2015-05-23  9:44 PM
 // ***********************************************************************
 // <copyright file="IRegularProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -91,7 +92,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the financing sum amount.
         /// </summary>
         /// <value>The financing sum amount.</value>
-        int FinancingSumAmount { get; set; }
+        long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the issue no.
@@ -109,7 +110,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the orders.
         /// </summary>
         /// <value>The orders.</value>
-        Dictionary<Guid, Order> Orders { get; set; }
+        Dictionary<Guid, OrderInfo> Orders { get; set; }
 
         /// <summary>
         ///     Gets or sets the period.

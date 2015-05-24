@@ -27,11 +27,10 @@ namespace Yuyi.Jinyinmao.Domain.Misc
         /// <summary>
         ///     Generates the no asynchronous.
         /// </summary>
-        /// <param name="sequencePrefix">The sequence prefix.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
-        public Task<string> GenerateNoAsync(char sequencePrefix)
+        public Task<string> GenerateNoAsync()
         {
-            return Task.FromResult(SequenceNoUtils.GenerateNo(sequencePrefix));
+            return Task.FromResult(SequenceNoUtils.GenerateNo());
         }
 
         #endregion ISequenceGenerator Members

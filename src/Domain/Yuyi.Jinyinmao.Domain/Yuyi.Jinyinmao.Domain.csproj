@@ -81,7 +81,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WindowsAzure.ServiceBus.2.6.6\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
+      <HintPath>..\..\packages\WindowsAzure.ServiceBus.2.6.7\lib\net40-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -100,8 +100,8 @@
       <HintPath>E:\io.yuyi.jinyinmao.server\src\packages\MoeEntityFramework.2.0.1.0\lib\net45\MoeEntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.9.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -139,6 +139,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventProcessor\BankCardHidenProcessor.cs" />
     <Compile Include="EventProcessor\DepositResultedProcessor.cs" />
     <Compile Include="EventProcessor\JBYReinvestedProcessor.cs" />
     <Compile Include="EventProcessor\JBYWithdrawalAcceptedProcessor.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="EventProcessor\VerifyBankCardResultedProcessor.cs" />
     <Compile Include="EventProcessor\WithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\WithdrawalResultedProcessor.cs" />
+    <Compile Include="Helper\SequenceNoHelper.cs" />
     <Compile Include="Misc\Cellphone.cs" />
     <Compile Include="EventProcessor\AuthenticateResultedProcessor.cs" />
     <Compile Include="EventProcessor\LoginPasswordResetProcessor.cs" />
@@ -220,7 +222,6 @@
       <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="favicon.ico" />
   </ItemGroup>

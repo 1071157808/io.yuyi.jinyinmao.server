@@ -4,13 +4,14 @@
 // Created          : 2015-04-28  12:59 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  11:48 AM
+// Last Modified On : 2015-05-23  7:33 PM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.Configuration;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -20,6 +21,7 @@ using System.Web.Http.Tracing;
 using Moe.AspNet.Logs;
 using Moe.AspNet.MessageHandlers;
 using Moe.AspNet.Providers;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApiContrib.Formatting.Jsonp;
@@ -58,7 +60,7 @@ namespace Yuyi.Jinyinmao.Api
             config.Routes.MapHttpBatchRoute("WebApiBatch", "$batch", new BatchHandler(GlobalConfiguration.DefaultServer));
             config.MapHttpAttributeRoutes();
 
-            config.EnableCors(new EnableCorsAttribute("http://www.jinyinmao.com.cn,https://www.jinyinmao.com.cn", "*", "*"));
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 
             NinjectConfig.RegisterDependencyResolver(config);
         }

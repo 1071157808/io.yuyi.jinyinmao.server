@@ -4,7 +4,7 @@
 // Created          : 2015-05-10  11:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  12:25 AM
+// Last Modified On : 2015-05-23  12:59 PM
 // ***********************************************************************
 // <copyright file="CurrentProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,6 +25,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     /// <summary>
     ///     CurrentProductController.
     /// </summary>
+    [RoutePrefix("Product/Current")]
     public class CurrentProductController : ApiControllerBase
     {
         private readonly IProductInfoService productInfoService;
@@ -67,7 +68,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             string content = await this.productInfoService.GetJBYAgreementAsync(productId, agreementIndex);
 
-            if (content.IsNotNullOrEmpty())
+            if (content.IsNullOrEmpty())
             {
                 return this.BadRequest("CPGA:无此协议");
             }
@@ -78,13 +79,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取金包银产品信息
         /// </summary>
-        /// <remarks>需要使用使用产品唯一标识调用接口，接口数据会有一分钟的缓存，包括销售份额数据也会缓存</remarks>
+        /// <remarks>
+        ///     接口数据会有1分钟的缓存，包括销售份额数据也会缓存
+        ///     <br />
+        ///     当该期产品已经售罄时，如果有下一期待售产品，则显示下一期待售产品信息；否则显示已售罄的产品的信息
+        /// </remarks>
         /// <response code="200"></response>
         /// <response code="500"></response>
-        [HttpGet, Route(""), Route("JBY"), ResponseType(typeof(JBYInfoResponse))]
+        [HttpGet, Route("JBY"), ResponseType(typeof(JBYInfoResponse))]
         public async Task<IHttpActionResult> GetJBYInfo()
         {
             JBYProductInfo info = await this.productInfoService.GetJBYProductInfoAsync();
+
+            if (info == null)
+            {
+                return this.BadRequest("敬请期待");
+            }
 
             return this.Ok(info.ToResponse());
         }

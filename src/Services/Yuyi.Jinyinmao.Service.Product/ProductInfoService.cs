@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:03 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  4:23 PM
+// Last Modified On : 2015-05-20  12:30 PM
 // ***********************************************************************
 // <copyright file="ProductInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -69,7 +69,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.String&gt;.</returns>
         public async Task<string> GetAgreementAsync(Guid productId, int agreementIndex)
         {
-            string cacheName = "agreement";
+            string cacheName = "Product-Agreement";
             string cacheId = "{0}-{1}".FormatWith(productId.ToGuidString(), agreementIndex);
             string agreement = SiloClusterConfig.CacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
 
@@ -93,7 +93,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.String&gt;.</returns>
         public async Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex)
         {
-            string cacheName = "jby-agreement";
+            string cacheName = "JBYProduct-Agreement";
             string cacheId = "{0}-{1}".FormatWith(productId.ToGuidString(), agreementIndex);
             string agreement = SiloClusterConfig.CacheTable.ReadDataFromTableCache<string>(cacheName, cacheId, TimeSpan.FromDays(1000));
 
@@ -115,7 +115,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
         public async Task<JBYProductInfo> GetJBYProductInfoAsync()
         {
-            string cacheName = "jby";
+            string cacheName = "JBYProduct";
             string cacheId = ProductCategoryCodeHelper.PC100000030.ToString();
             JBYProductInfo product = SiloClusterConfig.CacheTable.ReadDataFromTableCache<JBYProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
@@ -144,7 +144,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         public async Task<RegularProductInfo> GetProductInfoAsync(Guid productId)
         {
-            string cacheName = "product";
+            string cacheName = "RegularProduct";
             string cacheId = productId.ToGuidString();
             RegularProductInfo product = SiloClusterConfig.CacheTable.ReadDataFromTableCache<RegularProductInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
@@ -166,7 +166,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;PaginatedList&lt;RegularProductInfo&gt;&gt;.</returns>
         public async Task<PaginatedList<RegularProductInfo>> GetProductInfosAsync(int pageIndex, int pageSize, params long[] productCategories)
         {
-            string cacheName = "product-page";
+            string cacheName = "RegularProduct-Page-ProductCategory";
             string cacheId = "{0}-{1}-{2}".FormatWith(pageIndex, pageSize, productCategories.Join("-"));
             PaginatedList<RegularProductInfo> infos = SiloClusterConfig.CacheTable.ReadDataFromTableCache<PaginatedList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 
@@ -197,7 +197,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;List&lt;RegularProductInfo&gt;&gt;.</returns>
         public async Task<IList<RegularProductInfo>> GetTopProductInfosAsync(int number, params long[] productCategories)
         {
-            string cacheName = "product-top";
+            string cacheName = "RegularProduct-Top";
             string cacheId = "{0}-{1}".FormatWith(number, productCategories.Join("-"));
             IList<RegularProductInfo> infos = SiloClusterConfig.CacheTable.ReadDataFromTableCache<IList<RegularProductInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
 

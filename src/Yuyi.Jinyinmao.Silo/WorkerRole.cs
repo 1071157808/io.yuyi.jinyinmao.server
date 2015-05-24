@@ -4,14 +4,13 @@
 // Created          : 2015-04-28  12:59 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  1:13 PM
+// Last Modified On : 2015-05-19  11:39 PM
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -28,7 +27,7 @@ namespace Yuyi.Jinyinmao.Silo
 
         public WorkerRole()
         {
-            Console.WriteLine("OrleansAzureSilos-Constructor called");
+            Trace.WriteLine("OrleansAzureSilos-Constructor called");
         }
 
         public override bool OnStart()

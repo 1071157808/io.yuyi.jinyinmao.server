@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  4:45 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  8:59 PM
+// Last Modified On : 2015-05-23  1:33 PM
 // ***********************************************************************
 // <copyright file="JBYProductSoldOutProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System.Threading.Tasks;
-using Yuyi.Jinyinmao.Domain.Events;
 using Yuyi.Jinyinmao.Domain.Products;
 
 namespace Yuyi.Jinyinmao.Domain.Events

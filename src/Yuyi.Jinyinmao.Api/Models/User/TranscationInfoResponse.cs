@@ -45,6 +45,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int ChannelCode { get; set; }
 
         /// <summary>
+        ///     相关的订单唯一标识, 如非必须，为一串0字符
+        /// </summary>
+        [Required, JsonProperty("orderIdentifier")]
+        public string OrderIdentifier { get; set; }
+
+        /// <summary>
         ///     交易结果 -1 => 交易失败，0 => 交易中，1 => 交易成功
         /// </summary>
         [Required, JsonProperty("resultCode")]
@@ -96,6 +102,7 @@ namespace Yuyi.Jinyinmao.Api.Models
                 Amount = info.Amount,
                 BankCardNo = info.BankCardNo,
                 ChannelCode = info.ChannelCode,
+                OrderIdentifier = info.OrderId.ToGuidString(),
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime.GetValueOrDefault(),
                 Trade = info.Trade,

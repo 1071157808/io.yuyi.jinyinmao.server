@@ -47,6 +47,15 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public const long Trillion = 1000000000000;
 
+        private static readonly Lazy<long> JBYProductGrainTypeLongKey = new Lazy<long>(()
+                    => GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030));
+
+        private static readonly Lazy<long> JBYProductWithdrawalManagerGrainTypeLongKey = new Lazy<long>(()
+                    => GetGrainTypeLongKey(GrainType.JBYWithdrawalManager, ProductCategoryCodeHelper.PC100000030));
+
+        private static readonly Lazy<Guid> SequenceGeneratorGrainTypeKey = new Lazy<Guid>(()
+                    => Guid.Parse("C8F98650-25EA-41D8-BF6F-6F0044716FA0"));
+
         /// <summary>
         ///     Gets the grain type long key.
         /// </summary>
@@ -86,7 +95,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>System.Int64.</returns>
         public static long GetJBYProductGrainTypeLongKey()
         {
-            return GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030);
+            return JBYProductGrainTypeLongKey.Value;
         }
 
         /// <summary>
@@ -95,7 +104,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>System.Int64.</returns>
         public static long GetJBYProductWithdrawalManagerGrainTypeLongKey()
         {
-            return GetGrainTypeLongKey(GrainType.JBYWithdrawalManager, ProductCategoryCodeHelper.PC100000030);
+            return JBYProductWithdrawalManagerGrainTypeLongKey.Value;
+        }
+
+        /// <summary>
+        /// Gets the sequence generator grain type key.
+        /// </summary>
+        /// <returns>Guid.</returns>
+        public static Guid GetSequenceGeneratorGrainTypeKey()
+        {
+            return SequenceGeneratorGrainTypeKey.Value;
         }
     }
 }

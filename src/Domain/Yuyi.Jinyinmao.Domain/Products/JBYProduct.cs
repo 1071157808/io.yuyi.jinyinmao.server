@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:26 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  1:05 AM
+// Last Modified On : 2015-05-25  12:27 AM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -18,6 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Newtonsoft.Json;
+using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -53,36 +54,56 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
         public async Task<Guid?> BuildJBYTranscationAsync(JBYAccountTranscationInfo info)
         {
-            if (this.State.SoldOut)
+            if (info.Amount > this.State.FinancingSumAmount - this.PaidAmount || this.State.SoldOut || this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
             {
                 return null;
             }
 
-            if (this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
+            JBYAccountTranscationInfo transcationInfo;
+            if (this.State.Transcations.TryGetValue(info.TransactionId, out transcationInfo))
             {
-                return null;
+                return transcationInfo.ProductId;
             }
 
-            if (info.Amount > this.State.FinancingSumAmount - this.PaidAmount)
+            transcationInfo = new JBYAccountTranscationInfo
             {
-                return null;
-            }
+                Amount = info.Amount,
+                Args = info.Args,
+                PredeterminedResultDate = info.PredeterminedResultDate,
+                ProductId = this.State.ProductId,
+                ResultCode = info.ResultCode,
+                ResultTime = info.ResultTime,
+                SettleAccountTranscationId = info.SettleAccountTranscationId,
+                Trade = info.Trade,
+                TradeCode = info.TradeCode,
+                TransDesc = info.TransDesc,
+                TransactionId = info.TransactionId,
+                TransactionTime = info.TransactionTime,
+                UserId = info.UserId
+            };
 
-            if (!this.State.Transcations.ContainsKey(info.TransactionId))
-            {
-                this.State.Transcations.Add(info.TransactionId, info);
-            }
+            this.State.Transcations.Add(transcationInfo.TransactionId, transcationInfo);
 
-            await this.State.WriteStateAsync();
+            await this.SaveStateAsync();
 
             this.ReloadTranscationData();
+            await this.CheckSaleStatusAsync();
 
-            if (this.PaidAmount >= this.State.FinancingSumAmount && !this.State.SoldOut)
+            return transcationInfo.ProductId;
+        }
+
+        /// <summary>
+        ///     Checks the sale status asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public Task CheckSaleStatusAsync()
+        {
+            if ((this.PaidAmount >= this.State.FinancingSumAmount || this.State.EndSellTime.AddMinutes(3) <= DateTime.UtcNow.AddHours(8)) && !this.State.SoldOut)
             {
-                this.SetToSoldOutAsync().Forget();
+                Task.Factory.StartNew(() => this.SetToSoldOutAsync());
             }
 
-            return this.State.Id;
+            return TaskDone.Done;
         }
 
         /// <summary>
@@ -146,11 +167,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 Yield = this.State.Yield
             };
 
-            if (info.PaidAmount >= info.FinancingSumAmount && !info.SoldOut)
-            {
-                this.SetToSoldOutAsync().Forget();
-            }
-
             return Task.FromResult(info);
         }
 
@@ -161,7 +177,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public async Task HitShelvesAsync(IssueJBYProduct command)
         {
-            this.BeginProcessCommandAsync(command).Forget();
+            this.BeginProcessCommandAsync(command);
 
             if (this.State.Id == Guid.Empty)
             {
@@ -186,29 +202,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.State.ValueDateMode = command.ValueDateMode;
                 this.State.Yield = command.Yield;
 
-                await this.State.WriteStateAsync();
+                await this.SaveStateAsync();
             }
 
             await this.RaiseJBYProductIssuedEvent(command);
-        }
-
-        /// <summary>
-        ///     set to sold out as an asynchronous operation.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public async Task SetToSoldOutAsync()
-        {
-            if (this.State.SoldOut && this.State.SoldOutTime.HasValue)
-            {
-                return;
-            }
-
-            this.State.SoldOut = true;
-            this.State.SoldOutTime = DateTime.UtcNow.AddHours(8);
-
-            await this.State.WriteStateAsync();
-
-            await this.RaiseJBYProductSoldOutEvent();
         }
 
         /// <summary>
@@ -256,11 +253,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
                 this.State.ValueDateMode = nextProduct.ValueDateMode;
                 this.State.Yield = nextProduct.Yield;
+
+                await this.SaveStateAsync();
+
+                this.ReloadTranscationData();
+
+                await this.RaiseJBYPorductUpdatedEvent();
             }
-
-            await this.State.WriteStateAsync();
-
-            await this.RaiseJBYPorductUpdatedEvent();
         }
 
         /// <summary>
@@ -271,6 +270,25 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             await this.State.ReadStateAsync();
             this.ReloadTranscationData();
+        }
+
+        /// <summary>
+        ///     set to sold out as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task SetToSoldOutAsync()
+        {
+            if (this.State.SoldOut && this.State.SoldOutTime.HasValue)
+            {
+                return;
+            }
+
+            this.State.SoldOut = true;
+            this.State.SoldOutTime = DateTime.UtcNow.AddHours(8);
+
+            await this.SaveStateAsync();
+
+            await this.RaiseJBYProductSoldOutEvent();
         }
 
         #endregion IJBYProduct Members
@@ -284,7 +302,26 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             this.ReloadTranscationData();
 
+            this.RegisterTimer(o => this.CheckSaleStatusAsync(), new object(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(13));
+            this.RegisterTimer(o => this.RefreshAsync(), new object(), TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(7));
+
             return base.OnActivateAsync();
+        }
+
+        /// <summary>
+        ///     process event as an asynchronous operation.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
+        private async Task ProcessEventAsync(Event @event)
+        {
+            @event.SourceId = this.State.Id.ToGuidString();
+            @event.SourceType = this.GetType().Name;
+            @event.TimeStamp = DateTime.UtcNow;
+
+            this.StoreEventAsync(@event);
+
+            await EventProcessing[@event.GetType()].Invoke(@event);
         }
 
         private async Task RaiseJBYPorductUpdatedEvent()
@@ -349,22 +386,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
         private void ReloadTranscationData()
         {
             this.PaidAmount = this.State.Transcations.Values.Sum(o => Convert.ToInt64(o.Amount));
-        }
-
-        /// <summary>
-        ///     process event as an asynchronous operation.
-        /// </summary>
-        /// <param name="event">The event.</param>
-        /// <returns>Task.</returns>
-        private async Task ProcessEventAsync(Event @event)
-        {
-            @event.SourceId = this.State.Id.ToGuidString();
-            @event.SourceType = this.GetType().Name;
-            @event.TimeStamp = DateTime.UtcNow;
-
-            this.StoreEventAsync(@event).Forget();
-
-            await EventProcessing[@event.GetType()].Invoke(@event);
         }
     }
 }

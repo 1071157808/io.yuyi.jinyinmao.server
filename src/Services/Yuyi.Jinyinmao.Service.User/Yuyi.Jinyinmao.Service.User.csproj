@@ -66,8 +66,8 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.1.1.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.2.1.9.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -123,6 +123,10 @@
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Interface\Yuyi.Jinyinmao.Domain.Interface.csproj">
       <Project>{596F9CB8-45FF-4D76-ACD6-037938ED5EEE}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
+      <Project>{7b420a40-acec-4461-ae6e-ca89e2ad65c9}</Project>
+      <Name>Yuyi.Jinyinmao.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj">
       <Project>{C3B74C74-F4C7-485E-9697-B51B754FCCEE}</Project>

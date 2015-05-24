@@ -4,16 +4,17 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  9:13 AM
+// Last Modified On : 2015-05-22  1:26 AM
 // ***********************************************************************
-// <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Web.Http.Controllers;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
@@ -27,12 +28,18 @@ namespace Yuyi.Jinyinmao.Api.Filters
     public class IpAuthorizeAttribute : OrderedAuthorizationFilterAttribute
     {
         /// <summary>
+        ///     Gets or sets a value indicating whether [only local host].
+        /// </summary>
+        /// <value><c>true</c> if [only local host]; otherwise, <c>false</c>.</value>
+        public bool OnlyLocalHost { get; set; }
+
+        /// <summary>
         ///     Calls when a process requests authorization.
         /// </summary>
         /// <param name="actionContext">The action context, which encapsulates information for using <see cref="T:System.Web.Http.Filters.AuthorizationFilterAttribute" />.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (!this.IpIsAuthorized(actionContext.Request))
+            if (!this.IpIsAuthorized(actionContext))
             {
                 this.HandleUnauthorizedRequest(actionContext);
             }
@@ -52,20 +59,19 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 throw new ArgumentNullException("actionContext", "actionContext can not be null");
             }
 
-            actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.NotFound, "");
+            actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "");
         }
 
-        /// <summary>
-        ///     Determines whether the client ip is authorized.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>
-        ///     bool
-        /// </returns>
-        private bool IpIsAuthorized(HttpRequestMessage request)
+        private bool IpIsAuthorized(HttpActionContext context)
         {
+            if (CookieAuthorizeAttribute.IsAdmin(context.RequestContext.Principal))
+            {
+                return true;
+            }
+
+            var request = context.Request;
             string ip = HttpUtils.GetUserHostAddress(request);
-            return !String.IsNullOrEmpty(ip) && (ip.StartsWith("172.26") || ip.StartsWith("172.25") || ip.StartsWith("10.1") || ip == "::1");
+            return !String.IsNullOrEmpty(ip) && (!this.OnlyLocalHost || this.OnlyLocalHost && request.IsLocal()) && (ip.StartsWith("172.26") || ip.StartsWith("172.25") || ip.StartsWith("10.1") || ip == "::1");
         }
     }
 }

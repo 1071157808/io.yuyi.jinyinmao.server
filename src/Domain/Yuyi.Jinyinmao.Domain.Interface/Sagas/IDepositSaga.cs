@@ -4,7 +4,7 @@
 // Created          : 2015-05-14  6:03 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-14  6:57 PM
+// Last Modified On : 2015-05-21  7:50 PM
 // ***********************************************************************
 // <copyright file="IDepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,5 +27,11 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         /// <param name="initData">The initData.</param>
         /// <returns>Task.</returns>
         Task BeginProcessAsync(DepositSagaInitData initData);
+
+        /// <summary>
+        ///     Processes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task ProcessAsync();
     }
 }

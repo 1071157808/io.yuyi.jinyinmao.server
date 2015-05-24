@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:47 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  1:44 AM
+// Last Modified On : 2015-05-23  9:11 PM
 // ***********************************************************************
 // <copyright file="JBYInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
 using Moe.Lib;
@@ -37,12 +36,6 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
         /// </summary>
         [Required, JsonProperty("financingSumAmount")]
         public long FinancingSumAmount { get; set; }
-
-        /// <summary>
-        ///     额外内容，请参考其他文档
-        /// </summary>
-        [Required, JsonProperty("info")]
-        public Dictionary<string, object> Info { get; set; }
 
         /// <summary>
         ///     发行编号，即期数，可以重复

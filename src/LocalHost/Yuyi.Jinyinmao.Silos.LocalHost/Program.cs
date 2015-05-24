@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-21  12:13 AM
@@ -38,23 +38,30 @@ namespace Yuyi.Jinyinmao.Silos.LocalHost
 
         private static void Main(string[] args)
         {
-            // The Orleans silo environment is initialized in its own app domain in order to more
-            // closely emulate the distributed situation, when the client and the server cannot
-            // pass data via shared memory.
-            AppDomain hostDomain = AppDomain.CreateDomain("Yuyi.Jinyinmao.Domain.Service", null, new AppDomainSetup
+            try
             {
-                AppDomainInitializer = InitSilo,
-                AppDomainInitializerArguments = args
-            });
+                // The Orleans silo environment is initialized in its own app domain in order to more
+                // closely emulate the distributed situation, when the client and the server cannot
+                // pass data via shared memory.
+                AppDomain hostDomain = AppDomain.CreateDomain("Yuyi.Jinyinmao.Domain.Service", null, new AppDomainSetup
+                {
+                    AppDomainInitializer = InitSilo,
+                    AppDomainInitializerArguments = args
+                });
 
-            string command;
+                string command;
 
-            do
+                do
+                {
+                    command = (Console.ReadLine() ?? "").ToUpperInvariant();
+                } while (command != "SHUTDOWN");
+
+                hostDomain.DoCallBack(ShutdownSilo);
+            }
+            catch (Exception e)
             {
-                command = (Console.ReadLine() ?? "").ToUpperInvariant();
-            } while (command != "SHUTDOWN");
-
-            hostDomain.DoCallBack(ShutdownSilo);
+                Console.WriteLine(e);
+            }
         }
 
         private static void ShutdownSilo()

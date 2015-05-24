@@ -1,20 +1,19 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-21  12:14 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  1:52 AM
+// Last Modified On : 2015-05-20  12:14 AM
 // ***********************************************************************
-// <copyright file="OrleansHostWrapper.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="OrleansHostWrapper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Net;
 using Orleans.Runtime.Host;
-using Yuyi.Jinyinmao.Domain;
 
 namespace Yuyi.Jinyinmao.Silos.LocalHost
 {
@@ -48,7 +47,6 @@ namespace Yuyi.Jinyinmao.Silos.LocalHost
 
             try
             {
-                SiloClusterConfig.CheckConfig();
                 this.siloHost.InitializeOrleansSilo();
 
                 result = this.siloHost.StartOrleansSilo();

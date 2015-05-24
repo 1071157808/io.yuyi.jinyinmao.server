@@ -4,17 +4,16 @@
 // Created          : 2015-04-24  4:13 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  1:48 AM
+// Last Modified On : 2015-05-22  6:53 PM
 // ***********************************************************************
-// <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Azure;
-using Microsoft.ServiceBus;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
@@ -29,27 +28,31 @@ namespace Yuyi.Jinyinmao.Domain
     {
         static SiloClusterConfig()
         {
-            string storageConnectionString = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            string storageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
             CloudStorageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
             CloudTableClient tableClient = CloudStorageAccount.CreateCloudTableClient();
             tableClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
-            CommandStoreTable = tableClient.GetTableReference("CommandStore");
-            EventProcessingErrorsTable = tableClient.GetTableReference("EventProcessingErrors");
-            EventStoreTable = tableClient.GetTableReference("EventStore");
+            tableClient.DefaultRequestOptions.MaximumExecutionTime = TimeSpan.FromMinutes(5);
+            tableClient.DefaultRequestOptions.ServerTimeout = TimeSpan.FromMinutes(5);
+            ErrorLogsTable = tableClient.GetTableReference("Errors");
             CacheTable = tableClient.GetTableReference("Cache");
             SagasTable = tableClient.GetTableReference("Sagas");
 
             CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
             blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
+            blobClient.DefaultRequestOptions.MaximumExecutionTime = TimeSpan.FromMinutes(5);
+            blobClient.DefaultRequestOptions.ServerTimeout = TimeSpan.FromMinutes(5);
             PublicFileContainer = blobClient.GetContainerReference("publicfiles");
             PrivateFileContainer = blobClient.GetContainerReference("privatefiles");
+            CommandStoreContainer = blobClient.GetContainerReference("commands");
+            EventStoreContainer = blobClient.GetContainerReference("events");
 
             ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
         }
 
         /// <summary>
-        /// Gets the cache table.
+        ///     Gets the cache table.
         /// </summary>
         /// <value>The product cache table.</value>
         public static CloudTable CacheTable { get; }
@@ -62,22 +65,22 @@ namespace Yuyi.Jinyinmao.Domain
         public static CloudStorageAccount CloudStorageAccount { get; private set; }
 
         /// <summary>
-        ///     Gets the command store table.
+        ///     Gets the command store container.
         /// </summary>
-        /// <value>The command store table.</value>
-        public static CloudTable CommandStoreTable { get; }
+        /// <value>The command store container.</value>
+        public static CloudBlobContainer CommandStoreContainer { get; }
 
         /// <summary>
-        ///     Gets the event processing errors table.
+        ///     Gets the error logs table.
         /// </summary>
-        /// <value>The event processing errors table.</value>
-        public static CloudTable EventProcessingErrorsTable { get; }
+        /// <value>The error logs table.</value>
+        public static CloudTable ErrorLogsTable { get; }
 
         /// <summary>
-        ///     Gets the event store table.
+        ///     Gets the event store container.
         /// </summary>
-        /// <value>The event store table.</value>
-        public static CloudTable EventStoreTable { get; }
+        /// <value>The event store container.</value>
+        public static CloudBlobContainer EventStoreContainer { get; }
 
         /// <summary>
         ///     Gets the private file container.
@@ -103,59 +106,5 @@ namespace Yuyi.Jinyinmao.Domain
         /// <value>The service bus connectiong string.</value>
         [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
         public static string ServiceBusConnectiongString { get; private set; }
-
-        /// <summary>
-        ///     Checks the configuration.
-        /// </summary>
-        /// <exception cref="System.ApplicationException">
-        ///     Can not connect to Command Store
-        ///     or
-        ///     Can not connect to Event Store
-        ///     or
-        ///     Can not connect to Event Processing Errors
-        /// </exception>
-        public static void CheckConfig()
-        {
-            if (!CommandStoreTable.Exists())
-            {
-                throw new ApplicationException("Can not connect to Command Store");
-            }
-
-            if (!EventProcessingErrorsTable.Exists())
-            {
-                throw new ApplicationException("Can not connect to Event Processing Errors");
-            }
-
-            if (!EventStoreTable.Exists())
-            {
-                throw new ApplicationException("Can not connect to Event Store");
-            }
-
-            if (!CacheTable.Exists())
-            {
-                throw new ApplicationException("Can not connect to Cache");
-            }
-
-            if (!SagasTable.Exists())
-            {
-                throw new ApplicationException("Can not connect to Sagas");
-            }
-
-            if (!PublicFileContainer.Exists())
-            {
-                throw new ApplicationException("Can not connect to Event Processing Errors");
-            }
-
-            if (!PrivateFileContainer.Exists())
-            {
-                throw new ApplicationException("Can not connect to Event Processing Errors");
-            }
-
-            NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(ServiceBusConnectiongString);
-            if (namespaceManager == null)
-            {
-                throw new ApplicationException("Can not connect to Events Service Bus");
-            }
-        }
     }
 }

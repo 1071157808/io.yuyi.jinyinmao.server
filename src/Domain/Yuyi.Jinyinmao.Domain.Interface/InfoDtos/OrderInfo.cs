@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using Moe.Lib;
+using Orleans.Concurrency;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -64,6 +65,40 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     public static class OrderInfoEx
     {
         /// <summary>
+        ///     Maps to database model.
+        /// </summary>
+        /// <param name="info">The information.</param>
+        /// <param name="orderModel">The order model.</param>
+        public static void MapToDBModel(this OrderInfo info, Models.Order orderModel)
+        {
+            Dictionary<string, object> i = BuildOrderModelInfo();
+
+            orderModel.AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString();
+            orderModel.Args = info.Args.ToJson();
+            orderModel.Cellphone = info.Cellphone;
+            orderModel.ExtraInterest = info.ExtraInterest;
+            orderModel.ExtraYield = info.ExtraYield;
+            orderModel.Info = i.ToJson();
+            orderModel.Interest = info.Interest;
+            orderModel.IsRepaid = info.IsRepaid;
+            orderModel.OrderNo = info.OrderNo;
+            orderModel.OrderTime = info.OrderTime;
+            orderModel.Principal = info.Principal;
+            orderModel.ProductCategory = info.ProductCategory;
+            orderModel.ProductIdentifier = info.ProductId.ToGuidString();
+            orderModel.ProductSnapshot = info.ProductSnapshot.ToJson();
+            orderModel.RepaidTime = info.RepaidTime;
+            orderModel.ResultCode = info.ResultCode;
+            orderModel.ResultTime = info.ResultTime;
+            orderModel.SettleDate = info.SettleDate;
+            orderModel.TransDesc = info.TransDesc;
+            orderModel.UserIdentifier = info.UserId.ToGuidString();
+            orderModel.UserInfo = info.UserInfo.ToJson();
+            orderModel.ValueDate = info.ValueDate;
+            orderModel.Yield = info.Yield;
+        }
+
+        /// <summary>
         ///     To the information.
         /// </summary>
         /// <param name="info">The information.</param>
@@ -101,40 +136,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             };
         }
 
-        /// <summary>
-        ///     Maps to database model.
-        /// </summary>
-        /// <param name="info">The information.</param>
-        /// <param name="orderModel">The order model.</param>
-        public static void MapToDBModel(this OrderInfo info, Models.Order orderModel)
-        {
-            Dictionary<string, object> i = BuildOrderModelInfo();
-
-            orderModel.AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString();
-            orderModel.Args = info.Args.ToJson();
-            orderModel.Cellphone = info.Cellphone;
-            orderModel.ExtraInterest = info.ExtraInterest;
-            orderModel.ExtraYield = info.ExtraYield;
-            orderModel.Info = i.ToJson();
-            orderModel.Interest = info.Interest;
-            orderModel.IsRepaid = info.IsRepaid;
-            orderModel.OrderNo = info.OrderNo;
-            orderModel.OrderTime = info.OrderTime;
-            orderModel.Principal = info.Principal;
-            orderModel.ProductCategory = info.ProductCategory;
-            orderModel.ProductIdentifier = info.ProductId.ToGuidString();
-            orderModel.ProductSnapshot = info.ProductSnapshot.ToJson();
-            orderModel.RepaidTime = info.RepaidTime;
-            orderModel.ResultCode = info.ResultCode;
-            orderModel.ResultTime = info.ResultTime;
-            orderModel.SettleDate = info.SettleDate;
-            orderModel.TransDesc = info.TransDesc;
-            orderModel.UserIdentifier = info.UserId.ToGuidString();
-            orderModel.UserInfo = info.UserInfo.ToJson();
-            orderModel.ValueDate = info.ValueDate;
-            orderModel.Yield = info.Yield;
-        }
-
         private static Dictionary<string, object> BuildOrderModelInfo()
         {
             Dictionary<string, object> i = new Dictionary<string, object>();
@@ -145,19 +146,20 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     /// <summary>
     ///     OrderInfo.
     /// </summary>
+    [Immutable]
     public class OrderInfo
     {
-        /// <summary>
-        ///     Gets or sets the arguments.
-        /// </summary>
-        /// <value>The arguments.</value>
-        public Dictionary<string, object> Args { get; set; }
-
         /// <summary>
         ///     Gets or sets the account transcation identifier.
         /// </summary>
         /// <value>The account transcation identifier.</value>
         public Guid AccountTranscationId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
         ///     Gets or sets the cellphone.

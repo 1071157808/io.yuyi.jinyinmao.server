@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  7:11 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  12:19 AM
+// Last Modified On : 2015-05-23  10:31 AM
 // ***********************************************************************
 // <copyright file="RegularProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -70,7 +70,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             string content = await this.productInfoService.GetAgreementAsync(productId, agreementIndex);
 
-            if (content.IsNotNullOrEmpty())
+            if (content.IsNullOrEmpty())
             {
                 return this.BadRequest("RPGA:无此协议");
             }
@@ -81,7 +81,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取产品信息
         /// </summary>
-        /// <remarks>需要使用产品唯一标识调用接口，接口数据会有一分钟的缓存，包括销售份额数据也会缓存</remarks>
+        /// <remarks>需要使用产品唯一标识调用接口，接口数据会有1分钟的缓存，包括销售份额数据也会缓存</remarks>
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">RPRI:无此产品信息</response>
@@ -111,7 +111,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
         /// <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
         /// <response code="200"></response>
-        /// <response code="404">无该产品</response>
+        /// <response code="404">RPGSP:无产品信息</response>
         /// <response code="500"></response>
         [HttpGet, Route("Sold/{productIdentifier:length(32)}")]
         public async Task<IHttpActionResult> GetSaleProcess(string productIdentifier)
@@ -122,7 +122,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.Ok(new { Paid = await this.productInfoService.GetProductPaidAmountAsync(productId) });
             }
 
-            return this.NotFound();
+            return this.BadRequest("RPGSP:无产品信息");
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取产品信息列表
         /// </summary>
         /// <remarks>
-        ///     每页数量为10个，页数从0开始。接口数据有有3分钟的缓存。
+        ///     每页数量为10个，页数从0开始。接口数据有有1分钟的缓存。
         /// </remarks>
         /// <param name="index">页码，从0开始，最小为0</param>
         /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
@@ -171,7 +171,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 categories = new long[] { 100000010 };
             }
 
-            PaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, categories);
+            IPaginatedList<RegularProductInfo> infos = await this.productInfoService.GetProductInfosAsync(index, 10, categories);
             return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
         }
     }

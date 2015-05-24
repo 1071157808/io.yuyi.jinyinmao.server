@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  1:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  11:40 AM
+// Last Modified On : 2015-05-25  1:26 AM
 // ***********************************************************************
 // <copyright file="UserJBYController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,6 +22,7 @@ using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
@@ -32,7 +33,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     [RoutePrefix("User/JBY")]
     public class UserJBYController : ApiControllerBase
     {
-        private static readonly int DailyJBYWithdrawalAmountLimit = 10000000;
         private readonly IUserInfoService userInfoService;
         private readonly IUserService userService;
 
@@ -135,16 +135,16 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </param>
         /// <response code="200">成功</response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UJW1:暂时无法取现</response>
-        /// <response code="400">UJW2:取现次数已经达到今日上限</response>
-        /// <response code="400">UJW3:该银行卡未经过认证</response>
-        /// <response code="400">UJW4:取现额度超过限制</response>
-        /// <response code="400">UJW5:请重置支付密码后再试</response>
-        /// <response code="400">UJW6:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
+        /// <response code="400">UJW1:请重置支付密码后再试</response>
+        /// <response code="400">UJW2:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
+        /// <response code="400">UJW3:暂时无法赎回</response>
+        /// <response code="400">UJW4:赎回金额已经达到今日上限</response>
+        /// <response code="400">UJW5:赎回金额超过限制</response>
+        /// <response code="400">UJW6:取现失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
-        public async Task<IHttpActionResult> Withdrawal(JBYWithdrawalRequest request)
+        [HttpGet, Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
+        public async Task<IHttpActionResult> Withdrawal([FromUri] JBYWithdrawalRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
 
@@ -166,9 +166,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UJW3:暂时无法赎回");
             }
 
-            if (userInfo.TodayJBYWithdrawalAmount >= DailyJBYWithdrawalAmountLimit)
+            if (userInfo.TodayJBYWithdrawalAmount + request.Amount > VariableHelper.DailyJBYWithdrawalAmountLimit)
             {
                 return this.BadRequest("UJW4:赎回金额已经达到今日上限");
+            }
+
+            if (userInfo.JBYWithdrawalableAmount < request.Amount)
+            {
+                return this.BadRequest("UJW5:赎回金额超过限制");
             }
 
             JBYAccountTranscationInfo info = await this.userService.WithdrawalAsync(new JBYWithdrawal
@@ -177,6 +182,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Args = this.BuildArgs(),
                 UserId = this.CurrentUser.Id
             });
+
+            if (info == null)
+            {
+                return this.BadRequest("UJW6:取现失败");
+            }
 
             return this.Ok(info.ToResponse());
         }

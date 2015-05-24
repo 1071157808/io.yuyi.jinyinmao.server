@@ -45,6 +45,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string Info { get; set; }
 
         /// <summary>
+        /// Gets or sets the jby product identifier.
+        /// </summary>
+        /// <value>The jby product identifier.</value>
+        public string JBYProductIdentifier { get; set; }
+
+        /// <summary>
         ///     Gets or sets the result code.
         /// </summary>
         /// <value>The result code.</value>

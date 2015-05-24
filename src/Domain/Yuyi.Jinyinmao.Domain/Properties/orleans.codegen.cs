@@ -16,7 +16,7 @@
 #pragma warning disable 1591
 #pragma warning disable 1998
 
-namespace Yuyi.Jinyinmao.Domain.Events
+namespace Yuyi.Jinyinmao.Domain.EventProcessor
 {
     using Orleans.CodeGeneration;
     using Orleans;
@@ -25,7 +25,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     using System.Runtime.Serialization;
     
 }
-namespace Yuyi.Jinyinmao.Domain.EventProcessor
+namespace Yuyi.Jinyinmao.Domain.Events
 {
     using Orleans.CodeGeneration;
     using Orleans;
@@ -129,6 +129,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             public Guid @Id { get; set; }
 
+            public Int64 @TimeStamp { get; set; }
+
             public String @Agreement1 { get; set; }
 
             public String @Agreement2 { get; set; }
@@ -151,13 +153,13 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @EnterpriseName { get; set; }
 
-            public Int32 @FinancingSumAmount { get; set; }
+            public Int64 @FinancingSumAmount { get; set; }
 
             public Int32 @IssueNo { get; set; }
 
             public DateTime @IssueTime { get; set; }
 
-            public Dictionary<Guid,Order> @Orders { get; set; }
+            public Dictionary<Guid,OrderInfo> @Orders { get; set; }
 
             public Int32 @Period { get; set; }
 
@@ -204,6 +206,7 @@ namespace Yuyi.Jinyinmao.Domain
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("TimeStamp", out value)) @TimeStamp = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Agreement1", out value)) @Agreement1 = (String) value;
                 if (values.TryGetValue("Agreement2", out value)) @Agreement2 = (String) value;
                 if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
@@ -215,10 +218,10 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("EnterpriseInfo", out value)) @EnterpriseInfo = (String) value;
                 if (values.TryGetValue("EnterpriseLicense", out value)) @EnterpriseLicense = (String) value;
                 if (values.TryGetValue("EnterpriseName", out value)) @EnterpriseName = (String) value;
-                if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("FinancingSumAmount", out value)) @FinancingSumAmount = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("IssueNo", out value)) @IssueNo = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("IssueTime", out value)) @IssueTime = (DateTime) value;
-                if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,Order>) value;
+                if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,OrderInfo>) value;
                 if (values.TryGetValue("Period", out value)) @Period = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("PledgeNo", out value)) @PledgeNo = (String) value;
                 if (values.TryGetValue("ProductCategory", out value)) @ProductCategory = value is Int32 ? (Int32)value : (Int64)value;
@@ -243,7 +246,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("RegularProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} BankName={4} Drawee={5} DraweeInfo={6} EndorseImageLink={7} EndSellTime={8} EnterpriseInfo={9} EnterpriseLicense={10} EnterpriseName={11} FinancingSumAmount={12} IssueNo={13} IssueTime={14} Orders={15} Period={16} PledgeNo={17} ProductCategory={18} ProductName={19} ProductNo={20} Repaid={21} RepaidTime={22} RepaymentDeadline={23} RiskManagement={24} RiskManagementInfo={25} RiskManagementMode={26} SettleDate={27} SoldOut={28} SoldOutTime={29} StartSellTime={30} UnitPrice={31} Usage={32} ValueDate={33} ValueDateMode={34} Yield={35} )", @Id, @Agreement1, @Agreement2, @Args, @BankName, @Drawee, @DraweeInfo, @EndorseImageLink, @EndSellTime, @EnterpriseInfo, @EnterpriseLicense, @EnterpriseName, @FinancingSumAmount, @IssueNo, @IssueTime, @Orders, @Period, @PledgeNo, @ProductCategory, @ProductName, @ProductNo, @Repaid, @RepaidTime, @RepaymentDeadline, @RiskManagement, @RiskManagementInfo, @RiskManagementMode, @SettleDate, @SoldOut, @SoldOutTime, @StartSellTime, @UnitPrice, @Usage, @ValueDate, @ValueDateMode, @Yield);
+                return System.String.Format("RegularProductState( Id={0} TimeStamp={1} Agreement1={2} Agreement2={3} Args={4} BankName={5} Drawee={6} DraweeInfo={7} EndorseImageLink={8} EndSellTime={9} EnterpriseInfo={10} EnterpriseLicense={11} EnterpriseName={12} FinancingSumAmount={13} IssueNo={14} IssueTime={15} Orders={16} Period={17} PledgeNo={18} ProductCategory={19} ProductName={20} ProductNo={21} Repaid={22} RepaidTime={23} RepaymentDeadline={24} RiskManagement={25} RiskManagementInfo={26} RiskManagementMode={27} SettleDate={28} SoldOut={29} SoldOutTime={30} StartSellTime={31} UnitPrice={32} Usage={33} ValueDate={34} ValueDateMode={35} Yield={36} )", @Id, @TimeStamp, @Agreement1, @Agreement2, @Args, @BankName, @Drawee, @DraweeInfo, @EndorseImageLink, @EndSellTime, @EnterpriseInfo, @EnterpriseLicense, @EnterpriseName, @FinancingSumAmount, @IssueNo, @IssueTime, @Orders, @Period, @PledgeNo, @ProductCategory, @ProductName, @ProductNo, @Repaid, @RepaidTime, @RepaymentDeadline, @RiskManagement, @RiskManagementInfo, @RiskManagementMode, @SettleDate, @SoldOut, @SoldOutTime, @StartSellTime, @UnitPrice, @Usage, @ValueDate, @ValueDateMode, @Yield);
             }
         
         public RegularProductState() : 
@@ -256,6 +259,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["Id"] = this.Id;
+            result["TimeStamp"] = this.TimeStamp;
             result["Agreement1"] = this.Agreement1;
             result["Agreement2"] = this.Agreement2;
             result["Args"] = this.Args;
@@ -297,6 +301,7 @@ namespace Yuyi.Jinyinmao.Domain
         private void InitStateFields()
         {
             this.Id = default(Guid);
+            this.TimeStamp = default(Int64);
             this.Agreement1 = default(String);
             this.Agreement2 = default(String);
             this.Args = new Dictionary<String,Object>();
@@ -308,10 +313,10 @@ namespace Yuyi.Jinyinmao.Domain
             this.EnterpriseInfo = default(String);
             this.EnterpriseLicense = default(String);
             this.EnterpriseName = default(String);
-            this.FinancingSumAmount = default(Int32);
+            this.FinancingSumAmount = default(Int64);
             this.IssueNo = default(Int32);
             this.IssueTime = default(DateTime);
-            this.Orders = new Dictionary<Guid,Order>();
+            this.Orders = new Dictionary<Guid,OrderInfo>();
             this.Period = default(Int32);
             this.PledgeNo = default(String);
             this.ProductCategory = default(Int64);
@@ -367,6 +372,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             public Guid @Id { get; set; }
 
+            public Int64 @TimeStamp { get; set; }
+
             public Dictionary<String,Object> @Args { get; set; }
 
             public Dictionary<String,BankCard> @BankCards { get; set; }
@@ -393,7 +400,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public List<String> @LoginNames { get; set; }
 
-            public Dictionary<Guid,OrderInfo> @Orders { get; set; }
+            public Dictionary<Guid,Order> @Orders { get; set; }
 
             public String @OutletCode { get; set; }
 
@@ -416,6 +423,7 @@ namespace Yuyi.Jinyinmao.Domain
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("TimeStamp", out value)) @TimeStamp = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
                 if (values.TryGetValue("BankCards", out value)) @BankCards = (Dictionary<String,BankCard>) value;
                 if (values.TryGetValue("Cellphone", out value)) @Cellphone = (String) value;
@@ -429,7 +437,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
                 if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (Dictionary<Guid,JBYAccountTranscation>) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
-                if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,OrderInfo>) value;
+                if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,Order>) value;
                 if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
                 if (values.TryGetValue("PaymentSalt", out value)) @PaymentSalt = (String) value;
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
@@ -442,7 +450,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public override System.String ToString()
             {
-                return System.String.Format("UserState( Id={0} Args={1} BankCards={2} Cellphone={3} ClientType={4} Closed={5} ContractId={6} Credential={7} CredentialNo={8} EncryptedPassword={9} EncryptedPaymentPassword={10} InviteBy={11} JBYAccount={12} LoginNames={13} Orders={14} OutletCode={15} PaymentSalt={16} RealName={17} RegisterTime={18} Salt={19} SettleAccount={20} Verified={21} VerifiedTime={22} )", @Id, @Args, @BankCards, @Cellphone, @ClientType, @Closed, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @Orders, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
+                return System.String.Format("UserState( Id={0} TimeStamp={1} Args={2} BankCards={3} Cellphone={4} ClientType={5} Closed={6} ContractId={7} Credential={8} CredentialNo={9} EncryptedPassword={10} EncryptedPaymentPassword={11} InviteBy={12} JBYAccount={13} LoginNames={14} Orders={15} OutletCode={16} PaymentSalt={17} RealName={18} RegisterTime={19} Salt={20} SettleAccount={21} Verified={22} VerifiedTime={23} )", @Id, @TimeStamp, @Args, @BankCards, @Cellphone, @ClientType, @Closed, @ContractId, @Credential, @CredentialNo, @EncryptedPassword, @EncryptedPaymentPassword, @InviteBy, @JBYAccount, @LoginNames, @Orders, @OutletCode, @PaymentSalt, @RealName, @RegisterTime, @Salt, @SettleAccount, @Verified, @VerifiedTime);
             }
         
         public UserState() : 
@@ -455,6 +463,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["Id"] = this.Id;
+            result["TimeStamp"] = this.TimeStamp;
             result["Args"] = this.Args;
             result["BankCards"] = this.BankCards;
             result["Cellphone"] = this.Cellphone;
@@ -483,6 +492,7 @@ namespace Yuyi.Jinyinmao.Domain
         private void InitStateFields()
         {
             this.Id = default(Guid);
+            this.TimeStamp = default(Int64);
             this.Args = new Dictionary<String,Object>();
             this.BankCards = new Dictionary<String,BankCard>();
             this.Cellphone = default(String);
@@ -496,7 +506,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.InviteBy = default(String);
             this.JBYAccount = new Dictionary<Guid,JBYAccountTranscation>();
             this.LoginNames = new List<String>();
-            this.Orders = new Dictionary<Guid,OrderInfo>();
+            this.Orders = new Dictionary<Guid,Order>();
             this.OutletCode = default(String);
             this.PaymentSalt = default(String);
             this.RealName = default(String);
@@ -562,6 +572,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public Guid @Id { get; set; }
 
+            public Int64 @TimeStamp { get; set; }
+
             public String @Agreement1 { get; set; }
 
             public String @Agreement2 { get; set; }
@@ -605,6 +617,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("TimeStamp", out value)) @TimeStamp = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("Agreement1", out value)) @Agreement1 = (String) value;
                 if (values.TryGetValue("Agreement2", out value)) @Agreement2 = (String) value;
                 if (values.TryGetValue("Args", out value)) @Args = (Dictionary<String,Object>) value;
@@ -628,7 +641,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} EndSellTime={4} FinancingSumAmount={5} IssueNo={6} IssueTime={7} ProductCategory={8} ProductId={9} ProductName={10} ProductNo={11} SoldOut={12} SoldOutTime={13} StartSellTime={14} Transcations={15} UnitPrice={16} UpdateTime={17} ValueDateMode={18} Yield={19} )", @Id, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @IssueNo, @IssueTime, @ProductCategory, @ProductId, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transcations, @UnitPrice, @UpdateTime, @ValueDateMode, @Yield);
+                return System.String.Format("JBYProductState( Id={0} TimeStamp={1} Agreement1={2} Agreement2={3} Args={4} EndSellTime={5} FinancingSumAmount={6} IssueNo={7} IssueTime={8} ProductCategory={9} ProductId={10} ProductName={11} ProductNo={12} SoldOut={13} SoldOutTime={14} StartSellTime={15} Transcations={16} UnitPrice={17} UpdateTime={18} ValueDateMode={19} Yield={20} )", @Id, @TimeStamp, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @IssueNo, @IssueTime, @ProductCategory, @ProductId, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transcations, @UnitPrice, @UpdateTime, @ValueDateMode, @Yield);
             }
         
         public JBYProductState() : 
@@ -641,6 +654,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["Id"] = this.Id;
+            result["TimeStamp"] = this.TimeStamp;
             result["Agreement1"] = this.Agreement1;
             result["Agreement2"] = this.Agreement2;
             result["Args"] = this.Args;
@@ -666,6 +680,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         private void InitStateFields()
         {
             this.Id = default(Guid);
+            this.TimeStamp = default(Int64);
             this.Agreement1 = default(String);
             this.Agreement2 = default(String);
             this.Args = new Dictionary<String,Object>();
@@ -721,6 +736,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public Guid @Id { get; set; }
 
+            public Int64 @TimeStamp { get; set; }
+
             public Dictionary<Guid,JBYAccountTranscationInfo> @WithdrawalTranscations { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
@@ -728,12 +745,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
+                if (values.TryGetValue("TimeStamp", out value)) @TimeStamp = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("WithdrawalTranscations", out value)) @WithdrawalTranscations = (Dictionary<Guid,JBYAccountTranscationInfo>) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} WithdrawalTranscations={1} )", @Id, @WithdrawalTranscations);
+                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} TimeStamp={1} WithdrawalTranscations={2} )", @Id, @TimeStamp, @WithdrawalTranscations);
             }
         
         public JBYProductWithdrawalManagerState() : 
@@ -746,6 +764,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["Id"] = this.Id;
+            result["TimeStamp"] = this.TimeStamp;
             result["WithdrawalTranscations"] = this.WithdrawalTranscations;
             return result;
         }
@@ -753,6 +772,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         private void InitStateFields()
         {
             this.Id = default(Guid);
+            this.TimeStamp = default(Int64);
             this.WithdrawalTranscations = new Dictionary<Guid,JBYAccountTranscationInfo>();
         }
         

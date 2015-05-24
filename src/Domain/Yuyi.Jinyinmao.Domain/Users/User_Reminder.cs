@@ -4,7 +4,7 @@
 // Created          : 2015-05-18  11:37 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  1:25 AM
+// Last Modified On : 2015-05-24  4:33 PM
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,20 +45,24 @@ namespace Yuyi.Jinyinmao.Domain
 
         #endregion IRemindable Members
 
-        private async Task DoDailyWorkAsync()
+        /// <summary>
+        /// do daily work as an asynchronous operation.
+        /// </summary>
+        /// <param name="force">if set to <c>true</c> [force].</param>
+        /// <returns>Task.</returns>
+        public async Task DoDailyWorkAsync(bool force = false)
         {
-            if (DateTime.UtcNow.AddHours(8).Hour < 3 && DateTime.UtcNow.AddHours(8).Hour > 1)
+            if (force || (DateTime.UtcNow.AddHours(8).Hour <= 4 && DateTime.UtcNow.AddHours(8).Hour >= 1))
             {
+                DateTime now = DateTime.UtcNow.AddHours(8);
                 List<JBYAccountTranscation> jbyWithdrawalTranscations = this.State.JBYAccount.Values
-                    .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue)
+                    .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue
+                                && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < now)
                     .ToList();
 
                 foreach (JBYAccountTranscation transcation in jbyWithdrawalTranscations)
                 {
-                    if (transcation.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < DateTime.UtcNow.AddHours(8))
-                    {
-                        await this.JBYWithdrawalResultedAsync(transcation.TransactionId);
-                    }
+                    await this.JBYWithdrawalResultedAsync(transcation.TransactionId);
                 }
 
                 await this.JBYReinvestingAsync();

@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-23  11:27 PM
+// Created          : 2015-04-26  11:36 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-24  8:14 AM
+// Last Modified On : 2015-05-24  2:26 PM
 // ***********************************************************************
-// <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -40,7 +40,9 @@ namespace Yuyi.Jinyinmao.Domain
         private static readonly string InsertCommandString;
         private static readonly string Letters;
         private static readonly string SelectCommandString;
+#pragma warning disable 414
         private static readonly string UpdateCommandString;
+#pragma warning restore 414
         private string connectionStringTemplate;
         private RetryPolicy retryPolicy;
         private JsonSerializerSettings settings;
@@ -50,7 +52,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             Letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             InsertCommandString = "INSERT INTO [dbo].[{0}] ([Id], [LongId], [Key], [Type], [TimeStamp], [Data]) VALUES(@Id, @LongId, @Key, @Type, @TimeStamp, @Data)";
-            SelectCommandString = "SELECT * FROM [dbo].[{0}] WHERE [Key] = @Key";
+            SelectCommandString = "SELECT TOP 1 * FROM [dbo].[{0}] WHERE [Key] = @Key ORDER BY [TimeStamp] DESC";
             UpdateCommandString = "UPDATE TOP(1) [dbo].[{0}] SET [Id]=@Id, [LongId]=@LongId, [Key]=@Key, [Type]=@Type, [TimeStamp]=@TimeStamp, [Data]=@Data WHERE [Key]=@Key AND [TimeStamp]=@Etag";
         }
 
@@ -141,6 +143,9 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 string connectionString = this.GetConnectionString(grainReference);
                 string tableName = this.GetTableName(grainReference);
+
+                this.Log.Verbose("SqlDatabaseProvider:{0}-{1}", connectionString, tableName);
+
                 GrainStateRecord record;
                 using (IDbConnection db = new SqlConnection(connectionString))
                 {
@@ -188,9 +193,16 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 IDictionary<string, object> grainStateDictionary = grainState.AsDictionary();
                 string storedData = JsonConvert.SerializeObject(grainStateDictionary, this.settings);
-                string timeStamp = DateTime.UtcNow.Ticks.ToString();
+                long timeStamp = DateTime.UtcNow.Ticks;
+                object timeStampState;
+                if (grainStateDictionary.TryGetValue("TimeStamp", out timeStampState))
+                {
+                    timeStamp = Convert.ToInt64(timeStampState);
+                }
                 string connectionString = this.GetConnectionString(grainReference);
                 string tableName = this.GetTableName(grainReference);
+
+                this.Log.Verbose("SqlDatabaseProvider:{0}-{1}-{2}", connectionString, tableName, storedData);
 
                 // Grain use the long as its key
                 if (id.StartsWith("00000000") && !id.EndsWith("000000"))
@@ -199,7 +211,8 @@ namespace Yuyi.Jinyinmao.Domain
                 }
 
                 int resultCount;
-                if (grainState.Etag.IsNullOrEmpty() || grainState.Etag == "0")
+
+                await Task.Run(async () =>
                 {
                     using (IDbConnection db = new SqlConnection(connectionString))
                     {
@@ -213,30 +226,50 @@ namespace Yuyi.Jinyinmao.Domain
                             Data = storedData
                         }));
                     }
-                }
-                else
-                {
-                    using (IDbConnection db = new SqlConnection(connectionString))
+
+                    if (resultCount == 0)
                     {
-                        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, UpdateCommandString.FormatWith(tableName), new
-                        {
-                            Id = id,
-                            LongId = longId,
-                            Key = key,
-                            Type = grainType,
-                            TimeStamp = timeStamp,
-                            Data = storedData,
-                            grainState.Etag
-                        }));
+                        throw new ApplicationException("Grain Write State Failed. {0}".FormatWith(id));
                     }
-                }
+                });
 
-                if (resultCount == 0)
-                {
-                    throw new ApplicationException("Grain Write State Failed. {0}".FormatWith(id));
-                }
+                
 
-                grainState.Etag = timeStamp;
+                //                if (grainState.Etag.IsNullOrEmpty() || grainState.Etag == "0")
+                //                {
+                //                    using (IDbConnection db = new SqlConnection(connectionString))
+                //                    {
+                //                        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, InsertCommandString.FormatWith(tableName), new
+                //                        {
+                //                            Id = id,
+                //                            LongId = longId,
+                //                            Key = key,
+                //                            Type = grainType,
+                //                            TimeStamp = timeStamp,
+                //                            Data = storedData
+                //                        }));
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    using (IDbConnection db = new SqlConnection(connectionString))
+                //                    {
+                //                        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, UpdateCommandString.FormatWith(tableName), new
+                //                        {
+                //                            Id = id,
+                //                            LongId = longId,
+                //                            Key = key,
+                //                            Type = grainType,
+                //                            TimeStamp = timeStamp,
+                //                            Data = storedData,
+                //                            grainState.Etag
+                //                        }));
+                //                    }
+                //                }
+
+
+
+                grainState.Etag = timeStamp.ToString();
             }
             catch (Exception e)
             {

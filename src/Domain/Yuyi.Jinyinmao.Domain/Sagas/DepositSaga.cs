@@ -4,7 +4,7 @@
 // Created          : 2015-05-03  11:48 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  11:30 PM
+// Last Modified On : 2015-05-24  10:26 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,11 +13,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.Helper;
 using Yuyi.Jinyinmao.Service;
 
 namespace Yuyi.Jinyinmao.Domain.Sagas
@@ -28,10 +30,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     [StorageProvider(ProviderName = "SqlDatabase")]
     public class DepositSaga : SagaGrain<IDepositSagaState>, IDepositSaga
     {
-        private Dictionary<string, object> Info { get; set; }
-        private string Message { get; set; }
         private IUser User { get; set; }
-        private bool Waiting { get; set; }
+
         private IYilianPaymentGatewayService YilianService { get; set; }
 
         #region IDepositSaga Members
@@ -47,12 +47,12 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             this.State.Status = DepositSagaStatus.Init;
             this.State.BeginTime = DateTime.UtcNow;
 
+            this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+
             this.ProcessAsync().Forget();
 
             return TaskDone.Done;
         }
-
-        #endregion IDepositSaga Members
 
         /// <summary>
         ///     Processes the asynchronous.
@@ -116,12 +116,46 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             }
         }
 
+        #endregion IDepositSaga Members
+
+        /// <summary>
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
+        /// </summary>
+        [SuppressMessage("ReSharper", "MergeSequentialChecks")]
+        public override Task OnActivateAsync()
+        {
+            if (this.State.InitData != null && this.State.InitData.InitUserInfo != null)
+            {
+                this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+            }
+
+            this.YilianService = new YilianPaymentGatewayService();
+            return base.OnActivateAsync();
+        }
+
+        private AuthRequestParameter BuildRequestParameter(string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, char sequencePrefix = 'A')
+        {
+            string[] address = cityName.Split('|');
+            return new AuthRequestParameter(this.State.SagaId.ToGuidString().ToUpperInvariant(), sequenceNo.ToUpperInvariant(),
+                bankCardNo, realName, address[0], address[1], bankName, credential, credentialNo, cellphone, userId);
+        }
+
+        private PaymentRequestParameter BuildRequestParameter(string batchNo, string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, int amount)
+        {
+            string[] address = cityName.Split('|');
+            return new PaymentRequestParameter(batchNo, sequenceNo, bankCardNo, realName, address[0],
+                address[1], bankName, credential, credentialNo, cellphone, userId,
+                "YL" + DateTime.UtcNow.AddHours(8).Date.ToString("yyyyMMdd"), decimal.Divide(amount, 100));
+        }
+
         private async Task FinishAsync()
         {
             this.Waiting = false;
             this.Message = "Finish";
             DateTime now = DateTime.UtcNow;
-            int duration = (now - this.State.BeginTime).Seconds;
+            double duration = (now - this.State.BeginTime).TotalSeconds;
 
             this.Info = new Dictionary<string, object>
             {
@@ -133,44 +167,9 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             await this.StoreSagaStateAsync((int)this.State.Status, this.Message, this.Info, 1);
         }
 
-        private async Task QueryYilianPaymentResultAsync()
-        {
-            if (this.State.InitData.PayByYilianCommand == null)
-            {
-                throw new ApplicationException("Missing PayByYilianCommand SagaId-{0}.".FormatWith(this.State.SagaId.ToGuidString()));
-            }
-
-            YilianRequestResult result = await this.YilianService.QueryRequestAsync(this.State.SagaId.ToGuidString(), true);
-
-            if (result == null)
-            {
-                this.Info = new Dictionary<string, object> { { "Query", new { Message = "Processing" } } };
-            }
-            else
-            {
-                this.Info = new Dictionary<string, object> { { "Query", new { result.Message, result.ResponseString } } };
-
-                await this.UnregisterReminder();
-
-                this.Waiting = false;
-                this.State.Status = DepositSagaStatus.Finished;
-
-                await this.User.DepositResultedAsync(this.State.InitData.PayByYilianCommand, result.Result, result.Message);
-            }
-        }
-
-        private async Task<AuthRequestParameter> BuildRequestParameterAsync(string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, char sequencePrefix = 'A')
-        {
-            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
-            string sequenceNo = await sequenceGenerator.GenerateNoAsync(sequencePrefix);
-            string[] address = cityName.Split('|');
-            return new AuthRequestParameter(this.State.SagaId.ToGuidString().ToUpperInvariant(), sequenceNo.ToUpperInvariant(),
-                bankCardNo, realName, address[0], address[1], bankName, credential, credentialNo, cellphone, userId);
-        }
-
         private Task InitAsync()
         {
-            this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+            this.State.Status = DepositSagaStatus.AddBankCard;
             return TaskDone.Done;
         }
 
@@ -191,7 +190,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
                 if (!userInfo.Verified)
                 {
-                    AuthRequestParameter parameter = await this.BuildRequestParameterAsync(this.State.InitData.AuthenticateCommand.CityName,
+                    string sequenceNo = await SequenceNoHelper.GetSequenceNoAsync();
+                    AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, this.State.InitData.AuthenticateCommand.CityName,
                         this.State.InitData.AuthenticateCommand.BankCardNo, userInfo.RealName, this.State.InitData.AuthenticateCommand.BankName, (int)userInfo.Credential,
                         userInfo.CredentialNo, this.State.InitData.AuthenticateCommand.Cellphone, userInfo.UserId.ToGuidString());
 
@@ -218,16 +218,17 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         {
             if (this.State.InitData.PayByYilianCommand != null)
             {
-                Tuple<UserInfo, SettleAccountTranscationInfo> info = await this.User.DepositAsync(this.State.InitData.PayByYilianCommand);
+                Tuple<UserInfo, SettleAccountTranscationInfo, BankCardInfo> info = await this.User.DepositAsync(this.State.InitData.PayByYilianCommand);
 
                 UserInfo userInfo = info.Item1;
                 SettleAccountTranscationInfo transcationInfo = info.Item2;
+                BankCardInfo bankCardInfo = info.Item3;
 
                 if (transcationInfo != null)
                 {
-                    PaymentRequestParameter parameter = await this.BuildRequestParameterAsync(transcationInfo.TransactionId.ToGuidString(),
-                        transcationInfo.BankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, transcationInfo.BankCardInfo.BankName,
-                        (int)userInfo.Credential, userInfo.CredentialNo, transcationInfo.BankCardInfo.Cellphone,
+                    PaymentRequestParameter parameter = this.BuildRequestParameter(transcationInfo.SequenceNo, transcationInfo.TransactionId.ToGuidString(),
+                        bankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
+                        (int)userInfo.Credential, userInfo.CredentialNo, bankCardInfo.Cellphone,
                         userInfo.UserId.ToGuidString(), transcationInfo.Amount);
 
                     YilianRequestResult result = await this.YilianService.PaymentRequestAsync(parameter);
@@ -257,9 +258,16 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 UserInfo userInfo = info.Item1;
                 BankCardInfo bankCardInfo = info.Item2;
 
-                if (userInfo.Verified && bankCardInfo.VerifiedByYilian)
+                if (!userInfo.Verified)
                 {
-                    AuthRequestParameter parameter = await this.BuildRequestParameterAsync(bankCardInfo.CityName,
+                    throw new ApplicationException("Invalid VerifyBankCardCommand. SagaId-{0}, UserId-{1}, CommandId-{2}."
+                        .FormatWith(this.State.SagaId.ToGuidString(), userInfo.UserId, this.State.InitData.VerifyBankCardCommand.CommandId));
+                }
+
+                if (!bankCardInfo.VerifiedByYilian)
+                {
+                    string sequenceNo = await SequenceNoHelper.GetSequenceNoAsync();
+                    AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, bankCardInfo.CityName,
                         bankCardInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName, (int)userInfo.Credential,
                         userInfo.CredentialNo, bankCardInfo.Cellphone, userInfo.UserId.ToGuidString(), 'B');
 
@@ -299,8 +307,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             {
                 this.Info = new Dictionary<string, object> { { "Query", new { result.Message, result.ResponseString } } };
 
-                await this.UnregisterReminder();
-
                 this.Waiting = false;
                 this.State.Status = DepositSagaStatus.PayByYilian;
 
@@ -325,7 +331,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             {
                 this.Info = new Dictionary<string, object> { { "Query", new { result.Message, result.ResponseString } } };
 
-                await this.UnregisterReminder();
                 this.Waiting = false;
                 this.State.Status = DepositSagaStatus.PayByYilian;
 
@@ -333,14 +338,28 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             }
         }
 
-        private async Task<PaymentRequestParameter> BuildRequestParameterAsync(string batchNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, int amount)
+        private async Task QueryYilianPaymentResultAsync()
         {
-            ISequenceGenerator sequenceGenerator = SequenceGeneratorFactory.GetGrain(Guid.Empty);
-            string sequenceNo = await sequenceGenerator.GenerateNoAsync('D');
-            string[] address = cityName.Split('|');
-            return new PaymentRequestParameter(batchNo, sequenceNo, bankCardNo, realName, address[0],
-                address[1], bankName, credential, credentialNo, cellphone, userId,
-                "YL" + DateTime.UtcNow.AddHours(8).Date.ToString("yyyyMMdd"), decimal.Divide(amount, 100));
+            if (this.State.InitData.PayByYilianCommand == null)
+            {
+                throw new ApplicationException("Missing PayByYilianCommand SagaId-{0}.".FormatWith(this.State.SagaId.ToGuidString()));
+            }
+
+            YilianRequestResult result = await this.YilianService.QueryRequestAsync(this.State.SagaId.ToGuidString(), true);
+
+            if (result == null)
+            {
+                this.Info = new Dictionary<string, object> { { "Query", new { Message = "Processing" } } };
+            }
+            else
+            {
+                this.Info = new Dictionary<string, object> { { "Query", new { result.Message, result.ResponseString } } };
+
+                this.Waiting = false;
+                this.State.Status = DepositSagaStatus.Finished;
+
+                await this.User.DepositResultedAsync(this.State.InitData.PayByYilianCommand, result.Result, result.Message);
+            }
         }
     }
 }

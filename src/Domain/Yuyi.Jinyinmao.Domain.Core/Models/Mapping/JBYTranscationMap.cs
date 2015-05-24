@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  7:23 PM
+// Last Modified On : 2015-05-24  1:50 AM
 // ***********************************************************************
 // <copyright file="JBYTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -37,6 +37,10 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
+            this.Property(t => t.JBYProductIdentifier)
+                .IsRequired()
+                .HasMaxLength(50);
+
             this.Property(t => t.UserIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -55,6 +59,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.ToTable("JBYTranscations");
             this.Property(t => t.TranscationIdentifier).HasColumnName("TranscationIdentifier");
             this.Property(t => t.AccountTranscationIdentifier).HasColumnName("AccountTranscationIdentifier");
+            this.Property(t => t.JBYProductIdentifier).HasColumnName("JBYProductIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.TradeCode).HasColumnName("TradeCode");
             this.Property(t => t.Amount).HasColumnName("Amount");

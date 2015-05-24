@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  8:10 PM
+// Last Modified On : 2015-05-23  12:29 PM
 // ***********************************************************************
 // <copyright file="IJBYProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -71,7 +71,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         long ProductCategory { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier.
+        ///     Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
         Guid ProductId { get; set; }
@@ -119,7 +119,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         int UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the update time.
+        ///     Gets or sets the update time.
         /// </summary>
         /// <value>The update time.</value>
         DateTime UpdateTime { get; set; }

@@ -4,7 +4,7 @@
 // Created          : 2015-05-17  7:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  11:38 AM
+// Last Modified On : 2015-05-24  1:52 AM
 // ***********************************************************************
 // <copyright file="JBYAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using Moe.Lib;
+using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -66,6 +67,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             transcationModel.Amount = info.Amount;
             transcationModel.Args = info.Args.ToJson();
             transcationModel.Info = i.ToJson();
+            transcationModel.JBYProductIdentifier = info.ProductId.ToGuidString();
             transcationModel.ResultCode = info.ResultCode;
             transcationModel.ResultTime = info.ResultTime;
             transcationModel.TradeCode = info.TradeCode;
@@ -89,6 +91,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 Amount = info.Amount,
                 Args = info.Args.ToJson(),
                 Info = i.ToJson(),
+                JBYProductIdentifier = info.ProductId.ToGuidString(),
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime,
                 TradeCode = info.TradeCode,
@@ -112,6 +115,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     /// <summary>
     ///     JBYAccountTranscationInfo.
     /// </summary>
+    [Immutable]
     public class JBYAccountTranscationInfo
     {
         /// <summary>

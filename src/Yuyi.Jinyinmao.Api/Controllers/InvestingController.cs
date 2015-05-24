@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  2:31 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  11:39 AM
+// Last Modified On : 2015-05-25  12:28 AM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -67,8 +67,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">IRI8:该产品已售罄</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpPost, Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
-        public async Task<IHttpActionResult> JBYInvesting(InvestingRequest request)
+        [HttpGet, Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
+        public async Task<IHttpActionResult> JBYInvesting([FromUri] InvestingRequest request)
         {
             Guid productId;
             if (!Guid.TryParseExact(request.ProductIdentifier, "N", out productId))
@@ -148,8 +148,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">IRI7:购买失败</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpPost, Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]
-        public async Task<IHttpActionResult> RegularInvesting(InvestingRequest request)
+        [HttpGet, Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> RegularInvesting([FromUri] InvestingRequest request)
         {
             Guid productId;
             if (!Guid.TryParseExact(request.ProductIdentifier, "N", out productId))
