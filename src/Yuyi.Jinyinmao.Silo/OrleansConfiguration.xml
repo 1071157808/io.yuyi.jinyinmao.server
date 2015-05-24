@@ -5,13 +5,9 @@
       <Provider Type="Yuyi.Jinyinmao.Domain.SqlDatabaseProvider" Name="SqlDatabase"
                 DataConnectionString="Server=tcp:l564pygdev.database.chinacloudapi.cn,1433;Database=jym-dev-grains-{0};User ID=db-user-front@l564pygdev;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
-    <SeedNode Address="localhost" Port="11111" />
     <SystemStore ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" DataConnectionString="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
-    <Networking />
     <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-    <Caching />
     <Liveness LivenessType="AzureTable" />
-    <ReminderService />
   </Globals>
   <Defaults>
     <!--

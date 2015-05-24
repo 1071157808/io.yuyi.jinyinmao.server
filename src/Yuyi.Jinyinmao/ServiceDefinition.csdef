@@ -13,12 +13,18 @@
     </Sites>
     <Endpoints>
       <InputEndpoint name="HTTP" protocol="http" port="80" />
-      <InputEndpoint name="HTTPS" protocol="http" port="443" />
+      <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="sslCert" />
     </Endpoints>
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
       <Setting name="ServiceBusConnectionString" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="sslCert" storeLocation="CurrentUser" storeName="My" />
+    </Certificates>
+    <Imports>
+      <Import moduleName="RemoteAccess" />
+    </Imports>
   </WebRole>
   <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Medium">
     <Startup>
@@ -40,5 +46,9 @@
       <Setting name="DataConnectionString" />
       <Setting name="ServiceBusConnectionString" />
     </ConfigurationSettings>
+    <Imports>
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
   </WorkerRole>
 </ServiceDefinition>

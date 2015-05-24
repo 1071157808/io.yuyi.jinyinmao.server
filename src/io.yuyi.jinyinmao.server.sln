@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7-Publish", "7-Publish", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
 	ProjectSection(SolutionItems) = preProject
+		Publish\dev\ApiKeys.json = Publish\dev\ApiKeys.json
 		Publish\dev\Configurations.txt = Publish\dev\Configurations.txt
 		Publish\dev\InitFrontTables.sql = Publish\dev\InitFrontTables.sql
 		Publish\dev\InitGrainDBs.sql = Publish\dev\InitGrainDBs.sql

@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ClientConfiguration xmlns="urn:orleans">
-  <Gateway Address="localhost" Port="30000" />
   <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true" />
+  <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="false">
+    <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
+  </Tracing>
 </ClientConfiguration>
 
 <!--
@@ -12,6 +13,7 @@
 <!-- Local Development Configuration
 <ClientConfiguration xmlns="urn:orleans">
   <Gateway Address="localhost" Port="30000" />
+  <Messaging ResendOnTimeout="true" MaxResendCount="10" />
   <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true" />
 </ClientConfiguration>
 -->
@@ -27,6 +29,7 @@
 		-->
 <!-- Product Configuration
 <ClientConfiguration xmlns="urn:orleans">
+  <Messaging ResendOnTimeout="true" MaxResendCount="10" />
   <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="false">
     <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
   </Tracing>

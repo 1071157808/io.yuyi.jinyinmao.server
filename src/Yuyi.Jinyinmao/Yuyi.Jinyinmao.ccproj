@@ -54,12 +54,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Profiles" />
     <Folder Include="Yuyi.Jinyinmao.ApiContent\" />
     <Folder Include="Yuyi.Jinyinmao.SiloContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.ApiContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.SiloContent\diagnostics.wadcfgx" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\jym-dev-api.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
