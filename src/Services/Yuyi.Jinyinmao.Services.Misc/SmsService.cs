@@ -15,6 +15,7 @@ using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Azure;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -63,9 +64,9 @@ namespace Yuyi.Jinyinmao.Service
         static SmsService()
         {
             bool temp;
-            string smsServiceEnableConfig = ConfigurationManager.AppSettings.Get("SmsServiceEnable");
+            string smsServiceEnableConfig = CloudConfigurationManager.GetSetting("SmsServiceEnable");
             smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty() && bool.TryParse(smsServiceEnableConfig, out temp) && temp;
-            string smsServiceAddressConfig = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
+            string smsServiceAddressConfig = CloudConfigurationManager.GetSetting("SmsServiceAddress");
             apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() && smsServiceAddressConfig.IsUrl() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
         }
 

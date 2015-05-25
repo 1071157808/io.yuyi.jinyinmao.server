@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
-                   schemaVersion="2014-06.2.4">
+                   schemaVersion="2015-04.2.6">
   <WebRole name="Yuyi.Jinyinmao.Api" vmsize="Medium">
     <Sites>
       <Site name="Web">
@@ -11,44 +11,44 @@
         </Bindings>
       </Site>
     </Sites>
-    <Endpoints>
-      <InputEndpoint name="HTTP" protocol="http" port="80" />
-      <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="sslCert" />
-    </Endpoints>
     <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
       <Setting name="DataConnectionString" />
       <Setting name="ServiceBusConnectionString" />
+      <Setting name="StorageProviderConnectionString" />
+      <Setting name="SmsServiceEnable" />
+      <Setting name="SmsServiceAddress" />
+      <Setting name="SmsServiceAppId" />
+      <Setting name="SmsServiceAppKey" />
+      <Setting name="EnableApiDoc" />
+      <Setting name="EnableHMACAuth" />
+      <Setting name="JYMDBContextConnectionString" />
     </ConfigurationSettings>
+    <Endpoints>
+      <InputEndpoint name="HTTP" protocol="http" port="80" />
+      <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="SSLCertificate" />
+    </Endpoints>
     <Certificates>
-      <Certificate name="sslCert" storeLocation="CurrentUser" storeName="My" />
+      <Certificate name="SSLCertificate" storeLocation="CurrentUser" storeName="My" />
     </Certificates>
-    <Imports>
-      <Import moduleName="RemoteAccess" />
-    </Imports>
   </WebRole>
   <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Medium">
-    <Startup>
-      <Task commandLine="ServerGC.cmd" executionContext="elevated" taskType="simple">
-        <Environment>
-          <Variable name="UseServerGC" value="True" />
-          <Variable name="UseBackgroundGC" value="True" />
-        </Environment>
-      </Task>
-    </Startup>
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="DataConnectionString" />
+      <Setting name="ServiceBusConnectionString" />
+      <Setting name="StorageProviderConnectionString" />
+      <Setting name="SmsServiceEnable" />
+      <Setting name="SmsServiceAddress" />
+      <Setting name="SmsServiceAppId" />
+      <Setting name="SmsServiceAppKey" />
+      <Setting name="EnableApiDoc" />
+      <Setting name="EnableHMACAuth" />
+      <Setting name="JYMDBContextConnectionString" />
+    </ConfigurationSettings>
     <Endpoints>
       <InternalEndpoint name="OrleansSiloEndpoint" protocol="tcp" port="11111" />
       <InternalEndpoint name="OrleansProxyEndpoint" protocol="tcp" port="30000" />
     </Endpoints>
-    <LocalResources>
-      <LocalStorage name="LocalStoreDirectory" cleanOnRoleRecycle="false" />
-    </LocalResources>
-    <ConfigurationSettings>
-      <Setting name="DataConnectionString" />
-      <Setting name="ServiceBusConnectionString" />
-    </ConfigurationSettings>
-    <Imports>
-      <Import moduleName="RemoteAccess" />
-      <Import moduleName="RemoteForwarder" />
-    </Imports>
   </WorkerRole>
 </ServiceDefinition>

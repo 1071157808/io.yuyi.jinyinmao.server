@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-20  11:27 AM
@@ -20,6 +20,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Azure;
 using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Service
@@ -41,9 +42,9 @@ namespace Yuyi.Jinyinmao.Service
 
         static ApiKeyAuthDelegatingHandler()
         {
-            string appId = ConfigurationManager.AppSettings.Get("SmsServiceAppId");
+            string appId = CloudConfigurationManager.GetSetting("SmsServiceAppId");
             AppId = appId.IsNullOrEmpty() ? "541a74bc-cdf0-455d-9093-1aa5ec3cb7d3" : appId;
-            string appKey = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
+            string appKey = CloudConfigurationManager.GetSetting("SmsServiceAppKey");
             AppKey = appKey.IsNullOrEmpty() ? "rNAhdng2Tu1iXpH72jU2zLSW/hhxuGBxpBNSBBjwQEA=" : appKey;
         }
 

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:10 PM
+// Last Modified On : 2015-05-25  8:01 AM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,21 +17,42 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Tracing;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using Moe.AspNet.Utility;
+using Orleans;
+using Orleans.Runtime.Host;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
     /// <summary>
     ///     Class ApiControllerBase.
     /// </summary>
-    public class ApiControllerBase : ApiController
+    public abstract class ApiControllerBase : ApiController
     {
         /// <summary>
         ///     The current user
         /// </summary>
         private CurrentUser currentUser;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ApiControllerBase" /> class.
+        /// </summary>
+        protected ApiControllerBase()
+        {
+            if (RoleEnvironment.IsAvailable)
+            {
+                // running in Azure
+                AzureClient.Initialize(HttpContext.Current.Server.MapPath(@"~/AzureConfiguration.xml"));
+            }
+            else
+            {
+                // not running in Azure
+                GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalConfiguration.xml"));
+            }
+        }
 
         /// <summary>
         ///     Gets the trace.

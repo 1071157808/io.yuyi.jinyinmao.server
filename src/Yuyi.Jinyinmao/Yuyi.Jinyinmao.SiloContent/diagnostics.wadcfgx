@@ -3,22 +3,23 @@
   <PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
     <WadCfg>
       <DiagnosticMonitorConfiguration overallQuotaInMB="4096">
+        <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter="Error" />
         <Directories scheduledTransferPeriod="PT1M">
           <IISLogs containerName="wad-iis-logfiles" />
           <FailedRequestLogs containerName="wad-failedrequestlogs" />
         </Directories>
-        <CrashDumps dumpType="Full">
+        <CrashDumps>
           <CrashDumpConfiguration processName="WaIISHost.exe" />
           <CrashDumpConfiguration processName="WaWorkerHost.exe" />
           <CrashDumpConfiguration processName="w3wp.exe" />
         </CrashDumps>
-        <Logs scheduledTransferLogLevelFilter="Information" />
+        <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Warning" />
       </DiagnosticMonitorConfiguration>
     </WadCfg>
-    <StorageAccount>jymdev</StorageAccount>
+    <StorageAccount />
   </PublicConfig>
   <PrivateConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
-    <StorageAccount name="jymdev" endpoint="https://core.chinacloudapi.cn/" />
+    <StorageAccount endpoint="" />
   </PrivateConfig>
   <IsEnabled>true</IsEnabled>
 </DiagnosticsConfiguration>

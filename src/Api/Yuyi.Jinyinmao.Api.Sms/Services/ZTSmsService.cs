@@ -4,15 +4,14 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  3:56 PM
+// Last Modified On : 2015-05-25  4:57 PM
 // ***********************************************************************
-// <copyright file="ZTSmsService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ZTSmsService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure;
@@ -40,8 +39,8 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         {
             sendMessageUrl = "http://www.ztsms.cn:8800/sendSms.do?";
             getBalanceUrl = "http://www.ztsms.cn:8800/balance.do?";
-            string userNameConfig = ConfigurationManager.AppSettings.Get("SmsServiceUserName");
-            string passwordConfig = ConfigurationManager.AppSettings.Get("SmsServicePassword");
+            string userNameConfig = CloudConfigurationManager.GetSetting("SmsServiceUserName");
+            string passwordConfig = CloudConfigurationManager.GetSetting("SmsServicePassword");
             userName = userNameConfig.IsNotNullOrEmpty() ? userNameConfig : "jymao";
             password = passwordConfig.IsNotNullOrEmpty() ? passwordConfig : "DRTkGfh9";
             messageTemplate = "username={0}&password={1}&mobile={2}&content={3}【{4}】&dstime=&productid={5}&xh=";

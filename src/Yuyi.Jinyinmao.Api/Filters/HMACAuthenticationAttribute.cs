@@ -96,7 +96,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
         static HMACAuthenticationAttribute()
         {
             bool temp;
-            string enableHMACAuthConfig = ConfigurationManager.AppSettings.Get("EnableHMACAuth");
+            string enableHMACAuthConfig = CloudConfigurationManager.GetSetting("EnableHMACAuth");
             EnableAuth = enableHMACAuthConfig.IsNotNullOrEmpty() && bool.TryParse(enableHMACAuthConfig, out temp) && temp;
 
             if (EnableAuth)

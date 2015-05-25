@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  12:59 PM
+// Created          : 2015-05-25  8:31 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  7:00 AM
+// Last Modified On : 2015-05-25  11:41 AM
 // ***********************************************************************
 // <copyright file="WebRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Api
 {
@@ -62,7 +63,7 @@ namespace Yuyi.Jinyinmao.Api
             }
             catch (Exception exc)
             {
-                Trace.WriteLine("Run() failed with " + exc);
+                Trace.TraceError("Run() failed with " + exc.GetExceptionString());
             }
         }
 

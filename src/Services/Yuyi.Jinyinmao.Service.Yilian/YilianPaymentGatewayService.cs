@@ -4,20 +4,20 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  12:35 AM
+// Last Modified On : 2015-05-25  4:57 PM
 // ***********************************************************************
-// <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.Azure;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -43,7 +43,7 @@ namespace Yuyi.Jinyinmao.Service
 
         static YilianPaymentGatewayService()
         {
-            PaymentGatewayHost = ConfigurationManager.AppSettings.Get("YilianPaymentGatewayHost");
+            PaymentGatewayHost = CloudConfigurationManager.GetSetting("YilianPaymentGatewayHost");
             UserAuthRequestUrl = "/paycore/services/userAuthRequestService";
             PaymentRequestUrl = "/paycore/services/easyLinkGatherRequestService";
             QueryRequestUrl = "/paycore/services/easyLinkGatherQueryRequestService";

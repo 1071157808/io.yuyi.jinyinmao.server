@@ -4,8 +4,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>2.5</ProductVersion>
-    <ProjectGuid>21de509d-8a7a-42bd-b31e-c25b1522d675</ProjectGuid>
+    <ProductVersion>2.6</ProductVersion>
+    <ProjectGuid>b9954535-d962-4ed3-bf4e-d8517d3bf2d1</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yuyi.Jinyinmao</RootNamespace>
@@ -38,7 +38,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Api\Yuyi.Jinyinmao.Api.csproj">
       <Name>Yuyi.Jinyinmao.Api</Name>
-      <Project>{0a0a57a5-7006-4366-bbdc-b02b2d83326f}</Project>
+      <Project>{456102ac-0c43-4f46-8ef1-aadfc0651b57}</Project>
       <Private>True</Private>
       <RoleType>Web</RoleType>
       <RoleName>Yuyi.Jinyinmao.Api</RoleName>
@@ -46,7 +46,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Silo\Yuyi.Jinyinmao.Silo.csproj">
       <Name>Yuyi.Jinyinmao.Silo</Name>
-      <Project>{aebd2562-06ad-4757-b083-c54d0cecb195}</Project>
+      <Project>{079fa826-9bc2-454a-ae3d-050a4909cf6b}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
       <RoleName>Yuyi.Jinyinmao.Silo</RoleName>
@@ -54,7 +54,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Profiles" />
     <Folder Include="Yuyi.Jinyinmao.ApiContent\" />
     <Folder Include="Yuyi.Jinyinmao.SiloContent\" />
   </ItemGroup>
@@ -62,13 +61,10 @@
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.ApiContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.SiloContent\diagnostics.wadcfgx" />
   </ItemGroup>
-  <ItemGroup>
-    <PublishProfile Include="Profiles\jym-dev-api.azurePubxml" />
-  </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
-    <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.5\</CloudExtensionsDir>
+    <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.6\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
 </Project>

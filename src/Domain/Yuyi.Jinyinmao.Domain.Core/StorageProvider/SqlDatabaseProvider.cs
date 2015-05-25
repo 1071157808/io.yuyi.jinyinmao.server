@@ -19,6 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Threading.Tasks;
+using Microsoft.Azure;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 using Moe.Lib;
 using Newtonsoft.Json;
@@ -107,8 +108,8 @@ namespace Yuyi.Jinyinmao.Domain
 
                 this.ConfigureJsonSerializerSettings(config);
 
-                string connectionString;
-                if (!config.Properties.TryGetValue("DataConnectionString", out connectionString))
+                string connectionString = CloudConfigurationManager.GetSetting("StorageProviderConnectionString");
+                if (connectionString.IsNullOrEmpty())
                 {
                     throw new BadProviderConfigException("The DataConnectionString setting has not been configured. Please add a DataConnectionString setting with a valid connection string.");
                 }
@@ -233,8 +234,6 @@ namespace Yuyi.Jinyinmao.Domain
                     }
                 });
 
-                
-
                 //                if (grainState.Etag.IsNullOrEmpty() || grainState.Etag == "0")
                 //                {
                 //                    using (IDbConnection db = new SqlConnection(connectionString))
@@ -266,8 +265,6 @@ namespace Yuyi.Jinyinmao.Domain
                 //                        }));
                 //                    }
                 //                }
-
-
 
                 grainState.Etag = timeStamp.ToString();
             }

@@ -1,33 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+
+<ServiceConfiguration serviceName="Yuyi.Jinyinmao"
+                      xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4"
+                      osVersion="*" schemaVersion="2015-04.2.6">
   <Role name="Yuyi.Jinyinmao.Api">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="DataConnectionString" value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
-      <Setting name="ServiceBusConnectionString" value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="ApiRemote" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBpQYJKoZIhvcNAQcDoIIBljCCAZICAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCECX892bm/m+LRx1stN1O6wkwDQYJKoZIhvcNAQEBBQAEggEAYVP+jRRynkVtTL9ammhipq71qZQ9/mr/xNn/cRTnY2YW+KRfiT2fkyjAMuMCzcGRSNapvI6G4UuFc5CZn9NbL5Z0nCPeeOEFwcXY8C+rWTlBP2KnLT3bqcqmElA1VFAF+509NqK+n9SV2y0528YKRA70YjiY7e0WUOdBvi45gj+i4EpmXCF/G43HTJsNtsIVl50S1ZeXM0r+QpYsc8LIyglgFb5cah2vJVwQn2EkL526JCQzKOEI9vuSG+o0FVIJpg/qdVAcF/Yc3soWPEUnQsXu/ZthXTY2cdKeWIrY50rwqwj8XJPuv2rwPzidJy/10LyCrmLbm0J2Pl5gsDKu8zA7BgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECBlJnCOBP+06gBg+vjz1xBM0ki2zdDkjilOBn4ni/eGoXvU=" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2016-05-25T23:59:59.0000000+08:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"
+               value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+      <Setting name="DataConnectionString"
+               value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+      <Setting name="ServiceBusConnectionString"
+               value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
+      <Setting name="StorageProviderConnectionString"
+               value="Server=tcp:l564pygdev.database.chinacloudapi.cn,1433;Database=jym-dev-grains-{0};User ID=db-user-front@l564pygdev;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="SmsServiceEnable" value="true" />
+      <Setting name="SmsServiceAddress" value="https://jym-dev-api-sms.yuyidev.com/" />
+      <Setting name="SmsServiceAppId" value="38e9ad41-c1b2-44a0-ad2a-88acba74db9d" />
+      <Setting name="SmsServiceAppKey"
+               value="HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" />
+      <Setting name="EnableApiDoc" value="true" />
+      <Setting name="EnableHMACAuth" value="false" />
+      <Setting name="JYMDBContextConnectionString"
+               value="Server=tcp:l564pygdev.database.chinacloudapi.cn,1433;Database=jym-dev;User ID=db-user-front@l564pygdev;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </ConfigurationSettings>
     <Certificates>
-      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="F6FBFD241278A27C680C30E5D3BC6DE51FE636A1" thumbprintAlgorithm="sha1" />
-      <Certificate name="sslCert" thumbprint="C325A6CBCF5B997EF8AF81093F46A66A4B5381E5" thumbprintAlgorithm="sha1" />
+      <Certificate name="SSLCertificate" thumbprint="C325A6CBCF5B997EF8AF81093F46A66A4B5381E5"
+                   thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
   <Role name="Yuyi.Jinyinmao.Silo">
     <Instances count="3" />
     <ConfigurationSettings>
-      <Setting name="DataConnectionString" value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
-      <Setting name="ServiceBusConnectionString" value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="ApiRemote" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBpQYJKoZIhvcNAQcDoIIBljCCAZICAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCECX892bm/m+LRx1stN1O6wkwDQYJKoZIhvcNAQEBBQAEggEAYVP+jRRynkVtTL9ammhipq71qZQ9/mr/xNn/cRTnY2YW+KRfiT2fkyjAMuMCzcGRSNapvI6G4UuFc5CZn9NbL5Z0nCPeeOEFwcXY8C+rWTlBP2KnLT3bqcqmElA1VFAF+509NqK+n9SV2y0528YKRA70YjiY7e0WUOdBvi45gj+i4EpmXCF/G43HTJsNtsIVl50S1ZeXM0r+QpYsc8LIyglgFb5cah2vJVwQn2EkL526JCQzKOEI9vuSG+o0FVIJpg/qdVAcF/Yc3soWPEUnQsXu/ZthXTY2cdKeWIrY50rwqwj8XJPuv2rwPzidJy/10LyCrmLbm0J2Pl5gsDKu8zA7BgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECBlJnCOBP+06gBg+vjz1xBM0ki2zdDkjilOBn4ni/eGoXvU=" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2016-05-25T23:59:59.0000000+08:00" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"
+               value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+      <Setting name="DataConnectionString"
+               value="BlobEndpoint=https://jymdev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdev.table.core.chinacloudapi.cn/;AccountName=jymdev;AccountKey=vtO5YY0USufbaw4BP8gBMIuMe2aPi0an4DkpxakWl579cfTxeCT7mvv7M8oZZkdg8VTxM525WHjPZ6gkifvmiQ==" />
+      <Setting name="ServiceBusConnectionString"
+               value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
+      <Setting name="StorageProviderConnectionString"
+               value="Server=tcp:l564pygdev.database.chinacloudapi.cn,1433;Database=jym-dev-grains-{0};User ID=db-user-front@l564pygdev;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="SmsServiceEnable" value="true" />
+      <Setting name="SmsServiceAddress" value="https://jym-dev-api-sms.yuyidev.com/" />
+      <Setting name="SmsServiceAppId" value="38e9ad41-c1b2-44a0-ad2a-88acba74db9d" />
+      <Setting name="SmsServiceAppKey"
+               value="HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" />
+      <Setting name="EnableApiDoc" value="true" />
+      <Setting name="EnableHMACAuth" value="false" />
+      <Setting name="JYMDBContextConnectionString"
+               value="Server=tcp:l564pygdev.database.chinacloudapi.cn,1433;Database=jym-dev;User ID=db-user-front@l564pygdev;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </ConfigurationSettings>
-    <Certificates>
-      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="F6FBFD241278A27C680C30E5D3BC6DE51FE636A1" thumbprintAlgorithm="sha1" />
-    </Certificates>
   </Role>
+  <NetworkConfiguration>
+    <VirtualNetworkSite name="VPN-product" />
+    <AddressAssignments>
+      <InstanceAddress roleName="Yuyi.Jinyinmao.Api">
+        <Subnets>
+          <Subnet name="Subnet-dev" />
+        </Subnets>
+      </InstanceAddress>
+      <InstanceAddress roleName="Yuyi.Jinyinmao.Silo">
+        <Subnets>
+          <Subnet name="Subnet-dev" />
+        </Subnets>
+      </InstanceAddress>
+    </AddressAssignments>
+  </NetworkConfiguration>
 </ServiceConfiguration>

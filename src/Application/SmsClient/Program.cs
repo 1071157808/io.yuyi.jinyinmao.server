@@ -1,21 +1,21 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  1:33 PM
+// Last Modified On : 2015-05-25  4:57 PM
 // ***********************************************************************
-// <copyright file="Program.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Azure;
 
 namespace SmsClient
 {
@@ -93,7 +93,7 @@ namespace SmsClient
         {
             Console.WriteLine("Calling the back-end API");
 
-            string smsServiceAddress = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
+            string smsServiceAddress = CloudConfigurationManager.GetSetting("SmsServiceAddress");
             string apiBaseAddress = string.IsNullOrEmpty(smsServiceAddress) ? "http://sms-api-dev-jym.yuyidev.com/" : smsServiceAddress;
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();

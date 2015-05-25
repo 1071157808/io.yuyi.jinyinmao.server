@@ -16,6 +16,7 @@ using System.IO;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.Azure;
 using Moe.Lib;
 using Swashbuckle.Application;
 using Swashbuckle.Swagger;
@@ -36,7 +37,7 @@ namespace Yuyi.Jinyinmao.Api
         public static void Register()
         {
             bool temp;
-            string enableApiDocConfig = ConfigurationManager.AppSettings.Get("EnableApiDoc");
+            string enableApiDocConfig = CloudConfigurationManager.GetSetting("EnableApiDoc");
             bool enableApiDoc = enableApiDocConfig.IsNotNullOrEmpty() && bool.TryParse(enableApiDocConfig, out temp) && temp;
 
             if (enableApiDoc)

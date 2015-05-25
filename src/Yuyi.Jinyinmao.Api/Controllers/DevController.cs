@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  1:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  11:19 PM
+// Last Modified On : 2015-05-25  8:32 AM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,15 +12,9 @@
 // ***********************************************************************
 
 using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Moe.AspNet.Utility;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models.Order;
 using Yuyi.Jinyinmao.Domain;
@@ -125,27 +119,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [HttpGet, Route("")]
         public IHttpActionResult Get()
         {
-            return this.Ok(
-                new
-                {
-                    this.Request.RequestUri,
-                    this.Request.Headers,
-                    QueryParameters = this.Request.GetQueryNameValuePairs(),
-                    RequestProperties = this.Request.Properties.Keys,
-                    this.RequestContext.ClientCertificate,
-                    this.RequestContext.IsLocal,
-                    this.RequestContext.VirtualPathRoot,
-                    HttpContext.Current.Request.Browser.Browser,
-                    HttpContext.Current.Request.IsSecureConnection,
-                    HttpContext.Current.Request.Browser.IsMobileDevice,
-                    IsFromMobileDevice = HttpUtils.IsFromMobileDevice(this.Request),
-                    UserHostAddress = HttpUtils.GetUserHostAddress(this.Request),
-                    UserAgent = HttpUtils.GetUserAgent(this.Request),
-                    Cookie = this.Request.Headers.GetCookies(),
-                    this.Request.Content,
-                    ConfigurationProperties = this.Configuration.Properties,
-                    ServerIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString()
-                });
+            return this.Ok();
         }
 
         /// <summary>

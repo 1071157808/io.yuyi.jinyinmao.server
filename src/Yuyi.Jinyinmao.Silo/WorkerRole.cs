@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  12:59 PM
+// Created          : 2015-05-25  4:00 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  11:39 PM
+// Last Modified On : 2015-05-25  5:20 PM
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,16 +20,28 @@ using Orleans.Runtime.Host;
 
 namespace Yuyi.Jinyinmao.Silo
 {
+    /// <summary>
+    ///     WorkerRole.
+    /// </summary>
     public class WorkerRole : RoleEntryPoint
     {
-        private const string DATA_CONNECTION_STRING_KEY = "DataConnectionString";
+        /// <summary>
+        ///     The orleans azure silo
+        /// </summary>
         private AzureSilo orleansAzureSilo;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WorkerRole" /> class.
+        /// </summary>
         public WorkerRole()
         {
             Trace.WriteLine("OrleansAzureSilos-Constructor called");
         }
 
+        /// <summary>
+        ///     Called when [start].
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool OnStart()
         {
             Trace.WriteLine("OrleansAzureSilos-OnStart called", "Information");
@@ -50,6 +62,9 @@ namespace Yuyi.Jinyinmao.Silo
             return ok;
         }
 
+        /// <summary>
+        ///     Called when [stop].
+        /// </summary>
         public override void OnStop()
         {
             Trace.WriteLine("OrleansAzureSilos-OnStop called", "Information");
@@ -62,6 +77,9 @@ namespace Yuyi.Jinyinmao.Silo
             Trace.WriteLine("OrleansAzureSilos-OnStop finished", "Information");
         }
 
+        /// <summary>
+        ///     Runs this instance.
+        /// </summary>
         public override void Run()
         {
             Trace.WriteLine("OrleansAzureSilos-Run entry point called", "Information");
@@ -81,6 +99,11 @@ namespace Yuyi.Jinyinmao.Silo
             this.orleansAzureSilo.Run(); // Call will block until silo is shutdown
         }
 
+        /// <summary>
+        ///     Roles the environment changing.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoleEnvironmentChangingEventArgs" /> instance containing the event data.</param>
         private static void RoleEnvironmentChanging(object sender, RoleEnvironmentChangingEventArgs e)
         {
             int i = 1;
@@ -97,6 +120,9 @@ namespace Yuyi.Jinyinmao.Silo
             }
         }
 
+        /// <summary>
+        ///     Setups the environment change handlers.
+        /// </summary>
         private static void SetupEnvironmentChangeHandlers()
         {
             // For information on handling configuration changes see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
