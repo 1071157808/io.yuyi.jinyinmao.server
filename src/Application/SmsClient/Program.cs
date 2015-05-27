@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  4:57 PM
+// Last Modified On : 2015-05-27  3:12 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -94,7 +94,7 @@ namespace SmsClient
             Console.WriteLine("Calling the back-end API");
 
             string smsServiceAddress = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
-            string apiBaseAddress = string.IsNullOrEmpty(smsServiceAddress) ? "http://sms-api-dev-jym.yuyidev.com/" : smsServiceAddress;
+            string apiBaseAddress = string.IsNullOrEmpty(smsServiceAddress) ? "https://jym-dev-api-sms.yuyidev.com/" : smsServiceAddress;
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();
 

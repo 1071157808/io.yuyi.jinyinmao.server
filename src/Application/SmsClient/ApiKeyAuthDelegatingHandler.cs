@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  10:12 PM
+// Last Modified On : 2015-05-27  3:09 PM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -37,9 +37,9 @@ namespace SmsClient
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string appIdConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppId");
-            string appId = string.IsNullOrEmpty(appIdConfig) ? "0dcd384f-47a6-4083-bef4-a61bec55e12f" : appIdConfig;
-            string apiKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
-            string apiKey = string.IsNullOrEmpty(apiKeyConfig) ? "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=" : apiKeyConfig;
+            string appId = string.IsNullOrEmpty(appIdConfig) ? "38e9ad41-c1b2-44a0-ad2a-88acba74db9d" : appIdConfig;
+            string apiKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceApiKey");
+            string apiKey = string.IsNullOrEmpty(apiKeyConfig) ? "HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" : apiKeyConfig;
 
             HttpResponseMessage response;
             string requestContentBase64String = string.Empty;
