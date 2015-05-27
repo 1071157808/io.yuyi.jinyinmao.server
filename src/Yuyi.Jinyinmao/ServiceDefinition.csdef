@@ -17,7 +17,7 @@
       <Setting name="SmsServiceEnable" />
       <Setting name="SmsServiceAddress" />
       <Setting name="SmsServiceAppId" />
-      <Setting name="SmsServiceAppKey" />
+      <Setting name="SmsServiceApiKey" />
       <Setting name="EnableHMACAuth" />
       <Setting name="JYMDBContextConnectionString" />
     </ConfigurationSettings>
@@ -40,7 +40,7 @@
       <Setting name="SmsServiceEnable" />
       <Setting name="SmsServiceAddress" />
       <Setting name="SmsServiceAppId" />
-      <Setting name="SmsServiceAppKey" />
+      <Setting name="SmsServiceApiKey" />
       <Setting name="EnableHMACAuth" />
       <Setting name="JYMDBContextConnectionString" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />

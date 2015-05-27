@@ -4,7 +4,7 @@
 // Created          : 2015-04-20  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  10:11 PM
+// Last Modified On : 2015-05-27  5:27 PM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,10 +42,10 @@ namespace Yuyi.Jinyinmao.Service
         static ApiKeyAuthDelegatingHandler()
         {
             string appId = CloudConfigurationManager.GetSetting("SmsServiceAppId");
-            string appKey = CloudConfigurationManager.GetSetting("SmsServiceAppKey");
+            string apiKey = CloudConfigurationManager.GetSetting("SmsServiceApiKey");
 
-            AppId = appId.IsNullOrEmpty() ? "541a74bc-cdf0-455d-9093-1aa5ec3cb7d3" : appId;
-            AppKey = appKey.IsNullOrEmpty() ? "rNAhdng2Tu1iXpH72jU2zLSW/hhxuGBxpBNSBBjwQEA=" : appKey;
+            AppId = appId.IsNullOrEmpty() ? "38e9ad41-c1b2-44a0-ad2a-88acba74db9d" : appId;
+            AppKey = apiKey.IsNullOrEmpty() ? "HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" : apiKey;
         }
 
         /// <summary>
