@@ -136,14 +136,6 @@
       <Project>{5245A89C-FD02-404A-A0A3-C1B5F197E426}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GrainInterface\GrainInterface.csproj">
-      <Project>{a62c0d13-062a-4992-bba9-ae7b5c9498cc}</Project>
-      <Name>GrainInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Grains\Grains.csproj">
-      <Project>{ba713541-ff67-43e3-a562-fb05b5e705c1}</Project>
-      <Name>Grains</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

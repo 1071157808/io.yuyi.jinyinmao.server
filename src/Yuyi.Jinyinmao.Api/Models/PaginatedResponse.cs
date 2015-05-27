@@ -63,19 +63,16 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int TotalPageCount { get; set; }
     }
 
-    internal static class IPaginatedListEx
+    internal static class PaginatedListEx
     {
-        internal static PaginatedResponse<TResponse> ToResponse<TResponse>(this IPaginatedList<TResponse> paginatedList) where TResponse : IResponse
+        internal static PaginatedResponse<TResponse> ToResponse<TResponse>(this IPaginatedList<TResponse> paginatedList) where TResponse : IResponse => new PaginatedResponse<TResponse>
         {
-            return new PaginatedResponse<TResponse>
-            {
-                HasNextPage = paginatedList.HasNextPage,
-                Items = paginatedList.Items.ToList(),
-                PageIndex = paginatedList.PageIndex,
-                PageSize = paginatedList.PageSize,
-                TotalCount = paginatedList.TotalCount,
-                TotalPageCount = paginatedList.TotalPageCount
-            };
-        }
+            HasNextPage = paginatedList.HasNextPage,
+            Items = paginatedList.Items.ToList(),
+            PageIndex = paginatedList.PageIndex,
+            PageSize = paginatedList.PageSize,
+            TotalCount = paginatedList.TotalCount,
+            TotalPageCount = paginatedList.TotalPageCount
+        };
     }
 }

@@ -56,16 +56,13 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static class SettleAccountInfoEx
     {
-        internal static SettleAccountInfoResponse ToResponse(this SettleAccountInfo info)
+        internal static SettleAccountInfoResponse ToResponse(this SettleAccountInfo info) => new SettleAccountInfoResponse
         {
-            return new SettleAccountInfoResponse
-            {
-                Balance = info.Balance,
-                Crediting = info.Crediting,
-                Debiting = info.Debiting,
-                MonthWithdrawalCount = info.MonthWithdrawalCount,
-                TodayWithdrawalCount = info.TodayWithdrawalCount
-            };
-        }
+            Balance = info.Balance,
+            Crediting = info.Crediting,
+            Debiting = info.Debiting,
+            MonthWithdrawalCount = info.MonthWithdrawalCount,
+            TodayWithdrawalCount = info.TodayWithdrawalCount
+        };
     }
 }

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-08  2:57 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  12:00 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="OrderInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -142,30 +142,27 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
 
     internal static class OrderInfoEx
     {
-        internal static OrderInfoResponse ToResponse(this OrderInfo info)
+        internal static OrderInfoResponse ToResponse(this OrderInfo info) => new OrderInfoResponse
         {
-            return new OrderInfoResponse
-            {
-                AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
-                ExtraInterest = info.ExtraInterest,
-                ExtraYield = info.ExtraYield,
-                Interest = info.Interest,
-                IsRepaid = info.IsRepaid,
-                OrderIdentifier = info.OrderId.ToGuidString(),
-                OrderNo = info.OrderNo,
-                OrderTime = info.OrderTime,
-                Principal = info.Principal,
-                ProductCategory = info.ProductCategory,
-                ProductIdentifier = info.ProductId.ToGuidString(),
-                ProductSnapshot = info.ProductSnapshot.ToResponse(),
-                RepaidTime = info.RepaidTime.GetValueOrDefault(),
-                ResultCode = info.ResultCode,
-                ResultTime = info.ResultTime.GetValueOrDefault(),
-                SettleDate = info.SettleDate,
-                TransDesc = info.TransDesc,
-                ValueDate = info.ValueDate,
-                Yield = info.Yield
-            };
-        }
+            AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
+            ExtraInterest = info.ExtraInterest,
+            ExtraYield = info.ExtraYield,
+            Interest = info.Interest,
+            IsRepaid = info.IsRepaid,
+            OrderIdentifier = info.OrderId.ToGuidString(),
+            OrderNo = info.OrderNo,
+            OrderTime = info.OrderTime,
+            Principal = info.Principal,
+            ProductCategory = info.ProductCategory,
+            ProductIdentifier = info.ProductId.ToGuidString(),
+            ProductSnapshot = info.ProductSnapshot.ToResponse(),
+            RepaidTime = info.RepaidTime.GetValueOrDefault(),
+            ResultCode = info.ResultCode,
+            ResultTime = info.ResultTime.GetValueOrDefault(),
+            SettleDate = info.SettleDate,
+            TransDesc = info.TransDesc,
+            ValueDate = info.ValueDate,
+            Yield = info.Yield
+        };
     }
 }

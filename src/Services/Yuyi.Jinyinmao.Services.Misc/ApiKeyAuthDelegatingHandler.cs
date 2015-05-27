@@ -56,7 +56,6 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;HttpResponseMessage&gt;.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response;
             string requestContentBase64String = string.Empty;
 
             string requestUri = HttpUtility.UrlEncode(request.RequestUri.AbsoluteUri.ToLower());
@@ -80,9 +79,9 @@ namespace Yuyi.Jinyinmao.Service
             }
 
             //Creating the raw signature string
-            string signatureRawData = String.Format("{0}{1}{2}{3}{4}{5}", AppId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
+            string signatureRawData = $"{AppId}{requestHttpMethod}{requestUri}{requestTimeStamp}{nonce}{requestContentBase64String}";
 
-            var secretKeyByteArray = Convert.FromBase64String(AppKey);
+            byte[] secretKeyByteArray = Convert.FromBase64String(AppKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(signatureRawData);
 
@@ -91,10 +90,10 @@ namespace Yuyi.Jinyinmao.Service
                 byte[] signatureBytes = hmac.ComputeHash(signature);
                 string requestSignatureBase64String = Convert.ToBase64String(signatureBytes);
                 //Setting the values in the Authorization header using custom scheme (amx)
-                request.Headers.Authorization = new AuthenticationHeaderValue("jas", string.Format("{0}:{1}:{2}:{3}", AppId, requestSignatureBase64String, nonce, requestTimeStamp));
+                request.Headers.Authorization = new AuthenticationHeaderValue("jas", $"{AppId}:{requestSignatureBase64String}:{nonce}:{requestTimeStamp}");
             }
 
-            response = await base.SendAsync(request, cancellationToken);
+            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
             return response;
         }

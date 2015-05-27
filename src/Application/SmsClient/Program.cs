@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
@@ -35,18 +36,16 @@ namespace SmsClient
                     continue;
                 }
 
-                var parameters = command.Split(' ').ToList();
+                List<string> parameters = command.Split(' ').ToList();
 
-                int index;
-                index = parameters.IndexOf("-C");
+                int index = parameters.IndexOf("-C");
                 if (index == -1 || parameters.Count < index + 2)
                 {
                     Console.WriteLine("Missing cellphone numbers.");
                     continue;
                 }
 
-                string cellphones;
-                cellphones = parameters[index + 1];
+                string cellphones = parameters[index + 1];
                 if (string.IsNullOrEmpty(cellphones))
                 {
                     Console.WriteLine("Missing cellphone numbers.");
@@ -54,8 +53,7 @@ namespace SmsClient
                 }
 
                 string message;
-                int messageIndex;
-                messageIndex = parameters.IndexOf("-M");
+                int messageIndex = parameters.IndexOf("-M");
                 if (messageIndex == -1 || parameters.Count < messageIndex + 2)
                 {
                     message = "验证码：123456";
@@ -66,8 +64,7 @@ namespace SmsClient
                 }
 
                 string signature;
-                int signatureIndex;
-                signatureIndex = parameters.IndexOf("-S");
+                int signatureIndex = parameters.IndexOf("-S");
                 if (signatureIndex == -1 || parameters.Count < signatureIndex + 2)
                 {
                     signature = "金银猫";

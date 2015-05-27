@@ -135,19 +135,19 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             return base.OnActivateAsync();
         }
 
-        private AuthRequestParameter BuildRequestParameter(string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, char sequencePrefix = 'A')
-        {
-            string[] address = cityName.Split('|');
-            return new AuthRequestParameter(this.State.SagaId.ToGuidString().ToUpperInvariant(), sequenceNo.ToUpperInvariant(),
-                bankCardNo, realName, address[0], address[1], bankName, credential, credentialNo, cellphone, userId);
-        }
-
-        private PaymentRequestParameter BuildRequestParameter(string batchNo, string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, int amount)
+        private static PaymentRequestParameter BuildRequestParameter(string batchNo, string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, int amount)
         {
             string[] address = cityName.Split('|');
             return new PaymentRequestParameter(batchNo, sequenceNo, bankCardNo, realName, address[0],
                 address[1], bankName, credential, credentialNo, cellphone, userId,
                 "YL" + DateTime.UtcNow.AddHours(8).Date.ToString("yyyyMMdd"), decimal.Divide(amount, 100));
+        }
+
+        private AuthRequestParameter BuildRequestParameter(string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId)
+        {
+            string[] address = cityName.Split('|');
+            return new AuthRequestParameter(this.State.SagaId.ToGuidString().ToUpperInvariant(), sequenceNo.ToUpperInvariant(),
+                bankCardNo, realName, address[0], address[1], bankName, credential, credentialNo, cellphone, userId);
         }
 
         private async Task FinishAsync()
@@ -226,7 +226,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
                 if (transcationInfo != null)
                 {
-                    PaymentRequestParameter parameter = this.BuildRequestParameter(transcationInfo.SequenceNo, transcationInfo.TransactionId.ToGuidString(),
+                    PaymentRequestParameter parameter = BuildRequestParameter(transcationInfo.SequenceNo, transcationInfo.TransactionId.ToGuidString(),
                         bankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
                         (int)userInfo.Credential, userInfo.CredentialNo, bankCardInfo.Cellphone,
                         userInfo.UserId.ToGuidString(), transcationInfo.Amount);
@@ -269,7 +269,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                     string sequenceNo = await SequenceNoHelper.GetSequenceNoAsync();
                     AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, bankCardInfo.CityName,
                         bankCardInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName, (int)userInfo.Credential,
-                        userInfo.CredentialNo, bankCardInfo.Cellphone, userInfo.UserId.ToGuidString(), 'B');
+                        userInfo.CredentialNo, bankCardInfo.Cellphone, userInfo.UserId.ToGuidString());
 
                     YilianRequestResult result = await this.YilianService.AuthRequestAsync(parameter);
                     this.Info.Add("Request-{0}".FormatWith(DateTime.UtcNow.ToString("O")), new { result.Message, result.ResponseString });

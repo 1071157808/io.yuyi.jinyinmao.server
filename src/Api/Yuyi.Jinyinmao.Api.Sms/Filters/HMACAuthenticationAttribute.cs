@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
     ///     Class HMACAuthenticationAttribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
+    public sealed class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
         private static readonly string ApiKeyName = "JymApiSms";
         private static readonly string AuthenticationScheme = "jas";
@@ -69,10 +69,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
         /// <returns>
         ///     true if more than one instance is allowed to be specified; otherwise, false. The default is false.
         /// </returns>
-        public bool AllowMultiple
-        {
-            get { return false; }
-        }
+        public bool AllowMultiple => false;
 
         /// <summary>
         ///     Authenticates the request.
@@ -92,7 +89,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             {
                 string rawAuthzHeader = req.Headers.Authorization.Parameter;
 
-                string[] autherizationHeaderArray = this.GetAutherizationHeaderValues(rawAuthzHeader);
+                string[] autherizationHeaderArray = GetAutherizationHeaderValues(rawAuthzHeader);
 
                 if (autherizationHeaderArray != null)
                 {
@@ -101,7 +98,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
                     string nonce = autherizationHeaderArray[2];
                     string requestTimeStamp = autherizationHeaderArray[3];
 
-                    Task<bool> isValid = this.isValidRequest(req, appId, incomingBase64Signature, nonce, requestTimeStamp);
+                    Task<bool> isValid = IsValidRequest(req, appId, incomingBase64Signature, nonce, requestTimeStamp);
 
                     if (isValid.Result)
                     {
@@ -154,27 +151,14 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             }
         }
 
-        private static void LoadAppKeysConfig()
-        {
-            if (DateTime.UtcNow - configLoadTime > TimeSpan.FromMinutes(5))
-            {
-                configLoadTime = DateTime.UtcNow;
-                CloudTableClient client = StorageAccount.CreateCloudTableClient();
-
-                IEnumerable<App> apps = client.GetTableReference("ApiKeys").ExecuteQuery(Query);
-                Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.AddHours(8)).ToDictionary(app => app.AppId);
-                allowedApps = tempAllowedApps;
-            }
-        }
-
-        private string[] GetAutherizationHeaderValues(string rawAuthzHeader)
+        private static string[] GetAutherizationHeaderValues(string rawAuthzHeader)
         {
             string[] credArray = rawAuthzHeader.Split(':');
 
             return credArray.Length == 4 ? credArray : null;
         }
 
-        private bool isReplayRequest(string nonce, string requestTimeStamp)
+        private static bool IsReplayRequest(string nonce, string requestTimeStamp)
         {
             if (MemoryCache.Default.Contains(nonce))
             {
@@ -194,7 +178,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             return false;
         }
 
-        private async Task<bool> isValidRequest(HttpRequestMessage req, string appIdString, string incomingBase64Signature, string nonce, string requestTimeStamp)
+        private static async Task<bool> IsValidRequest(HttpRequestMessage req, string appIdString, string incomingBase64Signature, string nonce, string requestTimeStamp)
         {
             string requestContentBase64String = "";
             string requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());
@@ -213,7 +197,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
 
             App app = allowedApps[appId];
 
-            if (this.isReplayRequest(nonce, requestTimeStamp))
+            if (IsReplayRequest(nonce, requestTimeStamp))
             {
                 return false;
             }
@@ -225,7 +209,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
                 requestContentBase64String = Convert.ToBase64String(hash);
             }
 
-            string data = String.Format("{0}{1}{2}{3}{4}{5}", appIdString, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
+            string data = $"{appIdString}{requestHttpMethod}{requestUri}{requestTimeStamp}{nonce}{requestContentBase64String}";
 
             byte[] secretKeyBytes = Convert.FromBase64String(app.ApiKey);
 
@@ -239,12 +223,25 @@ namespace Yuyi.Jinyinmao.Api.Sms.Filters
             }
         }
 
+        private static void LoadAppKeysConfig()
+        {
+            if (DateTime.UtcNow - configLoadTime > TimeSpan.FromMinutes(5))
+            {
+                configLoadTime = DateTime.UtcNow;
+                CloudTableClient client = StorageAccount.CreateCloudTableClient();
+
+                IEnumerable<App> apps = client.GetTableReference("ApiKeys").ExecuteQuery(Query);
+                Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.AddHours(8)).ToDictionary(app => app.AppId);
+                allowedApps = tempAllowedApps;
+            }
+        }
+
         #region Nested type: ResultWithChallenge
 
         /// <summary>
         ///     ResultWithChallenge.
         /// </summary>
-        public class ResultWithChallenge : IHttpActionResult
+        private sealed class ResultWithChallenge : IHttpActionResult
         {
             private readonly string authenticationScheme = "jas";
             private readonly IHttpActionResult next;

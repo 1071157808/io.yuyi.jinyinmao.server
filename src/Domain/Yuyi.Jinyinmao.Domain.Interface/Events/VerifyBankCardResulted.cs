@@ -1,15 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// Author           : Siqi Lu
+// Created          : 2015-05-27  7:35 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-05-27  7:36 PM
+// ***********************************************************************
+// <copyright file="VerifyBankCardResulted.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
-    /// VerifyBankCardResulted.
+    ///     VerifyBankCardResulted.
     /// </summary>
     [Immutable]
     public class VerifyBankCardResulted : Event
@@ -21,7 +29,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public BankCardInfo BankCardInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="VerifyBankCardResulted"/> is result.
+        ///     Gets or sets a value indicating whether this <see cref="VerifyBankCardResulted" /> is result.
         /// </summary>
         /// <value><c>true</c> if result; otherwise, <c>false</c>.</value>
         public bool Result { get; set; }

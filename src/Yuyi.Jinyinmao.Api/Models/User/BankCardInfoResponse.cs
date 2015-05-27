@@ -75,19 +75,16 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static class BankCardEx
     {
-        internal static BankCardInfoResponse ToResponse(this BankCardInfo info)
+        internal static BankCardInfoResponse ToResponse(this BankCardInfo info) => new BankCardInfoResponse
         {
-            return new BankCardInfoResponse
-            {
-                BankCardNo = info.BankCardNo,
-                BankName = info.BankName,
-                Cellphone = info.Cellphone,
-                CityName = info.CityName,
-                Verified = info.Verified,
-                VerifiedByYilian = info.VerifiedByYilian,
-                VerifiedTime = info.VerifiedTime,
-                WithdrawAmount = info.WithdrawAmount
-            };
-        }
+            BankCardNo = info.BankCardNo,
+            BankName = info.BankName,
+            Cellphone = info.Cellphone,
+            CityName = info.CityName,
+            Verified = info.Verified,
+            VerifiedByYilian = info.VerifiedByYilian,
+            VerifiedTime = info.VerifiedTime,
+            WithdrawAmount = info.WithdrawAmount
+        };
     }
 }

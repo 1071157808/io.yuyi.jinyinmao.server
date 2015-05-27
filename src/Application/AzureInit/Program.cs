@@ -4,7 +4,7 @@
 // Created          : 2015-05-19  2:22 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  6:45 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.ServiceBus;
@@ -150,10 +151,8 @@ namespace AzureInit
                 "Sms"
             };
 
-            foreach (string table in tables)
+            foreach (CloudTable cloudTable in tables.Select(table => tableClient.GetTableReference(table)))
             {
-                CloudTable cloudTable = tableClient.GetTableReference(table);
-
                 cloudTable.CreateIfNotExists();
                 Console.WriteLine("Created Storage Table {0}".FormatWith(cloudTable.Name));
             }
@@ -200,12 +199,7 @@ namespace AzureInit
                 return true;
             }
 
-            if (day.DayOfWeek == DayOfWeek.Sunday || day.DayOfWeek == DayOfWeek.Saturday)
-            {
-                return false;
-            }
-
-            return true;
+            return day.DayOfWeek != DayOfWeek.Sunday && day.DayOfWeek != DayOfWeek.Saturday;
         }
 
         private static void Main(string[] args)
@@ -231,12 +225,12 @@ namespace AzureInit
                         continue;
                     }
 
-                    if (command.StartsWith("ServiceBus:"))
+                    if (command.StartsWith("ServiceBus:", StringComparison.Ordinal))
                     {
                         InitServiceBus(command.Remove(0, "ServiceBus:".Length));
                     }
 
-                    if (command.StartsWith("Storage:"))
+                    if (command.StartsWith("Storage:", StringComparison.Ordinal))
                     {
                         InitStorage(command.Remove(0, "Storage:".Length));
                     }
@@ -252,7 +246,8 @@ namespace AzureInit
 
         #region Nested type: ConfigEntity
 
-        public class ConfigEntity : TableEntity
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public sealed class ConfigEntity : TableEntity
         {
             public int DateIndex { get; set; }
 

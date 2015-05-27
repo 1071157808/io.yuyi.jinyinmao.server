@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  9:22 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="WebRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Api
             Trace.TraceInformation("OrleansAzureWeb-OnStart");
 
             // For information on handling configuration changes see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
-            RoleEnvironment.Changing += this.RoleEnvironmentChanging;
+            RoleEnvironment.Changing += RoleEnvironmentChanging;
 
             bool ok = base.OnStart();
 
@@ -72,7 +72,7 @@ namespace Yuyi.Jinyinmao.Api
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="RoleEnvironmentChangingEventArgs" /> instance containing the event data.</param>
-        private void RoleEnvironmentChanging(object sender, RoleEnvironmentChangingEventArgs e)
+        private static void RoleEnvironmentChanging(object sender, RoleEnvironmentChangingEventArgs e)
         {
             // If a configuration setting is changing
             if (e.Changes.Any(change => change is RoleEnvironmentConfigurationSettingChange))

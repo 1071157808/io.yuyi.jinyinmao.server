@@ -76,19 +76,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="grainReference">The grain reference.</param>
         /// <param name="grainState">State of the grain.</param>
         /// <returns>Task.</returns>
-        public Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
-        {
-            return TaskDone.Done;
-        }
+        public Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState) => TaskDone.Done;
 
         /// <summary>
         ///     Closes this instance.
         /// </summary>
         /// <returns>Task.</returns>
-        public Task Close()
-        {
-            return TaskDone.Done;
-        }
+        public Task Close() => TaskDone.Done;
 
         /// <summary>
         ///     Initialization function for this storage provider.
@@ -98,6 +92,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="config">The configuration.</param>
         /// <returns>Task.</returns>
         /// <exception cref="BadProviderConfigException">The DataConnectionString setting has not been configured. Please add a DataConnectionString setting with a valid connection string.</exception>
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
         public async Task Init(string name, IProviderRuntime providerRuntime, IProviderConfiguration config)
         {
             try
@@ -121,13 +116,12 @@ namespace Yuyi.Jinyinmao.Domain
 
                 using (IDbConnection db = new SqlConnection(this.connectionStringTemplate.FormatWith(0)))
                 {
-                    // ReSharper disable once AccessToDisposedClosure
                     await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.QueryAsync<int>(db, "SELECT count(Id) FROM " + this.tableNameTemplate.FormatWith(0)));
                 }
             }
             catch (Exception e)
             {
-                this.Log.Error((int)ErrorCode.SqlDatabaseProvider_InitProvider, e.Message, e);
+                this.Log.Error((int)ErrorCode.SqlDatabaseProviderInitProvider, e.Message, e);
             }
         }
 
@@ -171,7 +165,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             catch (Exception e)
             {
-                this.Log.Error((int)ErrorCode.SqlDatabaseProvider_Read, "{0} : {1}".FormatWith(e.Message, grainReference.GetPrimaryKey().ToGuidString()), e);
+                this.Log.Error((int)ErrorCode.SqlDatabaseProviderRead, "{0} : {1}".FormatWith(e.Message, grainReference.GetPrimaryKey().ToGuidString()), e);
                 throw;
             }
         }
@@ -207,7 +201,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.Log.Verbose("SqlDatabaseProvider:{0}-{1}-{2}", connectionString, tableName, storedData);
 
                 // Grain use the long as its key
-                if (id.StartsWith("00000000") && !id.EndsWith("000000"))
+                if (id.StartsWith("00000000", StringComparison.Ordinal) && !id.EndsWith("000000", StringComparison.Ordinal))
                 {
                     longId = grainReference.GetPrimaryKeyLong();
                 }
@@ -271,7 +265,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             catch (Exception e)
             {
-                this.Log.Error((int)ErrorCode.SqlDatabaseProvider_Write, "{0} : {1}".FormatWith(e.Message, id), e);
+                this.Log.Error((int)ErrorCode.SqlDatabaseProviderWrite, "{0} : {1}".FormatWith(e.Message, id), e);
                 throw;
             }
         }
@@ -285,10 +279,12 @@ namespace Yuyi.Jinyinmao.Domain
         private void ConfigureJsonSerializerSettings(IProviderConfiguration config)
         {
             // By default, use automatic type name handling, simple assembly names, and no JSON formatting
-            this.settings = new JsonSerializerSettings();
-            this.settings.TypeNameHandling = TypeNameHandling.Auto;
-            this.settings.TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple;
-            this.settings.Formatting = Formatting.None;
+            this.settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
+                Formatting = Formatting.None
+            };
 
             string propertie;
             if (config.Properties.TryGetValue("SerializeTypeNames", out propertie))
@@ -305,8 +301,8 @@ namespace Yuyi.Jinyinmao.Domain
             if (config.Properties.TryGetValue("UseFullAssemblyNames", out propertie))
             {
                 bool useFullAssemblyNames;
-                var UseFullAssemblyNamesValue = propertie;
-                bool.TryParse(UseFullAssemblyNamesValue, out useFullAssemblyNames);
+                var useFullAssemblyNamesValue = propertie;
+                bool.TryParse(useFullAssemblyNamesValue, out useFullAssemblyNames);
                 if (useFullAssemblyNames)
                 {
                     this.settings.TypeNameAssemblyFormat = FormatterAssemblyStyle.Full;
@@ -315,10 +311,10 @@ namespace Yuyi.Jinyinmao.Domain
 
             if (config.Properties.TryGetValue("Formatting", out propertie))
             {
-                bool indentJSON;
-                var indentJSONValue = propertie;
-                bool.TryParse(indentJSONValue, out indentJSON);
-                if (indentJSON)
+                bool indentJson;
+                var indentJsonValue = propertie;
+                bool.TryParse(indentJsonValue, out indentJson);
+                if (indentJson)
                 {
                     this.settings.Formatting = Formatting.Indented;
                 }
@@ -353,6 +349,8 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Class GrainStateRecord.
     /// </summary>
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     internal class GrainStateRecord
     {
         /// <summary>

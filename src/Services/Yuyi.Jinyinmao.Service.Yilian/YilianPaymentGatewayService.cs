@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  4:57 PM
+// Last Modified On : 2015-05-27  6:26 PM
 // ***********************************************************************
 // <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,7 @@ namespace Yuyi.Jinyinmao.Service
     /// </summary>
     public sealed class YilianPaymentGatewayService : IYilianPaymentGatewayService
     {
-        private const string QueryAuthRequestWithParameters = "{0}?p={{BATCH_NO:\"{1}\"}}";
+        private const string QUERY_AUTH_REQUEST_WITH_PARAMETERS = "{0}?p={{BATCH_NO:\"{1}\"}}";
         private static readonly string PaymentGatewayHost;
         private static readonly string PaymentRequestReturnUrl;
         private static readonly string PaymentRequestUrl;
@@ -58,13 +58,10 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         public YilianPaymentGatewayService()
         {
-            this.client = new Lazy<HttpClient>(this.InitHttpClient);
+            this.client = new Lazy<HttpClient>(InitHttpClient);
         }
 
-        private HttpClient Client
-        {
-            get { return this.client.Value; }
-        }
+        private HttpClient Client => this.client.Value;
 
         #region IYilianPaymentGatewayService Members
 
@@ -79,7 +76,7 @@ namespace Yuyi.Jinyinmao.Service
             string responseString = "";
             try
             {
-                parameter.TRANS_DETAILS.First().MERCHANT_URL = UserAuthRequestReturnUrl;
+                parameter.TransDetails.First().MerchantUrl = UserAuthRequestReturnUrl;
                 JsonConvert.SerializeObject(parameter);
 
                 Dictionary<string, string> parameters = new Dictionary<string, string> { { "p", JsonConvert.SerializeObject(parameter) } };
@@ -119,7 +116,7 @@ namespace Yuyi.Jinyinmao.Service
             string responseString = "";
             try
             {
-                parameter.TRANS_DETAILS.First().MERCHANT_URL = PaymentRequestReturnUrl;
+                parameter.TransDetails.First().MerchantUrl = PaymentRequestReturnUrl;
                 JsonConvert.SerializeObject(parameter);
 
                 Dictionary<string, string> parameters = new Dictionary<string, string> { { "p", JsonConvert.SerializeObject(parameter) } };
@@ -158,13 +155,13 @@ namespace Yuyi.Jinyinmao.Service
         {
             try
             {
-                string url = string.Format(QueryAuthRequestWithParameters, QueryRequestUrl, batchNo);
+                string url = string.Format(QUERY_AUTH_REQUEST_WITH_PARAMETERS, QueryRequestUrl, batchNo);
                 HttpResponseMessage response = await RetryPolicy.ExecuteAsync(() => this.Client.GetAsync(url));
                 string responseString = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    JObject resultJObjects = this.ValidateJsonSchema(responseString);
+                    JObject resultJObjects = ValidateJsonSchema(responseString);
                     JArray jArray = resultJObjects.SelectToken("TRANS_DETAILS").Value<JArray>();
                     string result = jArray.First.SelectToken("PAY_STATE").Value<string>();
                     string message = jArray.First.SelectToken("REMARK").Value<string>();
@@ -188,6 +185,7 @@ namespace Yuyi.Jinyinmao.Service
             }
             catch
             {
+                // ignored
             }
 
             return null;
@@ -199,17 +197,16 @@ namespace Yuyi.Jinyinmao.Service
         ///     Initializes the HTTP client.
         /// </summary>
         /// <returns></returns>
-        private HttpClient InitHttpClient()
+        private static HttpClient InitHttpClient()
         {
-            HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(PaymentGatewayHost);
+            HttpClient httpClient = new HttpClient { BaseAddress = new Uri(PaymentGatewayHost) };
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
             httpClient.Timeout = new TimeSpan(0, 0, 10, 0);
             return httpClient;
         }
 
-        private JObject ValidateJsonSchema(string responseString)
+        private static JObject ValidateJsonSchema(string responseString)
         {
             //{"BATCH_NO":"ACBIFK45564783","MSG_SIGN":"","MSG_TYPE":"200002","TRANS_DETAILS":[{"ACC_CITY":"","ACC_NAME":"","ACC_NO":"","ACC_PROP":"0","ACC_PROVINCE":""
             //,"ACC_TYPE":"00","AMOUNT":"0.00","BANK_CODE":"","BANK_NAME":"","BANK_NO":"","CNY":"CNY","EXCHANGE_RATE":"","ID_NO":"","ID_TYPE":"0"
@@ -271,11 +268,7 @@ namespace Yuyi.Jinyinmao.Service
 
             JObject reply = JObject.Parse(responseString);
 
-            if (!reply.IsValid(schema))
-            {
-                return null;
-            }
-            return reply;
+            return !reply.IsValid(schema) ? null : reply;
         }
     }
 }

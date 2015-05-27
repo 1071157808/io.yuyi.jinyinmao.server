@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  2:08 AM
+// Last Modified On : 2015-05-27  6:57 PM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,12 +25,6 @@ namespace Yuyi.Jinyinmao.Domain
     public abstract class EntityGrain<TState> : Grain<TState>, IEntity where TState : class, IEntityState
     {
         /// <summary>
-        ///     Gets or sets a value indicating whether [state changed].
-        /// </summary>
-        /// <value><c>true</c> if [state changed]; otherwise, <c>false</c>.</value>
-        protected bool StateChanged { get; set; }
-
-        /// <summary>
         ///     Gets the command store.
         /// </summary>
         private ICommandStore CommandStore { get; set; }
@@ -40,16 +34,19 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private IEventStore EventStore { get; set; }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether [state changed].
+        /// </summary>
+        /// <value><c>true</c> if [state changed]; otherwise, <c>false</c>.</value>
+        private bool StateChanged { get; set; }
+
         #region IEntity Members
 
         /// <summary>
         ///     Gets the identifier.
         /// </summary>
         /// <returns>Task&lt;Guid&gt;.</returns>
-        public Task<Guid> GetIdAsync()
-        {
-            return Task.FromResult(this.State.Id);
-        }
+        public Task<Guid> GetIdAsync() => Task.FromResult(this.State.Id);
 
         /// <summary>
         ///     Reload state data as an asynchronous operation.
@@ -87,39 +84,19 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Stores the event asynchronous.
-        /// </summary>
-        /// <param name="event">The event.</param>
-        /// <returns>Task.</returns>
-        public void StoreEventAsync(IEvent @event)
-        {
-            EventRecord record = @event.ToRecord();
-            this.EventStore.StoreEventRecordAsync(record).Forget(e =>
-                SiloClusterErrorLogger.Log(new ErrorLog
-                {
-                    Exception = e.GetExceptionString(),
-                    Message = e.Message,
-                    PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                    RowKey = "EntityEventStoringError"
-                }));
-        }
-
-        /// <summary>
         ///     Begins the process command asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        protected void BeginProcessCommandAsync(ICommand command)
-        {
-            this.StoreCommandAsync(command).Forget(e =>
-                SiloClusterErrorLogger.Log(new ErrorLog
-                {
-                    Exception = e.GetExceptionString(),
-                    Message = e.Message,
-                    PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                    RowKey = "EntityCommandStoringError"
-                }));
-        }
+        protected void BeginProcessCommandAsync(ICommand command) => this.StoreCommandAsync(command).Forget(e =>
+            SiloClusterErrorLogger.Log(new ErrorLog
+            {
+                Exception = e.GetExceptionString(),
+                Message = e.Message,
+                PartitionKey = this.GetPrimaryKey().ToGuidString(),
+                RowKey = "EntityCommandStoringError"
+            })
+            );
 
         /// <summary>
         ///     Logs the error.
@@ -144,6 +121,24 @@ namespace Yuyi.Jinyinmao.Domain
             this.StateChanged = true;
 
             return TaskDone.Done;
+        }
+
+        /// <summary>
+        ///     Stores the event asynchronous.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
+        protected void StoreEventAsync(IEvent @event)
+        {
+            EventRecord record = @event.ToRecord();
+            this.EventStore.StoreEventRecordAsync(record).Forget(e =>
+                SiloClusterErrorLogger.Log(new ErrorLog
+                {
+                    Exception = e.GetExceptionString(),
+                    Message = e.Message,
+                    PartitionKey = this.GetPrimaryKey().ToGuidString(),
+                    RowKey = "EntityEventStoringError"
+                }));
         }
 
         /// <summary>

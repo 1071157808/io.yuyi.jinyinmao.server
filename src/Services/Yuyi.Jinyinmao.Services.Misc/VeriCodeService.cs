@@ -30,12 +30,12 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     The maximum send times
         /// </summary>
-        private static readonly int maxSendTimes = 10;
+        private static readonly int MaxSendTimes = 10;
 
         /// <summary>
         ///     The veri code validity in minute
         /// </summary>
-        private static readonly int veriCodeValidityInMinute = 30;
+        private static readonly int VeriCodeValidityInMinute = 30;
 
         /// <summary>
         ///     The SMS service
@@ -65,22 +65,22 @@ namespace Yuyi.Jinyinmao.Service
             string veriCode;
             VeriCode code;
 
-            using (JYMDBContext context = new JYMDBContext())
+            using (JymdbContext context = new JymdbContext())
             {
                 // 时间大于今天开始日期，就一定是今天发送的验证码
                 code = await context.Query<VeriCode>().OrderByDescending(c => c.BuildAt)
                     .FirstOrDefaultAsync(c => c.Cellphone == cellphone && c.Type == (int)type && c.BuildAt >= DateTime.Today);
 
                 // 超过最大次数，停止发送
-                if (code != null && code.Times >= maxSendTimes)
+                if (code != null && code.Times >= MaxSendTimes)
                 {
                     return new SendVeriCodeResult { RemainCount = -1, Success = false };
                 }
 
-                veriCode = this.GenerateCode();
+                veriCode = GenerateCode();
 
                 // 小于最大次数，再次发送
-                if (code != null && code.Times < maxSendTimes)
+                if (code != null && code.Times < MaxSendTimes)
                 {
                     // 增加失败次数
                     code.Times += 1;
@@ -117,10 +117,10 @@ namespace Yuyi.Jinyinmao.Service
             }
 
             string message = GetVeriCodeMessage(type);
-            string verifyMessage = message.FormatWith(veriCode, veriCodeValidityInMinute);
+            string verifyMessage = message.FormatWith(veriCode, VeriCodeValidityInMinute);
             await this.smsService.SendMessageAsync(cellphone, verifyMessage);
 
-            return new SendVeriCodeResult { RemainCount = maxSendTimes - code.Times, Success = true };
+            return new SendVeriCodeResult { RemainCount = MaxSendTimes - code.Times, Success = true };
         }
 
         /// <summary>
@@ -131,10 +131,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;UseVeriCodeResult&gt;.</returns>
         public async Task<UseVeriCodeResult> UseAsync(string token, VeriCodeType type)
         {
-            using (JYMDBContext context = new JYMDBContext())
+            using (JymdbContext context = new JymdbContext())
             {
                 // 验证码的使用有效期为30分钟
-                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-veriCodeValidityInMinute);
+                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
                     .FirstOrDefaultAsync(v => v.Token == token && v.Type == (int)type && v.BuildAt >= availableTime);
 
@@ -160,10 +160,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;VerifyVeriCodeResult&gt;.</returns>
         public async Task<VerifyVeriCodeResult> VerifyAsync(string cellphone, string code, VeriCodeType type)
         {
-            using (JYMDBContext context = new JYMDBContext())
+            using (JymdbContext context = new JymdbContext())
             {
                 // 只取有效期内的验证码
-                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-veriCodeValidityInMinute);
+                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
                     .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == (int)type && v.BuildAt >= availableTime);
 
@@ -195,6 +195,12 @@ namespace Yuyi.Jinyinmao.Service
 
         #endregion IVeriCodeService Members
 
+        private static string GenerateCode()
+        {
+            Random r = new Random();
+            return r.Next(100000, 999999).ToString();
+        }
+
         private static string GetVeriCodeMessage(VeriCodeType type)
         {
             switch (type)
@@ -211,12 +217,6 @@ namespace Yuyi.Jinyinmao.Service
                 default:
                     return Resources.Sms_VeriCode;
             }
-        }
-
-        private string GenerateCode()
-        {
-            Random r = new Random();
-            return r.Next(100000, 999999).ToString();
         }
     }
 }

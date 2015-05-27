@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-20  4:01 PM
+// Last Modified On : 2015-05-27  7:45 PM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -205,7 +205,7 @@ namespace Yuyi.Jinyinmao.Service
         ///     Refreshes the jyb product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task RefreshJYBProductAsync()
+        public async Task RefreshJybProductAsync()
         {
             IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.RefreshAsync();
@@ -266,12 +266,9 @@ namespace Yuyi.Jinyinmao.Service
 
         #endregion IProductService Members
 
-        private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
-        {
-            return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                .ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
-                .ThenByDescending(p => p.IssueNo);
-        }
+        private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct => context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
+            .ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+            .ThenByDescending(p => p.IssueNo);
 
         private async Task FillWithSaleData(IEnumerable<RegularProductInfo> infos)
         {

@@ -26,15 +26,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>EventRecord.</returns>
-        public static EventRecord ToRecord(this IEvent @event)
+        public static EventRecord ToRecord(this IEvent @event) => new EventRecord
         {
-            return new EventRecord
-            {
-                Event = @event.ToJson(),
-                EventId = @event.EventId,
-                EventName = @event.GetType().Name
-            };
-        }
+            Event = @event.ToJson(),
+            EventId = @event.EventId,
+            EventName = @event.GetType().Name
+        };
     }
 
     /// <summary>

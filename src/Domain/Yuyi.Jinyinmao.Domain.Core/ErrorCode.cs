@@ -32,27 +32,27 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The azure table provider_ read
         /// </summary>
-        AzureTableProvider_Read = AzureTableProviderBase + 1,
+        AzureTableProviderRead = AzureTableProviderBase + 1,
 
         /// <summary>
         ///     The azure table provider_ write
         /// </summary>
-        AzureTableProvider_Write = AzureTableProviderBase + 2,
+        AzureTableProviderWrite = AzureTableProviderBase + 2,
 
         /// <summary>
         ///     The azure table provider_ delete
         /// </summary>
-        AzureTableProvider_Delete = AzureTableProviderBase + 3,
+        AzureTableProviderDelete = AzureTableProviderBase + 3,
 
         /// <summary>
         ///     The azure table provider_ initialize provider
         /// </summary>
-        AzureTableProvider_InitProvider = AzureTableProviderBase + 4,
+        AzureTableProviderInitProvider = AzureTableProviderBase + 4,
 
         /// <summary>
         ///     The azure table provider_ parameter connection string
         /// </summary>
-        AzureTableProvider_ParamConnectionString = AzureTableProviderBase + 5,
+        AzureTableProviderParamConnectionString = AzureTableProviderBase + 5,
 
         // Azure sql database storage provider related
         /// <summary>
@@ -63,26 +63,26 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The SQL database provider_ read
         /// </summary>
-        SqlDatabaseProvider_Read = SqlDatabaseProviderBase + 1,
+        SqlDatabaseProviderRead = SqlDatabaseProviderBase + 1,
 
         /// <summary>
         ///     The SQL database provider_ write
         /// </summary>
-        SqlDatabaseProvider_Write = SqlDatabaseProviderBase + 2,
+        SqlDatabaseProviderWrite = SqlDatabaseProviderBase + 2,
 
         /// <summary>
         ///     The SQL database provider_ delete
         /// </summary>
-        SqlDatabaseProvider_Delete = SqlDatabaseProviderBase + 3,
+        SqlDatabaseProviderDelete = SqlDatabaseProviderBase + 3,
 
         /// <summary>
         ///     The SQL database provider_ initialize provider
         /// </summary>
-        SqlDatabaseProvider_InitProvider = SqlDatabaseProviderBase + 4,
+        SqlDatabaseProviderInitProvider = SqlDatabaseProviderBase + 4,
 
         /// <summary>
         ///     The SQL database provider_ parameter connection string
         /// </summary>
-        SqlDatabaseProvider_ParamConnectionString = SqlDatabaseProviderBase + 5
+        SqlDatabaseProviderParamConnectionString = SqlDatabaseProviderBase + 5
     }
 }

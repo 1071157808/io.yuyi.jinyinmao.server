@@ -1,10 +1,10 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  4:13 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  10:34 PM
+// Last Modified On : 2015-05-27  6:06 PM
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -61,8 +60,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets the cloud storage account.
         /// </summary>
         /// <value>The cloud storage account.</value>
-        [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
-        public static CloudStorageAccount CloudStorageAccount { get; private set; }
+        public static CloudStorageAccount CloudStorageAccount { get; }
 
         /// <summary>
         ///     Gets the command store container.
@@ -104,7 +102,6 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the service bus connectiong string.
         /// </summary>
         /// <value>The service bus connectiong string.</value>
-        [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
         public static string ServiceBusConnectiongString { get; private set; }
     }
 }

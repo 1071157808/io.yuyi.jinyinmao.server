@@ -25,45 +25,47 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
     /// <summary>
     ///     Class ZTSmsService.
     /// </summary>
-    internal class ZTSmsService : ISmsService
+    internal class ZtSmsService : ISmsService
     {
-        private static readonly string getBalanceUrl;
-        private static readonly string messageTemplate;
-        private static readonly string password;
-        private static readonly string sendMessageUrl;
-        private static readonly CloudStorageAccount storageAccount;
-        private static readonly string userName;
+        private static readonly string GetBalanceUrl;
+        private static readonly string MessageTemplate;
+        private static readonly string Password;
+        private static readonly string SendMessageUrl;
+        private static readonly CloudStorageAccount StorageAccount;
+        private static readonly string UserName;
         private readonly string productId;
 
-        static ZTSmsService()
+        static ZtSmsService()
         {
-            sendMessageUrl = "http://www.ztsms.cn:8800/sendSms.do?";
-            getBalanceUrl = "http://www.ztsms.cn:8800/balance.do?";
+            SendMessageUrl = "http://www.ztsms.cn:8800/sendSms.do?";
+            GetBalanceUrl = "http://www.ztsms.cn:8800/balance.do?";
             string userNameConfig = CloudConfigurationManager.GetSetting("SmsServiceUserName");
             string passwordConfig = CloudConfigurationManager.GetSetting("SmsServicePassword");
-            userName = userNameConfig.IsNotNullOrEmpty() ? userNameConfig : "jymao";
-            password = passwordConfig.IsNotNullOrEmpty() ? passwordConfig : "DRTkGfh9";
-            messageTemplate = "username={0}&password={1}&mobile={2}&content={3}【{4}】&dstime=&productid={5}&xh=";
-            storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            UserName = userNameConfig.IsNotNullOrEmpty() ? userNameConfig : "jymao";
+            Password = passwordConfig.IsNotNullOrEmpty() ? passwordConfig : "DRTkGfh9";
+            MessageTemplate = "username={0}&password={1}&mobile={2}&content={3}【{4}】&dstime=&productid={5}&xh=";
+            StorageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ZTSmsService" /> class.
+        ///     Initializes a new instance of the <see cref="ZtSmsService" /> class.
         /// </summary>
         /// <param name="priority">The priority.</param>
-        public ZTSmsService(int priority)
+        public ZtSmsService(int priority)
         {
-            if (priority == 0)
+            switch (priority)
             {
-                this.productId = "676767";
-            }
-            else if (priority == 1)
-            {
-                this.productId = "48661";
-            }
-            else
-            {
-                this.productId = "251503";
+                case 0:
+                    this.productId = "676767";
+                    break;
+
+                case 1:
+                    this.productId = "48661";
+                    break;
+
+                default:
+                    this.productId = "251503";
+                    break;
             }
         }
 
@@ -73,7 +75,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         {
             using (HttpClient client = new HttpClient())
             {
-                string getBalanceRequstUrl = getBalanceUrl + "username={0}&password={1}".FormatWith(userName, password);
+                string getBalanceRequstUrl = GetBalanceUrl + "username={0}&password={1}".FormatWith(UserName, Password);
                 HttpResponseMessage response = await client.GetAsync(getBalanceRequstUrl);
                 return (await response.Content.ReadAsStringAsync()).ToInt();
             }
@@ -94,8 +96,8 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    HttpResponseMessage response = await client.GetAsync(sendMessageUrl + messageTemplate.FormatWith(
-                        userName, password, cellphones, message, signature, this.productId));
+                    HttpResponseMessage response = await client.GetAsync(SendMessageUrl + MessageTemplate.FormatWith(
+                        UserName, Password, cellphones, message, signature, this.productId));
                     responseMessage = await response.Content.ReadAsStringAsync();
                 }
             }
@@ -106,7 +108,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
             }
             finally
             {
-                CloudTableClient client = storageAccount.CreateCloudTableClient();
+                CloudTableClient client = StorageAccount.CreateCloudTableClient();
                 client.GetTableReference("Sms").Execute(TableOperation.Insert(new SmsMessage
                 {
                     AppId = appId,
@@ -120,7 +122,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
                 }));
             }
 
-            if (!responseMessage.StartsWith("1,"))
+            if (!responseMessage.StartsWith("1,", StringComparison.Ordinal))
             {
                 throw new ApplicationException("Sending message failed. " + responseMessage);
             }

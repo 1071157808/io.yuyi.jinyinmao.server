@@ -49,13 +49,10 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>SignUpResponse.</returns>
-        internal static SignUpResponse ToSignUpResponse(this UserInfo info)
+        internal static SignUpResponse ToSignUpResponse(this UserInfo info) => new SignUpResponse
         {
-            return new SignUpResponse
-            {
-                Cellphone = info.Cellphone,
-                UserIdentifier = info.UserId.ToGuidString()
-            };
-        }
+            Cellphone = info.Cellphone,
+            UserIdentifier = info.UserId.ToGuidString()
+        };
     }
 }

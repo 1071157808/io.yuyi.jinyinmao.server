@@ -21,7 +21,7 @@ namespace Yuyi.Jinyinmao.Service.Models
     /// <summary>
     ///     JYMDBContext.
     /// </summary>
-    public class JYMDBContext : DbContextBase
+    public class JymdbContext : DbContextBase
     {
         /// <summary>
         ///     The connectiong string
@@ -29,18 +29,18 @@ namespace Yuyi.Jinyinmao.Service.Models
         private static readonly string ConnectiongString;
 
         /// <summary>
-        ///     Initializes static members of the <see cref="JYMDBContext" /> class.
+        ///     Initializes static members of the <see cref="JymdbContext" /> class.
         /// </summary>
-        static JYMDBContext()
+        static JymdbContext()
         {
-            Database.SetInitializer<JYMDBContext>(null);
+            Database.SetInitializer<JymdbContext>(null);
             ConnectiongString = CloudConfigurationManager.GetSetting("JYMDBContextConnectionString");
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="JYMDBContext" /> class.
+        ///     Initializes a new instance of the <see cref="JymdbContext" /> class.
         /// </summary>
-        public JYMDBContext()
+        public JymdbContext()
             : base(ConnectiongString)
         {
         }
@@ -55,9 +55,6 @@ namespace Yuyi.Jinyinmao.Service.Models
         ///     Called when [model creating].
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Configurations.Add(new VeriCodeMap());
-        }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) => modelBuilder.Configurations.Add(new VeriCodeMap());
     }
 }

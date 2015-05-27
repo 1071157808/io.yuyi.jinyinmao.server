@@ -4,7 +4,7 @@
 // Created          : 2015-04-21  12:14 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-20  12:14 AM
+// Last Modified On : 2015-05-27  7:17 PM
 // ***********************************************************************
 // <copyright file="OrleansHostWrapper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,11 +17,11 @@ using Orleans.Runtime.Host;
 
 namespace Yuyi.Jinyinmao.Silos.LocalHost
 {
-    internal class OrleansHostWrapper : IDisposable
+    internal sealed class OrleansHostWrapper : IDisposable
     {
         private SiloHost siloHost;
 
-        public OrleansHostWrapper(string[] args)
+        public OrleansHostWrapper()
         {
             this.Init();
         }
@@ -36,7 +36,8 @@ namespace Yuyi.Jinyinmao.Silos.LocalHost
 
         public void Dispose()
         {
-            this.Dispose(true);
+            this.siloHost.Dispose();
+            this.siloHost = null;
         }
 
         #endregion IDisposable Members
@@ -57,13 +58,13 @@ namespace Yuyi.Jinyinmao.Silos.LocalHost
                 }
                 else
                 {
-                    throw new SystemException(string.Format("Failed to start Orleans silo '{0}' as a {1} node.", this.siloHost.Name, this.siloHost.Type));
+                    throw new SystemException($"Failed to start Orleans silo '{this.siloHost.Name}' as a {this.siloHost.Type} node.");
                 }
             }
             catch (Exception exc)
             {
                 this.siloHost.ReportStartupError(exc);
-                string msg = string.Format("{0}:\n{1}\n{2}", exc.GetType().FullName, exc.Message, exc.StackTrace);
+                string msg = $"{exc.GetType().FullName}:\n{exc.Message}\n{exc.StackTrace}";
                 Console.WriteLine(msg);
             }
 
@@ -81,25 +82,21 @@ namespace Yuyi.Jinyinmao.Silos.LocalHost
             catch (Exception exc)
             {
                 this.siloHost.ReportStartupError(exc);
-                string msg = string.Format("{0}:\n{1}\n{2}", exc.GetType().FullName, exc.Message, exc.StackTrace);
+                string msg = $"{exc.GetType().FullName}:\n{exc.Message}\n{exc.StackTrace}";
                 Console.WriteLine(msg);
             }
 
             return true;
         }
 
-        protected virtual void Dispose(bool dispose)
-        {
-            this.siloHost.Dispose();
-            this.siloHost = null;
-        }
-
         private void Init()
         {
-            this.siloHost = new SiloHost(Dns.GetHostName());
-            this.siloHost.ConfigFileName = "OrleansConfiguration.xml";
-            this.siloHost.DeploymentId = Guid.NewGuid().ToString();
-            this.siloHost.Debug = true;
+            this.siloHost = new SiloHost(Dns.GetHostName())
+            {
+                ConfigFileName = "OrleansConfiguration.xml",
+                DeploymentId = Guid.NewGuid().ToString(),
+                Debug = true
+            };
             this.siloHost.LoadOrleansConfig();
         }
     }

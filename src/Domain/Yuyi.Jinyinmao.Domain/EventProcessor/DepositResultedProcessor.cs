@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-16  1:48 AM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  7:08 PM
+// Last Modified On : 2015-05-27  7:51 PM
 // ***********************************************************************
 // <copyright file="DepositResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,7 +14,6 @@
 using System;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Domain.Events;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {

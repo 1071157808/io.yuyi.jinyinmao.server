@@ -4,10 +4,10 @@
 // Created          : 2015-04-21  12:13 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-21  12:14 AM
+// Last Modified On : 2015-05-27  7:17 PM
 // ***********************************************************************
-// <copyright file="Program.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -23,7 +23,7 @@ namespace Yuyi.Jinyinmao.Silos.LocalHost
         {
             try
             {
-                hostWrapper = new OrleansHostWrapper(args);
+                hostWrapper = new OrleansHostWrapper();
             }
             catch (Exception e)
             {

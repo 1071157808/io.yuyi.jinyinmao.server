@@ -46,20 +46,14 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productNo">The product no.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public Task<bool> CheckJBYProductNoExistsAsync(string productNo)
-        {
-            return this.innerService.CheckJBYProductNoExistsAsync(productNo);
-        }
+        public Task<bool> CheckJBYProductNoExistsAsync(string productNo) => this.innerService.CheckJBYProductNoExistsAsync(productNo);
 
         /// <summary>
         ///     Checks the product no exists.
         /// </summary>
         /// <param name="productNo">The product no.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public Task<bool> CheckProductNoExistsAsync(string productNo)
-        {
-            return this.innerService.CheckProductNoExistsAsync(productNo);
-        }
+        public Task<bool> CheckProductNoExistsAsync(string productNo) => this.innerService.CheckProductNoExistsAsync(productNo);
 
         /// <summary>
         ///     Gets the agreement asynchronous.
@@ -132,10 +126,7 @@ namespace Yuyi.Jinyinmao.Service
         ///     Gets the jby product paid amount asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int64&gt;.</returns>
-        public Task<long> GetJBYProductPaidAmountAsync()
-        {
-            return this.innerService.GetJBYProductPaidAmountAsync();
-        }
+        public Task<long> GetJBYProductPaidAmountAsync() => this.innerService.GetJBYProductPaidAmountAsync();
 
         /// <summary>
         ///     Gets the product information asynchronous.
@@ -184,10 +175,7 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public Task<long> GetProductPaidAmountAsync(Guid productId)
-        {
-            return this.innerService.GetProductPaidAmountAsync(productId);
-        }
+        public Task<long> GetProductPaidAmountAsync(Guid productId) => this.innerService.GetProductPaidAmountAsync(productId);
 
         /// <summary>
         ///     Gets the top product infos asynchronous.

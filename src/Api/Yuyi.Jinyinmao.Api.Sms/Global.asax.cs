@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-17  11:13 AM
@@ -24,9 +24,6 @@ namespace Yuyi.Jinyinmao.Api.Sms
         /// <summary>
         ///     Application start.
         /// </summary>
-        protected void Application_Start()
-        {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-        }
+        protected void Application_Start() => GlobalConfiguration.Configure(WebApiConfig.Register);
     }
 }

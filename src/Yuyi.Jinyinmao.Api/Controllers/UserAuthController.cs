@@ -171,12 +171,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UACPP1:请重置支付密码后再试");
             }
 
-            if (!result.Success)
-            {
-                return this.BadRequest("UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能");
-            }
-
-            return this.Ok();
+            return !result.Success ? this.BadRequest("UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能")
+                : this.Ok();
         }
 
         /// <summary>
@@ -429,7 +425,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
             DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1);
-            FormsAuthentication.SetAuthCookie(string.Format("{0},{1},{2}", userId, cellphone, expiry.ToBinary()), true);
+            FormsAuthentication.SetAuthCookie($"{userId},{cellphone},{expiry.ToBinary()}", true);
         }
     }
 }

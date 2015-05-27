@@ -24,9 +24,6 @@ namespace Yuyi.Jinyinmao.Api
         /// <summary>
         ///     Application start.
         /// </summary>
-        protected void Application_Start()
-        {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-        }
+        protected void Application_Start() => GlobalConfiguration.Configure(WebApiConfig.Register);
     }
 }

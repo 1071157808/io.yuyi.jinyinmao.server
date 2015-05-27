@@ -1,13 +1,13 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
-//
+// Created          : 2015-05-25  4:38 PM
+// 
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  1:59 AM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
-// <copyright file="SignInResponse.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SignInResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -50,15 +50,12 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static class SignInResultEx
     {
-        internal static SignInResponse ToResponse(this SignInResult result)
+        internal static SignInResponse ToResponse(this SignInResult result) => new SignInResponse
         {
-            return new SignInResponse
-            {
-                Lock = result.Lock,
-                RemainCount = result.RemainCount,
-                Success = result.Success,
-                UserExist = result.UserExist
-            };
-        }
+            Lock = result.Lock,
+            RemainCount = result.RemainCount,
+            Success = result.Success,
+            UserExist = result.UserExist
+        };
     }
 }

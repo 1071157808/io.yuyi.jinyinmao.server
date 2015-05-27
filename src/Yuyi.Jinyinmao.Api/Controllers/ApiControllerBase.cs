@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  9:55 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -59,19 +58,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Gets the trace.
         /// </summary>
         /// <value>The trace.</value>
-        public ITraceWriter Trace
-        {
-            get { return this.Configuration.Services.GetTraceWriter(); }
-        }
+        public ITraceWriter Trace => this.Configuration.Services.GetTraceWriter();
 
         /// <summary>
         ///     Gets the current user.
         /// </summary>
         /// <value>The current user.</value>
-        protected CurrentUser CurrentUser
-        {
-            get { return this.currentUser ?? (this.currentUser = this.GetCurrentUser()); }
-        }
+        protected CurrentUser CurrentUser => this.currentUser ?? (this.currentUser = this.GetCurrentUser());
 
         /// <summary>
         ///     Builds the arguments.
@@ -119,12 +112,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Gets the current user.
         /// </summary>
         /// <returns>CurrentUser.</returns>
-        [SuppressMessage("ReSharper", "MergeSequentialChecks")]
         protected CurrentUser GetCurrentUser()
         {
             IPrincipal principal = this.User;
 
-            if (principal == null || principal.Identity == null || !principal.Identity.IsAuthenticated)
+            if (principal?.Identity == null || !principal.Identity.IsAuthenticated)
             {
                 return null;
             }
@@ -132,7 +124,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             string token = principal.Identity.Name;
             string[] tokens = token.Split(',');
 
-            if (String.IsNullOrWhiteSpace(token) || tokens.Length != 3)
+            if (string.IsNullOrWhiteSpace(token) || tokens.Length != 3)
             {
                 return null;
             }
@@ -156,10 +148,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Creates an <see cref="T:System.Web.Http.IHttpActionResult" /> (200 OK).
         /// </summary>
         /// <returns>An <see cref="T:System.Web.Http.IHttpActionResult" /> (200 OK).</returns>
-        protected new IHttpActionResult Ok()
-        {
-            return base.Ok(new object());
-        }
+        protected new IHttpActionResult Ok() => base.Ok(new object());
     }
 
     /// <summary>

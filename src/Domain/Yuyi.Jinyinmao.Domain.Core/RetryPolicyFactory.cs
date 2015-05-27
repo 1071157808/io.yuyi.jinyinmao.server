@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-23  11:54 PM
@@ -19,21 +19,15 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     RetryPolicyFactory.
     /// </summary>
-    public static class RetryPolicyHelper
+    internal static class RetryPolicyHelper
     {
-        private static readonly Lazy<RetryPolicy> sqlDatabase = new Lazy<RetryPolicy>(
+        private static readonly Lazy<RetryPolicy> SqlDatabaseRetryPolicy = new Lazy<RetryPolicy>(
             () => new RetryPolicy(new SqlDatabaseTransientErrorDetectionStrategy(), new ExponentialBackoff(
                 "SqlDatabase", 10, TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(1), true)));
 
         /// <summary>
         ///     Gets the SQL database retry policy.
         /// </summary>
-        public static RetryPolicy SqlDatabase
-        {
-            get
-            {
-                return sqlDatabase.Value;
-            }
-        }
+        internal static RetryPolicy SqlDatabase => SqlDatabaseRetryPolicy.Value;
     }
 }

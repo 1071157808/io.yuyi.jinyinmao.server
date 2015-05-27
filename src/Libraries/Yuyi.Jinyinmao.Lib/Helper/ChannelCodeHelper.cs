@@ -22,27 +22,18 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// Gets the jinyinmao.
         /// </summary>
         /// <value>The jinyinmao.</value>
-        public static int Jinyinmao
-        {
-            get { return 10000; }
-        }
+        public static int Jinyinmao => 10000;
 
         /// <summary>
         ///     Gets the lianlian.
         /// </summary>
         /// <value>The lianlian.</value>
-        public static int Lianlian
-        {
-            get { return 10020; }
-        }
+        public static int Lianlian => 10020;
 
         /// <summary>
         ///     Gets the yilian.
         /// </summary>
         /// <value>The yilian.</value>
-        public static int Yilian
-        {
-            get { return 10010; }
-        }
+        public static int Yilian => 10010;
     }
 }

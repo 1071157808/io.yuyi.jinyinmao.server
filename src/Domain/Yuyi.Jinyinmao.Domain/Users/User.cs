@@ -440,12 +440,7 @@ namespace Yuyi.Jinyinmao.Domain
         public Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid transcationId)
         {
             JBYAccountTranscation transcation;
-            if (this.State.JBYAccount.TryGetValue(transcationId, out transcation))
-            {
-                return Task.FromResult(transcation.ToInfo());
-            }
-
-            return Task.FromResult<JBYAccountTranscationInfo>(null);
+            return this.State.JBYAccount.TryGetValue(transcationId, out transcation) ? Task.FromResult(transcation.ToInfo()) : Task.FromResult<JBYAccountTranscationInfo>(null);
         }
 
         /// <summary>
@@ -474,12 +469,7 @@ namespace Yuyi.Jinyinmao.Domain
         public Task<OrderInfo> GetOrderInfoAsync(Guid orderId)
         {
             Order order;
-            if (this.State.Orders.TryGetValue(orderId, out order))
-            {
-                return Task.FromResult(order.ToInfo());
-            }
-
-            return Task.FromResult<OrderInfo>(null);
+            return this.State.Orders.TryGetValue(orderId, out order) ? Task.FromResult(order.ToInfo()) : Task.FromResult<OrderInfo>(null);
         }
 
         /// <summary>
@@ -529,12 +519,7 @@ namespace Yuyi.Jinyinmao.Domain
         public Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid transcationId)
         {
             SettleAccountTranscation transcation;
-            if (this.State.SettleAccount.TryGetValue(transcationId, out transcation))
-            {
-                return Task.FromResult(transcation.ToInfo());
-            }
-
-            return Task.FromResult<SettleAccountTranscationInfo>(null);
+            return this.State.SettleAccount.TryGetValue(transcationId, out transcation) ? Task.FromResult(transcation.ToInfo()) : Task.FromResult<SettleAccountTranscationInfo>(null);
         }
 
         /// <summary>

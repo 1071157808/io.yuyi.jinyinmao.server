@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  1:41 AM
@@ -22,8 +22,8 @@ namespace Yuyi.Jinyinmao.Packages
     /// </summary>
     public static class SequenceNoUtils
     {
-        private static readonly char[] characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
-        private static readonly object lockObject = new object();
+        private static readonly char[] Characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
+        private static readonly object LockObject = new object();
 
         /// <summary>
         ///     Generates the no.
@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Packages
         public static string GenerateNo()
         {
             DateTime currentTime;
-            lock (lockObject)
+            lock (LockObject)
             {
                 currentTime = DateTime.UtcNow.AddHours(8);
             }
@@ -46,10 +46,10 @@ namespace Yuyi.Jinyinmao.Packages
             int day = currentTime.Day;
             int hour = currentTime.Hour;
 
-            string yearChar = characters[year].ToString(CultureInfo.InvariantCulture);
-            string monthChar = characters[month].ToString(CultureInfo.InvariantCulture);
-            string dayChar = characters[day].ToString(CultureInfo.InvariantCulture);
-            string hourChar = characters[hour].ToString(CultureInfo.InvariantCulture);
+            string yearChar = Characters[year].ToString(CultureInfo.InvariantCulture);
+            string monthChar = Characters[month].ToString(CultureInfo.InvariantCulture);
+            string dayChar = Characters[day].ToString(CultureInfo.InvariantCulture);
+            string hourChar = Characters[hour].ToString(CultureInfo.InvariantCulture);
 
             string time = currentTime.ToString("mmssffffff");
 

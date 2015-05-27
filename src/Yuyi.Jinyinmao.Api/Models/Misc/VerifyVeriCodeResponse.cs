@@ -57,14 +57,11 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>VerifyVeriCodeResponse.</returns>
-        internal static VerifyVeriCodeResponse ToResponse(this VerifyVeriCodeResult result)
+        internal static VerifyVeriCodeResponse ToResponse(this VerifyVeriCodeResult result) => new VerifyVeriCodeResponse
         {
-            return new VerifyVeriCodeResponse
-            {
-                RemainCount = result.RemainCount,
-                Success = result.Success,
-                Token = result.Token.IsNotNullOrEmpty() ? result.Token : ""
-            };
-        }
+            RemainCount = result.RemainCount,
+            Success = result.Success,
+            Token = result.Token.IsNotNullOrEmpty() ? result.Token : ""
+        };
     }
 }

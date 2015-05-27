@@ -232,45 +232,42 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static class RegularProductInfoEx
     {
-        internal static RegularProductInfoResponse ToResponse(this RegularProductInfo info)
+        internal static RegularProductInfoResponse ToResponse(this RegularProductInfo info) => new RegularProductInfoResponse
         {
-            return new RegularProductInfoResponse
-            {
-                BankName = info.BankName,
-                Drawee = info.Drawee,
-                DraweeInfo = info.DraweeInfo,
-                EndorseImageLink = info.EndorseImageLink,
-                EndSellTime = info.EndSellTime,
-                EnterpriseInfo = info.EnterpriseInfo,
-                EnterpriseLicense = info.EnterpriseLicense,
-                EnterpriseName = info.EndorseImageLink,
-                FinancingSumAmount = info.FinancingSumAmount,
-                IssueNo = info.IssueNo,
-                IssueTime = info.IssueTime,
-                PaidAmount = info.PaidAmount,
-                Period = info.Period,
-                PledgeNo = info.PledgeNo,
-                ProductCategory = info.ProductCategory,
-                ProductIdentifier = info.ProductId.ToGuidString(),
-                ProductName = info.ProductName,
-                ProductNo = info.ProductNo,
-                Repaid = info.Repaid,
-                RepaidTime = info.RepaidTime.GetValueOrDefault(),
-                RepaymentDeadline = info.RepaymentDeadline,
-                RiskManagement = info.RiskManagement,
-                RiskManagementInfo = info.RiskManagementInfo,
-                RiskManagementMode = info.RiskManagementMode,
-                SettleDate = info.SettleDate,
-                SoldOut = info.SoldOut,
-                SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
-                SpecifyValueDate = !info.ValueDateMode.HasValue,
-                StartSellTime = info.StartSellTime,
-                UnitPrice = info.UnitPrice,
-                Usage = info.Usage,
-                ValueDate = info.ValueDate.GetValueOrDefault(),
-                ValueDateMode = info.ValueDateMode.GetValueOrDefault(),
-                Yield = info.Yield
-            };
-        }
+            BankName = info.BankName,
+            Drawee = info.Drawee,
+            DraweeInfo = info.DraweeInfo,
+            EndorseImageLink = info.EndorseImageLink,
+            EndSellTime = info.EndSellTime,
+            EnterpriseInfo = info.EnterpriseInfo,
+            EnterpriseLicense = info.EnterpriseLicense,
+            EnterpriseName = info.EndorseImageLink,
+            FinancingSumAmount = info.FinancingSumAmount,
+            IssueNo = info.IssueNo,
+            IssueTime = info.IssueTime,
+            PaidAmount = info.PaidAmount,
+            Period = info.Period,
+            PledgeNo = info.PledgeNo,
+            ProductCategory = info.ProductCategory,
+            ProductIdentifier = info.ProductId.ToGuidString(),
+            ProductName = info.ProductName,
+            ProductNo = info.ProductNo,
+            Repaid = info.Repaid,
+            RepaidTime = info.RepaidTime.GetValueOrDefault(),
+            RepaymentDeadline = info.RepaymentDeadline,
+            RiskManagement = info.RiskManagement,
+            RiskManagementInfo = info.RiskManagementInfo,
+            RiskManagementMode = info.RiskManagementMode,
+            SettleDate = info.SettleDate,
+            SoldOut = info.SoldOut,
+            SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
+            SpecifyValueDate = !info.ValueDateMode.HasValue,
+            StartSellTime = info.StartSellTime,
+            UnitPrice = info.UnitPrice,
+            Usage = info.Usage,
+            ValueDate = info.ValueDate.GetValueOrDefault(),
+            ValueDateMode = info.ValueDateMode.GetValueOrDefault(),
+            Yield = info.Yield
+        };
     }
 }

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  12:34 PM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  3:15 PM
+// Last Modified On : 2015-05-27  7:53 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,7 +45,7 @@ namespace Yuyi.Jinyinmao.Domain
 
         private long PaidAmount { get; set; }
 
-        private List<OrderInfo> PaidOrders
+        private IEnumerable<OrderInfo> PaidOrders
         {
             get { return this.State.Orders.Values.Where(o => o.ResultCode > 0).ToList(); }
         }

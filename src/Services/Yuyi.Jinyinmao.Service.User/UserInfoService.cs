@@ -46,10 +46,7 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
-        public Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone)
-        {
-            return this.innerService.CheckCellphoneAsync(cellphone);
-        }
+        public Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone) => this.innerService.CheckCellphoneAsync(cellphone);
 
         /// <summary>
         ///     Checks the password asynchronous.
@@ -57,10 +54,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         /// <param name="password">The password.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public Task<bool> CheckPasswordAsync(Guid userId, string password)
-        {
-            return this.innerService.CheckPasswordAsync(userId, password);
-        }
+        public Task<bool> CheckPasswordAsync(Guid userId, string password) => this.innerService.CheckPasswordAsync(userId, password);
 
         /// <summary>
         ///     Checks the password asynchronous.
@@ -68,10 +62,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="cellphone">The cellphone.</param>
         /// <param name="password">The password.</param>
         /// <returns>Task&lt;SignInResult&gt;.</returns>
-        public Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password)
-        {
-            return this.innerService.CheckPasswordViaCellphoneAsync(cellphone, password);
-        }
+        public Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password) => this.innerService.CheckPasswordViaCellphoneAsync(cellphone, password);
 
         /// <summary>
         ///     Gets the bank card information asynchronous.
@@ -79,30 +70,21 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         /// <param name="bankCardNo">The bank card no.</param>
         /// <returns>Task&lt;BankCardInfo&gt;.</returns>
-        public Task<BankCardInfo> GetBankCardInfoAsync(Guid userId, string bankCardNo)
-        {
-            return this.innerService.GetBankCardInfoAsync(userId, bankCardNo);
-        }
+        public Task<BankCardInfo> GetBankCardInfoAsync(Guid userId, string bankCardNo) => this.innerService.GetBankCardInfoAsync(userId, bankCardNo);
 
         /// <summary>
         ///     Gets the bank card infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
-        public Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId)
-        {
-            return this.innerService.GetBankCardInfosAsync(userId);
-        }
+        public Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId) => this.innerService.GetBankCardInfosAsync(userId);
 
         /// <summary>
         ///     Gets the jby account information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;JBYAccountInfo&gt;.</returns>
-        public Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId)
-        {
-            return this.innerService.GetJBYAccountInfoAsync(userId);
-        }
+        public Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId) => this.innerService.GetJBYAccountInfoAsync(userId);
 
         /// <summary>
         ///     Gets the jby account transcation information asynchronous.
@@ -110,10 +92,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
         /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        public Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId)
-        {
-            return this.innerService.GetJBYAccountTranscationInfoAsync(userId, transcationId);
-        }
+        public Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId) => this.innerService.GetJBYAccountTranscationInfoAsync(userId, transcationId);
 
         /// <summary>
         ///     Gets the jby account transcation infos asynchronous.
@@ -122,10 +101,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
-        {
-            return this.innerService.GetJBYAccountTranscationInfosAsync(userId, pageIndex, pageSize);
-        }
+        public Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize) => this.innerService.GetJBYAccountTranscationInfosAsync(userId, pageIndex, pageSize);
 
         /// <summary>
         ///     Gets the order information asynchronous.
@@ -157,20 +133,14 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
         /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
-        {
-            return this.innerService.GetOrderInfosAsync(userId, pageIndex, pageSize, ordersSortMode, categories);
-        }
+        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories) => this.innerService.GetOrderInfosAsync(userId, pageIndex, pageSize, ordersSortMode, categories);
 
         /// <summary>
         ///     Gets the settle account information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
-        public Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId)
-        {
-            return this.innerService.GetSettleAccountInfoAsync(userId);
-        }
+        public Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId) => this.innerService.GetSettleAccountInfoAsync(userId);
 
         /// <summary>
         ///     Gets the settle account transcation information asynchronous.
@@ -178,10 +148,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
         /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        public Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId)
-        {
-            return this.innerService.GetSettleAccountTranscationInfoAsync(userId, transcationId);
-        }
+        public Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId) => this.innerService.GetSettleAccountTranscationInfoAsync(userId, transcationId);
 
         /// <summary>
         ///     Gets the settle account transcation infos asynchronous.
@@ -190,40 +157,28 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <returns>Task&lt;PaginatedList&lt;SettleAccountTranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid useriId, int pageIndex, int pageSize)
-        {
-            return this.innerService.GetSettleAccountTranscationInfosAsync(useriId, pageIndex, pageSize);
-        }
+        public Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid useriId, int pageIndex, int pageSize) => this.innerService.GetSettleAccountTranscationInfosAsync(useriId, pageIndex, pageSize);
 
         /// <summary>
         ///     Gets the sign up user identifier information asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;SignUpUserIdInfo&gt;.</returns>
-        public Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone)
-        {
-            return this.innerService.GetSignUpUserIdInfoAsync(cellphone);
-        }
+        public Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone) => this.innerService.GetSignUpUserIdInfoAsync(cellphone);
 
         /// <summary>
         ///     Gets the user information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
-        public Task<UserInfo> GetUserInfoAsync(Guid userId)
-        {
-            return this.innerService.GetUserInfoAsync(userId);
-        }
+        public Task<UserInfo> GetUserInfoAsync(Guid userId) => this.innerService.GetUserInfoAsync(userId);
 
         /// <summary>
         ///     Gets the withdrawalable bank card infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
-        public Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync(Guid userId)
-        {
-            return this.innerService.GetWithdrawalableBankCardInfosAsync(userId);
-        }
+        public Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync(Guid userId) => this.innerService.GetWithdrawalableBankCardInfosAsync(userId);
 
         #endregion IUserInfoService Members
     }

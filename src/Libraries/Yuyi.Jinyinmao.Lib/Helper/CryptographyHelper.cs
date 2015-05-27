@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  11:52 PM
@@ -23,8 +23,8 @@ namespace Yuyi.Jinyinmao.Helper
     /// </summary>
     public static class CryptographyHelper
     {
-        private const string rgbIV = "JYM.YUYI";
-        private const string rgbKey = "jym.yuyi";
+        private const string RGB_IV = "JYM.YUYI";
+        private const string RGB_KEY = "jym.yuyi";
 
         /// <summary>
         ///     Checks the specified data.
@@ -33,10 +33,7 @@ namespace Yuyi.Jinyinmao.Helper
         /// <param name="salt">The salt.</param>
         /// <param name="encryptedData">The encrypted data.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool Check(string data, string salt, string encryptedData)
-        {
-            return string.CompareOrdinal(Encrypting(data, salt), encryptedData.ToUpper()) == 0;
-        }
+        public static bool Check(string data, string salt, string encryptedData) => string.CompareOrdinal(Encrypting(data, salt), encryptedData.ToUpper()) == 0;
 
         /// <summary>
         ///     Decrypts the specified payload.
@@ -50,7 +47,7 @@ namespace Yuyi.Jinyinmao.Helper
             using (MemoryStream ms = new MemoryStream())
             {
                 DESCryptoServiceProvider cryptoService = new DESCryptoServiceProvider();
-                CryptoStream encStream = new CryptoStream(ms, cryptoService.CreateDecryptor(Encoding.UTF8.GetBytes(rgbKey), Encoding.UTF8.GetBytes(rgbIV)), CryptoStreamMode.Write);
+                CryptoStream encStream = new CryptoStream(ms, cryptoService.CreateDecryptor(Encoding.UTF8.GetBytes(RGB_KEY), Encoding.UTF8.GetBytes(RGB_IV)), CryptoStreamMode.Write);
                 encStream.Write(buffer, 0, buffer.Length);
                 encStream.FlushFinalBlock();
                 return Encoding.UTF8.GetString(ms.ToArray());
@@ -68,7 +65,7 @@ namespace Yuyi.Jinyinmao.Helper
             using (MemoryStream ms = new MemoryStream())
             {
                 DESCryptoServiceProvider cryptoService = new DESCryptoServiceProvider();
-                CryptoStream encStream = new CryptoStream(ms, cryptoService.CreateEncryptor(Encoding.UTF8.GetBytes(payload), Encoding.UTF8.GetBytes(rgbIV)), CryptoStreamMode.Write);
+                CryptoStream encStream = new CryptoStream(ms, cryptoService.CreateEncryptor(Encoding.UTF8.GetBytes(payload), Encoding.UTF8.GetBytes(RGB_IV)), CryptoStreamMode.Write);
                 encStream.Write(buffer, 0, buffer.Length);
                 encStream.FlushFinalBlock();
                 return Convert.ToBase64String(ms.ToArray()).Replace("+", "%");
@@ -84,7 +81,7 @@ namespace Yuyi.Jinyinmao.Helper
         public static string Encrypting(string payload, string salt)
         {
             HashAlgorithm mySha256 = SHA256.Create();
-            byte[] value = Encoding.UTF8.GetBytes(String.Format("--{0}--{1}--", salt, payload));
+            byte[] value = Encoding.UTF8.GetBytes($"--{salt}--{payload}--");
             byte[] hashValue = mySha256.ComputeHash(value);
             return BitConverter.ToString(hashValue).Replace("-", "").ToUpper();
         }

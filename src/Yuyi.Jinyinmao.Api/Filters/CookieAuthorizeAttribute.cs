@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-23  8:37 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,15 +20,13 @@ using System.Web.Http.Controllers;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 
-// ReSharper disable MergeSequentialChecks
-
 namespace Yuyi.Jinyinmao.Api.Filters
 {
     /// <summary>
     ///     Class CookieAuthorizeAttribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class CookieAuthorizeAttribute : OrderedAuthorizationFilterAttribute
+    public sealed class CookieAuthorizeAttribute : OrderedAuthorizationFilterAttribute
     {
         /// <summary>
         ///     Gets or sets a value indicating whether [refresh token].
@@ -55,10 +53,10 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             if (!this.IsValid(actionContext, out token))
             {
-                this.HandleUnauthorizedRequest(actionContext);
+                HandleUnauthorizedRequest(actionContext);
                 return;
             }
-            if (this.refreshToken && !String.IsNullOrWhiteSpace(token))
+            if (this.refreshToken && !string.IsNullOrWhiteSpace(token))
             {
                 FormsAuthentication.SetAuthCookie(token, true);
             }
@@ -68,13 +66,13 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
         internal static bool IsAdmin(IPrincipal user)
         {
-            if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
+            if (user?.Identity == null || !user.Identity.IsAuthenticated)
             {
                 return false;
             }
 
             // Token 格式检验，必须由3部分组成
-            if (String.IsNullOrWhiteSpace(user.Identity.Name) || user.Identity.Name.Split(',').Count() != 3)
+            if (string.IsNullOrWhiteSpace(user.Identity.Name) || user.Identity.Name.Split(',').Count() != 3)
             {
                 return false;
             }
@@ -83,14 +81,14 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             // Identifier
             string guid = tokenContents[0];
-            if (String.IsNullOrWhiteSpace(guid) || guid.Length != 36)
+            if (string.IsNullOrWhiteSpace(guid) || guid.Length != 36)
             {
                 return false;
             }
 
             // 用户名检验，必须是手机号格式
             string cellphone = tokenContents[1];
-            if (String.IsNullOrWhiteSpace(cellphone))
+            if (string.IsNullOrWhiteSpace(cellphone))
             {
                 return false;
             }
@@ -102,10 +100,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
         ///     Formats the error message.
         /// </summary>
         /// <returns>string</returns>
-        private string FormatErrorMessage()
-        {
-            return "AUTH:请先登录";
-        }
+        private static string FormatErrorMessage() => "AUTH:请先登录";
 
         /// <summary>
         ///     Processes requests that fail authorization. This default implementation creates a new
@@ -113,14 +108,14 @@ namespace Yuyi.Jinyinmao.Api.Filters
         ///     handling for unauthorized requests.
         /// </summary>
         /// <param name="actionContext">The context.</param>
-        private void HandleUnauthorizedRequest(HttpActionContext actionContext)
+        private static void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
             if (actionContext == null)
             {
-                throw new ArgumentNullException("actionContext", "actionContext can not be null");
+                throw new ArgumentNullException(nameof(actionContext), @"actionContext can not be null");
             }
 
-            actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, this.FormatErrorMessage());
+            actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, FormatErrorMessage());
         }
 
         /// <summary>
@@ -138,17 +133,17 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             if (actionContext == null)
             {
-                throw new ArgumentNullException("actionContext", "actionContext can not be null");
+                throw new ArgumentNullException(nameof(actionContext), @"actionContext can not be null");
             }
 
             IPrincipal user = actionContext.RequestContext.Principal;
-            if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
+            if (user?.Identity == null || !user.Identity.IsAuthenticated)
             {
                 return false;
             }
 
             // Token 格式检验，必须由3部分组成
-            if (String.IsNullOrWhiteSpace(user.Identity.Name) || user.Identity.Name.Split(',').Count() != 3)
+            if (string.IsNullOrWhiteSpace(user.Identity.Name) || user.Identity.Name.Split(',').Count() != 3)
             {
                 return false;
             }
@@ -157,14 +152,14 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             // Identifier
             string guid = tokenContents[0];
-            if (String.IsNullOrWhiteSpace(guid) || guid.Length != 36)
+            if (string.IsNullOrWhiteSpace(guid) || guid.Length != 36)
             {
                 return false;
             }
 
             // 用户名检验，必须是手机号格式
             string cellphone = tokenContents[1];
-            if (String.IsNullOrWhiteSpace(cellphone))
+            if (string.IsNullOrWhiteSpace(cellphone))
             {
                 return false;
             }
@@ -184,7 +179,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
             if (this.refreshToken)
             {
                 DateTime newExpiryTime = DateTime.UtcNow.AddMinutes(30);
-                newToken = string.Format("{0},{1},{2}", guid, cellphone, newExpiryTime.ToBinary());
+                newToken = $"{guid},{cellphone},{newExpiryTime.ToBinary()}";
             }
 
             return true;

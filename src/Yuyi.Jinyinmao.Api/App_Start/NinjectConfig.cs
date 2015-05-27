@@ -33,18 +33,14 @@ namespace Yuyi.Jinyinmao.Api
     /// </summary>
     public static class NinjectConfig
     {
-        private static readonly Bootstrapper bootstrapper = new Bootstrapper();
-        private static readonly StandardKernel kernel = new StandardKernel();
+        private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
+        private static readonly StandardKernel Kernel = new StandardKernel();
 
         /// <summary>
         ///     RegisterDependencyResolver to HttpConfiguration
         /// </summary>
         /// <param name="config">HttpConfiguration</param>
-        public static void RegisterDependencyResolver(HttpConfiguration config)
-        {
-            // Configure Web API with the dependency resolver.
-            config.DependencyResolver = new NinjectDependencyResolver(kernel);
-        }
+        public static void RegisterDependencyResolver(HttpConfiguration config) => config.DependencyResolver = new NinjectDependencyResolver(Kernel);
 
         /// <summary>
         ///     Starts the application
@@ -53,16 +49,13 @@ namespace Yuyi.Jinyinmao.Api
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            bootstrapper.Initialize(CreateKernel);
+            Bootstrapper.Initialize(CreateKernel);
         }
 
         /// <summary>
         ///     Stops the application.
         /// </summary>
-        public static void Stop()
-        {
-            bootstrapper.ShutDown();
-        }
+        public static void Stop() => Bootstrapper.ShutDown();
 
         /// <summary>
         ///     Creates the kernel that will manage your application.
@@ -70,11 +63,11 @@ namespace Yuyi.Jinyinmao.Api
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
-            kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+            Kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
+            Kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
             RegisterServices();
-            return kernel;
+            return Kernel;
         }
 
         /// <summary>
@@ -83,12 +76,12 @@ namespace Yuyi.Jinyinmao.Api
         private static void RegisterServices()
         {
             // This is where we tell Ninject how to resolve service requests
-            kernel.Bind<IProductInfoService>().To<ProductInfoService>().InSingletonScope();
-            kernel.Bind<IProductService>().To<ProductService>().InSingletonScope();
-            kernel.Bind<ISmsService>().To<SmsService>().InSingletonScope();
-            kernel.Bind<IVeriCodeService>().To<VeriCodeService>().InSingletonScope();
-            kernel.Bind<IUserService>().To<UserService>().InSingletonScope();
-            kernel.Bind<IUserInfoService>().To<UserInfoService>().InSingletonScope()
+            Kernel.Bind<IProductInfoService>().To<ProductInfoService>().InSingletonScope();
+            Kernel.Bind<IProductService>().To<ProductService>().InSingletonScope();
+            Kernel.Bind<ISmsService>().To<SmsService>().InSingletonScope();
+            Kernel.Bind<IVeriCodeService>().To<VeriCodeService>().InSingletonScope();
+            Kernel.Bind<IUserService>().To<UserService>().InSingletonScope();
+            Kernel.Bind<IUserInfoService>().To<UserInfoService>().InSingletonScope()
                 .WithConstructorArgument(new UserService());
         }
     }

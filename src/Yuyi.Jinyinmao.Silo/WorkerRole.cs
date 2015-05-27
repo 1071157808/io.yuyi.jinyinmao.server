@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:00 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  9:08 PM
+// Last Modified On : 2015-05-27  7:17 PM
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -68,10 +68,7 @@ namespace Yuyi.Jinyinmao.Silo
         public override void OnStop()
         {
             Trace.TraceInformation("OrleansAzureSilos-OnStop called");
-            if (this.orleansAzureSilo != null)
-            {
-                this.orleansAzureSilo.Stop();
-            }
+            this.orleansAzureSilo?.Stop();
             RoleEnvironment.Changing -= RoleEnvironmentChanging;
             base.OnStop();
             Trace.TraceInformation("OrleansAzureSilos-OnStop finished");

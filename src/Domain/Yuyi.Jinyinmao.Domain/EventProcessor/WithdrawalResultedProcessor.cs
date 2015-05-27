@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-04  2:22 AM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  3:11 PM
+// Last Modified On : 2015-05-27  7:51 PM
 // ***********************************************************************
 // <copyright file="WithdrawalResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -40,7 +40,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
                 }
             });
 
-            await this.ProcessingEventAsync(@event, async e => { await DBSyncHelper.SyncSettleAccountTranscation(e.WithdrawalTranscationInfo); });
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTranscation(e.WithdrawalTranscationInfo));
 
             await base.ProcessEventAsync(@event);
         }

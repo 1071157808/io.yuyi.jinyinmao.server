@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-13  12:27 AM
@@ -32,12 +32,9 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static class CheckCellphoneResultEx
     {
-        internal static CheckCellphoneResponse ToResponse(this CheckCellphoneResult result)
+        internal static CheckCellphoneResponse ToResponse(this CheckCellphoneResult result) => new CheckCellphoneResponse
         {
-            return new CheckCellphoneResponse
-            {
-                Result = result.Result
-            };
-        }
+            Result = result.Result
+        };
     }
 }

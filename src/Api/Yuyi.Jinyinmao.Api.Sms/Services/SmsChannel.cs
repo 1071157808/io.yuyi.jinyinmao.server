@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
@@ -27,27 +27,27 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
         /// <summary>
         ///     助通验证码
         /// </summary>
-        [Description("验证码")] YanZhengMa = 100001,
+        [Description("验证码")]
+        YanZhengMa = 100001,
 
         /// <summary>
         ///     助通通知
         /// </summary>
-        [Description("通知")] TongZhi = 100002,
+        [Description("通知")]
+        TongZhi = 100002,
 
         /// <summary>
         ///     助通营销
         /// </summary>
-        [Description("营销")] YingXiao = 100003
+        [Description("营销")]
+        YingXiao = 100003
     }
 
     internal static class SmsChannelEnumHelper
     {
-        private static readonly Lazy<Dictionary<int, string>> channels = new Lazy<Dictionary<int, string>>(
+        private static readonly Lazy<Dictionary<int, string>> Channels = new Lazy<Dictionary<int, string>>(
             () => Enum.GetValues(typeof(SmsChannel)).Cast<SmsChannel>().ToDictionary(value => Convert.ToInt32(value), value => value.Description()));
 
-        internal static Dictionary<int, string> GetChannels()
-        {
-            return channels.Value;
-        }
+        internal static Dictionary<int, string> GetChannels() => Channels.Value;
     }
 }

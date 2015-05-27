@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  11:33 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="DailyConfigHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -121,10 +121,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         ///     Gets the today daily configuration.
         /// </summary>
         /// <returns>DailyConfig.</returns>
-        public static DailyConfig GetTodayDailyConfig()
-        {
-            return GetDailyConfig(DateTime.UtcNow.AddHours(8));
-        }
+        public static DailyConfig GetTodayDailyConfig() => GetDailyConfig(DateTime.UtcNow.AddHours(8));
     }
 
     /// <summary>

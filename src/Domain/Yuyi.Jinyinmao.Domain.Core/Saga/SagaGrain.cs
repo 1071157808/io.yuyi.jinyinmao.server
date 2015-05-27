@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  5:10 PM
+// Last Modified On : 2015-05-27  7:19 PM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -122,10 +122,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Registers the reminder.
         /// </summary>
         /// <returns>Task.</returns>
-        protected virtual async Task RegisterReminder()
-        {
-            await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
-        }
+        protected virtual async Task RegisterReminder() => await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
 
         /// <summary>
         ///     Runs the into error.

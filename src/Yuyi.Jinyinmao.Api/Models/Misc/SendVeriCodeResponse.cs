@@ -48,13 +48,10 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>SendVeriCodeResponse.</returns>
-        internal static SendVeriCodeResponse ToResponse(this SendVeriCodeResult result)
+        internal static SendVeriCodeResponse ToResponse(this SendVeriCodeResult result) => new SendVeriCodeResponse
         {
-            return new SendVeriCodeResponse
-            {
-                RemainCount = result.RemainCount,
-                Success = result.Success
-            };
-        }
+            RemainCount = result.RemainCount,
+            Success = result.Success
+        };
     }
 }

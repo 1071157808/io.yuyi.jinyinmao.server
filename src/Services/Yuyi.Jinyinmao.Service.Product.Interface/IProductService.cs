@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  10:57 AM
@@ -40,7 +40,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// Refreshes the jyb product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task RefreshJYBProductAsync();
+        Task RefreshJybProductAsync();
 
         /// <summary>
         /// Reloads the jby product asynchronous.

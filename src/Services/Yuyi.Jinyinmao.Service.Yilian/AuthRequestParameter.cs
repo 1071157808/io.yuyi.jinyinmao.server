@@ -1,24 +1,25 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-26  11:11 PM
+// Last Modified On : 2015-05-27  7:20 PM
 // ***********************************************************************
-// <copyright file="AuthRequestParameter.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="AuthRequestParameter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Yuyi.Jinyinmao.Service
 {
     /// <summary>
     ///     AuthRequestParameter.
     /// </summary>
-    public class AuthRequestParameter
+    public sealed class AuthRequestParameter
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="AuthRequestParameter" /> class.
@@ -37,46 +38,47 @@ namespace Yuyi.Jinyinmao.Service
         public AuthRequestParameter(string bn, string sn, string accNo, string accName, string accProvince, string accCity, string bankName,
             int idType, string idNo, string mobileNo, string userId)
         {
-            this.BATCH_NO = bn.ToUpper();
+            this.BatchNo = bn.ToUpper();
 
             TransDetail tran = new TransDetail
             {
-                USER_UUID = userId.ToUpper(),
-                SN = sn,
-                ACC_NO = accNo,
+                UserUuid = userId.ToUpper(),
+                Sn = sn,
+                AccNo = accNo,
                 // 账号名
-                ACC_NAME = accName,
+                AccName = accName,
                 // 省份
-                ACC_PROVINCE = accProvince,
+                AccProvince = accProvince,
                 // 城市名
-                ACC_CITY = accCity,
-                AMOUNT = "1.08",
+                AccCity = accCity,
+                Amount = "1.08",
                 // 银行名
-                BANK_NAME = bankName,
+                BankName = bankName,
                 // 证件类型
-                ID_TYPE = YilianRequestParameterHelper.TransformCredentialType(idType),
+                IDType = YilianRequestParameterHelper.TransformCredentialType(idType),
                 // 证件号码
-                ID_NO = idNo,
+                IDNo = idNo,
                 // 手机号
-                MOBILE_NO = mobileNo,
+                MobileNo = mobileNo,
                 // 回调URL
-                MERCHANT_URL = "",
+                MerchantUrl = "",
                 // 模拟产品编号
-                MER_ORDER_NO = "A" + userId.ToUpper()
+                MerOrderNo = "A" + userId.ToUpper()
             };
 
-            this.TRANS_DETAILS = new List<TransDetail>();
-            this.TRANS_DETAILS.Add(tran);
+            this.TransDetails = new List<TransDetail> { tran };
         }
 
         /// <summary>
         ///     “BATCH_NO 批次号”须保证唯一性
         /// </summary>
-        public string BATCH_NO { get; set; }
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public string BatchNo { get; set; }
 
         /// <summary>
         ///     交易信息
         /// </summary>
-        public List<TransDetail> TRANS_DETAILS { get; set; }
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global"), SuppressMessage("ReSharper", "MemberCanBeInternal")]
+        public List<TransDetail> TransDetails { get; set; }
     }
 }

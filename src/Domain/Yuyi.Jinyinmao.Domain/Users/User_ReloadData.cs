@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-07  12:19 PM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  11:33 PM
+// Last Modified On : 2015-05-27  7:53 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -111,18 +111,15 @@ namespace Yuyi.Jinyinmao.Domain
             int investingPrincipal = 0;
             int investingInterest = 0;
 
-            foreach (Order order in this.State.Orders.Values)
+            foreach (Order order in this.State.Orders.Values.Where(order => order.ResultCode > 0))
             {
-                if (order.ResultCode > 0)
-                {
-                    totalPrincipal += order.Principal;
-                    totalInterest += (order.Interest + order.ExtraInterest);
+                totalPrincipal += order.Principal;
+                totalInterest += (order.Interest + order.ExtraInterest);
 
-                    if (!order.IsRepaid)
-                    {
-                        investingPrincipal += order.Principal;
-                        investingInterest += (order.Interest + order.ExtraInterest);
-                    }
+                if (!order.IsRepaid)
+                {
+                    investingPrincipal += order.Principal;
+                    investingInterest += (order.Interest + order.ExtraInterest);
                 }
             }
 

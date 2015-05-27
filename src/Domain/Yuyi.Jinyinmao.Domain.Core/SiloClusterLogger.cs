@@ -24,10 +24,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Logs this instance.
         /// </summary>
-        public static void Log(ErrorLog log)
-        {
-            SiloClusterConfig.ErrorLogsTable.Execute(TableOperation.InsertOrReplace(log));
-        }
+        public static void Log(ErrorLog log) => SiloClusterConfig.ErrorLogsTable.Execute(TableOperation.InsertOrReplace(log));
     }
 
     /// <summary>

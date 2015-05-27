@@ -1,6 +1,6 @@
 ﻿namespace Yuyi.Jinyinmao.Service
 {
-    internal class await
+    internal class Await
     {
     }
 }

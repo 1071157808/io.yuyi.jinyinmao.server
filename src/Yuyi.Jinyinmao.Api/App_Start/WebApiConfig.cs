@@ -39,12 +39,17 @@ namespace Yuyi.Jinyinmao.Api
             config.Services.Add(typeof(IFilterProvider), new OrderedFilterProvider());
             config.Services.Add(typeof(IExceptionLogger), new AzureExceptionLogger());
 
-            JsonMediaTypeFormatter formatter = new JsonMediaTypeFormatter();
-            formatter.SerializerSettings.NullValueHandling = NullValueHandling.Include;
-            formatter.SerializerSettings.DateFormatString = "G";
-            formatter.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Populate;
-            formatter.SerializerSettings.Formatting = Formatting.None;
-            formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            JsonMediaTypeFormatter formatter = new JsonMediaTypeFormatter
+            {
+                SerializerSettings =
+                {
+                    NullValueHandling = NullValueHandling.Include,
+                    DateFormatString = "G",
+                    DefaultValueHandling = DefaultValueHandling.Populate,
+                    Formatting = Formatting.None,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }
+            };
 
             config.Formatters.Clear();
             config.Formatters.Add(formatter);

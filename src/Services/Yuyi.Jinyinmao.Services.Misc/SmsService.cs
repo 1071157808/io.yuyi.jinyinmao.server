@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-11  10:35 AM
@@ -57,16 +57,16 @@ namespace Yuyi.Jinyinmao.Service
     /// </summary>
     public class SmsService : ISmsService
     {
-        private static readonly string apiBaseAddress;
-        private static readonly bool smsServiceEnable;
+        private static readonly string ApiBaseAddress;
+        private static readonly bool SmsServiceEnable;
 
         static SmsService()
         {
             bool temp;
             string smsServiceEnableConfig = CloudConfigurationManager.GetSetting("SmsServiceEnable");
             string smsServiceAddressConfig = CloudConfigurationManager.GetSetting("SmsServiceAddress");
-            smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty() && bool.TryParse(smsServiceEnableConfig, out temp) && temp;
-            apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() && smsServiceAddressConfig.IsUrl() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
+            SmsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty() && bool.TryParse(smsServiceEnableConfig, out temp) && temp;
+            ApiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() && smsServiceAddressConfig.IsUrl() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
         }
 
         #region ISmsService Members
@@ -80,7 +80,7 @@ namespace Yuyi.Jinyinmao.Service
             using (HttpClient client = new HttpClient())
             {
                 int balance = 9999999;
-                string getBalanceRequstUrl = apiBaseAddress + "Balance?channel=100001";
+                string getBalanceRequstUrl = ApiBaseAddress + "Balance?channel=100001";
                 HttpResponseMessage response = await client.GetAsync(getBalanceRequstUrl);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 JObject result = JObject.Parse(responseContent);
@@ -101,7 +101,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
         public async Task<bool> SendMessageAsync(string cellphones, string message, string signature = "金银猫")
         {
-            if (!smsServiceEnable)
+            if (!SmsServiceEnable)
             {
                 return true;
             }
@@ -110,7 +110,7 @@ namespace Yuyi.Jinyinmao.Service
             SmsMessage smsMessage = new SmsMessage { Cellphones = cellphones, Channel = channel, Message = message, Signature = signature };
             using (HttpClient client = HttpClientFactory.Create(new ApiKeyAuthDelegatingHandler()))
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync(apiBaseAddress + "Send", smsMessage);
+                HttpResponseMessage response = await client.PostAsJsonAsync(ApiBaseAddress + "Send", smsMessage);
                 return response.IsSuccessStatusCode;
             }
         }

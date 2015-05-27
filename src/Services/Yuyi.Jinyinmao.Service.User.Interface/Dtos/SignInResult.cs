@@ -30,10 +30,7 @@ namespace Yuyi.Jinyinmao.Service.Dtos
         ///     Gets a value indicating whether this <see cref="SignInResult" /> is lock.
         /// </summary>
         /// <value><c>true</c> if lock; otherwise, <c>false</c>.</value>
-        public bool Lock
-        {
-            get { return this.RemainCount < 1; }
-        }
+        public bool Lock => this.RemainCount < 1;
 
         /// <summary>
         ///     Gets or sets the remain count.

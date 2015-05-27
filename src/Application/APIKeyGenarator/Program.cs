@@ -22,18 +22,18 @@ namespace APIKeyGenarator
         [STAThread]
         private static void Main(string[] args)
         {
-            string APIKey;
+            string apiKey;
 
             using (var cryptoProvider = new RNGCryptoServiceProvider())
             {
                 byte[] secretKeyByteArray = new byte[256]; //2048 bit
                 cryptoProvider.GetBytes(secretKeyByteArray);
-                APIKey = Convert.ToBase64String(secretKeyByteArray);
+                apiKey = Convert.ToBase64String(secretKeyByteArray);
             }
 
-            Console.WriteLine(APIKey);
+            Console.WriteLine(apiKey);
             Console.WriteLine("Copied to the clibboard.");
-            Clipboard.SetText(APIKey);
+            Clipboard.SetText(apiKey);
         }
     }
 }

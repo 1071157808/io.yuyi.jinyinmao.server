@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
@@ -58,10 +58,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Controllers
         /// <response code="200"></response>
         /// <response code="401"></response>
         [HttpGet, Route("Channels")]
-        public IHttpActionResult GetSmsChannels()
-        {
-            return this.Ok(SmsChannelEnumHelper.GetChannels());
-        }
+        public IHttpActionResult GetSmsChannels() => this.Ok(SmsChannelEnumHelper.GetChannels());
 
         /// <summary>
         ///     发送短信(ApiKeyRequired)

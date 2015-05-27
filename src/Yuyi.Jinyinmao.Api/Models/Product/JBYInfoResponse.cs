@@ -124,27 +124,24 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
 
     internal static class JBYProductInfoEx
     {
-        internal static JBYInfoResponse ToResponse(this JBYProductInfo info)
+        internal static JBYInfoResponse ToResponse(this JBYProductInfo info) => new JBYInfoResponse
         {
-            return new JBYInfoResponse
-            {
-                EndSellTime = info.EndSellTime,
-                FinancingSumAmount = info.FinancingSumAmount,
-                IssueNo = info.IssueNo,
-                IssueTime = info.IssueTime,
-                PaidAmount = info.PaidAmount,
-                ProductCategory = info.ProductCategory,
-                ProductIdentifier = info.ProductId.ToGuidString(),
-                ProductName = info.ProductName,
-                ProductNo = info.ProductNo,
-                SoldOut = info.SoldOut,
-                SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
-                StartSellTime = info.StartSellTime,
-                UpdateTime = info.UpdateTime,
-                UnitPrice = info.UnitPrice,
-                ValueDateMode = info.ValueDateMode,
-                Yield = info.Yield
-            };
-        }
+            EndSellTime = info.EndSellTime,
+            FinancingSumAmount = info.FinancingSumAmount,
+            IssueNo = info.IssueNo,
+            IssueTime = info.IssueTime,
+            PaidAmount = info.PaidAmount,
+            ProductCategory = info.ProductCategory,
+            ProductIdentifier = info.ProductId.ToGuidString(),
+            ProductName = info.ProductName,
+            ProductNo = info.ProductNo,
+            SoldOut = info.SoldOut,
+            SoldOutTime = info.SoldOutTime.GetValueOrDefault(),
+            StartSellTime = info.StartSellTime,
+            UpdateTime = info.UpdateTime,
+            UnitPrice = info.UnitPrice,
+            ValueDateMode = info.ValueDateMode,
+            Yield = info.Yield
+        };
     }
 }

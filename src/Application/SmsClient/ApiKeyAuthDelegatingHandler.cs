@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  3:09 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,7 +41,6 @@ namespace SmsClient
             string apiKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceApiKey");
             string apiKey = string.IsNullOrEmpty(apiKeyConfig) ? "HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" : apiKeyConfig;
 
-            HttpResponseMessage response;
             string requestContentBase64String = string.Empty;
 
             string requestUri = HttpUtility.UrlEncode(request.RequestUri.AbsoluteUri.ToLower());
@@ -67,9 +66,9 @@ namespace SmsClient
             }
 
             //Creating the raw signature string
-            string signatureRawData = String.Format("{0}{1}{2}{3}{4}{5}", appId, requestHttpMethod, requestUri, requestTimeStamp, nonce, requestContentBase64String);
+            string signatureRawData = $"{appId}{requestHttpMethod}{requestUri}{requestTimeStamp}{nonce}{requestContentBase64String}";
 
-            var secretKeyByteArray = Convert.FromBase64String(apiKey);
+            byte[] secretKeyByteArray = Convert.FromBase64String(apiKey);
 
             byte[] signature = Encoding.UTF8.GetBytes(signatureRawData);
 
@@ -78,10 +77,10 @@ namespace SmsClient
                 byte[] signatureBytes = hmac.ComputeHash(signature);
                 string requestSignatureBase64String = Convert.ToBase64String(signatureBytes);
                 //Setting the values in the Authorization header using custom scheme (jas)
-                request.Headers.Authorization = new AuthenticationHeaderValue("jas", string.Format("{0}:{1}:{2}:{3}", appId, requestSignatureBase64String, nonce, requestTimeStamp));
+                request.Headers.Authorization = new AuthenticationHeaderValue("jas", $"{appId}:{requestSignatureBase64String}:{nonce}:{requestTimeStamp}");
             }
 
-            response = await base.SendAsync(request, cancellationToken);
+            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
             return response;
         }

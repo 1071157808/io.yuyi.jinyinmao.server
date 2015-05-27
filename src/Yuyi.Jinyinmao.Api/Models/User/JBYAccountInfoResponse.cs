@@ -44,14 +44,11 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static class JBYAccountInfoEx
     {
-        internal static JBYAccountInfoResponse ToResponse(this JBYAccountInfo info)
+        internal static JBYAccountInfoResponse ToResponse(this JBYAccountInfo info) => new JBYAccountInfoResponse
         {
-            return new JBYAccountInfoResponse
-            {
-                JBYAccrualAmount = info.JBYAccrualAmount,
-                JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
-                TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount
-            };
-        }
+            JBYAccrualAmount = info.JBYAccrualAmount,
+            JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
+            TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount
+        };
     }
 }

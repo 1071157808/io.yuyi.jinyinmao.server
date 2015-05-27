@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  9:51 PM
+// Last Modified On : 2015-05-27  7:18 PM
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,7 +24,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
     ///     IpAuthorizeAttribute.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class IpAuthorizeAttribute : OrderedAuthorizationFilterAttribute
+    public sealed class IpAuthorizeAttribute : OrderedAuthorizationFilterAttribute
     {
         /// <summary>
         ///     Gets or sets a value indicating whether [only local host].
@@ -55,7 +55,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
         {
             if (actionContext == null)
             {
-                throw new ArgumentNullException("actionContext", "actionContext can not be null");
+                throw new ArgumentNullException(nameof(actionContext), @"actionContext can not be null");
             }
 
             actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "");
@@ -70,7 +70,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             var request = context.Request;
             string ip = HttpUtils.GetUserHostAddress(request);
-            return !String.IsNullOrEmpty(ip) && (!this.OnlyLocalHost || this.OnlyLocalHost && request.IsLocal()) && (ip.StartsWith("172.26") || ip.StartsWith("172.25") || ip.StartsWith("10.1") || ip == "::1");
+            return !string.IsNullOrEmpty(ip) && (!this.OnlyLocalHost || this.OnlyLocalHost && request.IsLocal()) && (ip.StartsWith("172.26", StringComparison.Ordinal) || ip.StartsWith("172.25", StringComparison.Ordinal) || ip.StartsWith("10.1", StringComparison.Ordinal) || ip == "::1");
         }
     }
 }

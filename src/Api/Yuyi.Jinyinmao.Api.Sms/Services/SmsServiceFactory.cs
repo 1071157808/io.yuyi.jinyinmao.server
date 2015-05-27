@@ -28,16 +28,16 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
             switch (channel)
             {
                 case SmsChannel.YanZhengMa:
-                    return new ZTSmsService(0);
+                    return new ZtSmsService(0);
 
                 case SmsChannel.TongZhi:
-                    return new ZTSmsService(1);
+                    return new ZtSmsService(1);
 
                 case SmsChannel.YingXiao:
-                    return new ZTSmsService(2);
+                    return new ZtSmsService(2);
 
                 default:
-                    return new ZTSmsService(2);
+                    return new ZtSmsService(2);
             }
         }
     }

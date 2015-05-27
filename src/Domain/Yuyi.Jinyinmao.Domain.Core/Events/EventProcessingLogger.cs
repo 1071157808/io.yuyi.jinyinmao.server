@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  11:35 PM
@@ -27,16 +27,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Logs the error.
         /// </summary>
-        /// <param name="EventId">The event identifier.</param>
+        /// <param name="eventId">The event identifier.</param>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void LogError(Guid EventId, string message, Exception exception = null)
+        public void LogError(Guid eventId, string message, Exception exception = null)
         {
             ErrorLog log = new ErrorLog
             {
                 Exception = exception.GetExceptionString(),
                 Message = message,
-                PartitionKey = EventId.ToGuidString(),
+                PartitionKey = eventId.ToGuidString(),
                 RowKey = "EventProcessingError"
             };
 
