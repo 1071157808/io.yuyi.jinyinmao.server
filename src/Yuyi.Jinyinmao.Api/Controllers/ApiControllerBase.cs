@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  8:01 AM
+// Last Modified On : 2015-05-26  9:55 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,7 +20,6 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Tracing;
-using Microsoft.WindowsAzure.ServiceRuntime;
 using Moe.AspNet.Utility;
 using Orleans;
 using Orleans.Runtime.Host;
@@ -42,16 +41,18 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         protected ApiControllerBase()
         {
-            if (RoleEnvironment.IsAvailable)
+            if (AzureClient.IsInitialized || GrainClient.IsInitialized)
             {
-                // running in Azure
-                AzureClient.Initialize(HttpContext.Current.Server.MapPath(@"~/AzureConfiguration.xml"));
+                return;
             }
-            else
-            {
-                // not running in Azure
-                GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalConfiguration.xml"));
-            }
+
+#if DEBUG
+            GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalDevConfiguration.xml"));
+#elif CLOUD
+            AzureClient.Initialize(HttpContext.Current.Server.MapPath(@"~/AzureConfiguration.xml"));
+#else
+            GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalConfiguration.xml"));
+#endif
         }
 
         /// <summary>

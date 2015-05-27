@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Silo.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Cloud|AnyCPU'">
+    <OutputPath>bin\Cloud\</OutputPath>
+    <DocumentationFile>bin\Cloud\Yuyi.Jinyinmao.Silo.XML</DocumentationFile>
+    <DefineConstants>TRACE;CLOUD</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CounterControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Orleans.CounterControl.1.0.7\lib\net45\CounterControl.exe</HintPath>
@@ -71,16 +77,15 @@
     <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unofficial.Microsoft.WindowsAzure.ServiceRuntime.2.5.0.0\lib\net40\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Orleans, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
@@ -145,6 +150,56 @@
     <Content Include="OrleansConfiguration.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
+      <Project>{5245a89c-fd02-404a-a0a3-c1b5f197e426}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Yuyi.Jinyinmao.Domain.Interface\Yuyi.Jinyinmao.Domain.Interface.csproj">
+      <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
+      <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Yuyi.Jinyinmao.Domain\Yuyi.Jinyinmao.Domain.csproj">
+      <Project>{bd85b692-cb20-481b-9628-452d41971a92}</Project>
+      <Name>Yuyi.Jinyinmao.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
+      <Project>{7b420a40-acec-4461-ae6e-ca89e2ad65c9}</Project>
+      <Name>Yuyi.Jinyinmao.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Yuyi.Jinyinmao.Resources\Yuyi.Jinyinmao.Resources.csproj">
+      <Project>{e6b0bda3-6554-4f1e-af83-fd22c16b627e}</Project>
+      <Name>Yuyi.Jinyinmao.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
+      <Project>{0e048dcc-f815-4d24-87b4-4210fd89e500}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Misc.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Product.Interface\Yuyi.Jinyinmao.Service.Product.Interface.csproj">
+      <Project>{5aeb9cc5-4d0b-456c-9233-2d7517781bc9}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Product.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Product\Yuyi.Jinyinmao.Service.Product.csproj">
+      <Project>{a2075913-20fc-496c-9f53-bca0762ecef1}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Product</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.User.Interface\Yuyi.Jinyinmao.Service.User.Interface.csproj">
+      <Project>{c3b74c74-f4c7-485e-9697-b51b754fccee}</Project>
+      <Name>Yuyi.Jinyinmao.Service.User.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.User\Yuyi.Jinyinmao.Service.User.csproj">
+      <Project>{d0c9996f-a7f6-4f7f-a5b8-8657cf4673c9}</Project>
+      <Name>Yuyi.Jinyinmao.Service.User</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Yilian\Yuyi.Jinyinmao.Service.Yilian.csproj">
+      <Project>{850e78f8-beee-4dd2-b4d9-ceebe0f4dd5d}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Yilian</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Services.Misc\Yuyi.Jinyinmao.Services.Misc.csproj">
+      <Project>{a109d0ad-39b7-49eb-b7ad-a0850782e2bc}</Project>
+      <Name>Yuyi.Jinyinmao.Services.Misc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

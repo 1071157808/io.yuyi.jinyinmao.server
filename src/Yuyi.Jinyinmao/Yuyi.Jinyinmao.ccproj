@@ -12,6 +12,7 @@
     <AssemblyName>Yuyi.Jinyinmao</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
     <Name>Yuyi.Jinyinmao</Name>
+    <PackageEnableRemoteDebugger>False</PackageEnableRemoteDebugger>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +55,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Profiles" />
     <Folder Include="Yuyi.Jinyinmao.ApiContent\" />
     <Folder Include="Yuyi.Jinyinmao.SiloContent\" />
   </ItemGroup>
@@ -61,10 +63,16 @@
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.ApiContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.SiloContent\diagnostics.wadcfgx" />
   </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\jym-dev-api.azurePubxml" />
+  </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
     <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.6\</CloudExtensionsDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Cloud' ">
+    <OutputPath>bin\Cloud\</OutputPath>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
 </Project>

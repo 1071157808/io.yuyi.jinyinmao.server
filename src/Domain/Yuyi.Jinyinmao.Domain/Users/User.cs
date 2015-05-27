@@ -325,7 +325,8 @@ namespace Yuyi.Jinyinmao.Domain
                     TransactionId = command.CommandId,
                     TransactionTime = DateTime.UtcNow.AddHours(8),
                     TransDesc = "充值申请",
-                    UserId = this.State.Id
+                    UserId = this.State.Id,
+                    UserInfo = await this.GetUserInfoAsync()
                 };
 
                 this.State.SettleAccount.Add(transcation.TransactionId, transcation);
@@ -678,7 +679,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "支付成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             SettleAccountTranscationInfo transcationInfo = transcation.ToInfo();
@@ -774,7 +776,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "支付成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             JBYAccountTranscation jbyTranscation = new JBYAccountTranscation
@@ -790,7 +793,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "申购成功",
                 TransactionId = command.CommandId,
                 TransactionTime = now,
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
@@ -914,6 +918,7 @@ namespace Yuyi.Jinyinmao.Domain
             SettleAccountTranscation principalTranscation = new SettleAccountTranscation
             {
                 Amount = order.Principal,
+                Args = new Dictionary<string, object>(),
                 BankCardNo = string.Empty,
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
                 OrderId = order.OrderId,
@@ -926,12 +931,13 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "本金还款",
                 TransactionTime = now,
                 UserId = this.State.Id,
-                Args = new Dictionary<string, object>()
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             SettleAccountTranscation interestTranscation = new SettleAccountTranscation
             {
                 Amount = order.Interest + order.ExtraInterest,
+                Args = new Dictionary<string, object>(),
                 BankCardNo = string.Empty,
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
                 OrderId = order.OrderId,
@@ -944,7 +950,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "产品结息",
                 TransactionTime = now,
                 UserId = this.State.Id,
-                Args = new Dictionary<string, object>()
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             this.State.SettleAccount.Add(principalTranscation.TransactionId, principalTranscation);
@@ -1119,7 +1125,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
                 TransDesc = "取现申请",
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             SettleAccountTranscation chargeTranscation = await this.BuildChargeTranscationAsync(command, transcation);
@@ -1169,7 +1176,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
                 TransDesc = "赎回申请",
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             IJBYProductWithdrawalManager manager = JBYProductWithdrawalManagerFactory.GetGrain(GrainTypeHelper.GetJBYProductWithdrawalManagerGrainTypeLongKey());
@@ -1260,7 +1268,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "利息复投成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             this.State.JBYAccount.Add(jbyTranscation.TransactionId, jbyTranscation);
@@ -1306,7 +1315,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = transcation.SettleAccountTranscationId,
                 TransactionTime = now,
                 TransDesc = "金包银赎回资金到账",
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             transcation.SettleAccountTranscationId = settleAccountTranscation.TransactionId;
@@ -1359,7 +1369,8 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "账户取现手续费",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id
+                UserId = this.State.Id,
+                UserInfo = await this.GetUserInfoAsync()
             };
         }
     }

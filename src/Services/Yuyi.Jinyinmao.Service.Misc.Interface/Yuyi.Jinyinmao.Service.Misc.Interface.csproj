@@ -34,6 +34,12 @@
     <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Service.Misc.Interface.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Cloud|AnyCPU'">
+    <OutputPath>bin\Cloud\</OutputPath>
+    <DefineConstants>TRACE;CLOUD</DefineConstants>
+    <Optimize>true</Optimize>
+    <DocumentationFile>bin\Cloud\Yuyi.Jinyinmao.Service.Misc.Interface.XML</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

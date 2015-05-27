@@ -4,7 +4,7 @@
 // Created          : 2015-05-12  1:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  2:09 AM
+// Last Modified On : 2015-05-27  1:29 PM
 // ***********************************************************************
 // <copyright file="JBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -62,7 +62,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
                     TransDesc = info.TransDesc,
                     TransactionId = info.TransactionId,
                     TransactionTime = info.TransactionTime,
-                    UserId = info.UserId
+                    UserId = info.UserId,
+                    UserInfo = info.UserInfo
                 };
 
                 this.State.WithdrawalTranscations.Add(transcation.TransactionId, transcation);

@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  4:13 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  6:53 PM
+// Last Modified On : 2015-05-26  10:34 PM
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,6 +29,8 @@ namespace Yuyi.Jinyinmao.Domain
         static SiloClusterConfig()
         {
             string storageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
+            ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
+
             CloudStorageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
             CloudTableClient tableClient = CloudStorageAccount.CreateCloudTableClient();
@@ -47,8 +49,6 @@ namespace Yuyi.Jinyinmao.Domain
             PrivateFileContainer = blobClient.GetContainerReference("privatefiles");
             CommandStoreContainer = blobClient.GetContainerReference("commands");
             EventStoreContainer = blobClient.GetContainerReference("events");
-
-            ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
         }
 
         /// <summary>

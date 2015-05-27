@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:00 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  5:20 PM
+// Last Modified On : 2015-05-25  9:08 PM
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -35,7 +35,7 @@ namespace Yuyi.Jinyinmao.Silo
         /// </summary>
         public WorkerRole()
         {
-            Trace.WriteLine("OrleansAzureSilos-Constructor called");
+            Trace.TraceInformation("OrleansAzureSilos-Constructor called");
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace Yuyi.Jinyinmao.Silo
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool OnStart()
         {
-            Trace.WriteLine("OrleansAzureSilos-OnStart called", "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStart called");
 
-            Trace.WriteLine("OrleansAzureSilos-OnStart Initializing config", "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStart Initializing config");
 
             // Set the maximum number of concurrent connections
             ServicePointManager.DefaultConnectionLimit = 12;
@@ -57,7 +57,7 @@ namespace Yuyi.Jinyinmao.Silo
 
             bool ok = base.OnStart();
 
-            Trace.WriteLine("OrleansAzureSilos-OnStart called base.OnStart ok=" + ok, "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStart called base.OnStart ok=" + ok);
 
             return ok;
         }
@@ -67,14 +67,14 @@ namespace Yuyi.Jinyinmao.Silo
         /// </summary>
         public override void OnStop()
         {
-            Trace.WriteLine("OrleansAzureSilos-OnStop called", "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStop called");
             if (this.orleansAzureSilo != null)
             {
                 this.orleansAzureSilo.Stop();
             }
             RoleEnvironment.Changing -= RoleEnvironmentChanging;
             base.OnStop();
-            Trace.WriteLine("OrleansAzureSilos-OnStop finished", "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStop finished");
         }
 
         /// <summary>
@@ -82,9 +82,9 @@ namespace Yuyi.Jinyinmao.Silo
         /// </summary>
         public override void Run()
         {
-            Trace.WriteLine("OrleansAzureSilos-Run entry point called", "Information");
+            Trace.TraceInformation("OrleansAzureSilos-Run entry point called");
 
-            Trace.WriteLine("OrleansAzureSilos-OnStart Starting Orleans silo", "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStart Starting Orleans silo");
 
             ClusterConfiguration config = new ClusterConfiguration();
             config.StandardLoad();
@@ -94,7 +94,7 @@ namespace Yuyi.Jinyinmao.Silo
             this.orleansAzureSilo = new AzureSilo();
             bool ok = this.orleansAzureSilo.Start(RoleEnvironment.DeploymentId, RoleEnvironment.CurrentRoleInstance, config);
 
-            Trace.WriteLine("OrleansAzureSilos-OnStart Orleans silo started ok=" + ok, "Information");
+            Trace.TraceInformation("OrleansAzureSilos-OnStart Orleans silo started ok=" + ok, "Information");
 
             this.orleansAzureSilo.Run(); // Call will block until silo is shutdown
         }
@@ -109,7 +109,7 @@ namespace Yuyi.Jinyinmao.Silo
             int i = 1;
             foreach (var c in e.Changes)
             {
-                Trace.WriteLine(string.Format("RoleEnvironmentChanging: #{0} Type={1} Change={2}", i++, c.GetType().FullName, c));
+                Trace.TraceInformation("RoleEnvironmentChanging: #{0} Type={1} Change={2}", i++, c.GetType().FullName, c);
             }
 
             // If a configuration setting is changing);

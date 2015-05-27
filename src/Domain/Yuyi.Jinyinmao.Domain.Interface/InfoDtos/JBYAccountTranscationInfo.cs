@@ -4,7 +4,7 @@
 // Created          : 2015-05-17  7:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  1:52 AM
+// Last Modified On : 2015-05-27  1:27 PM
 // ***********************************************************************
 // <copyright file="JBYAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,7 +45,8 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 TransactionId = transcation.TransactionId,
                 TransactionTime = transcation.TransactionTime,
                 TransDesc = transcation.TransDesc,
-                UserId = transcation.UserId
+                UserId = transcation.UserId,
+                UserInfo = transcation.UserInfo
             };
         }
     }
@@ -74,6 +75,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             transcationModel.TranscationTime = info.TransactionTime;
             transcationModel.TransDesc = info.TransDesc;
             transcationModel.UserIdentifier = info.UserId.ToGuidString();
+            transcationModel.UserInfo = info.UserInfo.ToJson();
         }
 
         /// <summary>
@@ -98,7 +100,8 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 TranscationIdentifier = info.TransactionId.ToGuidString(),
                 TranscationTime = info.TransactionTime,
                 TransDesc = info.TransDesc,
-                UserIdentifier = info.UserId.ToGuidString()
+                UserIdentifier = info.UserId.ToGuidString(),
+                UserInfo = info.UserInfo.ToJson()
             };
         }
 
@@ -195,5 +198,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public UserInfo UserInfo { get; set; }
     }
 }

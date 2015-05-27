@@ -4,15 +4,14 @@
 // Created          : 2015-04-11  10:35 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  8:34 AM
+// Last Modified On : 2015-05-26  10:33 PM
 // ***********************************************************************
-// <copyright file="SmsService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SmsService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure;
@@ -65,8 +64,8 @@ namespace Yuyi.Jinyinmao.Service
         {
             bool temp;
             string smsServiceEnableConfig = CloudConfigurationManager.GetSetting("SmsServiceEnable");
-            smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty() && bool.TryParse(smsServiceEnableConfig, out temp) && temp;
             string smsServiceAddressConfig = CloudConfigurationManager.GetSetting("SmsServiceAddress");
+            smsServiceEnable = smsServiceEnableConfig.IsNotNullOrEmpty() && bool.TryParse(smsServiceEnableConfig, out temp) && temp;
             apiBaseAddress = smsServiceAddressConfig.IsNotNullOrEmpty() && smsServiceAddressConfig.IsUrl() ? smsServiceAddressConfig : "https://jym-dev-apisms.yuyidev.com/";
         }
 

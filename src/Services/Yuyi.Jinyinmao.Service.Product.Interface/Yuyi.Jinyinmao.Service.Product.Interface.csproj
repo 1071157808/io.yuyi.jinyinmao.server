@@ -36,6 +36,12 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <DocumentationFile>bin\Release\Yuyi.Jinyinmao.Service.Product.Interface.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Cloud|AnyCPU'">
+    <OutputPath>bin\Cloud\</OutputPath>
+    <DefineConstants>TRACE;CLOUD</DefineConstants>
+    <Optimize>true</Optimize>
+    <DocumentationFile>bin\Cloud\Yuyi.Jinyinmao.Service.Product.Interface.XML</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MoeLib, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MoeLib.2.1.9.0\lib\net45\MoeLib.dll</HintPath>

@@ -4,7 +4,7 @@
 // Created          : 2015-05-17  4:24 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  7:21 PM
+// Last Modified On : 2015-05-27  1:25 PM
 // ***********************************************************************
 // <copyright file="JBYAccountTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -34,7 +35,7 @@ namespace Yuyi.Jinyinmao.Domain
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
-        /// Gets or sets the predetermined result date.
+        ///     Gets or sets the predetermined result date.
         /// </summary>
         /// <value>The predetermined result date.</value>
         public DateTime? PredeterminedResultDate { get; set; }
@@ -58,7 +59,7 @@ namespace Yuyi.Jinyinmao.Domain
         public DateTime? ResultTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the settle account transcation identifier.
+        ///     Gets or sets the settle account transcation identifier.
         /// </summary>
         /// <value>The settle account transcation identifier.</value>
         public Guid SettleAccountTranscationId { get; set; }
@@ -98,5 +99,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public UserInfo UserInfo { get; set; }
     }
 }

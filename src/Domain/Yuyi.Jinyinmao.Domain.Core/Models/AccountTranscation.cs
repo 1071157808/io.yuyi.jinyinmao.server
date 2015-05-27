@@ -2,9 +2,9 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
-//
+// 
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-21  9:33 PM
+// Last Modified On : 2015-05-27  1:17 PM
 // ***********************************************************************
 // <copyright file="AccountTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string Args { get; set; }
 
         /// <summary>
-        /// Gets or sets the bank card no.
+        ///     Gets or sets the bank card no.
         /// </summary>
         /// <value>The bank card no.</value>
         public string BankCardNo { get; set; }
@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string Info { get; set; }
 
         /// <summary>
-        /// Gets or sets the order identifier.
+        ///     Gets or sets the order identifier.
         /// </summary>
         /// <value>The order identifier.</value>
         public string OrderIdentifier { get; set; }
@@ -103,5 +103,11 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public string UserInfo { get; set; }
     }
 }

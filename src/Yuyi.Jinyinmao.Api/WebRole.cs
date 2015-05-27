@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-25  8:31 AM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  11:41 AM
+// Last Modified On : 2015-05-25  9:22 PM
 // ***********************************************************************
 // <copyright file="WebRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,14 +30,14 @@ namespace Yuyi.Jinyinmao.Api
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool OnStart()
         {
-            Trace.WriteLine("OrleansAzureWeb-OnStart");
+            Trace.TraceInformation("OrleansAzureWeb-OnStart");
 
             // For information on handling configuration changes see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
             RoleEnvironment.Changing += this.RoleEnvironmentChanging;
 
             bool ok = base.OnStart();
 
-            Trace.WriteLine("OrleansAzureWeb-OnStart completed with OK=" + ok);
+            Trace.TraceInformation("OrleansAzureWeb-OnStart completed with OK=" + ok);
 
             return ok;
         }
@@ -47,7 +47,7 @@ namespace Yuyi.Jinyinmao.Api
         /// </summary>
         public override void OnStop()
         {
-            Trace.WriteLine("OrleansAzureWeb-OnStop");
+            Trace.TraceInformation("OrleansAzureWeb-OnStop");
             base.OnStop();
         }
 
@@ -56,7 +56,7 @@ namespace Yuyi.Jinyinmao.Api
         /// </summary>
         public override void Run()
         {
-            Trace.WriteLine("OrleansAzureWeb-Run");
+            Trace.TraceInformation("OrleansAzureWeb-Run");
             try
             {
                 base.Run();

@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  10:21 PM
+// Last Modified On : 2015-05-27  1:18 PM
 // ***********************************************************************
 // <copyright file="AccountTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -51,6 +51,9 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.BankCardNo)
                 .IsRequired();
 
+            this.Property(t => t.UserInfo)
+                .IsRequired();
+
             this.Property(t => t.Info)
                 .IsRequired();
 
@@ -71,6 +74,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.ResultCode).HasColumnName("ResultCode");
             this.Property(t => t.ResultTime).HasColumnName("ResultTime");
             this.Property(t => t.TransDesc).HasColumnName("TransDesc");
+            this.Property(t => t.UserInfo).HasColumnName("UserInfo");
             this.Property(t => t.Info).HasColumnName("Info");
             this.Property(t => t.Args).HasColumnName("Args");
         }

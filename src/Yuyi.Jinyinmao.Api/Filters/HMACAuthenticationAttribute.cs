@@ -1,19 +1,18 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  12:06 AM
+// Last Modified On : 2015-05-26  10:15 PM
 // ***********************************************************************
-// <copyright file="HMACAuthenticationAttribute.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="HMACAuthenticationAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -79,11 +78,10 @@ namespace Yuyi.Jinyinmao.Api.Filters
     {
         private static readonly string ApiKeyName = "ApiAdmin";
         private static readonly string AuthenticationScheme = "jas";
-
         private static readonly bool EnableAuth;
 
         private static readonly TableQuery<App> Query = new TableQuery<App>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey",
-                    QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "{0} eq true".FormatWith(ApiKeyName)));
+            QueryComparisons.Equal, "jinyinmao"), TableOperators.And, "{0} eq true".FormatWith(ApiKeyName)));
 
         private static readonly long RequestMaxAgeInSeconds = 300;
         private static readonly CloudStorageAccount StorageAccount;

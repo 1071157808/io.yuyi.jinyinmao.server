@@ -79,7 +79,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 TransDesc = info.TransDesc,
                 TransactionId = info.TransactionId,
                 TransactionTime = info.TransactionTime,
-                UserId = info.UserId
+                UserId = info.UserId,
+                UserInfo = info.UserInfo
             };
 
             this.State.Transcations.Add(transcationInfo.TransactionId, transcationInfo);

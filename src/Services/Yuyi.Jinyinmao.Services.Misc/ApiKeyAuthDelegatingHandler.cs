@@ -4,15 +4,14 @@
 // Created          : 2015-04-20  11:27 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-20  11:38 AM
+// Last Modified On : 2015-05-26  10:11 PM
 // ***********************************************************************
-// <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -43,8 +42,9 @@ namespace Yuyi.Jinyinmao.Service
         static ApiKeyAuthDelegatingHandler()
         {
             string appId = CloudConfigurationManager.GetSetting("SmsServiceAppId");
-            AppId = appId.IsNullOrEmpty() ? "541a74bc-cdf0-455d-9093-1aa5ec3cb7d3" : appId;
             string appKey = CloudConfigurationManager.GetSetting("SmsServiceAppKey");
+
+            AppId = appId.IsNullOrEmpty() ? "541a74bc-cdf0-455d-9093-1aa5ec3cb7d3" : appId;
             AppKey = appKey.IsNullOrEmpty() ? "rNAhdng2Tu1iXpH72jU2zLSW/hhxuGBxpBNSBBjwQEA=" : appKey;
         }
 

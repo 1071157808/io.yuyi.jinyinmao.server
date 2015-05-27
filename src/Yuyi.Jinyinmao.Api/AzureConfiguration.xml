@@ -2,36 +2,7 @@
 
 <ClientConfiguration xmlns="urn:orleans">
   <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Warning" TraceToConsole="false" TraceToFile="{0}-{1}.log" WriteTraces="false">
+  <Tracing DefaultTraceLevel="Warning" TraceToConsole="false" TraceToFile="{0}-{1}.log" WriteTraces="true">
     <TraceLevelOverride LogPrefix="Application" TraceLevel="Warning" />
   </Tracing>
 </ClientConfiguration>
-
-<!--
-	This is a sample client configuration file.
--->
-<!-- Local Development Configuration
-<ClientConfiguration xmlns="urn:orleans">
-  <Gateway Address="localhost" Port="30000" />
-  <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true" />
-</ClientConfiguration>
--->
-<!--
-	To turn tracing off, set DefaultTraceLevel="Off" and have no overrides. To see a minimum of messages, set DefaultTraceLevel="Error".
-    For the trace log file name, {0} is the silo name and {1} is the current time.
-	Setting WriteTraces to true will cause detailed performance information to be collected and logged about the individual steps in the
-	message lifecycle. This may be useful debugging performance issues.
-	-->
-<!--
-		To get more detailed application logging, you can change the TraceLevel attribute value to "Verbose" or "Verbose2".
-		Depending on the log levels you have used in your code, this will cause additional messages to be written to the log.
-		-->
-<!-- Product Configuration
-<ClientConfiguration xmlns="urn:orleans">
-  <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="false">
-    <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
-  </Tracing>
-</ClientConfiguration>
--->

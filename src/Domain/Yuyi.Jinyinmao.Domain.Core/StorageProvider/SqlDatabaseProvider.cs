@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:36 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  2:26 PM
+// Last Modified On : 2015-05-26  10:32 PM
 // ***********************************************************************
 // <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -109,6 +109,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.ConfigureJsonSerializerSettings(config);
 
                 string connectionString = CloudConfigurationManager.GetSetting("StorageProviderConnectionString");
+
                 if (connectionString.IsNullOrEmpty())
                 {
                     throw new BadProviderConfigException("The DataConnectionString setting has not been configured. Please add a DataConnectionString setting with a valid connection string.");

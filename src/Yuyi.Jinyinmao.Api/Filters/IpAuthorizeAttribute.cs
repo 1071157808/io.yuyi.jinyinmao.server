@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  1:26 AM
+// Last Modified On : 2015-05-26  9:51 PM
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,7 +14,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Web.Http.Controllers;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;

@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  2:48 AM
+// Last Modified On : 2015-05-27  1:27 PM
 // ***********************************************************************
 // <copyright file="JBYTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,7 +45,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string Info { get; set; }
 
         /// <summary>
-        /// Gets or sets the jby product identifier.
+        ///     Gets or sets the jby product identifier.
         /// </summary>
         /// <value>The jby product identifier.</value>
         public string JBYProductIdentifier { get; set; }
@@ -91,5 +91,11 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user information.
+        /// </summary>
+        /// <value>The user information.</value>
+        public string UserInfo { get; set; }
     }
 }

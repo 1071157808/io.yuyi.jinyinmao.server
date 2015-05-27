@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  4:57 PM
+// Last Modified On : 2015-05-26  10:12 PM
 // ***********************************************************************
 // <copyright file="ApiKeyAuthDelegatingHandler.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -19,7 +20,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.Azure;
 
 namespace SmsClient
 {
@@ -36,9 +36,9 @@ namespace SmsClient
         /// <returns>Task&lt;HttpResponseMessage&gt;.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            string appIdConfig = CloudConfigurationManager.GetSetting("SmsServiceAppId");
+            string appIdConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppId");
             string appId = string.IsNullOrEmpty(appIdConfig) ? "0dcd384f-47a6-4083-bef4-a61bec55e12f" : appIdConfig;
-            string apiKeyConfig = CloudConfigurationManager.GetSetting("SmsServiceAppKey");
+            string apiKeyConfig = ConfigurationManager.AppSettings.Get("SmsServiceAppKey");
             string apiKey = string.IsNullOrEmpty(apiKeyConfig) ? "QGUc8eXBfhUNBYH5suNeAxZM8D6OkFklGkxnLtOrSjE=" : apiKeyConfig;
 
             HttpResponseMessage response;

@@ -4,14 +4,15 @@
 // Created          : 2015-05-04  11:50 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  11:53 AM
+// Last Modified On : 2015-05-26  10:34 PM
 // ***********************************************************************
-// <copyright file="JYMDBContext.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="JYMDBContext.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System.Data.Entity;
+using Microsoft.Azure;
 using Moe.EntityFramework;
 using Yuyi.Jinyinmao.Service.Models.Mapping;
 
@@ -23,18 +24,24 @@ namespace Yuyi.Jinyinmao.Service.Models
     public class JYMDBContext : DbContextBase
     {
         /// <summary>
+        ///     The connectiong string
+        /// </summary>
+        private static readonly string ConnectiongString;
+
+        /// <summary>
         ///     Initializes static members of the <see cref="JYMDBContext" /> class.
         /// </summary>
         static JYMDBContext()
         {
             Database.SetInitializer<JYMDBContext>(null);
+            ConnectiongString = CloudConfigurationManager.GetSetting("JYMDBContextConnectionString");
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JYMDBContext" /> class.
         /// </summary>
         public JYMDBContext()
-            : base("Name=JYMDBContext")
+            : base(ConnectiongString)
         {
         }
 
