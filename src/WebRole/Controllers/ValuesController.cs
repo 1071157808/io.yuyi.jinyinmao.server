@@ -4,7 +4,7 @@
 // Created          : 2015-05-28  12:42 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  1:17 AM
+// Last Modified On : 2015-05-28  8:34 AM
 // ***********************************************************************
 // <copyright file="ValuesController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -26,7 +26,9 @@ namespace WebRole.Controllers
         /// <remarks>
         ///     aaaaaaaaaaa
         /// </remarks>
-        /// <returns>System.String.</returns>
+        /// <response code="200"></response>
+        /// <response code="403">未授权</response>
+        /// <response code="500"></response>
         [Route("")]
         public string Get()
         {

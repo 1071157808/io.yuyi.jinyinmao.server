@@ -1,25 +1,20 @@
-// ***********************************************************************  #if CLOUD
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  10:02 PM
+// Last Modified On : 2015-05-28  8:44 AM
 // ***********************************************************************
 // <copyright file="SwaggerConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-//#if CLOUD
-//#else
-
 using System.IO;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Swashbuckle.Application;
-using Swashbuckle.Swagger;
 using Yuyi.Jinyinmao.Api;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
