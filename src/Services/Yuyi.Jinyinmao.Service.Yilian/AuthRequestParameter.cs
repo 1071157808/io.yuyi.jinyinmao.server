@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:20 PM
+// Last Modified On : 2015-05-28  10:46 AM
 // ***********************************************************************
 // <copyright file="AuthRequestParameter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Service
 {
@@ -72,13 +73,13 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     “BATCH_NO 批次号”须保证唯一性
         /// </summary>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global"), JsonProperty("BATCH_NO")]
         public string BatchNo { get; set; }
 
         /// <summary>
         ///     交易信息
         /// </summary>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global"), SuppressMessage("ReSharper", "MemberCanBeInternal")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global"), SuppressMessage("ReSharper", "MemberCanBeInternal"), JsonProperty("TRANS_DETAILS")]
         public List<TransDetail> TransDetails { get; set; }
     }
 }
