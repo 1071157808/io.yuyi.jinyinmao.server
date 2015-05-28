@@ -82,6 +82,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3EB508
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureCloudService", "AzureCloudService\AzureCloudService.ccproj", "{AB3ABABA-B941-4D7B-A413-87397C8D827D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRole", "WebRole\WebRole.csproj", "{C0E0D635-C267-46D3-9C7F-34A86F7234C4}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureCloudService1", "AzureCloudService1\AzureCloudService1.ccproj", "{AC29CDD3-C456-4105-B930-72891300B263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud|Any CPU = Cloud|Any CPU
@@ -345,6 +351,42 @@ Global
 		{079FA826-9BC2-454A-AE3D-050A4909CF6B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{079FA826-9BC2-454A-AE3D-050A4909CF6B}.Release|x86.ActiveCfg = Release|Any CPU
 		{079FA826-9BC2-454A-AE3D-050A4909CF6B}.Release|x86.Build.0 = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Cloud|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Cloud|Any CPU.Build.0 = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Cloud|x86.ActiveCfg = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Cloud|x86.Build.0 = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Debug|x86.Build.0 = Debug|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Release|x86.ActiveCfg = Release|Any CPU
+		{AB3ABABA-B941-4D7B-A413-87397C8D827D}.Release|x86.Build.0 = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Cloud|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Cloud|Any CPU.Build.0 = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Cloud|x86.ActiveCfg = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Cloud|x86.Build.0 = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Debug|x86.Build.0 = Debug|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0E0D635-C267-46D3-9C7F-34A86F7234C4}.Release|x86.Build.0 = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Cloud|Any CPU.ActiveCfg = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Cloud|Any CPU.Build.0 = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Cloud|x86.ActiveCfg = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Cloud|x86.Build.0 = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Debug|x86.Build.0 = Debug|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC29CDD3-C456-4105-B930-72891300B263}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

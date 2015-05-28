@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-04-28  11:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-25  12:48 AM
+// Last Modified On : 2015-05-28  12:27 AM
 // ***********************************************************************
-// <copyright file="Cellphone.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Cellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -36,9 +36,8 @@ namespace Yuyi.Jinyinmao.Domain
             if (!this.State.UserId.HasValue)
             {
                 this.State.UserId = Guid.NewGuid();
+                await this.State.WriteStateAsync();
             }
-
-            await this.State.WriteStateAsync();
 
             return new CellphoneInfo
             {

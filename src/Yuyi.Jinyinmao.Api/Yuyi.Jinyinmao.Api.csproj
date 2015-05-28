@@ -221,6 +221,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\jym-api - RELEASE.pubxml" />
     <None Include="Web.Cloud.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

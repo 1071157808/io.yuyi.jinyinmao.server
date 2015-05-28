@@ -11,8 +11,8 @@
 // </copyright>
 // ***********************************************************************
 
-#if CLOUD
-#else
+//#if CLOUD
+//#else
 
 using System.IO;
 using System.Web;
@@ -149,7 +149,7 @@ namespace Yuyi.Jinyinmao.Api
                 //
                 //c.DescribeAllEnumsAsStrings();
 
-                c.OperationFilter<OperationFilter>();
+                //c.OperationFilter<OperationFilter>();
 
                 // Similar to Schema filters, Swashbuckle also supports Operation and Document filters:
                 //
@@ -240,25 +240,25 @@ namespace Yuyi.Jinyinmao.Api
             });
     }
 
-    internal class OperationFilter : IOperationFilter
-    {
-        #region IOperationFilter Members
-
-        public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
-        {
-            operation.consumes.Clear();
-            operation.consumes.Add("application/json");
-            operation.consumes.Add("text/json");
-            operation.produces.Clear();
-            operation.produces.Add("application/json");
-            operation.produces.Add("text/json");
-            operation.produces.Add("application/javascript");
-            operation.produces.Add("application/json-p");
-            operation.produces.Add("text/javascript");
-        }
-
-        #endregion IOperationFilter Members
-    }
+    //    internal class OperationFilter : IOperationFilter
+    //    {
+    //        #region IOperationFilter Members
+    //
+    //        public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
+    //        {
+    //            operation.consumes.Clear();
+    //            operation.consumes.Add("application/json");
+    //            operation.consumes.Add("text/json");
+    //            operation.produces.Clear();
+    //            operation.produces.Add("application/json");
+    //            operation.produces.Add("text/json");
+    //            operation.produces.Add("application/javascript");
+    //            operation.produces.Add("application/json-p");
+    //            operation.produces.Add("text/javascript");
+    //        }
+    //
+    //        #endregion IOperationFilter Members
+    //    }
 }
 
-#endif
+//#endif
