@@ -45,6 +45,7 @@
       <Setting name="EnableHMACAuth" />
       <Setting name="JYMDBContextConnectionString" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="YilianPaymentGatewayHost" />
     </ConfigurationSettings>
     <Endpoints>
       <InternalEndpoint name="OrleansSiloEndpoint" protocol="tcp" port="11111" />
