@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-03  11:48 PM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  10:26 PM
+// Last Modified On : 2015-05-28  1:15 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -226,7 +226,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
                 if (transcationInfo != null)
                 {
-                    PaymentRequestParameter parameter = BuildRequestParameter(transcationInfo.SequenceNo, transcationInfo.TransactionId.ToGuidString(),
+                    PaymentRequestParameter parameter = BuildRequestParameter(transcationInfo.TransactionId.ToGuidString(), transcationInfo.SequenceNo,
                         bankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
                         (int)userInfo.Credential, userInfo.CredentialNo, bankCardInfo.Cellphone,
                         userInfo.UserId.ToGuidString(), transcationInfo.Amount);

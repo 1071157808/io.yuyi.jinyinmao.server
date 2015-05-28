@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:19 PM
+// Last Modified On : 2015-05-28  1:16 PM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,16 +42,16 @@ namespace Yuyi.Jinyinmao.Domain
         protected string Message { get; set; }
 
         /// <summary>
-        ///     Gets or sets the saga entity.
-        /// </summary>
-        /// <value>The saga entity.</value>
-        protected SagaStateRecord SagaStateRecord { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="SagaGrain{TState}" /> is waiting.
         /// </summary>
         /// <value><c>true</c> if waiting; otherwise, <c>false</c>.</value>
         protected bool Waiting { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the saga entity.
+        /// </summary>
+        /// <value>The saga entity.</value>
+        private SagaStateRecord SagaStateRecord { get; set; }
 
         #region IRemindable Members
 
@@ -122,7 +122,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Registers the reminder.
         /// </summary>
         /// <returns>Task.</returns>
-        protected virtual async Task RegisterReminder() => await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+        protected async Task RegisterReminder() => await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
 
         /// <summary>
         ///     Runs the into error.
@@ -138,7 +138,7 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 message = message ?? exception.Message;
                 info = info ?? new Dictionary<string, object>();
-                info.Add("Exception", exception.GetExceptionString());
+                info.Add("Exception-{0}".FormatWith(DateTime.UtcNow), exception.GetExceptionString());
 
                 await this.StoreSagaStateAsync(currentProcessingStatus, message, info, -1);
 
@@ -195,7 +195,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Unregisters the reminder.
         /// </summary>
         /// <returns>Task.</returns>
-        protected virtual async Task UnregisterReminder()
+        protected async Task UnregisterReminder()
         {
             IGrainReminder reminder = (await this.GetReminders()).FirstOrDefault(r => r.ReminderName == this.GetType().Name);
 

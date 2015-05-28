@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:36 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  10:32 PM
+// Last Modified On : 2015-05-28  1:18 PM
 // ***********************************************************************
 // <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -266,7 +266,7 @@ namespace Yuyi.Jinyinmao.Domain
             catch (Exception e)
             {
                 this.Log.Error((int)ErrorCode.SqlDatabaseProviderWrite, "{0} : {1}".FormatWith(e.Message, id), e);
-                throw;
+                //throw;
             }
         }
 
@@ -349,8 +349,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Class GrainStateRecord.
     /// </summary>
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     internal class GrainStateRecord
     {
         /// <summary>
