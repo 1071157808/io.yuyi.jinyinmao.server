@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  10:55 AM
+// Last Modified On : 2015-05-28  12:21 PM
 // ***********************************************************************
 // <copyright file="PaymentRequestParameter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,12 +43,12 @@ namespace Yuyi.Jinyinmao.Service
         public PaymentRequestParameter(string bn, string sn, string accNo, string accName, string accProvince, string accCity, string bankName,
             int idType, string idNo, string mobileNo, string userId, string pn, decimal amount)
         {
-            this.BatchNo = bn.ToUpper();
+            this.BatchNo = bn.ToUpperInvariant();
 
             TransDetail tran = new TransDetail
             {
-                UserUuid = userId.ToUpper(),
-                Sn = sn,
+                UserUuid = userId.ToUpperInvariant(),
+                Sn = sn.ToUpperInvariant(),
                 AccNo = accNo,
                 // 账号名
                 AccName = accName,
@@ -62,13 +62,13 @@ namespace Yuyi.Jinyinmao.Service
                 // 证件类型
                 IDType = YilianRequestParameterHelper.TransformCredentialType(idType),
                 // 证件号码
-                IDNo = idNo,
+                IDNo = idNo.ToUpperInvariant(),
                 // 手机号
                 MobileNo = mobileNo,
                 // 回调URL
                 MerchantUrl = "",
                 // 产品编号
-                MerOrderNo = pn
+                MerOrderNo = pn.ToUpperInvariant()
             };
 
             this.TransDetails = new List<TransDetail> { tran };

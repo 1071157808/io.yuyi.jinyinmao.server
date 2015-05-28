@@ -39,12 +39,12 @@ namespace Yuyi.Jinyinmao.Service
         public AuthRequestParameter(string bn, string sn, string accNo, string accName, string accProvince, string accCity, string bankName,
             int idType, string idNo, string mobileNo, string userId)
         {
-            this.BatchNo = bn.ToUpper();
+            this.BatchNo = bn.ToUpperInvariant();
 
             TransDetail tran = new TransDetail
             {
-                UserUuid = userId.ToUpper(),
-                Sn = sn,
+                UserUuid = userId.ToUpperInvariant(),
+                Sn = sn.ToUpperInvariant(),
                 AccNo = accNo,
                 // 账号名
                 AccName = accName,
@@ -64,7 +64,7 @@ namespace Yuyi.Jinyinmao.Service
                 // 回调URL
                 MerchantUrl = "",
                 // 模拟产品编号
-                MerOrderNo = "A" + userId.ToUpper()
+                MerOrderNo = "A" + userId.ToUpperInvariant()
             };
 
             this.TransDetails = new List<TransDetail> { tran };
