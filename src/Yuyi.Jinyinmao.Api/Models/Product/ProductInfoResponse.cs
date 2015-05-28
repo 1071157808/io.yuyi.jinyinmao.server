@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-29  7:14 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  12:00 PM
+// Last Modified On : 2015-05-28  8:46 AM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Newtonsoft.Json;
@@ -23,6 +24,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     RegularProductInfoResponse.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class RegularProductInfoResponse : IResponse
     {
         /// <summary>
@@ -38,7 +40,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string Drawee { get; set; }
 
         /// <summary>
-        ///    付款人信息，可能为空
+        ///     付款人信息，可能为空
         /// </summary>
         [JsonProperty("draweeInfo")]
         public string DraweeInfo { get; set; }
@@ -56,19 +58,19 @@ namespace Yuyi.Jinyinmao.Api.Models
         public DateTime EndSellTime { get; set; }
 
         /// <summary>
-        ///    融资企业信息，可能为空
+        ///     融资企业信息，可能为空
         /// </summary>
         [JsonProperty("enterpriseInfo")]
         public string EnterpriseInfo { get; set; }
 
         /// <summary>
-        ///    融资企业营业执照，可能为空
+        ///     融资企业营业执照，可能为空
         /// </summary>
         [JsonProperty("enterpriseLicense")]
         public string EnterpriseLicense { get; set; }
 
         /// <summary>
-        ///    融资企业名称，可能为空
+        ///     融资企业名称，可能为空
         /// </summary>
         [JsonProperty("enterpriseName")]
         public string EnterpriseName { get; set; }
@@ -98,7 +100,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public long PaidAmount { get; set; }
 
         /// <summary>
-        ///    融资周期，用于显示，可能为空
+        ///     融资周期，用于显示，可能为空
         /// </summary>
         [JsonProperty("period")]
         public int Period { get; set; }
@@ -152,19 +154,19 @@ namespace Yuyi.Jinyinmao.Api.Models
         public DateTime RepaymentDeadline { get; set; }
 
         /// <summary>
-        ///    风控方名称，可能为空
+        ///     风控方名称，可能为空
         /// </summary>
         [JsonProperty("riskManagement")]
         public string RiskManagement { get; set; }
 
         /// <summary>
-        ///    风控信息，可能为空
+        ///     风控信息，可能为空
         /// </summary>
         [JsonProperty("riskManagementInfo")]
         public string RiskManagementInfo { get; set; }
 
         /// <summary>
-        ///    风控方式，可能为空
+        ///     风控方式，可能为空
         /// </summary>
         [JsonProperty("riskManagementMode")]
         public string RiskManagementMode { get; set; }
@@ -206,7 +208,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int UnitPrice { get; set; }
 
         /// <summary>
-        ///    融资用途，可能为空
+        ///     融资用途，可能为空
         /// </summary>
         [JsonProperty("usage")]
         public string Usage { get; set; }

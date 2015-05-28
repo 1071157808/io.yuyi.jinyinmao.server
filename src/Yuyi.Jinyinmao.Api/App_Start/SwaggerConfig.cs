@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  8:44 AM
+// Last Modified On : 2015-05-28  9:32 AM
 // ***********************************************************************
 // <copyright file="SwaggerConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -90,7 +90,7 @@ namespace Yuyi.Jinyinmao.Api
                 //    });
 
                 // Set this flag to omit descriptions for any actions decorated with the Obsolete attribute
-                c.IgnoreObsoleteActions();
+                //c.IgnoreObsoleteActions();
 
                 // Each operation be assigned one or more tags which are then used by consumers for various reasons.
                 // For example, the swagger-ui groups operations according to the first tag of each operation.
@@ -127,7 +127,7 @@ namespace Yuyi.Jinyinmao.Api
 
                 // Set this flag to omit schema property descriptions for any type properties decorated with the
                 // Obsolete attribute
-                c.IgnoreObsoleteProperties();
+                //c.IgnoreObsoleteProperties();
 
                 // In a Swagger 2.0 document, complex types are typically declared globally and referenced by unique
                 // Schema Id. By default, Swashbuckle does NOT use the full type name in Schema Ids. In most cases, this
@@ -255,5 +255,3 @@ namespace Yuyi.Jinyinmao.Api
     //        #endregion IOperationFilter Members
     //    }
 }
-
-//#endif

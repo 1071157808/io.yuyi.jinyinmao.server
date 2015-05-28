@@ -17,6 +17,7 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="ApiRemote" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBpQYJKoZIhvcNAQcDoIIBljCCAZICAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEFZMFILAIkONQVLffYX/3qEwDQYJKoZIhvcNAQEBBQAEggEARSVRW8tpSKeG9/qqphmP/h3+OuPP8AsReoUU0lT9inbq5kTLXi4IDEUHbI0NFsgJ9Z+zpyis5NpI7LD9PFz31Rt3BY1DOQzN00VbDls2Hf96EAcizGoj9FmHquNdQVmkz74WrME3lION+SVgO7SilFCk0eVInYEvAW5ioXgJM/5PA4+zjKtPtETnmL0VvMwyChWoh1ja12Rnd1xfMoJwSYjWTBK167b4H33Xh9kOzK00zKpsDJAXUzk+VOZsO/qHm46s+icTF5igl3Wocfpz6GE31+TYkiytRT0q2/Q6Gc2xegkPVAt19dLHS90yJ3Jv8vITh2NdoOVqAt5UQAUnjTA7BgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECPuliDh1IHmlgBjpoGJOUaHw6IehoC2fdvKPCSepMeNYlP0=" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2016-05-25T23:59:59.0000000+08:00" />
+      <Setting name="YilianPaymentGatewayHost" value="" />
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="6C7DAC99ADA6B81006C6C71828479C3EAD20DD2D" thumbprintAlgorithm="sha1" />

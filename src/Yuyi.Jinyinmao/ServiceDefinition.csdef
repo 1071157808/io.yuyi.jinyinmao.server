@@ -20,6 +20,7 @@
       <Setting name="SmsServiceApiKey" />
       <Setting name="EnableHMACAuth" />
       <Setting name="JYMDBContextConnectionString" />
+      <Setting name="YilianPaymentGatewayHost" />
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="HTTP" protocol="http" port="80" />
