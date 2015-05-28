@@ -65,7 +65,7 @@ namespace Yuyi.Jinyinmao.Service
             string veriCode;
             VeriCode code;
 
-            using (JymdbContext context = new JymdbContext())
+            using (JYMDBContext context = new JYMDBContext())
             {
                 // 时间大于今天开始日期，就一定是今天发送的验证码
                 code = await context.Query<VeriCode>().OrderByDescending(c => c.BuildAt)
@@ -131,7 +131,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;UseVeriCodeResult&gt;.</returns>
         public async Task<UseVeriCodeResult> UseAsync(string token, VeriCodeType type)
         {
-            using (JymdbContext context = new JymdbContext())
+            using (JYMDBContext context = new JYMDBContext())
             {
                 // 验证码的使用有效期为30分钟
                 DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);
@@ -160,7 +160,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;VerifyVeriCodeResult&gt;.</returns>
         public async Task<VerifyVeriCodeResult> VerifyAsync(string cellphone, string code, VeriCodeType type)
         {
-            using (JymdbContext context = new JymdbContext())
+            using (JYMDBContext context = new JYMDBContext())
             {
                 // 只取有效期内的验证码
                 DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);

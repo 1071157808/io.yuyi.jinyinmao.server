@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  10:54 AM
+// Last Modified On : 2015-05-28  11:18 AM
 // ***********************************************************************
 // <copyright file="TransDetail.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -49,6 +49,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     金额（即认证费，由金银猫自己生成，可以是动态的每次都不一样，也可以是写死的每次都一样）
         /// </summary>
+        [JsonProperty("AMOUNT")]
         public string Amount { get; set; }
 
         /// <summary>

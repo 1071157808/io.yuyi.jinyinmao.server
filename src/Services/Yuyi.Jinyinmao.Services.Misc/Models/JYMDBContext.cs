@@ -4,7 +4,7 @@
 // Created          : 2015-05-04  11:50 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  10:34 PM
+// Last Modified On : 2015-05-28  11:49 AM
 // ***********************************************************************
 // <copyright file="JYMDBContext.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,27 +21,27 @@ namespace Yuyi.Jinyinmao.Service.Models
     /// <summary>
     ///     JYMDBContext.
     /// </summary>
-    public class JymdbContext : DbContextBase
+    public sealed class JYMDBContext : DbContextBase
     {
         /// <summary>
         ///     The connectiong string
         /// </summary>
-        private static readonly string ConnectiongString;
+        private static readonly string ConnectionString;
 
         /// <summary>
-        ///     Initializes static members of the <see cref="JymdbContext" /> class.
+        ///     Initializes static members of the <see cref="JYMDBContext" /> class.
         /// </summary>
-        static JymdbContext()
+        static JYMDBContext()
         {
-            Database.SetInitializer<JymdbContext>(null);
-            ConnectiongString = CloudConfigurationManager.GetSetting("JYMDBContextConnectionString");
+            Database.SetInitializer<JYMDBContext>(null);
+            ConnectionString = CloudConfigurationManager.GetSetting("JYMDBContextConnectionString");
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="JymdbContext" /> class.
+        ///     Initializes a new instance of the <see cref="JYMDBContext" /> class.
         /// </summary>
-        public JymdbContext()
-            : base(ConnectiongString)
+        public JYMDBContext()
+            : base(ConnectionString)
         {
         }
 

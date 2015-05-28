@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:19 PM
+// Last Modified On : 2015-05-28  11:51 AM
 // ***********************************************************************
 // <copyright file="EventProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -46,7 +46,7 @@ namespace Yuyi.Jinyinmao.Domain
         public virtual async Task ProcessEventAsync(TEvent @event) => await this.ProcessingEventAsync(@event, async e =>
         {
             string topicName = e.GetType().Name.ToUnderScope();
-            TopicClient client = TopicClient.CreateFromConnectionString(SiloClusterConfig.ServiceBusConnectiongString, topicName);
+            TopicClient client = TopicClient.CreateFromConnectionString(SiloClusterConfig.ServiceBusConnectionString, topicName);
             await client.SendAsync(new BrokeredMessage(e.ToJson()));
         });
 

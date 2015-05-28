@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  4:13 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  6:06 PM
+// Last Modified On : 2015-05-28  11:51 AM
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -23,12 +24,13 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     SiloClusterConfig.
     /// </summary>
+    [SuppressMessage("ReSharper", "MemberCanBeInternal")]
     public static class SiloClusterConfig
     {
         static SiloClusterConfig()
         {
             string storageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
-            ServiceBusConnectiongString = CloudConfigurationManager.GetSetting("ServiceBusConnectiongString");
+            ServiceBusConnectionString = CloudConfigurationManager.GetSetting("ServiceBusConnectionString");
 
             CloudStorageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
@@ -60,6 +62,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets the cloud storage account.
         /// </summary>
         /// <value>The cloud storage account.</value>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
         public static CloudStorageAccount CloudStorageAccount { get; }
 
         /// <summary>
@@ -84,6 +87,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets the private file container.
         /// </summary>
         /// <value>The private file container.</value>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public static CloudBlobContainer PrivateFileContainer { get; }
 
         /// <summary>
@@ -102,6 +106,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the service bus connectiong string.
         /// </summary>
         /// <value>The service bus connectiong string.</value>
-        public static string ServiceBusConnectiongString { get; private set; }
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public static string ServiceBusConnectionString { get; private set; }
     }
 }
