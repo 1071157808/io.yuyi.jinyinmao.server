@@ -9,7 +9,7 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString"
                value="BlobEndpoint=https://jymstoredevapilogs.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevapilogs.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevapilogs.table.core.chinacloudapi.cn/;AccountName=jymstoredevapilogs;AccountKey=mo6gT9g0K+uykNlw0+y9D1FwWTecdPyeVrnLM+8Ow4cVpyCxwovunMAMvFc0k2t9lUuc/P+VV9H0E3Xj9HP2fw==" />
       <Setting name="DataConnectionString"
-               value="BlobEndpoint=https://jymstoragedev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoragedev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoragedev.table.core.chinacloudapi.cn/;AccountName=jymstoragedev;AccountKey=FZUO4IQaPFftvdSPu3/PF+Jyn3pIGU37jvFUXdplk9Gv0loOQjCHoEsUwpRjOQEo5EQ9t8OL9ddvcVe9gm7crw==" />
+               value="BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=FZUO4IQaPFftvdSPu3/PF+Jyn3pIGU37jvFUXdplk9Gv0loOQjCHoEsUwpRjOQEo5EQ9t8OL9ddvcVe9gm7crw==" />
       <Setting name="ServiceBusConnectionString"
                value="Endpoint=sb://jym-servicebus-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
       <Setting name="StorageProviderConnectionString"
@@ -41,7 +41,7 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="DataConnectionString"
-               value="BlobEndpoint=https://jymstoragedev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoragedev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoragedev.table.core.chinacloudapi.cn/;AccountName=jymstoragedev;AccountKey=FZUO4IQaPFftvdSPu3/PF+Jyn3pIGU37jvFUXdplk9Gv0loOQjCHoEsUwpRjOQEo5EQ9t8OL9ddvcVe9gm7crw==" />
+               value="BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=FZUO4IQaPFftvdSPu3/PF+Jyn3pIGU37jvFUXdplk9Gv0loOQjCHoEsUwpRjOQEo5EQ9t8OL9ddvcVe9gm7crw==" />
       <Setting name="ServiceBusConnectionString"
                value="Endpoint=sb://jym-servicebus-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=d9emGUQNz5b114V/Y7HVN+n/Z+152e9jNq9C6InyDJ4=" />
       <Setting name="StorageProviderConnectionString"
