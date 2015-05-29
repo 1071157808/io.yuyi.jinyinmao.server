@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:36 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  1:18 PM
+// Last Modified On : 2015-05-29  2:31 PM
 // ***********************************************************************
 // <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -229,44 +229,43 @@ namespace Yuyi.Jinyinmao.Domain
                     }
                 });
 
-                //                if (grainState.Etag.IsNullOrEmpty() || grainState.Etag == "0")
-                //                {
-                //                    using (IDbConnection db = new SqlConnection(connectionString))
-                //                    {
-                //                        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, InsertCommandString.FormatWith(tableName), new
-                //                        {
-                //                            Id = id,
-                //                            LongId = longId,
-                //                            Key = key,
-                //                            Type = grainType,
-                //                            TimeStamp = timeStamp,
-                //                            Data = storedData
-                //                        }));
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    using (IDbConnection db = new SqlConnection(connectionString))
-                //                    {
-                //                        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, UpdateCommandString.FormatWith(tableName), new
-                //                        {
-                //                            Id = id,
-                //                            LongId = longId,
-                //                            Key = key,
-                //                            Type = grainType,
-                //                            TimeStamp = timeStamp,
-                //                            Data = storedData,
-                //                            grainState.Etag
-                //                        }));
-                //                    }
-                //                }
+                //if (grainState.Etag.IsNullOrEmpty() || grainState.Etag == "0")
+                //{
+                //    using (IDbConnection db = new SqlConnection(connectionString))
+                //    {
+                //        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, InsertCommandString.FormatWith(tableName), new
+                //        {
+                //            Id = id,
+                //            LongId = longId,
+                //            Key = key,
+                //            Type = grainType,
+                //            TimeStamp = timeStamp,
+                //            Data = storedData
+                //        }));
+                //    }
+                //}
+                //else
+                //{
+                //    using (IDbConnection db = new SqlConnection(connectionString))
+                //    {
+                //        resultCount = await this.retryPolicy.ExecuteAsync(async () => await SqlMapper.ExecuteAsync(db, UpdateCommandString.FormatWith(tableName), new
+                //        {
+                //            Id = id,
+                //            LongId = longId,
+                //            Key = key,
+                //            Type = grainType,
+                //            TimeStamp = timeStamp,
+                //            Data = storedData,
+                //            grainState.Etag
+                //        }));
+                //    }
+                //}
 
                 grainState.Etag = timeStamp.ToString();
             }
             catch (Exception e)
             {
                 this.Log.Error((int)ErrorCode.SqlDatabaseProviderWrite, "{0} : {1}".FormatWith(e.Message, id), e);
-                //throw;
             }
         }
 

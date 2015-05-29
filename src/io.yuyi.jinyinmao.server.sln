@@ -31,12 +31,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
 	ProjectSection(SolutionItems) = preProject
 		Publish\dev\ApiKeys.json = Publish\dev\ApiKeys.json
-		Publish\dev\Configurations.txt = Publish\dev\Configurations.txt
-		Publish\dev\InitFrontTables.sql = Publish\dev\InitFrontTables.sql
-		Publish\dev\InitGrainDBs.sql = Publish\dev\InitGrainDBs.sql
-		Publish\dev\InitGrainTables.sql = Publish\dev\InitGrainTables.sql
-		Publish\dev\InitUser.sql = Publish\dev\InitUser.sql
-		Publish\dev\ServerConfig.json = Publish\dev\ServerConfig.json
+		Publish\dev\业务表初始化脚本.sql = Publish\dev\业务表初始化脚本.sql
+		Publish\dev\业务配置.txt = Publish\dev\业务配置.txt
+		Publish\dev\内存集群数据持久化数据库建立脚本.sql = Publish\dev\内存集群数据持久化数据库建立脚本.sql
+		Publish\dev\内存集群数据持久化数据库表初始化.sql = Publish\dev\内存集群数据持久化数据库表初始化.sql
+		Publish\dev\开发环境服务器配置.json = Publish\dev\开发环境服务器配置.json
+		Publish\dev\数据库用户初始化脚本.sql = Publish\dev\数据库用户初始化脚本.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-LocalHost", "3-LocalHost", "{A10B2E6B-7856-4EA5-AF60-816879A740BE}"

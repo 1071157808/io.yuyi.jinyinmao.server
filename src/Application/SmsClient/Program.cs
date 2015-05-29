@@ -91,7 +91,7 @@ namespace SmsClient
             Console.WriteLine("Calling the back-end API");
 
             string smsServiceAddress = ConfigurationManager.AppSettings.Get("SmsServiceAddress");
-            string apiBaseAddress = string.IsNullOrEmpty(smsServiceAddress) ? "https://jym-dev-api-sms.yuyidev.com/" : smsServiceAddress;
+            string apiBaseAddress = string.IsNullOrEmpty(smsServiceAddress) ? "https://jym-web-dev-sms.yuyidev.com/" : smsServiceAddress;
 
             ApiKeyAuthDelegatingHandler delegatingHandler = new ApiKeyAuthDelegatingHandler();
 
