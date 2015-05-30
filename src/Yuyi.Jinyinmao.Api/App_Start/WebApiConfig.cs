@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  12:59 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  12:37 PM
+// Last Modified On : 2015-05-31  12:48 AM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,12 +16,12 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
-using Moe.AspNet.Logs;
 using Moe.AspNet.MessageHandlers;
 using Moe.AspNet.Providers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApiContrib.Formatting.Jsonp;
+using ExceptionLogger = Moe.AspNet.Logs.ExceptionLogger;
 
 namespace Yuyi.Jinyinmao.Api
 {
@@ -37,7 +37,7 @@ namespace Yuyi.Jinyinmao.Api
         public static void Register(HttpConfiguration config)
         {
             config.Services.Add(typeof(IFilterProvider), new OrderedFilterProvider());
-            config.Services.Add(typeof(IExceptionLogger), new AzureExceptionLogger());
+            config.Services.Add(typeof(IExceptionLogger), new ExceptionLogger());
 
             JsonMediaTypeFormatter formatter = new JsonMediaTypeFormatter
             {

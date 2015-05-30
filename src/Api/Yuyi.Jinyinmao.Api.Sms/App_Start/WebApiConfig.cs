@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  11:58 AM
+// Last Modified On : 2015-05-31  12:35 AM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,11 +16,11 @@ using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 using System.Web.Http.Tracing;
-using Moe.AspNet.Logs;
 using Moe.AspNet.Providers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApiContrib.Formatting.Jsonp;
+using ExceptionLogger = Moe.AspNet.Logs.ExceptionLogger;
 
 namespace Yuyi.Jinyinmao.Api.Sms
 {
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Api.Sms
         internal static void Register(HttpConfiguration config)
         {
             config.Services.Add(typeof(IFilterProvider), new OrderedFilterProvider());
-            config.Services.Add(typeof(IExceptionLogger), new AzureExceptionLogger());
+            config.Services.Add(typeof(IExceptionLogger), new ExceptionLogger());
 
             SystemDiagnosticsTraceWriter traceWriter = config.EnableSystemDiagnosticsTracing();
             traceWriter.IsVerbose = true;

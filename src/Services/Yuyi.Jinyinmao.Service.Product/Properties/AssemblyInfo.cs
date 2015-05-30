@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Yuyi.Jinyinmao.Service.Product")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Yuyi.Jinyinmao.Service.Product")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Shanghai Yuyi")]
+[assembly: AssemblyCompany("Shanghai Yuyi Mdt InfoTech Ltd.")]
 [assembly: AssemblyProduct("Yuyi.Jinyinmao.Service.Product")]
-[assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Yuyi.Jinyinmao.Api.Sms")]
 [assembly: AssemblyDescription("Yuyi.Jinyinmao.Api.Sms")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Shanghai Yuyi")]
+[assembly: AssemblyCompany("Shanghai Yuyi Mdt InfoTech Ltd.")]
 [assembly: AssemblyProduct("Yuyi.Jinyinmao.Api.Sms")]
 [assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.")]
 [assembly: AssemblyTrademark("")]

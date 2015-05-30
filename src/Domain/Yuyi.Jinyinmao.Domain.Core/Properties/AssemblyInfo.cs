@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Yuyi.Jinyinmao.Domain.Core")]
 [assembly: AssemblyDescription("Yuyi.Jinyinmao.Domain.Core")]
 [assembly: AssemblyConfiguration("Shanghai Yuyi")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Shanghai Yuyi Mdt InfoTech Ltd.")]
 [assembly: AssemblyProduct("Yuyi.Jinyinmao.Domain.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.")]
 [assembly: AssemblyTrademark("")]

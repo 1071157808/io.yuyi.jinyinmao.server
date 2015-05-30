@@ -72,21 +72,13 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeAspNet, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeAspNet.2.0.1.0\lib\net45\MoeAspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="MoeEnsure, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeEnsure.2.0.1.0\lib\net45\MoeEnsure.dll</HintPath>
-    </Reference>
-    <Reference Include="MoeLib, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.2.1.9.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeAspNet, Version=3.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeAspNet.3.1.3.0\lib\net45\MoeAspNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeThrow, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MoeThrow.2.0.1.0\lib\net45\MoeThrow.dll</HintPath>
+    <Reference Include="MoeLib, Version=3.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.3.1.5.0\lib\net45\MoeLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -197,8 +189,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Cloud|AnyCPU'">
     <OutputPath>bin\</OutputPath>

@@ -64,6 +64,7 @@
     <DiagnosticsConfiguration Include="Yuyi.Jinyinmao.SiloContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <ItemGroup>
+    <PublishProfile Include="Profiles\jym-api.azurePubxml" />
     <PublishProfile Include="Profiles\jym-dev-api.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->

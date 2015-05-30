@@ -19,9 +19,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Yuyi.Jinyinmao.Domain.User.Interface")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Yuyi.Jinyinmao.Domain.User.Interface")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Shanghai Yuyi")]
+[assembly: AssemblyCompany("Shanghai Yuyi Mdt InfoTech Ltd.")]
 [assembly: AssemblyProduct("Yuyi.Jinyinmao.Domain.User.Interface")]
 [assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.")]
 [assembly: AssemblyTrademark("")]

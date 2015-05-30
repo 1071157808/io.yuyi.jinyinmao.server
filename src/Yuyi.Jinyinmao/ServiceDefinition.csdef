@@ -24,10 +24,10 @@
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="HTTP" protocol="http" port="80" />
-      <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="YuyiCertificate" />
+      <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="SSLCertificate" />
     </Endpoints>
     <Certificates>
-      <Certificate name="YuyiCertificate" storeLocation="CurrentUser" storeName="My" />
+      <Certificate name="SSLCertificate" storeLocation="CurrentUser" storeName="My" />
     </Certificates>
     <Imports>
       <Import moduleName="RemoteAccess" />

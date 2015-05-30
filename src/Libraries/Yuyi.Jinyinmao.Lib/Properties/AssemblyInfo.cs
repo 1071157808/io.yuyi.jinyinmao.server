@@ -21,9 +21,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Yuyi.Jinyinmao.Lib")]
 [assembly: AssemblyDescription("Yuyi.Jinyinmao.Lib")]
 [assembly: AssemblyConfiguration("Shanghai Yuyi")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Shanghai Yuyi Mdt InfoTech Ltd.")]
 [assembly: AssemblyProduct("Yuyi.Jinyinmao.Lib")]
-[assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

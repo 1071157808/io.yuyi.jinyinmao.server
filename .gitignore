@@ -194,3 +194,6 @@ ModelManifest.xml
 
 # GhostDoc 
 *.GhostDoc.xml
+
+# PublishFile
+!src/Publish/*

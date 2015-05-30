@@ -19,11 +19,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Yuyi.Jinyinmao.Resources")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Yuyi.Jinyinmao.Resources")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Shanghai Yuyi")]
+[assembly: AssemblyCompany("Shanghai Yuyi Mdt InfoTech Ltd.")]
 [assembly: AssemblyProduct("Yuyi.Jinyinmao.Resources")]
-[assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

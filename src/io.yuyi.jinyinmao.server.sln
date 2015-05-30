@@ -25,18 +25,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Service.User
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7-Publish", "7-Publish", "{D91863F8-FB00-4448-AEAC-E1442C17CF17}"
 	ProjectSection(SolutionItems) = preProject
-		Publish\CodeMap.dgml = Publish\CodeMap.dgml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-dev", "0-dev", "{C2CDB48E-6910-42A3-96E5-DE22025E6FAD}"
-	ProjectSection(SolutionItems) = preProject
-		Publish\dev\ApiKeys.json = Publish\dev\ApiKeys.json
-		Publish\dev\业务表初始化脚本.sql = Publish\dev\业务表初始化脚本.sql
-		Publish\dev\业务配置.txt = Publish\dev\业务配置.txt
-		Publish\dev\内存集群数据持久化数据库初始化脚本.sql = Publish\dev\内存集群数据持久化数据库初始化脚本.sql
-		Publish\dev\内存集群数据持久化数据库表结构初始化脚本.sql = Publish\dev\内存集群数据持久化数据库表结构初始化脚本.sql
-		Publish\dev\开发环境服务器配置.json = Publish\dev\开发环境服务器配置.json
-		Publish\dev\数据库用户初始化脚本.sql = Publish\dev\数据库用户初始化脚本.sql
+		Publish\ApiKeys.json = Publish\ApiKeys.json
+		Publish\业务表初始化脚本.sql = Publish\业务表初始化脚本.sql
+		Publish\业务配置.md = Publish\业务配置.md
+		Publish\内存集群数据持久化数据库初始化脚本.sql = Publish\内存集群数据持久化数据库初始化脚本.sql
+		Publish\内存集群数据持久化数据库表结构初始化脚本.sql = Publish\内存集群数据持久化数据库表结构初始化脚本.sql
+		Publish\数据库用户初始化脚本.sql = Publish\数据库用户初始化脚本.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-LocalHost", "3-LocalHost", "{A10B2E6B-7856-4EA5-AF60-816879A740BE}"
@@ -355,7 +349,6 @@ Global
 		{0E048DCC-F815-4D24-87B4-4210FD89E500} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{D0C9996F-A7F6-4F7F-A5B8-8657CF4673C9} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{C3B74C74-F4C7-485E-9697-B51B754FCCEE} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
-		{C2CDB48E-6910-42A3-96E5-DE22025E6FAD} = {D91863F8-FB00-4448-AEAC-E1442C17CF17}
 		{041F1C0A-534D-42AB-B5D7-DC6C38B9CD03} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{F6633FBB-6227-4D15-838E-C6F8EC4641EC} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{E3386E63-15E2-49DF-B8B8-290A5CEFFAF9} = {E57225A1-3000-4369-8C1E-A1DF4C5120B9}
