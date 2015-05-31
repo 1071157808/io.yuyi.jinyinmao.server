@@ -1,0 +1,27 @@
+{
+    "Entities": [
+        {
+            "PartitionKey": "jinyinmao",
+            "RowKey": "38e9ad41-c1b2-44a0-ad2a-88acba74db9d",
+            "ApiAdmin": "false",
+            "ApiKey": "HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==",
+            "AppId": "38e9ad41-c1b2-44a0-ad2a-88acba74db9d",
+            "AppName": "SmsClient",
+            "Expiry": "8/8/2015 7:51:25 AM",
+            "JymApiSms": "true",
+            "Notes": "SmsClient"
+        },
+        {
+            "PartitionKey": "jinyinmao",
+            "RowKey": "a96c9761-2865-4155-b0f7-5c0756c4459c",
+            "ApiAdmin": "true",
+            "ApiKey": "/sNLl6eToGKsRor48QmcNit3d7L1D6/Mi5nrNFrTdM2f9c62NSebA5RjHxNSAhXeASbAPifKhLEHEIkF+dYHRArJQ8J2TWFDEVbl6jfIVlinv238KIMtcJRNRv/RxZmw0sy5IcAIsFIKGfE/JZNsXvvhziOzjHUe7gAFZwWh5EwkiVmyJpDezB+VCCR0TeIbt1g2WuYBg5OuCQx+7Y08YrzCm1X90ck0CBzAUNw+dgi7yyhLHuo7K2SUcJ0sjnFt2KAw5kjf/og1BNBh0laYaTAby8apU2Bo5/pVIzTIYhRfTcwGQ39b7m+pSr472X4oDpN5WN/GnKN+9FlPuy4Zeg==",
+            "AppId": "a96c9761-2865-4155-b0f7-5c0756c4459c",
+            "AppName": "ApiAdmin",
+            "Expiry": "5/30/2015 1:00:00 AM",
+            "JymApiSms": "false",
+            "Notes": "ApiAdmin"
+
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+CREATE LOGIN [db-user-front] 
+WITH PASSWORD = N'0SmDXp8i7MRfg29HJk1N' 
+GO
+
+CREATE LOGIN [db-user-backoffice] 
+WITH PASSWORD = N'0SmDXp8i7MRfg29HJk1N' 
+GO
