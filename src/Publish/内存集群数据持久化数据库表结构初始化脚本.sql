@@ -3,6 +3,7 @@
 	需要先链接到server的各个database，再执行以下脚本（由于azure的限制，不能使用use语句切换database，必须手动切换）
 	执行前，务必删除原有的表，或者重新创建database
 */
+/*USE jym-grains-{0}*/
 CREATE USER [db-user-front] FOR LOGIN [db-user-front]
 GO
 

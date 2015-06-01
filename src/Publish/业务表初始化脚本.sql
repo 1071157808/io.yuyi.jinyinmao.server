@@ -13,10 +13,31 @@ File Encoding         : 65001
 
 Date: 2015-05-27 13:48:24
 */
+/*USE jym-biz*/
+IF NOT EXISTS (SELECT * FROM [sys].[database_principals] WHERE [name] = N'db-user-backoffice')
+  SET NOEXEC ON
+GO
+
+DROP USER [db-user-backoffice]
+GO
+
+SET NOEXEC OFF
+GO
+
 CREATE USER [db-user-backoffice] FOR LOGIN [db-user-backoffice]
 GO
 
 EXEC sp_addrolemember N'db_datareader', N'db-user-backoffice' 
+GO
+
+IF NOT EXISTS (SELECT * FROM [sys].[database_principals] WHERE [name] = N'db-user-front')
+  SET NOEXEC ON
+GO
+
+DROP USER [db-user-front]
+GO
+
+SET NOEXEC OFF
 GO
 
 CREATE USER [db-user-front] FOR LOGIN [db-user-front]
@@ -31,8 +52,16 @@ GO
 -- ----------------------------
 -- Table structure for AccountTranscations
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'AccountTranscations')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[AccountTranscations]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[AccountTranscations] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [TranscationIdentifier] varchar(50) NOT NULL ,
@@ -93,8 +122,16 @@ GO
 -- ----------------------------
 -- Table structure for BankCards
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'BankCards')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[BankCards]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[BankCards] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [UserIdentifier] varchar(50) NOT NULL ,
@@ -126,8 +163,16 @@ GO
 -- ----------------------------
 -- Table structure for JBYProducts
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'JBYProducts')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[JBYProducts]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[JBYProducts] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [ProductIdentifier] varchar(50) NOT NULL ,
@@ -179,8 +224,16 @@ GO
 -- ----------------------------
 -- Table structure for JBYTranscations
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'JBYTranscations')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[JBYTranscations]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[JBYTranscations] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [TranscationIdentifier] varchar(50) NOT NULL ,
@@ -235,8 +288,16 @@ GO
 -- ----------------------------
 -- Table structure for Orders
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Orders')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[Orders]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[Orders] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [OrderIdentifier] varchar(50) NOT NULL ,
@@ -330,8 +391,16 @@ GO
 -- ----------------------------
 -- Table structure for RegularProducts
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'RegularProducts')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[RegularProducts]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[RegularProducts] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [ProductIdentifier] varchar(50) NOT NULL ,
@@ -398,8 +467,16 @@ GO
 -- ----------------------------
 -- Table structure for Users
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Users')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[Users]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[Users] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [UserIdentifier] varchar(50) NOT NULL ,
@@ -449,8 +526,16 @@ GO
 -- ----------------------------
 -- Table structure for VeriCodes
 -- ----------------------------
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'VeriCodes')
+  SET NOEXEC ON
+GO
+
 DROP TABLE [dbo].[VeriCodes]
 GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[VeriCodes] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [BuildAt] datetime2(7) NOT NULL ,
