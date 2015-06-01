@@ -2,7 +2,7 @@
 
 <ClientConfiguration xmlns="urn:orleans">
   <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Warning" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true">
+  <Tracing DefaultTraceLevel="Warning" TraceToConsole="true" TraceToFile="{0}-{1}.log">
     <TraceLevelOverride LogPrefix="Application" TraceLevel="Warning" />
   </Tracing>
 </ClientConfiguration>

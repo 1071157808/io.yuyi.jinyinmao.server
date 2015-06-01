@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-12  1:28 AM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  1:26 AM
+// Last Modified On : 2015-06-01  2:50 PM
 // ***********************************************************************
 // <copyright file="UserJBYController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -134,13 +134,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     账户取现请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UJW1:请重置支付密码后再试</response>
-        /// <response code="400">UJW2:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
-        /// <response code="400">UJW3:暂时无法赎回</response>
-        /// <response code="400">UJW4:赎回金额已经达到今日上限</response>
-        /// <response code="400">UJW5:赎回金额超过限制</response>
-        /// <response code="400">UJW6:取现失败</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UJW1:请重置支付密码后再试
+        ///     <br />
+        ///     UJW2:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     <br />
+        ///     UJW3:暂时无法赎回
+        ///     <br />
+        ///     UJW4:赎回金额已经达到今日上限
+        ///     <br />
+        ///     UJW5:赎回金额超过限制
+        ///     <br />
+        ///     UJW6:取现失败
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]

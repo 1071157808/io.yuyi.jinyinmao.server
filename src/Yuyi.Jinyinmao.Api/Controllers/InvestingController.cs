@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-04  2:31 AM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  12:28 AM
+// Last Modified On : 2015-06-01  2:50 PM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -56,15 +56,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     金包银理财产品投资请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">IRI1:请重置支付密码后再试</response>
-        /// <response code="400">IRI2:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
-        /// <response code="400">IRI3:账户余额不足</response>
-        /// <response code="400">IRI4:产品剩余份额不足"</response>
-        /// <response code="400">IRI5:该产品未开售</response>
-        /// <response code="400">IRI6:购买金额错误</response>
-        /// <response code="400">IRI7:购买失败</response>
-        /// <response code="400">IRI8:该产品已售罄</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     IRI1:请重置支付密码后再试
+        ///     <br />
+        ///     IRI2:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     <br />
+        ///     IRI3:账户余额不足
+        ///     <br />
+        ///     IRI4:产品剩余份额不足"
+        ///     <br />
+        ///     IRI5:该产品未开售
+        ///     <br />
+        ///     IRI6:购买金额错误
+        ///     <br />
+        ///     IRI7:购买失败
+        ///     <br />
+        ///     IRI8:该产品已售罄
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
@@ -138,14 +148,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     定期理财产品投资请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">IRI1:请重置支付密码后再试</response>
-        /// <response code="400">IRI2:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
-        /// <response code="400">IRI3:账户余额不足</response>
-        /// <response code="400">IRI4:产品剩余份额不足"</response>
-        /// <response code="400">IRI5:该产品未开售</response>
-        /// <response code="400">IRI6:购买金额错误</response>
-        /// <response code="400">IRI7:购买失败</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     IRI1:请重置支付密码后再试
+        ///     <br />
+        ///     IRI2:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     <br />
+        ///     IRI3:账户余额不足
+        ///     <br />
+        ///     IRI4:产品剩余份额不足"
+        ///     <br />
+        ///     IRI5:该产品未开售
+        ///     <br />
+        ///     IRI6:购买金额错误
+        ///     <br />
+        ///     IRI7:购买失败
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]

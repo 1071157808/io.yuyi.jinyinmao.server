@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  1:04 AM
+// Last Modified On : 2015-06-01  2:50 PM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -58,10 +58,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     添加银行卡请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UBCABC1:无法添加银行卡</response>
-        /// <response code="400">UBCABC2:最多绑定10张银行卡</response>
-        /// <response code="400">UBCABC3:银行卡添加失败</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UBCABC1:无法添加银行卡
+        ///     <br />
+        ///     UBCABC2:最多绑定10张银行卡
+        ///     <br />
+        ///     UBCABC3:银行卡添加失败
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(BankCardInfoResponse))]
@@ -107,10 +112,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     添加银行卡请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UBCABCBY1:无法添加银行卡</response>
-        /// <response code="400">UBCABCBY2:请先进行实名认证</response>
-        /// <response code="400">UBCABCBY3:最多绑定10张银行卡</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UBCABCBY1:无法添加银行卡
+        ///     <br />
+        ///     UBCABCBY2:请先进行实名认证
+        ///     <br />
+        ///     UBCABCBY3:最多绑定10张银行卡
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("AddBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
@@ -215,10 +225,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     隐藏银行卡请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UBCDBC1:无法添加银行卡</response>
-        /// <response code="400">UBCDBC2:银行卡不存在</response>
-        /// <response code="400">UBCDBC3:该银行卡尚有资金未完全取出</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UBCDBC1:无法添加银行卡
+        ///     <br />
+        ///     UBCDBC2:银行卡不存在
+        ///     <br />
+        ///     UBCDBC3:该银行卡尚有资金未完全取出
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Remove"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
@@ -264,10 +279,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     添加银行卡请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UBCABCBY1:无法添加银行卡</response>
-        /// <response code="400">UBCABCBY2:请先进行实名认证</response>
-        /// <response code="400">UBCABCBY3:最多绑定10张银行卡</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UBCABCBY1:无法添加银行卡
+        ///     <br />
+        ///     UBCABCBY2:请先进行实名认证
+        ///     <br />
+        ///     UBCABCBY3:最多绑定10张银行卡
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("VerifyBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]

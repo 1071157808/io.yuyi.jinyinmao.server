@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  8:52 PM
+// Last Modified On : 2015-06-01  2:30 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -56,6 +56,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="userIdentifier">用户唯一标识</param>
         /// <response code="200"></response>
+        /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
         [Route("UserInfo/{userIdentifier:length(32)}"), ResponseType(typeof(UserInfoResponse))]
@@ -76,7 +77,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </param>
         /// <response code="200">上架成功</response>
         /// <response code="400">请求格式不合法</response>
-        /// <response code="400">上架失败：产品编号已存在</response>
+        /// <response code="400">
+        ///     上架失败：产品编号已存在
+        ///     <br />
+        ///     认证失败
+        /// </response>
+        /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
@@ -120,8 +126,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     产品上架请求
         /// </param>
         /// <response code="200">上架成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">上架失败：产品编号已存在</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     上架失败：产品编号已存在
+        /// </response>
+        /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
@@ -179,6 +189,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
+        /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
         [Route("RegularProduct/Repay/{productIdentifier:length(32)}")]
@@ -197,6 +208,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="transcationIdentifier">交易流水唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
+        /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
         [Route("Withdrawal/{userIdentifier:length(32)}-{transcationIdentifier:length(32)}")]

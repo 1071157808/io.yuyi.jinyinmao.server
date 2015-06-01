@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-03  3:34 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  1:27 AM
+// Last Modified On : 2015-06-01  2:50 PM
 // ***********************************************************************
 // <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -57,10 +57,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     账户充值请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">USAD1:请重置支付密码后再试</response>
-        /// <response code="400">USAD2:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
-        /// <response code="400">USAD3:该银行卡不能用于易联支付</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     USAD1:请重置支付密码后再试
+        ///     <br />
+        ///     USAD2:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     <br />
+        ///     USAD3:该银行卡不能用于易联支付
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Deposit/Yilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
@@ -183,14 +188,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     账户取现请求
         /// </param>
         /// <response code="200">成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">USAW1:暂时无法取现</response>
-        /// <response code="400">USAW2:取现次数已经达到今日上限</response>
-        /// <response code="400">USAW3:该银行卡不能用于取现</response>
-        /// <response code="400">USAW4:取现额度超过限制</response>
-        /// <response code="400">USAW5:请重置支付密码后再试</response>
-        /// <response code="400">USAW6:支付密码错误，支付密码输入错误5次会锁定支付功能</response>
-        /// <response code="400">USAW7:取现失败</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     USAW1:暂时无法取现
+        ///     <br />
+        ///     USAW2:取现次数已经达到今日上限
+        ///     <br />
+        ///     USAW3:该银行卡不能用于取现
+        ///     <br />
+        ///     USAW4:取现额度超过限制
+        ///     <br />
+        ///     USAW5:请重置支付密码后再试
+        ///     <br />
+        ///     USAW6:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     <br />
+        ///     USAW7:取现失败
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SettleAccountTranscationInfoResponse))]

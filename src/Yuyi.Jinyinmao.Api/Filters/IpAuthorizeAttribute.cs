@@ -70,7 +70,18 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             var request = context.Request;
             string ip = HttpUtils.GetUserHostAddress(request);
-            return !string.IsNullOrEmpty(ip) && (!this.OnlyLocalHost || this.OnlyLocalHost && request.IsLocal()) && (ip.StartsWith("172.26", StringComparison.Ordinal) || ip.StartsWith("172.25", StringComparison.Ordinal) || ip.StartsWith("10.1", StringComparison.Ordinal) || ip == "::1");
+
+            if (string.IsNullOrEmpty(ip))
+            {
+                return false;
+            }
+
+            if (this.OnlyLocalHost)
+            {
+                return request.IsLocal() || ip == "::1";
+            }
+
+            return ip.StartsWith("172.26", StringComparison.Ordinal) || ip.StartsWith("172.25", StringComparison.Ordinal) || ip.StartsWith("10.1", StringComparison.Ordinal) || ip == "::1";
         }
     }
 }

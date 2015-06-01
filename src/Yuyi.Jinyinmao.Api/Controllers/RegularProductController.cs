@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-29  7:11 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-23  10:31 AM
+// Last Modified On : 2015-06-01  2:45 PM
 // ***********************************************************************
 // <copyright file="RegularProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -55,7 +55,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Content[string]: 协议内容
         /// </returns>
         /// <response code="200"></response>
-        /// <response code="401">RPGA:无此协议</response>
+        /// <response code="400">RPGA:无此协议</response>
         /// <response code="500"></response>
         [HttpGet, Route("Agreement/{productIdentifier:length(32)}-{agreementIndex:int}")]
         public async Task<IHttpActionResult> GetAgreement(string productIdentifier, int agreementIndex)
@@ -111,7 +111,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
         /// <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
         /// <response code="200"></response>
-        /// <response code="404">RPGSP:无产品信息</response>
+        /// <response code="400">RPGSP:无产品信息</response>
         /// <response code="500"></response>
         [HttpGet, Route("Sold/{productIdentifier:length(32)}")]
         public async Task<IHttpActionResult> GetSaleProcess(string productIdentifier)
@@ -134,7 +134,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="number">数量，最小为1</param>
         /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
         /// <response code="200"></response>
-        /// <response code="404">无该产品信息</response>
         /// <response code="500"></response>
         [HttpGet, Route("Index/{number:int=1:min(1)}"), ResponseType(typeof(IList<RegularProductInfoResponse>))]
         public async Task<IHttpActionResult> Index(int number = 1, [FromUri] long[] categories = null)
@@ -159,7 +158,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="index">页码，从0开始，最小为0</param>
         /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
         /// <response code="200"></response>
-        /// <response code="404">无该产品信息</response>
         /// <response code="500"></response>
         [HttpGet, Route("Page/{index:int=0:min(0)}"), ResponseType(typeof(PaginatedResponse<RegularProductInfoResponse>))]
         public async Task<IHttpActionResult> Page(int index = 0, [FromUri] long[] categories = null)

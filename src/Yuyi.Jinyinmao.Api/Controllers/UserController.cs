@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-21  11:12 AM
+// Last Modified On : 2015-06-01  2:50 PM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -47,8 +47,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     用户未登录会返回401
         /// </remarks>
         /// <response code="200">认证成功</response>
-        /// <response code="400">请求格式不合法</response>
-        /// <response code="400">UG:无法获取用户信息</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UG:无法获取用户信息
+        /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route(""), CookieAuthorize, ResponseType(typeof(UserInfoResponse))]

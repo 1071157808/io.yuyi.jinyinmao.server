@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:18 PM
+// Last Modified On : 2015-06-01  3:56 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -58,7 +59,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Gets the trace.
         /// </summary>
         /// <value>The trace.</value>
-        public ITraceWriter Trace => this.Configuration.Services.GetTraceWriter();
+        protected ITraceWriter Trace => this.Configuration.Services.GetTraceWriter();
 
         /// <summary>
         ///     Gets the current user.
@@ -112,7 +113,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Gets the current user.
         /// </summary>
         /// <returns>CurrentUser.</returns>
-        protected CurrentUser GetCurrentUser()
+        private CurrentUser GetCurrentUser()
         {
             IPrincipal principal = this.User;
 
@@ -166,6 +167,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Gets or sets the expiry time.
         /// </summary>
         /// <value>The expiry time.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public DateTime ExpiryTime { get; set; }
 
         /// <summary>

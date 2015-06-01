@@ -194,9 +194,10 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                     AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, this.State.InitData.AuthenticateCommand.CityName,
                         this.State.InitData.AuthenticateCommand.BankCardNo, userInfo.RealName, this.State.InitData.AuthenticateCommand.BankName, (int)userInfo.Credential,
                         userInfo.CredentialNo, this.State.InitData.AuthenticateCommand.Cellphone, userInfo.UserId.ToGuidString());
+                    this.Info.Add("Auth-Request-{0}".FormatWith(DateTime.UtcNow), parameter);
 
                     YilianRequestResult result = await this.YilianService.AuthRequestAsync(parameter);
-                    this.Info.Add("Request-{0}".FormatWith(DateTime.UtcNow.ToString("O")), new { result.Message, result.ResponseString });
+                    this.Info.Add("Auth-Response-{0}".FormatWith(DateTime.UtcNow), new { result.Message, result.ResponseString });
 
                     if (!result.Result)
                     {
@@ -230,9 +231,10 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                         bankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
                         (int)userInfo.Credential, userInfo.CredentialNo, bankCardInfo.Cellphone,
                         userInfo.UserId.ToGuidString(), transcationInfo.Amount);
+                    this.Info.Add("Pay-Request-{0}".FormatWith(DateTime.UtcNow), parameter);
 
                     YilianRequestResult result = await this.YilianService.PaymentRequestAsync(parameter);
-                    this.Info.Add("Request-{0}".FormatWith(DateTime.UtcNow.ToString("O")), new { result.Message, result.ResponseString });
+                    this.Info.Add("Pay-Response-{0}".FormatWith(DateTime.UtcNow), new { result.Message, result.ResponseString });
 
                     if (!result.Result)
                     {

@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-08  1:54 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  2:26 PM
+// Last Modified On : 2015-06-01  2:50 PM
 // ***********************************************************************
 // <copyright file="UserOrderController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -78,8 +78,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     订单详情。订单详情数据会有1分钟缓存时间。
         /// </remarks>
         /// <param name="orderIdentifier">订单唯一标识</param>
-        /// <response code="200">UOI:订单不存在</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="200"></response>
+        /// <response code="400">UOI:订单不存在</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Index/{orderIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(OrderInfoResponse))]

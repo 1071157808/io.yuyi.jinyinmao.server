@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-26  2:06 PM
+// Last Modified On : 2015-06-01  2:32 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,6 +43,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="productIdentifier">productIdentifier</param>
         /// <param name="orderIdentifier">orderIdentifier</param>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("CancelOrderFromProduct/{productIdentifier:length(32)}-{orderIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
@@ -64,6 +65,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     CheckJBYProductSaleStatus
         /// </summary>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("CheckJBYProductSaleStatus"), IpAuthorize(OnlyLocalHost = true)]
@@ -78,6 +80,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="productIdentifier">productIdentifier</param>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("CheckProductSaleStatus/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
@@ -93,6 +96,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="sagaIdentifier">sagaIdentifier</param>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("DepositSaga/{sagaIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
@@ -110,6 +114,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">userIdentifier</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("DoDailyWork/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
@@ -155,6 +160,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     RefreshJBYProduct
         /// </summary>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("RefreshJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
@@ -168,6 +174,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     ReloadJBYProduct
         /// </summary>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("ReloadJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
@@ -182,6 +189,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="productIdentifier">productIdentifier</param>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("ReloadProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
@@ -197,6 +205,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="userIdentifier">userIdentifier</param>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("ReloadUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
@@ -211,6 +220,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     SetJBYProductToSoldOut
         /// </summary>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("SetJBYProductToSoldOut"), IpAuthorize(OnlyLocalHost = true)]
@@ -225,6 +235,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="productIdentifier">productIdentifier</param>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("SetProductToOnSale/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
@@ -241,6 +252,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="productIdentifier">productIdentifier</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
         /// <response code="200"></response>
+        /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("SetProductToSoldOut/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
