@@ -1,18 +1,19 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-27  11:32 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-28  10:16 AM
+// Last Modified On : 2015-06-03  3:18 AM
 // ***********************************************************************
-// <copyright file="UserInfoResponse.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Newtonsoft.Json;
@@ -23,6 +24,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     UserInfoResponse.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class UserInfoResponse : IResponse
     {
         /// <summary>
@@ -122,16 +124,22 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int JBYWithdrawalableAmount { get; set; }
 
         /// <summary>
-        /// 当月取款次数
+        ///     当月取款次数
         /// </summary>
         [Required, JsonProperty("monthWithdrawalCount")]
         public int MonthWithdrawalCount { get; set; }
 
         /// <summary>
-        /// 登录密码错误次数
+        ///     登录密码错误次数
         /// </summary>
         [Required, JsonProperty("passwordErrorCount")]
         public int PasswordErrorCount { get; set; }
+
+        /// <summary>
+        ///     支付密码错误次数
+        /// </summary>
+        [Required, JsonProperty("paymentPasswordErrorCount")]
+        public int PaymentPasswordErrorCount { get; set; }
 
         /// <summary>
         ///     用户真实姓名
@@ -152,7 +160,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int TodayJBYWithdrawalAmount { get; set; }
 
         /// <summary>
-        /// 当天取款次数
+        ///     当天取款次数
         /// </summary>
         [Required, JsonProperty("todayWithdrawalCount")]
         public int TodayWithdrawalCount { get; set; }
@@ -170,7 +178,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int TotalPrincipal { get; set; }
 
         /// <summary>
-        /// 用户唯一标识
+        ///     用户唯一标识
         /// </summary>
         [Required, JsonProperty("userIdentifier")]
         public string UserIdentifier { get; set; }
@@ -210,6 +218,7 @@ namespace Yuyi.Jinyinmao.Api.Models
             JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
             MonthWithdrawalCount = info.MonthWithdrawalCount,
             PasswordErrorCount = info.PasswordErrorCount,
+            PaymentPasswordErrorCount = info.PaymentPasswordErrorCount,
             RealName = info.RealName,
             RegisterTime = info.RegisterTime,
             TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount,

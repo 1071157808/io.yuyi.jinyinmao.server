@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  11:52 AM
+// Last Modified On : 2015-06-03  3:13 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -142,7 +142,7 @@ namespace Yuyi.Jinyinmao.Service
             return new SignInResult
             {
                 Cellphone = result.Cellphone,
-                RemainCount = 5 - result.ErrorCount,
+                RemainCount = result.RemainCount,
                 Success = result.Success,
                 UserExist = result.UserExist,
                 UserId = result.UserId

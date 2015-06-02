@@ -84,6 +84,18 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the jby issue no asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        public async Task<int> GetJBYIssueNoAsync()
+        {
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                return await db.ReadonlyQuery<JBYProduct>().MaxAsync(p => p.IssueNo);
+            }
+        }
+
+        /// <summary>
         ///     Gets the jby product information asynchronous.
         /// </summary>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>

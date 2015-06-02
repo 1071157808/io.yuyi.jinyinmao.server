@@ -16,12 +16,6 @@ namespace Yuyi.Jinyinmao.Domain
     public partial class User
     {
         /// <summary>
-        ///     Gets or sets the error count.
-        /// </summary>
-        /// <value>The error count.</value>
-        public int PasswordErrorCount { get; set; }
-
-        /// <summary>
         ///     Gets or sets the crediting settle account amount.
         /// </summary>
         /// <value>The crediting settle account amount.</value>
@@ -46,16 +40,10 @@ namespace Yuyi.Jinyinmao.Domain
         private int InvestingPrincipal { get; set; }
 
         /// <summary>
-        ///     Gets or sets the jby total pricipal.
+        ///     Gets or sets the jby accrual amount.
         /// </summary>
-        /// <value>The jby total pricipal.</value>
-        private int JBYTotalPricipal { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the jby total interest.
-        /// </summary>
-        /// <value>The jby total interest.</value>
-        private int JBYTotalInterest { get; set; }
+        /// <value>The jby accrual amount.</value>
+        private int JBYAccrualAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total amount.
@@ -64,10 +52,16 @@ namespace Yuyi.Jinyinmao.Domain
         private int JBYTotalAmount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the jby accrual amount.
+        ///     Gets or sets the jby total interest.
         /// </summary>
-        /// <value>The jby accrual amount.</value>
-        private int JBYAccrualAmount { get; set; }
+        /// <value>The jby total interest.</value>
+        private int JBYTotalInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the jby total pricipal.
+        /// </summary>
+        /// <value>The jby total pricipal.</value>
+        private int JBYTotalPricipal { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby withdrawalable amount.
@@ -80,6 +74,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The month withdrawal count.</value>
         private int MonthWithdrawalCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the error count.
+        /// </summary>
+        /// <value>The error count.</value>
+        private int PasswordErrorCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the payment password error count.

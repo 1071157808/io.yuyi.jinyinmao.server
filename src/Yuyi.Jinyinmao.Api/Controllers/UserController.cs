@@ -4,17 +4,17 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:50 PM
+// Last Modified On : 2015-06-03  2:49 AM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-GetBankCards:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-GetBankCards:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UG:无法获取用户信息");
             }
 

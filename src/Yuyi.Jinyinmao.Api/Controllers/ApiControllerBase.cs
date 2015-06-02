@@ -19,7 +19,6 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Utility;
 using Orleans;
 using Orleans.Runtime.Host;
@@ -54,12 +53,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalConfiguration.xml"));
 #endif
         }
-
-        /// <summary>
-        ///     Gets the trace.
-        /// </summary>
-        /// <value>The trace.</value>
-        protected ITraceWriter Trace => this.Configuration.Services.GetTraceWriter();
 
         /// <summary>
         ///     Gets the current user.

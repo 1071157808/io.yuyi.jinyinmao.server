@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:30 PM
+// Last Modified On : 2015-06-03  3:34 AM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,10 +12,10 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -95,6 +95,27 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品编号已存在");
             }
 
+            int maxIssueNo = await this.productInfoService.GetJBYIssueNoAsync();
+            if (request.IssueNo <= maxIssueNo)
+            {
+                return this.BadRequest($"上架失败：金包银产品期数必须大于 {maxIssueNo}");
+            }
+
+            if (request.EndSellTime < DateTime.UtcNow.AddHours(8).AddMinutes(10))
+            {
+                return this.BadRequest("上架失败：产品停售时间已过");
+            }
+
+            if (request.EndSellTime < request.StartSellTime)
+            {
+                return this.BadRequest("上架失败：产品停售时间小于开售时间");
+            }
+
+            if (request.FinancingSumAmount % request.UnitPrice != 0)
+            {
+                return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
+            }
+
             DailyConfig config = DailyConfigHelper.GetDailyConfig(DateTime.UtcNow.AddHours(8));
 
             await this.productService.HitShelvesAsync(new IssueJBYProduct
@@ -144,7 +165,27 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品编号已存在");
             }
 
-            this.Trace.Info(this.Request, "Application", "RegularProductIssue. {0}", request.ToJson());
+            if (request.EndSellTime < DateTime.UtcNow.AddHours(8).AddMinutes(10))
+            {
+                return this.BadRequest("上架失败：产品停售时间已过");
+            }
+
+            if (request.EndSellTime < request.StartSellTime)
+            {
+                return this.BadRequest("上架失败：产品停售时间小于开售时间");
+            }
+
+            if (request.ValueDateMode == null && request.ValueDate == null)
+            {
+                return this.BadRequest("上架失败：产品起息时间错误");
+            }
+
+            if (request.FinancingSumAmount % request.UnitPrice != 0)
+            {
+                return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
+            }
+
+            Trace.TraceInformation("RegularProductIssue. {0}", request.ToJson());
 
             await this.productService.HitShelvesAsync(new IssueRegularProduct
             {

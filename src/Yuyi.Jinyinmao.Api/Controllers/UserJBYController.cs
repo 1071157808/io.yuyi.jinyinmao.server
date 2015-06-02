@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:50 PM
+// Last Modified On : 2015-06-03  2:49 AM
 // ***********************************************************************
 // <copyright file="UserJBYController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,10 +12,10 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -170,7 +170,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UJW3:暂时无法赎回");
             }
 

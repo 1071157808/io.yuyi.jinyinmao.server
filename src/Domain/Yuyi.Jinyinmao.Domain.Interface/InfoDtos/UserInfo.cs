@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-15  4:09 PM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  10:54 PM
+// Last Modified On : 2015-06-03  3:21 AM
 // ***********************************************************************
 // <copyright file="UserInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
 using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Models;
@@ -165,6 +166,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets a value indicating whether this instance has set password.
         /// </summary>
         /// <value><c>true</c> if this instance has set password; otherwise, <c>false</c>.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public bool HasSetPassword { get; set; }
 
         /// <summary>
@@ -244,6 +246,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The password error count.</value>
         public int PasswordErrorCount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the payment password error count.
+        /// </summary>
+        /// <value>The payment password error count.</value>
+        public int PaymentPasswordErrorCount { get; set; }
 
         /// <summary>
         ///     Gets or sets the name of the real.

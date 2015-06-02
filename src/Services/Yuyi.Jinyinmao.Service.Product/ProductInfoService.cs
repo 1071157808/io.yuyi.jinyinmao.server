@@ -104,6 +104,15 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the jby issue no asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        public Task<int> GetJBYIssueNoAsync()
+        {
+            return this.innerService.GetJBYIssueNoAsync();
+        }
+
+        /// <summary>
         ///     Gets the jby product information asynchronous.
         /// </summary>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>

@@ -8040,6 +8040,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Orleans.Serialization.SerializationManager.SerializeInner(input.MonthWithdrawalCount, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.OutletCode, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.PasswordErrorCount, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.PaymentPasswordErrorCount, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.RealName, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.RegisterTime, stream, typeof(System.DateTime));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TodayJBYWithdrawalAmount, stream, typeof(int));
@@ -8079,6 +8080,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.MonthWithdrawalCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.OutletCode = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.PasswordErrorCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.PaymentPasswordErrorCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.RealName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.RegisterTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
             result.TodayJBYWithdrawalAmount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
@@ -8170,7 +8172,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult input = ((Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.ErrorCount, stream, typeof(int));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.RemainCount, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Success, stream, typeof(bool));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserExist, stream, typeof(bool));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
@@ -8180,7 +8182,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult result = new Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult();
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.ErrorCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.RemainCount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.Success = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
             result.UserExist = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
             result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));

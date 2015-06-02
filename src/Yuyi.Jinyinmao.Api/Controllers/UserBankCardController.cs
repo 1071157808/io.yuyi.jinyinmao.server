@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:50 PM
+// Last Modified On : 2015-06-03  2:50 AM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,11 +12,11 @@
 // ***********************************************************************
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -76,7 +76,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UBCABC1:无法添加银行卡");
             }
 
@@ -130,7 +130,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UBCABC1:无法添加银行卡");
             }
 
@@ -186,7 +186,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             List<BankCardInfo> cards = await this.userInfoService.GetBankCardInfosAsync(this.CurrentUser.Id);
             if (cards == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UBI1:无法获取用户信息");
             }
 
@@ -243,7 +243,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UBCDBC1:无法删除银行卡");
             }
 
@@ -297,7 +297,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UBCVBC1:无法添加银行卡");
             }
 
@@ -347,7 +347,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             List<BankCardInfo> cards = await this.userInfoService.GetWithdrawalableBankCardInfosAsync(this.CurrentUser.Id);
             if (cards == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UBWCI:无法获取用户信息");
             }
 

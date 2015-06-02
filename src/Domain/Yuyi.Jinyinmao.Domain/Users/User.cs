@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  11:27 AM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  1:46 AM
+// Last Modified On : 2015-06-03  3:06 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
@@ -180,7 +181,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;CheckPasswordResult&gt;.</returns>
         public Task<CheckPasswordResult> CheckPasswordAsync(string loginName, string password)
         {
-            if (this.State.Cellphone.IsNullOrEmpty())
+            if (this.State.Cellphone.IsNullOrEmpty() || this.PasswordErrorCount > 10)
             {
                 return Task.FromResult(new CheckPasswordResult
                 {
@@ -197,7 +198,7 @@ namespace Yuyi.Jinyinmao.Domain
                     return Task.FromResult(new CheckPasswordResult
                     {
                         Cellphone = this.State.Cellphone,
-                        ErrorCount = 0,
+                        RemainCount = 10 - this.PasswordErrorCount,
                         Success = true,
                         UserExist = true,
                         UserId = this.State.Id
@@ -210,7 +211,7 @@ namespace Yuyi.Jinyinmao.Domain
             return Task.FromResult(new CheckPasswordResult
             {
                 Cellphone = this.State.Cellphone,
-                ErrorCount = this.PasswordErrorCount,
+                RemainCount = 10 - this.PasswordErrorCount,
                 Success = false,
                 UserExist = true,
                 UserId = this.State.Id
@@ -234,7 +235,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;CheckPaymentPasswordResult&gt;.</returns>
         public Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(string paymentPassword)
         {
-            if (this.State.EncryptedPaymentPassword.IsNullOrEmpty())
+            if (this.State.EncryptedPaymentPassword.IsNullOrEmpty() || this.PasswordErrorCount >= 5)
             {
                 return Task.FromResult(new CheckPaymentPasswordResult
                 {
@@ -571,6 +572,7 @@ namespace Yuyi.Jinyinmao.Domain
                 MonthWithdrawalCount = this.MonthWithdrawalCount,
                 OutletCode = this.State.OutletCode,
                 PasswordErrorCount = this.PasswordErrorCount,
+                PaymentPasswordErrorCount = this.PaymentPasswordErrorCount,
                 RealName = this.State.RealName,
                 RegisterTime = this.State.RegisterTime,
                 TodayJBYWithdrawalAmount = this.TodayJBYWithdrawalAmount,
@@ -959,6 +961,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.Salt = command.Salt;
             this.State.EncryptedPassword = CryptographyHelper.Encrypting(command.Password, command.Salt);
+            this.PasswordErrorCount = 0;
 
             await this.SaveStateAsync();
 
@@ -981,6 +984,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.PaymentSalt = command.Salt;
             this.State.EncryptedPaymentPassword = CryptographyHelper.Encrypting(command.PaymentPassword, command.Salt);
+            this.PaymentPasswordErrorCount = 0;
 
             await this.SaveStateAsync();
 
@@ -1219,6 +1223,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     jby compute interest as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
         public async Task JBYReinvestingAsync()
         {
             this.ReloadJBYAccountData();
@@ -1270,6 +1275,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="transcationId">The transcation identifier.</param>
         /// <returns>Task.</returns>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
         public async Task JBYWithdrawalResultedAsync(Guid transcationId)
         {
             JBYAccountTranscation transcation;

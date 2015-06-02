@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-25  1:02 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  4:21 PM
+// Last Modified On : 2015-06-03  3:13 AM
 // ***********************************************************************
-// <copyright file="CheckPasswordResult.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="CheckPasswordResult.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -29,10 +29,10 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public string Cellphone { get; set; }
 
         /// <summary>
-        ///     Gets or sets the error count.
+        ///     Gets or sets the remain count.
         /// </summary>
-        /// <value>The error count.</value>
-        public int ErrorCount { get; set; }
+        /// <value>The remain count.</value>
+        public int RemainCount { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="CheckPasswordResult" /> is success.

@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  10:57 AM
@@ -53,6 +53,12 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
         Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex);
+
+        /// <summary>
+        /// Gets the jby issue no asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        Task<int> GetJBYIssueNoAsync();
 
         /// <summary>
         ///     Gets the jby product information asynchronous.

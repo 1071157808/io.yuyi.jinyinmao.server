@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-20  11:00 AM
+// Last Modified On : 2015-06-03  3:30 AM
 // ***********************************************************************
 // <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,9 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
+using Moe.AspNet.Validations;
 using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Models
@@ -21,6 +23,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     IssueProductRequest.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class IssueProductRequest : IRequest
     {
         /// <summary>
@@ -56,7 +59,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     背书图片链接
         /// </summary>
-        [Required, JsonProperty("endorseImageLink")]
+        [Required, RegularExpression(@"^(http:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$"), JsonProperty("endorseImageLink")]
         public string EndorseImageLink { get; set; }
 
         /// <summary>
@@ -110,7 +113,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     产品分类
         /// </summary>
-        [JsonProperty("productCategory")]
+        [Required, JsonProperty("productCategory")]
+        [AvailableValues("100000010", "100000020", "100000021", "100000022", "100000023", "100000030", "210001010", "210001020", "210002010", "210002020")]
         public long ProductCategory { get; set; }
 
         /// <summary>

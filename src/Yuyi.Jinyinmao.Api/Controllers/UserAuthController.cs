@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  1:04 AM
+// Last Modified On : 2015-06-03  2:49 AM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,11 +12,11 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
@@ -66,13 +66,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     实名认证请求
         /// </param>
         /// <response code="200">认证成功</response>
-        /// <response code="400">请求格式不合法
-        /// <br />
-        /// UAA1:无法开通快捷支付功能
-        /// <br />
-        /// UAA2:请先设置支付密码
-        /// <br />
-        /// UAA3:已经通过实名认证
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UAA1:无法开通快捷支付功能
+        ///     <br />
+        ///     UAA2:请先设置支付密码
+        ///     <br />
+        ///     UAA3:已经通过实名认证
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -83,7 +84,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.Trace.Warn(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                Trace.TraceWarning("User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UAA1:无法开通快捷支付功能");
             }
 
@@ -160,11 +161,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     请求
         /// </param>
         /// <response code="200">密码正确</response>
-        /// <response code="400">请求格式错误
-        /// <br />
-        /// UACPP1:请重置支付密码后再试
-        /// <br />
-        /// UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能
+        /// <response code="400">
+        ///     请求格式错误
+        ///     <br />
+        ///     UACPP1:请重置支付密码后再试
+        ///     <br />
+        ///     UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -209,11 +211,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     重置登录密码请求
         /// </param>
         /// <response code="200">重置成功</response>
-        /// <response code="400">请求格式不合法
-        /// <br />
-        /// UARLP1:该验证码已经失效，请重新获取验证码
-        /// <br />
-        /// UARLP2:手机号码不存在，密码修改失败
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UARLP1:该验证码已经失效，请重新获取验证码
+        ///     <br />
+        ///     UARLP2:手机号码不存在，密码修改失败
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -254,13 +257,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     重置支付密码请求
         /// </param>
         /// <response code="200">重置成功</response>
-        /// <response code="400">请求格式不合法
-        /// <br />
-        /// UARPP1:该验证码已经失效，请重新获取验证码
-        /// <br />
-        /// UARPP2:您输入的身份信息错误！请重新输入
-        /// <br />
-        /// UARPP3:支付密码不能与登录密码一致，请选择新的支付密码
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UARPP1:该验证码已经失效，请重新获取验证码
+        ///     <br />
+        ///     UARPP2:您输入的身份信息错误！请重新输入
+        ///     <br />
+        ///     UARPP3:支付密码不能与登录密码一致，请选择新的支付密码
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -308,11 +312,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     设置支付密码请求
         /// </param>
         /// <response code="200">重置成功</response>
-        /// <response code="400">请求格式不合法
-        /// <br />
-        /// UASPP1:支付密码不能与登录密码一致，请选择新的支付密码
-        /// <br />
-        /// UASPP2: 支付密码已经设置，请直接使用
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UASPP1:支付密码不能与登录密码一致，请选择新的支付密码
+        ///     <br />
+        ///     UASPP2: 支付密码已经设置，请直接使用
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -394,11 +399,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     注册请求
         /// </param>
         /// <response code="200">注册成功</response>
-        /// <response code="400">请求格式不合法
-        /// <br />
-        /// UAS01:请输入正确的验证码
-        /// <br />
-        /// UAS02:此号码已注册，请直接登录
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     UAS01:请输入正确的验证码
+        ///     <br />
+        ///     UAS02:此号码已注册，请直接登录
         /// </response>
         /// <response code="500"></response>
         [HttpGet, Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
