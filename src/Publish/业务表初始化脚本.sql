@@ -246,6 +246,7 @@ CREATE TABLE [dbo].[JBYTranscations] (
 [ResultCode] int NOT NULL ,
 [ResultTime] datetime2(7) NULL ,
 [TransDesc] nvarchar(200) NOT NULL ,
+[UserInfo] nvarchar(MAX) NOT NULL ,
 [Info] nvarchar(MAX) NOT NULL ,
 [Args] nvarchar(MAX) NOT NULL ,
 PRIMARY KEY ([Id])
