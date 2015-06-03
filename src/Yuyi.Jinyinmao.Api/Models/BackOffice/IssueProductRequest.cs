@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:30 AM
+// Last Modified On : 2015-06-04  12:26 AM
 // ***********************************************************************
 // <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -59,7 +59,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     背书图片链接
         /// </summary>
-        [Required, RegularExpression(@"^(http:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$"), JsonProperty("endorseImageLink")]
+        [Required, RegularExpression("^(https?|ftp)://[^\\s/$.?#].[^\\s]*$"), JsonProperty("endorseImageLink")]
         public string EndorseImageLink { get; set; }
 
         /// <summary>
