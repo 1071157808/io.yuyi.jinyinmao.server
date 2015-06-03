@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
+  <WadCfg>
+    <DiagnosticMonitorConfiguration overallQuotaInMB="4096">
+      <Directories scheduledTransferPeriod="PT1M">
+        <IISLogs containerName="wad-iis-logfiles" />
+        <FailedRequestLogs containerName="wad-failedrequestlogs" />
+      </Directories>
+      <CrashDumps dumpType="Full">
+        <CrashDumpConfiguration processName="WaAppAgent.exe" />
+        <CrashDumpConfiguration processName="WaIISHost.exe" />
+        <CrashDumpConfiguration processName="WindowsAzureGuestAgent.exe" />
+        <CrashDumpConfiguration processName="WaWorkerHost.exe" />
+        <CrashDumpConfiguration processName="DiagnosticsAgent.exe" />
+        <CrashDumpConfiguration processName="w3wp.exe" />
+      </CrashDumps>
+      <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Information" />
+    </DiagnosticMonitorConfiguration>
+  </WadCfg>
+  <StorageAccount>jymstoredevsilologs</StorageAccount>
+</PublicConfig>
