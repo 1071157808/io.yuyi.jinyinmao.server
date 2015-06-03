@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:36 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-29  2:31 PM
+// Last Modified On : 2015-06-03  10:11 PM
 // ***********************************************************************
 // <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -190,11 +190,7 @@ namespace Yuyi.Jinyinmao.Domain
                 IDictionary<string, object> grainStateDictionary = grainState.AsDictionary();
                 string storedData = JsonConvert.SerializeObject(grainStateDictionary, this.settings);
                 long timeStamp = DateTime.UtcNow.Ticks;
-                object timeStampState;
-                if (grainStateDictionary.TryGetValue("TimeStamp", out timeStampState))
-                {
-                    timeStamp = Convert.ToInt64(timeStampState);
-                }
+
                 string connectionString = this.GetConnectionString(grainReference);
                 string tableName = this.GetTableName(grainReference);
 

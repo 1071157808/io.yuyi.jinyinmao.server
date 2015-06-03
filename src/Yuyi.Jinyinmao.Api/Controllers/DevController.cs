@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:32 PM
+// Last Modified On : 2015-06-03  11:04 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -131,7 +131,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [HttpGet, Route("")]
         public IHttpActionResult Get()
         {
+            Trace.TraceInformation("This is from Yuyi.Jinyinmao.Api.");
             Trace.TraceWarning("This is from Yuyi.Jinyinmao.Api.");
+            Trace.TraceError("This is from Yuyi.Jinyinmao.Api.");
 
             return this.Ok(
                 new

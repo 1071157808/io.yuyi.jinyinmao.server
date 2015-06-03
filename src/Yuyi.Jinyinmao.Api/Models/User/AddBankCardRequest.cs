@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  2:56 AM
+// Last Modified On : 2015-06-03  10:54 PM
 // ***********************************************************************
 // <copyright file="AddBankCardRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,7 +43,9 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     开户城市，必须是 省份|城市 的格式
         /// </summary>
-        [Required, RegularExpression(@"^.+\|.+$"), JsonProperty("cityName")]
+        [Required, RegularExpression(@"^.+\|.+$")]
+        [AvailableValues("上海|上海", "广东|广州", "广东|深圳")]
+        [JsonProperty("cityName")]
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public string CityName { get; set; }
     }

@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  2:50 AM
+// Last Modified On : 2015-06-03  11:00 PM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -66,6 +66,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UBCABC2:最多绑定10张银行卡
         ///     <br />
         ///     UBCABC3:银行卡添加失败
+        ///     <br />
+        ///     UBCABC4:该银行卡已经绑定
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -85,7 +87,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UBCABC2:最多绑定10张银行卡");
             }
 
-            BankCardInfo info = await this.userService.AddBankCardAsync(new AddBankCard
+            BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
+
+            if (bankCardInfo != null && bankCardInfo.Dispaly)
+            {
+                return this.BadRequest("UBCABC4:该银行卡已经绑定");
+            }
+
+            bankCardInfo = await this.userService.AddBankCardAsync(new AddBankCard
             {
                 BankCardNo = request.BankCardNo,
                 BankName = request.BankName,
@@ -94,12 +103,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Args = this.BuildArgs()
             });
 
-            if (info == null)
+            if (bankCardInfo == null)
             {
                 return this.BadRequest("UBCABC3:银行卡添加失败");
             }
 
-            return this.Ok(info.ToResponse());
+            return this.Ok(bankCardInfo.ToResponse());
         }
 
         /// <summary>

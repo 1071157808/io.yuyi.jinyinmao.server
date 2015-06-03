@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-24  8:16 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  2:53 AM
+// Last Modified On : 2015-06-03  10:44 PM
 // ***********************************************************************
 // <copyright file="IEntityState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -26,11 +26,5 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The identifier.</value>
         Guid Id { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the time stamp.
-        /// </summary>
-        /// <value>The time stamp.</value>
-        long TimeStamp { get; set; }
     }
 }

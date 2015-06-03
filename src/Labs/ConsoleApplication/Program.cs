@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  2:56 AM
+// Last Modified On : 2015-06-03  10:45 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,12 +20,15 @@ namespace ConsoleApplication
     {
         private static void Main(string[] args)
         {
-            Regex r = new Regex(@"^\d{15,19}$");
-            Console.WriteLine(r.IsMatch("11111111111111111111")); // 20
-            Console.WriteLine(r.IsMatch("11111111111111111111 ")); // 21
-            Console.WriteLine(r.IsMatch("1111111111111111111")); // 19
-            Console.WriteLine(r.IsMatch("11111111111111"));
-            Console.WriteLine(r.IsMatch("111111111111111")); // 15
+            Regex r = new Regex(@"^(https?|ftp)://[^\s/$.?#].[^\s]*$", RegexOptions.IgnoreCase);
+            Console.WriteLine(r.IsMatch("www.baidu.com")); // 20
+            Console.WriteLine(r.IsMatch("www.baidu.com ")); // 21
+            Console.WriteLine(r.IsMatch("www.baidu.com/#/uuuu#")); // 19
+            Console.WriteLine(r.IsMatch("www.baidu.com/#/uuuu#/?dddddd="));
+            Console.WriteLine(r.IsMatch("http://www.baidu.com/#/uuuu#/?dddddd=")); // 15
+            Console.WriteLine(r.IsMatch("https://www.baidu.com/#/uuuu#/?dddddd=")); // 15
+            Console.WriteLine(r.IsMatch("HTTps://www.baidu.com/#/uuuu#/?dddddd=")); // 15
+            Console.WriteLine(r.IsMatch("httpss://www.baidu.com/#/uuuu#/?dddddd=")); // 15
         }
     }
 }

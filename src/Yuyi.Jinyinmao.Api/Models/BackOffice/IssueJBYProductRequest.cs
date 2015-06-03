@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-11  1:49 AM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  12:40 PM
+// Last Modified On : 2015-06-03  10:13 PM
 // ***********************************************************************
 // <copyright file="IssueJBYProductRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
 
@@ -21,6 +22,7 @@ namespace Yuyi.Jinyinmao.Api.Models.BackOffice
     /// <summary>
     ///     IssueJBYProductRequest.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class IssueJBYProductRequest : IRequest
     {
         /// <summary>

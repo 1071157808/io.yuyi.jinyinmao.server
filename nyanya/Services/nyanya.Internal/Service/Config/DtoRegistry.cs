@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : nyanya
 // Author           : Siqi Lu
-// Created          : 2015-03-04  6:31 PM
+// Created          : 2015-05-18  2:55 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-14  11:15 AM
+// Last Modified On : 2015-06-03  11:57 AM
 // ***********************************************************************
 // <copyright file="DtoRegistry.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -129,6 +129,7 @@ namespace nyanya.Internal.Service.Config
 
             //
             helper.RegisterDto<UserSignInSucceeded, UserSignInSucceededValidator>(userEventsHandler);
+            helper.RegisterDto<RegisteredANewUser, RegisteredANewUserValidator>(userEventsHandler);
         }
     }
 

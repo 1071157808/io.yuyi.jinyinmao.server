@@ -1,17 +1,18 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-07  12:43 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-07  1:29 PM
+// Last Modified On : 2015-06-03  7:06 PM
 // ***********************************************************************
-// <copyright file="SettleAccountInfoResponse.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="SettleAccountInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -21,6 +22,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     SettleAccountInfoResponse.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class SettleAccountInfoResponse : IResponse
     {
         /// <summary>

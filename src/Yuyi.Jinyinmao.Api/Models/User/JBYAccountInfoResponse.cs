@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-12  1:49 AM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-12  1:54 AM
+// Last Modified On : 2015-06-03  3:04 PM
 // ***********************************************************************
 // <copyright file="JBYAccountInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -21,6 +22,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     JBYAccountInfoResponse.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class JBYAccountInfoResponse : IResponse
     {
         /// <summary>

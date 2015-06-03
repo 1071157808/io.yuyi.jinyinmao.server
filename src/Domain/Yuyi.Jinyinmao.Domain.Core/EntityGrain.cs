@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  6:57 PM
+// Last Modified On : 2015-06-03  10:44 PM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -77,7 +77,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public override async Task OnDeactivateAsync()
         {
-            this.State.TimeStamp = DateTime.UtcNow.Ticks;
             await this.State.WriteStateAsync();
 
             await base.OnDeactivateAsync();
@@ -116,8 +115,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected Task SaveStateAsync()
         {
-            this.State.TimeStamp = DateTime.UtcNow.Ticks;
-
             this.StateChanged = true;
 
             return TaskDone.Done;
