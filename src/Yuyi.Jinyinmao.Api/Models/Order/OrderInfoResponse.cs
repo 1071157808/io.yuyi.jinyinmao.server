@@ -12,10 +12,13 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Newtonsoft.Json;
+using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Api.Models.Order
@@ -23,6 +26,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
     /// <summary>
     ///     OrderInfoResponse.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class OrderInfoResponse : IResponse
     {
         /// <summary>
@@ -36,6 +40,12 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         /// </summary>
         [Required, JsonProperty("extraInterest")]
         public int ExtraInterest { get; set; }
+
+        /// <summary>
+        ///     额外收益的相关信息
+        /// </summary>
+        [Required, JsonProperty("extraInterestRecords")]
+        public List<ExtraInterestRecord> ExtraInterestRecords { get; set; }
 
         /// <summary>
         ///     额外收益率，以“万分之一”为单位
@@ -142,27 +152,31 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
 
     internal static class OrderInfoEx
     {
-        internal static OrderInfoResponse ToResponse(this OrderInfo info) => new OrderInfoResponse
+        internal static OrderInfoResponse ToResponse(this OrderInfo info)
         {
-            AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
-            ExtraInterest = info.ExtraInterest,
-            ExtraYield = info.ExtraYield,
-            Interest = info.Interest,
-            IsRepaid = info.IsRepaid,
-            OrderIdentifier = info.OrderId.ToGuidString(),
-            OrderNo = info.OrderNo,
-            OrderTime = info.OrderTime,
-            Principal = info.Principal,
-            ProductCategory = info.ProductCategory,
-            ProductIdentifier = info.ProductId.ToGuidString(),
-            ProductSnapshot = info.ProductSnapshot.ToResponse(),
-            RepaidTime = info.RepaidTime.GetValueOrDefault(),
-            ResultCode = info.ResultCode,
-            ResultTime = info.ResultTime.GetValueOrDefault(),
-            SettleDate = info.SettleDate,
-            TransDesc = info.TransDesc,
-            ValueDate = info.ValueDate,
-            Yield = info.Yield
-        };
+            return new OrderInfoResponse
+            {
+                AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
+                ExtraInterest = info.ExtraInterest,
+                ExtraInterestRecords = info.ExtraInterestRecords,
+                ExtraYield = info.ExtraYield,
+                Interest = info.Interest,
+                IsRepaid = info.IsRepaid,
+                OrderIdentifier = info.OrderId.ToGuidString(),
+                OrderNo = info.OrderNo,
+                OrderTime = info.OrderTime,
+                Principal = info.Principal,
+                ProductCategory = info.ProductCategory,
+                ProductIdentifier = info.ProductId.ToGuidString(),
+                ProductSnapshot = info.ProductSnapshot.ToResponse(),
+                RepaidTime = info.RepaidTime.GetValueOrDefault(),
+                ResultCode = info.ResultCode,
+                ResultTime = info.ResultTime.GetValueOrDefault(),
+                SettleDate = info.SettleDate,
+                TransDesc = info.TransDesc,
+                ValueDate = info.ValueDate,
+                Yield = info.Yield
+            };
+        }
     }
 }

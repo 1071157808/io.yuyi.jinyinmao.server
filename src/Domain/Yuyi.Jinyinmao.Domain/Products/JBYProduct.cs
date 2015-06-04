@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:52 PM
+// Last Modified On : 2015-06-05  1:40 AM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -271,6 +271,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             await this.State.ReadStateAsync();
             this.ReloadTranscationData();
+            await this.SyncAsync();
         }
 
         /// <summary>
@@ -290,6 +291,15 @@ namespace Yuyi.Jinyinmao.Domain.Products
             await this.SaveStateAsync();
 
             await this.RaiseJBYProductSoldOutEvent();
+        }
+
+        /// <summary>
+        ///     Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task SyncAsync()
+        {
+            await DBSyncHelper.SyncJBYProduct(await this.GetProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }
 
         #endregion IJBYProduct Members

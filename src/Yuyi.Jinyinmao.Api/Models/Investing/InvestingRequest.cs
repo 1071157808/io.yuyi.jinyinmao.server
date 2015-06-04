@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-04  2:34 AM
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
 
@@ -20,6 +21,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Investing
     /// <summary>
     ///     InvestingRequest.
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class InvestingRequest : IRequest
     {
         /// <summary>

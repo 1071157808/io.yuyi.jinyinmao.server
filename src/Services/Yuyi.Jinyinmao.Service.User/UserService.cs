@@ -66,6 +66,17 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Adds the extra interest to order.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command)
+        {
+            IUser user = UserFactory.GetGrain(command.UserId);
+            return user.AddExtraInterestToOrderAsync(command);
+        }
+
+        /// <summary>
         ///     Authenticatings the asynchronous.
         /// </summary>
         /// <param name="command">The apply for authentication.</param>

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-17  10:48 PM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  11:00 PM
+// Last Modified On : 2015-06-05  12:46 AM
 // ***********************************************************************
 // <copyright file="OrderInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,6 +36,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 Args = order.Args,
                 Cellphone = order.Cellphone,
                 ExtraInterest = order.ExtraInterest,
+                ExtraInterestRecords = order.ExtraInterestRecords,
                 ExtraYield = order.ExtraYield,
                 Interest = order.Interest,
                 IsRepaid = order.IsRepaid,
@@ -71,7 +72,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <param name="orderModel">The order model.</param>
         public static void MapToDBModel(this OrderInfo info, Models.Order orderModel)
         {
-            Dictionary<string, object> i = BuildOrderModelInfo();
+            Dictionary<string, object> i = BuildOrderModelInfo(info);
 
             orderModel.AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString();
             orderModel.Args = info.Args.ToJson();
@@ -105,7 +106,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <returns>OrderInfo.</returns>
         public static Models.Order ToDBModel(this OrderInfo info)
         {
-            Dictionary<string, object> i = BuildOrderModelInfo();
+            Dictionary<string, object> i = BuildOrderModelInfo(info);
 
             return new Models.Order
             {
@@ -136,9 +137,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             };
         }
 
-        private static Dictionary<string, object> BuildOrderModelInfo()
+        private static Dictionary<string, object> BuildOrderModelInfo(OrderInfo info)
         {
-            Dictionary<string, object> i = new Dictionary<string, object>();
+            Dictionary<string, object> i = new Dictionary<string, object>
+            {
+                { "ExtraInterestRecords", info.ExtraInterestRecords }
+            };
             return i;
         }
     }
@@ -172,6 +176,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The extra interest.</value>
         public int ExtraInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the extra interest records.
+        /// </summary>
+        /// <value>The extra interest records.</value>
+        public List<ExtraInterestRecord> ExtraInterestRecords { get; set; }
 
         /// <summary>
         ///     Gets or sets the extra yield.

@@ -146,6 +146,7 @@
   <ItemGroup>
     <Compile Include="EventProcessor\BankCardHidenProcessor.cs" />
     <Compile Include="EventProcessor\DepositResultedProcessor.cs" />
+    <Compile Include="EventProcessor\ExtraInterestAddedProcessor.cs" />
     <Compile Include="EventProcessor\JBYReinvestedProcessor.cs" />
     <Compile Include="EventProcessor\JBYWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\JBYWithdrawalResultedProcessor.cs" />

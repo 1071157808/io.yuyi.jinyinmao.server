@@ -39,6 +39,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task AddBankCardAsync(AddBankCard addBankCardCommand, VerifyBankCard verifyBankCardCommand);
 
         /// <summary>
+        /// Adds the extra interest to order.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command);
+
+        /// <summary>
         ///     Authenticatings the asynchronous.
         /// </summary>
         /// <param name="command">The apply for authentication.</param>

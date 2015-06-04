@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-07  12:20 PM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-21  5:51 PM
+// Last Modified On : 2015-06-05  1:33 AM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -48,7 +48,8 @@ namespace Yuyi.Jinyinmao.Domain
             { typeof(JBYWithdrawalAccepted), e => JBYWithdrawalAcceptedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalAccepted)e) },
             { typeof(JBYWithdrawalResulted), e => JBYWithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) },
             { typeof(JBYReinvested), e => JBYReinvestedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYReinvested)e) },
-            { typeof(BankCardHiden), e => BankCardHidenProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((BankCardHiden)e) }
+            { typeof(BankCardHiden), e => BankCardHidenProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((BankCardHiden)e) },
+            { typeof(ExtraInterestAdded), e => ExtraInterestAddedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) }
         };
 
         /// <summary>
@@ -134,6 +135,28 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = message,
                 TranscationInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the extra interest added event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="info">The information.</param>
+        /// <param name="amount">The amount.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseExtraInterestAddedEvent(AddExtraInterest command, OrderInfo info, int amount)
+        {
+            ExtraInterestAdded @event = new ExtraInterestAdded
+            {
+                Amount = amount,
+                Args = command.Args,
+                Description = command.Description,
+                ExtraInterest = command.ExtraInterest,
+                ExtraPrincipal = command.ExtraPrincipal,
+                OrderInfo = info
             };
 
             await this.ProcessEventAsync(@event);

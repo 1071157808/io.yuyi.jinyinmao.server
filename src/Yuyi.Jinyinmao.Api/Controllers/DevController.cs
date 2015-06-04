@@ -264,5 +264,51 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             await RegularProductFactory.GetGrain(productId).SetToSoldOutAsync();
             return this.Ok();
         }
+
+        /// <summary>
+        ///     SyncJBYProduct
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("SyncJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> SyncJBYProduct()
+        {
+            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).SyncAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     SyncProduct
+        /// </summary>
+        /// <param name="productIdentifier">productIdentifier</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("ReloadProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> SyncProduct(string productIdentifier)
+        {
+            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            await RegularProductFactory.GetGrain(productId).SyncAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     SyncUser
+        /// </summary>
+        /// <param name="userIdentifier">userIdentifier</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("SyncUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> SyncUser(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            await UserFactory.GetGrain(userId).SyncAsync();
+            return this.Ok();
+        }
     }
 }

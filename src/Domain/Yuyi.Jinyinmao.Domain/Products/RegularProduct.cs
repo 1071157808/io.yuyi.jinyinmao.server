@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-04  3:39 PM
+// Last Modified On : 2015-06-05  1:42 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -325,6 +325,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             await this.State.ReadStateAsync();
             this.ReloadOrderData();
+            await this.SyncAsync();
         }
 
         /// <summary>
@@ -392,6 +393,15 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaiseRegularProductSoldOutEvent();
+        }
+
+        /// <summary>
+        ///     Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task SyncAsync()
+        {
+            await DBSyncHelper.SyncRegularProduct(await this.GetRegularProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }
 
         #endregion IRegularProduct Members

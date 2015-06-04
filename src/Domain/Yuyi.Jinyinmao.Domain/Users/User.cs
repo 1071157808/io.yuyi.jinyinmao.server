@@ -102,6 +102,45 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        /// Adds the extra interest to order.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public async Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command)
+        {
+            Order order;
+            if (!this.State.Orders.TryGetValue(command.OrderId, out order))
+            {
+                return null;
+            }
+
+            if (order.ExtraInterestRecords.Any(r => r.OperationId == command.OperationId))
+            {
+                return order.ToInfo();
+            }
+
+            this.BeginProcessCommandAsync(command);
+
+            int amount = command.ExtraInterest + BuildInterest(order.ValueDate, order.SettleDate, command.ExtraPrincipal, order.Yield);
+
+            order.ExtraInterestRecords.Add(new ExtraInterestRecord
+            {
+                Amount = amount,
+                Description = command.Description,
+                OperationId = command.OperationId
+            });
+
+            await this.SaveStateAsync();
+            this.ReloadOrderInfosData();
+
+            OrderInfo info = order.ToInfo();
+
+            await this.RaiseExtraInterestAddedEvent(command, info, amount);
+
+            return info;
+        }
+
+        /// <summary>
         ///     authenticate as an asynchronous operation.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -1218,6 +1257,20 @@ namespace Yuyi.Jinyinmao.Domain
             await this.RaiseWithdrawalResultedEvent(info);
 
             return info;
+        }
+
+        /// <summary>
+        /// Builds the interest.
+        /// </summary>
+        /// <param name="valueDate">The value date.</param>
+        /// <param name="settleDate">The settle date.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="yield">The yield.</param>
+        /// <returns>System.Int32.</returns>
+        private static int BuildInterest(DateTime valueDate, DateTime settleDate, int principal, int yield)
+        {
+            int dayCount = (settleDate.Date.AddHours(1) - valueDate.Date).Days;
+            return principal * yield * dayCount / 3600000;
         }
 
         #endregion IUser Members

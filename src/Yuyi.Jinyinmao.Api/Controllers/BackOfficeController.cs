@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-04  3:31 PM
+// Last Modified On : 2015-06-05  1:14 AM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,6 +21,7 @@ using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Api.Models.BackOffice;
+using Yuyi.Jinyinmao.Api.Models.Order;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
@@ -49,6 +50,56 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             this.productInfoService = productInfoService;
             this.productService = productService;
             this.userService = userService;
+        }
+
+        /// <summary>
+        ///     增加用户订单额外收益
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <response code="200"></response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     订单不存在
+        ///     <br />
+        ///     操作失败
+        /// </response>
+        /// <response code="401">认证失败</response>
+        /// <response code="403">未授权</response>
+        /// <response code="500"></response>
+        [Route("Withdrawal/{userIdentifier:length(32)}-{orderIdentifier:length(32)}")]
+        [ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> AddExtraInterest(AddExtraInterestRequest request)
+        {
+            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
+            Guid orderId = Guid.ParseExact(request.OrderIdentifier, "N");
+            Guid operationId = Guid.ParseExact(request.OperationIdentifier, "N");
+            OrderInfo orderInfo = await this.userService.GetOrderInfoAsync(userId, orderId);
+
+            if (orderInfo == null)
+            {
+                return this.BadRequest("订单不存在");
+            }
+
+            AddExtraInterest command = new AddExtraInterest
+            {
+                Args = this.BuildArgs(),
+                Description = request.Description.Trim(),
+                ExtraInterest = request.ExtraInterest,
+                ExtraPrincipal = request.ExtraPrincipal,
+                OperationId = operationId,
+                OrderId = orderId,
+                UserId = userId
+            };
+
+            orderInfo = await this.userService.AddExtraInterestToOrderAsync(command);
+
+            if (orderInfo == null)
+            {
+                return this.BadRequest("操作失败");
+            }
+
+            return this.Ok(orderInfo.ToResponse());
         }
 
         /// <summary>

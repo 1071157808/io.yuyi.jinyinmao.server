@@ -34,6 +34,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<BankCardInfo> AddBankCardAsync(AddBankCard command);
 
         /// <summary>
+        /// Adds the extra interest to order.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command);
+
+        /// <summary>
         ///     Authenticates the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -245,6 +252,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
+
+        /// <summary>
+        /// Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task SyncAsync();
 
         /// <summary>
         ///     Verifies the bank card asynchronous.

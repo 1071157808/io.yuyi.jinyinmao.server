@@ -97,6 +97,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddExtraInterest.cs" />
     <Compile Include="Commands\HideBankCard.cs" />
     <Compile Include="Commands\IssueJBYProduct.cs" />
     <Compile Include="Commands\IssueRegularProduct.cs" />
@@ -112,11 +113,13 @@
     <Compile Include="Dtos\JBYAccountInfo.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
     <Compile Include="EventProcessor\IBankCardHidenProcessor.cs" />
+    <Compile Include="EventProcessor\IExtraInterestAddedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYReinvestedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalResultedProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductRepaid.cs" />
     <Compile Include="Events\BankCardHiden.cs" />
+    <Compile Include="Events\ExtraInterestAdded.cs" />
     <Compile Include="Events\JBYReinvested.cs" />
     <Compile Include="Events\JBYWithdrawalAccepted.cs" />
     <Compile Include="Events\JBYWithdrawalResulted.cs" />

@@ -1,17 +1,21 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-07  12:23 PM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:01 AM
+// Last Modified On : 2015-06-05  1:48 AM
 // ***********************************************************************
 // <copyright file="User_Grain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moe.Lib;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -32,6 +36,35 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadSettleAccountData();
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
+            await this.SyncAsync();
+        }
+
+        /// <summary>
+        ///     Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task SyncAsync()
+        {
+            await DBSyncHelper.SyncUser(await this.GetUserInfoAsync());
+            foreach (KeyValuePair<Guid, Order> order in this.State.Orders)
+            {
+                await DBSyncHelper.SyncOrder(order.Value.ToInfo());
+            }
+
+            foreach (KeyValuePair<string, BankCard> bankCard in this.State.BankCards)
+            {
+                await DBSyncHelper.SyncBankCard(bankCard.Value.ToInfo(), this.State.Id.ToGuidString());
+            }
+
+            foreach (KeyValuePair<Guid, JBYAccountTranscation> jbyAccountTranscation in this.State.JBYAccount)
+            {
+                await DBSyncHelper.SyncJBYAccountTranscation(jbyAccountTranscation.Value.ToInfo());
+            }
+
+            foreach (KeyValuePair<Guid, SettleAccountTranscation> settleAccountTranscation in this.State.SettleAccount)
+            {
+                await DBSyncHelper.SyncSettleAccountTranscation(settleAccountTranscation.Value.ToInfo());
+            }
         }
 
         #endregion IUser Members

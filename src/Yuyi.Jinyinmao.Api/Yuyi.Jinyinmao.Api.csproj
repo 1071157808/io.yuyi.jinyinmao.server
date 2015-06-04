@@ -252,11 +252,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BackOffice\AddExtraInterestRequest.cs" />
     <Compile Include="Models\BackOffice\IssueJBYProductRequest.cs" />
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
     <Compile Include="Models\BackOffice\JBYProductRequest.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />
-    <Compile Include="Models\Investing\JBYInvestingRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeResponse.cs" />
     <Compile Include="Models\Misc\VerifyVeriCodeRequest.cs" />
@@ -294,9 +294,6 @@
   <ItemGroup>
     <Content Include="AzureConfiguration.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ClientConfiguration.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

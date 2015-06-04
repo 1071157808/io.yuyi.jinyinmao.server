@@ -80,5 +80,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <returns>Task.</returns>
         Task SetToSoldOutAsync();
+
+        /// <summary>
+        /// Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task SyncAsync();
     }
 }

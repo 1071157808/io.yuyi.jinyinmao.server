@@ -1,22 +1,48 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-04  4:00 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:12 AM
+// Last Modified On : 2015-06-05  1:32 AM
 // ***********************************************************************
-// <copyright file="Order.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Order.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
 {
+    /// <summary>
+    ///     ExtraInterestRecords.
+    /// </summary>
+    public class ExtraInterestRecord
+    {
+        /// <summary>
+        ///     Gets or sets the amount.
+        /// </summary>
+        /// <value>The amount.</value>
+        public int Amount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the description.
+        /// </summary>
+        /// <value>The description.</value>
+        public string Description { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the operation identifier.
+        /// </summary>
+        /// <value>The operation identifier.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public Guid OperationId { get; set; }
+    }
+
     /// <summary>
     ///     Order.
     /// </summary>
@@ -29,7 +55,7 @@ namespace Yuyi.Jinyinmao.Domain
         public Guid AccountTranscationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the arguments.
+        ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
         public Dictionary<string, object> Args { get; set; }
@@ -45,6 +71,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The extra interest.</value>
         public int ExtraInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the extra interest records.
+        /// </summary>
+        /// <value>The extra interest records.</value>
+        public List<ExtraInterestRecord> ExtraInterestRecords { get; set; }
 
         /// <summary>
         ///     Gets or sets the extra yield.
@@ -89,7 +121,7 @@ namespace Yuyi.Jinyinmao.Domain
         public int Principal { get; set; }
 
         /// <summary>
-        /// Gets or sets the product category.
+        ///     Gets or sets the product category.
         /// </summary>
         /// <value>The product category.</value>
         public long ProductCategory { get; set; }

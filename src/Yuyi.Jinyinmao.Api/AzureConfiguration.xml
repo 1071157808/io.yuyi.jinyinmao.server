@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ClientConfiguration xmlns="urn:orleans">
-  <Messaging ResendOnTimeout="true" MaxResendCount="10" />
+  <Messaging ResponseTimeout="120" ResendOnTimeout="true" MaxResendCount="10" />
   <Tracing DefaultTraceLevel="Warning" TraceToConsole="true" TraceToFile="{0}-{1}.log">
     <TraceLevelOverride LogPrefix="Application" TraceLevel="Warning" />
   </Tracing>

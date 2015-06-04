@@ -5,7 +5,7 @@
       <Provider Type="Yuyi.Jinyinmao.Domain.SqlDatabaseProvider" Name="SqlDatabase" DataConnectionString="" />
     </StorageProviders>
     <SystemStore ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" />
-    <Messaging ResendOnTimeout="true" MaxResendCount="10" />
+    <Messaging ResponseTimeout="120" ResendOnTimeout="true" MaxResendCount="10" />
   </Globals>
   <Defaults>
     <!--
