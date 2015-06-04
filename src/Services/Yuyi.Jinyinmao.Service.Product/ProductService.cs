@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:45 PM
+// Last Modified On : 2015-06-04  3:31 PM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -84,14 +84,15 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the jby issue no asynchronous.
+        ///     Gets the jby issue no asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public async Task<int> GetJBYIssueNoAsync()
+        public async Task<int> GetJBYMaxIssueNoAsync()
         {
             using (JYMDBContext db = new JYMDBContext())
             {
-                return await db.ReadonlyQuery<JBYProduct>().MaxAsync(p => p.IssueNo);
+                int? maxIssueNo = await db.ReadonlyQuery<JBYProduct>().DefaultIfEmpty().MaxAsync(p => (int?)p.IssueNo);
+                return maxIssueNo.GetValueOrDefault();
             }
         }
 

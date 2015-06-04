@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:53 PM
+// Last Modified On : 2015-06-04  3:39 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -207,6 +207,7 @@ namespace Yuyi.Jinyinmao.Domain
                 IssueNo = this.State.IssueNo,
                 IssueTime = this.State.IssueTime,
                 PaidAmount = this.PaidAmount,
+                Period = this.State.Period,
                 PledgeNo = this.State.PledgeNo,
                 ProductCategory = this.State.ProductCategory,
                 ProductId = this.State.Id,

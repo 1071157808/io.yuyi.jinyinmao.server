@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:34 AM
+// Last Modified On : 2015-06-04  3:31 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -95,7 +95,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品编号已存在");
             }
 
-            int maxIssueNo = await this.productInfoService.GetJBYIssueNoAsync();
+            int maxIssueNo = await this.productInfoService.GetJBYMaxIssueNoAsync();
             if (request.IssueNo <= maxIssueNo)
             {
                 return this.BadRequest($"上架失败：金包银产品期数必须大于 {maxIssueNo}");
@@ -248,18 +248,35 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">用户唯一标识</param>
         /// <param name="transcationIdentifier">交易流水唯一标识</param>
         /// <response code="200"></response>
-        /// <response code="400">请求格式不合法</response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     交易流水不存在
+        ///     <br />
+        ///     交易流水操作失败
+        /// </response>
         /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
         [Route("Withdrawal/{userIdentifier:length(32)}-{transcationIdentifier:length(32)}")]
+        [ResponseType(typeof(SettleAccountTranscationInfoResponse))]
         public async Task<IHttpActionResult> WithdrawalTranscationFinished(string userIdentifier, string transcationIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid transcationId = Guid.ParseExact(transcationIdentifier, "N");
-            await this.userService.WithdrawalResultedAsync(userId, transcationId);
+            SettleAccountTranscationInfo info = await this.userService.WithdrawalResultedAsync(userId, transcationId);
 
-            return this.Ok();
+            if (info == null)
+            {
+                return this.BadRequest("交易流水不存在");
+            }
+
+            if (info.ResultCode <= 0)
+            {
+                return this.BadRequest("交易流水操作失败");
+            }
+
+            return this.Ok(info.ToResponse());
         }
     }
 }

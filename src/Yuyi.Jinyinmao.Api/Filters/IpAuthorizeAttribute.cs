@@ -12,6 +12,8 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
@@ -31,6 +33,9 @@ namespace Yuyi.Jinyinmao.Api.Filters
         /// </summary>
         /// <value><c>true</c> if [only local host]; otherwise, <c>false</c>.</value>
         public bool OnlyLocalHost { get; set; }
+
+        [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Local")]
+        private string[] AllowedIps { get; } = { "101.95.30.142", "211.152.53.50" };
 
         /// <summary>
         ///     Calls when a process requests authorization.
@@ -81,7 +86,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 return request.IsLocal() || ip == "::1";
             }
 
-            return ip.StartsWith("172.26", StringComparison.Ordinal) || ip.StartsWith("172.25", StringComparison.Ordinal) || ip.StartsWith("10.1", StringComparison.Ordinal) || ip == "::1";
+            return this.AllowedIps.Contains(ip) || ip == "::1";
         }
     }
 }

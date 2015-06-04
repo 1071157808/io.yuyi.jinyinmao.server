@@ -6279,10 +6279,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(2144792893, new object[] {@orderId} );
             }
             
-            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>> Yuyi.Jinyinmao.Domain.IUser.GetOrderInfosAsync(int @pageIndex, int @pageSize, Yuyi.Jinyinmao.Domain.OrdersSortMode @ordersSortMode, long[] @categories)
+            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>> Yuyi.Jinyinmao.Domain.IUser.GetOrderInfosAsync(int @pageIndex, int @pageSize, Yuyi.Jinyinmao.Domain.OrdersSortMode @ordersSortMode, IEnumerable<Int64> @categories)
             {
 
-                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>>(404335350, new object[] {@pageIndex, @pageSize, @ordersSortMode, @categories} );
+                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>>(-1782538028, new object[] {@pageIndex, @pageSize, @ordersSortMode, @categories} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountInfo> Yuyi.Jinyinmao.Domain.IUser.GetSettleAccountInfoAsync()
@@ -6393,10 +6393,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>(180708551, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.WithdrawalResultedAsync(System.Guid @transcationId)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalResultedAsync(System.Guid @transcationId)
             {
 
-                return base.InvokeMethodAsync<object>(910331770, new object[] {@transcationId} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo>(910331770, new object[] {@transcationId} );
             }
         }
     }
@@ -6457,8 +6457,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).GetJBYAccountTranscationInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2144792893: 
                                 return ((IUser)grain).GetOrderInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 404335350: 
-                                return ((IUser)grain).GetOrderInfosAsync((Int32)arguments[0], (Int32)arguments[1], (OrdersSortMode)arguments[2], (Int64[])arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -1782538028: 
+                                return ((IUser)grain).GetOrderInfosAsync((Int32)arguments[0], (Int32)arguments[1], (OrdersSortMode)arguments[2], (IEnumerable<Int64>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1277297927: 
                                 return ((IUser)grain).GetSettleAccountInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -1835182403: 
@@ -6496,7 +6496,7 @@ namespace Yuyi.Jinyinmao.Domain
                             case 180708551: 
                                 return ((IUser)grain).WithdrawalAsync((Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 910331770: 
-                                return ((IUser)grain).WithdrawalResultedAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IUser)grain).WithdrawalResultedAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -6553,7 +6553,7 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetJBYAccountTranscationInfosAsync";
                     case 2144792893:
                             return "GetOrderInfoAsync";
-                    case 404335350:
+                    case -1782538028:
                             return "GetOrderInfosAsync";
                     case 1277297927:
                             return "GetSettleAccountInfoAsync";

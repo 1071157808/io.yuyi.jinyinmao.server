@@ -476,12 +476,12 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Withdrawals the resulted asynchronous.
+        /// Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task.</returns>
-        public Task WithdrawalResultedAsync(Guid userId, Guid transcationId)
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        public Task<SettleAccountTranscationInfo> WithdrawalResultedAsync(Guid userId, Guid transcationId)
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.WithdrawalResultedAsync(transcationId);

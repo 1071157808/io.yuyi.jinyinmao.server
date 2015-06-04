@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  11:03 AM
@@ -107,9 +107,9 @@ namespace Yuyi.Jinyinmao.Service
         /// Gets the jby issue no asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public Task<int> GetJBYIssueNoAsync()
+        public Task<int> GetJBYMaxIssueNoAsync()
         {
-            return this.innerService.GetJBYIssueNoAsync();
+            return this.innerService.GetJBYMaxIssueNoAsync();
         }
 
         /// <summary>

@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  10:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-20  4:01 PM
+// Last Modified On : 2015-06-04  3:31 PM
 // ***********************************************************************
 // <copyright file="IProductInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -55,10 +55,10 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex);
 
         /// <summary>
-        /// Gets the jby issue no asynchronous.
+        ///     Gets the jby issue no asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int> GetJBYIssueNoAsync();
+        Task<int> GetJBYMaxIssueNoAsync();
 
         /// <summary>
         ///     Gets the jby product information asynchronous.

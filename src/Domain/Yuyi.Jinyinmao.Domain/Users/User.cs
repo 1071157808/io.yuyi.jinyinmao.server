@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:06 AM
+// Last Modified On : 2015-06-04  2:24 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -481,7 +481,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
         /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
+        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories)
         {
             pageIndex = pageIndex < 1 ? 0 : pageIndex;
             pageSize = pageSize < 1 ? 10 : pageSize;
@@ -1190,21 +1190,21 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Withdrawals the resulted asynchronous.
+        ///     withdrawal resulted as an asynchronous operation.
         /// </summary>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task.</returns>
-        public async Task WithdrawalResultedAsync(Guid transcationId)
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        public async Task<SettleAccountTranscationInfo> WithdrawalResultedAsync(Guid transcationId)
         {
             SettleAccountTranscation transcation;
             if (!this.State.SettleAccount.TryGetValue(transcationId, out transcation))
             {
-                return;
+                return null;
             }
 
             if (transcation.ResultCode != 0 || transcation.TradeCode != TradeCodeHelper.TC1005052001)
             {
-                return;
+                return null;
             }
 
             transcation.ResultCode = 1;
@@ -1214,7 +1214,10 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
             this.ReloadSettleAccountData();
 
-            await this.RaiseWithdrawalResultedEvent(transcation.ToInfo());
+            SettleAccountTranscationInfo info = transcation.ToInfo();
+            await this.RaiseWithdrawalResultedEvent(info);
+
+            return info;
         }
 
         #endregion IUser Members

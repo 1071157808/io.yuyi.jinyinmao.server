@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  3:56 PM
+// Last Modified On : 2015-06-04  3:43 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,6 +20,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
 using Moe.AspNet.Utility;
+using Moe.Lib;
 using Orleans;
 using Orleans.Runtime.Host;
 
@@ -67,6 +68,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         protected Dictionary<string, object> BuildArgs(Dictionary<string, object> argsToAdd = null)
         {
             List<KeyValuePair<string, string>> args = this.Request.GetQueryNameValuePairs().ToList();
+            args = args.Where(kv => kv.Key.Contains("password", StringComparison.OrdinalIgnoreCase)).ToList();
             args.Add(new KeyValuePair<string, string>("Ip", HttpUtils.GetUserHostAddress(this.Request)));
             args.Add(new KeyValuePair<string, string>("UserAgent", HttpUtils.GetUserAgent(this.Request)));
 

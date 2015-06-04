@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:12 AM
+// Last Modified On : 2015-06-04  3:49 PM
 // ***********************************************************************
-// <copyright file="UserRegister.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="UserRegister.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 

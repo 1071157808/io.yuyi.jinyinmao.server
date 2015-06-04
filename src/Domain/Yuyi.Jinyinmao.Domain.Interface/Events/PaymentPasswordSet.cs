@@ -1,16 +1,17 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-25  3:20 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:23 AM
+// Last Modified On : 2015-06-04  3:50 PM
 // ***********************************************************************
-// <copyright file="PaymentPasswordSet.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="PaymentPasswordSet.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.Diagnostics.CodeAnalysis;
 using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
@@ -23,9 +24,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class PaymentPasswordSet : Event
     {
         /// <summary>
-        /// Gets or sets the user information.
+        ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public UserInfo UserInfo { get; set; }
     }
 }

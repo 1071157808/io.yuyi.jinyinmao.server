@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-19  5:34 PM
@@ -146,11 +146,11 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
-        ///     Withdrawals the resulted asynchronous.
+        /// Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task.</returns>
-        Task WithdrawalResultedAsync(Guid userId, Guid transcationId);
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        Task<SettleAccountTranscationInfo> WithdrawalResultedAsync(Guid userId, Guid transcationId);
     }
 }

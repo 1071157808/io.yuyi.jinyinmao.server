@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  11:25 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:40 AM
+// Last Modified On : 2015-06-04  2:21 PM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -78,14 +78,14 @@ namespace Yuyi.Jinyinmao.Domain
         Task ClearUnauthenticatedInfoAsync();
 
         /// <summary>
-        /// Deposits the asynchronous.
+        ///     Deposits the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTranscationInfo, BankCardInfo&gt;&gt;.</returns>
         Task<Tuple<UserInfo, SettleAccountTranscationInfo, BankCardInfo>> DepositAsync(PayCommand command);
 
         /// <summary>
-        /// Deposits the resulted asynchronous.
+        ///     Deposits the resulted asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
@@ -94,7 +94,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task DepositResultedAsync(PayCommand command, bool result, string message);
 
         /// <summary>
-        /// Does the daily work asynchronous.
+        ///     Does the daily work asynchronous.
         /// </summary>
         /// <param name="force">if set to <c>true</c> [force].</param>
         /// <returns>Task.</returns>
@@ -135,7 +135,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
-        /// Gets the order information asynchronous.
+        ///     Gets the order information asynchronous.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
@@ -149,7 +149,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
         /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
-        Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories);
+        Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories);
 
         /// <summary>
         ///     Gets the settle account information asynchronous.
@@ -179,13 +179,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<UserInfo> GetUserInfoAsync();
 
         /// <summary>
-        /// Gets the withdrawalable bank card infos asynchronous.
+        ///     Gets the withdrawalable bank card infos asynchronous.
         /// </summary>
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
         Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync();
 
         /// <summary>
-        /// Hides the bank card asynchronous.
+        ///     Hides the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
@@ -280,7 +280,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task.</returns>
-        Task WithdrawalResultedAsync(Guid transcationId);
+        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
+        Task<SettleAccountTranscationInfo> WithdrawalResultedAsync(Guid transcationId);
     }
 }
