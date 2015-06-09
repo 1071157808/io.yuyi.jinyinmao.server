@@ -88,8 +88,9 @@ GO
 -- ----------------------------
 -- Indexes structure for table AccountTranscations
 -- ----------------------------
-CREATE INDEX [IN_TranscationIdentifier] ON [dbo].[AccountTranscations]
+CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[AccountTranscations]
 ([TranscationIdentifier] ASC) 
+WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
 GO
 CREATE INDEX [IN_UserIdentifier] ON [dbo].[AccountTranscations]
 ([UserIdentifier] ASC) 
@@ -201,6 +202,7 @@ GO
 -- ----------------------------
 CREATE INDEX [IN_ProductIdentifier] ON [dbo].[JBYProducts]
 ([ProductIdentifier] ASC) 
+WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
 GO
 CREATE INDEX [IN_ProductCategory] ON [dbo].[JBYProducts]
 ([ProductCategory] ASC) 
@@ -260,6 +262,7 @@ GO
 -- ----------------------------
 CREATE INDEX [IN_TranscationIdentifier] ON [dbo].[JBYTranscations]
 ([TranscationIdentifier] ASC) 
+WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
 GO
 CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[JBYTranscations]
 ([AccountTranscationIdentifier] ASC) 
@@ -336,6 +339,7 @@ GO
 -- ----------------------------
 CREATE INDEX [IN_OrderIdentifier] ON [dbo].[Orders]
 ([OrderIdentifier] ASC) 
+WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
 GO
 CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[Orders]
 ([AccountTranscationIdentifier] ASC) 
@@ -436,6 +440,7 @@ GO
 -- ----------------------------
 CREATE INDEX [IN_ProductIdentifier] ON [dbo].[RegularProducts]
 ([ProductIdentifier] ASC) 
+WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
 GO
 CREATE INDEX [IN_ProductCategory] ON [dbo].[RegularProducts]
 ([ProductCategory] ASC) 
@@ -507,6 +512,7 @@ GO
 -- ----------------------------
 CREATE INDEX [IN_UserIdentifier] ON [dbo].[Users]
 ([UserIdentifier] ASC) 
+WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
 GO
 CREATE INDEX [IN_Cellphone] ON [dbo].[Users]
 ([Cellphone] ASC) 
