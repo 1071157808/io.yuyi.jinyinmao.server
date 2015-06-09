@@ -90,7 +90,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[AccountTranscations]
 ([TranscationIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
+WITH (IGNORE_DUP_KEY = OFF)
 GO
 CREATE INDEX [IN_UserIdentifier] ON [dbo].[AccountTranscations]
 ([UserIdentifier] ASC) 
@@ -200,9 +200,9 @@ GO
 -- ----------------------------
 -- Indexes structure for table JBYProducts
 -- ----------------------------
-CREATE INDEX [IN_ProductIdentifier] ON [dbo].[JBYProducts]
+CREATE UNIQUE INDEX [IN_ProductIdentifier] ON [dbo].[JBYProducts]
 ([ProductIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
+WITH (IGNORE_DUP_KEY = OFF)
 GO
 CREATE INDEX [IN_ProductCategory] ON [dbo].[JBYProducts]
 ([ProductCategory] ASC) 
@@ -260,9 +260,9 @@ GO
 -- ----------------------------
 -- Indexes structure for table JBYTranscations
 -- ----------------------------
-CREATE INDEX [IN_TranscationIdentifier] ON [dbo].[JBYTranscations]
+CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[JBYTranscations]
 ([TranscationIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
+WITH (IGNORE_DUP_KEY = OFF)
 GO
 CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[JBYTranscations]
 ([AccountTranscationIdentifier] ASC) 
@@ -337,9 +337,9 @@ GO
 -- ----------------------------
 -- Indexes structure for table Orders
 -- ----------------------------
-CREATE INDEX [IN_OrderIdentifier] ON [dbo].[Orders]
+CREATE UNIQUE INDEX [IN_OrderIdentifier] ON [dbo].[Orders]
 ([OrderIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
+WITH (IGNORE_DUP_KEY = OFF)
 GO
 CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[Orders]
 ([AccountTranscationIdentifier] ASC) 
@@ -438,9 +438,9 @@ GO
 -- ----------------------------
 -- Indexes structure for table RegularProducts
 -- ----------------------------
-CREATE INDEX [IN_ProductIdentifier] ON [dbo].[RegularProducts]
+CREATE UNIQUE INDEX [IN_ProductIdentifier] ON [dbo].[RegularProducts]
 ([ProductIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
+WITH (IGNORE_DUP_KEY = OFF)
 GO
 CREATE INDEX [IN_ProductCategory] ON [dbo].[RegularProducts]
 ([ProductCategory] ASC) 
@@ -510,9 +510,9 @@ GO
 -- ----------------------------
 -- Indexes structure for table Users
 -- ----------------------------
-CREATE INDEX [IN_UserIdentifier] ON [dbo].[Users]
+CREATE UNIQUE INDEX [IN_UserIdentifier] ON [dbo].[Users]
 ([UserIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = ON, DROP_EXISTING = ON)
+WITH (IGNORE_DUP_KEY = OFF)
 GO
 CREATE INDEX [IN_Cellphone] ON [dbo].[Users]
 ([Cellphone] ASC) 
