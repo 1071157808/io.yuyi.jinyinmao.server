@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  12:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  2:26 PM
+// Last Modified On : 2015-06-09  10:31 PM
 // ***********************************************************************
 // <copyright file="UserInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,11 +42,25 @@ namespace Yuyi.Jinyinmao.Service
         #region IUserInfoService Members
 
         /// <summary>
+        ///     Checks the bank card used asynchronous.
+        /// </summary>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public Task<bool> CheckBankCardUsedAsync(string bankCardNo) => this.innerService.CheckBankCardUsedAsync(bankCardNo);
+
+        /// <summary>
         ///     Checks the cellphone asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
         public Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone) => this.innerService.CheckCellphoneAsync(cellphone);
+
+        /// <summary>
+        ///     Checks the credential no used asynchronous.
+        /// </summary>
+        /// <param name="credentialNo">The credential no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public Task<bool> CheckCredentialNoUsedAsync(string credentialNo) => this.innerService.CheckCredentialNoUsedAsync(credentialNo);
 
         /// <summary>
         ///     Checks the password asynchronous.

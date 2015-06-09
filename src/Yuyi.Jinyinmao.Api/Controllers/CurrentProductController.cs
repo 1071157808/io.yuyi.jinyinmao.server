@@ -107,6 +107,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="404">无该产品</response>
         /// <response code="500"></response>
         [HttpGet, Route("Sold/{productIdentifier:length(32)}")]
-        public async Task<IHttpActionResult> GetJBYSaleProcess() => this.Ok(new { Paid = await this.productInfoService.GetJBYProductPaidAmountAsync() });
+        public async Task<IHttpActionResult> GetJBYSaleProcess()
+        {
+            return this.Ok(new { Paid = await this.productInfoService.GetJBYProductPaidAmountAsync() });
+        }
     }
 }

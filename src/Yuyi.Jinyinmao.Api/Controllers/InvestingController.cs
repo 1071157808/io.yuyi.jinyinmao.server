@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-05  1:03 AM
+// Last Modified On : 2015-06-09  9:59 PM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -77,8 +77,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
-        public async Task<IHttpActionResult> JBYInvesting([FromUri] InvestingRequest request)
+        [Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
+        public async Task<IHttpActionResult> JBYInvesting(InvestingRequest request)
         {
             Guid productId;
             if (!Guid.TryParseExact(request.ProductIdentifier, "N", out productId))
@@ -167,8 +167,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]
-        public async Task<IHttpActionResult> RegularInvesting([FromUri] InvestingRequest request)
+        [Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> RegularInvesting(InvestingRequest request)
         {
             Guid productId;
             if (!Guid.TryParseExact(request.ProductIdentifier, "N", out productId))

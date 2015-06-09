@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:13 AM
+// Last Modified On : 2015-06-09  10:41 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,14 +13,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Domain.Sagas;
 using Yuyi.Jinyinmao.Service.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
+using BankCard = Yuyi.Jinyinmao.Domain.Models.BankCard;
 
 namespace Yuyi.Jinyinmao.Service
 {
@@ -66,7 +69,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Adds the extra interest to order.
+        ///     Adds the extra interest to order.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
@@ -111,6 +114,20 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Checks the bank card used asynchronous.
+        /// </summary>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public async Task<bool> CheckBankCardUsedAsync(string bankCardNo)
+        {
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                BankCard card = await db.ReadonlyQuery<BankCard>().FirstOrDefaultAsync(c => c.BankCardNo == bankCardNo);
+                return card?.VerifiedTime != null;
+            }
+        }
+
+        /// <summary>
         ///     Checks the cellphone asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
@@ -124,6 +141,19 @@ namespace Yuyi.Jinyinmao.Service
             {
                 Result = info.Registered
             };
+        }
+
+        /// <summary>
+        ///     Checks the credential no used asynchronous.
+        /// </summary>
+        /// <param name="credentialNo">The credential no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public Task<bool> CheckCredentialNoUsedAsync(string credentialNo)
+        {
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                return db.ReadonlyQuery<User>().AnyAsync(c => c.CredentialNo == credentialNo && c.Verified);
+            }
         }
 
         /// <summary>
@@ -487,7 +517,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Withdrawals the resulted asynchronous.
+        ///     Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>

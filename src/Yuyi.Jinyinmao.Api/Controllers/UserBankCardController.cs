@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  11:00 PM
+// Last Modified On : 2015-06-09  10:45 PM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -68,12 +68,19 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UBCABC3:银行卡添加失败
         ///     <br />
         ///     UBCABC4:该银行卡已经绑定
+        ///     <br />
+        ///     UBCABC5:该银行卡已经被绑定
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(BankCardInfoResponse))]
-        public async Task<IHttpActionResult> AddBankCard([FromUri] AddBankCardRequest request)
+        [Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(BankCardInfoResponse))]
+        public async Task<IHttpActionResult> AddBankCard(AddBankCardRequest request)
         {
+            if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
+            {
+                return this.BadRequest("UBCABC5:该银行卡已经被绑定");
+            }
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (userInfo == null)
@@ -129,28 +136,35 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UBCABCBY2:请先进行实名认证
         ///     <br />
         ///     UBCABCBY3:最多绑定10张银行卡
+        ///     <br />
+        ///     UBCABCBY5:该银行卡已经被绑定
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("AddBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> AddBankCardByYilian([FromUri] AddBankCardRequest request)
+        [Route("AddBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> AddBankCardByYilian(AddBankCardRequest request)
         {
+            if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
+            {
+                return this.BadRequest("UBCABCBY5:该银行卡已经被绑定");
+            }
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (userInfo == null)
             {
                 Trace.TraceWarning("User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBCABC1:无法添加银行卡");
+                return this.BadRequest("UBCABCBY1:无法添加银行卡");
             }
 
             if (!userInfo.Verified)
             {
-                return this.BadRequest("UBCABC2:请先进行实名认证");
+                return this.BadRequest("UBCABCBY2:请先进行实名认证");
             }
 
             if (userInfo.BankCardsCount >= 10)
             {
-                return this.BadRequest("UBCABC3:最多绑定10张银行卡");
+                return this.BadRequest("UBCABCBY3:最多绑定10张银行卡");
             }
 
             AddBankCard addBankCardCommand = new AddBankCard
@@ -245,8 +259,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Remove"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> RemoveBankCard([FromUri] DeleteBankCardRequest request)
+        [Route("Remove"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> RemoveBankCard(DeleteBankCardRequest request)
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
@@ -296,12 +310,19 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UBCABCBY2:请先进行实名认证
         ///     <br />
         ///     UBCABCBY3:最多绑定10张银行卡
+        ///     <br />
+        ///     UBCVBC5:该银行卡已经被绑定
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("VerifyBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> VerifyBankCardByYilian([FromUri] VerifyBankCardRequest request)
+        [Route("VerifyBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> VerifyBankCardByYilian(VerifyBankCardRequest request)
         {
+            if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
+            {
+                return this.BadRequest("UBCVBC5:该银行卡已经被绑定");
+            }
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (userInfo == null)

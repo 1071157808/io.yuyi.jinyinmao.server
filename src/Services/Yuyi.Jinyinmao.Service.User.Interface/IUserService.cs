@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  1:35 AM
+// Last Modified On : 2015-06-09  10:30 PM
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,14 +24,14 @@ namespace Yuyi.Jinyinmao.Service.Interface
     public interface IUserService : IUserInfoService
     {
         /// <summary>
-        /// Adds the bank card asynchronous.
+        ///     Adds the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;BankCardInfo&gt;.</returns>
         Task<BankCardInfo> AddBankCardAsync(AddBankCard command);
 
         /// <summary>
-        /// Adds the bank card asynchronous.
+        ///     Adds the bank card asynchronous.
         /// </summary>
         /// <param name="addBankCardCommand">The add bank card command.</param>
         /// <param name="verifyBankCardCommand">The verify bank card command.</param>
@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task AddBankCardAsync(AddBankCard addBankCardCommand, VerifyBankCard verifyBankCardCommand);
 
         /// <summary>
-        /// Adds the extra interest to order.
+        ///     Adds the extra interest to order.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
@@ -53,7 +53,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task AuthenticateAsync(Authenticate command);
 
         /// <summary>
-        /// Authenticates the asynchronous.
+        ///     Authenticates the asynchronous.
         /// </summary>
         /// <param name="addBankCardCommand">The add bank card command.</param>
         /// <param name="authenticateCommand">The authenticate command.</param>
@@ -76,14 +76,14 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task ClearUnauthenticatedInfo(Guid userId);
 
         /// <summary>
-        /// Deposits the asynchronous.
+        ///     Deposits the asynchronous.
         /// </summary>
         /// <param name="payByYilian">The pay by yilian.</param>
         /// <returns>Task.</returns>
         Task DepositAsync(PayByYilian payByYilian);
 
         /// <summary>
-        /// Hides the bank card asynchronous.
+        ///     Hides the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
@@ -132,7 +132,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
-        /// Verifies the bank card asynchronous.
+        ///     Verifies the bank card asynchronous.
         /// </summary>
         /// <param name="verifyBankCardCommand">The verify bank card command.</param>
         /// <returns>Task.</returns>
@@ -153,7 +153,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
-        /// Withdrawals the resulted asynchronous.
+        ///     Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="transcationId">The transcation identifier.</param>

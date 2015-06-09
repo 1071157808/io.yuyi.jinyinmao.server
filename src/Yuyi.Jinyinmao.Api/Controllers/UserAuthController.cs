@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-07  4:06 PM
+// Last Modified On : 2015-06-09  10:50 PM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -75,12 +75,26 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UAA2:请先设置支付密码
         ///     <br />
         ///     UAA3:已经通过实名认证
+        ///     <br />
+        ///     UAA4:该身份信息已经被绑定
+        ///     <br />
+        ///     UAA5:该银行卡已经被绑定
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> Authenticate([FromUri] AuthenticationRequest request)
+        [Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> Authenticate(AuthenticationRequest request)
         {
+            if (await this.userInfoService.CheckCredentialNoUsedAsync(request.CredentialNo))
+            {
+                return this.BadRequest("UAA4:该身份信息已经被绑定");
+            }
+
+            if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
+            {
+                return this.BadRequest("UAA5:该银行卡已经被绑定");
+            }
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (userInfo == null)
@@ -171,8 +185,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("CheckPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> CheckPaymentPassword([FromUri] CheckPaymentPasswordRequest request)
+        [Route("CheckPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> CheckPaymentPassword(CheckPaymentPasswordRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.Password);
 
@@ -221,8 +235,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> ResetLoginPassword([FromUri] ResetPasswordRequest request)
+        [Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
         {
             UseVeriCodeResult veriCodeResult = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetLoginPassword);
             if (!veriCodeResult.Result)
@@ -269,8 +283,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> ResetPaymentPassword([FromUri] ResetPaymentPasswordRequest request)
+        [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetPaymentPassword);
             if (!result.Result)
@@ -322,8 +336,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
-        public async Task<IHttpActionResult> SetPaymentPassword([FromUri] SetPaymentPasswordRequest request)
+        [Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
         {
             if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
             {
@@ -361,8 +375,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200">登录成功</response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="500"></response>
-        [HttpGet, Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
-        public async Task<IHttpActionResult> SignIn([FromUri] SignInRequest request)
+        [Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
+        public async Task<IHttpActionResult> SignIn(SignInRequest request)
         {
             SignInResult signInResult = await this.userService.CheckPasswordViaCellphoneAsync(request.LoginName, request.Password);
 
@@ -408,8 +422,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UAS02:此号码已注册，请直接登录
         /// </response>
         /// <response code="500"></response>
-        [HttpGet, Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
-        public async Task<IHttpActionResult> SignUp([FromUri] SignUpRequest request)
+        [Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
+        public async Task<IHttpActionResult> SignUp(SignUpRequest request)
         {
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.SignUp);
 

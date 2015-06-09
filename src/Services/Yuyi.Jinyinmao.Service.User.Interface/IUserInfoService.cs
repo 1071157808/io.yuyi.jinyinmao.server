@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-26  12:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  11:44 AM
+// Last Modified On : 2015-06-09  10:50 PM
 // ***********************************************************************
 // <copyright file="IUserInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,11 +27,25 @@ namespace Yuyi.Jinyinmao.Service.Interface
     public interface IUserInfoService
     {
         /// <summary>
+        ///     Checks the bank card used asynchronous.
+        /// </summary>
+        /// <param name="bankCardNo">The bank card no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        Task<bool> CheckBankCardUsedAsync(string bankCardNo);
+
+        /// <summary>
         ///     Checks the cellphone asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
         Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone);
+
+        /// <summary>
+        ///     Checks the credential no used asynchronous.
+        /// </summary>
+        /// <param name="credentialNo">The credential no.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        Task<bool> CheckCredentialNoUsedAsync(string credentialNo);
 
         /// <summary>
         ///     Checks the password asynchronous.
