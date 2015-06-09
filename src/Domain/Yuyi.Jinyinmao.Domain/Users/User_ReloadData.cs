@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  11:23 PM
+// Last Modified On : 2015-06-08  5:16 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -62,7 +62,7 @@ namespace Yuyi.Jinyinmao.Domain
                     if (transcation.ResultCode > 0)
                     {
                         debitedTransAmount += transcation.Amount;
-                        if (transcation.TransactionTime <= confirmTime)
+                        if (transcation.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime)
                         {
                             investingConfirmTransAmount += transcation.Amount;
                         }
@@ -177,13 +177,12 @@ namespace Yuyi.Jinyinmao.Domain
                         }
                     }
 
-                    if (transcation.ResultCode == 0)
-                    {
-                        creditingSettleAccountAmount += amount;
-                    }
-
                     settleAccountBalance -= amount;
                     bankCards[bankCardNo] -= amount;
+                }
+                else if (transcation.Trade == Trade.Credit && transcation.ResultCode == 0)
+                {
+                    creditingSettleAccountAmount += amount;
                 }
             }
 

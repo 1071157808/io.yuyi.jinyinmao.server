@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  8:46 AM
+// Last Modified On : 2015-06-07  5:33 PM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -243,7 +243,7 @@ namespace Yuyi.Jinyinmao.Api.Models
             EndSellTime = info.EndSellTime,
             EnterpriseInfo = info.EnterpriseInfo,
             EnterpriseLicense = info.EnterpriseLicense,
-            EnterpriseName = info.EndorseImageLink,
+            EnterpriseName = info.EnterpriseName,
             FinancingSumAmount = info.FinancingSumAmount,
             IssueNo = info.IssueNo,
             IssueTime = info.IssueTime,

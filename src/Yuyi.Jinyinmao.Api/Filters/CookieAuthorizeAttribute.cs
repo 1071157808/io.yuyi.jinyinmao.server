@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:18 PM
+// Last Modified On : 2015-06-07  5:28 PM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,10 +12,12 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
+using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Security;
 using Moe.AspNet.Filters;
@@ -59,6 +61,8 @@ namespace Yuyi.Jinyinmao.Api.Filters
             if (this.refreshToken && !string.IsNullOrWhiteSpace(token))
             {
                 FormsAuthentication.SetAuthCookie(token, true);
+                HttpCookie cookie = FormsAuthentication.GetAuthCookie(token, true);
+                HttpContext.Current.Response.Headers.Add("JYM", cookie.Value);
             }
 
             base.OnAuthorization(actionContext);
@@ -134,6 +138,17 @@ namespace Yuyi.Jinyinmao.Api.Filters
             if (actionContext == null)
             {
                 throw new ArgumentNullException(nameof(actionContext), @"actionContext can not be null");
+            }
+
+            IEnumerable<string> header;
+            if (actionContext.Request.Headers.TryGetValues("JYM", out header))
+            {
+                string tokenValue = header.FirstOrDefault();
+                if (tokenValue != null)
+                {
+                    FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(tokenValue);
+                    if (ticket != null) actionContext.RequestContext.Principal = new GenericPrincipal(new GenericIdentity(ticket.Name), null);
+                }
             }
 
             IPrincipal user = actionContext.RequestContext.Principal;

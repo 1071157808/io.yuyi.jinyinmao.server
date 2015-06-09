@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-04  2:24 PM
+// Last Modified On : 2015-06-08  5:31 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -102,7 +102,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Adds the extra interest to order.
+        ///     Adds the extra interest to order.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
@@ -1259,20 +1259,6 @@ namespace Yuyi.Jinyinmao.Domain
             return info;
         }
 
-        /// <summary>
-        /// Builds the interest.
-        /// </summary>
-        /// <param name="valueDate">The value date.</param>
-        /// <param name="settleDate">The settle date.</param>
-        /// <param name="principal">The principal.</param>
-        /// <param name="yield">The yield.</param>
-        /// <returns>System.Int32.</returns>
-        private static int BuildInterest(DateTime valueDate, DateTime settleDate, int principal, int yield)
-        {
-            int dayCount = (settleDate.Date.AddHours(1) - valueDate.Date).Days;
-            return principal * yield * dayCount / 3600000;
-        }
-
         #endregion IUser Members
 
         /// <summary>
@@ -1280,25 +1266,31 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task.</returns>
         [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-        public async Task JBYReinvestingAsync()
+        public async Task<JBYAccountTranscationInfo> JBYReinvestingAsync()
         {
             this.ReloadJBYAccountData();
-
-            if (this.JBYAccrualAmount <= 0)
-            {
-                return;
-            }
 
             DateTime now = DateTime.UtcNow.AddHours(8);
             if (this.State.JBYAccount.Values.Any(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0
                                                       && t.TransactionTime.Date == now.Date))
             {
-                return;
+                return null;
             }
 
             int yield = DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield;
+            int jbyAccrualAmount = this.GetJBYAccrualAmount(now);
 
-            int interest = this.JBYAccrualAmount * yield / 3600000;
+            if (jbyAccrualAmount <= 0)
+            {
+                return null;
+            }
+
+            int interest = jbyAccrualAmount * yield / 3600000;
+
+            if (interest <= 0)
+            {
+                return null;
+            }
 
             JBYAccountTranscation jbyTranscation = new JBYAccountTranscation
             {
@@ -1323,7 +1315,9 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
             this.ReloadJBYAccountData();
 
-            await this.RaiseJBYReinvestedEvent(jbyTranscation.ToInfo());
+            JBYAccountTranscationInfo info = jbyTranscation.ToInfo();
+            await this.RaiseJBYReinvestedEvent(info);
+            return info;
         }
 
         /// <summary>
@@ -1381,6 +1375,32 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Builds the interest.
+        /// </summary>
+        /// <param name="valueDate">The value date.</param>
+        /// <param name="settleDate">The settle date.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="yield">The yield.</param>
+        /// <returns>System.Int32.</returns>
+        private static int BuildInterest(DateTime valueDate, DateTime settleDate, int principal, int yield)
+        {
+            int dayCount = (settleDate.Date.AddHours(1) - valueDate.Date).Days;
+            return principal * yield * dayCount / 3600000;
+        }
+
+        /// <summary>
+        ///     Gets the last investing confirm time.
+        /// </summary>
+        /// <param name="date">The date.UTC+8</param>
+        /// <returns>System.DateTime.</returns>
+        private static DateTime GetLastInvestingConfirmTime(DateTime date)
+        {
+            DailyConfig config = DailyConfigHelper.GetDailyConfig(date);
+            DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(date, config.IsWorkDay ? 0 : 1);
+            return confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1);
+        }
+
+        /// <summary>
         ///     Builds the charge transcation.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -1419,6 +1439,27 @@ namespace Yuyi.Jinyinmao.Domain
                 UserId = this.State.Id,
                 UserInfo = await this.GetUserInfoAsync()
             };
+        }
+
+        /// <summary>
+        ///     Gets the jby accrual amount.
+        /// </summary>
+        /// <param name="date">The date.UTC+8</param>
+        /// <param name="reload">The reload.</param>
+        /// <returns>System.Int32.</returns>
+        private int GetJBYAccrualAmount(DateTime date, bool reload = false)
+        {
+            DateTime confirmTime = GetLastInvestingConfirmTime(date);
+            if (reload)
+            {
+                this.ReloadJBYAccountData();
+            }
+
+            List<JBYAccountTranscation> transcations = this.State.JBYAccount.Values.Where(t => t.ResultTime < date.Date).ToList();
+            int investedAmount = transcations.Where(t => t.Trade == Trade.Debit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime).Sum(t => t.Amount);
+            int creditedTransAmount = transcations.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= date.Date).Sum(t => t.Amount);
+
+            return investedAmount - creditedTransAmount;
         }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-05-18  2:55 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  11:57 AM
+// Last Modified On : 2015-06-08  10:35 AM
 // ***********************************************************************
 // <copyright file="DtoRegistry.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -188,7 +188,7 @@ namespace nyanya.Internal.Service.Config
             if (!this.eventTypes.Contains(typeof(TEvent)))
             {
                 this.eventTypes.Add(typeof(TEvent));
-                this.mqServer.RegisterHandler<TEvent>(this.host.ServiceController.ExecuteMessage, 100);
+                this.mqServer.RegisterHandler<TEvent>(this.host.ServiceController.ExecuteMessage, 10);
             }
 
             if (!this.validatorTypes.Contains(typeof(TValidator)))

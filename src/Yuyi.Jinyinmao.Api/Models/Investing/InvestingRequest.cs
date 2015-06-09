@@ -1,13 +1,13 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-04  2:34 AM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  1:20 PM
+// Last Modified On : 2015-06-07  5:32 PM
 // ***********************************************************************
-// <copyright file="InvestingRequest.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="InvestingRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -27,7 +27,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Investing
         /// <summary>
         ///     投资金额，以“分”为单位
         /// </summary>
-        [Required, Range(0, 10000000000), JsonProperty("amount")]
+        [Required, Range(1, 10000000000), JsonProperty("amount")]
         public int Amount { get; set; }
 
         /// <summary>

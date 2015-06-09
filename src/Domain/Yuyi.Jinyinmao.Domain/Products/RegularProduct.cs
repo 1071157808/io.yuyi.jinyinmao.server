@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-05  1:42 AM
+// Last Modified On : 2015-06-07  6:07 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -298,7 +298,7 @@ namespace Yuyi.Jinyinmao.Domain
                     stream = await client.GetStreamAsync(command.EndorseImageLink);
                 }
 
-                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference("EndorseImage-" + command.ProductId.ToGuidString());
+                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference("EndorseImages/" + command.ProductId.ToGuidString());
                 blob.Properties.ContentType = "image/jpeg";
                 await blob.UploadFromStreamAsync(stream);
                 this.State.EndorseImageLink = blob.Uri.AbsoluteUri;

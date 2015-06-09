@@ -47,11 +47,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
 #if DEBUG
-            GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalDevConfiguration.xml"));
+            GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/DebugConfiguration.xml"));
 #elif CLOUD
             AzureClient.Initialize(HttpContext.Current.Server.MapPath(@"~/AzureConfiguration.xml"));
 #else
-            GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/LocalConfiguration.xml"));
+            GrainClient.Initialize(HttpContext.Current.Server.MapPath(@"~/ReleaseConfiguration.xml"));
 #endif
         }
 

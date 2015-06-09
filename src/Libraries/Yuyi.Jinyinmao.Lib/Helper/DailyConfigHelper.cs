@@ -4,7 +4,7 @@
 // Created          : 2015-05-11  12:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:18 PM
+// Last Modified On : 2015-06-08  4:00 PM
 // ***********************************************************************
 // <copyright file="DailyConfigHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
@@ -30,6 +31,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <summary>
         ///     Gets the daily configuration.
         /// </summary>
+        /// <param name="date">The date.UTC+8</param>
         /// <returns>DailyConfig.</returns>
         public static DailyConfig GetDailyConfig(DateTime date)
         {
@@ -64,6 +66,17 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <returns>DateTime.</returns>
         public static DailyConfig GetLastWorkDayConfig(int offset = 0)
         {
+            return GetLastWorkDayConfig(DateTime.UtcNow.AddHours(8), offset);
+        }
+
+        /// <summary>
+        ///     Gets the last work day configuration.
+        /// </summary>
+        /// <param name="fromDate">From date.UTC+8</param>
+        /// <param name="offset">The offset.</param>
+        /// <returns>DateTime.</returns>
+        public static DailyConfig GetLastWorkDayConfig(DateTime fromDate, int offset = 0)
+        {
             offset = offset < 0 ? 0 : offset;
             offset += 1;
 
@@ -71,7 +84,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
 
             for (int i = 1; i < 100; i++)
             {
-                DateTime date = DateTime.UtcNow.AddHours(8).AddDays(-i);
+                DateTime date = fromDate.AddDays(-i);
                 config = GetDailyConfig(date);
                 if (config != null && config.IsWorkDay)
                 {
@@ -94,6 +107,17 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <returns>DailyConfig.</returns>
         public static DailyConfig GetNextWorkDayConfig(int offset = 0)
         {
+            return GetNextWorkDayConfig(DateTime.UtcNow.AddHours(8), offset);
+        }
+
+        /// <summary>
+        ///     Gets the next work day configuration.
+        /// </summary>
+        /// <param name="fromDate">From date.UTC+8</param>
+        /// <param name="offset">The offset.</param>
+        /// <returns>DailyConfig.</returns>
+        public static DailyConfig GetNextWorkDayConfig(DateTime fromDate, int offset = 0)
+        {
             offset = offset < 0 ? 0 : offset;
             offset += 1;
 
@@ -101,7 +125,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
 
             for (int i = 1; i < 100; i++)
             {
-                DateTime date = DateTime.UtcNow.AddHours(8).AddDays(i);
+                DateTime date = fromDate.AddDays(i);
                 config = GetDailyConfig(date);
                 if (config != null && config.IsWorkDay)
                 {
@@ -121,7 +145,10 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         ///     Gets the today daily configuration.
         /// </summary>
         /// <returns>DailyConfig.</returns>
-        public static DailyConfig GetTodayDailyConfig() => GetDailyConfig(DateTime.UtcNow.AddHours(8));
+        public static DailyConfig GetTodayDailyConfig()
+        {
+            return GetDailyConfig(DateTime.UtcNow.AddHours(8));
+        }
     }
 
     /// <summary>
@@ -139,18 +166,21 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         ///     Gets or sets a value indicating whether this instance is workday.
         /// </summary>
         /// <value><c>true</c> if this instance is workday; otherwise, <c>false</c>.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public bool IsWorkday { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby withdrawal limit.
         /// </summary>
         /// <value>The jby withdrawal limit.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public int JBYWithdrawalLimit { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby yield.
         /// </summary>
         /// <value>The jby yield.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public int JBYYield { get; set; }
     }
 
@@ -169,6 +199,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         ///     Gets or sets the date string.
         /// </summary>
         /// <value>The date string.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public string DateString { get; set; }
 
         /// <summary>

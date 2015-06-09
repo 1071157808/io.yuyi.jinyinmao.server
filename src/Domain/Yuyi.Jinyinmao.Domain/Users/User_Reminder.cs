@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-18  11:37 PM
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  4:33 PM
+// Last Modified On : 2015-06-09  9:14 PM
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,9 +13,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Orleans.Runtime;
+using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -45,8 +49,10 @@ namespace Yuyi.Jinyinmao.Domain
 
         #endregion IRemindable Members
 
+        #region IUser Members
+
         /// <summary>
-        /// do daily work as an asynchronous operation.
+        ///     do daily work as an asynchronous operation.
         /// </summary>
         /// <param name="force">if set to <c>true</c> [force].</param>
         /// <returns>Task.</returns>
@@ -54,19 +60,32 @@ namespace Yuyi.Jinyinmao.Domain
         {
             if (force || (DateTime.UtcNow.AddHours(8).Hour <= 4 && DateTime.UtcNow.AddHours(8).Hour >= 1))
             {
+                StringBuilder builder = new StringBuilder();
+                builder.Append("UserDailyWork: {0}\n".FormatWith(this.State.Id));
+
                 DateTime now = DateTime.UtcNow.AddHours(8);
                 List<JBYAccountTranscation> jbyWithdrawalTranscations = this.State.JBYAccount.Values
                     .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue
                                 && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < now)
                     .ToList();
 
+                builder.Append("JBYWithdrawalResulted: ");
+
                 foreach (JBYAccountTranscation transcation in jbyWithdrawalTranscations)
                 {
                     await this.JBYWithdrawalResultedAsync(transcation.TransactionId);
+                    builder.Append(transcation.TransactionId + " ");
                 }
 
-                await this.JBYReinvestingAsync();
+                builder.Append("\n");
+
+                JBYAccountTranscationInfo transcationInfo = await this.JBYReinvestingAsync();
+                builder.Append(transcationInfo == null ? "JBYReinvesting: SKIPED." : "JBYReinvesting: {0}".FormatWith(transcationInfo.ToJson()));
+
+                Trace.TraceWarning(builder.ToString());
             }
         }
+
+        #endregion IUser Members
     }
 }

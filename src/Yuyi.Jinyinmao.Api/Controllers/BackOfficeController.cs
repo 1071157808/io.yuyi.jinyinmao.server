@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-05  1:14 AM
+// Last Modified On : 2015-06-08  5:29 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -169,6 +169,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             DailyConfig config = DailyConfigHelper.GetDailyConfig(DateTime.UtcNow.AddHours(8));
 
+            Trace.TraceWarning("JBYProductIssue. {0}", request.ToJson());
+
             await this.productService.HitShelvesAsync(new IssueJBYProduct
             {
                 Agreement1 = request.Agreement1,
@@ -236,7 +238,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            Trace.TraceInformation("RegularProductIssue. {0}", request.ToJson());
+            Trace.TraceWarning("RegularProductIssue. {0}", request.ToJson());
 
             await this.productService.HitShelvesAsync(new IssueRegularProduct
             {

@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  2:49 AM
+// Last Modified On : 2015-06-07  4:06 PM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Security;
@@ -449,9 +450,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="cellphone">The cellphone.</param>
         private void SetCookie(Guid userId, string cellphone)
         {
-            bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
-            DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1);
-            FormsAuthentication.SetAuthCookie($"{userId},{cellphone},{expiry.ToBinary()}", true);
+            if (HttpContext.Current.Request.IsSecureConnection)
+            {
+                bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
+                DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1);
+                string userData = $"{userId},{cellphone},{expiry.ToBinary()}";
+                FormsAuthentication.SetAuthCookie(userData, true);
+                HttpCookie cookie = FormsAuthentication.GetAuthCookie(userData, true);
+                HttpContext.Current.Response.Headers.Add("JYM", cookie.Value);
+            }
         }
     }
 }

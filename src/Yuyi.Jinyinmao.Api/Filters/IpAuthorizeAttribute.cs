@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:18 PM
+// Last Modified On : 2015-06-08  5:23 PM
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,6 +33,9 @@ namespace Yuyi.Jinyinmao.Api.Filters
         /// </summary>
         /// <value><c>true</c> if [only local host]; otherwise, <c>false</c>.</value>
         public bool OnlyLocalHost { get; set; }
+
+        [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Local")]
+        private string[] AdminIps { get; } = { "10.1.10.100", "10.1.10.13", "10.1.10.31", "10.1.10.64", "10.1.5.42" };
 
         [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Local")]
         private string[] AllowedIps { get; } = { "101.95.30.142", "211.152.53.50" };
@@ -83,10 +86,10 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             if (this.OnlyLocalHost)
             {
-                return request.IsLocal() || ip == "::1";
+                return request.IsLocal() || ip == "::1" || this.AdminIps.Contains(ip);
             }
 
-            return this.AllowedIps.Contains(ip) || ip == "::1";
+            return this.AllowedIps.Contains(ip) || ip == "::1" || this.AdminIps.Contains(ip);
         }
     }
 }

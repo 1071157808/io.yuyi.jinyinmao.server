@@ -15,7 +15,7 @@
           <CrashDumpConfiguration processName="DiagnosticsAgent.exe" />
           <CrashDumpConfiguration processName="w3wp.exe" />
         </CrashDumps>
-        <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Information" />
+        <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Warning" />
       </DiagnosticMonitorConfiguration>
     </WadCfg>
     <StorageAccount />
