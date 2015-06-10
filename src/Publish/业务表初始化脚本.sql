@@ -139,6 +139,7 @@ CREATE TABLE [dbo].[BankCards] (
 [BankCardNo] varchar(25) NOT NULL ,
 [BankName] nvarchar(20) NOT NULL ,
 [CityName] nvarchar(20) NOT NULL ,
+[Verified] bit NOT NULL ,
 [VerifiedTime] datetime2(7) NULL ,
 [Info] nvarchar(MAX) NOT NULL ,
 [Args] nvarchar(MAX) NOT NULL ,

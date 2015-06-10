@@ -4,15 +4,9 @@
   <Globals>
     <StorageProviders>
       <Provider Type="Yuyi.Jinyinmao.Domain.SqlDatabaseProvider" Name="SqlDatabase"
-                DataConnectionString="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-dev-local-grains-{0};User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+                DataConnectionString="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
-    <SystemStore ServiceId="5017AE96-945C-4E80-AA5A-11FB559B614A" DataConnectionString="BlobEndpoint=https://jymdevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymdevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymdevlocal.table.core.chinacloudapi.cn/;AccountName=jymdevlocal;AccountKey=zLJrHdFg2fn0+GGjIAbgzOKo8vsoU0raOSI93YQVwO1ZIk6/xeXYTB/jQJNkTWO1YOw9dVW+30Uz8EeOehy5ZA==" />
-    <Networking />
-    <Messaging ResendOnTimeout="true" MaxResendCount="10" />
-    <Caching />
-    <Liveness LivenessType="AzureTable" />
-    <ReminderService />
   </Globals>
   <Defaults>
     <Networking Address="localhost" Port="11111" />
@@ -23,12 +17,12 @@
     Setting WriteTraces to true will cause detailed performance information to be collected and logged about the individual steps in the
     message lifecycle. This may be useful debugging performance issues.
     -->
-    <Tracing DefaultTraceLevel="Verbose" TraceToConsole="true" TraceToFile="{0}-{1}.log">
+    <Tracing DefaultTraceLevel="Error" TraceToConsole="true" TraceToFile="{0}-{1}.log">
       <!--
 	  To get more detailed application logging, you can change the TraceLevel attribute value to "Verbose" or "Verbose2".
 	  Depending on the log levels you have used in your code, this will cause additional messages to be written to the log.
 	  -->
-      <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
+      <TraceLevelOverride LogPrefix="Application" TraceLevel="Error" />
     </Tracing>
   </Defaults>
 </OrleansConfiguration>

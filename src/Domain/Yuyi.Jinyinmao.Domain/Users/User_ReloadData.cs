@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-08  5:16 PM
+// Last Modified On : 2015-06-10  11:15 AM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -162,9 +162,12 @@ namespace Yuyi.Jinyinmao.Domain
                         debitingSettleAccountAmount += amount;
                     }
                 }
-                else if (transcation.Trade == Trade.Credit && transcation.ResultCode > 0)
+                else if (transcation.Trade == Trade.Credit && transcation.ResultCode >= 0)
                 {
-                    if (transcation.TradeCode == TradeCodeHelper.TC1005012102)
+                    settleAccountBalance -= amount;
+                    bankCards[bankCardNo] -= amount;
+
+                    if (transcation.TradeCode == TradeCodeHelper.TC1005052001)
                     {
                         if (transcation.TransactionTime >= todayDate && transcation.TransactionTime < todayDate.AddDays(1))
                         {
@@ -177,12 +180,10 @@ namespace Yuyi.Jinyinmao.Domain
                         }
                     }
 
-                    settleAccountBalance -= amount;
-                    bankCards[bankCardNo] -= amount;
-                }
-                else if (transcation.Trade == Trade.Credit && transcation.ResultCode == 0)
-                {
-                    creditingSettleAccountAmount += amount;
+                    if (transcation.ResultCode == 0)
+                    {
+                        creditingSettleAccountAmount += amount;
+                    }
                 }
             }
 

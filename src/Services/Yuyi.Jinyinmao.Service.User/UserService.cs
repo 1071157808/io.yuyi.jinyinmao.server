@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:41 PM
+// Last Modified On : 2015-06-10  11:09 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -122,8 +122,7 @@ namespace Yuyi.Jinyinmao.Service
         {
             using (JYMDBContext db = new JYMDBContext())
             {
-                BankCard card = await db.ReadonlyQuery<BankCard>().FirstOrDefaultAsync(c => c.BankCardNo == bankCardNo);
-                return card?.VerifiedTime != null;
+                return await db.ReadonlyQuery<BankCard>().AnyAsync(c => c.BankCardNo == bankCardNo && c.Verified);
             }
         }
 
@@ -148,11 +147,11 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="credentialNo">The credential no.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public Task<bool> CheckCredentialNoUsedAsync(string credentialNo)
+        public async Task<bool> CheckCredentialNoUsedAsync(string credentialNo)
         {
             using (JYMDBContext db = new JYMDBContext())
             {
-                return db.ReadonlyQuery<User>().AnyAsync(c => c.CredentialNo == credentialNo && c.Verified);
+                return await db.ReadonlyQuery<User>().AnyAsync(c => c.CredentialNo == credentialNo && c.Verified);
             }
         }
 

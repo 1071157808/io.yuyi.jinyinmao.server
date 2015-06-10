@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-15  1:48 PM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  4:01 PM
+// Last Modified On : 2015-06-10  11:19 AM
 // ***********************************************************************
 // <copyright file="BankCardInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,7 +24,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     public static class BankCardEx
     {
         /// <summary>
-        /// To the information.
+        ///     To the information.
         /// </summary>
         /// <param name="card">The card.</param>
         /// <param name="withdrawAmount">The withdraw amount.</param>
@@ -49,7 +49,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         }
 
         /// <summary>
-        /// To the information.
+        ///     To the information.
         /// </summary>
         /// <param name="card">The card.</param>
         /// <returns>BankCardInfo.</returns>
@@ -93,6 +93,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             model.CityName = info.CityName;
             model.Info = i.ToJson();
             model.UserIdentifier = info.UserId.ToGuidString();
+            model.Verified = info.Verified;
             model.VerifiedTime = info.VerifiedTime;
         }
 
@@ -113,6 +114,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 CityName = info.CityName,
                 Info = i.ToJson(),
                 UserIdentifier = info.UserId.ToGuidString(),
+                Verified = info.Verified,
                 VerifiedTime = info.VerifiedTime
             };
         }

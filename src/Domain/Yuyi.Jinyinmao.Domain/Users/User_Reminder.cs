@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  9:14 PM
+// Last Modified On : 2015-06-10  11:35 AM
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -58,31 +58,44 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task DoDailyWorkAsync(bool force = false)
         {
-            if (force || (DateTime.UtcNow.AddHours(8).Hour <= 4 && DateTime.UtcNow.AddHours(8).Hour >= 1))
+            try
             {
-                StringBuilder builder = new StringBuilder();
-                builder.Append("UserDailyWork: {0}\n".FormatWith(this.State.Id));
-
-                DateTime now = DateTime.UtcNow.AddHours(8);
-                List<JBYAccountTranscation> jbyWithdrawalTranscations = this.State.JBYAccount.Values
-                    .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue
-                                && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < now)
-                    .ToList();
-
-                builder.Append("JBYWithdrawalResulted: ");
-
-                foreach (JBYAccountTranscation transcation in jbyWithdrawalTranscations)
+                if (force || (DateTime.UtcNow.AddHours(8).Hour <= 4 && DateTime.UtcNow.AddHours(8).Hour >= 1))
                 {
-                    await this.JBYWithdrawalResultedAsync(transcation.TransactionId);
-                    builder.Append(transcation.TransactionId + " ");
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append("UserDailyWork: {0}\n".FormatWith(this.State.Id));
+
+                    DateTime now = DateTime.UtcNow.AddHours(8);
+                    List<JBYAccountTranscation> jbyWithdrawalTranscations = this.State.JBYAccount.Values
+                        .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue
+                                    && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < now)
+                        .ToList();
+
+                    builder.Append("JBYWithdrawalResulted: ");
+
+                    foreach (JBYAccountTranscation transcation in jbyWithdrawalTranscations)
+                    {
+                        await this.JBYWithdrawalResultedAsync(transcation.TransactionId);
+                        builder.Append(transcation.TransactionId + " ");
+                    }
+
+                    builder.Append("\n");
+
+                    JBYAccountTranscationInfo transcationInfo = await this.JBYReinvestingAsync();
+                    builder.Append(transcationInfo == null ? "JBYReinvesting: SKIPED." : "JBYReinvesting: {0}".FormatWith(transcationInfo.ToJson()));
+
+                    Trace.TraceWarning(builder.ToString());
                 }
-
-                builder.Append("\n");
-
-                JBYAccountTranscationInfo transcationInfo = await this.JBYReinvestingAsync();
-                builder.Append(transcationInfo == null ? "JBYReinvesting: SKIPED." : "JBYReinvesting: {0}".FormatWith(transcationInfo.ToJson()));
-
-                Trace.TraceWarning(builder.ToString());
+            }
+            catch (Exception e)
+            {
+                SiloClusterErrorLogger.Log(new ErrorLog
+                {
+                    Exception = e.GetExceptionString(),
+                    Message = e.Message,
+                    PartitionKey = this.State.Id.ToGuidString(),
+                    RowKey = "UserDailyWorkError-{0}".FormatWith(DateTime.UtcNow)
+                });
             }
         }
 

@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
-                   schemaVersion="2015-04.2.6">
+<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
   <WebRole name="Yuyi.Jinyinmao.Api" vmsize="Standard_D3">
     <Sites>
       <Site name="Web">
@@ -29,7 +27,8 @@
       <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="SSLCertificate" />
     </Endpoints>
     <Startup>
-      <Task commandLine="EnableCompression.cmd" executionContext="elevated" taskType="simple"></Task>
+      <Task commandLine="EnableCompression.cmd" executionContext="elevated" taskType="simple">
+      </Task>
     </Startup>
     <Certificates>
       <Certificate name="SSLCertificate" storeLocation="CurrentUser" storeName="My" />

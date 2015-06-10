@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  1:15 PM
+// Last Modified On : 2015-06-10  1:32 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,17 +41,15 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         /// </summary>
         /// <param name="initData">The initData.</param>
         /// <returns>Task.</returns>
-        public Task BeginProcessAsync(DepositSagaInitData initData)
+        public async Task BeginProcessAsync(DepositSagaInitData initData)
         {
             this.State.InitData = initData;
             this.State.Status = DepositSagaStatus.Init;
             this.State.BeginTime = DateTime.UtcNow;
 
             this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
-
+            await this.RegisterReminder();
             this.ProcessAsync().Forget();
-
-            return TaskDone.Done;
         }
 
         /// <summary>
@@ -204,7 +202,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                         throw new ApplicationException("Yilian request failed.");
                     }
 
-                    await this.RegisterReminder();
                     this.Waiting = true;
                     this.State.Status = DepositSagaStatus.QueryAuthenticateResult;
 
@@ -231,17 +228,16 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                         bankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
                         (int)userInfo.Credential, userInfo.CredentialNo, bankCardInfo.Cellphone,
                         userInfo.UserId.ToGuidString(), transcationInfo.Amount);
-                    this.Info.Add("Pay-Request-{0}".FormatWith(DateTime.UtcNow), parameter);
+                    this.Info.Add("PayByYilian-Request-{0}".FormatWith(DateTime.UtcNow), parameter);
 
                     YilianRequestResult result = await this.YilianService.PaymentRequestAsync(parameter);
-                    this.Info.Add("Pay-Response-{0}".FormatWith(DateTime.UtcNow), new { result.Message, result.ResponseString });
+                    this.Info.Add("PayByYilian-Response-{0}".FormatWith(DateTime.UtcNow), new { result.Message, result.ResponseString });
 
                     if (!result.Result)
                     {
                         throw new ApplicationException("Yilian request failed.");
                     }
 
-                    await this.RegisterReminder();
                     this.Waiting = true;
                     this.State.Status = DepositSagaStatus.QueryYilianPaymentResult;
 
@@ -274,14 +270,13 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                         userInfo.CredentialNo, bankCardInfo.Cellphone, userInfo.UserId.ToGuidString());
 
                     YilianRequestResult result = await this.YilianService.AuthRequestAsync(parameter);
-                    this.Info.Add("Request-{0}".FormatWith(DateTime.UtcNow.ToString("O")), new { result.Message, result.ResponseString });
+                    this.Info.Add("VerifyBankCard-Response-{0}".FormatWith(DateTime.UtcNow), new { result.Message, result.ResponseString });
 
                     if (!result.Result)
                     {
                         throw new ApplicationException("Yilian request failed.");
                     }
 
-                    await this.RegisterReminder();
                     this.Waiting = true;
                     this.State.Status = DepositSagaStatus.QueryBankCardVerifiedResult;
 

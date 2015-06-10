@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Yuyi.Jinyinmao.Domain.Models
 {
@@ -48,6 +49,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public int Id { get; set; }
 
         /// <summary>
@@ -61,6 +63,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// </summary>
         /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="BankCard"/> is verified.
+        /// </summary>
+        /// <value><c>true</c> if verified; otherwise, <c>false</c>.</value>
+        public bool Verified { get; set; }
 
         /// <summary>
         ///     Gets or sets the verified time.

@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  1:16 PM
+// Last Modified On : 2015-06-10  1:30 PM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -122,7 +122,10 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Registers the reminder.
         /// </summary>
         /// <returns>Task.</returns>
-        protected async Task RegisterReminder() => await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+        protected async Task RegisterReminder()
+        {
+            await this.RegisterOrUpdateReminder(this.GetType().Name, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+        }
 
         /// <summary>
         ///     Runs the into error.
@@ -151,7 +154,7 @@ namespace Yuyi.Jinyinmao.Domain
                     Exception = e.GetExceptionString(),
                     Message = e.Message,
                     PartitionKey = this.State.SagaId.ToGuidString(),
-                    RowKey = "SagaErrorLogingError"
+                    RowKey = "SagaErrorLogingError-{0}".FormatWith(DateTime.UtcNow)
                 });
             }
         }

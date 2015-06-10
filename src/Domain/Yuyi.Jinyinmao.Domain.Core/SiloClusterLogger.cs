@@ -4,7 +4,7 @@
 // Created          : 2015-05-22  6:41 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  6:49 PM
+// Last Modified On : 2015-06-10  11:27 AM
 // ***********************************************************************
 // <copyright file="SiloClusterLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,7 +24,10 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Logs this instance.
         /// </summary>
-        public static void Log(ErrorLog log) => SiloClusterConfig.ErrorLogsTable.Execute(TableOperation.InsertOrReplace(log));
+        public static void Log(ErrorLog log)
+        {
+            SiloClusterConfig.ErrorLogsTable.Execute(TableOperation.InsertOrReplace(log));
+        }
     }
 
     /// <summary>

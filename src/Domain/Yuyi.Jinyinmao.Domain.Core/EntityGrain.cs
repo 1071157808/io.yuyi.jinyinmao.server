@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-04  3:47 PM
+// Last Modified On : 2015-06-10  11:33 AM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -87,15 +87,18 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        protected void BeginProcessCommandAsync(ICommand command) => this.StoreCommandAsync(command).Forget(e =>
-            SiloClusterErrorLogger.Log(new ErrorLog
-            {
-                Exception = e.GetExceptionString(),
-                Message = e.Message,
-                PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                RowKey = "EntityCommandStoringError"
-            })
-            );
+        protected void BeginProcessCommandAsync(ICommand command)
+        {
+            this.StoreCommandAsync(command).Forget(e =>
+                SiloClusterErrorLogger.Log(new ErrorLog
+                {
+                    Exception = e.GetExceptionString(),
+                    Message = e.Message,
+                    PartitionKey = this.GetPrimaryKey().ToGuidString(),
+                    RowKey = "EntityCommandStoringError-{0}".FormatWith(DateTime.UtcNow)
+                })
+                );
+        }
 
         /// <summary>
         ///     Logs the error.
@@ -134,7 +137,7 @@ namespace Yuyi.Jinyinmao.Domain
                     Exception = e.GetExceptionString(),
                     Message = e.Message,
                     PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                    RowKey = "EntityEventStoringError"
+                    RowKey = "EntityEventStoringError-{0}".FormatWith(DateTime.UtcNow)
                 }));
         }
 

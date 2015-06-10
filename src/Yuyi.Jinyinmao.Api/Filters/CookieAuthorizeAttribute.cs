@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-07  5:28 PM
+// Last Modified On : 2015-06-10  4:25 AM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -193,7 +193,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
 
             if (this.refreshToken)
             {
-                DateTime newExpiryTime = DateTime.UtcNow.AddMinutes(30);
+                DateTime newExpiryTime = DateTime.UtcNow.AddDays(30);
                 newToken = $"{guid},{cellphone},{newExpiryTime.ToBinary()}";
             }
 
