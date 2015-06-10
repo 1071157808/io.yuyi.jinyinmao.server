@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  11:33 AM
+// Last Modified On : 2015-06-10  4:11 PM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -66,7 +66,6 @@ namespace Yuyi.Jinyinmao.Domain
             this.CommandStore = new CommandStore();
             this.EventStore = new EventStore();
 
-            this.RegisterTimer(o => this.State.WriteStateAsync(), new object(), TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
             this.RegisterTimer(o => this.SaveStateChangesAsync(), new object(), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
 
             return base.OnActivateAsync();
@@ -149,8 +148,8 @@ namespace Yuyi.Jinyinmao.Domain
         {
             if (this.StateChanged)
             {
-                await this.State.WriteStateAsync();
                 this.StateChanged = false;
+                await this.State.WriteStateAsync();
             }
         }
 

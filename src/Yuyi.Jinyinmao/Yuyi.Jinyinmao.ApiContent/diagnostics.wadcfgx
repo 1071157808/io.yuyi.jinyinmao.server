@@ -3,7 +3,7 @@
   <PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
     <WadCfg>
       <DiagnosticMonitorConfiguration overallQuotaInMB="4096">
-        <Directories scheduledTransferPeriod="PT1M">
+        <Directories scheduledTransferPeriod="PT5M">
           <IISLogs containerName="wad-iis-logfiles" />
           <FailedRequestLogs containerName="wad-failedrequestlogs" />
         </Directories>
@@ -15,7 +15,7 @@
           <CrashDumpConfiguration processName="DiagnosticsAgent.exe" />
           <CrashDumpConfiguration processName="w3wp.exe" />
         </CrashDumps>
-        <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Warning" />
+        <Logs scheduledTransferLogLevelFilter="Warning" />
       </DiagnosticMonitorConfiguration>
     </WadCfg>
     <StorageAccount />

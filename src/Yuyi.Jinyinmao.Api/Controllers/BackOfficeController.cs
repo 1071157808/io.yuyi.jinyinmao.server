@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-08  5:29 PM
+// Last Modified On : 2015-06-10  6:10 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -124,7 +124,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     发行金包银理财产品
         /// </summary>
         /// <param name="request">
-        ///     JBY产品上架请求
+        ///     JBY产品上架请求，计息方式固定为T+1，起息方式的参数值现在没有实际的业务作用
         /// </param>
         /// <response code="200">上架成功</response>
         /// <response code="400">请求格式不合法</response>
@@ -145,6 +145,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 return this.BadRequest("上架失败：产品编号已存在");
             }
+
+            request.ValueDateMode = 1;
 
             int maxIssueNo = await this.productInfoService.GetJBYMaxIssueNoAsync();
             if (request.IssueNo <= maxIssueNo)
