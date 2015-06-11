@@ -732,6 +732,12 @@
             The logger.
             </value>
         </member>
+        <member name="M:nyanya.Internal.Hangfire.CronJobs.ProductStatistics">
+            <summary>
+            产品统计信息（累计售出、累计收益、累计赎回、当日剩余取款金额、更新资产包用户收益）（今天之前）
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:nyanya.Internal.Hangfire.CronJobs.SetProductSoldOut">
             <summary>
             Sets the product sold out.
@@ -747,12 +753,6 @@
         <member name="M:nyanya.Internal.Hangfire.CronJobs.VerifyYilianAuth">
             <summary>
             Verifies the yilian authentication.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:nyanya.Internal.Hangfire.CronJobs.ProductStatistics">
-            <summary>
-            产品统计信息（累计售出、累计收益、累计赎回、当日剩余取款金额、更新资产包用户收益）（今天之前）
             </summary>
             <returns></returns>
         </member>
