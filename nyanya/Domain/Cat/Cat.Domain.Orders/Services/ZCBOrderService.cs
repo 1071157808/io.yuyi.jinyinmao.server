@@ -1,13 +1,13 @@
 // ***********************************************************************
 // Project          : nyanya
 // Author           : Siqi Lu
-// Created          : 2015-03-04  6:31 PM
+// Created          : 2015-05-18  2:53 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-06  11:23 AM
+// Last Modified On : 2015-06-11  10:00 AM
 // ***********************************************************************
-// <copyright file="ZCBOrderService.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="ZCBOrderService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -230,13 +230,15 @@ and p.IsPaid = 1 and o.OrderType = 30 and p.HasResult = 1 and o.UserIdentifier =
         private static DateTime GetLastWorkDay(DateTime time)
         {
             CloudStorageAccount account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudTable table = account.CreateCloudTableClient().GetTableReference("DailyConfig");
+            CloudTable table = account.CreateCloudTableClient().GetTableReference("Config");
 
             for (int i = 1; i < 100; i++)
             {
                 DateTime day = time.AddDays(-i);
                 string dateString = day.ToString("yyyyMMdd");
-                var result = table.ExecuteQuery(new TableQuery().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, dateString)).Take(1)).ToList();
+                var result = table.ExecuteQuery(new TableQuery().Where(
+                    TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "jinyinmao-daily-config"), TableOperators.And,
+                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, dateString))).Take(1)).ToList();
 
                 var config = result.FirstOrDefault();
                 EntityProperty value;
