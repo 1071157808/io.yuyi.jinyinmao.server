@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  7:06 PM
+// Last Modified On : 2015-06-15  7:05 PM
 // ***********************************************************************
 // <copyright file="SettleAccountInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,19 +29,19 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     账户余额，以“分”为单位
         /// </summary>
         [Required, JsonProperty("balance")]
-        public int Balance { get; set; }
+        public long Balance { get; set; }
 
         /// <summary>
         ///     在途的出项金额，以“分”为单位
         /// </summary>
         [Required, JsonProperty("crediting")]
-        public int Crediting { get; set; }
+        public long Crediting { get; set; }
 
         /// <summary>
         ///     在途的进项金额，以“分”为单位
         /// </summary>
         [Required, JsonProperty("debiting")]
-        public int Debiting { get; set; }
+        public long Debiting { get; set; }
 
         /// <summary>
         ///     今天的提现次数

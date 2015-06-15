@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  11:08 AM
+// Last Modified On : 2015-06-15  1:05 AM
 // ***********************************************************************
 // <copyright file="BankCardMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -58,6 +58,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             this.Property(t => t.BankCardNo).HasColumnName("BankCardNo");
             this.Property(t => t.BankName).HasColumnName("BankName");
             this.Property(t => t.CityName).HasColumnName("CityName");
+            this.Property(t => t.Display).HasColumnName("Display");
             this.Property(t => t.Verified).HasColumnName("Verified");
             this.Property(t => t.VerifiedTime).HasColumnName("VerifiedTime");
             this.Property(t => t.Info).HasColumnName("Info");

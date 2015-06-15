@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  1:27 PM
+// Last Modified On : 2015-06-15  6:45 PM
 // ***********************************************************************
 // <copyright file="JBYTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         /// <summary>
         ///     Gets or sets the arguments.

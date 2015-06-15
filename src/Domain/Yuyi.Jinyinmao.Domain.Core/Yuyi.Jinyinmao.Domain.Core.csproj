@@ -108,6 +108,14 @@
       <HintPath>..\..\packages\Microsoft.Orleans.Core.1.0.7\lib\net45\Orleans.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Serilog.1.5.7\lib\net45\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -190,6 +198,10 @@
     <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
       <Project>{7B420A40-ACEC-4461-AE6E-CA89E2AD65C9}</Project>
       <Name>Yuyi.Jinyinmao.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Log\Yuyi.Jinyinmao.Log.csproj">
+      <Project>{7617a0c5-e6b2-4d3f-95c9-f09ed74721c5}</Project>
+      <Name>Yuyi.Jinyinmao.Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
       <Project>{0E048DCC-F815-4D24-87B4-4210FD89E500}</Project>

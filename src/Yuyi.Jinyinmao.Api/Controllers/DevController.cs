@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Moe.AspNet.Utility;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models.Order;
 using Yuyi.Jinyinmao.Domain;
@@ -308,6 +309,24 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             await UserFactory.GetGrain(userId).SyncAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// UnregisteredCellphone
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("UnregisteredCellphone/{cellphone:lenght(11)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> UnregisteredCellphone(string cellphone)
+        {
+            if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
+            {
+                await CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone))
+                .Unregister();
+            }
             return this.Ok();
         }
     }

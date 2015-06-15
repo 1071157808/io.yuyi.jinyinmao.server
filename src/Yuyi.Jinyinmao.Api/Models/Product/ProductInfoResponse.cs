@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:05 PM
+// Last Modified On : 2015-06-15  7:41 PM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -205,7 +205,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     单价，以“分”为单位
         /// </summary>
         [Required, JsonProperty("unitPrice")]
-        public int UnitPrice { get; set; }
+        public long UnitPrice { get; set; }
 
         /// <summary>
         ///     融资用途，可能为空

@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-07  6:09 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-19  11:47 AM
+// Last Modified On : 2015-06-15  7:17 PM
 // ***********************************************************************
 // <copyright file="TranscationInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     金额，以分为单位
         /// </summary>
         [Required, JsonProperty("amount")]
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         /// <summary>
         ///     银行卡号

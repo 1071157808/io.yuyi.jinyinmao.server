@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-18  2:06 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  2:07 AM
+// Last Modified On : 2015-06-15  7:10 PM
 // ***********************************************************************
 // <copyright file="SettleAccountInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,19 +25,19 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the balance.
         /// </summary>
         /// <value>The balance.</value>
-        public int Balance { get; set; }
+        public long Balance { get; set; }
 
         /// <summary>
         ///     Gets or sets the crediting.
         /// </summary>
         /// <value>The crediting.</value>
-        public int Crediting { get; set; }
+        public long Crediting { get; set; }
 
         /// <summary>
         ///     Gets or sets the debiting.
         /// </summary>
         /// <value>The debiting.</value>
-        public int Debiting { get; set; }
+        public long Debiting { get; set; }
 
         /// <summary>
         ///     Gets or sets the month withdrawal count.

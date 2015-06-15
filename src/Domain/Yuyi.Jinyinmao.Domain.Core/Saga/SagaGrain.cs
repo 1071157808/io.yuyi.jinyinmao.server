@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  1:30 PM
+// Last Modified On : 2015-06-14  10:56 PM
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -149,13 +149,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             catch (Exception e)
             {
-                SiloClusterErrorLogger.Log(new ErrorLog
-                {
-                    Exception = e.GetExceptionString(),
-                    Message = e.Message,
-                    PartitionKey = this.State.SagaId.ToGuidString(),
-                    RowKey = "SagaErrorLogingError-{0}".FormatWith(DateTime.UtcNow)
-                });
+                SiloClusterErrorLogger.Log(e, "SagaErrorLogingError: {0}".FormatWith(e.Message));
             }
         }
 

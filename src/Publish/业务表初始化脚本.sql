@@ -70,7 +70,7 @@ CREATE TABLE [dbo].[AccountTranscations] (
 [OrderIdentifier] varchar(50) NOT NULL ,
 [BankCardNo] varchar(25) NOT NULL ,
 [TradeCode] int NOT NULL ,
-[Amount] int NOT NULL ,
+[Amount] bigint NOT NULL ,
 [TranscationTime] datetime2(7) NOT NULL ,
 [ChannelCode] int NOT NULL ,
 [ResultCode] int NOT NULL ,
@@ -90,7 +90,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[AccountTranscations]
 ([TranscationIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = OFF)
+WITH (IGNORE_DUP_KEY = ON)
 GO
 CREATE INDEX [IN_UserIdentifier] ON [dbo].[AccountTranscations]
 ([UserIdentifier] ASC) 
@@ -139,6 +139,7 @@ CREATE TABLE [dbo].[BankCards] (
 [BankCardNo] varchar(25) NOT NULL ,
 [BankName] nvarchar(20) NOT NULL ,
 [CityName] nvarchar(20) NOT NULL ,
+[Display] bit NOT NULL ,
 [Verified] bit NOT NULL ,
 [VerifiedTime] datetime2(7) NULL ,
 [Info] nvarchar(MAX) NOT NULL ,
@@ -157,6 +158,12 @@ CREATE INDEX [IN_UserIdentifier] ON [dbo].[BankCards]
 GO
 CREATE INDEX [IN_BankCardNo] ON [dbo].[BankCards]
 ([BankCardNo] ASC) 
+GO
+CREATE INDEX [IN_Display] ON [dbo].[BankCards]
+([Display] ASC) 
+GO
+CREATE INDEX [IN_BankCardNo_Display] ON [dbo].[BankCards]
+([BankCardNo] ASC, [Display] ASC) 
 GO
 CREATE INDEX [IN_UserIdentifier_BankCardNo] ON [dbo].[BankCards]
 ([UserIdentifier] ASC, [BankCardNo] ASC) 
@@ -183,7 +190,7 @@ CREATE TABLE [dbo].[JBYProducts] (
 [ProductNo] varchar(100) NOT NULL ,
 [IssueNo] int NOT NULL ,
 [FinancingSumAmount] bigint NOT NULL ,
-[UnitPrice] int NOT NULL ,
+[UnitPrice] bigint NOT NULL ,
 [IssueTime] datetime2(7) NOT NULL ,
 [StartSellTime] datetime2(7) NOT NULL ,
 [EndSellTime] datetime2(7) NOT NULL ,
@@ -203,7 +210,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_ProductIdentifier] ON [dbo].[JBYProducts]
 ([ProductIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = OFF)
+WITH (IGNORE_DUP_KEY = ON)
 GO
 CREATE INDEX [IN_ProductCategory] ON [dbo].[JBYProducts]
 ([ProductCategory] ASC) 
@@ -244,7 +251,7 @@ CREATE TABLE [dbo].[JBYTranscations] (
 [JBYProductIdentifier] varchar(50) NOT NULL ,
 [UserIdentifier] varchar(50) NOT NULL ,
 [TradeCode] int NOT NULL ,
-[Amount] int NOT NULL ,
+[Amount] bigint NOT NULL ,
 [TranscationTime] datetime2(7) NOT NULL ,
 [ResultCode] int NOT NULL ,
 [ResultTime] datetime2(7) NULL ,
@@ -263,7 +270,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[JBYTranscations]
 ([TranscationIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = OFF)
+WITH (IGNORE_DUP_KEY = ON)
 GO
 CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[JBYTranscations]
 ([AccountTranscationIdentifier] ASC) 
@@ -313,11 +320,11 @@ CREATE TABLE [dbo].[Orders] (
 [ProductIdentifier] varchar(50) NOT NULL ,
 [ProductCategory] bigint NOT NULL ,
 [ProductSnapshot] nvarchar(MAX) NOT NULL ,
-[Principal] int NOT NULL ,
+[Principal] bigint NOT NULL ,
 [Yield] int NOT NULL ,
 [ExtraYield] int NOT NULL ,
-[Interest] int NOT NULL ,
-[ExtraInterest] int NOT NULL ,
+[Interest] bigint NOT NULL ,
+[ExtraInterest] bigint NOT NULL ,
 [ValueDate] datetime2(7) NOT NULL ,
 [SettleDate] datetime2(7) NOT NULL ,
 [ResultCode] int NOT NULL ,
@@ -340,7 +347,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_OrderIdentifier] ON [dbo].[Orders]
 ([OrderIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = OFF)
+WITH (IGNORE_DUP_KEY = ON)
 GO
 CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[Orders]
 ([AccountTranscationIdentifier] ASC) 
@@ -417,7 +424,7 @@ CREATE TABLE [dbo].[RegularProducts] (
 [PledgeNo] varchar(40) NOT NULL ,
 [Yield] int NOT NULL ,
 [FinancingSumAmount] bigint NOT NULL ,
-[UnitPrice] int NOT NULL ,
+[UnitPrice] bigint NOT NULL ,
 [IssueTime] datetime2(7) NOT NULL ,
 [StartSellTime] datetime2(7) NOT NULL ,
 [EndSellTime] datetime2(7) NOT NULL ,
@@ -441,7 +448,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_ProductIdentifier] ON [dbo].[RegularProducts]
 ([ProductIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = OFF)
+WITH (IGNORE_DUP_KEY = ON)
 GO
 CREATE INDEX [IN_ProductCategory] ON [dbo].[RegularProducts]
 ([ProductCategory] ASC) 
@@ -513,7 +520,7 @@ GO
 -- ----------------------------
 CREATE UNIQUE INDEX [IN_UserIdentifier] ON [dbo].[Users]
 ([UserIdentifier] ASC) 
-WITH (IGNORE_DUP_KEY = OFF)
+WITH (IGNORE_DUP_KEY = ON)
 GO
 CREATE INDEX [IN_Cellphone] ON [dbo].[Users]
 ([Cellphone] ASC) 
@@ -582,4 +589,20 @@ CREATE INDEX [IN_Verified] ON [dbo].[VeriCodes]
 GO
 CREATE INDEX [IN_Cellphone_Type_Verified] ON [dbo].[VeriCodes]
 ([Cellphone] ASC, [Type] ASC, [Verified] ASC) 
+GO
+
+CREATE TABLE [dbo].[PrincipalVolumes] (
+[Id] int NOT NULL IDENTITY(1,1) ,
+[UserIdentifier] varchar(50) COLLATE Chinese_PRC_CI_AS NOT NULL ,
+[Amount] decimal(18,6) NOT NULL ,
+[AddDate] datetime NOT NULL ,
+[EffectiveStartDate] datetime NOT NULL ,
+[EffectiveEndDate] datetime NOT NULL ,
+[UseFlag] int NOT NULL ,
+[UseTime] datetime NULL ,
+[OrderNo] varchar(20) COLLATE Chinese_PRC_CI_AS NULL ,
+[Remark] nvarchar(500) COLLATE Chinese_PRC_CI_AS NULL ,
+CONSTRAINT [PK_PRINCIPALVOLUMES] PRIMARY KEY ([Id])
+)
+ON [PRIMARY]
 GO

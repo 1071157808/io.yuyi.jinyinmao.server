@@ -25,36 +25,36 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the jby accrual amount.
         /// </summary>
         /// <value>The jby accrual amount.</value>
-        public int JBYAccrualAmount { get; set; }
+        public long JBYAccrualAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total amount.
         /// </summary>
         /// <value>The jby total amount.</value>
-        public int JBYTotalAmount { get; set; }
+        public long JBYTotalAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total interest.
         /// </summary>
         /// <value>The jby total interest.</value>
-        public int JBYTotalInterest { get; set; }
+        public long JBYTotalInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total pricipal.
         /// </summary>
         /// <value>The jby total pricipal.</value>
-        public int JBYTotalPricipal { get; set; }
+        public long JBYTotalPricipal { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby withdrawalable amount.
         /// </summary>
         /// <value>The jby withdrawalable amount.</value>
-        public int JBYWithdrawalableAmount { get; set; }
+        public long JBYWithdrawalableAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the today jby withdrawal amount.
         /// </summary>
         /// <value>The today jby withdrawal amount.</value>
-        public int TodayJBYWithdrawalAmount { get; set; }
+        public long TodayJBYWithdrawalAmount { get; set; }
     }
 }

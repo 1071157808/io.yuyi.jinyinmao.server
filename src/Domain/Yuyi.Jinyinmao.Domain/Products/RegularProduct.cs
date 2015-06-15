@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-07  6:07 PM
+// Last Modified On : 2015-06-15  7:13 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -80,7 +80,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             DateTime valueDate = this.BuildValueDate();
-            int interest = this.BuildInterest(valueDate, orderInfo.Principal);
+            long interest = this.BuildInterest(valueDate, orderInfo.Principal);
 
             order = new OrderInfo
             {
@@ -420,10 +420,10 @@ namespace Yuyi.Jinyinmao.Domain
             return base.OnActivateAsync();
         }
 
-        private int BuildInterest(DateTime valueDate, int principal)
+        private long BuildInterest(DateTime valueDate, long principal)
         {
             int dayCount = (this.State.SettleDate.Date.AddHours(1) - valueDate.Date).Days;
-            return (int)((long)principal * this.State.Yield * dayCount / 3600000);
+            return principal * this.State.Yield * dayCount / 3600000;
         }
 
         private DateTime BuildValueDate()

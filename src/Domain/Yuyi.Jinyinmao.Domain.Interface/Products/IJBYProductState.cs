@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-11  12:27 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-23  12:29 PM
+// Last Modified On : 2015-06-15  7:49 PM
 // ***********************************************************************
 // <copyright file="IJBYProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -116,7 +116,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Gets or sets the unit price.
         /// </summary>
         /// <value>The unit price.</value>
-        int UnitPrice { get; set; }
+        long UnitPrice { get; set; }
 
         /// <summary>
         ///     Gets or sets the update time.

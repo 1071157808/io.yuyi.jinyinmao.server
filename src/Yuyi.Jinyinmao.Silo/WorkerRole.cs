@@ -4,19 +4,22 @@
 // Created          : 2015-05-25  4:00 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:17 PM
+// Last Modified On : 2015-06-14  7:08 PM
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
 using Orleans.Runtime.Host;
+using Yuyi.Jinyinmao.Silo.Log;
 
 namespace Yuyi.Jinyinmao.Silo
 {
@@ -85,6 +88,10 @@ namespace Yuyi.Jinyinmao.Silo
 
             ClusterConfiguration config = new ClusterConfiguration();
             config.StandardLoad();
+            config.Globals.ResendOnTimeout = true;
+            config.Globals.ResponseTimeout = TimeSpan.FromMinutes(2);
+            config.Globals.MaxResendCount = 10;
+            TraceLogger.LogConsumers.Add(new SiloLogger());
 
             // It is IMPORTANT to start the silo not in OnStart but in Run.
             // Azure may not have the firewalls open yet (on the remote silos) at the OnStart phase.
@@ -104,7 +111,7 @@ namespace Yuyi.Jinyinmao.Silo
         private static void RoleEnvironmentChanging(object sender, RoleEnvironmentChangingEventArgs e)
         {
             int i = 1;
-            foreach (var c in e.Changes)
+            foreach (RoleEnvironmentChange c in e.Changes)
             {
                 Trace.TraceInformation("RoleEnvironmentChanging: #{0} Type={1} Change={2}", i++, c.GetType().FullName, c);
             }

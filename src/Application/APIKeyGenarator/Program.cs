@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-17  10:07 AM
+// Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-19  1:37 AM
+// Last Modified On : 2015-06-14  6:24 PM
 // ***********************************************************************
-// <copyright file="Program.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -24,7 +24,7 @@ namespace APIKeyGenarator
         {
             string apiKey;
 
-            using (var cryptoProvider = new RNGCryptoServiceProvider())
+            using (RNGCryptoServiceProvider cryptoProvider = new RNGCryptoServiceProvider())
             {
                 byte[] secretKeyByteArray = new byte[256]; //2048 bit
                 cryptoProvider.GetBytes(secretKeyByteArray);

@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  11:48 PM
+// Last Modified On : 2015-06-15  7:47 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -126,7 +126,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the unit price.
         /// </summary>
         /// <value>The unit price.</value>
-        public int UnitPrice { get; set; }
+        public long UnitPrice { get; set; }
 
         /// <summary>
         ///     Gets or sets the value date.

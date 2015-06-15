@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  1:05 PM
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  11:55 AM
+// Last Modified On : 2015-06-15  7:06 PM
 // ***********************************************************************
 // <copyright file="BankCardInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -70,7 +70,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     可提现额度，单位为“分”
         /// </summary>
         [Required, JsonProperty("withdrawAmount")]
-        public int WithdrawAmount { get; set; }
+        public long WithdrawAmount { get; set; }
     }
 
     internal static class BankCardEx

@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-04  5:16 AM
+// Last Modified On : 2015-06-15  7:08 PM
 // ***********************************************************************
-// <copyright file="Order.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="Order.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -42,7 +42,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the extra interest.
         /// </summary>
         /// <value>The extra interest.</value>
-        public int ExtraInterest { get; set; }
+        public long ExtraInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the extra yield.
@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the interest.
         /// </summary>
         /// <value>The interest.</value>
-        public int Interest { get; set; }
+        public long Interest { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is repaid.
@@ -90,10 +90,10 @@ namespace Yuyi.Jinyinmao.Domain.Models
         ///     Gets or sets the principal.
         /// </summary>
         /// <value>The principal.</value>
-        public int Principal { get; set; }
+        public long Principal { get; set; }
 
         /// <summary>
-        /// Gets or sets the product category.
+        ///     Gets or sets the product category.
         /// </summary>
         /// <value>The product category.</value>
         public long ProductCategory { get; set; }

@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-04  2:21 PM
+// Last Modified On : 2015-06-15  4:18 PM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -34,7 +34,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<BankCardInfo> AddBankCardAsync(AddBankCard command);
 
         /// <summary>
-        /// Adds the extra interest to order.
+        ///     Adds the extra interest to order.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
@@ -155,8 +155,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
-        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
-        Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories);
+        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
+        Task<Tuple<int, List<OrderInfo>>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories);
 
         /// <summary>
         ///     Gets the settle account information asynchronous.
@@ -254,7 +254,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
-        /// Synchronizes the asynchronous.
+        ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task SyncAsync();

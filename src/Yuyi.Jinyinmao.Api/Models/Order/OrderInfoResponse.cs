@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  7:18 PM
+// Last Modified On : 2015-06-15  7:07 PM
 // ***********************************************************************
 // <copyright file="OrderInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         ///     额外收益，以“分”为单位
         /// </summary>
         [Required, JsonProperty("extraInterest")]
-        public int ExtraInterest { get; set; }
+        public long ExtraInterest { get; set; }
 
         /// <summary>
         ///     额外收益的相关信息
@@ -57,7 +57,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         ///     预期收益，以“分”为单位
         /// </summary>
         [Required, JsonProperty("interest")]
-        public int Interest { get; set; }
+        public long Interest { get; set; }
 
         /// <summary>
         ///     是否已经还款
@@ -87,7 +87,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         ///     投资本金
         /// </summary>
         [Required, JsonProperty("principal")]
-        public int Principal { get; set; }
+        public long Principal { get; set; }
 
         /// <summary>
         ///     产品类别

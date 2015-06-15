@@ -592,7 +592,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public Dictionary<Guid,JBYAccountTranscationInfo> @Transcations { get; set; }
 
-            public Int32 @UnitPrice { get; set; }
+            public Int64 @UnitPrice { get; set; }
 
             public DateTime @UpdateTime { get; set; }
 
@@ -620,7 +620,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 if (values.TryGetValue("SoldOutTime", out value)) @SoldOutTime = (Nullable<DateTime>) value;
                 if (values.TryGetValue("StartSellTime", out value)) @StartSellTime = (DateTime) value;
                 if (values.TryGetValue("Transcations", out value)) @Transcations = (Dictionary<Guid,JBYAccountTranscationInfo>) value;
-                if (values.TryGetValue("UnitPrice", out value)) @UnitPrice = value is Int64 ? (Int32)(Int64)value : (Int32)value;
+                if (values.TryGetValue("UnitPrice", out value)) @UnitPrice = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("UpdateTime", out value)) @UpdateTime = (DateTime) value;
                 if (values.TryGetValue("ValueDateMode", out value)) @ValueDateMode = value is Int64 ? (Int32)(Int64)value : (Int32)value;
                 if (values.TryGetValue("Yield", out value)) @Yield = value is Int64 ? (Int32)(Int64)value : (Int32)value;
@@ -681,7 +681,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.SoldOutTime = default(Nullable<DateTime>);
             this.StartSellTime = default(DateTime);
             this.Transcations = new Dictionary<Guid,JBYAccountTranscationInfo>();
-            this.UnitPrice = default(Int32);
+            this.UnitPrice = default(Int64);
             this.UpdateTime = default(DateTime);
             this.ValueDateMode = default(Int32);
             this.Yield = default(Int32);

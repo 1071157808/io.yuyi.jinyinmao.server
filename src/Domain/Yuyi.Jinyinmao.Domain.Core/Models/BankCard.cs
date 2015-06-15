@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  3:36 PM
+// Last Modified On : 2015-06-15  1:04 AM
 // ***********************************************************************
 // <copyright file="BankCard.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -46,6 +46,12 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string CityName { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="BankCard" /> is display.
+        /// </summary>
+        /// <value><c>true</c> if display; otherwise, <c>false</c>.</value>
+        public bool Display { get; set; }
+
+        /// <summary>
         ///     Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
@@ -65,7 +71,7 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public string UserIdentifier { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="BankCard"/> is verified.
+        ///     Gets or sets a value indicating whether this <see cref="BankCard" /> is verified.
         /// </summary>
         /// <value><c>true</c> if verified; otherwise, <c>false</c>.</value>
         public bool Verified { get; set; }

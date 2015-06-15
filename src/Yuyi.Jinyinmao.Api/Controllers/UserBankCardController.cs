@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:45 PM
+// Last Modified On : 2015-06-15  1:36 AM
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -67,9 +67,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCABC3:银行卡添加失败
         ///     <br />
-        ///     UBCABC4:该银行卡已经绑定
-        ///     <br />
-        ///     UBCABC5:该银行卡已经被绑定
+        ///     UBCABC4:该银行卡已经被使用
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -78,7 +76,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
             {
-                return this.BadRequest("UBCABC5:该银行卡已经被绑定");
+                return this.BadRequest("UBCABC4:该银行卡已经被使用");
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
@@ -98,7 +96,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (bankCardInfo != null && bankCardInfo.Dispaly)
             {
-                return this.BadRequest("UBCABC4:该银行卡已经绑定");
+                return this.BadRequest("UBCABC4:该银行卡已经被使用");
             }
 
             bankCardInfo = await this.userService.AddBankCardAsync(new AddBankCard
@@ -137,7 +135,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCABCBY3:最多绑定10张银行卡
         ///     <br />
-        ///     UBCABCBY5:该银行卡已经被绑定
+        ///     UBCABCBY5:该银行卡已经被使用
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -146,7 +144,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
             {
-                return this.BadRequest("UBCABCBY5:该银行卡已经被绑定");
+                return this.BadRequest("UBCABCBY4:该银行卡已经被使用");
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
@@ -223,7 +221,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     会获取所有的银行卡信息，无分页功能，排序规则为按可体现额度从大到小排序
         /// </remarks>
         /// <response code="200">注册成功</response>
-        /// <response code="400">UBI2:无该银行卡信息</response>
+        /// <response code="400">UBI:无该银行卡信息</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Info/{bankCardNo:length(15,19)}"), CookieAuthorize, ResponseType(typeof(BankCardInfoResponse))]
@@ -232,7 +230,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             BankCardInfo card = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, bankCardNo);
             if (card == null || !card.Dispaly)
             {
-                return this.BadRequest("UBI2:无该银行卡信息");
+                return this.BadRequest("UBI:无该银行卡信息");
             }
 
             return this.Ok(card.ToResponse());
@@ -311,7 +309,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCABCBY3:最多绑定10张银行卡
         ///     <br />
-        ///     UBCVBC5:该银行卡已经被绑定
+        ///     UBCVBC4:该银行卡已经通过认证，请直接使用
+        ///     <br />
+        ///     UBCVBC5:该银行卡已经被使用
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
@@ -320,7 +320,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             if (await this.userInfoService.CheckBankCardUsedAsync(request.BankCardNo))
             {
-                return this.BadRequest("UBCVBC5:该银行卡已经被绑定");
+                return this.BadRequest("UBCVBC5:该银行卡已经被使用");
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);

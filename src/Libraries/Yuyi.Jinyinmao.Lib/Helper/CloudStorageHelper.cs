@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-29  11:52 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-08  1:15 AM
+// Last Modified On : 2015-06-15  12:44 AM
 // ***********************************************************************
-// <copyright file="CloudStorageHelper.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="CloudStorageHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -43,9 +43,9 @@ namespace Yuyi.Jinyinmao.Helper
                     TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, cacheId)));
             TableCacheEntity cacheData = table.ExecuteQuery(query).FirstOrDefault();
 
-            if (cacheData != null && DateTime.UtcNow - cacheData.TimeStamp < cacheTime)
+            if (cacheData != null && DateTime.UtcNow.UnixTimeStamp() - cacheData.UnixTimeStamp < cacheTime.TotalSeconds)
             {
-                if (cacheData.Data.IsNotNullOrEmpty())
+                if (cacheData.Data.IsNotNullOrEmpty() && cacheData.Data.ToUpperInvariant() != "NULL")
                 {
                     try
                     {
@@ -75,9 +75,10 @@ namespace Yuyi.Jinyinmao.Helper
             TableCacheEntity cache = new TableCacheEntity
             {
                 Data = data.ToJson(),
+                LocalTime = DateTime.UtcNow.AddHours(8),
                 PartitionKey = cacheName,
                 RowKey = cacheId,
-                TimeStamp = DateTime.UtcNow
+                UnixTimeStamp = DateTime.UtcNow.UnixTimeStamp()
             };
 
             await table.ExecuteAsync(TableOperation.InsertOrReplace(cache));
@@ -97,10 +98,16 @@ namespace Yuyi.Jinyinmao.Helper
             public string Data { get; set; }
 
             /// <summary>
-            ///     Gets or sets the time stamp.
+            ///     Gets or sets the local time.
             /// </summary>
-            /// <value>The time stamp.</value>
-            public DateTime TimeStamp { get; set; }
+            /// <value>The local time.</value>
+            public DateTime LocalTime { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the unix time stamp.
+            /// </summary>
+            /// <value>The unix time stamp.</value>
+            public long UnixTimeStamp { get; set; }
         }
 
         #endregion Nested type: TableCacheEntity

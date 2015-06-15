@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  11:15 AM
+// Last Modified On : 2015-06-15  6:46 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -44,14 +44,14 @@ namespace Yuyi.Jinyinmao.Domain
             DateTime confirmTime = GetLastInvestingConfirmTime();
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
 
-            int debitTransAmount = 0;
-            int debitedTransAmount = 0;
-            int creditedTransAmount = 0;
-            int creditingTransAmount = 0;
+            long debitTransAmount = 0L;
+            long debitedTransAmount = 0L;
+            long creditedTransAmount = 0L;
+            long creditingTransAmount = 0L;
 
-            int todayJBYWithdrawalAmount = 0;
-            int investingConfirmTransAmount = 0;
-            int jBYTotalInterest = 0;
+            long todayJBYWithdrawalAmount = 0L;
+            long investingConfirmTransAmount = 0L;
+            long jBYTotalInterest = 0L;
 
             foreach (JBYAccountTranscation transcation in this.State.JBYAccount.Values)
             {
@@ -106,10 +106,10 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadOrderInfosData()
         {
-            int totalPrincipal = 0;
-            int totalInterest = 0;
-            int investingPrincipal = 0;
-            int investingInterest = 0;
+            long totalPrincipal = 0;
+            long totalInterest = 0;
+            long investingPrincipal = 0;
+            long investingInterest = 0;
 
             foreach (Order order in this.State.Orders.Values.Where(order => order.ResultCode > 0))
             {
@@ -134,13 +134,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadSettleAccountData()
         {
-            int settleAccountBalance = 0;
-            int debitingSettleAccountAmount = 0;
-            int creditingSettleAccountAmount = 0;
+            long settleAccountBalance = 0;
+            long debitingSettleAccountAmount = 0;
+            long creditingSettleAccountAmount = 0;
             int todayWithdrawalCount = 0;
             int monthWithdrawalCount = 0;
 
-            Dictionary<string, int> bankCards = this.State.BankCards.ToDictionary(kv => kv.Key, kv => 0);
+            Dictionary<string, long> bankCards = this.State.BankCards.ToDictionary(kv => kv.Key, kv => 0L);
             bankCards.Add(string.Empty, 0);
 
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
@@ -148,7 +148,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             foreach (SettleAccountTranscation transcation in this.State.SettleAccount.Values)
             {
-                int amount = transcation.Amount;
+                long amount = transcation.Amount;
                 string bankCardNo = transcation.BankCardNo;
                 if (transcation.Trade == Trade.Debit)
                 {

@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-05  1:32 AM
+// Last Modified On : 2015-06-15  6:46 PM
 // ***********************************************************************
 // <copyright file="Order.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,6 +27,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
+        /// TODO:111
         public int Amount { get; set; }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the extra interest.
         /// </summary>
         /// <value>The extra interest.</value>
-        public int ExtraInterest { get; set; }
+        public long ExtraInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the extra interest records.
@@ -88,7 +89,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the interest.
         /// </summary>
         /// <value>The interest.</value>
-        public int Interest { get; set; }
+        public long Interest { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is repaid.
@@ -118,7 +119,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the principal.
         /// </summary>
         /// <value>The principal.</value>
-        public int Principal { get; set; }
+        public long Principal { get; set; }
 
         /// <summary>
         ///     Gets or sets the product category.

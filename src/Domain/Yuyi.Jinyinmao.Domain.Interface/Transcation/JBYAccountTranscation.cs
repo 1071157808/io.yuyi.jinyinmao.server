@@ -26,7 +26,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         /// <summary>
         ///     Gets or sets the arguments.

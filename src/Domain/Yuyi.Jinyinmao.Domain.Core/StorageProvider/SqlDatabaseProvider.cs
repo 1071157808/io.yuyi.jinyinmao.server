@@ -285,7 +285,7 @@ namespace Yuyi.Jinyinmao.Domain
             if (config.Properties.TryGetValue("SerializeTypeNames", out propertie))
             {
                 bool serializeTypeNames;
-                var serializeTypeNamesValue = propertie;
+                string serializeTypeNamesValue = propertie;
                 bool.TryParse(serializeTypeNamesValue, out serializeTypeNames);
                 if (serializeTypeNames)
                 {
@@ -296,7 +296,7 @@ namespace Yuyi.Jinyinmao.Domain
             if (config.Properties.TryGetValue("UseFullAssemblyNames", out propertie))
             {
                 bool useFullAssemblyNames;
-                var useFullAssemblyNamesValue = propertie;
+                string useFullAssemblyNamesValue = propertie;
                 bool.TryParse(useFullAssemblyNamesValue, out useFullAssemblyNames);
                 if (useFullAssemblyNames)
                 {
@@ -307,7 +307,7 @@ namespace Yuyi.Jinyinmao.Domain
             if (config.Properties.TryGetValue("Formatting", out propertie))
             {
                 bool indentJson;
-                var indentJsonValue = propertie;
+                string indentJsonValue = propertie;
                 bool.TryParse(indentJsonValue, out indentJson);
                 if (indentJson)
                 {

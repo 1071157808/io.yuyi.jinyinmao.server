@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-04  9:49 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:11 AM
+// Last Modified On : 2015-06-15  7:08 PM
 // ***********************************************************************
 // <copyright file="OrderRepaid.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the pri int sum amount.
         /// </summary>
         /// <value>The pri int sum amount.</value>
-        public int PriIntSumAmount { get; set; }
+        public long PriIntSumAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the principal transcation information.

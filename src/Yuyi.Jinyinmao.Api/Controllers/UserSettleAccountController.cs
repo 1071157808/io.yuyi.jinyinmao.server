@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:04 PM
+// Last Modified On : 2015-06-15  4:09 PM
 // ***********************************************************************
 // <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -235,7 +235,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAW2:取现次数已经达到今日上限");
             }
 
-            if (userInfo.Balance < request.Amount)
+            int charge = 0;
+            if (userInfo.MonthWithdrawalCount >= VariableHelper.MonthFreeWithrawalLimitCount)
+            {
+                charge = VariableHelper.WithdrawalChargeFee;
+            }
+
+            if (userInfo.Balance + charge < request.Amount)
             {
                 return this.BadRequest("USAW4:取现额度超过限制");
             }

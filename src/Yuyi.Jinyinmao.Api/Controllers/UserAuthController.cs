@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:50 PM
+// Last Modified On : 2015-06-15  12:51 AM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -286,12 +286,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
-            UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetPaymentPassword);
-            if (!result.Result)
-            {
-                return this.BadRequest("UARPP1:该验证码已经失效，请重新获取验证码");
-            }
-
             UserInfo info = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
 
             if (info == null || !info.HasSetPaymentPassword ||
@@ -303,6 +297,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
             {
                 return this.BadRequest("UARPP3:支付密码不能与登录密码一致，请选择新的支付密码");
+            }
+
+            UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetPaymentPassword);
+            if (!result.Result)
+            {
+                return this.BadRequest("UARPP1:该验证码已经失效，请重新获取验证码");
             }
 
             await this.userService.SetPaymentPasswordAsync(new SetPaymentPassword

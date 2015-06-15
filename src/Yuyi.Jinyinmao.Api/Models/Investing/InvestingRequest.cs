@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-07  5:32 PM
+// Last Modified On : 2015-06-15  4:09 PM
 // ***********************************************************************
 // <copyright file="InvestingRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -35,12 +35,6 @@ namespace Yuyi.Jinyinmao.Api.Models.Investing
         /// </summary>
         [Required, StringLength(18, MinimumLength = 6), JsonProperty("paymentPassword")]
         public string PaymentPassword { get; set; }
-
-        /// <summary>
-        ///     产品类别
-        /// </summary>
-        [Required, JsonProperty("productCategory")]
-        public long ProductCategory { get; set; }
 
         /// <summary>
         ///     产品唯一标识

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  11:27 AM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-15  1:53 PM
+// Last Modified On : 2015-06-15  7:20 PM
 // ***********************************************************************
 // <copyright file="BankCard.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,7 +22,7 @@ namespace Yuyi.Jinyinmao.Domain
     public class BankCard
     {
         /// <summary>
-        /// Gets or sets the adding time.
+        ///     Gets or sets the adding time.
         /// </summary>
         /// <value>The adding time.</value>
         public DateTime AddingTime { get; set; }
@@ -64,7 +64,7 @@ namespace Yuyi.Jinyinmao.Domain
         public bool Dispaly { get; set; }
 
         /// <summary>
-        /// Gets or sets the user identifier.
+        ///     Gets or sets the user identifier.
         /// </summary>
         /// <value>The user identifier.</value>
         public Guid UserId { get; set; }
@@ -91,6 +91,6 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the withdraw amount.
         /// </summary>
         /// <value>The withdraw amount.</value>
-        public int WithdrawAmount { get; set; }
+        public long WithdrawAmount { get; set; }
     }
 }

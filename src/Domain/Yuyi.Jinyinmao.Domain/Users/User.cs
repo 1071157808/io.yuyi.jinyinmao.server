@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  3:56 PM
+// Last Modified On : 2015-06-15  7:14 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -438,7 +438,7 @@ namespace Yuyi.Jinyinmao.Domain
             BankCard card;
             if (this.State.BankCards.TryGetValue(bankCardNo, out card))
             {
-                int withdrawAmount = this.SettleAccountBalance - this.State.BankCards.Values.Where(c => c.VerifiedByYilian).Sum(c => c.WithdrawAmount);
+                long withdrawAmount = this.SettleAccountBalance - this.State.BankCards.Values.Where(c => c.VerifiedByYilian).Sum(c => c.WithdrawAmount);
                 withdrawAmount = withdrawAmount > 0 ? withdrawAmount + card.WithdrawAmount : card.WithdrawAmount;
 
                 return Task.FromResult(card.ToInfo(withdrawAmount));
@@ -519,8 +519,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
-        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories)
+        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
+        public Task<Tuple<int, List<OrderInfo>>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories)
         {
             pageIndex = pageIndex < 1 ? 0 : pageIndex;
             pageSize = pageSize < 1 ? 10 : pageSize;
@@ -532,7 +532,7 @@ namespace Yuyi.Jinyinmao.Domain
                 orders.OrderByDescending(o => o.OrderTime).Skip(pageIndex * pageSize).Take(pageSize).ToList()
                 : orders.OrderBy(o => o.SettleDate).ThenByDescending(o => o.OrderTime).Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
-            return Task.FromResult(new PaginatedList<OrderInfo>(pageIndex, pageSize, totalCount, orders.Select(o => o.ToInfo())));
+            return Task.FromResult(new Tuple<int, List<OrderInfo>>(totalCount, orders.Select(o => o.ToInfo()).ToList()));
         }
 
         /// <summary>
@@ -634,11 +634,11 @@ namespace Yuyi.Jinyinmao.Domain
         {
             List<BankCard> cards = this.State.BankCards.Values.Where(c => c.VerifiedByYilian && c.Dispaly).ToList();
 
-            int withdrawAmountSum = cards.Sum(c => c.WithdrawAmount);
+            long withdrawAmountSum = cards.Sum(c => c.WithdrawAmount);
 
             List<BankCardInfo> infos = cards.Select(c =>
             {
-                int withdrawAmount = this.SettleAccountBalance - withdrawAmountSum;
+                long withdrawAmount = this.SettleAccountBalance - withdrawAmountSum;
                 withdrawAmount = withdrawAmount > 0 ? withdrawAmount + c.WithdrawAmount : c.WithdrawAmount;
                 return c.ToInfo(withdrawAmount);
             }).ToList();
@@ -1277,15 +1277,15 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
-            int yield = DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield;
-            int jbyAccrualAmount = this.GetJBYAccrualAmount(now);
+            long yield = Convert.ToInt64(DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield);
+            long jbyAccrualAmount = this.GetJBYAccrualAmount(now);
 
             if (jbyAccrualAmount <= 0)
             {
                 return null;
             }
 
-            int interest = jbyAccrualAmount * yield / 3600000;
+            long interest = jbyAccrualAmount * yield / 3600000L;
 
             if (interest <= 0)
             {
@@ -1395,8 +1395,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>System.DateTime.</returns>
         private static DateTime GetLastInvestingConfirmTime(DateTime date)
         {
-            DailyConfig config = DailyConfigHelper.GetDailyConfig(date);
-            DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(date, config.IsWorkDay ? 0 : 1);
+            DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(date, 1);
             return confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1);
         }
 
@@ -1409,7 +1408,7 @@ namespace Yuyi.Jinyinmao.Domain
         private async Task<SettleAccountTranscation> BuildChargeTranscationAsync(Withdrawal command, SettleAccountTranscation transcation)
         {
             DateTime now = DateTime.UtcNow.AddHours(8).AddSeconds(1);
-            int chargeAmount;
+            long chargeAmount;
 
             if (this.MonthWithdrawalCount < VariableHelper.MonthFreeWithrawalLimitCount)
             {
@@ -1447,7 +1446,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="date">The date.UTC+8</param>
         /// <param name="reload">The reload.</param>
         /// <returns>System.Int32.</returns>
-        private int GetJBYAccrualAmount(DateTime date, bool reload = false)
+        private long GetJBYAccrualAmount(DateTime date, bool reload = false)
         {
             DateTime confirmTime = GetLastInvestingConfirmTime(date);
             if (reload)
@@ -1456,8 +1455,8 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             List<JBYAccountTranscation> transcations = this.State.JBYAccount.Values.Where(t => t.ResultTime < date.Date).ToList();
-            int investedAmount = transcations.Where(t => t.Trade == Trade.Debit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime).Sum(t => t.Amount);
-            int creditedTransAmount = transcations.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= date.Date).Sum(t => t.Amount);
+            long investedAmount = transcations.Where(t => t.Trade == Trade.Debit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime).Sum(t => t.Amount);
+            long creditedTransAmount = transcations.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= date.Date).Sum(t => t.Amount);
 
             return investedAmount - creditedTransAmount;
         }

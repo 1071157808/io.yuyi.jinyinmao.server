@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  11:09 AM
+// Last Modified On : 2015-06-15  4:18 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -122,7 +122,7 @@ namespace Yuyi.Jinyinmao.Service
         {
             using (JYMDBContext db = new JYMDBContext())
             {
-                return await db.ReadonlyQuery<BankCard>().AnyAsync(c => c.BankCardNo == bankCardNo && c.Verified);
+                return await db.ReadonlyQuery<BankCard>().AnyAsync(c => c.BankCardNo == bankCardNo && c.Verified && c.Display);
             }
         }
 
@@ -313,10 +313,11 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
         /// <returns>PaginatedList&lt;OrderInfo&gt;.</returns>
-        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
+        public async Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
         {
             IUser user = UserFactory.GetGrain(userId);
-            return user.GetOrderInfosAsync(pageIndex, pageSize, ordersSortMode, categories);
+            Tuple<int, List<OrderInfo>> result = await user.GetOrderInfosAsync(pageIndex, pageSize, ordersSortMode, categories);
+            return new PaginatedList<OrderInfo>(pageIndex, pageSize, result.Item1, result.Item2);
         }
 
         /// <summary>

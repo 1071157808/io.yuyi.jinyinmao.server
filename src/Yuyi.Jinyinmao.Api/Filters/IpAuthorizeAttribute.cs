@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-08  5:23 PM
+// Last Modified On : 2015-06-14  6:24 PM
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -76,7 +76,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 return true;
             }
 
-            var request = context.Request;
+            HttpRequestMessage request = context.Request;
             string ip = HttpUtils.GetUserHostAddress(request);
 
             if (string.IsNullOrEmpty(ip))

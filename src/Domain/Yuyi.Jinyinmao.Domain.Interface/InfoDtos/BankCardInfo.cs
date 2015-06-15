@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  11:19 AM
+// Last Modified On : 2015-06-15  1:06 AM
 // ***********************************************************************
 // <copyright file="BankCardInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,7 +29,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <param name="card">The card.</param>
         /// <param name="withdrawAmount">The withdraw amount.</param>
         /// <returns>BankCardInfo.</returns>
-        public static BankCardInfo ToInfo(this BankCard card, int withdrawAmount)
+        public static BankCardInfo ToInfo(this BankCard card, long withdrawAmount)
         {
             return new BankCardInfo
             {
@@ -91,6 +91,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             model.BankCardNo = info.BankCardNo;
             model.BankName = info.BankName;
             model.CityName = info.CityName;
+            model.Display = info.Dispaly;
             model.Info = i.ToJson();
             model.UserIdentifier = info.UserId.ToGuidString();
             model.Verified = info.Verified;
@@ -112,6 +113,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 BankCardNo = info.BankCardNo,
                 BankName = info.BankName,
                 CityName = info.CityName,
+                Display = info.Dispaly,
                 Info = i.ToJson(),
                 UserIdentifier = info.UserId.ToGuidString(),
                 Verified = info.Verified,
@@ -124,7 +126,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             Dictionary<string, object> i = new Dictionary<string, object>
             {
                 { "Cellphone", info.Cellphone },
-                { "Dispaly", info.Dispaly },
                 { "VerifiedByYilian", info.VerifiedByYilian }
             };
             return i;
@@ -207,6 +208,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the withdraw amount.
         /// </summary>
         /// <value>The withdraw amount.</value>
-        public int WithdrawAmount { get; set; }
+        public long WithdrawAmount { get; set; }
     }
 }

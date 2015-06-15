@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  1:32 PM
+// Last Modified On : 2015-06-15  7:15 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -133,7 +133,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             return base.OnActivateAsync();
         }
 
-        private static PaymentRequestParameter BuildRequestParameter(string batchNo, string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, int amount)
+        private static PaymentRequestParameter BuildRequestParameter(string batchNo, string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, long amount)
         {
             string[] address = cityName.Split('|');
             return new PaymentRequestParameter(batchNo, sequenceNo, bankCardNo, realName, address[0],

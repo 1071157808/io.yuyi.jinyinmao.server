@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-15  7:43 PM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  1:21 PM
+// Last Modified On : 2015-06-15  7:09 PM
 // ***********************************************************************
 // <copyright file="SettleAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -128,7 +128,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         /// <summary>
         ///     Gets or sets the arguments.

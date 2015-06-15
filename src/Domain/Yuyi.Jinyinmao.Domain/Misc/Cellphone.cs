@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:26 PM
+// Last Modified On : 2015-06-15  3:53 PM
 // ***********************************************************************
 // <copyright file="Cellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,10 +45,20 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Registers this instance.
         /// </summary>
         /// <returns>System.Threading.Tasks.Task.</returns>
-        public Task Register()
+        public async Task Register()
         {
             this.State.Registered = true;
-            return this.State.WriteStateAsync();
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
+        ///     Unregisters this instance.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task Unregister()
+        {
+            this.State.Registered = false;
+            await this.State.WriteStateAsync();
         }
 
         #endregion ICellphone Members

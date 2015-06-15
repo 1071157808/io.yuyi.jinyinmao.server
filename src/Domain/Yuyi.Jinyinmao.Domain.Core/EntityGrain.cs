@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  4:11 PM
+// Last Modified On : 2015-06-14  10:56 PM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -88,15 +88,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected void BeginProcessCommandAsync(ICommand command)
         {
-            this.StoreCommandAsync(command).Forget(e =>
-                SiloClusterErrorLogger.Log(new ErrorLog
-                {
-                    Exception = e.GetExceptionString(),
-                    Message = e.Message,
-                    PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                    RowKey = "EntityCommandStoringError-{0}".FormatWith(DateTime.UtcNow)
-                })
-                );
+            this.StoreCommandAsync(command).Forget(e => SiloClusterErrorLogger.Log(e, "EntityCommandStoringError: {0}".FormatWith(e.Message)));
         }
 
         /// <summary>
@@ -130,14 +122,7 @@ namespace Yuyi.Jinyinmao.Domain
         protected void StoreEventAsync(IEvent @event)
         {
             EventRecord record = @event.ToRecord();
-            this.EventStore.StoreEventRecordAsync(record).Forget(e =>
-                SiloClusterErrorLogger.Log(new ErrorLog
-                {
-                    Exception = e.GetExceptionString(),
-                    Message = e.Message,
-                    PartitionKey = this.GetPrimaryKey().ToGuidString(),
-                    RowKey = "EntityEventStoringError-{0}".FormatWith(DateTime.UtcNow)
-                }));
+            this.EventStore.StoreEventRecordAsync(record).Forget(e => SiloClusterErrorLogger.Log(e, "EntityEventStoringError: {0}".FormatWith(e.Message)));
         }
 
         /// <summary>

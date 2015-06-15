@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:04 PM
+// Last Modified On : 2015-06-15  7:06 PM
 // ***********************************************************************
 // <copyright file="JBYAccountInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,19 +29,19 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     金包银计息金额
         /// </summary>
         [Required, JsonProperty("jBYAccrualAmount")]
-        public int JBYAccrualAmount { get; set; }
+        public long JBYAccrualAmount { get; set; }
 
         /// <summary>
         ///     金包银可取现金额
         /// </summary>
         [Required, JsonProperty("jBYWithdrawalableAmount")]
-        public int JBYWithdrawalableAmount { get; set; }
+        public long JBYWithdrawalableAmount { get; set; }
 
         /// <summary>
         ///     当天金包银已经申请体现的总额
         /// </summary>
         [Required, JsonProperty("todayJBYWithdrawalAmount")]
-        public int TodayJBYWithdrawalAmount { get; set; }
+        public long TodayJBYWithdrawalAmount { get; set; }
     }
 
     internal static class JBYAccountInfoEx

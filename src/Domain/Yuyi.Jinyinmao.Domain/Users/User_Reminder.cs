@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  11:35 AM
+// Last Modified On : 2015-06-14  11:58 PM
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,7 +62,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (force || (DateTime.UtcNow.AddHours(8).Hour <= 4 && DateTime.UtcNow.AddHours(8).Hour >= 1))
                 {
                     StringBuilder builder = new StringBuilder();
-                    builder.Append("UserDailyWork: {0}\n".FormatWith(this.State.Id));
+                    builder.Append("UserDailyWork: UserId-{0}\n".FormatWith(this.State.Id));
 
                     DateTime now = DateTime.UtcNow.AddHours(8);
                     List<JBYAccountTranscation> jbyWithdrawalTranscations = this.State.JBYAccount.Values
@@ -72,6 +71,11 @@ namespace Yuyi.Jinyinmao.Domain
                         .ToList();
 
                     builder.Append("JBYWithdrawalResulted: ");
+
+                    if (jbyWithdrawalTranscations.Count == 0)
+                    {
+                        builder.Append("SKIPPED.");
+                    }
 
                     foreach (JBYAccountTranscation transcation in jbyWithdrawalTranscations)
                     {
@@ -82,20 +86,14 @@ namespace Yuyi.Jinyinmao.Domain
                     builder.Append("\n");
 
                     JBYAccountTranscationInfo transcationInfo = await this.JBYReinvestingAsync();
-                    builder.Append(transcationInfo == null ? "JBYReinvesting: SKIPED." : "JBYReinvesting: {0}".FormatWith(transcationInfo.ToJson()));
+                    builder.Append(transcationInfo == null ? "JBYReinvesting: SKIPPED." : "JBYReinvesting: {0}".FormatWith(transcationInfo.ToJson()));
 
-                    Trace.TraceWarning(builder.ToString());
+                    SiloClusterTraceLogger.Log(builder.ToString());
                 }
             }
             catch (Exception e)
             {
-                SiloClusterErrorLogger.Log(new ErrorLog
-                {
-                    Exception = e.GetExceptionString(),
-                    Message = e.Message,
-                    PartitionKey = this.State.Id.ToGuidString(),
-                    RowKey = "UserDailyWorkError-{0}".FormatWith(DateTime.UtcNow)
-                });
+                SiloClusterErrorLogger.Log(e, "UserDailyWorkError: {0}".FormatWith(e.Message));
             }
         }
 

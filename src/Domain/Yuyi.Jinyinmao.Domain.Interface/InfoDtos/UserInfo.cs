@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:21 AM
+// Last Modified On : 2015-06-15  7:10 PM
 // ***********************************************************************
 // <copyright file="UserInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,7 +39,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             userModel.ClientType = info.ClientType;
             userModel.Closed = info.Closed;
             userModel.ContractId = info.ContractId;
-            userModel.Credential = info.Crediting;
+            userModel.Credential = (int)info.Credential;
             userModel.CredentialNo = info.CredentialNo;
             userModel.Info = i.ToJson();
             userModel.InviteBy = info.InviteBy;
@@ -67,7 +67,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 ClientType = info.ClientType,
                 Closed = info.Closed,
                 ContractId = info.ContractId,
-                Credential = info.Crediting,
+                Credential = (int)info.Credential,
                 CredentialNo = info.CredentialNo,
                 Info = i.ToJson(),
                 InviteBy = info.InviteBy,
@@ -106,7 +106,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the balance.
         /// </summary>
         /// <value>The balance.</value>
-        public int Balance { get; set; }
+        public long Balance { get; set; }
 
         /// <summary>
         ///     Gets or sets the bank cards count.
@@ -154,13 +154,13 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the crediting.
         /// </summary>
         /// <value>The crediting.</value>
-        public int Crediting { get; set; }
+        public long Crediting { get; set; }
 
         /// <summary>
         ///     Gets or sets the debiting.
         /// </summary>
         /// <value>The debiting.</value>
-        public int Debiting { get; set; }
+        public long Debiting { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has set password.
@@ -179,13 +179,13 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the investing interest.
         /// </summary>
         /// <value>The investing interest.</value>
-        public int InvestingInterest { get; set; }
+        public long InvestingInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the investing principal.
         /// </summary>
         /// <value>The investing principal.</value>
-        public int InvestingPrincipal { get; set; }
+        public long InvestingPrincipal { get; set; }
 
         /// <summary>
         ///     Gets or sets the invite by.
@@ -197,31 +197,31 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the jby accrual amount.
         /// </summary>
         /// <value>The jby accrual amount.</value>
-        public int JBYAccrualAmount { get; set; }
+        public long JBYAccrualAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total amount.
         /// </summary>
         /// <value>The jby total amount.</value>
-        public int JBYTotalAmount { get; set; }
+        public long JBYTotalAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total interest.
         /// </summary>
         /// <value>The jby total interest.</value>
-        public int JBYTotalInterest { get; set; }
+        public long JBYTotalInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total pricipal.
         /// </summary>
         /// <value>The jby total pricipal.</value>
-        public int JBYTotalPricipal { get; set; }
+        public long JBYTotalPricipal { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby withdrawalable amount.
         /// </summary>
         /// <value>The jby withdrawalable amount.</value>
-        public int JBYWithdrawalableAmount { get; set; }
+        public long JBYWithdrawalableAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the login names.
@@ -269,7 +269,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the today jby withdrawal amount.
         /// </summary>
         /// <value>The today jby withdrawal amount.</value>
-        public int TodayJBYWithdrawalAmount { get; set; }
+        public long TodayJBYWithdrawalAmount { get; set; }
 
         /// <summary>
         ///     Gets or sets the today withdrawal count.
@@ -281,13 +281,13 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the total interest.
         /// </summary>
         /// <value>The total interest.</value>
-        public int TotalInterest { get; set; }
+        public long TotalInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the total principal.
         /// </summary>
         /// <value>The total principal.</value>
-        public int TotalPrincipal { get; set; }
+        public long TotalPrincipal { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifier.

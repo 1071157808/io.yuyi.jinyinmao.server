@@ -116,6 +116,10 @@
       <Project>{5245A89C-FD02-404A-A0A3-C1B5F197E426}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
+      <Project>{7B420A40-ACEC-4461-AE6E-CA89E2AD65C9}</Project>
+      <Name>Yuyi.Jinyinmao.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Product.Interface\Yuyi.Jinyinmao.Service.Product.Interface.csproj">
       <Project>{5AEB9CC5-4D0B-456C-9233-2D7517781BC9}</Project>
       <Name>Yuyi.Jinyinmao.Service.Product.Interface</Name>

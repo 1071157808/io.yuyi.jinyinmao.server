@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  9:59 PM
+// Last Modified On : 2015-06-15  4:07 PM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,12 +16,14 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Moe.AspNet.Filters;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Api.Models.Investing;
 using Yuyi.Jinyinmao.Api.Models.Order;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
@@ -110,6 +112,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI4:产品剩余份额不足");
             }
 
+            if (!string.Equals(productInfo.ProductId.ToGuidString(), request.ProductIdentifier, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return this.BadRequest("IRI4:产品剩余份额不足");
+            }
+
             if (productInfo.StartSellTime > DateTime.UtcNow.AddHours(8))
             {
                 return this.BadRequest("IRI5:该产品未开售");
@@ -129,7 +136,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
-                ProductCategory = request.ProductCategory,
+                ProductCategory = ProductCategoryCodeHelper.PC100000030,
                 UserId = this.CurrentUser.Id
             });
 
@@ -214,7 +221,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
-                ProductCategory = request.ProductCategory,
+                ProductCategory = productInfo.ProductCategory,
                 ProductId = Guid.ParseExact(request.ProductIdentifier, "N"),
                 UserId = this.CurrentUser.Id
             });

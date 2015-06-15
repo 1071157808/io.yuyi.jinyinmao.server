@@ -149,6 +149,18 @@
       <HintPath>..\packages\ReflectionMagic.2.1.0\lib\net40\ReflectionMagic.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.1.5.7\lib\net45\Serilog.FullNetFx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.Sinks.AzureTableStorage, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.AzureTableStorage.1.5.5\lib\net45\Serilog.Sinks.AzureTableStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
       <HintPath>..\packages\Swashbuckle.Core.5.1.5\lib\net40\Swashbuckle.Core.dll</HintPath>
       <Private>True</Private>
@@ -252,6 +264,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Log\SeriLog.cs" />
     <Compile Include="Models\BackOffice\AddExtraInterestRequest.cs" />
     <Compile Include="Models\BackOffice\IssueJBYProductRequest.cs" />
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
@@ -323,6 +336,10 @@
     <ProjectReference Include="..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">
       <Project>{7b420a40-acec-4461-ae6e-ca89e2ad65c9}</Project>
       <Name>Yuyi.Jinyinmao.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Yuyi.Jinyinmao.Log\Yuyi.Jinyinmao.Log.csproj">
+      <Project>{7617A0C5-E6B2-4D3F-95C9-F09ED74721C5}</Project>
+      <Name>Yuyi.Jinyinmao.Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Yuyi.Jinyinmao.Resources\Yuyi.Jinyinmao.Resources.csproj">
       <Project>{e6b0bda3-6554-4f1e-af83-fd22c16b627e}</Project>

@@ -2,9 +2,9 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-19  2:22 PM
-// 
+//
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-11  11:06 AM
+// Last Modified On : 2015-06-14  6:24 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -71,7 +71,7 @@ namespace AzureInit
             foreach (Type type in eventTypes)
             {
                 string eventName = type.Name.ToUnderScope();
-                var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
+                NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
 
                 if (namespaceManager.TopicExists(eventName))
                 {
@@ -250,11 +250,14 @@ namespace AzureInit
         public sealed class ConfigEntity : TableEntity
         {
             public int DateIndex { get; set; }
+
             public bool IsWorkday { get; set; }
+
             public int JBYWithdrawalLimit { get; set; }
+
             public int JBYYield { get; set; }
         }
 
-        #endregion
+        #endregion Nested type: ConfigEntity
     }
 }

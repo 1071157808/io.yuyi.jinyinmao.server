@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-17  11:20 PM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-20  11:20 AM
+// Last Modified On : 2015-06-15  7:50 PM
 // ***********************************************************************
 // <copyright file="RegularProductInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,10 +13,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans.Concurrency;
 using Yuyi.Jinyinmao.Domain.Models;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -133,28 +135,30 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <param name="productModel">The product model.</param>
         /// <returns>RegularProductInfo.</returns>
+        [SuppressMessage("ReSharper", "MergeConditionalExpression")]
         public static RegularProductInfo ToInfo(this RegularProduct productModel)
         {
             Dictionary<string, object> i = JsonConvert.DeserializeObject<Dictionary<string, object>>(productModel.Info);
 
-            Dictionary<string, object> args = JsonConvert.DeserializeObject<Dictionary<string, object>>(i["Args"].ToString());
+            string argsJson = i["Args"] == null ? JsonHelper.NewDictionary : i["Args"].ToString();
+            Dictionary<string, object> args = JsonConvert.DeserializeObject<Dictionary<string, object>>(argsJson);
 
             RegularProductInfo info = new RegularProductInfo
             {
                 Args = args,
-                BankName = i["BankName"].ToString(),
-                Drawee = i["Drawee"].ToString(),
-                DraweeInfo = i["DraweeInfo"].ToString(),
-                EndorseImageLink = i["EndorseImageLink"].ToString(),
+                BankName = i["BankName"].IfNotNull(s => s.ToString()),
+                Drawee = i["Drawee"].IfNotNull(s => s.ToString()),
+                DraweeInfo = i["DraweeInfo"].IfNotNull(s => s.ToString()),
+                EndorseImageLink = i["EndorseImageLink"].IfNotNull(s => s.ToString()),
                 EndSellTime = productModel.EndSellTime,
-                EnterpriseInfo = i["EnterpriseInfo"].ToString(),
-                EnterpriseLicense = i["EnterpriseLicense"].ToString(),
-                EnterpriseName = i["EnterpriseName"].ToString(),
+                EnterpriseInfo = i["EnterpriseInfo"].IfNotNull(s => s.ToString()),
+                EnterpriseLicense = i["EnterpriseLicense"].IfNotNull(s => s.ToString()),
+                EnterpriseName = i["EnterpriseName"].IfNotNull(s => s.ToString()),
                 FinancingSumAmount = productModel.FinancingSumAmount,
                 IssueNo = productModel.IssueNo,
                 IssueTime = productModel.IssueTime,
                 PaidAmount = 0,
-                Period = Convert.ToInt32(i["Period"].ToString()),
+                Period = Convert.ToInt32(i["Period"].IfNotNull(s => s.ToString())),
                 PledgeNo = productModel.PledgeNo,
                 ProductCategory = productModel.ProductCategory,
                 ProductId = Guid.ParseExact(productModel.ProductIdentifier, "N"),
@@ -163,15 +167,15 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 Repaid = productModel.Repaid,
                 RepaidTime = productModel.RepaidTime,
                 RepaymentDeadline = productModel.RepaymentDeadline,
-                RiskManagement = i["RiskManagement"].ToString(),
-                RiskManagementInfo = i["RiskManagementInfo"].ToString(),
-                RiskManagementMode = i["RiskManagementMode"].ToString(),
+                RiskManagement = i["RiskManagement"].IfNotNull(s => s.ToString()),
+                RiskManagementInfo = i["RiskManagementInfo"].IfNotNull(s => s.ToString()),
+                RiskManagementMode = i["RiskManagementMode"].IfNotNull(s => s.ToString()),
                 SettleDate = productModel.SettleDate,
                 SoldOut = productModel.SoldOut,
                 SoldOutTime = productModel.SoldOutTime,
                 StartSellTime = productModel.StartSellTime,
                 UnitPrice = productModel.UnitPrice,
-                Usage = i["Usage"].ToString(),
+                Usage = i["Usage"].IfNotNull(s => s.ToString()),
                 ValueDate = productModel.ValueDate,
                 ValueDateMode = productModel.ValueDateMode,
                 Yield = productModel.Yield
@@ -365,7 +369,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the unit price.
         /// </summary>
         /// <value>The unit price.</value>
-        public int UnitPrice { get; set; }
+        public long UnitPrice { get; set; }
 
         /// <summary>
         ///     Gets or sets the usage.
