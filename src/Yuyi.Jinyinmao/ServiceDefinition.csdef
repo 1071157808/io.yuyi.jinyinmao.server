@@ -20,7 +20,6 @@
       <Setting name="EnableHMACAuth" />
       <Setting name="JYMDBContextConnectionString" />
       <Setting name="YilianPaymentGatewayHost" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="HTTP" protocol="http" port="80" />
@@ -48,7 +47,6 @@
       <Setting name="SmsServiceApiKey" />
       <Setting name="EnableHMACAuth" />
       <Setting name="JYMDBContextConnectionString" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
       <Setting name="YilianPaymentGatewayHost" />
     </ConfigurationSettings>
     <Endpoints>
