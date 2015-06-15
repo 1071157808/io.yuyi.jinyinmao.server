@@ -201,6 +201,7 @@ ModelManifest.xml
 # Logs
 logs
 *.log
+!Yuyi.Jinyinmao.Log
 
 # Runtime data
 pids
