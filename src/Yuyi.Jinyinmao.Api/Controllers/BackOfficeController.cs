@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  2:22 AM
+// Last Modified On : 2015-06-16  2:33 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,10 +12,10 @@
 // ***********************************************************************
 
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -196,7 +196,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             DailyConfig config = DailyConfigHelper.GetDailyConfig(DateTime.UtcNow.AddHours(8));
 
-            Trace.TraceWarning("JBYProductIssue. {0}", request.ToJson());
+            this.TraceWriter.Warn(this.Request, "Application", "JBYProductIssue. {0}", request.ToJson());
 
             await this.productService.HitShelvesAsync(new IssueJBYProduct
             {
@@ -273,7 +273,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            Trace.TraceWarning("RegularProductIssue. {0}", request.ToJson());
+            this.TraceWriter.Warn(this.Request, "Application", "RegularProductIssue. {0}", request.ToJson());
 
             await this.productService.HitShelvesAsync(new IssueRegularProduct
             {

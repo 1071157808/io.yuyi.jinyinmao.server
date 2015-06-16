@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  5:42 PM
+// Last Modified On : 2015-06-16  2:22 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Tracing;
 using Moe.AspNet.Utility;
 using Moe.Lib;
 using Orleans;
@@ -60,6 +61,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <value>The current user.</value>
         protected CurrentUser CurrentUser => this.currentUser ?? (this.currentUser = this.GetCurrentUser());
+
+        /// <summary>
+        ///     Gets the trace writer.
+        /// </summary>
+        /// <value>The trace writer.</value>
+        protected ITraceWriter TraceWriter
+        {
+            get { return this.Configuration.Services.GetTraceWriter(); }
+        }
 
         /// <summary>
         ///     Builds the arguments.
@@ -144,7 +154,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Creates an <see cref="T:System.Web.Http.IHttpActionResult" /> (200 OK).
         /// </summary>
         /// <returns>An <see cref="T:System.Web.Http.IHttpActionResult" /> (200 OK).</returns>
-        protected new IHttpActionResult Ok() => base.Ok(new object());
+        protected new IHttpActionResult Ok()
+        {
+            return base.Ok(new object());
+        }
     }
 
     /// <summary>

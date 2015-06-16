@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-16  12:36 PM
+// Last Modified On : 2015-06-16  2:26 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -21,6 +20,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using Moe.AspNet.Utility;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     ///     Class HomeController.
     /// </summary>
     [RoutePrefix("")]
-    public class DevController : ApiController
+    public class DevController : ApiControllerBase
     {
         /// <summary>
         ///     CancelOrderFromProduct
@@ -132,9 +132,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [HttpGet, Route("")]
         public IHttpActionResult Get()
         {
-            Trace.TraceInformation("This is from Yuyi.Jinyinmao.Api.");
-            Trace.TraceWarning("This is from Yuyi.Jinyinmao.Api.");
-            Trace.TraceError("This is from Yuyi.Jinyinmao.Api.");
+            this.TraceWriter.Debug(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Debug test");
+            this.TraceWriter.Info(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Info test");
+            this.TraceWriter.Warn(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Warn test");
+            this.TraceWriter.Error(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Error test");
+            this.TraceWriter.Fatal(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Fatal test.");
 
             return this.Ok(
                 new

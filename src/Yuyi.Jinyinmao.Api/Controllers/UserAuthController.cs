@@ -12,12 +12,12 @@
 // ***********************************************************************
 
 using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
@@ -99,7 +99,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                Trace.TraceWarning("User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Warn(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UAA1:无法开通快捷支付功能");
             }
 

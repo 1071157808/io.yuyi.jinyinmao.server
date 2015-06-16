@@ -11,10 +11,10 @@
 // </copyright>
 // ***********************************************************************
 
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
             if (userInfo == null)
             {
-                Trace.TraceWarning("User-GetBankCards:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Warn(this.Request, "Application", "User-GetBankCards:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UG:无法获取用户信息");
             }
 
