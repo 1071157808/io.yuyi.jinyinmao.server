@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  11:04 PM
+// Last Modified On : 2015-06-16  12:36 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -313,19 +313,19 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// UnregisteredCellphone
+        ///     UnregisteredCellphone
         /// </summary>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("UnregisteredCellphone/{cellphone:lenght(11)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("UnregisteredCellphone/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> UnregisteredCellphone(string cellphone)
         {
             if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
             {
                 await CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone))
-                .Unregister();
+                    .Unregister();
             }
             return this.Ok();
         }
