@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-04  12:26 AM
+// Last Modified On : 2015-06-23  2:47 PM
 // ***********************************************************************
 // <copyright file="IssueProductRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
-using Moe.AspNet.Validations;
 using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Models
@@ -114,7 +113,6 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     产品分类
         /// </summary>
         [Required, JsonProperty("productCategory")]
-        [AvailableValues("100000010", "100000020", "100000021", "100000022", "100000023", "100000030", "210001010", "210001020", "210002010", "210002020")]
         public long ProductCategory { get; set; }
 
         /// <summary>
