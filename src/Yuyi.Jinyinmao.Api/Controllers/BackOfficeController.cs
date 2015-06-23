@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-16  2:33 PM
+// Last Modified On : 2015-06-23  5:08 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     /// <summary>
     ///     BackOfficeController.
     /// </summary>
-    [RoutePrefix("BackOffice"), HMACAuthentication, IpAuthorize]
+    [RoutePrefix("BackOffice"), IpAuthorize]
     public class BackOfficeController : ApiControllerBase
     {
         private readonly IProductInfoService productInfoService;

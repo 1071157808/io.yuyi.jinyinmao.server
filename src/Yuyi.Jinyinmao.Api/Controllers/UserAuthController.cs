@@ -85,6 +85,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> Authenticate(AuthenticationRequest request)
         {
+            request.CredentialNo = request.CredentialNo.ToUpperInvariant();
+
             if (await this.userInfoService.CheckCredentialNoUsedAsync(request.CredentialNo.ToUpperInvariant()))
             {
                 return this.BadRequest("UAA4:该身份信息已经被绑定");
