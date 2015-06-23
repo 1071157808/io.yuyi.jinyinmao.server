@@ -6519,6 +6519,12 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountInfo>(1416920783, null );
             }
             
+            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountReinvestingTranscationInfosAsync(int @pageIndex, int @pageSize)
+            {
+
+                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>>(612356051, new object[] {@pageIndex, @pageSize} );
+            }
+            
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountTranscationInfoAsync(System.Guid @transcationId)
             {
 
@@ -6717,6 +6723,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).GetBankCardInfosAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1416920783: 
                                 return ((IUser)grain).GetJBYAccountInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 612356051: 
+                                return ((IUser)grain).GetJBYAccountReinvestingTranscationInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1587768830: 
                                 return ((IUser)grain).GetJBYAccountTranscationInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2058755757: 
@@ -6817,6 +6825,8 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetBankCardInfosAsync";
                     case 1416920783:
                             return "GetJBYAccountInfoAsync";
+                    case 612356051:
+                            return "GetJBYAccountReinvestingTranscationInfosAsync";
                     case 1587768830:
                             return "GetJBYAccountTranscationInfoAsync";
                     case 2058755757:
@@ -8410,6 +8420,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Orleans.Serialization.SerializationManager.SerializeInner(input.InvestingPrincipal, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.InviteBy, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.JBYAccrualAmount, stream, typeof(long));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYLastInterest, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTotalAmount, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTotalInterest, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTotalPricipal, stream, typeof(long));
@@ -8450,6 +8461,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.InvestingPrincipal = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.InviteBy = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.JBYAccrualAmount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            result.JBYLastInterest = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.JBYTotalAmount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.JBYTotalInterest = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.JBYTotalPricipal = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));

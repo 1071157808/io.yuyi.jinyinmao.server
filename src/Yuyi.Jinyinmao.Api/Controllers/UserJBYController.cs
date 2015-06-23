@@ -71,6 +71,31 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     金包银复投流水信息
+        /// </summary>
+        /// <remarks>
+        ///     必须登录，每页10条信息，页码从0开始，
+        /// </remarks>
+        /// <response code="200">成功</response>
+        /// <response code="400">USAT1:交易流水不存在</response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Transcations/Reinvesting/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<JBYTranscationInfoResponse>))]
+        public async Task<IHttpActionResult> ReinvestingTranscations(int pageIndex = 0)
+        {
+            pageIndex = pageIndex < 0 ? 0 : pageIndex;
+
+            PaginatedList<JBYAccountTranscationInfo> infos = await this.userInfoService.GetJBYAccountReinvestingTranscationInfosAsync(this.CurrentUser.Id, pageIndex, 10);
+
+            if (infos == null)
+            {
+                return this.BadRequest("USAT1:交易流水不存在");
+            }
+
+            return this.Ok(infos.ToPaginated(i => i.ToResponse()).ToResponse());
+        }
+
+        /// <summary>
         ///     金包银流水信息
         /// </summary>
         /// <remarks>

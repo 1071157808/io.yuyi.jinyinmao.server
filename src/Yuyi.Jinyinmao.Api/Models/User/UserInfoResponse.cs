@@ -100,6 +100,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         public long JBYAccrualAmount { get; set; }
 
         /// <summary>
+        /// 金包银最近一次的收益
+        /// </summary>
+        [Required, JsonProperty("jBYLastInterest")]
+        public long JBYLastInterest { get; set; }
+
+        /// <summary>
         ///     金包银总资产，在途及已经确认的入账减去已经确认的出账
         /// </summary>
         [Required, JsonProperty("jBYTotalAmount")]
@@ -198,36 +204,40 @@ namespace Yuyi.Jinyinmao.Api.Models
 
     internal static partial class UserInfoEx
     {
-        internal static UserInfoResponse ToResponse(this UserInfo info) => new UserInfoResponse
+        internal static UserInfoResponse ToResponse(this UserInfo info)
         {
-            Balance = info.Balance,
-            BankCardsCount = info.BankCardsCount,
-            Cellphone = info.Cellphone,
-            Closed = info.Closed,
-            Credential = (int)info.Credential,
-            CredentialNo = info.CredentialNo,
-            Crediting = info.Crediting,
-            Debiting = info.Debiting,
-            HasSetPaymentPassword = info.HasSetPaymentPassword,
-            InvestingInterest = info.InvestingInterest,
-            InvestingPrincipal = info.InvestingPrincipal,
-            JBYAccrualAmount = info.JBYAccrualAmount,
-            JBYTotalAmount = info.JBYTotalAmount,
-            JBYTotalInterest = info.JBYTotalInterest,
-            JBYTotalPricipal = info.JBYTotalPricipal,
-            JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
-            MonthWithdrawalCount = info.MonthWithdrawalCount,
-            PasswordErrorCount = info.PasswordErrorCount,
-            PaymentPasswordErrorCount = info.PaymentPasswordErrorCount,
-            RealName = info.RealName,
-            RegisterTime = info.RegisterTime,
-            TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount,
-            TodayWithdrawalCount = info.TodayWithdrawalCount,
-            TotalInterest = info.TotalInterest,
-            TotalPrincipal = info.TotalPrincipal,
-            UserIdentifier = info.UserId.ToGuidString(),
-            Verified = info.Verified,
-            VerifiedTime = info.VerifiedTime.GetValueOrDefault()
-        };
+            return new UserInfoResponse
+            {
+                Balance = info.Balance,
+                BankCardsCount = info.BankCardsCount,
+                Cellphone = info.Cellphone,
+                Closed = info.Closed,
+                Credential = (int)info.Credential,
+                CredentialNo = info.CredentialNo,
+                Crediting = info.Crediting,
+                Debiting = info.Debiting,
+                HasSetPaymentPassword = info.HasSetPaymentPassword,
+                InvestingInterest = info.InvestingInterest,
+                InvestingPrincipal = info.InvestingPrincipal,
+                JBYAccrualAmount = info.JBYAccrualAmount,
+                JBYLastInterest = info.JBYLastInterest,
+                JBYTotalAmount = info.JBYTotalAmount,
+                JBYTotalInterest = info.JBYTotalInterest,
+                JBYTotalPricipal = info.JBYTotalPricipal,
+                JBYWithdrawalableAmount = info.JBYWithdrawalableAmount,
+                MonthWithdrawalCount = info.MonthWithdrawalCount,
+                PasswordErrorCount = info.PasswordErrorCount,
+                PaymentPasswordErrorCount = info.PaymentPasswordErrorCount,
+                RealName = info.RealName,
+                RegisterTime = info.RegisterTime,
+                TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount,
+                TodayWithdrawalCount = info.TodayWithdrawalCount,
+                TotalInterest = info.TotalInterest,
+                TotalPrincipal = info.TotalPrincipal,
+                UserIdentifier = info.UserId.ToGuidString(),
+                Verified = info.Verified,
+                VerifiedTime = info.VerifiedTime.GetValueOrDefault()
+            };
+        }
     }
 }

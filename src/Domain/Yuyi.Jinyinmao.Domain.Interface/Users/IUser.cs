@@ -127,6 +127,14 @@ namespace Yuyi.Jinyinmao.Domain
         Task<JBYAccountInfo> GetJBYAccountInfoAsync();
 
         /// <summary>
+        /// Gets the jby account reinvesting transcation infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountReinvestingTranscationInfosAsync(int pageIndex, int pageSize);
+
+        /// <summary>
         ///     Gets the jby account transcation information asynchronous.
         /// </summary>
         /// <param name="transcationId">The transcation identifier.</param>

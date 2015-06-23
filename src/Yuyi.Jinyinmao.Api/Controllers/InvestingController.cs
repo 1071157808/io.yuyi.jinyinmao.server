@@ -82,12 +82,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
         public async Task<IHttpActionResult> JBYInvesting(InvestingRequest request)
         {
-            Guid productId;
-            if (!Guid.TryParseExact(request.ProductIdentifier, "N", out productId))
-            {
-                return this.BadRequest("请求格式不合法");
-            }
-
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
 
             if (result.Lock)

@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-10  4:25 AM
+// Last Modified On : 2015-06-23  1:14 PM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,10 +17,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
-using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Security;
 using Moe.AspNet.Filters;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Api.Filters
 {
@@ -58,12 +58,12 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 HandleUnauthorizedRequest(actionContext);
                 return;
             }
-            if (this.refreshToken && !string.IsNullOrWhiteSpace(token))
-            {
-                FormsAuthentication.SetAuthCookie(token, true);
-                HttpCookie cookie = FormsAuthentication.GetAuthCookie(token, true);
-                HttpContext.Current.Response.Headers.Add("JYM", cookie.Value);
-            }
+            //            if (this.refreshToken && !string.IsNullOrWhiteSpace(token))
+            //            {
+            //                FormsAuthentication.SetAuthCookie(token, true);
+            //                HttpCookie cookie = FormsAuthentication.GetAuthCookie(token, true);
+            //                HttpContext.Current.Response.Headers.Add("x-jym", cookie.Value);
+            //            }
 
             base.OnAuthorization(actionContext);
         }
@@ -141,13 +141,20 @@ namespace Yuyi.Jinyinmao.Api.Filters
             }
 
             IEnumerable<string> header;
-            if (actionContext.Request.Headers.TryGetValues("JYM", out header))
+            if (actionContext.Request.Headers.TryGetValues("x-jym", out header))
             {
                 string tokenValue = header.FirstOrDefault();
-                if (tokenValue != null)
+                if (tokenValue.IsNotNullOrEmpty())
                 {
-                    FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(tokenValue);
-                    if (ticket != null) actionContext.RequestContext.Principal = new GenericPrincipal(new GenericIdentity(ticket.Name), null);
+                    try
+                    {
+                        FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(tokenValue);
+                        if (ticket != null) actionContext.RequestContext.Principal = new GenericPrincipal(new GenericIdentity(ticket.Name), null);
+                    }
+                    catch (Exception)
+                    {
+                        // ignore
+                    }
                 }
             }
 

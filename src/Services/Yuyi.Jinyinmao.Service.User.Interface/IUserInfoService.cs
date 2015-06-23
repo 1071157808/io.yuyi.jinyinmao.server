@@ -86,6 +86,15 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId);
 
         /// <summary>
+        /// Gets the jby account reinvesting transcation infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountReinvestingTranscationInfosAsync(Guid userId, int pageIndex, int pageSize);
+
+        /// <summary>
         ///     Gets the jby account transcation information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>

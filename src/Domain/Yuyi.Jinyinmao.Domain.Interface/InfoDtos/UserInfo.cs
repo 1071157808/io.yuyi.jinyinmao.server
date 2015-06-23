@@ -200,6 +200,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public long JBYAccrualAmount { get; set; }
 
         /// <summary>
+        /// Gets or sets the jby last interest.
+        /// </summary>
+        /// <value>The jby last interest.</value>
+        public long JBYLastInterest { get; set; }
+
+        /// <summary>
         ///     Gets or sets the jby total amount.
         /// </summary>
         /// <value>The jby total amount.</value>

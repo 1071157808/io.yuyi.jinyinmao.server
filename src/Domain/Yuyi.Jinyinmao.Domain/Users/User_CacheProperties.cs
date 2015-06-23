@@ -4,7 +4,7 @@
 // Created          : 2015-05-07  12:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  6:46 PM
+// Last Modified On : 2015-06-23  2:37 PM
 // ***********************************************************************
 // <copyright file="User_CacheProperties.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -44,6 +44,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The jby accrual amount.</value>
         private long JBYAccrualAmount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the jby last interest.
+        /// </summary>
+        /// <value>The jby last interest.</value>
+        private long JBYLastInterest { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby total amount.

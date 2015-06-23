@@ -4,7 +4,7 @@
 // Created          : 2015-05-19  2:22 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  6:24 PM
+// Last Modified On : 2015-06-17  4:19 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -34,6 +34,8 @@ namespace AzureInit
             CloudTableClient client = account.CreateCloudTableClient();
             CloudTable table = client.GetTableReference("Config");
 
+            table.CreateIfNotExistsAsync();
+
             DateTime baseDay = new DateTime(2015, 5, 1);
 
             for (int i = 0; i < 300; i++)
@@ -46,7 +48,7 @@ namespace AzureInit
                 {
                     DateIndex = i,
                     IsWorkday = isWorkDay,
-                    JBYWithdrawalLimit = isWorkDay ? 1000 : 0,
+                    JBYWithdrawalLimit = 1000,
                     JBYYield = 700,
                     PartitionKey = "jinyinmao-daily-config",
                     RowKey = day.ToString("yyyyMMdd")

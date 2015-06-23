@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:14 PM
+// Last Modified On : 2015-06-23  2:36 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -473,6 +473,24 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Gets the jby account reinvesting transcation infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountReinvestingTranscationInfosAsync(int pageIndex, int pageSize)
+        {
+            pageIndex = pageIndex < 1 ? 0 : pageIndex;
+            pageSize = pageSize < 1 ? 10 : pageSize;
+
+            int totalCount = this.State.JBYAccount.Count;
+            IList<JBYAccountTranscationInfo> items = this.State.JBYAccount.Values.Where(t => t.TradeCode == TradeCodeHelper.TC2001011106).OrderByDescending(t => t.TransactionTime)
+                .Skip(pageIndex * pageSize).Take(pageSize).Select(t => t.ToInfo()).ToList();
+
+            return Task.FromResult(new PaginatedList<JBYAccountTranscationInfo>(pageIndex, pageSize, totalCount, items));
+        }
+
+        /// <summary>
         ///     Gets the jby account transcation information asynchronous.
         /// </summary>
         /// <param name="transcationId">The transcation identifier.</param>
@@ -603,6 +621,7 @@ namespace Yuyi.Jinyinmao.Domain
                 InvestingPrincipal = this.InvestingPrincipal,
                 InviteBy = this.State.InviteBy,
                 JBYAccrualAmount = this.JBYAccrualAmount,
+                JBYLastInterest = this.JBYLastInterest,
                 JBYTotalAmount = this.JBYTotalAmount,
                 JBYTotalInterest = this.JBYTotalInterest,
                 JBYTotalPricipal = this.JBYTotalPricipal,
@@ -1278,14 +1297,13 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             long yield = Convert.ToInt64(DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield);
-            long jbyAccrualAmount = this.GetJBYAccrualAmount(now);
 
-            if (jbyAccrualAmount <= 0)
+            if (this.JBYAccrualAmount <= 0)
             {
                 return null;
             }
 
-            long interest = jbyAccrualAmount * yield / 3600000L;
+            long interest = this.JBYAccrualAmount * yield / 3600000L;
 
             if (interest <= 0)
             {
@@ -1457,8 +1475,9 @@ namespace Yuyi.Jinyinmao.Domain
             List<JBYAccountTranscation> transcations = this.State.JBYAccount.Values.Where(t => t.ResultTime < date.Date).ToList();
             long investedAmount = transcations.Where(t => t.Trade == Trade.Debit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime).Sum(t => t.Amount);
             long creditedTransAmount = transcations.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= date.Date).Sum(t => t.Amount);
+            long creditingTransAmount = transcations.Where(t => t.Trade == Trade.Credit && t.ResultCode == 0 && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue) <= date.AddDays(1).Date).Sum(t => t.Amount);
 
-            return investedAmount - creditedTransAmount;
+            return investedAmount - creditedTransAmount - creditingTransAmount;
         }
     }
 }

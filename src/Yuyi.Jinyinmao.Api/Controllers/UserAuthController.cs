@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  12:51 AM
+// Last Modified On : 2015-06-23  12:59 PM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -61,7 +61,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     实名认证必须先设置支付密码
         ///     <br />
-        ///     实名认证过程会绑定一张银行卡，同时将该卡设置为默认银行卡
+        ///     实名认证过程会绑定一张银行卡
         /// </remarks>
         /// <param name="request">
         ///     实名认证请求
@@ -85,7 +85,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> Authenticate(AuthenticationRequest request)
         {
-            if (await this.userInfoService.CheckCredentialNoUsedAsync(request.CredentialNo))
+            if (await this.userInfoService.CheckCredentialNoUsedAsync(request.CredentialNo.ToUpperInvariant()))
             {
                 return this.BadRequest("UAA4:该身份信息已经被绑定");
             }
@@ -130,7 +130,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Cellphone = this.CurrentUser.Cellphone,
                 CityName = request.CityName,
                 Credential = request.Credential,
-                CredentialNo = request.CredentialNo,
+                CredentialNo = request.CredentialNo.ToUpperInvariant(),
                 RealName = request.RealName,
                 UserId = this.CurrentUser.Id
             };
@@ -464,15 +464,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="cellphone">The cellphone.</param>
         private void SetCookie(Guid userId, string cellphone)
         {
-            if (HttpContext.Current.Request.IsSecureConnection)
-            {
-                bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
-                DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1);
-                string userData = $"{userId},{cellphone},{expiry.ToBinary()}";
-                FormsAuthentication.SetAuthCookie(userData, true);
-                HttpCookie cookie = FormsAuthentication.GetAuthCookie(userData, true);
-                HttpContext.Current.Response.Headers.Add("JYM", cookie.Value);
-            }
+            bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
+            DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7);
+            string userData = $"{userId},{cellphone},{expiry.ToBinary()}";
+            FormsAuthentication.SetAuthCookie(userData, true);
+            HttpCookie cookie = FormsAuthentication.GetAuthCookie(userData, true);
+            HttpContext.Current.Response.Headers.Add("x-jym", cookie.Value);
         }
     }
 }

@@ -41,7 +41,6 @@ namespace Yuyi.Jinyinmao.Domain
 
         private void ReloadJBYAccountData()
         {
-            DateTime confirmTime = GetLastInvestingConfirmTime();
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
 
             long debitTransAmount = 0L;
@@ -50,7 +49,6 @@ namespace Yuyi.Jinyinmao.Domain
             long creditingTransAmount = 0L;
 
             long todayJBYWithdrawalAmount = 0L;
-            long investingConfirmTransAmount = 0L;
             long jBYTotalInterest = 0L;
 
             foreach (JBYAccountTranscation transcation in this.State.JBYAccount.Values)
@@ -62,10 +60,6 @@ namespace Yuyi.Jinyinmao.Domain
                     if (transcation.ResultCode > 0)
                     {
                         debitedTransAmount += transcation.Amount;
-                        if (transcation.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime)
-                        {
-                            investingConfirmTransAmount += transcation.Amount;
-                        }
 
                         if (transcation.ProductId == SpecialIdHelper.ReinvestingJBYTranscationProductId)
                         {
@@ -91,7 +85,6 @@ namespace Yuyi.Jinyinmao.Domain
                 }
             }
 
-            this.JBYAccrualAmount = investingConfirmTransAmount - creditedTransAmount;
             this.JBYTotalAmount = debitTransAmount - creditedTransAmount;
             this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditingTransAmount;
 
@@ -99,6 +92,13 @@ namespace Yuyi.Jinyinmao.Domain
             this.JBYTotalPricipal = debitedTransAmount;
 
             this.TodayJBYWithdrawalAmount = todayJBYWithdrawalAmount;
+
+            this.JBYAccrualAmount = this.GetJBYAccrualAmount(DateTime.UtcNow.AddHours(8));
+            JBYAccountTranscation lastReinvesting = this.State.JBYAccount.Values.Where(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0)
+                .OrderByDescending(t => t.ResultTime.GetValueOrDefault(DateTime.MinValue)).FirstOrDefault();
+
+            // ReSharper disable once MergeConditionalExpression
+            this.JBYLastInterest = lastReinvesting == null ? 0 : lastReinvesting.Amount;
         }
 
         /// <summary>
