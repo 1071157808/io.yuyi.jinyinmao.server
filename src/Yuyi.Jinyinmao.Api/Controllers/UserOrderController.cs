@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:50 PM
+// Last Modified On : 2015-06-24  3:24 PM
 // ***********************************************************************
 // <copyright file="UserOrderController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -50,12 +50,35 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </remarks>
         /// <param name="index">页码，从0开始，最小为0</param>
         /// <param name="sortMode">排序规则 1 => 按下单时间排序，2 => 按结息日期排序</param>
-        /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
         /// <response code="200"></response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Index/{index:min(0):int=0}/{sortMode:min(1):int=1}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<OrderInfoResponse>))]
-        public async Task<IHttpActionResult> Index(int index = 0, int sortMode = 1, [FromUri] long[] categories = null)
+        public async Task<IHttpActionResult> Index(int index = 0, int sortMode = 1)
+        {
+            index = index < 0 ? 0 : index;
+
+            OrdersSortMode ordersSortMode = (OrdersSortMode)Enum.ToObject(typeof(OrdersSortMode), sortMode);
+
+            PaginatedList<OrderInfo> infos = await this.userInfoService.GetOrderInfosAsync(this.CurrentUser.Id, index, 10, ordersSortMode);
+
+            return this.Ok(infos.ToPaginated(t => t.ToResponse()).ToResponse());
+        }
+
+        /// <summary>
+        ///     订单列表
+        /// </summary>
+        /// <remarks>
+        ///     每页数量为10个，页数从0开始。
+        /// </remarks>
+        /// <param name="index">页码，从0开始，最小为0</param>
+        /// <param name="sortMode">排序规则 1 => 按下单时间排序，2 => 按结息日期排序</param>
+        /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
+        /// <response code="200"></response>
+        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("IndexByCategory/{index:min(0):int=0}/{sortMode:min(1):int=1}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<OrderInfoResponse>))]
+        public async Task<IHttpActionResult> IndexByCategory(int index = 0, int sortMode = 1, [FromUri] long[] categories = null)
         {
             index = index < 0 ? 0 : index;
 
@@ -82,7 +105,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UOI:订单不存在</response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Index/{orderIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(OrderInfoResponse))]
+        [HttpGet, Route("Info/{orderIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> Info(string orderIdentifier)
         {
             Guid orderId;

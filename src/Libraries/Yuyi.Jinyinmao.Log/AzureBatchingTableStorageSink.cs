@@ -4,7 +4,7 @@
 // Created          : 2015-06-14  6:18 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  6:23 PM
+// Last Modified On : 2015-06-24  3:24 PM
 // ***********************************************************************
 // <copyright file="AzureBatchingTableStorageSink.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,6 +20,9 @@ using Serilog.Sinks.PeriodicBatching;
 
 namespace Yuyi.Jinyinmao.Log
 {
+    /// <summary>
+    ///     AzureBatchingTableStorageSink.
+    /// </summary>
     public class AzureBatchingTableStorageSink : PeriodicBatchingSink
     {
         private readonly IFormatProvider formatProvider;

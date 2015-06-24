@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  12:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:50 PM
+// Last Modified On : 2015-06-24  2:20 PM
 // ***********************************************************************
 // <copyright file="IUserInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -86,7 +86,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId);
 
         /// <summary>
-        /// Gets the jby account reinvesting transcation infos asynchronous.
+        ///     Gets the jby account reinvesting transcation infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
@@ -118,6 +118,16 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="orderId">The order identifier.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         Task<OrderInfo> GetOrderInfoAsync(Guid userId, Guid orderId);
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
+        Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode);
 
         /// <summary>
         ///     Gets the order infos asynchronous.

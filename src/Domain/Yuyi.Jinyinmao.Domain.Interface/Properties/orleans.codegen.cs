@@ -6543,6 +6543,12 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(2144792893, new object[] {@orderId} );
             }
             
+            System.Threading.Tasks.Task<System.Tuple<int, System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>>> Yuyi.Jinyinmao.Domain.IUser.GetOrderInfosAsync(int @pageIndex, int @pageSize, Yuyi.Jinyinmao.Domain.OrdersSortMode @ordersSortMode)
+            {
+
+                return base.InvokeMethodAsync<System.Tuple<System.Int32,System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>>>(-2035153628, new object[] {@pageIndex, @pageSize, @ordersSortMode} );
+            }
+            
             System.Threading.Tasks.Task<System.Tuple<int, System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>>> Yuyi.Jinyinmao.Domain.IUser.GetOrderInfosAsync(int @pageIndex, int @pageSize, Yuyi.Jinyinmao.Domain.OrdersSortMode @ordersSortMode, IEnumerable<Int64> @categories)
             {
 
@@ -6731,6 +6737,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).GetJBYAccountTranscationInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2144792893: 
                                 return ((IUser)grain).GetOrderInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -2035153628: 
+                                return ((IUser)grain).GetOrderInfosAsync((Int32)arguments[0], (Int32)arguments[1], (OrdersSortMode)arguments[2]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -1782538028: 
                                 return ((IUser)grain).GetOrderInfosAsync((Int32)arguments[0], (Int32)arguments[1], (OrdersSortMode)arguments[2], (IEnumerable<Int64>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1277297927: 
@@ -6833,6 +6841,8 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetJBYAccountTranscationInfosAsync";
                     case 2144792893:
                             return "GetOrderInfoAsync";
+                    case -2035153628:
+                            return "GetOrderInfosAsync";
                     case -1782538028:
                             return "GetOrderInfosAsync";
                     case 1277297927:

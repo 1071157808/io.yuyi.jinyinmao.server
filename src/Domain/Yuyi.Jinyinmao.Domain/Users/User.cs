@@ -536,6 +536,28 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
+        public Task<Tuple<int, List<OrderInfo>>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode)
+        {
+            pageIndex = pageIndex < 1 ? 0 : pageIndex;
+            pageSize = pageSize < 1 ? 10 : pageSize;
+
+            IList<Order> orders = this.State.Orders.Values.ToList();
+
+            int totalCount = orders.Count;
+            orders = ordersSortMode == OrdersSortMode.ByOrderTimeDesc ?
+                orders.OrderByDescending(o => o.OrderTime).Skip(pageIndex * pageSize).Take(pageSize).ToList()
+                : orders.OrderBy(o => o.SettleDate).ThenByDescending(o => o.OrderTime).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+            return Task.FromResult(new Tuple<int, List<OrderInfo>>(totalCount, orders.Select(o => o.ToInfo()).ToList()));
+        }
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
         /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
         public Task<Tuple<int, List<OrderInfo>>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode, IEnumerable<long> categories)

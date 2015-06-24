@@ -324,6 +324,19 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <param name="categories">The categories.</param>
         /// <returns>PaginatedList&lt;OrderInfo&gt;.</returns>
         public async Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)

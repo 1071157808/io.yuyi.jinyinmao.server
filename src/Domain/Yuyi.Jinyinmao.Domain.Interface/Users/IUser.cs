@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  4:18 PM
+// Last Modified On : 2015-06-24  2:21 PM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -127,7 +127,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<JBYAccountInfo> GetJBYAccountInfoAsync();
 
         /// <summary>
-        /// Gets the jby account reinvesting transcation infos asynchronous.
+        ///     Gets the jby account reinvesting transcation infos asynchronous.
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
@@ -155,6 +155,15 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="orderId">The order identifier.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         Task<OrderInfo> GetOrderInfoAsync(Guid orderId);
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="pageIndex">Index of the page.</param>
+        /// <param name="pageSize">Size of the page.</param>
+        /// <param name="ordersSortMode">The orders sort mode.</param>
+        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
+        Task<Tuple<int, List<OrderInfo>>> GetOrderInfosAsync(int pageIndex, int pageSize, OrdersSortMode ordersSortMode);
 
         /// <summary>
         ///     Gets the order infos asynchronous.
