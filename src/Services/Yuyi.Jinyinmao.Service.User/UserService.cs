@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  4:18 PM
+// Last Modified On : 2015-06-24  4:45 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -268,7 +268,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Gets the jby account reinvesting transcation infos asynchronous.
+        ///     Gets the jby account reinvesting transcation infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
@@ -325,9 +325,11 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="ordersSortMode">The orders sort mode.</param>
         /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode)
+        public async Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode)
         {
-            throw new NotImplementedException();
+            IUser user = UserFactory.GetGrain(userId);
+            Tuple<int, List<OrderInfo>> result = await user.GetOrderInfosAsync(pageIndex, pageSize, ordersSortMode);
+            return new PaginatedList<OrderInfo>(pageIndex, pageSize, result.Item1, result.Item2);
         }
 
         /// <summary>
