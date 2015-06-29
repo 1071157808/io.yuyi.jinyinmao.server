@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  6:46 PM
+// Last Modified On : 2015-06-25  11:56 AM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -51,6 +51,11 @@ namespace Yuyi.Jinyinmao.Domain
             long todayJBYWithdrawalAmount = 0L;
             long jBYTotalInterest = 0L;
 
+            long todayInvestingAmount = 0L;
+
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime today = now.Date;
+
             foreach (JBYAccountTranscation transcation in this.State.JBYAccount.Values)
             {
                 if (transcation.Trade == Trade.Debit)
@@ -64,6 +69,11 @@ namespace Yuyi.Jinyinmao.Domain
                         if (transcation.ProductId == SpecialIdHelper.ReinvestingJBYTranscationProductId)
                         {
                             jBYTotalInterest += transcation.Amount;
+                        }
+
+                        if (transcation.ResultTime.GetValueOrDefault().Date == today)
+                        {
+                            todayInvestingAmount += transcation.Amount;
                         }
                     }
                 }
@@ -86,7 +96,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             this.JBYTotalAmount = debitTransAmount - creditedTransAmount;
-            this.JBYWithdrawalableAmount = this.JBYAccrualAmount - creditingTransAmount;
+            this.JBYWithdrawalableAmount = debitedTransAmount - todayInvestingAmount - creditedTransAmount - creditingTransAmount;
 
             this.JBYTotalInterest = jBYTotalInterest;
             this.JBYTotalPricipal = debitedTransAmount;

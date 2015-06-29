@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  3:53 PM
+// Last Modified On : 2015-06-29  12:10 PM
 // ***********************************************************************
 // <copyright file="Cellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -52,12 +52,35 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Registers this instance.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>System.Threading.Tasks.Task.</returns>
+        public async Task Register(Guid userId)
+        {
+            this.State.Registered = true;
+            this.State.UserId = userId;
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
+        ///     Resets the user identifier.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task ResetUserIdentifier()
+        {
+            this.State.UserId = Guid.NewGuid();
+            await this.State.WriteStateAsync();
+        }
+
+        /// <summary>
         ///     Unregisters this instance.
         /// </summary>
         /// <returns>Task.</returns>
         public async Task Unregister()
         {
             this.State.Registered = false;
+            this.State.UserId = Guid.NewGuid();
             await this.State.WriteStateAsync();
         }
 

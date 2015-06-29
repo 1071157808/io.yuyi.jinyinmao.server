@@ -133,7 +133,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
         public async Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone)
         {
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone));
+            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
 
             return new CheckCellphoneResult
@@ -175,7 +175,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignInResult&gt;.</returns>
         public async Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password)
         {
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone));
+            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
             IUser user = UserFactory.GetGrain(info.UserId);
             CheckPasswordResult result = await user.CheckPasswordAsync(cellphone, password);
@@ -391,7 +391,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignUpUserIdInfo&gt;.</returns>
         public async Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone)
         {
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone));
+            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
             return new SignUpUserIdInfo
             {

@@ -57,12 +57,14 @@ namespace Yuyi.Jinyinmao.Domain
             => Guid.Parse("C8F98650-25EA-41D8-BF6F-6F0044716FA0"));
 
         /// <summary>
-        ///     Gets the grain type long key.
+        /// Gets the cellphone grain type long key.
         /// </summary>
-        /// <param name="grainType">Type of the grain.</param>
-        /// <param name="key">The key.</param>
+        /// <param name="cellphone">The cellphone.</param>
         /// <returns>System.Int64.</returns>
-        public static long GetGrainTypeLongKey(GrainType grainType, int key) => GetGrainTypeLongKey(grainType, Convert.ToInt64(key));
+        public static long GetCellphoneGrainTypeLongKey(string cellphone)
+        {
+            return GetGrainTypeLongKey(GrainType.Cellphone, cellphone);
+        }
 
         /// <summary>
         ///     Gets the grain type long key.
@@ -70,7 +72,10 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="grainType">Type of the grain.</param>
         /// <param name="key">The key.</param>
         /// <returns>System.Int64.</returns>
-        public static long GetGrainTypeLongKey(GrainType grainType, string key) => GetGrainTypeLongKey(grainType, Convert.ToInt64(key));
+        public static long GetGrainTypeLongKey(GrainType grainType, int key)
+        {
+            return GetGrainTypeLongKey(grainType, Convert.ToInt64(key));
+        }
 
         /// <summary>
         ///     Gets the grain type long key.
@@ -78,24 +83,47 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="grainType">Type of the grain.</param>
         /// <param name="key">The key.</param>
         /// <returns>System.Int64.</returns>
-        public static long GetGrainTypeLongKey(GrainType grainType, long key) => Convert.ToInt64(grainType) * Trillion + key;
+        public static long GetGrainTypeLongKey(GrainType grainType, string key)
+        {
+            return GetGrainTypeLongKey(grainType, Convert.ToInt64(key));
+        }
+
+        /// <summary>
+        ///     Gets the grain type long key.
+        /// </summary>
+        /// <param name="grainType">Type of the grain.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>System.Int64.</returns>
+        public static long GetGrainTypeLongKey(GrainType grainType, long key)
+        {
+            return Convert.ToInt64(grainType) * Trillion + key;
+        }
 
         /// <summary>
         ///     Gets the jby grain type long key.
         /// </summary>
         /// <returns>System.Int64.</returns>
-        public static long GetJBYProductGrainTypeLongKey() => JBYProductGrainTypeLongKey.Value;
+        public static long GetJBYProductGrainTypeLongKey()
+        {
+            return JBYProductGrainTypeLongKey.Value;
+        }
 
         /// <summary>
         ///     Gets the jby grain type long key.
         /// </summary>
         /// <returns>System.Int64.</returns>
-        public static long GetJBYProductWithdrawalManagerGrainTypeLongKey() => JBYProductWithdrawalManagerGrainTypeLongKey.Value;
+        public static long GetJBYProductWithdrawalManagerGrainTypeLongKey()
+        {
+            return JBYProductWithdrawalManagerGrainTypeLongKey.Value;
+        }
 
         /// <summary>
         ///     Gets the sequence generator grain type key.
         /// </summary>
         /// <returns>Guid.</returns>
-        public static Guid GetSequenceGeneratorGrainTypeKey() => SequenceGeneratorGrainTypeKey.Value;
+        public static Guid GetSequenceGeneratorGrainTypeKey()
+        {
+            return SequenceGeneratorGrainTypeKey.Value;
+        }
     }
 }

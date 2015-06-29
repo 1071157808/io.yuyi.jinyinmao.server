@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:06 PM
+// Last Modified On : 2015-06-25  3:46 PM
 // ***********************************************************************
 // <copyright file="BankCardInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string BankCardNo { get; set; }
 
         /// <summary>
-        ///     银行名称
+        ///     银行名称：浦发银行,深发银行,平安银行,民生银行,工商银行,农业银行,建设银行,招商银行,广发银行,广州银行,邮储银行,兴业银行,光大银行,华夏银行,中信银行,广州农商行,中国银行,富滇银行
         /// </summary>
         [Required, JsonProperty("bankName")]
         public string BankName { get; set; }

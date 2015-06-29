@@ -6254,6 +6254,18 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(528260870, null );
             }
             
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Register(System.Guid @userId)
+            {
+
+                return base.InvokeMethodAsync<object>(-1640712768, new object[] {@userId} );
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.ResetUserIdentifier()
+            {
+
+                return base.InvokeMethodAsync<object>(238144245, null );
+            }
+            
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Unregister()
             {
 
@@ -6290,6 +6302,10 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((ICellphone)grain).GetCellphoneInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 528260870: 
                                 return ((ICellphone)grain).Register().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -1640712768: 
+                                return ((ICellphone)grain).Register((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 238144245: 
+                                return ((ICellphone)grain).ResetUserIdentifier().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1879022777: 
                                 return ((ICellphone)grain).Unregister().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
@@ -6320,6 +6336,10 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetCellphoneInfoAsync";
                     case 528260870:
                             return "Register";
+                    case -1640712768:
+                            return "Register";
+                    case 238144245:
+                            return "ResetUserIdentifier";
                     case 1879022777:
                             return "Unregister";
                     
@@ -6457,6 +6477,12 @@ namespace Yuyi.Jinyinmao.Domain
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.UserInfo>(98016208, new object[] {@command, @result, @message} );
+            }
+            
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.UserInfo> Yuyi.Jinyinmao.Domain.IUser.ChangeCellphoneAsync(string @cellphone)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.UserInfo>(-1187688942, new object[] {@cellphone} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.CheckPasswordResult> Yuyi.Jinyinmao.Domain.IUser.CheckPasswordAsync(string @loginName, string @password)
@@ -6709,6 +6735,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).AuthenticateAsync((Yuyi.Jinyinmao.Domain.Commands.Authenticate)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 98016208: 
                                 return ((IUser)grain).AuthenticateResultedAsync((Yuyi.Jinyinmao.Domain.Commands.Authenticate)arguments[0], (Boolean)arguments[1], (String)arguments[2]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -1187688942: 
+                                return ((IUser)grain).ChangeCellphoneAsync((String)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -1723407494: 
                                 return ((IUser)grain).CheckPasswordAsync((String)arguments[0], (String)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1446235673: 
@@ -6813,6 +6841,8 @@ namespace Yuyi.Jinyinmao.Domain
                             return "AuthenticateAsync";
                     case 98016208:
                             return "AuthenticateResultedAsync";
+                    case -1187688942:
+                            return "ChangeCellphoneAsync";
                     case -1723407494:
                             return "CheckPasswordAsync";
                     case 1446235673:

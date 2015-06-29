@@ -4,7 +4,7 @@
 // Created          : 2015-04-29  11:52 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  12:44 AM
+// Last Modified On : 2015-06-29  10:36 AM
 // ***********************************************************************
 // <copyright file="CloudStorageHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,7 +43,7 @@ namespace Yuyi.Jinyinmao.Helper
                     TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, cacheId)));
             TableCacheEntity cacheData = table.ExecuteQuery(query).FirstOrDefault();
 
-            if (cacheData != null && DateTime.UtcNow.UnixTimeStamp() - cacheData.UnixTimeStamp < cacheTime.TotalSeconds)
+            if (cacheData != null && DateTime.UtcNow.UnixTimeStamp() - cacheData.UnixTimeStamp < cacheTime.TotalSeconds && DateTime.UtcNow.UnixTimeStamp() >= cacheData.UnixTimeStamp)
             {
                 if (cacheData.Data.IsNotNullOrEmpty() && cacheData.Data.ToUpperInvariant() != "NULL")
                 {

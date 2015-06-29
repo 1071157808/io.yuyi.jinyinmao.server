@@ -57,6 +57,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<UserInfo> AuthenticateResultedAsync(Authenticate command, bool result, string message);
 
         /// <summary>
+        /// Changes the cellphone asynchronous.
+        /// </summary>
+        /// <param name="cellphone">The cellphone.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> ChangeCellphoneAsync(string cellphone);
+
+        /// <summary>
         ///     Checks the password asynchronous.
         /// </summary>
         /// <param name="loginName">Name of the login.</param>

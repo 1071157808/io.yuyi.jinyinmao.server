@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:04 PM
+// Last Modified On : 2015-06-25  11:41 AM
 // ***********************************************************************
 // <copyright file="UserInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Newtonsoft.Json;
+using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Api.Models
@@ -52,10 +53,10 @@ namespace Yuyi.Jinyinmao.Api.Models
         public bool Closed { get; set; }
 
         /// <summary>
-        ///     证件类型。0 => 身份证， 1 => 护照，2 => 台湾， 3=> 军官证
+        ///     证件类型。10 => 身份证， 20 => 护照，30 => 台湾， 40=> 军官证
         /// </summary>
         [Required, JsonProperty("credential")]
-        public int Credential { get; set; }
+        public Credential Credential { get; set; }
 
         /// <summary>
         ///     证件号码
@@ -100,7 +101,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public long JBYAccrualAmount { get; set; }
 
         /// <summary>
-        /// 金包银最近一次的收益
+        ///     金包银最近一次的收益
         /// </summary>
         [Required, JsonProperty("jBYLastInterest")]
         public long JBYLastInterest { get; set; }
@@ -212,7 +213,7 @@ namespace Yuyi.Jinyinmao.Api.Models
                 BankCardsCount = info.BankCardsCount,
                 Cellphone = info.Cellphone,
                 Closed = info.Closed,
-                Credential = (int)info.Credential,
+                Credential = info.Credential,
                 CredentialNo = info.CredentialNo,
                 Crediting = info.Crediting,
                 Debiting = info.Debiting,

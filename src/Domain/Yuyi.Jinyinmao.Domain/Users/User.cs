@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-23  2:36 PM
+// Last Modified On : 2015-06-29  12:16 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -208,6 +208,37 @@ namespace Yuyi.Jinyinmao.Domain
                 await this.SaveStateAsync();
                 await this.RaiseAuthenticationResultedEvent(command, card.ToInfo(), result, message);
             }
+
+            return await this.GetUserInfoAsync();
+        }
+
+        /// <summary>
+        ///     Changes the cellphone asynchronous.
+        /// </summary>
+        /// <param name="cellphoneNo">The cellphone no.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public async Task<UserInfo> ChangeCellphoneAsync(string cellphoneNo)
+        {
+            ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphoneNo));
+            CellphoneInfo cellphoneInfo = await cellphone.GetCellphoneInfoAsync();
+            if (cellphoneInfo.Registered)
+            {
+                return null;
+            }
+
+            ICellphone originalCellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
+
+            this.State.Cellphone = cellphoneNo;
+            this.State.LoginNames.Remove(this.State.Cellphone);
+            this.State.LoginNames.Add(cellphoneNo);
+
+            this.State.BankCards.ForEach(c => c.Value.Cellphone = cellphoneNo);
+
+            await this.State.WriteStateAsync();
+
+            await cellphone.Register(this.State.Id);
+
+            await originalCellphone.Unregister();
 
             return await this.GetUserInfoAsync();
         }

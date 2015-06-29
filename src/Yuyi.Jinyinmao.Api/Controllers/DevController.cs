@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-16  2:26 PM
+// Last Modified On : 2015-06-29  12:22 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -60,6 +60,31 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(order.ToResponse());
+        }
+
+        /// <summary>
+        ///     Changes the cellphone.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="cellphone">The cellphone.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("ChangeCellphone/{userIdentifier:length(32)}/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> ChangeCellphone(string userIdentifier, string cellphone)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+
+            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
+            CellphoneInfo cellphoneInfo = await cellphoneGrain.GetCellphoneInfoAsync();
+            if (cellphoneInfo.Registered)
+            {
+                return this.BadRequest("修改的目标手机号已经被注册");
+            }
+
+            if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
+            {
+                await UserFactory.GetGrain(userId).ChangeCellphoneAsync(cellphone);
+            }
+            return this.Ok();
         }
 
         /// <summary>
@@ -326,7 +351,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
             {
-                await CellphoneFactory.GetGrain(GrainTypeHelper.GetGrainTypeLongKey(GrainType.Cellphone, cellphone))
+                await CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone))
                     .Unregister();
             }
             return this.Ok();
