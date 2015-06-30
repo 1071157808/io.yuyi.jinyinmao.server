@@ -32,8 +32,8 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         /// <summary>
         ///     交易流水唯一标识
         /// </summary>
-        [Required, JsonProperty("accountTranscationIdentifier")]
-        public string AccountTranscationIdentifier { get; set; }
+        [Required, JsonProperty("accountTransactionIdentifier")]
+        public string AccountTransactionIdentifier { get; set; }
 
         /// <summary>
         ///     额外收益，以“分”为单位
@@ -156,7 +156,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Order
         {
             return new OrderInfoResponse
             {
-                AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
+                AccountTransactionIdentifier = info.AccountTransactionId.ToGuidString(),
                 ExtraInterest = info.ExtraInterest,
                 ExtraInterestRecords = info.ExtraInterestRecords,
                 ExtraYield = info.ExtraYield,

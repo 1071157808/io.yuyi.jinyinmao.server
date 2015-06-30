@@ -65,28 +65,28 @@ namespace Yuyi.Jinyinmao.Domain
                     builder.Append("UserDailyWork: UserId-{0}\n".FormatWith(this.State.Id));
 
                     DateTime now = DateTime.UtcNow.AddHours(8);
-                    List<JBYAccountTranscation> jbyWithdrawalTranscations = this.State.JBYAccount.Values
+                    List<JBYAccountTransaction> jbyWithdrawalTransactions = this.State.JBYAccount.Values
                         .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue
                                     && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < now)
                         .ToList();
 
                     builder.Append("JBYWithdrawalResulted: ");
 
-                    if (jbyWithdrawalTranscations.Count == 0)
+                    if (jbyWithdrawalTransactions.Count == 0)
                     {
                         builder.Append("SKIPPED.");
                     }
 
-                    foreach (JBYAccountTranscation transcation in jbyWithdrawalTranscations)
+                    foreach (JBYAccountTransaction transaction in jbyWithdrawalTransactions)
                     {
-                        await this.JBYWithdrawalResultedAsync(transcation.TransactionId);
-                        builder.Append(transcation.TransactionId + " ");
+                        await this.JBYWithdrawalResultedAsync(transaction.TransactionId);
+                        builder.Append(transaction.TransactionId + " ");
                     }
 
                     builder.Append("\n");
 
-                    JBYAccountTranscationInfo transcationInfo = await this.JBYReinvestingAsync();
-                    builder.Append(transcationInfo == null ? "JBYReinvesting: SKIPPED." : "JBYReinvesting: {0}".FormatWith(transcationInfo.ToJson()));
+                    JBYAccountTransactionInfo transactionInfo = await this.JBYReinvestingAsync();
+                    builder.Append(transactionInfo == null ? "JBYReinvesting: SKIPPED." : "JBYReinvesting: {0}".FormatWith(transactionInfo.ToJson()));
 
                     SiloClusterTraceLogger.Log(builder.ToString());
                 }

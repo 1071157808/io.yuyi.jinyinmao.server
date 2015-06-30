@@ -4544,7 +4544,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceId = input.SourceId;
             result.SourceType = input.SourceType;
             result.TimeStamp = input.TimeStamp;
-            result.TranscationInfo = input.TranscationInfo;
+            result.TransactionInfo = input.TransactionInfo;
             result.UserInfo = input.UserInfo;
             return result;
         }
@@ -4557,7 +4557,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.TranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
         }
         
@@ -4569,7 +4569,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.TranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo), stream)));
+            result.TransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
             return result;
         }
@@ -4604,7 +4604,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.TranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
         }
         
@@ -4616,7 +4616,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.TranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo), stream)));
+            result.TransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
             return result;
         }
@@ -4648,8 +4648,8 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Yuyi.Jinyinmao.Domain.Events.JBYWithdrawalResulted input = ((Yuyi.Jinyinmao.Domain.Events.JBYWithdrawalResulted)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYAccountTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.SettleAccountTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYAccountTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SettleAccountTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
@@ -4661,8 +4661,8 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Yuyi.Jinyinmao.Domain.Events.JBYWithdrawalResulted result = new Yuyi.Jinyinmao.Domain.Events.JBYWithdrawalResulted();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.JBYAccountTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo), stream)));
-            result.SettleAccountTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.JBYAccountTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo), stream)));
+            result.SettleAccountTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
@@ -4802,7 +4802,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TransDesc, stream, typeof(string));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.TranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
         }
         
@@ -4816,7 +4816,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
             result.TransDesc = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.TranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.TransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
             return result;
         }
@@ -4903,7 +4903,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.Transcations, stream, typeof(System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Transactions, stream, typeof(System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>));
         }
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
@@ -4917,7 +4917,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.Transcations = ((System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>), stream)));
+            result.Transactions = ((System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.List<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>), stream)));
             return result;
         }
         
@@ -4997,8 +4997,8 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Yuyi.Jinyinmao.Domain.Events.JBYPurchased input = ((Yuyi.Jinyinmao.Domain.Events.JBYPurchased)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.SettleTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.JBYTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SettleTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
@@ -5010,8 +5010,8 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Yuyi.Jinyinmao.Domain.Events.JBYPurchased result = new Yuyi.Jinyinmao.Domain.Events.JBYPurchased();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.JBYTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo), stream)));
-            result.SettleTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.JBYTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo), stream)));
+            result.SettleTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
@@ -5050,7 +5050,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.TranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
         }
         
@@ -5063,7 +5063,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.TranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.TransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
             return result;
         }
@@ -5095,10 +5095,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Yuyi.Jinyinmao.Domain.Events.OrderRepaid input = ((Yuyi.Jinyinmao.Domain.Events.OrderRepaid)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.InterestTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.InterestTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.OrderInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.OrderInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.PriIntSumAmount, stream, typeof(long));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.PrincipalTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.PrincipalTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.RepaidTime, stream, typeof(System.DateTime));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
@@ -5111,10 +5111,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Yuyi.Jinyinmao.Domain.Events.OrderRepaid result = new Yuyi.Jinyinmao.Domain.Events.OrderRepaid();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.InterestTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.InterestTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.OrderInfo = ((Yuyi.Jinyinmao.Domain.Dtos.OrderInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.OrderInfo), stream)));
             result.PriIntSumAmount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.PrincipalTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.PrincipalTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.RepaidTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
@@ -5153,7 +5153,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.TranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.TransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
         }
         
@@ -5165,7 +5165,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.TranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.TransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
             return result;
         }
@@ -5349,26 +5349,26 @@ namespace Yuyi.Jinyinmao.Domain.Events
         {
             Yuyi.Jinyinmao.Domain.Events.WithdrawalAccepted input = ((Yuyi.Jinyinmao.Domain.Events.WithdrawalAccepted)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.ChargeTranscation, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ChargeTransaction, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
             Orleans.Serialization.SerializationManager.SerializeInner(input.EventId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceId, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.WithdrawalTranscation, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.WithdrawalTransaction, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
         }
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Yuyi.Jinyinmao.Domain.Events.WithdrawalAccepted result = new Yuyi.Jinyinmao.Domain.Events.WithdrawalAccepted();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.ChargeTranscation = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.ChargeTransaction = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             result.SourceId = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
-            result.WithdrawalTranscation = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.WithdrawalTransaction = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             return result;
         }
         
@@ -5400,7 +5400,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceType = input.SourceType;
             result.TimeStamp = input.TimeStamp;
             result.UserInfo = input.UserInfo;
-            result.WithdrawalTranscationInfo = input.WithdrawalTranscationInfo;
+            result.WithdrawalTransactionInfo = input.WithdrawalTransactionInfo;
             return result;
         }
         
@@ -5413,7 +5413,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             Orleans.Serialization.SerializationManager.SerializeInner(input.SourceType, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TimeStamp, stream, typeof(System.DateTime));
             Orleans.Serialization.SerializationManager.SerializeInner(input.UserInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.WithdrawalTranscationInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.WithdrawalTransactionInfo, stream, typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo));
         }
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
@@ -5425,7 +5425,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             result.SourceType = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.TimeStamp = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
             result.UserInfo = ((Yuyi.Jinyinmao.Domain.Dtos.UserInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.UserInfo), stream)));
-            result.WithdrawalTranscationInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), stream)));
+            result.WithdrawalTransactionInfo = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), stream)));
             return result;
         }
         
@@ -6509,10 +6509,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(859174464, null );
             }
             
-            System.Threading.Tasks.Task<System.Tuple<Yuyi.Jinyinmao.Domain.Dtos.UserInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo, Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>> Yuyi.Jinyinmao.Domain.IUser.DepositAsync(Yuyi.Jinyinmao.Domain.Commands.PayCommand @command)
+            System.Threading.Tasks.Task<System.Tuple<Yuyi.Jinyinmao.Domain.Dtos.UserInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo, Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>> Yuyi.Jinyinmao.Domain.IUser.DepositAsync(Yuyi.Jinyinmao.Domain.Commands.PayCommand @command)
             {
 
-                return base.InvokeMethodAsync<System.Tuple<Yuyi.Jinyinmao.Domain.Dtos.UserInfo,Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo,Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>>(-532442069, new object[] {@command} );
+                return base.InvokeMethodAsync<System.Tuple<Yuyi.Jinyinmao.Domain.Dtos.UserInfo,Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo,Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>>(-532442069, new object[] {@command} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.DepositResultedAsync(Yuyi.Jinyinmao.Domain.Commands.PayCommand @command, bool @result, string @message)
@@ -6545,22 +6545,22 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountInfo>(1416920783, null );
             }
             
-            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountReinvestingTranscationInfosAsync(int @pageIndex, int @pageSize)
+            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountReinvestingTransactionInfosAsync(int @pageIndex, int @pageSize)
             {
 
-                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>>(612356051, new object[] {@pageIndex, @pageSize} );
+                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>>(-1737494575, new object[] {@pageIndex, @pageSize} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountTranscationInfoAsync(System.Guid @transcationId)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountTransactionInfoAsync(System.Guid @transactionId)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>(1587768830, new object[] {@transcationId} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(2096842565, new object[] {@transactionId} );
             }
             
-            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountTranscationInfosAsync(int @pageIndex, int @pageSize)
+            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>> Yuyi.Jinyinmao.Domain.IUser.GetJBYAccountTransactionInfosAsync(int @pageIndex, int @pageSize)
             {
 
-                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>>(2058755757, new object[] {@pageIndex, @pageSize} );
+                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>>(-205891779, new object[] {@pageIndex, @pageSize} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo> Yuyi.Jinyinmao.Domain.IUser.GetOrderInfoAsync(System.Guid @orderId)
@@ -6587,16 +6587,16 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountInfo>(1277297927, null );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.GetSettleAccountTranscationInfoAsync(System.Guid @transcationId)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.GetSettleAccountTransactionInfoAsync(System.Guid @transactionId)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo>(-1835182403, new object[] {@transcationId} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(-608175905, new object[] {@transactionId} );
             }
             
-            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo>> Yuyi.Jinyinmao.Domain.IUser.GetSettleAccountTranscationInfosAsync(int @pageIndex, int @pageSize)
+            System.Threading.Tasks.Task<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>> Yuyi.Jinyinmao.Domain.IUser.GetSettleAccountTransactionInfosAsync(int @pageIndex, int @pageSize)
             {
 
-                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo>>(463294560, new object[] {@pageIndex, @pageSize} );
+                return base.InvokeMethodAsync<Moe.Lib.PaginatedList<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>>(946258015, new object[] {@pageIndex, @pageSize} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.UserInfo> Yuyi.Jinyinmao.Domain.IUser.GetUserInfoAsync()
@@ -6623,10 +6623,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(167616958, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.InvestingAsync(Yuyi.Jinyinmao.Domain.Commands.JBYInvesting @command)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.InvestingAsync(Yuyi.Jinyinmao.Domain.Commands.JBYInvesting @command)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>(-654612292, new object[] {@command} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(-654612292, new object[] {@command} );
             }
             
             System.Threading.Tasks.Task<bool> Yuyi.Jinyinmao.Domain.IUser.IsRegisteredAsync()
@@ -6683,22 +6683,22 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(-1348510408, new object[] {@command, @result, @message} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalAsync(Yuyi.Jinyinmao.Domain.Commands.Withdrawal @command)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalAsync(Yuyi.Jinyinmao.Domain.Commands.Withdrawal @command)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo>(1030635906, new object[] {@command} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(1030635906, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalAsync(Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal @command)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalAsync(Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal @command)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo>(180708551, new object[] {@command} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(180708551, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalResultedAsync(System.Guid @transcationId)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalResultedAsync(System.Guid @transactionId)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo>(910331770, new object[] {@transcationId} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(910331770, new object[] {@transactionId} );
             }
         }
     }
@@ -6757,12 +6757,12 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).GetBankCardInfosAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1416920783: 
                                 return ((IUser)grain).GetJBYAccountInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 612356051: 
-                                return ((IUser)grain).GetJBYAccountReinvestingTranscationInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 1587768830: 
-                                return ((IUser)grain).GetJBYAccountTranscationInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 2058755757: 
-                                return ((IUser)grain).GetJBYAccountTranscationInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -1737494575: 
+                                return ((IUser)grain).GetJBYAccountReinvestingTransactionInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 2096842565: 
+                                return ((IUser)grain).GetJBYAccountTransactionInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -205891779: 
+                                return ((IUser)grain).GetJBYAccountTransactionInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2144792893: 
                                 return ((IUser)grain).GetOrderInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -2035153628: 
@@ -6771,10 +6771,10 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).GetOrderInfosAsync((Int32)arguments[0], (Int32)arguments[1], (OrdersSortMode)arguments[2], (IEnumerable<Int64>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1277297927: 
                                 return ((IUser)grain).GetSettleAccountInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case -1835182403: 
-                                return ((IUser)grain).GetSettleAccountTranscationInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 463294560: 
-                                return ((IUser)grain).GetSettleAccountTranscationInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -608175905: 
+                                return ((IUser)grain).GetSettleAccountTransactionInfoAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 946258015: 
+                                return ((IUser)grain).GetSettleAccountTransactionInfosAsync((Int32)arguments[0], (Int32)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -390757202: 
                                 return ((IUser)grain).GetUserInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -39653656: 
@@ -6863,12 +6863,12 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetBankCardInfosAsync";
                     case 1416920783:
                             return "GetJBYAccountInfoAsync";
-                    case 612356051:
-                            return "GetJBYAccountReinvestingTranscationInfosAsync";
-                    case 1587768830:
-                            return "GetJBYAccountTranscationInfoAsync";
-                    case 2058755757:
-                            return "GetJBYAccountTranscationInfosAsync";
+                    case -1737494575:
+                            return "GetJBYAccountReinvestingTransactionInfosAsync";
+                    case 2096842565:
+                            return "GetJBYAccountTransactionInfoAsync";
+                    case -205891779:
+                            return "GetJBYAccountTransactionInfosAsync";
                     case 2144792893:
                             return "GetOrderInfoAsync";
                     case -2035153628:
@@ -6877,10 +6877,10 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetOrderInfosAsync";
                     case 1277297927:
                             return "GetSettleAccountInfoAsync";
-                    case -1835182403:
-                            return "GetSettleAccountTranscationInfoAsync";
-                    case 463294560:
-                            return "GetSettleAccountTranscationInfosAsync";
+                    case -608175905:
+                            return "GetSettleAccountTransactionInfoAsync";
+                    case 946258015:
+                            return "GetSettleAccountTransactionInfosAsync";
                     case -390757202:
                             return "GetUserInfoAsync";
                     case -39653656:
@@ -7087,10 +7087,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 return JBYProductMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<System.Nullable<System.Guid>> Yuyi.Jinyinmao.Domain.Products.IJBYProduct.BuildJBYTranscationAsync(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo @info)
+            System.Threading.Tasks.Task<System.Nullable<System.Guid>> Yuyi.Jinyinmao.Domain.Products.IJBYProduct.BuildJBYTransactionAsync(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo @info)
             {
 
-                return base.InvokeMethodAsync<System.Nullable<System.Guid>>(-367556927, new object[] {@info} );
+                return base.InvokeMethodAsync<System.Nullable<System.Guid>>(-2104862497, new object[] {@info} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.Products.IJBYProduct.CheckSaleStatusAsync()
@@ -7173,8 +7173,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
                     case 1038104477:  // IJBYProduct
                         switch (methodId)
                         {
-                            case -367556927: 
-                                return ((IJBYProduct)grain).BuildJBYTranscationAsync((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -2104862497: 
+                                return ((IJBYProduct)grain).BuildJBYTransactionAsync((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -918156331: 
                                 return ((IJBYProduct)grain).CheckSaleStatusAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1617244261: 
@@ -7217,8 +7217,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 case 1038104477:  // IJBYProduct
                     switch (methodId)
                     {
-                        case -367556927:
-                            return "BuildJBYTranscationAsync";
+                        case -2104862497:
+                            return "BuildJBYTransactionAsync";
                     case -918156331:
                             return "CheckSaleStatusAsync";
                     case -1617244261:
@@ -7352,10 +7352,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 return JBYProductWithdrawalManagerMethodInvoker.GetMethodName(interfaceId, methodId);
             }
             
-            System.Threading.Tasks.Task<System.Nullable<System.DateTime>> Yuyi.Jinyinmao.Domain.Products.IJBYProductWithdrawalManager.BuildWithdrawalTranscationAsync(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo @info)
+            System.Threading.Tasks.Task<System.Nullable<System.DateTime>> Yuyi.Jinyinmao.Domain.Products.IJBYProductWithdrawalManager.BuildWithdrawalTransactionAsync(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo @info)
             {
 
-                return base.InvokeMethodAsync<System.Nullable<System.DateTime>>(-1832181534, new object[] {@info} );
+                return base.InvokeMethodAsync<System.Nullable<System.DateTime>>(741549537, new object[] {@info} );
             }
         }
     }
@@ -7385,8 +7385,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
                     case 720275813:  // IJBYProductWithdrawalManager
                         switch (methodId)
                         {
-                            case -1832181534: 
-                                return ((IJBYProductWithdrawalManager)grain).BuildWithdrawalTranscationAsync((JBYAccountTranscationInfo)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 741549537: 
+                                return ((IJBYProductWithdrawalManager)grain).BuildWithdrawalTransactionAsync((JBYAccountTransactionInfo)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -7411,8 +7411,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 case 720275813:  // IJBYProductWithdrawalManager
                     switch (methodId)
                     {
-                        case -1832181534:
-                            return "BuildWithdrawalTranscationAsync";
+                        case 741549537:
+                            return "BuildWithdrawalTransactionAsync";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
@@ -7687,10 +7687,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.8.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
-    internal class Yuyi_Jinyinmao_Domain_Dtos_JBYAccountTranscationInfoSerialization
+    internal class Yuyi_Jinyinmao_Domain_Dtos_JBYAccountTransactionInfoSerialization
     {
         
-        static Yuyi_Jinyinmao_Domain_Dtos_JBYAccountTranscationInfoSerialization()
+        static Yuyi_Jinyinmao_Domain_Dtos_JBYAccountTransactionInfoSerialization()
         {
             Register();
         }
@@ -7702,14 +7702,14 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo)(untypedInput));
+            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.PredeterminedResultDate, stream, typeof(System.Nullable<System.DateTime>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.ProductId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.ResultCode, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.ResultTime, stream, typeof(System.Nullable<System.DateTime>));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.SettleAccountTranscationId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.SettleAccountTransactionId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Trade, stream, typeof(Yuyi.Jinyinmao.Domain.Trade));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TradeCode, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TransDesc, stream, typeof(string));
@@ -7721,14 +7721,14 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo result = new Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo();
+            Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo result = new Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo();
             result.Amount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.PredeterminedResultDate = ((System.Nullable<System.DateTime>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.DateTime>), stream)));
             result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             result.ResultCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.ResultTime = ((System.Nullable<System.DateTime>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.DateTime>), stream)));
-            result.SettleAccountTranscationId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.SettleAccountTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             result.Trade = ((Yuyi.Jinyinmao.Domain.Trade)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Trade), stream)));
             result.TradeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.TransDesc = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
@@ -7741,7 +7741,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         
         public static void Register()
         {
-            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTranscationInfo), DeepCopier, Serializer, Deserializer);
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo), DeepCopier, Serializer, Deserializer);
         }
     }
     
@@ -7896,7 +7896,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
             Yuyi.Jinyinmao.Domain.Dtos.OrderInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.OrderInfo)(untypedInput));
-            Orleans.Serialization.SerializationManager.SerializeInner(input.AccountTranscationId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.AccountTransactionId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Cellphone, stream, typeof(string));
             Orleans.Serialization.SerializationManager.SerializeInner(input.ExtraInterest, stream, typeof(long));
@@ -7925,7 +7925,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
             Yuyi.Jinyinmao.Domain.Dtos.OrderInfo result = new Yuyi.Jinyinmao.Domain.Dtos.OrderInfo();
-            result.AccountTranscationId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.AccountTransactionId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.ExtraInterest = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
@@ -8670,10 +8670,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.8.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
-    internal class Yuyi_Jinyinmao_Domain_Dtos_SettleAccountTranscationInfoSerialization
+    internal class Yuyi_Jinyinmao_Domain_Dtos_SettleAccountTransactionInfoSerialization
     {
         
-        static Yuyi_Jinyinmao_Domain_Dtos_SettleAccountTranscationInfoSerialization()
+        static Yuyi_Jinyinmao_Domain_Dtos_SettleAccountTransactionInfoSerialization()
         {
             Register();
         }
@@ -8685,7 +8685,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
         {
-            Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo)(untypedInput));
+            Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo input = ((Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
             Orleans.Serialization.SerializationManager.SerializeInner(input.BankCardNo, stream, typeof(string));
@@ -8705,7 +8705,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         
         public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo result = new Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo();
+            Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo result = new Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo();
             result.Amount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
@@ -8726,7 +8726,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         
         public static void Register()
         {
-            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTranscationInfo), DeepCopier, Serializer, Deserializer);
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo), DeepCopier, Serializer, Deserializer);
         }
     }
     

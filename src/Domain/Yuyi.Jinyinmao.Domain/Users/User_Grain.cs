@@ -56,14 +56,14 @@ namespace Yuyi.Jinyinmao.Domain
                 await DBSyncHelper.SyncBankCard(bankCard.Value.ToInfo(), this.State.Id.ToGuidString());
             }
 
-            foreach (KeyValuePair<Guid, JBYAccountTranscation> jbyAccountTranscation in this.State.JBYAccount)
+            foreach (KeyValuePair<Guid, JBYAccountTransaction> jbyAccountTransaction in this.State.JBYAccount)
             {
-                await DBSyncHelper.SyncJBYAccountTranscation(jbyAccountTranscation.Value.ToInfo());
+                await DBSyncHelper.SyncJBYAccountTransaction(jbyAccountTransaction.Value.ToInfo());
             }
 
-            foreach (KeyValuePair<Guid, SettleAccountTranscation> settleAccountTranscation in this.State.SettleAccount)
+            foreach (KeyValuePair<Guid, SettleAccountTransaction> settleAccountTransaction in this.State.SettleAccount)
             {
-                await DBSyncHelper.SyncSettleAccountTranscation(settleAccountTranscation.Value.ToInfo());
+                await DBSyncHelper.SyncSettleAccountTransaction(settleAccountTransaction.Value.ToInfo());
             }
         }
 

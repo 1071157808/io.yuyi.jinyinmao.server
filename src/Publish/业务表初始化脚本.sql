@@ -50,28 +50,28 @@ EXEC sp_addrolemember N'db_datawriter', N'db-user-front'
 GO
 
 -- ----------------------------
--- Table structure for AccountTranscations
+-- Table structure for AccountTransactions
 -- ----------------------------
-IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'AccountTranscations')
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'AccountTransactions')
   SET NOEXEC ON
 GO
 
-DROP TABLE [dbo].[AccountTranscations]
+DROP TABLE [dbo].[AccountTransactions]
 GO
 
 SET NOEXEC OFF
 GO
 
-CREATE TABLE [dbo].[AccountTranscations] (
+CREATE TABLE [dbo].[AccountTransactions] (
 [Id] int NOT NULL IDENTITY(1,1) ,
-[TranscationIdentifier] varchar(50) NOT NULL ,
+[TransactionIdentifier] varchar(50) NOT NULL ,
 [SequenceNo] varchar(30) NOT NULL ,
 [UserIdentifier] varchar(50) NOT NULL ,
 [OrderIdentifier] varchar(50) NOT NULL ,
 [BankCardNo] varchar(25) NOT NULL ,
 [TradeCode] int NOT NULL ,
 [Amount] bigint NOT NULL ,
-[TranscationTime] datetime2(7) NOT NULL ,
+[TransactionTime] datetime2(7) NOT NULL ,
 [ChannelCode] int NOT NULL ,
 [ResultCode] int NOT NULL ,
 [ResultTime] datetime2(7) NULL ,
@@ -86,37 +86,37 @@ PRIMARY KEY ([Id])
 GO
 
 -- ----------------------------
--- Indexes structure for table AccountTranscations
+-- Indexes structure for table AccountTransactions
 -- ----------------------------
-CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[AccountTranscations]
-([TranscationIdentifier] ASC) 
+CREATE UNIQUE INDEX [IN_TransactionIdentifier] ON [dbo].[AccountTransactions]
+([TransactionIdentifier] ASC) 
 WITH (IGNORE_DUP_KEY = ON)
 GO
-CREATE INDEX [IN_UserIdentifier] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_UserIdentifier] ON [dbo].[AccountTransactions]
 ([UserIdentifier] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier_TradeCode] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_UserIdentifier_TradeCode] ON [dbo].[AccountTransactions]
 ([UserIdentifier] ASC, [TradeCode] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier_ResultCode] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_UserIdentifier_ResultCode] ON [dbo].[AccountTransactions]
 ([UserIdentifier] ASC, [ResultCode] ASC) 
 GO
-CREATE INDEX [IN_TradeCode] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_TradeCode] ON [dbo].[AccountTransactions]
 ([TradeCode] ASC) 
 GO
-CREATE INDEX [IN_ResultCode] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_ResultCode] ON [dbo].[AccountTransactions]
 ([ResultCode] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier_TradeCode_ResultCode] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_UserIdentifier_TradeCode_ResultCode] ON [dbo].[AccountTransactions]
 ([UserIdentifier] ASC, [TradeCode] ASC, [ResultCode] ASC) 
 GO
-CREATE INDEX [IN_OrderIdentifier] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_OrderIdentifier] ON [dbo].[AccountTransactions]
 ([OrderIdentifier] ASC) 
 GO
-CREATE INDEX [IN_BankCardNo] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_BankCardNo] ON [dbo].[AccountTransactions]
 ([BankCardNo] ASC) 
 GO
-CREATE INDEX [IN_SequenceNo] ON [dbo].[AccountTranscations]
+CREATE INDEX [IN_SequenceNo] ON [dbo].[AccountTransactions]
 ([SequenceNo] ASC) 
 GO
 
@@ -232,27 +232,27 @@ CREATE INDEX [IN_ProductCategory_SoldOut] ON [dbo].[JBYProducts]
 GO
 
 -- ----------------------------
--- Table structure for JBYTranscations
+-- Table structure for JBYTransactions
 -- ----------------------------
-IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'JBYTranscations')
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'JBYTransactions')
   SET NOEXEC ON
 GO
 
-DROP TABLE [dbo].[JBYTranscations]
+DROP TABLE [dbo].[JBYTransactions]
 GO
 
 SET NOEXEC OFF
 GO
 
-CREATE TABLE [dbo].[JBYTranscations] (
+CREATE TABLE [dbo].[JBYTransactions] (
 [Id] int NOT NULL IDENTITY(1,1) ,
-[TranscationIdentifier] varchar(50) NOT NULL ,
-[AccountTranscationIdentifier] varchar(50) NOT NULL ,
+[TransactionIdentifier] varchar(50) NOT NULL ,
+[AccountTransactionIdentifier] varchar(50) NOT NULL ,
 [JBYProductIdentifier] varchar(50) NOT NULL ,
 [UserIdentifier] varchar(50) NOT NULL ,
 [TradeCode] int NOT NULL ,
 [Amount] bigint NOT NULL ,
-[TranscationTime] datetime2(7) NOT NULL ,
+[TransactionTime] datetime2(7) NOT NULL ,
 [ResultCode] int NOT NULL ,
 [ResultTime] datetime2(7) NULL ,
 [TransDesc] nvarchar(200) NOT NULL ,
@@ -266,34 +266,34 @@ PRIMARY KEY ([Id])
 GO
 
 -- ----------------------------
--- Indexes structure for table JBYTranscations
+-- Indexes structure for table JBYTransactions
 -- ----------------------------
-CREATE UNIQUE INDEX [IN_TranscationIdentifier] ON [dbo].[JBYTranscations]
-([TranscationIdentifier] ASC) 
+CREATE UNIQUE INDEX [IN_TransactionIdentifier] ON [dbo].[JBYTransactions]
+([TransactionIdentifier] ASC) 
 WITH (IGNORE_DUP_KEY = ON)
 GO
-CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[JBYTranscations]
-([AccountTranscationIdentifier] ASC) 
+CREATE INDEX [IN_AccountTransactionIdentifier] ON [dbo].[JBYTransactions]
+([AccountTransactionIdentifier] ASC) 
 GO
-CREATE INDEX [IN_JBYProductIdentifier] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_JBYProductIdentifier] ON [dbo].[JBYTransactions]
 ([JBYProductIdentifier] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_UserIdentifier] ON [dbo].[JBYTransactions]
 ([UserIdentifier] ASC) 
 GO
-CREATE INDEX [IN_TradeCode] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_TradeCode] ON [dbo].[JBYTransactions]
 ([TradeCode] ASC) 
 GO
-CREATE INDEX [IN_ResultCode] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_ResultCode] ON [dbo].[JBYTransactions]
 ([ResultCode] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier_TradeCode] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_UserIdentifier_TradeCode] ON [dbo].[JBYTransactions]
 ([UserIdentifier] ASC, [TradeCode] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier_ResultCode] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_UserIdentifier_ResultCode] ON [dbo].[JBYTransactions]
 ([UserIdentifier] ASC, [ResultCode] ASC) 
 GO
-CREATE INDEX [IN_UserIdentifier_TradeCode_ResultCode] ON [dbo].[JBYTranscations]
+CREATE INDEX [IN_UserIdentifier_TradeCode_ResultCode] ON [dbo].[JBYTransactions]
 ([UserIdentifier] ASC, [TradeCode] ASC, [ResultCode] ASC) 
 GO
 
@@ -313,7 +313,7 @@ GO
 CREATE TABLE [dbo].[Orders] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [OrderIdentifier] varchar(50) NOT NULL ,
-[AccountTranscationIdentifier] varchar(50) NOT NULL ,
+[AccountTransactionIdentifier] varchar(50) NOT NULL ,
 [UserIdentifier] varchar(50) NOT NULL ,
 [OrderTime] datetime2(7) NOT NULL ,
 [OrderNo] varchar(20) NOT NULL ,
@@ -349,8 +349,8 @@ CREATE UNIQUE INDEX [IN_OrderIdentifier] ON [dbo].[Orders]
 ([OrderIdentifier] ASC) 
 WITH (IGNORE_DUP_KEY = ON)
 GO
-CREATE INDEX [IN_AccountTranscationIdentifier] ON [dbo].[Orders]
-([AccountTranscationIdentifier] ASC) 
+CREATE INDEX [IN_AccountTransactionIdentifier] ON [dbo].[Orders]
+([AccountTransactionIdentifier] ASC) 
 GO
 CREATE INDEX [IN_UserIdentifier] ON [dbo].[Orders]
 ([UserIdentifier] ASC) 

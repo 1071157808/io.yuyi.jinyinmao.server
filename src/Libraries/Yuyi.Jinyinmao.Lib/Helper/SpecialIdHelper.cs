@@ -21,15 +21,15 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     public static class SpecialIdHelper
     {
         /// <summary>
-        ///     Gets the j reinvesting by transcation product identifier.
+        ///     Gets the j reinvesting by transaction product identifier.
         /// </summary>
-        /// <value>The j reinvesting by transcation product identifier.</value>
-        public static Guid ReinvestingJBYTranscationProductId { get; } = Guid.Parse("92CFADC4-91A5-4A09-8D0E-AC122C837F5B");
+        /// <value>The j reinvesting by transaction product identifier.</value>
+        public static Guid ReinvestingJBYTransactionProductId { get; } = Guid.Parse("92CFADC4-91A5-4A09-8D0E-AC122C837F5B");
 
         /// <summary>
-        ///     Gets the withdrawal jby transcation product identifier.
+        ///     Gets the withdrawal jby transaction product identifier.
         /// </summary>
-        /// <value>The withdrawal jby transcation product identifier.</value>
-        public static Guid WithdrawalJBYTranscationProductId { get; } = Guid.Parse("92CFADC4-91A5-4A09-8D0E-AC122C837F5B");
+        /// <value>The withdrawal jby transaction product identifier.</value>
+        public static Guid WithdrawalJBYTransactionProductId { get; } = Guid.Parse("92CFADC4-91A5-4A09-8D0E-AC122C837F5B");
     }
 }

@@ -107,10 +107,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
         DateTime StartSellTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the transcations.
+        ///     Gets or sets the transactions.
         /// </summary>
-        /// <value>The transcations.</value>
-        Dictionary<Guid, JBYAccountTranscationInfo> Transcations { get; set; }
+        /// <value>The transactions.</value>
+        Dictionary<Guid, JBYAccountTransactionInfo> Transactions { get; set; }
 
         /// <summary>
         ///     Gets or sets the unit price.

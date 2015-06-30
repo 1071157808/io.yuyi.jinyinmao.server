@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public override async Task ProcessEventAsync(PayingByYilian @event)
         {
             await this.ProcessingEventAsync(@event, async e =>
-                await DBSyncHelper.SyncSettleAccountTranscation(e.TranscationInfo));
+                await DBSyncHelper.SyncSettleAccountTransaction(e.TransactionInfo));
 
             await base.ProcessEventAsync(@event);
         }

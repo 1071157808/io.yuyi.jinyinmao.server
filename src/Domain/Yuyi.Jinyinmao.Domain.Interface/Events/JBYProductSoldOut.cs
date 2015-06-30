@@ -42,9 +42,9 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public JBYProductInfo ProductInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the transcations.
+        ///     Gets or sets the transactions.
         /// </summary>
-        /// <value>The transcations.</value>
-        public List<JBYAccountTranscationInfo> Transcations { get; set; }
+        /// <value>The transactions.</value>
+        public List<JBYAccountTransactionInfo> Transactions { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         {
             return new OrderInfo
             {
-                AccountTranscationId = order.AccountTranscationId,
+                AccountTransactionId = order.AccountTransactionId,
                 Args = order.Args,
                 Cellphone = order.Cellphone,
                 ExtraInterest = order.ExtraInterest,
@@ -74,7 +74,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         {
             Dictionary<string, object> i = BuildOrderModelInfo(info);
 
-            orderModel.AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString();
+            orderModel.AccountTransactionIdentifier = info.AccountTransactionId.ToGuidString();
             orderModel.Args = info.Args.ToJson();
             orderModel.Cellphone = info.Cellphone;
             orderModel.ExtraInterest = info.ExtraInterest;
@@ -110,7 +110,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
 
             return new Models.Order
             {
-                AccountTranscationIdentifier = info.AccountTranscationId.ToGuidString(),
+                AccountTransactionIdentifier = info.AccountTransactionId.ToGuidString(),
                 Args = info.Args.ToJson(),
                 Cellphone = info.Cellphone,
                 ExtraInterest = info.ExtraInterest,
@@ -154,10 +154,10 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     public class OrderInfo
     {
         /// <summary>
-        ///     Gets or sets the account transcation identifier.
+        ///     Gets or sets the account transaction identifier.
         /// </summary>
-        /// <value>The account transcation identifier.</value>
-        public Guid AccountTranscationId { get; set; }
+        /// <value>The account transaction identifier.</value>
+        public Guid AccountTransactionId { get; set; }
 
         /// <summary>
         ///     Gets or sets the arguments.

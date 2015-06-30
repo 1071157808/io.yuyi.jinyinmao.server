@@ -24,10 +24,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public interface IJBYProductWithdrawalManager : IGrain
     {
         /// <summary>
-        ///     Builds the withdrawal transcation asynchronous.
+        ///     Builds the withdrawal transaction asynchronous.
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<DateTime?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info);
+        Task<DateTime?> BuildWithdrawalTransactionAsync(JBYAccountTransactionInfo info);
     }
 }

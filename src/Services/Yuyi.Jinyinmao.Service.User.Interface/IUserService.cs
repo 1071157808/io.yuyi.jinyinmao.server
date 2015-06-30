@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-09  10:30 PM
+// Last Modified On : 2015-06-30  1:19 AM
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -100,8 +100,8 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The regular investing.</param>
-        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        Task<JBYAccountTranscationInfo> InvestingAsync(JBYInvesting command);
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> InvestingAsync(JBYInvesting command);
 
         /// <summary>
         ///     Registers the user asynchronous.
@@ -142,22 +142,22 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The withdrawal.</param>
-        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        Task<SettleAccountTranscationInfo> WithdrawalAsync(Withdrawal command);
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> WithdrawalAsync(Withdrawal command);
 
         /// <summary>
         ///     Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command);
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
         ///     Withdrawals the resulted asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        Task<SettleAccountTranscationInfo> WithdrawalResultedAsync(Guid userId, Guid transcationId);
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> WithdrawalResultedAsync(Guid userId, Guid transactionId);
     }
 }

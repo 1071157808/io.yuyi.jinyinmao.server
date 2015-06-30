@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-06-15  7:17 PM
 // ***********************************************************************
-// <copyright file="TranscationInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="TransactionInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -22,9 +22,9 @@ using Yuyi.Jinyinmao.Domain.Dtos;
 namespace Yuyi.Jinyinmao.Api.Models
 {
     /// <summary>
-    ///     TranscationInfoResponse.
+    ///     TransactionInfoResponse.
     /// </summary>
-    public class SettleAccountTranscationInfoResponse : IResponse
+    public class SettleAccountTransactionInfoResponse : IResponse
     {
         /// <summary>
         ///     金额，以分为单位
@@ -93,11 +93,11 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string TransDesc { get; set; }
     }
 
-    internal static class SettleAccountTranscationInfoEx
+    internal static class SettleAccountTransactionInfoEx
     {
-        internal static SettleAccountTranscationInfoResponse ToResponse(this SettleAccountTranscationInfo info)
+        internal static SettleAccountTransactionInfoResponse ToResponse(this SettleAccountTransactionInfo info)
         {
-            SettleAccountTranscationInfoResponse response = new SettleAccountTranscationInfoResponse
+            SettleAccountTransactionInfoResponse response = new SettleAccountTransactionInfoResponse
             {
                 Amount = info.Amount,
                 BankCardNo = info.BankCardNo,

@@ -24,10 +24,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class OrderRepaid : Event
     {
         /// <summary>
-        ///     Gets or sets the interest transcation information.
+        ///     Gets or sets the interest transaction information.
         /// </summary>
-        /// <value>The interest transcation information.</value>
-        public SettleAccountTranscationInfo InterestTranscationInfo { get; set; }
+        /// <value>The interest transaction information.</value>
+        public SettleAccountTransactionInfo InterestTransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the order information.
@@ -42,10 +42,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public long PriIntSumAmount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the principal transcation information.
+        ///     Gets or sets the principal transaction information.
         /// </summary>
-        /// <value>The principal transcation information.</value>
-        public SettleAccountTranscationInfo PrincipalTranscationInfo { get; set; }
+        /// <value>The principal transaction information.</value>
+        public SettleAccountTransactionInfo PrincipalTransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the repaid time.

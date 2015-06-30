@@ -25,11 +25,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public interface IJBYProduct : IGrain
     {
         /// <summary>
-        ///     Builds the jby transcation asynchronous.
+        ///     Builds the jby transaction asynchronous.
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Nullable&lt;Guid&gt;&gt;.</returns>
-        Task<Guid?> BuildJBYTranscationAsync(JBYAccountTranscationInfo info);
+        Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info);
 
         /// <summary>
         /// Checks the sale status asynchronous.

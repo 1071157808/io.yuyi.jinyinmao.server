@@ -48,24 +48,24 @@ namespace Yuyi.Jinyinmao.Domain.Products
         #region IJBYProduct Members
 
         /// <summary>
-        ///     build jby transcation as an asynchronous operation.
+        ///     build jby transaction as an asynchronous operation.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        public async Task<Guid?> BuildJBYTranscationAsync(JBYAccountTranscationInfo info)
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public async Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info)
         {
             if (info.Amount > this.State.FinancingSumAmount - this.PaidAmount || this.State.SoldOut || this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
             {
                 return null;
             }
 
-            JBYAccountTranscationInfo transcationInfo;
-            if (this.State.Transcations.TryGetValue(info.TransactionId, out transcationInfo))
+            JBYAccountTransactionInfo transactionInfo;
+            if (this.State.Transactions.TryGetValue(info.TransactionId, out transactionInfo))
             {
-                return transcationInfo.ProductId;
+                return transactionInfo.ProductId;
             }
 
-            transcationInfo = new JBYAccountTranscationInfo
+            transactionInfo = new JBYAccountTransactionInfo
             {
                 Amount = info.Amount,
                 Args = info.Args,
@@ -73,7 +73,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 ProductId = this.State.ProductId,
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime,
-                SettleAccountTranscationId = info.SettleAccountTranscationId,
+                SettleAccountTransactionId = info.SettleAccountTransactionId,
                 Trade = info.Trade,
                 TradeCode = info.TradeCode,
                 TransDesc = info.TransDesc,
@@ -83,14 +83,14 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 UserInfo = info.UserInfo
             };
 
-            this.State.Transcations.Add(transcationInfo.TransactionId, transcationInfo);
+            this.State.Transactions.Add(transactionInfo.TransactionId, transactionInfo);
 
             await this.SaveStateAsync();
 
-            this.ReloadTranscationData();
+            this.ReloadTransactionData();
             await this.CheckSaleStatusAsync();
 
-            return transcationInfo.ProductId;
+            return transactionInfo.ProductId;
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.State.SoldOut = false;
                 this.State.SoldOutTime = null;
                 this.State.StartSellTime = command.StartSellTime;
-                this.State.Transcations = new Dictionary<Guid, JBYAccountTranscationInfo>();
+                this.State.Transactions = new Dictionary<Guid, JBYAccountTransactionInfo>();
                 this.State.UnitPrice = command.UnitPrice;
                 this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
                 this.State.ValueDateMode = command.ValueDateMode;
@@ -249,7 +249,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.State.SoldOut = false;
                 this.State.SoldOutTime = null;
                 this.State.StartSellTime = nextProduct.StartSellTime;
-                this.State.Transcations = new Dictionary<Guid, JBYAccountTranscationInfo>();
+                this.State.Transactions = new Dictionary<Guid, JBYAccountTransactionInfo>();
                 this.State.UnitPrice = nextProduct.UnitPrice;
                 this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
                 this.State.ValueDateMode = nextProduct.ValueDateMode;
@@ -257,7 +257,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
                 await this.SaveStateAsync();
 
-                this.ReloadTranscationData();
+                this.ReloadTransactionData();
 
                 await this.RaiseJBYPorductUpdatedEvent();
             }
@@ -270,7 +270,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         public override async Task ReloadAsync()
         {
             await this.State.ReadStateAsync();
-            this.ReloadTranscationData();
+            this.ReloadTransactionData();
             await this.SyncAsync();
         }
 
@@ -311,7 +311,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         public override Task OnActivateAsync()
         {
-            this.ReloadTranscationData();
+            this.ReloadTransactionData();
 
             this.RegisterTimer(o => this.CheckSaleStatusAsync(), new object(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(13));
             this.RegisterTimer(o => this.RefreshAsync(), new object(), TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(7));
@@ -388,15 +388,15 @@ namespace Yuyi.Jinyinmao.Domain.Products
             {
                 Args = this.State.Args,
                 ProductInfo = await this.GetProductInfoAsync(),
-                Transcations = this.State.Transcations.Values.ToList()
+                Transactions = this.State.Transactions.Values.ToList()
             };
 
             await this.ProcessEventAsync(@event);
         }
 
-        private void ReloadTranscationData()
+        private void ReloadTransactionData()
         {
-            this.PaidAmount = this.State.Transcations.Values.Sum(o => Convert.ToInt64(o.Amount));
+            this.PaidAmount = this.State.Transactions.Values.Sum(o => Convert.ToInt64(o.Amount));
         }
     }
 }

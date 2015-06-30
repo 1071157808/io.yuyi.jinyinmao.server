@@ -23,16 +23,16 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class JBYWithdrawalResulted : Event
     {
         /// <summary>
-        ///     Gets or sets the jby account transcation information.
+        ///     Gets or sets the jby account transaction information.
         /// </summary>
-        /// <value>The jby account transcation information.</value>
-        public JBYAccountTranscationInfo JBYAccountTranscationInfo { get; set; }
+        /// <value>The jby account transaction information.</value>
+        public JBYAccountTransactionInfo JBYAccountTransactionInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the settle account transcation information.
+        ///     Gets or sets the settle account transaction information.
         /// </summary>
-        /// <value>The settle account transcation information.</value>
-        public SettleAccountTranscationInfo SettleAccountTranscationInfo { get; set; }
+        /// <value>The settle account transaction information.</value>
+        public SettleAccountTransactionInfo SettleAccountTransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the user information.

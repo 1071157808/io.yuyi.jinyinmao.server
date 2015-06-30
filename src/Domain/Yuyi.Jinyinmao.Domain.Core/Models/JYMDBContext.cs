@@ -47,11 +47,11 @@ namespace Yuyi.Jinyinmao.Domain.Models
         }
 
         /// <summary>
-        ///     Gets or sets the account transcations.
+        ///     Gets or sets the account transactions.
         /// </summary>
-        /// <value>The account transcations.</value>
+        /// <value>The account transactions.</value>
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-        public DbSet<AccountTranscation> AccountTranscations { get; set; }
+        public DbSet<AccountTransaction> AccountTransactions { get; set; }
 
         /// <summary>
         ///     Gets or sets the bank cards.
@@ -68,11 +68,11 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public DbSet<JBYProduct> JBYProducts { get; set; }
 
         /// <summary>
-        ///     Gets or sets the jby transcations.
+        ///     Gets or sets the jby transactions.
         /// </summary>
-        /// <value>The jby transcations.</value>
+        /// <value>The jby transactions.</value>
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-        public DbSet<JBYTranscation> JBYTranscations { get; set; }
+        public DbSet<JBYTransaction> JBYTransactions { get; set; }
 
         /// <summary>
         ///     Gets or sets the orders.
@@ -107,10 +107,10 @@ namespace Yuyi.Jinyinmao.Domain.Models
         /// <param name="modelBuilder">The model builder.</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new AccountTranscationMap());
+            modelBuilder.Configurations.Add(new AccountTransactionMap());
             modelBuilder.Configurations.Add(new BankCardMap());
             modelBuilder.Configurations.Add(new JBYProductMap());
-            modelBuilder.Configurations.Add(new JBYTranscationMap());
+            modelBuilder.Configurations.Add(new JBYTransactionMap());
             modelBuilder.Configurations.Add(new OrderMap());
             modelBuilder.Configurations.Add(new RegularProductMap());
             modelBuilder.Configurations.Add(new UserMap());

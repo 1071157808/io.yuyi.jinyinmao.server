@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-05-11  9:57 PM
-//
+// Created          : 2015-05-27  7:39 PM
+// 
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  2:49 AM
+// Last Modified On : 2015-06-30  1:19 AM
 // ***********************************************************************
 // <copyright file="JBYPurchasedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         {
             await this.ProcessingEventAsync(@event, async e =>
             {
-                string message = Resources.Sms_JBYPurchased.FormatWith(e.JBYTranscationInfo.Amount / 100);
+                string message = Resources.Sms_JBYPurchased.FormatWith(e.JBYTransactionInfo.Amount / 100);
                 if (!await this.SmsService.SendMessageAsync(e.UserInfo.Cellphone, message))
                 {
                     throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.UserInfo.Cellphone, message));
@@ -42,13 +42,13 @@ namespace Yuyi.Jinyinmao.Domain.Events
 
             await this.ProcessingEventAsync(@event, async e =>
             {
-                await DBSyncHelper.SyncJBYAccountTranscation(e.JBYTranscationInfo);
-                await DBSyncHelper.SyncSettleAccountTranscation(e.SettleTranscationInfo);
+                await DBSyncHelper.SyncJBYAccountTransaction(e.JBYTransactionInfo);
+                await DBSyncHelper.SyncSettleAccountTransaction(e.SettleTransactionInfo);
             });
 
             await base.ProcessEventAsync(@event);
         }
 
-        #endregion IJBYPurchasedProcessor Members
+        #endregion
     }
 }

@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-05-27  1:18 PM
 // ***********************************************************************
-// <copyright file="AccountTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="AccountTransactionMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -16,20 +16,20 @@ using System.Data.Entity.ModelConfiguration;
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
     /// <summary>
-    ///     AccountTranscationMap.
+    ///     AccountTransactionMap.
     /// </summary>
-    public class AccountTranscationMap : EntityTypeConfiguration<AccountTranscation>
+    public class AccountTransactionMap : EntityTypeConfiguration<AccountTransaction>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="AccountTranscationMap" /> class.
+        ///     Initializes a new instance of the <see cref="AccountTransactionMap" /> class.
         /// </summary>
-        public AccountTranscationMap()
+        public AccountTransactionMap()
         {
             // Primary Key
-            this.HasKey(t => t.TranscationIdentifier);
+            this.HasKey(t => t.TransactionIdentifier);
 
             // Properties
-            this.Property(t => t.TranscationIdentifier)
+            this.Property(t => t.TransactionIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -61,15 +61,15 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired();
 
             // Table & Column Mappings
-            this.ToTable("AccountTranscations");
-            this.Property(t => t.TranscationIdentifier).HasColumnName("TranscationIdentifier");
+            this.ToTable("AccountTransactions");
+            this.Property(t => t.TransactionIdentifier).HasColumnName("TransactionIdentifier");
             this.Property(t => t.SequenceNo).HasColumnName("SequenceNo");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.OrderIdentifier).HasColumnName("OrderIdentifier");
             this.Property(t => t.BankCardNo).HasColumnName("BankCardNo");
             this.Property(t => t.TradeCode).HasColumnName("TradeCode");
             this.Property(t => t.Amount).HasColumnName("Amount");
-            this.Property(t => t.TranscationTime).HasColumnName("TranscationTime");
+            this.Property(t => t.TransactionTime).HasColumnName("TransactionTime");
             this.Property(t => t.ChannelCode).HasColumnName("ChannelCode");
             this.Property(t => t.ResultCode).HasColumnName("ResultCode");
             this.Property(t => t.ResultTime).HasColumnName("ResultTime");

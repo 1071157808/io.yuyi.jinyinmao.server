@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-24  2:21 PM
+// Last Modified On : 2015-06-30  1:19 AM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -57,7 +57,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<UserInfo> AuthenticateResultedAsync(Authenticate command, bool result, string message);
 
         /// <summary>
-        /// Changes the cellphone asynchronous.
+        ///     Changes the cellphone asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -95,8 +95,8 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Deposits the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTranscationInfo, BankCardInfo&gt;&gt;.</returns>
-        Task<Tuple<UserInfo, SettleAccountTranscationInfo, BankCardInfo>> DepositAsync(PayCommand command);
+        /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTransactionInfo, BankCardInfo&gt;&gt;.</returns>
+        Task<Tuple<UserInfo, SettleAccountTransactionInfo, BankCardInfo>> DepositAsync(PayCommand command);
 
         /// <summary>
         ///     Deposits the resulted asynchronous.
@@ -134,27 +134,27 @@ namespace Yuyi.Jinyinmao.Domain
         Task<JBYAccountInfo> GetJBYAccountInfoAsync();
 
         /// <summary>
-        ///     Gets the jby account reinvesting transcation infos asynchronous.
+        ///     Gets the jby account reinvesting transaction infos asynchronous.
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountReinvestingTranscationInfosAsync(int pageIndex, int pageSize);
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountReinvestingTransactionInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
-        ///     Gets the jby account transcation information asynchronous.
+        ///     Gets the jby account transaction information asynchronous.
         /// </summary>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid transcationId);
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> GetJBYAccountTransactionInfoAsync(Guid transactionId);
 
         /// <summary>
-        ///     Gets the jby account transcation infos asynchronous.
+        ///     Gets the jby account transaction infos asynchronous.
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(int pageIndex, int pageSize);
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountTransactionInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
         ///     Gets the order information asynchronous.
@@ -189,19 +189,19 @@ namespace Yuyi.Jinyinmao.Domain
         Task<SettleAccountInfo> GetSettleAccountInfoAsync();
 
         /// <summary>
-        ///     Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transaction information asynchronous.
         /// </summary>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid transcationId);
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> GetSettleAccountTransactionInfoAsync(Guid transactionId);
 
         /// <summary>
-        ///     Gets the settle account transcation infos asynchronous.
+        ///     Gets the settle account transaction infos asynchronous.
         /// </summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;SettleAccountTranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(int pageIndex, int pageSize);
+        /// <returns>Task&lt;PaginatedList&lt;SettleAccountTransactionInfo&gt;&gt;.</returns>
+        Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
         ///     Gets the user information asynchronous.
@@ -233,8 +233,8 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        Task<JBYAccountTranscationInfo> InvestingAsync(JBYInvesting command);
+        /// <returns>Task&lt;TransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> InvestingAsync(JBYInvesting command);
 
         /// <summary>
         ///     Determines whether [is registered] asynchronous.
@@ -303,21 +303,21 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        Task<SettleAccountTranscationInfo> WithdrawalAsync(Withdrawal command);
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> WithdrawalAsync(Withdrawal command);
 
         /// <summary>
         ///     Withdrawals the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        Task<JBYAccountTranscationInfo> WithdrawalAsync(JBYWithdrawal command);
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
         ///     Withdrawals the resulted asynchronous.
         /// </summary>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        Task<SettleAccountTranscationInfo> WithdrawalResultedAsync(Guid transcationId);
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> WithdrawalResultedAsync(Guid transactionId);
     }
 }

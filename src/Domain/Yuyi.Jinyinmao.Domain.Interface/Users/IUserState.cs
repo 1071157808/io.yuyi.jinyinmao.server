@@ -91,7 +91,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the jby account.
         /// </summary>
         /// <value>The jby account.</value>
-        Dictionary<Guid, JBYAccountTranscation> JBYAccount { get; set; }
+        Dictionary<Guid, JBYAccountTransaction> JBYAccount { get; set; }
 
         /// <summary>
         ///     Gets or sets the login names.
@@ -139,7 +139,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the settle account.
         /// </summary>
         /// <value>The settle account.</value>
-        Dictionary<Guid, SettleAccountTranscation> SettleAccount { get; set; }
+        Dictionary<Guid, SettleAccountTransaction> SettleAccount { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="IUserState" /> is verified.

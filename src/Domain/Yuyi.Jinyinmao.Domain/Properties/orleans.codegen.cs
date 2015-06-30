@@ -389,7 +389,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @InviteBy { get; set; }
 
-            public Dictionary<Guid,JBYAccountTranscation> @JBYAccount { get; set; }
+            public Dictionary<Guid,JBYAccountTransaction> @JBYAccount { get; set; }
 
             public List<String> @LoginNames { get; set; }
 
@@ -405,7 +405,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             public String @Salt { get; set; }
 
-            public Dictionary<Guid,SettleAccountTranscation> @SettleAccount { get; set; }
+            public Dictionary<Guid,SettleAccountTransaction> @SettleAccount { get; set; }
 
             public Boolean @Verified { get; set; }
 
@@ -427,7 +427,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("EncryptedPassword", out value)) @EncryptedPassword = (String) value;
                 if (values.TryGetValue("EncryptedPaymentPassword", out value)) @EncryptedPaymentPassword = (String) value;
                 if (values.TryGetValue("InviteBy", out value)) @InviteBy = (String) value;
-                if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (Dictionary<Guid,JBYAccountTranscation>) value;
+                if (values.TryGetValue("JBYAccount", out value)) @JBYAccount = (Dictionary<Guid,JBYAccountTransaction>) value;
                 if (values.TryGetValue("LoginNames", out value)) @LoginNames = (List<String>) value;
                 if (values.TryGetValue("Orders", out value)) @Orders = (Dictionary<Guid,Order>) value;
                 if (values.TryGetValue("OutletCode", out value)) @OutletCode = (String) value;
@@ -435,7 +435,7 @@ namespace Yuyi.Jinyinmao.Domain
                 if (values.TryGetValue("RealName", out value)) @RealName = (String) value;
                 if (values.TryGetValue("RegisterTime", out value)) @RegisterTime = (DateTime) value;
                 if (values.TryGetValue("Salt", out value)) @Salt = (String) value;
-                if (values.TryGetValue("SettleAccount", out value)) @SettleAccount = (Dictionary<Guid,SettleAccountTranscation>) value;
+                if (values.TryGetValue("SettleAccount", out value)) @SettleAccount = (Dictionary<Guid,SettleAccountTransaction>) value;
                 if (values.TryGetValue("Verified", out value)) @Verified = (Boolean) value;
                 if (values.TryGetValue("VerifiedTime", out value)) @VerifiedTime = (Nullable<DateTime>) value;
             }
@@ -494,7 +494,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.EncryptedPassword = default(String);
             this.EncryptedPaymentPassword = default(String);
             this.InviteBy = default(String);
-            this.JBYAccount = new Dictionary<Guid,JBYAccountTranscation>();
+            this.JBYAccount = new Dictionary<Guid,JBYAccountTransaction>();
             this.LoginNames = new List<String>();
             this.Orders = new Dictionary<Guid,Order>();
             this.OutletCode = default(String);
@@ -502,7 +502,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.RealName = default(String);
             this.RegisterTime = default(DateTime);
             this.Salt = default(String);
-            this.SettleAccount = new Dictionary<Guid,SettleAccountTranscation>();
+            this.SettleAccount = new Dictionary<Guid,SettleAccountTransaction>();
             this.Verified = default(Boolean);
             this.VerifiedTime = default(Nullable<DateTime>);
         }
@@ -590,7 +590,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public DateTime @StartSellTime { get; set; }
 
-            public Dictionary<Guid,JBYAccountTranscationInfo> @Transcations { get; set; }
+            public Dictionary<Guid,JBYAccountTransactionInfo> @Transactions { get; set; }
 
             public Int64 @UnitPrice { get; set; }
 
@@ -619,7 +619,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 if (values.TryGetValue("SoldOut", out value)) @SoldOut = (Boolean) value;
                 if (values.TryGetValue("SoldOutTime", out value)) @SoldOutTime = (Nullable<DateTime>) value;
                 if (values.TryGetValue("StartSellTime", out value)) @StartSellTime = (DateTime) value;
-                if (values.TryGetValue("Transcations", out value)) @Transcations = (Dictionary<Guid,JBYAccountTranscationInfo>) value;
+                if (values.TryGetValue("Transactions", out value)) @Transactions = (Dictionary<Guid,JBYAccountTransactionInfo>) value;
                 if (values.TryGetValue("UnitPrice", out value)) @UnitPrice = value is Int32 ? (Int32)value : (Int64)value;
                 if (values.TryGetValue("UpdateTime", out value)) @UpdateTime = (DateTime) value;
                 if (values.TryGetValue("ValueDateMode", out value)) @ValueDateMode = value is Int64 ? (Int32)(Int64)value : (Int32)value;
@@ -628,7 +628,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} EndSellTime={4} FinancingSumAmount={5} IssueNo={6} IssueTime={7} ProductCategory={8} ProductId={9} ProductName={10} ProductNo={11} SoldOut={12} SoldOutTime={13} StartSellTime={14} Transcations={15} UnitPrice={16} UpdateTime={17} ValueDateMode={18} Yield={19} )", @Id, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @IssueNo, @IssueTime, @ProductCategory, @ProductId, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transcations, @UnitPrice, @UpdateTime, @ValueDateMode, @Yield);
+                return System.String.Format("JBYProductState( Id={0} Agreement1={1} Agreement2={2} Args={3} EndSellTime={4} FinancingSumAmount={5} IssueNo={6} IssueTime={7} ProductCategory={8} ProductId={9} ProductName={10} ProductNo={11} SoldOut={12} SoldOutTime={13} StartSellTime={14} Transactions={15} UnitPrice={16} UpdateTime={17} ValueDateMode={18} Yield={19} )", @Id, @Agreement1, @Agreement2, @Args, @EndSellTime, @FinancingSumAmount, @IssueNo, @IssueTime, @ProductCategory, @ProductId, @ProductName, @ProductNo, @SoldOut, @SoldOutTime, @StartSellTime, @Transactions, @UnitPrice, @UpdateTime, @ValueDateMode, @Yield);
             }
         
         public JBYProductState() : 
@@ -655,7 +655,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             result["SoldOut"] = this.SoldOut;
             result["SoldOutTime"] = this.SoldOutTime;
             result["StartSellTime"] = this.StartSellTime;
-            result["Transcations"] = this.Transcations;
+            result["Transactions"] = this.Transactions;
             result["UnitPrice"] = this.UnitPrice;
             result["UpdateTime"] = this.UpdateTime;
             result["ValueDateMode"] = this.ValueDateMode;
@@ -680,7 +680,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.SoldOut = default(Boolean);
             this.SoldOutTime = default(Nullable<DateTime>);
             this.StartSellTime = default(DateTime);
-            this.Transcations = new Dictionary<Guid,JBYAccountTranscationInfo>();
+            this.Transactions = new Dictionary<Guid,JBYAccountTransactionInfo>();
             this.UnitPrice = default(Int64);
             this.UpdateTime = default(DateTime);
             this.ValueDateMode = default(Int32);
@@ -721,19 +721,19 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             public Guid @Id { get; set; }
 
-            public Dictionary<Guid,JBYAccountTranscationInfo> @WithdrawalTranscations { get; set; }
+            public Dictionary<Guid,JBYAccountTransactionInfo> @WithdrawalTransactions { get; set; }
 
             public override void SetAll(System.Collections.Generic.IDictionary<string,object> values)
             {   
                 object value;
                 if (values == null) { InitStateFields(); return; }
                 if (values.TryGetValue("Id", out value)) @Id = (Guid) value;
-                if (values.TryGetValue("WithdrawalTranscations", out value)) @WithdrawalTranscations = (Dictionary<Guid,JBYAccountTranscationInfo>) value;
+                if (values.TryGetValue("WithdrawalTransactions", out value)) @WithdrawalTransactions = (Dictionary<Guid,JBYAccountTransactionInfo>) value;
             }
 
             public override System.String ToString()
             {
-                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} WithdrawalTranscations={1} )", @Id, @WithdrawalTranscations);
+                return System.String.Format("JBYProductWithdrawalManagerState( Id={0} WithdrawalTransactions={1} )", @Id, @WithdrawalTransactions);
             }
         
         public JBYProductWithdrawalManagerState() : 
@@ -746,14 +746,14 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             System.Collections.Generic.Dictionary<string, object> result = new System.Collections.Generic.Dictionary<string, object>();
             result["Id"] = this.Id;
-            result["WithdrawalTranscations"] = this.WithdrawalTranscations;
+            result["WithdrawalTransactions"] = this.WithdrawalTransactions;
             return result;
         }
         
         private void InitStateFields()
         {
             this.Id = default(Guid);
-            this.WithdrawalTranscations = new Dictionary<Guid,JBYAccountTranscationInfo>();
+            this.WithdrawalTransactions = new Dictionary<Guid,JBYAccountTransactionInfo>();
         }
         
         [global::Orleans.CodeGeneration.CopierMethodAttribute()]

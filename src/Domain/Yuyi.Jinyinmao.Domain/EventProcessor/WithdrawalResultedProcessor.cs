@@ -33,14 +33,14 @@ namespace Yuyi.Jinyinmao.Domain.Events
         {
             await this.ProcessingEventAsync(@event, async e =>
             {
-                string message = Resources.Sms_WithdrawalResulted.FormatWith(e.WithdrawalTranscationInfo.BankCardNo.GetLast(4), e.WithdrawalTranscationInfo.Amount / 100);
+                string message = Resources.Sms_WithdrawalResulted.FormatWith(e.WithdrawalTransactionInfo.BankCardNo.GetLast(4), e.WithdrawalTransactionInfo.Amount / 100);
                 if (!await this.SmsService.SendMessageAsync(e.UserInfo.Cellphone, message))
                 {
                     throw new ApplicationException("Sms sending failed. {0}-{1}".FormatWith(e.UserInfo.Cellphone, message));
                 }
             });
 
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTranscation(e.WithdrawalTranscationInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTransaction(e.WithdrawalTransactionInfo));
 
             await base.ProcessEventAsync(@event);
         }

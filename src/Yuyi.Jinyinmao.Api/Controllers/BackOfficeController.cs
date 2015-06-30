@@ -343,7 +343,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     用户取现到账
         /// </summary>
         /// <param name="userIdentifier">用户唯一标识</param>
-        /// <param name="transcationIdentifier">交易流水唯一标识</param>
+        /// <param name="transactionIdentifier">交易流水唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">
         ///     用户编号错误
@@ -357,9 +357,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
-        [Route("Withdrawal/{userIdentifier:length(32)}-{transcationIdentifier:length(32)}")]
-        [ResponseType(typeof(SettleAccountTranscationInfoResponse))]
-        public async Task<IHttpActionResult> WithdrawalTranscationFinished(string userIdentifier, string transcationIdentifier)
+        [Route("Withdrawal/{userIdentifier:length(32)}-{transactionIdentifier:length(32)}")]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        public async Task<IHttpActionResult> WithdrawalTransactionFinished(string userIdentifier, string transactionIdentifier)
         {
             Guid userId;
             if (!Guid.TryParseExact(userIdentifier, "N", out userId))
@@ -367,13 +367,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("用户编号错误");
             }
 
-            Guid transcationId;
-            if (!Guid.TryParseExact(transcationIdentifier, "N", out transcationId))
+            Guid transactionId;
+            if (!Guid.TryParseExact(transactionIdentifier, "N", out transactionId))
             {
                 return this.BadRequest("流水编号错误");
             }
 
-            SettleAccountTranscationInfo info = await this.userService.WithdrawalResultedAsync(userId, transcationId);
+            SettleAccountTransactionInfo info = await this.userService.WithdrawalResultedAsync(userId, transactionId);
 
             if (info == null)
             {

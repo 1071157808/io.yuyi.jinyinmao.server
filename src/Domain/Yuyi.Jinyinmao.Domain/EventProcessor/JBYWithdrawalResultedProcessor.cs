@@ -31,9 +31,9 @@ namespace Yuyi.Jinyinmao.Domain.Events
         {
             await this.ProcessingEventAsync(@event, async e =>
             {
-                await DBSyncHelper.SyncJBYAccountTranscation(e.JBYAccountTranscationInfo);
+                await DBSyncHelper.SyncJBYAccountTransaction(e.JBYAccountTransactionInfo);
 
-                await DBSyncHelper.SyncSettleAccountTranscation(e.SettleAccountTranscationInfo);
+                await DBSyncHelper.SyncSettleAccountTransaction(e.SettleAccountTransactionInfo);
             });
 
             await base.ProcessEventAsync(@event);

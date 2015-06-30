@@ -79,7 +79,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">UAUTH1:请先登录</response>
         /// <response code="500"></response>
-        [Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTranscationInfoResponse))]
+        [Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> JBYInvesting(InvestingRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
@@ -126,7 +126,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI8:该产品已售罄");
             }
 
-            JBYAccountTranscationInfo info = await this.userService.InvestingAsync(new JBYInvesting
+            JBYAccountTransactionInfo info = await this.userService.InvestingAsync(new JBYInvesting
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),

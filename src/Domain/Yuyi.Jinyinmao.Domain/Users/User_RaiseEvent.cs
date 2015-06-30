@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-05  1:33 AM
+// Last Modified On : 2015-06-30  1:20 AM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -126,14 +126,14 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseDepositResultedEvent(Command command, SettleAccountTranscationInfo info, bool result, string message)
+        private async Task RaiseDepositResultedEvent(Command command, SettleAccountTransactionInfo info, bool result, string message)
         {
             DepositResulted @event = new DepositResulted
             {
                 Args = command.Args,
                 Result = result,
                 TransDesc = message,
-                TranscationInfo = info,
+                TransactionInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -162,50 +162,50 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseJBYPurchasedEvent(JBYInvesting command, JBYAccountTranscationInfo jbyTranscation, SettleAccountTranscationInfo settleTranscation)
+        private async Task RaiseJBYPurchasedEvent(JBYInvesting command, JBYAccountTransactionInfo jbyTransaction, SettleAccountTransactionInfo settleTransaction)
         {
             JBYPurchased @event = new JBYPurchased
             {
                 Args = command.Args,
-                JBYTranscationInfo = jbyTranscation,
-                SettleTranscationInfo = settleTranscation,
+                JBYTransactionInfo = jbyTransaction,
+                SettleTransactionInfo = settleTransaction,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseJBYReinvestedEvent(JBYAccountTranscationInfo jbyAccountTranscationInfo)
+        private async Task RaiseJBYReinvestedEvent(JBYAccountTransactionInfo jbyAccountTransactionInfo)
         {
             JBYReinvested @event = new JBYReinvested
             {
                 Args = new Dictionary<string, object>(),
-                TranscationInfo = jbyAccountTranscationInfo,
+                TransactionInfo = jbyAccountTransactionInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseJBYWithdrawalAcceptedEvent(JBYWithdrawal command, JBYAccountTranscationInfo info)
+        private async Task RaiseJBYWithdrawalAcceptedEvent(JBYWithdrawal command, JBYAccountTransactionInfo info)
         {
             JBYWithdrawalAccepted @event = new JBYWithdrawalAccepted
             {
                 Args = command.Args,
-                TranscationInfo = info,
+                TransactionInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseJBYWithdrawalResultedEvent(JBYAccountTranscationInfo jbyAccountTranscationInfo, SettleAccountTranscationInfo settleAccountTranscationInfo)
+        private async Task RaiseJBYWithdrawalResultedEvent(JBYAccountTransactionInfo jbyAccountTransactionInfo, SettleAccountTransactionInfo settleAccountTransactionInfo)
         {
             JBYWithdrawalResulted @event = new JBYWithdrawalResulted
             {
                 Args = new Dictionary<string, object>(),
-                JBYAccountTranscationInfo = jbyAccountTranscationInfo,
-                SettleAccountTranscationInfo = settleAccountTranscationInfo,
+                JBYAccountTransactionInfo = jbyAccountTransactionInfo,
+                SettleAccountTransactionInfo = settleAccountTransactionInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -232,15 +232,15 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Raises the order built event.
         /// </summary>
         /// <param name="orderInfo">The order information.</param>
-        /// <param name="transcationInfo">The transcation information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseOrderPaidEvent(OrderInfo orderInfo, SettleAccountTranscationInfo transcationInfo)
+        private async Task RaiseOrderPaidEvent(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
         {
             OrderPaid @event = new OrderPaid
             {
                 Args = new Dictionary<string, object>(),
                 OrderInfo = orderInfo,
-                TranscationInfo = transcationInfo
+                TransactionInfo = transactionInfo
             };
 
             await this.ProcessEventAsync(@event);
@@ -250,17 +250,17 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Raises the order repaid event.
         /// </summary>
         /// <param name="orderInfo">The order information.</param>
-        /// <param name="principalTranscationInfo">The principal transcation information.</param>
-        /// <param name="interestTranscationInfo">The interest transcation information.</param>
-        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo, SettleAccountTranscationInfo principalTranscationInfo, SettleAccountTranscationInfo interestTranscationInfo)
+        /// <param name="principalTransactionInfo">The principal transaction information.</param>
+        /// <param name="interestTransactionInfo">The interest transaction information.</param>
+        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo, SettleAccountTransactionInfo principalTransactionInfo, SettleAccountTransactionInfo interestTransactionInfo)
         {
             OrderRepaid @event = new OrderRepaid
             {
                 Args = new Dictionary<string, object>(),
-                InterestTranscationInfo = interestTranscationInfo,
+                InterestTransactionInfo = interestTransactionInfo,
                 OrderInfo = orderInfo,
-                PriIntSumAmount = principalTranscationInfo.Amount + interestTranscationInfo.Amount,
-                PrincipalTranscationInfo = principalTranscationInfo,
+                PriIntSumAmount = principalTransactionInfo.Amount + interestTransactionInfo.Amount,
+                PrincipalTransactionInfo = principalTransactionInfo,
                 RepaidTime = orderInfo.ResultTime.GetValueOrDefault(),
                 UserInfo = await this.GetUserInfoAsync()
             };
@@ -272,14 +272,14 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Raises the paying by yilian event.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <param name="transcationInfo">The transcation information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
-        private async Task RaisePayingByYilianEvent(Command command, SettleAccountTranscationInfo transcationInfo)
+        private async Task RaisePayingByYilianEvent(Command command, SettleAccountTransactionInfo transactionInfo)
         {
             PayingByYilian @event = new PayingByYilian
             {
                 Args = command.Args,
-                TranscationInfo = transcationInfo,
+                TransactionInfo = transactionInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -352,14 +352,14 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseWithdrawalAcceptedEvent(Withdrawal command, SettleAccountTranscationInfo transcation, SettleAccountTranscationInfo chargeTranscation)
+        private async Task RaiseWithdrawalAcceptedEvent(Withdrawal command, SettleAccountTransactionInfo transaction, SettleAccountTransactionInfo chargeTransaction)
         {
             WithdrawalAccepted @event = new WithdrawalAccepted
             {
                 Args = command.Args,
-                ChargeTranscation = chargeTranscation,
+                ChargeTransaction = chargeTransaction,
                 UserInfo = await this.GetUserInfoAsync(),
-                WithdrawalTranscation = transcation
+                WithdrawalTransaction = transaction
             };
 
             await this.ProcessEventAsync(@event);
@@ -368,15 +368,15 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Raises the withdrawal resulted event.
         /// </summary>
-        /// <param name="transcation">The transcation.</param>
+        /// <param name="transaction">The transaction.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseWithdrawalResultedEvent(SettleAccountTranscationInfo transcation)
+        private async Task RaiseWithdrawalResultedEvent(SettleAccountTransactionInfo transaction)
         {
             WithdrawalResulted @event = new WithdrawalResulted
             {
                 Args = new Dictionary<string, object>(),
                 UserInfo = await this.GetUserInfoAsync(),
-                WithdrawalTranscationInfo = transcation
+                WithdrawalTransactionInfo = transaction
             };
 
             await this.ProcessEventAsync(@event);

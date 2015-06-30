@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  12:59 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-24  2:21 PM
+// Last Modified On : 2015-06-30  1:19 AM
 // ***********************************************************************
 // <copyright file="UserInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -125,38 +125,38 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Gets the jby account reinvesting transcation infos asynchronous.
+        ///     Gets the jby account reinvesting transaction infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountReinvestingTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountReinvestingTransactionInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
-            return this.innerService.GetJBYAccountReinvestingTranscationInfosAsync(userId, pageIndex, pageSize);
+            return this.innerService.GetJBYAccountReinvestingTransactionInfosAsync(userId, pageIndex, pageSize);
         }
 
         /// <summary>
-        ///     Gets the jby account transcation information asynchronous.
+        ///     Gets the jby account transaction information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;JBYAccountTranscationInfo&gt;.</returns>
-        public Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public Task<JBYAccountTransactionInfo> GetJBYAccountTransactionInfoAsync(Guid userId, Guid transactionId)
         {
-            return this.innerService.GetJBYAccountTranscationInfoAsync(userId, transcationId);
+            return this.innerService.GetJBYAccountTransactionInfoAsync(userId, transactionId);
         }
 
         /// <summary>
-        ///     Gets the jby account transcation infos asynchronous.
+        ///     Gets the jby account transaction infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize)
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountTransactionInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
-            return this.innerService.GetJBYAccountTranscationInfosAsync(userId, pageIndex, pageSize);
+            return this.innerService.GetJBYAccountTransactionInfosAsync(userId, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -218,26 +218,26 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transaction information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;SettleAccountTranscationInfo&gt;.</returns>
-        public Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId)
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public Task<SettleAccountTransactionInfo> GetSettleAccountTransactionInfoAsync(Guid userId, Guid transactionId)
         {
-            return this.innerService.GetSettleAccountTranscationInfoAsync(userId, transcationId);
+            return this.innerService.GetSettleAccountTransactionInfoAsync(userId, transactionId);
         }
 
         /// <summary>
-        ///     Gets the settle account transcation infos asynchronous.
+        ///     Gets the settle account transaction infos asynchronous.
         /// </summary>
         /// <param name="useriId">The useri identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;SettleAccountTranscationInfo&gt;&gt;.</returns>
-        public Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid useriId, int pageIndex, int pageSize)
+        /// <returns>Task&lt;PaginatedList&lt;SettleAccountTransactionInfo&gt;&gt;.</returns>
+        public Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(Guid useriId, int pageIndex, int pageSize)
         {
-            return this.innerService.GetSettleAccountTranscationInfosAsync(useriId, pageIndex, pageSize);
+            return this.innerService.GetSettleAccountTransactionInfosAsync(useriId, pageIndex, pageSize);
         }
 
         /// <summary>

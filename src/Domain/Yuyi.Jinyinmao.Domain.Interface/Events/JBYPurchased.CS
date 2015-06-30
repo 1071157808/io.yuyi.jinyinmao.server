@@ -23,16 +23,16 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class JBYPurchased : Event
     {
         /// <summary>
-        ///     Gets or sets the jby transcation.
+        ///     Gets or sets the jby transaction.
         /// </summary>
-        /// <value>The jby transcation.</value>
-        public JBYAccountTranscationInfo JBYTranscationInfo { get; set; }
+        /// <value>The jby transaction.</value>
+        public JBYAccountTransactionInfo JBYTransactionInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the settle transcation.
+        ///     Gets or sets the settle transaction.
         /// </summary>
-        /// <value>The settle transcation.</value>
-        public SettleAccountTranscationInfo SettleTranscationInfo { get; set; }
+        /// <value>The settle transaction.</value>
+        public SettleAccountTransactionInfo SettleTransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the user information.

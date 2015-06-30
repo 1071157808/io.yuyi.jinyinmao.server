@@ -23,9 +23,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public interface IJBYProductWithdrawalManagerState : IEntityState
     {
         /// <summary>
-        ///     Gets or sets the withdrawal transcations.
+        ///     Gets or sets the withdrawal transactions.
         /// </summary>
-        /// <value>The withdrawal transcations.</value>
-        Dictionary<Guid, JBYAccountTranscationInfo> WithdrawalTranscations { get; set; }
+        /// <value>The withdrawal transactions.</value>
+        Dictionary<Guid, JBYAccountTransactionInfo> WithdrawalTransactions { get; set; }
     }
 }

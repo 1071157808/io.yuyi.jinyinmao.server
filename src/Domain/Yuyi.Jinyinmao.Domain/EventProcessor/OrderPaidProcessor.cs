@@ -42,7 +42,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
 
             await this.ProcessingEventAsync(@event, async e =>
             {
-                await DBSyncHelper.SyncSettleAccountTranscation(e.TranscationInfo);
+                await DBSyncHelper.SyncSettleAccountTransaction(e.TransactionInfo);
                 await DBSyncHelper.SyncOrder(e.OrderInfo);
             });
 

@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-05-27  1:20 PM
 // ***********************************************************************
-// <copyright file="SettleAccountTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="SettleAccountTransaction.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -18,9 +18,9 @@ using Yuyi.Jinyinmao.Domain.Dtos;
 namespace Yuyi.Jinyinmao.Domain
 {
     /// <summary>
-    ///     SettleAccountTranscation.
+    ///     SettleAccountTransaction.
     /// </summary>
-    public class SettleAccountTranscation
+    public class SettleAccountTransaction
     {
         /// <summary>
         ///     Gets or sets the amount.

@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-06-15  7:07 PM
 // ***********************************************************************
-// <copyright file="AccountTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="AccountTransaction.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -16,9 +16,9 @@ using System;
 namespace Yuyi.Jinyinmao.Domain.Models
 {
     /// <summary>
-    ///     AccountTranscation.
+    ///     AccountTransaction.
     /// </summary>
-    public class AccountTranscation
+    public class AccountTransaction
     {
         /// <summary>
         ///     Gets or sets the amount.
@@ -81,16 +81,16 @@ namespace Yuyi.Jinyinmao.Domain.Models
         public int TradeCode { get; set; }
 
         /// <summary>
-        ///     Gets or sets the transcation identifier.
+        ///     Gets or sets the transaction identifier.
         /// </summary>
-        /// <value>The transcation identifier.</value>
-        public string TranscationIdentifier { get; set; }
+        /// <value>The transaction identifier.</value>
+        public string TransactionIdentifier { get; set; }
 
         /// <summary>
-        ///     Gets or sets the transcation time.
+        ///     Gets or sets the transaction time.
         /// </summary>
-        /// <value>The transcation time.</value>
-        public DateTime TranscationTime { get; set; }
+        /// <value>The transaction time.</value>
+        public DateTime TransactionTime { get; set; }
 
         /// <summary>
         ///     Gets or sets the trans desc.

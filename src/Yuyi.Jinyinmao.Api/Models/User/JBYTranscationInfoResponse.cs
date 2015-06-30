@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-06-15  7:05 PM
 // ***********************************************************************
-// <copyright file="JBYTranscationInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYTransactionInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -22,9 +22,9 @@ using Yuyi.Jinyinmao.Domain.Dtos;
 namespace Yuyi.Jinyinmao.Api.Models
 {
     /// <summary>
-    ///     JBYTranscationInfoResponse.
+    ///     JBYTransactionInfoResponse.
     /// </summary>
-    public class JBYTranscationInfoResponse : IResponse
+    public class JBYTransactionInfoResponse : IResponse
     {
         /// <summary>
         ///     金额，以分为单位
@@ -59,8 +59,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     对应的钱包流水唯一标识，如果没有相对应的流水，则该值为一串0
         /// </summary>
-        [Required, JsonProperty("settleAccountTranscationId")]
-        public string SettleAccountTranscationId { get; set; }
+        [Required, JsonProperty("settleAccountTransactionId")]
+        public string SettleAccountTransactionId { get; set; }
 
         /// <summary>
         ///     交易代码
@@ -93,18 +93,18 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string TransDesc { get; set; }
     }
 
-    internal static class JBYAccountTranscationInfoEx
+    internal static class JBYAccountTransactionInfoEx
     {
-        internal static JBYTranscationInfoResponse ToResponse(this JBYAccountTranscationInfo info)
+        internal static JBYTransactionInfoResponse ToResponse(this JBYAccountTransactionInfo info)
         {
-            JBYTranscationInfoResponse response = new JBYTranscationInfoResponse
+            JBYTransactionInfoResponse response = new JBYTransactionInfoResponse
             {
                 Amount = info.Amount,
                 PredeterminedResultDate = info.PredeterminedResultDate.GetValueOrDefault(),
                 ProductIdentifier = info.ProductId.ToGuidString(),
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime.GetValueOrDefault(),
-                SettleAccountTranscationId = info.SettleAccountTranscationId.ToGuidString(),
+                SettleAccountTransactionId = info.SettleAccountTransactionId.ToGuidString(),
                 Trade = info.Trade,
                 TradeCode = info.TradeCode,
                 TransactionIdentifier = info.TransactionId.ToGuidString(),

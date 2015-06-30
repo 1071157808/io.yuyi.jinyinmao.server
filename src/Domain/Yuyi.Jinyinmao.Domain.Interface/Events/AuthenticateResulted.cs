@@ -35,7 +35,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public bool Result { get; set; }
 
         /// <summary>
-        ///     Gets or sets the transcation desc.
+        ///     Gets or sets the transaction desc.
         /// </summary>
         /// <value>The tran desc.</value>
         public string TranDesc { get; set; }

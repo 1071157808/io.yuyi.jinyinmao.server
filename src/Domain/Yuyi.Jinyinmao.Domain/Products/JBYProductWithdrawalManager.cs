@@ -34,21 +34,21 @@ namespace Yuyi.Jinyinmao.Domain.Products
         #region IJBYProductWithdrawalManager Members
 
         /// <summary>
-        ///     Builds the withdrawal transcation.
+        ///     Builds the withdrawal transaction.
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public async Task<DateTime?> BuildWithdrawalTranscationAsync(JBYAccountTranscationInfo info)
+        public async Task<DateTime?> BuildWithdrawalTransactionAsync(JBYAccountTransactionInfo info)
         {
             DailyConfig dailyConfig = GetTodayConfig();
-            JBYAccountTranscationInfo transcation;
-            if (!this.State.WithdrawalTranscations.TryGetValue(info.TransactionId, out transcation))
+            JBYAccountTransactionInfo transaction;
+            if (!this.State.WithdrawalTransactions.TryGetValue(info.TransactionId, out transaction))
             {
                 int waitingDays = (int)((this.WithdrawalAmount + info.Amount) / dailyConfig.JBYWithdrawalLimit) + 1;
 
                 DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
 
-                transcation = new JBYAccountTranscationInfo
+                transaction = new JBYAccountTransactionInfo
                 {
                     Amount = info.Amount,
                     Args = info.Args,
@@ -56,7 +56,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                     ProductId = info.ProductId,
                     ResultCode = info.ResultCode,
                     ResultTime = info.ResultTime,
-                    SettleAccountTranscationId = info.SettleAccountTranscationId,
+                    SettleAccountTransactionId = info.SettleAccountTransactionId,
                     Trade = info.Trade,
                     TradeCode = info.TradeCode,
                     TransDesc = info.TransDesc,
@@ -66,14 +66,14 @@ namespace Yuyi.Jinyinmao.Domain.Products
                     UserInfo = info.UserInfo
                 };
 
-                this.State.WithdrawalTranscations.Add(transcation.TransactionId, transcation);
+                this.State.WithdrawalTransactions.Add(transaction.TransactionId, transaction);
 
                 await this.SaveStateAsync();
 
-                this.ReloadTranscationData();
+                this.ReloadTransactionData();
             }
 
-            return transcation.PredeterminedResultDate;
+            return transaction.PredeterminedResultDate;
         }
 
         #endregion IJBYProductWithdrawalManager Members
@@ -85,9 +85,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         public override Task OnActivateAsync()
         {
-            this.RegisterTimer(o => this.RemovePastTranscationsAsync(), new object(), TimeSpan.FromMinutes(5), TimeSpan.FromHours(1));
+            this.RegisterTimer(o => this.RemovePastTransactionsAsync(), new object(), TimeSpan.FromMinutes(5), TimeSpan.FromHours(1));
 
-            this.ReloadTranscationData();
+            this.ReloadTransactionData();
 
             return base.OnActivateAsync();
         }
@@ -99,7 +99,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         public override async Task ReloadAsync()
         {
             await this.State.ReadStateAsync();
-            this.ReloadTranscationData();
+            this.ReloadTransactionData();
         }
 
         private static DailyConfig GetTodayConfig()
@@ -114,24 +114,24 @@ namespace Yuyi.Jinyinmao.Domain.Products
             return todayConfig.Item2;
         }
 
-        private void ReloadTranscationData()
+        private void ReloadTransactionData()
         {
-            this.WithdrawalAmount = this.State.WithdrawalTranscations.Values
+            this.WithdrawalAmount = this.State.WithdrawalTransactions.Values
                 .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8)).Sum(t => Convert.ToInt64(t.Amount));
         }
 
-        private async Task RemovePastTranscationsAsync()
+        private async Task RemovePastTransactionsAsync()
         {
-            List<Guid> toRemove = this.State.WithdrawalTranscations.Values
+            List<Guid> toRemove = this.State.WithdrawalTransactions.Values
                 .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8))
                 .Select(t => t.TransactionId).ToList();
 
             foreach (Guid id in toRemove)
             {
-                this.State.WithdrawalTranscations.Remove(id);
+                this.State.WithdrawalTransactions.Remove(id);
             }
 
-            this.ReloadTranscationData();
+            this.ReloadTransactionData();
 
             await this.SaveStateAsync();
         }

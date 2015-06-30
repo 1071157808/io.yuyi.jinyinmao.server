@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.AccountTranscationIdentifier)
+            this.Property(t => t.AccountTransactionIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -72,7 +72,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
             // Table & Column Mappings
             this.ToTable("Orders");
             this.Property(t => t.OrderIdentifier).HasColumnName("OrderIdentifier");
-            this.Property(t => t.AccountTranscationIdentifier).HasColumnName("AccountTranscationIdentifier");
+            this.Property(t => t.AccountTransactionIdentifier).HasColumnName("AccountTransactionIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.OrderTime).HasColumnName("OrderTime");
             this.Property(t => t.OrderNo).HasColumnName("OrderNo");

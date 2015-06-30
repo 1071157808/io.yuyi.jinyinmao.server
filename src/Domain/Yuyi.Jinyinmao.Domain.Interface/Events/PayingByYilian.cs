@@ -23,10 +23,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class PayingByYilian : Event
     {
         /// <summary>
-        ///     Gets or sets the transcation information.
+        ///     Gets or sets the transaction information.
         /// </summary>
-        /// <value>The transcation information.</value>
-        public SettleAccountTranscationInfo TranscationInfo { get; set; }
+        /// <value>The transaction information.</value>
+        public SettleAccountTransactionInfo TransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the user information.

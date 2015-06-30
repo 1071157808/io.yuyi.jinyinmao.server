@@ -21,10 +21,10 @@ namespace Yuyi.Jinyinmao.Domain.Models
     public class Order
     {
         /// <summary>
-        ///     Gets or sets the account transcation identifier.
+        ///     Gets or sets the account transaction identifier.
         /// </summary>
-        /// <value>The account transcation identifier.</value>
-        public string AccountTranscationIdentifier { get; set; }
+        /// <value>The account transaction identifier.</value>
+        public string AccountTransactionIdentifier { get; set; }
 
         /// <summary>
         ///     Gets or sets the arguments.

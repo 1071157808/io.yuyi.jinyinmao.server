@@ -43,6 +43,27 @@ namespace Yuyi.Jinyinmao.Domain
             }
         }
 
+        internal static async Task SyncJBYAccountTransaction(JBYAccountTransactionInfo info)
+        {
+            string transactionIdentifier = info.TransactionId.ToGuidString();
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                JBYTransaction transaction = await db.Query<JBYTransaction>()
+                    .FirstOrDefaultAsync(t => t.TransactionIdentifier == transactionIdentifier);
+
+                if (transaction == null)
+                {
+                    db.JBYTransactions.Add(info.ToDBModel());
+                }
+                else
+                {
+                    info.MapToDBModel(transaction);
+                }
+
+                await db.ExecuteSaveChangesAsync();
+            }
+        }
+
         internal static async Task SyncJBYProduct(JBYProductInfo info, params string[] agreements)
         {
             string productIdentifier = info.ProductId.ToGuidString();
@@ -60,67 +81,6 @@ namespace Yuyi.Jinyinmao.Domain
                 }
 
                 await db.SaveChangesAsync();
-            }
-        }
-
-        internal static async Task SyncRegularProduct(RegularProductInfo info, params string[] agreements)
-        {
-            string productIdentifier = info.ProductId.ToGuidString();
-            using (JYMDBContext db = new JYMDBContext())
-            {
-                Models.RegularProduct product = await db.Query<Models.RegularProduct>().FirstOrDefaultAsync(p => p.ProductIdentifier == productIdentifier);
-
-                if (product == null)
-                {
-                    db.RegularProducts.Add(info.ToDBModel(agreements));
-                }
-                else
-                {
-                    info.MapToDBModel(product, agreements);
-                }
-
-                await db.SaveChangesAsync();
-            }
-        }
-
-        internal static async Task SyncUser(UserInfo info)
-        {
-            string userIdentifier = info.UserId.ToGuidString();
-            using (JYMDBContext db = new JYMDBContext())
-            {
-                Models.User user = await db.Query<Models.User>().FirstOrDefaultAsync(u => u.UserIdentifier == userIdentifier);
-
-                if (user == null)
-                {
-                    db.Users.Add(info.ToDBModel());
-                }
-                else
-                {
-                    info.MapToDBModel(user);
-                }
-
-                await db.SaveChangesAsync();
-            }
-        }
-
-        internal static async Task SyncSettleAccountTranscation(SettleAccountTranscationInfo info)
-        {
-            string transcationIdentifier = info.TransactionId.ToGuidString();
-            using (JYMDBContext db = new JYMDBContext())
-            {
-                AccountTranscation transcation = await db.Query<AccountTranscation>()
-                    .FirstOrDefaultAsync(t => t.TranscationIdentifier == transcationIdentifier);
-
-                if (transcation == null)
-                {
-                    db.AccountTranscations.Add(info.ToDBModel());
-                }
-                else
-                {
-                    info.MapToDBModel(transcation);
-                }
-
-                await db.ExecuteSaveChangesAsync();
             }
         }
 
@@ -145,24 +105,64 @@ namespace Yuyi.Jinyinmao.Domain
             }
         }
 
-        internal static async Task SyncJBYAccountTranscation(JBYAccountTranscationInfo info)
+        internal static async Task SyncRegularProduct(RegularProductInfo info, params string[] agreements)
         {
-            string transcationIdentifier = info.TransactionId.ToGuidString();
+            string productIdentifier = info.ProductId.ToGuidString();
             using (JYMDBContext db = new JYMDBContext())
             {
-                JBYTranscation transcation = await db.Query<JBYTranscation>()
-                    .FirstOrDefaultAsync(t => t.TranscationIdentifier == transcationIdentifier);
+                Models.RegularProduct product = await db.Query<Models.RegularProduct>().FirstOrDefaultAsync(p => p.ProductIdentifier == productIdentifier);
 
-                if (transcation == null)
+                if (product == null)
                 {
-                    db.JBYTranscations.Add(info.ToDBModel());
+                    db.RegularProducts.Add(info.ToDBModel(agreements));
                 }
                 else
                 {
-                    info.MapToDBModel(transcation);
+                    info.MapToDBModel(product, agreements);
+                }
+
+                await db.SaveChangesAsync();
+            }
+        }
+
+        internal static async Task SyncSettleAccountTransaction(SettleAccountTransactionInfo info)
+        {
+            string transactionIdentifier = info.TransactionId.ToGuidString();
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                AccountTransaction transaction = await db.Query<AccountTransaction>()
+                    .FirstOrDefaultAsync(t => t.TransactionIdentifier == transactionIdentifier);
+
+                if (transaction == null)
+                {
+                    db.AccountTransactions.Add(info.ToDBModel());
+                }
+                else
+                {
+                    info.MapToDBModel(transaction);
                 }
 
                 await db.ExecuteSaveChangesAsync();
+            }
+        }
+
+        internal static async Task SyncUser(UserInfo info)
+        {
+            string userIdentifier = info.UserId.ToGuidString();
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                Models.User user = await db.Query<Models.User>().FirstOrDefaultAsync(u => u.UserIdentifier == userIdentifier);
+
+                if (user == null)
+                {
+                    db.Users.Add(info.ToDBModel());
+                }
+                else
+                {
+                    info.MapToDBModel(user);
+                }
+
+                await db.SaveChangesAsync();
             }
         }
     }

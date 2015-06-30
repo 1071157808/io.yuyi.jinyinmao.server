@@ -84,7 +84,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             order = new OrderInfo
             {
-                AccountTranscationId = orderInfo.AccountTranscationId,
+                AccountTransactionId = orderInfo.AccountTransactionId,
                 Args = orderInfo.Args,
                 Cellphone = orderInfo.Cellphone,
                 ExtraInterest = 0,

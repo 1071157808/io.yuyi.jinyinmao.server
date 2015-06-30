@@ -27,9 +27,9 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public UserInfo UserInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the withdrawal transcation information.
+        ///     Gets or sets the withdrawal transaction information.
         /// </summary>
-        /// <value>The withdrawal transcation information.</value>
-        public SettleAccountTranscationInfo WithdrawalTranscationInfo { get; set; }
+        /// <value>The withdrawal transaction information.</value>
+        public SettleAccountTransactionInfo WithdrawalTransactionInfo { get; set; }
     }
 }

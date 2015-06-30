@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-05-27  1:27 PM
 // ***********************************************************************
-// <copyright file="JBYTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYTransactionMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -16,24 +16,24 @@ using System.Data.Entity.ModelConfiguration;
 namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 {
     /// <summary>
-    ///     JBYTranscationMap.
+    ///     JBYTransactionMap.
     /// </summary>
-    public class JBYTranscationMap : EntityTypeConfiguration<JBYTranscation>
+    public class JBYTransactionMap : EntityTypeConfiguration<JBYTransaction>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="JBYTranscationMap" /> class.
+        ///     Initializes a new instance of the <see cref="JBYTransactionMap" /> class.
         /// </summary>
-        public JBYTranscationMap()
+        public JBYTransactionMap()
         {
             // Primary Key
-            this.HasKey(t => t.TranscationIdentifier);
+            this.HasKey(t => t.TransactionIdentifier);
 
             // Properties
-            this.Property(t => t.TranscationIdentifier)
+            this.Property(t => t.TransactionIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            this.Property(t => t.AccountTranscationIdentifier)
+            this.Property(t => t.AccountTransactionIdentifier)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -59,14 +59,14 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
                 .IsRequired();
 
             // Table & Column Mappings
-            this.ToTable("JBYTranscations");
-            this.Property(t => t.TranscationIdentifier).HasColumnName("TranscationIdentifier");
-            this.Property(t => t.AccountTranscationIdentifier).HasColumnName("AccountTranscationIdentifier");
+            this.ToTable("JBYTransactions");
+            this.Property(t => t.TransactionIdentifier).HasColumnName("TransactionIdentifier");
+            this.Property(t => t.AccountTransactionIdentifier).HasColumnName("AccountTransactionIdentifier");
             this.Property(t => t.JBYProductIdentifier).HasColumnName("JBYProductIdentifier");
             this.Property(t => t.UserIdentifier).HasColumnName("UserIdentifier");
             this.Property(t => t.TradeCode).HasColumnName("TradeCode");
             this.Property(t => t.Amount).HasColumnName("Amount");
-            this.Property(t => t.TranscationTime).HasColumnName("TranscationTime");
+            this.Property(t => t.TransactionTime).HasColumnName("TransactionTime");
             this.Property(t => t.ResultCode).HasColumnName("ResultCode");
             this.Property(t => t.ResultTime).HasColumnName("ResultTime");
             this.Property(t => t.TransDesc).HasColumnName("TransDesc");

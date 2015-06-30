@@ -29,7 +29,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(JBYWithdrawalAccepted @event)
         {
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYAccountTranscation(e.TranscationInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYAccountTransaction(e.TransactionInfo));
 
             await base.ProcessEventAsync(@event);
         }

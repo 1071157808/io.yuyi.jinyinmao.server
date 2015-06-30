@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-06-15  7:09 PM
 // ***********************************************************************
-// <copyright file="SettleAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="SettleAccountTransactionInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -20,78 +20,78 @@ using Yuyi.Jinyinmao.Domain.Models;
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
-    ///     SettleAccountTranscationEx.
+    ///     SettleAccountTransactionEx.
     /// </summary>
-    public static class SettleAccountTranscationEx
+    public static class SettleAccountTransactionEx
     {
         /// <summary>
         ///     To the information.
         /// </summary>
-        /// <param name="transcation">The transcation.</param>
-        /// <returns>SettleAccountTranscationInfo.</returns>
-        public static SettleAccountTranscationInfo ToInfo(this SettleAccountTranscation transcation)
+        /// <param name="transaction">The transaction.</param>
+        /// <returns>SettleAccountTransactionInfo.</returns>
+        public static SettleAccountTransactionInfo ToInfo(this SettleAccountTransaction transaction)
         {
-            return new SettleAccountTranscationInfo
+            return new SettleAccountTransactionInfo
             {
-                Amount = transcation.Amount,
-                Args = transcation.Args,
-                BankCardNo = transcation.BankCardNo,
-                ChannelCode = transcation.ChannelCode,
-                OrderId = transcation.OrderId,
-                ResultCode = transcation.ResultCode,
-                ResultTime = transcation.ResultTime,
-                SequenceNo = transcation.SequenceNo,
-                Trade = transcation.Trade,
-                TradeCode = transcation.TradeCode,
-                TransactionId = transcation.TransactionId,
-                TransactionTime = transcation.TransactionTime,
-                TransDesc = transcation.TransDesc,
-                UserId = transcation.UserId,
-                UserInfo = transcation.UserInfo
+                Amount = transaction.Amount,
+                Args = transaction.Args,
+                BankCardNo = transaction.BankCardNo,
+                ChannelCode = transaction.ChannelCode,
+                OrderId = transaction.OrderId,
+                ResultCode = transaction.ResultCode,
+                ResultTime = transaction.ResultTime,
+                SequenceNo = transaction.SequenceNo,
+                Trade = transaction.Trade,
+                TradeCode = transaction.TradeCode,
+                TransactionId = transaction.TransactionId,
+                TransactionTime = transaction.TransactionTime,
+                TransDesc = transaction.TransDesc,
+                UserId = transaction.UserId,
+                UserInfo = transaction.UserInfo
             };
         }
     }
 
     /// <summary>
-    ///     SettleAccountTranscationInfoEx.
+    ///     SettleAccountTransactionInfoEx.
     /// </summary>
-    public static class SettleAccountTranscationInfoEx
+    public static class SettleAccountTransactionInfoEx
     {
         /// <summary>
         ///     Maps to database model.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <param name="transcationModel">The transcation model.</param>
-        public static void MapToDBModel(this SettleAccountTranscationInfo info, AccountTranscation transcationModel)
+        /// <param name="transactionModel">The transaction model.</param>
+        public static void MapToDBModel(this SettleAccountTransactionInfo info, AccountTransaction transactionModel)
         {
-            Dictionary<string, object> i = BuildAccountTranscationModelInfo();
+            Dictionary<string, object> i = BuildAccountTransactionModelInfo();
 
-            transcationModel.Amount = info.Amount;
-            transcationModel.Args = info.Args.ToJson();
-            transcationModel.BankCardNo = info.BankCardNo;
-            transcationModel.ChannelCode = info.ChannelCode;
-            transcationModel.Info = i.ToJson();
-            transcationModel.OrderIdentifier = info.OrderId.ToGuidString();
-            transcationModel.ResultCode = info.ResultCode;
-            transcationModel.ResultTime = info.ResultTime;
-            transcationModel.SequenceNo = info.SequenceNo;
-            transcationModel.TradeCode = info.TradeCode;
-            transcationModel.TransDesc = info.TransDesc;
-            transcationModel.TranscationTime = info.TransactionTime;
-            transcationModel.UserIdentifier = info.UserId.ToGuidString();
-            transcationModel.UserInfo = info.UserInfo.ToJson();
+            transactionModel.Amount = info.Amount;
+            transactionModel.Args = info.Args.ToJson();
+            transactionModel.BankCardNo = info.BankCardNo;
+            transactionModel.ChannelCode = info.ChannelCode;
+            transactionModel.Info = i.ToJson();
+            transactionModel.OrderIdentifier = info.OrderId.ToGuidString();
+            transactionModel.ResultCode = info.ResultCode;
+            transactionModel.ResultTime = info.ResultTime;
+            transactionModel.SequenceNo = info.SequenceNo;
+            transactionModel.TradeCode = info.TradeCode;
+            transactionModel.TransDesc = info.TransDesc;
+            transactionModel.TransactionTime = info.TransactionTime;
+            transactionModel.UserIdentifier = info.UserId.ToGuidString();
+            transactionModel.UserInfo = info.UserInfo.ToJson();
         }
 
         /// <summary>
         ///     To the database model.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <returns>Models.AccountTranscation.</returns>
-        public static AccountTranscation ToDBModel(this SettleAccountTranscationInfo info)
+        /// <returns>Models.AccountTransaction.</returns>
+        public static AccountTransaction ToDBModel(this SettleAccountTransactionInfo info)
         {
-            Dictionary<string, object> i = BuildAccountTranscationModelInfo();
+            Dictionary<string, object> i = BuildAccountTransactionModelInfo();
 
-            return new AccountTranscation
+            return new AccountTransaction
             {
                 Amount = info.Amount,
                 Args = info.Args.ToJson(),
@@ -104,14 +104,14 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 SequenceNo = info.SequenceNo,
                 TradeCode = info.TradeCode,
                 TransDesc = info.TransDesc,
-                TranscationIdentifier = info.TransactionId.ToGuidString(),
-                TranscationTime = info.TransactionTime,
+                TransactionIdentifier = info.TransactionId.ToGuidString(),
+                TransactionTime = info.TransactionTime,
                 UserIdentifier = info.UserId.ToGuidString(),
                 UserInfo = info.UserInfo.ToJson()
             };
         }
 
-        private static Dictionary<string, object> BuildAccountTranscationModelInfo()
+        private static Dictionary<string, object> BuildAccountTransactionModelInfo()
         {
             Dictionary<string, object> i = new Dictionary<string, object>();
             return i;
@@ -119,10 +119,10 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     }
 
     /// <summary>
-    ///     SettleAccountTranscationInfo.
+    ///     SettleAccountTransactionInfo.
     /// </summary>
     [Immutable]
-    public class SettleAccountTranscationInfo
+    public class SettleAccountTransactionInfo
     {
         /// <summary>
         ///     Gets or sets the amount.

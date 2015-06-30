@@ -86,30 +86,30 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId);
 
         /// <summary>
-        ///     Gets the jby account reinvesting transcation infos asynchronous.
+        ///     Gets the jby account reinvesting transaction infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountReinvestingTranscationInfosAsync(Guid userId, int pageIndex, int pageSize);
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountReinvestingTransactionInfosAsync(Guid userId, int pageIndex, int pageSize);
 
         /// <summary>
-        ///     Gets the jby account transcation information asynchronous.
+        ///     Gets the jby account transaction information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        Task<JBYAccountTranscationInfo> GetJBYAccountTranscationInfoAsync(Guid userId, Guid transcationId);
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;TransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> GetJBYAccountTransactionInfoAsync(Guid userId, Guid transactionId);
 
         /// <summary>
-        ///     Gets the jby account transcation infos asynchronous.
+        ///     Gets the jby account transaction infos asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<JBYAccountTranscationInfo>> GetJBYAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize);
+        /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
+        Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountTransactionInfosAsync(Guid userId, int pageIndex, int pageSize);
 
         /// <summary>
         ///     Gets the order information asynchronous.
@@ -148,21 +148,21 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId);
 
         /// <summary>
-        ///     Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transaction information asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="transcationId">The transcation identifier.</param>
-        /// <returns>Task&lt;TranscationInfo&gt;.</returns>
-        Task<SettleAccountTranscationInfo> GetSettleAccountTranscationInfoAsync(Guid userId, Guid transcationId);
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;TransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> GetSettleAccountTransactionInfoAsync(Guid userId, Guid transactionId);
 
         /// <summary>
-        ///     Gets the settle account transcation information asynchronous.
+        ///     Gets the settle account transaction information asynchronous.
         /// </summary>
         /// <param name="userId">The useri identifier.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <returns>Task&lt;IPaginatedList&lt;TranscationInfo&gt;&gt;.</returns>
-        Task<PaginatedList<SettleAccountTranscationInfo>> GetSettleAccountTranscationInfosAsync(Guid userId, int pageIndex, int pageSize);
+        /// <returns>Task&lt;IPaginatedList&lt;TransactionInfo&gt;&gt;.</returns>
+        Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(Guid userId, int pageIndex, int pageSize);
 
         /// <summary>
         ///     Gets the sign up user identifier information asynchronous.

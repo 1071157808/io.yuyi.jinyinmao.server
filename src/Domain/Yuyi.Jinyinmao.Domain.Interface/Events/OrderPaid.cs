@@ -29,10 +29,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public OrderInfo OrderInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the transcation.
+        ///     Gets or sets the transaction.
         /// </summary>
-        /// <value>The transcation.</value>
-        public SettleAccountTranscationInfo TranscationInfo { get; set; }
+        /// <value>The transaction.</value>
+        public SettleAccountTransactionInfo TransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the user information.

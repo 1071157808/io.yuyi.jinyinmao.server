@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-25  11:56 AM
+// Last Modified On : 2015-06-30  1:20 AM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -56,41 +56,41 @@ namespace Yuyi.Jinyinmao.Domain
             DateTime now = DateTime.UtcNow.AddHours(8);
             DateTime today = now.Date;
 
-            foreach (JBYAccountTranscation transcation in this.State.JBYAccount.Values)
+            foreach (JBYAccountTransaction transaction in this.State.JBYAccount.Values)
             {
-                if (transcation.Trade == Trade.Debit)
+                if (transaction.Trade == Trade.Debit)
                 {
-                    debitTransAmount += transcation.Amount;
+                    debitTransAmount += transaction.Amount;
 
-                    if (transcation.ResultCode > 0)
+                    if (transaction.ResultCode > 0)
                     {
-                        debitedTransAmount += transcation.Amount;
+                        debitedTransAmount += transaction.Amount;
 
-                        if (transcation.ProductId == SpecialIdHelper.ReinvestingJBYTranscationProductId)
+                        if (transaction.ProductId == SpecialIdHelper.ReinvestingJBYTransactionProductId)
                         {
-                            jBYTotalInterest += transcation.Amount;
+                            jBYTotalInterest += transaction.Amount;
                         }
 
-                        if (transcation.ResultTime.GetValueOrDefault().Date == today)
+                        if (transaction.ResultTime.GetValueOrDefault().Date == today)
                         {
-                            todayInvestingAmount += transcation.Amount;
+                            todayInvestingAmount += transaction.Amount;
                         }
                     }
                 }
                 else
                 {
-                    if (transcation.ResultCode > 0)
+                    if (transaction.ResultCode > 0)
                     {
-                        creditedTransAmount += transcation.Amount;
+                        creditedTransAmount += transaction.Amount;
                     }
-                    else if (transcation.ResultCode == 0)
+                    else if (transaction.ResultCode == 0)
                     {
-                        creditingTransAmount += transcation.Amount;
+                        creditingTransAmount += transaction.Amount;
                     }
 
-                    if (transcation.TransactionTime >= todayDate && transcation.TransactionTime < todayDate.AddDays(1) && transcation.ResultCode >= 0)
+                    if (transaction.TransactionTime >= todayDate && transaction.TransactionTime < todayDate.AddDays(1) && transaction.ResultCode >= 0)
                     {
-                        todayJBYWithdrawalAmount += transcation.Amount;
+                        todayJBYWithdrawalAmount += transaction.Amount;
                     }
                 }
             }
@@ -104,7 +104,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.TodayJBYWithdrawalAmount = todayJBYWithdrawalAmount;
 
             this.JBYAccrualAmount = this.GetJBYAccrualAmount(DateTime.UtcNow.AddHours(8));
-            JBYAccountTranscation lastReinvesting = this.State.JBYAccount.Values.Where(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0)
+            JBYAccountTransaction lastReinvesting = this.State.JBYAccount.Values.Where(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0)
                 .OrderByDescending(t => t.ResultTime.GetValueOrDefault(DateTime.MinValue)).FirstOrDefault();
 
             // ReSharper disable once MergeConditionalExpression
@@ -156,41 +156,41 @@ namespace Yuyi.Jinyinmao.Domain
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
             DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1).Date;
 
-            foreach (SettleAccountTranscation transcation in this.State.SettleAccount.Values)
+            foreach (SettleAccountTransaction transaction in this.State.SettleAccount.Values)
             {
-                long amount = transcation.Amount;
-                string bankCardNo = transcation.BankCardNo;
-                if (transcation.Trade == Trade.Debit)
+                long amount = transaction.Amount;
+                string bankCardNo = transaction.BankCardNo;
+                if (transaction.Trade == Trade.Debit)
                 {
-                    if (transcation.ResultCode > 0)
+                    if (transaction.ResultCode > 0)
                     {
                         settleAccountBalance += amount;
                         bankCards[bankCardNo] += amount;
                     }
-                    else if (transcation.ResultCode == 0)
+                    else if (transaction.ResultCode == 0)
                     {
                         debitingSettleAccountAmount += amount;
                     }
                 }
-                else if (transcation.Trade == Trade.Credit && transcation.ResultCode >= 0)
+                else if (transaction.Trade == Trade.Credit && transaction.ResultCode >= 0)
                 {
                     settleAccountBalance -= amount;
                     bankCards[bankCardNo] -= amount;
 
-                    if (transcation.TradeCode == TradeCodeHelper.TC1005052001)
+                    if (transaction.TradeCode == TradeCodeHelper.TC1005052001)
                     {
-                        if (transcation.TransactionTime >= todayDate && transcation.TransactionTime < todayDate.AddDays(1))
+                        if (transaction.TransactionTime >= todayDate && transaction.TransactionTime < todayDate.AddDays(1))
                         {
                             todayWithdrawalCount += 1;
                         }
 
-                        if (transcation.TransactionTime >= monthDate && transcation.TransactionTime < monthDate.AddMonths(1))
+                        if (transaction.TransactionTime >= monthDate && transaction.TransactionTime < monthDate.AddMonths(1))
                         {
                             monthWithdrawalCount += 1;
                         }
                     }
 
-                    if (transcation.ResultCode == 0)
+                    if (transaction.ResultCode == 0)
                     {
                         creditingSettleAccountAmount += amount;
                     }

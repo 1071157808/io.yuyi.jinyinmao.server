@@ -23,10 +23,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class WithdrawalAccepted : Event
     {
         /// <summary>
-        ///     Gets or sets the charge transcation.
+        ///     Gets or sets the charge transaction.
         /// </summary>
-        /// <value>The charge transcation.</value>
-        public SettleAccountTranscationInfo ChargeTranscation { get; set; }
+        /// <value>The charge transaction.</value>
+        public SettleAccountTransactionInfo ChargeTransaction { get; set; }
 
         /// <summary>
         /// Gets or sets the user information.
@@ -35,9 +35,9 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public UserInfo UserInfo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the withdrawal transcation.
+        ///     Gets or sets the withdrawal transaction.
         /// </summary>
-        /// <value>The withdrawal transcation.</value>
-        public SettleAccountTranscationInfo WithdrawalTranscation { get; set; }
+        /// <value>The withdrawal transaction.</value>
+        public SettleAccountTransactionInfo WithdrawalTransaction { get; set; }
     }
 }

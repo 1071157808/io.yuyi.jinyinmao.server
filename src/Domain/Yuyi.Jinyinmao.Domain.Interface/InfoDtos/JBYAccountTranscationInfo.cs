@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-06-15  6:46 PM
 // ***********************************************************************
-// <copyright file="JBYAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYAccountTransactionInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -20,76 +20,76 @@ using Yuyi.Jinyinmao.Domain.Models;
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
     /// <summary>
-    ///     JBYAccountTranscationEx.
+    ///     JBYAccountTransactionEx.
     /// </summary>
-    public static class JBYAccountTranscationEx
+    public static class JBYAccountTransactionEx
     {
         /// <summary>
         ///     To the information.
         /// </summary>
-        /// <param name="transcation">The transcation.</param>
-        /// <returns>JBYAccountTranscationInfo.</returns>
-        public static JBYAccountTranscationInfo ToInfo(this JBYAccountTranscation transcation)
+        /// <param name="transaction">The transaction.</param>
+        /// <returns>JBYAccountTransactionInfo.</returns>
+        public static JBYAccountTransactionInfo ToInfo(this JBYAccountTransaction transaction)
         {
-            return new JBYAccountTranscationInfo
+            return new JBYAccountTransactionInfo
             {
-                Amount = transcation.Amount,
-                Args = transcation.Args,
-                PredeterminedResultDate = transcation.PredeterminedResultDate,
-                ProductId = transcation.ProductId,
-                ResultCode = transcation.ResultCode,
-                ResultTime = transcation.ResultTime,
-                SettleAccountTranscationId = transcation.SettleAccountTranscationId,
-                Trade = transcation.Trade,
-                TradeCode = transcation.TradeCode,
-                TransactionId = transcation.TransactionId,
-                TransactionTime = transcation.TransactionTime,
-                TransDesc = transcation.TransDesc,
-                UserId = transcation.UserId,
-                UserInfo = transcation.UserInfo
+                Amount = transaction.Amount,
+                Args = transaction.Args,
+                PredeterminedResultDate = transaction.PredeterminedResultDate,
+                ProductId = transaction.ProductId,
+                ResultCode = transaction.ResultCode,
+                ResultTime = transaction.ResultTime,
+                SettleAccountTransactionId = transaction.SettleAccountTransactionId,
+                Trade = transaction.Trade,
+                TradeCode = transaction.TradeCode,
+                TransactionId = transaction.TransactionId,
+                TransactionTime = transaction.TransactionTime,
+                TransDesc = transaction.TransDesc,
+                UserId = transaction.UserId,
+                UserInfo = transaction.UserInfo
             };
         }
     }
 
     /// <summary>
     /// </summary>
-    public static class JBYAccountTranscationInfoEx
+    public static class JBYAccountTransactionInfoEx
     {
         /// <summary>
         ///     Maps to database model.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <param name="transcationModel">The transcation model.</param>
-        public static void MapToDBModel(this JBYAccountTranscationInfo info, JBYTranscation transcationModel)
+        /// <param name="transactionModel">The transaction model.</param>
+        public static void MapToDBModel(this JBYAccountTransactionInfo info, JBYTransaction transactionModel)
         {
-            Dictionary<string, object> i = BuidJBYTranscationModelInfo(info);
+            Dictionary<string, object> i = BuidJBYTransactionModelInfo(info);
 
-            transcationModel.AccountTranscationIdentifier = info.SettleAccountTranscationId.ToGuidString();
-            transcationModel.Amount = info.Amount;
-            transcationModel.Args = info.Args.ToJson();
-            transcationModel.Info = i.ToJson();
-            transcationModel.JBYProductIdentifier = info.ProductId.ToGuidString();
-            transcationModel.ResultCode = info.ResultCode;
-            transcationModel.ResultTime = info.ResultTime;
-            transcationModel.TradeCode = info.TradeCode;
-            transcationModel.TranscationTime = info.TransactionTime;
-            transcationModel.TransDesc = info.TransDesc;
-            transcationModel.UserIdentifier = info.UserId.ToGuidString();
-            transcationModel.UserInfo = info.UserInfo.ToJson();
+            transactionModel.AccountTransactionIdentifier = info.SettleAccountTransactionId.ToGuidString();
+            transactionModel.Amount = info.Amount;
+            transactionModel.Args = info.Args.ToJson();
+            transactionModel.Info = i.ToJson();
+            transactionModel.JBYProductIdentifier = info.ProductId.ToGuidString();
+            transactionModel.ResultCode = info.ResultCode;
+            transactionModel.ResultTime = info.ResultTime;
+            transactionModel.TradeCode = info.TradeCode;
+            transactionModel.TransactionTime = info.TransactionTime;
+            transactionModel.TransDesc = info.TransDesc;
+            transactionModel.UserIdentifier = info.UserId.ToGuidString();
+            transactionModel.UserInfo = info.UserInfo.ToJson();
         }
 
         /// <summary>
         ///     To the database model.
         /// </summary>
         /// <param name="info">The information.</param>
-        /// <returns>JBYTranscation.</returns>
-        public static JBYTranscation ToDBModel(this JBYAccountTranscationInfo info)
+        /// <returns>JBYTransaction.</returns>
+        public static JBYTransaction ToDBModel(this JBYAccountTransactionInfo info)
         {
-            Dictionary<string, object> i = BuidJBYTranscationModelInfo(info);
+            Dictionary<string, object> i = BuidJBYTransactionModelInfo(info);
 
-            return new JBYTranscation
+            return new JBYTransaction
             {
-                AccountTranscationIdentifier = info.SettleAccountTranscationId.ToGuidString(),
+                AccountTransactionIdentifier = info.SettleAccountTransactionId.ToGuidString(),
                 Amount = info.Amount,
                 Args = info.Args.ToJson(),
                 Info = i.ToJson(),
@@ -97,15 +97,15 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
                 ResultCode = info.ResultCode,
                 ResultTime = info.ResultTime,
                 TradeCode = info.TradeCode,
-                TranscationIdentifier = info.TransactionId.ToGuidString(),
-                TranscationTime = info.TransactionTime,
+                TransactionIdentifier = info.TransactionId.ToGuidString(),
+                TransactionTime = info.TransactionTime,
                 TransDesc = info.TransDesc,
                 UserIdentifier = info.UserId.ToGuidString(),
                 UserInfo = info.UserInfo.ToJson()
             };
         }
 
-        private static Dictionary<string, object> BuidJBYTranscationModelInfo(JBYAccountTranscationInfo info)
+        private static Dictionary<string, object> BuidJBYTransactionModelInfo(JBYAccountTransactionInfo info)
         {
             Dictionary<string, object> i = new Dictionary<string, object>
             {
@@ -116,10 +116,10 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     }
 
     /// <summary>
-    ///     JBYAccountTranscationInfo.
+    ///     JBYAccountTransactionInfo.
     /// </summary>
     [Immutable]
-    public class JBYAccountTranscationInfo
+    public class JBYAccountTransactionInfo
     {
         /// <summary>
         ///     Gets or sets the amount.
@@ -158,10 +158,10 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public DateTime? ResultTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the settle account transcation identifier.
+        ///     Gets or sets the settle account transaction identifier.
         /// </summary>
-        /// <value>The settle account transcation identifier.</value>
-        public Guid SettleAccountTranscationId { get; set; }
+        /// <value>The settle account transaction identifier.</value>
+        public Guid SettleAccountTransactionId { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade.

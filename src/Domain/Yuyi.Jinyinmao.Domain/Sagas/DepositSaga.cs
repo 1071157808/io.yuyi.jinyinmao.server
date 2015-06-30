@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:15 PM
+// Last Modified On : 2015-06-30  1:19 AM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -216,18 +216,18 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         {
             if (this.State.InitData.PayByYilianCommand != null)
             {
-                Tuple<UserInfo, SettleAccountTranscationInfo, BankCardInfo> info = await this.User.DepositAsync(this.State.InitData.PayByYilianCommand);
+                Tuple<UserInfo, SettleAccountTransactionInfo, BankCardInfo> info = await this.User.DepositAsync(this.State.InitData.PayByYilianCommand);
 
                 UserInfo userInfo = info.Item1;
-                SettleAccountTranscationInfo transcationInfo = info.Item2;
+                SettleAccountTransactionInfo transactionInfo = info.Item2;
                 BankCardInfo bankCardInfo = info.Item3;
 
-                if (transcationInfo != null)
+                if (transactionInfo != null)
                 {
-                    PaymentRequestParameter parameter = BuildRequestParameter(transcationInfo.TransactionId.ToGuidString(), transcationInfo.SequenceNo,
-                        bankCardInfo.CityName, transcationInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
+                    PaymentRequestParameter parameter = BuildRequestParameter(transactionInfo.TransactionId.ToGuidString(), transactionInfo.SequenceNo,
+                        bankCardInfo.CityName, transactionInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName,
                         (int)userInfo.Credential, userInfo.CredentialNo, bankCardInfo.Cellphone,
-                        userInfo.UserId.ToGuidString(), transcationInfo.Amount);
+                        userInfo.UserId.ToGuidString(), transactionInfo.Amount);
                     this.Info.Add("PayByYilian-Request-{0}".FormatWith(DateTime.UtcNow), parameter);
 
                     YilianRequestResult result = await this.YilianService.PaymentRequestAsync(parameter);

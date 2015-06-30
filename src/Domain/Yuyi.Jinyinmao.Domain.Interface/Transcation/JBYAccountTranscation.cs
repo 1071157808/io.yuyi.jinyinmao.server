@@ -6,7 +6,7 @@
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-05-27  1:25 PM
 // ***********************************************************************
-// <copyright file="JBYAccountTranscation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYAccountTransaction.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -18,9 +18,9 @@ using Yuyi.Jinyinmao.Domain.Dtos;
 namespace Yuyi.Jinyinmao.Domain
 {
     /// <summary>
-    ///     JBYAccountTranscation.
+    ///     JBYAccountTransaction.
     /// </summary>
-    public class JBYAccountTranscation
+    public class JBYAccountTransaction
     {
         /// <summary>
         ///     Gets or sets the amount.
@@ -59,10 +59,10 @@ namespace Yuyi.Jinyinmao.Domain
         public DateTime? ResultTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the settle account transcation identifier.
+        ///     Gets or sets the settle account transaction identifier.
         /// </summary>
-        /// <value>The settle account transcation identifier.</value>
-        public Guid SettleAccountTranscationId { get; set; }
+        /// <value>The settle account transaction identifier.</value>
+        public Guid SettleAccountTransactionId { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade.
