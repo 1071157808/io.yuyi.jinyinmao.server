@@ -591,6 +591,16 @@ CREATE INDEX [IN_Cellphone_Type_Verified] ON [dbo].[VeriCodes]
 ([Cellphone] ASC, [Type] ASC, [Verified] ASC) 
 GO
 
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'PrincipalVolumes')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[PrincipalVolumes]
+GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[PrincipalVolumes] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [UserIdentifier] varchar(50) COLLATE Chinese_PRC_CI_AS NOT NULL ,

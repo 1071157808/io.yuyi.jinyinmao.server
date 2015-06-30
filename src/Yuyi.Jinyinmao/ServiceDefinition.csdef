@@ -38,7 +38,7 @@
       <Import moduleName="RemoteAccess" />
     </Imports>
   </WebRole>
-  <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Standard_D12">
+  <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Standard_D4">
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
       <Setting name="ServiceBusConnectionString" />
