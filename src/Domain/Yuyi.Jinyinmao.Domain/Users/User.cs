@@ -2,9 +2,9 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-27  7:39 PM
-// 
+//
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-30  1:20 AM
+// Last Modified On : 2015-07-01  3:12 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -150,10 +150,6 @@ namespace Yuyi.Jinyinmao.Domain
             if (!this.State.Verified)
             {
                 this.BeginProcessCommandAsync(command);
-
-                this.State.RealName = command.RealName;
-                this.State.Credential = command.Credential;
-                this.State.CredentialNo = command.CredentialNo;
 
                 await this.SaveStateAsync();
             }
@@ -324,7 +320,7 @@ namespace Yuyi.Jinyinmao.Domain
                 });
             }
 
-            this.PasswordErrorCount += 1;
+            this.PaymentPasswordErrorCount += 1;
 
             return Task.FromResult(new CheckPaymentPasswordResult
             {
@@ -1331,7 +1327,7 @@ namespace Yuyi.Jinyinmao.Domain
             return info;
         }
 
-        #endregion
+        #endregion IUser Members
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.

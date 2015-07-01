@@ -4,7 +4,7 @@
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  6:26 PM
+// Last Modified On : 2015-07-01  3:08 PM
 // ***********************************************************************
 // <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,6 +19,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Azure;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -99,7 +100,7 @@ namespace Yuyi.Jinyinmao.Service
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = e.GetExceptionString();
             }
 
             return new YilianRequestResult { Message = message, Result = false, ResponseString = responseString };
@@ -139,7 +140,7 @@ namespace Yuyi.Jinyinmao.Service
             }
             catch (Exception e)
             {
-                message = e.Message;
+                message = e.GetExceptionString();
             }
 
             return new YilianRequestResult { Message = message, Result = false, ResponseString = responseString };

@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-30  1:19 AM
+// Last Modified On : 2015-07-01  4:08 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -190,8 +190,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                 {
                     string sequenceNo = await SequenceNoHelper.GetSequenceNoAsync();
                     AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, this.State.InitData.AuthenticateCommand.CityName,
-                        this.State.InitData.AuthenticateCommand.BankCardNo, userInfo.RealName, this.State.InitData.AuthenticateCommand.BankName, (int)userInfo.Credential,
-                        userInfo.CredentialNo, this.State.InitData.AuthenticateCommand.Cellphone, userInfo.UserId.ToGuidString());
+                        this.State.InitData.AuthenticateCommand.BankCardNo, this.State.InitData.AuthenticateCommand.RealName, this.State.InitData.AuthenticateCommand.BankName, (int)this.State.InitData.AuthenticateCommand.Credential,
+                        this.State.InitData.AuthenticateCommand.CredentialNo, this.State.InitData.AuthenticateCommand.Cellphone, userInfo.UserId.ToGuidString());
                     this.Info.Add("Auth-Request-{0}".FormatWith(DateTime.UtcNow), parameter);
 
                     YilianRequestResult result = await this.YilianService.AuthRequestAsync(parameter);
