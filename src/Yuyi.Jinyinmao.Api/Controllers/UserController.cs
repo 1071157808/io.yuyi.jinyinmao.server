@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  2:49 AM
+// Last Modified On : 2015-07-01  11:09 PM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -46,13 +46,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     用户未登录会返回401
         /// </remarks>
-        /// <response code="200">认证成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
         ///     UG:无法获取用户信息
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route(""), CookieAuthorize, ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> Get()

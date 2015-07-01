@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-29  10:36 AM
+// Last Modified On : 2015-07-01  10:59 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -78,7 +78,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         protected Dictionary<string, object> BuildArgs(Dictionary<string, object> argsToAdd = null)
         {
             List<KeyValuePair<string, string>> args = this.Request.GetQueryNameValuePairs().ToList();
-            args = args.Where(kv => kv.Key.Contains("password", StringComparison.OrdinalIgnoreCase)).ToList();
+            args = args.Where(kv => !kv.Key.Contains("password", StringComparison.OrdinalIgnoreCase)).ToList();
             args.Add(new KeyValuePair<string, string>("Ip", HttpUtils.GetUserHostAddress(this.Request)));
             args.Add(new KeyValuePair<string, string>("UserAgent", HttpUtils.GetUserAgent(this.Request)));
 

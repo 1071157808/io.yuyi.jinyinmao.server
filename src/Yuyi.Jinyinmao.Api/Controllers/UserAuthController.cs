@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-29  12:28 PM
+// Last Modified On : 2015-07-01  11:53 PM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     实名认证请求
         /// </param>
-        /// <response code="200">认证成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -151,7 +151,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="cellphone">
         ///     手机号[Required]
         /// </param>
-        /// <response code="200">注册成功</response>
+        /// <response code="200"></response>
         /// <response code="400">UACC:手机号格式不正确</response>
         /// <response code="500"></response>
         [HttpGet, Route("CheckCellphone"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(CheckCellphoneResult))]
@@ -177,7 +177,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     请求
         /// </param>
-        /// <response code="200">密码正确</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式错误
         ///     <br />
@@ -185,7 +185,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("CheckPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> CheckPaymentPassword(CheckPaymentPasswordRequest request)
@@ -202,23 +202,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     清楚未认证成功的身份信息
-        /// </summary>
-        /// <remarks>
-        ///     调用该接口会清楚未认证的身份信息和银行卡信息，清楚了的信心之后后收到的认证通过结果也会被忽略
-        /// </remarks>
-        /// <response code="200"></response>
-        /// <response code="401">UAUTH1:请先登录</response>
-        /// <response code="500"></response>
-        [HttpGet, Route("ClearUnauthenticatedInfo"), CookieAuthorize]
-        public async Task<IHttpActionResult> ClearUnauthenticatedInfo()
-        {
-            await this.userService.ClearUnauthenticatedInfo(this.CurrentUser.Id);
-
-            return this.Ok();
-        }
-
-        /// <summary>
         ///     重置登录密码
         /// </summary>
         /// <remarks>
@@ -227,7 +210,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     重置登录密码请求
         /// </param>
-        /// <response code="200">重置成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -235,7 +218,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UARLP2:手机号码不存在，密码修改失败
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
@@ -273,7 +256,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     重置支付密码请求
         /// </param>
-        /// <response code="200">重置成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -283,7 +266,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UARPP3:支付密码不能与登录密码一致，请选择新的支付密码
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
@@ -328,7 +311,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     设置支付密码请求
         /// </param>
-        /// <response code="200">重置成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -336,7 +319,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UASPP2: 支付密码已经设置，请直接使用
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
@@ -374,7 +357,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     登录请求
         /// </param>
-        /// <response code="200">登录成功</response>
+        /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="500"></response>
         [Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
@@ -415,7 +398,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     注册请求
         /// </param>
-        /// <response code="200">注册成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
