@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  11:46 AM
+// Last Modified On : 2015-07-03  4:19 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,6 +20,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Tracing;
+using System.Web.Security;
 using Moe.AspNet.Utility;
 using Moe.Lib;
 using Orleans;
@@ -134,7 +135,29 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <returns>CurrentUser.</returns>
         private CurrentUser GetCurrentUser()
         {
-            IPrincipal principal = this.User;
+            IPrincipal principal = null;
+            IEnumerable<string> header;
+            if (this.Request.Headers.TryGetValues("X-JYM-AUTH", out header))
+            {
+                string tokenValue = header.FirstOrDefault();
+                if (tokenValue.IsNotNullOrEmpty())
+                {
+                    try
+                    {
+                        FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(tokenValue);
+                        if (ticket != null) principal = new GenericPrincipal(new GenericIdentity(ticket.Name), null);
+                    }
+                    catch (Exception)
+                    {
+                        // ignore
+                    }
+                }
+            }
+
+            if (principal == null)
+            {
+                principal = this.User;
+            }
 
             if (principal?.Identity == null || !principal.Identity.IsAuthenticated)
             {

@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-02  9:24 PM
+// Last Modified On : 2015-07-03  4:01 PM
 // ***********************************************************************
 // <copyright file="CookieAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -58,12 +58,6 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 HandleUnauthorizedRequest(actionContext);
                 return;
             }
-            //            if (this.refreshToken && !string.IsNullOrWhiteSpace(token))
-            //            {
-            //                FormsAuthentication.SetAuthCookie(token, true);
-            //                HttpCookie cookie = FormsAuthentication.GetAuthCookie(token, true);
-            //                HttpContext.Current.Response.Headers.Add("x-jym", cookie.Value);
-            //            }
 
             base.OnAuthorization(actionContext);
         }
