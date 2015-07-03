@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-25  3:46 PM
+// Last Modified On : 2015-07-03  3:31 PM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -106,15 +106,20 @@ namespace Yuyi.Jinyinmao.Api
             // Create a CORS policy.
             this.policy = new CorsPolicy();
 
-            this.policy.ExposedHeaders.Add("x-jym");
+            this.policy.ExposedHeaders.Add("X-JYM-AUTH");
+            this.policy.ExposedHeaders.Add("X-JYM-CorsProxy-Url");
+            this.policy.ExposedHeaders.Add("X-JYM-IP");
+            this.policy.ExposedHeaders.Add("X-JYM-UserAgent");
             this.policy.ExposedHeaders.Add("Set-Cookie");
             this.policy.ExposedHeaders.Add("Date");
 
-            this.policy.Headers.Add("x-jym");
-            this.policy.Headers.Add("content-type");
-            this.policy.Headers.Add("accept");
-            this.policy.Headers.Add("set-cookie");
-            this.policy.Headers.Add("date");
+            this.policy.Headers.Add("X-JYM-AUTH");
+            this.policy.Headers.Add("X-JYM-CorsProxy-Url");
+            this.policy.Headers.Add("X-JYM-IP");
+            this.policy.Headers.Add("X-JYM-UserAgent");
+            this.policy.Headers.Add("Content-Type");
+            this.policy.Headers.Add("Accept");
+            this.policy.Headers.Add("Cookie");
 
             this.policy.Origins.Add("http://localhost:8100");
             this.policy.Origins.Add("http://jym-web-dev-www.jinyinmao.com.cn");
