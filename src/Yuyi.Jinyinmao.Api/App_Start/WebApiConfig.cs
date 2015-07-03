@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  3:31 PM
+// Last Modified On : 2015-07-03  3:35 PM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -104,7 +104,13 @@ namespace Yuyi.Jinyinmao.Api
         public CorsPolicyProvider()
         {
             // Create a CORS policy.
-            this.policy = new CorsPolicy();
+            this.policy = new CorsPolicy
+            {
+                AllowAnyHeader = true,
+                AllowAnyMethod = true,
+                AllowAnyOrigin = true,
+                PreflightMaxAge = 300L
+            };
 
             this.policy.ExposedHeaders.Add("X-JYM-AUTH");
             this.policy.ExposedHeaders.Add("X-JYM-CorsProxy-Url");
@@ -112,41 +118,6 @@ namespace Yuyi.Jinyinmao.Api
             this.policy.ExposedHeaders.Add("X-JYM-UserAgent");
             this.policy.ExposedHeaders.Add("Set-Cookie");
             this.policy.ExposedHeaders.Add("Date");
-
-            this.policy.Headers.Add("X-JYM-AUTH");
-            this.policy.Headers.Add("X-JYM-CorsProxy-Url");
-            this.policy.Headers.Add("X-JYM-IP");
-            this.policy.Headers.Add("X-JYM-UserAgent");
-            this.policy.Headers.Add("Content-Type");
-            this.policy.Headers.Add("Accept");
-            this.policy.Headers.Add("Cookie");
-
-            this.policy.Origins.Add("http://localhost:8100");
-            this.policy.Origins.Add("http://jym-web-dev-www.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://jym-web-test-www.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://jym-web-product-www.jinyinmao.com.cn");
-            this.policy.Origins.Add("https://jym-web-dev-www.jinyinmao.com.cn");
-            this.policy.Origins.Add("https://jym-web-test-www.jinyinmao.com.cn");
-            this.policy.Origins.Add("https://jym-web-product-www.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://jym-web-dev-m.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://jym-web-test-m.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://jym-web-product-m.jinyinmao.com.cn");
-            this.policy.Origins.Add("https://jym-web-dev-m.jinyinmao.com.cn");
-            this.policy.Origins.Add("https://jym-web-test-m.jinyinmao.com.cn");
-            this.policy.Origins.Add("https://jym-web-product-m.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://www.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://m.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://www3.jinyinmao.com.cn");
-            this.policy.Origins.Add("http://m3.jinyinmao.com.cn");
-
-            this.policy.Methods.Add("GET");
-            this.policy.Methods.Add("POST");
-            this.policy.Methods.Add("PUT");
-            this.policy.Methods.Add("DELETE");
-
-            this.policy.PreflightMaxAge = 1000000000L;
-
-            this.policy.SupportsCredentials = true;
         }
 
         #region ICorsPolicyProvider Members
