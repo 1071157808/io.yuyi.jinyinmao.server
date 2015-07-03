@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  11:24 AM
+// Last Modified On : 2015-07-03  12:26 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -465,8 +465,15 @@ namespace Yuyi.Jinyinmao.Domain
             BankCard card;
             if (this.State.BankCards.TryGetValue(bankCardNo, out card))
             {
-                long withdrawAmount = this.SettleAccountBalance - this.State.BankCards.Values.Where(c => c.VerifiedByYilian).Sum(c => c.WithdrawAmount);
-                withdrawAmount = withdrawAmount > 0 ? withdrawAmount + card.WithdrawAmount : card.WithdrawAmount;
+                long withdrawAmount = card.WithdrawAmount;
+                withdrawAmount -= this.GetWithrawalCharge();
+                long extraAmount = this.SettleAccountBalance - this.State.BankCards.Values.Where(c => c.Verified).Sum(c => c.WithdrawAmount);
+                if (extraAmount > 0)
+                {
+                    withdrawAmount += extraAmount;
+                }
+
+                withdrawAmount = withdrawAmount > 0 ? withdrawAmount : 0;
 
                 return Task.FromResult(card.ToInfo(withdrawAmount));
             }
@@ -1527,6 +1534,21 @@ namespace Yuyi.Jinyinmao.Domain
             long creditingTransAmount = transactions.Where(t => t.Trade == Trade.Credit && t.ResultCode == 0 && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue) <= date.AddDays(1).Date).Sum(t => t.Amount);
 
             return investedAmount - creditedTransAmount - creditingTransAmount;
+        }
+
+        /// <summary>
+        ///     Gets the withrawal charge.
+        /// </summary>
+        /// <returns>System.Int64.</returns>
+        private long GetWithrawalCharge()
+        {
+            int charge = 0;
+            if (this.MonthWithdrawalCount >= VariableHelper.MonthFreeWithrawalLimitCount)
+            {
+                charge = VariableHelper.WithdrawalChargeFee;
+            }
+
+            return Convert.ToInt64(charge);
         }
     }
 }
