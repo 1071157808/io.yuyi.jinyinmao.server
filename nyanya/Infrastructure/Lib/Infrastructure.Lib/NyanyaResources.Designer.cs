@@ -889,7 +889,7 @@ namespace Infrastructure.Lib {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功!现在即可开始购买。关注金银猫官方微信，100元本金券等你拿。如需帮助 4008-556-333.
+        ///   Looks up a localized string similar to 您尾号为{0}的借记卡已经绑定成功!现在即可开始购买。如需帮助 4008-556-333.
         /// </summary>
         public static string Sms_AddBankCardSuccessed {
             get {
@@ -925,7 +925,7 @@ namespace Infrastructure.Lib {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 恭喜您成功注册金银猫！关注金银猫官方微信，100元本金券等你拿。如需帮助请致电金银猫客服 4008556333.
+        ///   Looks up a localized string similar to 恭喜您成功注册金银猫！如需帮助请致电金银猫客服 4008556333.
         /// </summary>
         public static string Sms_SignUpSuccessful {
             get {

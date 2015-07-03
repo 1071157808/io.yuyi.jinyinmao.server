@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-01  3:12 PM
+// Last Modified On : 2015-07-03  11:24 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -1521,7 +1521,7 @@ namespace Yuyi.Jinyinmao.Domain
                 this.ReloadJBYAccountData();
             }
 
-            List<JBYAccountTransaction> transactions = this.State.JBYAccount.Values.Where(t => t.ResultTime < date.Date).ToList();
+            List<JBYAccountTransaction> transactions = this.State.JBYAccount.Values.ToList();
             long investedAmount = transactions.Where(t => t.Trade == Trade.Debit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= confirmTime).Sum(t => t.Amount);
             long creditedTransAmount = transactions.Where(t => t.Trade == Trade.Credit && t.ResultCode > 0 && t.ResultTime.GetValueOrDefault(DateTime.MaxValue) <= date.Date).Sum(t => t.Amount);
             long creditingTransAmount = transactions.Where(t => t.Trade == Trade.Credit && t.ResultCode == 0 && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue) <= date.AddDays(1).Date).Sum(t => t.Amount);

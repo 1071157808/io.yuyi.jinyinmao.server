@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-01  11:53 PM
+// Last Modified On : 2015-07-03  11:47 AM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -454,7 +454,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             string userData = $"{userId},{cellphone},{expiry.ToBinary()}";
             FormsAuthentication.SetAuthCookie(userData, true);
             HttpCookie cookie = FormsAuthentication.GetAuthCookie(userData, true);
-            HttpContext.Current.Response.Headers.Add("x-jym", cookie.Value);
+            HttpContext.Current.Response.Headers.Add("X-JYM-AUTH", cookie.Value);
         }
     }
 }
