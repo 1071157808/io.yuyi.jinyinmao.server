@@ -23,10 +23,18 @@ using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Proxy.Controllers
 {
+    /// <summary>
+    /// ProxyController.
+    /// </summary>
     public class ProxyController : ApiController
     {
         private static readonly string[] IgnoredRequestHeaders = { "Connection", "Content-Length", "Host" };
 
+        /// <summary>
+        /// Proxies the specified target URL.
+        /// </summary>
+        /// <param name="targetUrl">The target URL.</param>
+        /// <returns>System.Threading.Tasks.Task&lt;System.Web.Http.IHttpActionResult&gt;.</returns>
         [HttpGet, HttpPost, HttpPut, HttpDelete, HttpOptions, Route("")]
         public async Task<IHttpActionResult> Proxy([FromUri] string targetUrl)
         {
