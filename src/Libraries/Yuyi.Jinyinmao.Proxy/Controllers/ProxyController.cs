@@ -4,7 +4,7 @@
 // Created          : 2015-07-02  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  11:40 AM
+// Last Modified On : 2015-07-06  6:04 AM
 // ***********************************************************************
 // <copyright file="ProxyController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,14 +24,14 @@ using Moe.Lib;
 namespace Yuyi.Jinyinmao.Proxy.Controllers
 {
     /// <summary>
-    /// ProxyController.
+    ///     ProxyController.
     /// </summary>
     public class ProxyController : ApiController
     {
         private static readonly string[] IgnoredRequestHeaders = { "Connection", "Content-Length", "Host" };
 
         /// <summary>
-        /// Proxies the specified target URL.
+        ///     Proxies the specified target URL.
         /// </summary>
         /// <param name="targetUrl">The target URL.</param>
         /// <returns>System.Threading.Tasks.Task&lt;System.Web.Http.IHttpActionResult&gt;.</returns>
@@ -43,7 +43,15 @@ namespace Yuyi.Jinyinmao.Proxy.Controllers
                 return this.BadRequest("Target url was not specified.");
             }
 
-            string url = this.Request.Headers.GetValues("X-JYM-CorsProxy-Url")?.FirstOrDefault();
+            string url = "";
+            try
+            {
+                url = this.Request.Headers.GetValues("X-JYM-CorsProxy-Url")?.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
             if (url.IsNullOrEmpty())
             {
                 return this.BadRequest("X-JYM-CorsProxy-Url was not specified.");
