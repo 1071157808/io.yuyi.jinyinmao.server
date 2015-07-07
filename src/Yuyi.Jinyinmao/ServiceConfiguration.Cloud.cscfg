@@ -5,13 +5,13 @@
     <ConfigurationSettings>
       <Setting name="DataConnectionString" value="BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==" />
       <Setting name="ServiceBusConnectionString" value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3DVhl0hMxw4vfOxNUi6B29/WvDRYsyvTj6QbJcWTHJg=" />
-      <Setting name="StorageProviderConnectionString" value="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="StorageProviderConnectionString" value="Server=tcp:flnpkc8fj6.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@flnpkc8fj6;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
       <Setting name="SmsServiceEnable" value="true" />
       <Setting name="SmsServiceAddress" value="https://jym-web-dev-sms.jinyinmao.com.cn/" />
       <Setting name="SmsServiceAppId" value="38e9ad41-c1b2-44a0-ad2a-88acba74db9d" />
       <Setting name="SmsServiceApiKey" value="HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" />
       <Setting name="EnableHMACAuth" value="false" />
-      <Setting name="JYMDBContextConnectionString" value="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-biz;User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="JYMDBContextConnectionString" value="Server=tcp:flnpkc8fj6.database.chinacloudapi.cn,1433;Database=jym-biz;User ID=db-user-front@flnpkc8fj6;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
       <Setting name="YilianPaymentGatewayHost" value="http://payment2.test.ad.jinyinmao.com.cn:10000/" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="jym-remote" />
@@ -28,13 +28,13 @@
     <ConfigurationSettings>
       <Setting name="DataConnectionString" value="BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==" />
       <Setting name="ServiceBusConnectionString" value="Endpoint=sb://jym-dev.servicebus.chinacloudapi.cn/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3DVhl0hMxw4vfOxNUi6B29/WvDRYsyvTj6QbJcWTHJg=" />
-      <Setting name="StorageProviderConnectionString" value="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="StorageProviderConnectionString" value="Server=tcp:flnpkc8fj6.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@flnpkc8fj6;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
       <Setting name="SmsServiceEnable" value="true" />
       <Setting name="SmsServiceAddress" value="https://jym-web-dev-sms.jinyinmao.com.cn/" />
       <Setting name="SmsServiceAppId" value="38e9ad41-c1b2-44a0-ad2a-88acba74db9d" />
       <Setting name="SmsServiceApiKey" value="HbX+NpcfkW3oSYRkYKa35dw8CiNEx+bg+4lGRiYYsRUV5YP6sWJ031DYaMS1jgSTOYF8W4gQ+B14oZzJYU1lpxLQCpjBuct299omchoSENoXHEIn7CUxO1i0kbD8FF5f98fZhKCAq4xUHJVpakMkByfoc1MkHcq7GFw45EiwqketEuCZTWx4DLxLh6GyPWD0M5xqtVhVwM9bunnK1R2mcucW8vdONsTKHU5IC9uejom/xMOywS/WkdDDAfKMM6MHuT6nsDD3BMf9/kvjuErei175AQrlmxzLIsEP1qHmhm56bRLTZHAq9NlBvQ64T2pnKlocqF528G1xJnRCZcHAgQ==" />
       <Setting name="EnableHMACAuth" value="false" />
-      <Setting name="JYMDBContextConnectionString" value="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-biz;User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+      <Setting name="JYMDBContextConnectionString" value="Server=tcp:flnpkc8fj6.database.chinacloudapi.cn,1433;Database=jym-biz;User ID=db-user-front@flnpkc8fj6;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
       <Setting name="YilianPaymentGatewayHost" value="http://payment2.test.ad.jinyinmao.com.cn:10000/" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="jym-remote" />

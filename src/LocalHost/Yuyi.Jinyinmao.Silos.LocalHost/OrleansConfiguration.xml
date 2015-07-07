@@ -4,7 +4,7 @@
   <Globals>
     <StorageProviders>
       <Provider Type="Yuyi.Jinyinmao.Domain.SqlDatabaseProvider" Name="SqlDatabase"
-                DataConnectionString="Server=tcp:uv1pb56i09.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@uv1pb56i09;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
+                DataConnectionString="Server=tcp:flnpkc8fj6.database.chinacloudapi.cn,1433;Database=jym-grains-{0};User ID=db-user-front@flnpkc8fj6;Password=0SmDXp8i7MRfg29HJk1N;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>

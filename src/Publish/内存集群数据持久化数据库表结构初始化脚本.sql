@@ -13,6 +13,15 @@ GO
 EXEC sp_addrolemember N'db_datawriter', N'db-user-front' 
 GO
 
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_0')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_0]
+GO
+
+SET NOEXEC OFF
+GO
 
 CREATE TABLE [dbo].[Grains_0] (
 [Id] varchar(100) NOT NULL ,
@@ -35,6 +44,16 @@ GO
 
 CREATE INDEX [IN_Key_TimeStamp_0] ON [dbo].[Grains_0]
 ([Key] ASC, [TimeStamp] DESC) 
+GO
+
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_1')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_1]
+GO
+
+SET NOEXEC OFF
 GO
 
 CREATE TABLE [dbo].[Grains_1] (
@@ -60,6 +79,16 @@ CREATE INDEX [IN_Key_TimeStamp_1] ON [dbo].[Grains_1]
 ([Key] ASC, [TimeStamp] DESC) 
 GO
 
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_2')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_2]
+GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[Grains_2] (
 [Id] varchar(100) NOT NULL ,
 [LongId] bigint NOT NULL,
@@ -81,6 +110,16 @@ GO
 
 CREATE INDEX [IN_Key_TimeStamp_2] ON [dbo].[Grains_2]
 ([Key] ASC, [TimeStamp] DESC) 
+GO
+
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_3')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_3]
+GO
+
+SET NOEXEC OFF
 GO
 
 CREATE TABLE [dbo].[Grains_3] (
@@ -106,6 +145,16 @@ CREATE INDEX [IN_Key_TimeStamp_3] ON [dbo].[Grains_3]
 ([Key] ASC, [TimeStamp] DESC) 
 GO
 
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_4')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_4]
+GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[Grains_4] (
 [Id] varchar(100) NOT NULL ,
 [LongId] bigint NOT NULL,
@@ -127,6 +176,16 @@ GO
 
 CREATE INDEX [IN_Key_TimeStamp_4] ON [dbo].[Grains_4]
 ([Key] ASC, [TimeStamp] DESC) 
+GO
+
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_5')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_5]
+GO
+
+SET NOEXEC OFF
 GO
 
 CREATE TABLE [dbo].[Grains_5] (
@@ -152,6 +211,16 @@ CREATE INDEX [IN_Key_TimeStamp_5] ON [dbo].[Grains_5]
 ([Key] ASC, [TimeStamp] DESC) 
 GO
 
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_6')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_6]
+GO
+
+SET NOEXEC OFF
+GO
+
 CREATE TABLE [dbo].[Grains_6] (
 [Id] varchar(100) NOT NULL ,
 [LongId] bigint NOT NULL,
@@ -173,6 +242,16 @@ GO
 
 CREATE INDEX [IN_Key_TimeStamp_6] ON [dbo].[Grains_6]
 ([Key] ASC, [TimeStamp] DESC) 
+GO
+
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_7')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_7]
+GO
+
+SET NOEXEC OFF
 GO
 
 CREATE TABLE [dbo].[Grains_7] (
@@ -197,6 +276,16 @@ GO
 
 CREATE INDEX [IN_Key_TimeStamp_7] ON [dbo].[Grains_7]
 ([Key] ASC, [TimeStamp] DESC) 
+GO
+
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'Grains_8')
+  SET NOEXEC ON
+GO
+
+DROP TABLE [dbo].[Grains_8]
+GO
+
+SET NOEXEC OFF
 GO
 
 CREATE TABLE [dbo].[Grains_8] (

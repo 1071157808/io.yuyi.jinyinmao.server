@@ -1,9 +1,9 @@
 /*
 Navicat SQL Server Data Transfer
 
-Source Server         : uv1pb56i09
+Source Server         : flnpkc8fj6
 Source Server Version : 110000
-Source Host           : uv1pb56i09.database.chinacloudapi.cn:1433
+Source Host           : flnpkc8fj6.database.chinacloudapi.cn:1433
 Source Database       : jym-dev
 Source Schema         : dbo
 
