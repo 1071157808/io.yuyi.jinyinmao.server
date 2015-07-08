@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-23  5:08 PM
+// Last Modified On : 2015-07-08  3:34 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -304,7 +304,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 StartSellTime = request.StartSellTime,
                 UnitPrice = request.UnitPrice,
                 Usage = request.Usage,
-                ValueDate = request.ValueDate,
+                ValueDate = request.ValueDate?.Date,
                 ValueDateMode = request.ValueDateMode,
                 Yield = request.Yield
             });
