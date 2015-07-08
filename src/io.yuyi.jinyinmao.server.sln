@@ -82,6 +82,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyConfigInit", "Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Proxy", "Libraries\Yuyi.Jinyinmao.Proxy\Yuyi.Jinyinmao.Proxy.csproj", "{22BE0C0C-9418-4BD2-8428-1DB65B7DFAA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SagasTransfer", "Application\SagasTransfer\SagasTransfer.csproj", "{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud|Any CPU = Cloud|Any CPU
@@ -381,6 +383,18 @@ Global
 		{22BE0C0C-9418-4BD2-8428-1DB65B7DFAA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22BE0C0C-9418-4BD2-8428-1DB65B7DFAA1}.Release|x86.ActiveCfg = Release|Any CPU
 		{22BE0C0C-9418-4BD2-8428-1DB65B7DFAA1}.Release|x86.Build.0 = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Cloud|Any CPU.ActiveCfg = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Cloud|Any CPU.Build.0 = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Cloud|x86.ActiveCfg = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Cloud|x86.Build.0 = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Debug|x86.Build.0 = Debug|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Release|x86.ActiveCfg = Release|Any CPU
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -407,6 +421,7 @@ Global
 		{7617A0C5-E6B2-4D3F-95C9-F09ED74721C5} = {70973739-B9FB-4AD8-B051-A74574D36DC5}
 		{B06B9EE7-2FC8-4D73-8662-ADCA572A278D} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 		{22BE0C0C-9418-4BD2-8428-1DB65B7DFAA1} = {70973739-B9FB-4AD8-B051-A74574D36DC5}
+		{F4E84125-7058-4EA5-BD43-4203B0AE6AAC} = {06FA11E8-18AC-4882-8EBE-165EE260E5D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45
