@@ -56,7 +56,7 @@ namespace SagasTransfer
                         baseDir = list[index + 1];
                     }
                     Transfer();
-                    Console.WriteLine($"DataStr:{connectionString},TranStr:{transferConnectionString},Path:{baseDir}");
+                   // Console.WriteLine($"DataStr:{connectionString},TranStr:{transferConnectionString},Path:{baseDir}");
 
                 }
                 catch (Exception ex)
@@ -100,7 +100,7 @@ namespace SagasTransfer
                     {
                         InsertTable(sagaTable, saga);
                     }
-                    //DeleteTable(table, saga);
+                    DeleteTable(table, saga);
                     Console.WriteLine("transfer partitionkey:" + saga.PartitionKey);
                 }
             }
