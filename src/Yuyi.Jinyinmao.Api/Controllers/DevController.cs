@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-29  12:22 PM
+// Last Modified On : 2015-07-09  9:40 AM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -82,9 +82,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
             {
-                await UserFactory.GetGrain(userId).ChangeCellphoneAsync(cellphone);
+                IUser user = UserFactory.GetGrain(userId);
+                UserInfo info = await user.ChangeCellphoneAsync(cellphone);
+                await user.SyncAsync();
+                return this.Ok(info);
             }
-            return this.Ok();
+            return this.BadRequest("手机号格式不正确");
         }
 
         /// <summary>
