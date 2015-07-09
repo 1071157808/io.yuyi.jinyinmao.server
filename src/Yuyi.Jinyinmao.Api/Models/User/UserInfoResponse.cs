@@ -201,6 +201,11 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         [Required, JsonProperty("verifiedTime")]
         public DateTime VerifiedTime { get; set; }
+
+        /// <summary>
+        ///     可取现账户余额，以“分”为单位
+        /// </summary>
+        public long WithdrawalableAmount { get; set; }
     }
 
     internal static partial class UserInfoEx
@@ -237,7 +242,8 @@ namespace Yuyi.Jinyinmao.Api.Models
                 TotalPrincipal = info.TotalPrincipal,
                 UserIdentifier = info.UserId.ToGuidString(),
                 Verified = info.Verified,
-                VerifiedTime = info.VerifiedTime.GetValueOrDefault()
+                VerifiedTime = info.VerifiedTime.GetValueOrDefault(),
+                WithdrawalableAmount = info.WithdrawalableAmount
             };
         }
     }
