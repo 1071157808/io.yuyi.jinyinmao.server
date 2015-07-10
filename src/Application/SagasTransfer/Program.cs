@@ -1,8 +1,12 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain;
@@ -17,57 +21,41 @@ namespace SagasTransfer
 
         static void Main(string[] args)
         {
-            Console.WriteLine("-S[OPTIONAL]     SourceStorageAccount: a string represents the source storage account, eg.BlobEndpoint = https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==\r\n" +
-                              "-D[OPTIONAL]     DestinationStorageAccount: a string represents the destination storage account, eg. same with the -S parameter\r\n" +
-                              "-P[OPTIONAL]     Logdir: a string represents the absolute path of log file, eg. D://Logs/");
-            
+            Console.WriteLine(string.Join(",", args));
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string command;
-            do
+            string path = Path.Combine(baseDir, $"/Saga/{DateTime.Now.ToString("yyyyMMdd")}.csv");
+            Console.WriteLine();
+            try
             {
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine("Please input parameters:");
-                command = string.Empty;
-                string input = string.Empty;
-                try
+                IList<string> list = args.ToList();
+                int index = list.IndexOf("-S");
+                if (-1 != index && list.Count >= index + 2)
                 {
-                    do
-                    {
-                        input = Console.ReadLine();
-                        command += input;
-                    } while (!string.IsNullOrEmpty(input));
-
-
-                    IList<string> list = command.Split(' ').ToList();
-                    int index = list.IndexOf("-S");
-                    if (-1 != index && list.Count >= index + 2)
-                    {
-                        connectionString = list[index + 1];
-                    }
-                    index = list.IndexOf("-D");
-                    if (-1 != index && list.Count >= index + 2)
-                    {
-                        transferConnectionString = list[index + 1];
-                    }
-                    index = list.IndexOf("-P");
-                    if (-1 != index && list.Count >= index + 2)
-                    {
-                        baseDir = list[index + 1];
-                    }
+                    connectionString = list[index + 1];
+                }
+                index = list.IndexOf("-D");
+                if (-1 != index && list.Count >= index + 2)
+                {
+                    transferConnectionString = list[index + 1];
+                }
+                index = list.IndexOf("-P");
+                if (-1 != index && list.Count >= index + 2)
+                {
+                    baseDir = list[index + 1];
+                }
+                using (StreamWriter writer = new StreamWriter(new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                {
+                    Log.Logger = new LoggerConfiguration().WriteTo.TextWriter(writer, outputTemplate: "{Message}").CreateLogger();
                     Transfer();
-                   // Console.WriteLine($"DataStr:{connectionString},TranStr:{transferConnectionString},Path:{baseDir}");
-
                 }
-                catch (Exception ex)
-                {
-                    FileHelper.WriteTo(baseDir, ex.Message);
-                }
-
-            } while (command.ToUpperInvariant() != "Q" && command.ToUpperInvariant() != "QUIT");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error");
+                new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir,"/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
+            }
             Console.ReadKey();
         }
-
         static void Transfer()
         {
             CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
@@ -82,7 +70,7 @@ namespace SagasTransfer
             var sagaErrorTable = transferClient.GetTableReference(sagaErrorName);
             sagaTable.CreateIfNotExists();
             sagaErrorTable.CreateIfNotExists();
-            var group = table.CreateQuery<SagaStateRecord>().ToList().GroupBy(s => s.PartitionKey);
+            var group = table.CreateQuery<SagaStateRecord>().ToList().Take(1).GroupBy(s => s.PartitionKey);
             Console.WriteLine("start");
             foreach (var item in group)
             {
@@ -94,16 +82,18 @@ namespace SagasTransfer
                     if (saga.CurrentProcessingStatus == (int)DepositSagaStatus.Fault)
                     {
                         InsertTable(sagaErrorTable, saga);
-                        
                     }
                     else
                     {
                         InsertTable(sagaTable, saga);
                     }
-                    DeleteTable(table, saga);
-                    Console.WriteLine("transfer partitionkey:" + saga.PartitionKey);
+                    //DeleteTable(table, saga);
                 }
             }
+
+            var listSaga = sagaTable.CreateQuery<SagaStateRecord>().ToList().Select(s => Util.InitData(s)).ToList();
+            listSaga.AddRange(sagaErrorTable.CreateQuery<SagaStateRecord>().ToList().Select(s => Util.InitData(s)).ToList());
+            Log.Information(Util.SaveAsCSV<SagaStateRecordResult>(listSaga));
         }
 
         async static void InsertTable(CloudTable table, SagaStateRecord saga)
@@ -115,6 +105,5 @@ namespace SagasTransfer
         {
             await table.ExecuteAsync(TableOperation.Delete(saga));
         }
-
     }
 }
