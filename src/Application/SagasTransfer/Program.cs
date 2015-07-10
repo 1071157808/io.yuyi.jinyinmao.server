@@ -1,3 +1,4 @@
+
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
@@ -6,22 +7,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
 
 namespace SagasTransfer
 {
-    class Program
+    internal class Program
     {
-        static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-        static string transferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
+        private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
+        private static string transferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
 
-        static void Main(string[] args)
+        private static async void DeleteTable(CloudTable table, SagaStateRecord saga)
         {
-            Console.WriteLine(string.Join(",", args));
+            await table.ExecuteAsync(TableOperation.Delete(saga));
+        }
+
+        private static async void InsertTable(CloudTable table, SagaStateRecord saga)
+        {
+            await table.ExecuteAsync(TableOperation.InsertOrReplace(saga));
+        }
+
+        private static void Main(string[] args)
+        {
+
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             string path = Path.Combine(baseDir, $"/Saga/{DateTime.Now.ToString("yyyyMMdd")}.csv");
             Console.WriteLine();
@@ -38,6 +46,7 @@ namespace SagasTransfer
                 {
                     transferConnectionString = list[index + 1];
                 }
+
                 index = list.IndexOf("-P");
                 if (-1 != index && list.Count >= index + 2)
                 {
@@ -74,36 +83,18 @@ namespace SagasTransfer
             Console.WriteLine("start");
             foreach (var item in group)
             {
-                var existItem = item.Where(s => s.CurrentProcessingStatus == (int)DepositSagaStatus.Finished || s.CurrentProcessingStatus == (int)DepositSagaStatus.Fault);
-                if (existItem == null) continue;
                 for (int i = 0; i < item.Count(); i++)
                 {
                     var saga = item.ElementAt(i);
-                    if (saga.CurrentProcessingStatus == (int)DepositSagaStatus.Fault)
-                    {
-                        InsertTable(sagaErrorTable, saga);
-                    }
-                    else
-                    {
-                        InsertTable(sagaTable, saga);
-                    }
-                    //DeleteTable(table, saga);
+                    InsertTable(saga.CurrentProcessingStatus == (int)DepositSagaStatus.Fault ? sagaErrorTable : sagaTable, saga);
+                    DeleteTable(table, saga);
+                    Console.WriteLine("transfer partitionkey:" + saga.PartitionKey);
                 }
             }
 
             var listSaga = sagaTable.CreateQuery<SagaStateRecord>().ToList().Select(s => Util.InitData(s)).ToList();
             listSaga.AddRange(sagaErrorTable.CreateQuery<SagaStateRecord>().ToList().Select(s => Util.InitData(s)).ToList());
             Log.Information(Util.SaveAsCSV<SagaStateRecordResult>(listSaga));
-        }
-
-        async static void InsertTable(CloudTable table, SagaStateRecord saga)
-        {
-            await table.ExecuteAsync(TableOperation.InsertOrReplace(saga));
-        }
-
-        async static void DeleteTable(CloudTable table, SagaStateRecord saga)
-        {
-            await table.ExecuteAsync(TableOperation.Delete(saga));
         }
     }
 }

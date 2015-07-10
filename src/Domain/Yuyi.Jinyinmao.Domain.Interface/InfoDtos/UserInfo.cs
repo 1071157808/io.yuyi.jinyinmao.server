@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:10 PM
+// Last Modified On : 2015-07-09  5:48 PM
 // ***********************************************************************
 // <copyright file="UserInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <param name="userModel">The user model.</param>
         public static void MapToDBModel(this UserInfo info, User userModel)
         {
-            Dictionary<string, object> i = BuildUserModelInfo();
+            Dictionary<string, object> i = BuildUserModelInfo(info);
 
             userModel.Args = info.Args.ToJson();
             userModel.Cellphone = info.Cellphone;
@@ -58,7 +58,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// <returns>User.</returns>
         public static User ToDBModel(this UserInfo info)
         {
-            Dictionary<string, object> i = BuildUserModelInfo();
+            Dictionary<string, object> i = BuildUserModelInfo(info);
 
             User user = new User
             {
@@ -83,9 +83,12 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
             return user;
         }
 
-        private static Dictionary<string, object> BuildUserModelInfo()
+        private static Dictionary<string, object> BuildUserModelInfo(UserInfo info)
         {
-            Dictionary<string, object> i = new Dictionary<string, object>();
+            Dictionary<string, object> i = new Dictionary<string, object>
+            {
+                { "WithdrawalableAmount", info.WithdrawalableAmount }
+            };
             return i;
         }
     }
@@ -200,7 +203,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public long JBYAccrualAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets the jby last interest.
+        ///     Gets or sets the jby last interest.
         /// </summary>
         /// <value>The jby last interest.</value>
         public long JBYLastInterest { get; set; }
@@ -312,5 +315,11 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The verified time.</value>
         public DateTime? VerifiedTime { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the withdrawalable amount.
+        /// </summary>
+        /// <value>The withdrawalable amount.</value>
+        public long WithdrawalableAmount { get; set; }
     }
 }
