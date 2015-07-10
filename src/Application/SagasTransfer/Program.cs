@@ -31,7 +31,6 @@ namespace SagasTransfer
         {
 
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string path = Path.Combine(baseDir, $"/Saga/{DateTime.Now.ToString("yyyyMMdd")}.csv");
             Console.WriteLine();
             try
             {
@@ -52,6 +51,12 @@ namespace SagasTransfer
                 {
                     baseDir = list[index + 1];
                 }
+                DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, "Saga"));
+                if (!dir.Exists)
+                {
+                    dir.Create();
+                }
+                string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
                 using (StreamWriter writer = new StreamWriter(new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
                 {
                     Log.Logger = new LoggerConfiguration().WriteTo.TextWriter(writer, outputTemplate: "{Message}").CreateLogger();
@@ -79,19 +84,19 @@ namespace SagasTransfer
             var sagaErrorTable = transferClient.GetTableReference(sagaErrorName);
             sagaTable.CreateIfNotExists();
             sagaErrorTable.CreateIfNotExists();
-            var group = table.CreateQuery<SagaStateRecord>().ToList().Take(1).GroupBy(s => s.PartitionKey);
+            var group = table.CreateQuery<SagaStateRecord>().ToList().GroupBy(s => s.PartitionKey);
             Console.WriteLine("start");
             foreach (var item in group)
             {
+                var existItem = item.Where(s => s.CurrentProcessingStatus == (int)DepositSagaStatus.Finished || s.CurrentProcessingStatus == (int)DepositSagaStatus.Fault);
+                if (existItem == null) continue;
                 for (int i = 0; i < item.Count(); i++)
                 {
                     var saga = item.ElementAt(i);
                     InsertTable(saga.CurrentProcessingStatus == (int)DepositSagaStatus.Fault ? sagaErrorTable : sagaTable, saga);
                     DeleteTable(table, saga);
-                    Console.WriteLine("transfer partitionkey:" + saga.PartitionKey);
                 }
             }
-
             var listSaga = sagaTable.CreateQuery<SagaStateRecord>().ToList().Select(s => Util.InitData(s)).ToList();
             listSaga.AddRange(sagaErrorTable.CreateQuery<SagaStateRecord>().ToList().Select(s => Util.InitData(s)).ToList());
             Log.Information(Util.SaveAsCSV<SagaStateRecordResult>(listSaga));
