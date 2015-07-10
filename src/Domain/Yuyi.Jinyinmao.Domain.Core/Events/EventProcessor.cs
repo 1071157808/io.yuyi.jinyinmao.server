@@ -31,7 +31,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The clients
         /// </summary>
-        [SuppressMessage("ReSharper", "StaticMemberInGenericType")] private static readonly Dictionary<string, TopicClient> Clients = new Dictionary<string, TopicClient>();
+        [SuppressMessage("ReSharper", "StaticMemberInGenericType")]
+        private static readonly Dictionary<string, TopicClient> Clients = new Dictionary<string, TopicClient>();
 
         /// <summary>
         ///     Gets the error logger.
@@ -50,16 +51,17 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public virtual async Task ProcessEventAsync(TEvent @event)
+        public virtual Task ProcessEventAsync(TEvent @event)
         {
-            await this.ProcessingEventAsync(@event, async e =>
-            {
-                string topicName = e.GetType().Name.ToUnderScope();
-
-                TopicClient client = GetTopicClient(topicName);
-
-                await client.SendAsync(new BrokeredMessage(e.ToJson()));
-            });
+            //            await this.ProcessingEventAsync(@event, async e =>
+            //            {
+            //                string topicName = e.GetType().Name.ToUnderScope();
+            //
+            //                TopicClient client = GetTopicClient(topicName);
+            //
+            //                await client.SendAsync(new BrokeredMessage(e.ToJson()));
+            //            });
+            return TaskDone.Done;
         }
 
         /// <summary>

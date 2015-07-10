@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-09  8:01 PM
+// Last Modified On : 2015-07-10  10:14 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -657,6 +657,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public Task<UserInfo> GetUserInfoAsync()
         {
+            long withdrawalableAmount = this.SettleAccountBalance - this.GetWithrawalCharge();
+
             UserInfo userInfo = new UserInfo
             {
                 Args = this.State.Args,
@@ -695,7 +697,7 @@ namespace Yuyi.Jinyinmao.Domain
                 UserId = this.State.Id,
                 Verified = this.State.Verified,
                 VerifiedTime = this.State.VerifiedTime,
-                WithdrawalableAmount = this.SettleAccountBalance - this.GetWithrawalCharge()
+                WithdrawalableAmount = withdrawalableAmount > 0 ? withdrawalableAmount : 0
             };
 
             return Task.FromResult(userInfo);
