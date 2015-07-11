@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-01  2:45 PM
+// Last Modified On : 2015-07-11  12:32 PM
 // ***********************************************************************
 // <copyright file="RegularProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -28,7 +28,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     ///     RegularProductController.
     /// </summary>
     [RoutePrefix("Product/Regular")]
-    public class RegularProductController : ApiController
+    public class RegularProductController : ApiControllerBase
     {
         private readonly IProductInfoService productInfoService;
 
