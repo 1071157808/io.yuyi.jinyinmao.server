@@ -115,6 +115,7 @@
     <Compile Include="Commands\Withdrawal.cs" />
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
     <Compile Include="Dtos\JBYAccountInfo.cs" />
+    <Compile Include="Dtos\RegularProductMigrationDto.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
     <Compile Include="EventProcessor\IBankCardHidenProcessor.cs" />
     <Compile Include="EventProcessor\IExtraInterestAddedProcessor.cs" />
