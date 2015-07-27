@@ -4,7 +4,7 @@
 // Created          : 2015-07-27  3:21 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  4:15 PM
+// Last Modified On : 2015-07-27  4:39 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,16 +21,21 @@ using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace DataTransfer
 {
+    /// <summary>
+    ///     Work.
+    /// </summary>
     public class Work
     {
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
 
-        [SuppressMessage("ReSharper", "CollectionNeverQueried.Local")]
-        private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
+        [SuppressMessage("ReSharper", "CollectionNeverQueried.Local")] private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
 
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
+        /// <summary>
+        ///     Runs this instance.
+        /// </summary>
         public static void Run()
         {
             OrderArgs.Add("Comment", "由原订单数据迁移");
