@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-22  11:48 PM
+// Last Modified On : 2015-07-26  10:24 AM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -156,7 +156,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 IssueTime = this.State.IssueTime,
                 PaidAmount = this.PaidAmount,
                 ProductCategory = this.State.ProductCategory,
-                ProductId = this.State.Id,
+                ProductId = this.State.ProductId,
                 ProductName = this.State.ProductName,
                 ProductNo = this.State.ProductNo,
                 SoldOut = this.State.SoldOut,
@@ -180,9 +180,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             this.BeginProcessCommandAsync(command);
 
-            if (this.State.Id == Guid.Empty)
+            if (this.State.ProductId == Guid.Empty)
             {
-                this.State.Id = command.ProductId;
+                this.State.ProductId = command.ProductId;
                 this.State.Agreement1 = command.Agreement1;
                 this.State.Agreement2 = command.Agreement2;
                 this.State.Args = command.Args;
@@ -230,11 +230,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                     .OrderBy(p => p.IssueNo).ThenBy(p => p.IssueTime).FirstOrDefaultAsync();
             }
 
-            if (nextProduct != null && this.State.Id.ToGuidString() != nextProduct.ProductIdentifier)
+            if (nextProduct != null && this.State.ProductId.ToGuidString() != nextProduct.ProductIdentifier)
             {
                 Dictionary<string, object> i = JsonConvert.DeserializeObject<Dictionary<string, object>>(nextProduct.Info);
 
-                this.State.Id = Guid.ParseExact(nextProduct.ProductIdentifier, "N");
                 this.State.Agreement1 = i["Agreement1"].ToString();
                 this.State.Agreement2 = i["Agreement2"].ToString();
                 this.State.Args = JsonConvert.DeserializeObject<Dictionary<string, object>>(i["Args"].ToString());
@@ -297,7 +296,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task SyncAsync()
+        public override async Task SyncAsync()
         {
             await DBSyncHelper.SyncJBYProduct(await this.GetProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }
@@ -326,7 +325,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         private async Task ProcessEventAsync(Event @event)
         {
-            @event.SourceId = this.State.Id.ToGuidString();
+            @event.SourceId = this.State.ProductId.ToGuidString();
             @event.SourceType = this.GetType().Name;
             @event.TimeStamp = DateTime.UtcNow;
 

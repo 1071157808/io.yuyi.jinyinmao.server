@@ -166,6 +166,8 @@
     <Compile Include="Events\IEvent.cs" />
     <Compile Include="Events\IEventProcessingLogger.cs" />
     <Compile Include="Events\IEventStore.cs" />
+    <Compile Include="Models\Mapping\PrincipalCouponMap.cs" />
+    <Compile Include="Models\PrincipalCoupon.cs" />
     <Compile Include="Models\AccountTranscation.cs" />
     <Compile Include="Models\BankCard.cs" />
     <Compile Include="Models\JYMDBContext.cs" />

@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-15  12:42 PM
+// Last Modified On : 2015-07-27  9:13 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -144,7 +144,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task CheckSaleStatusAsync()
         {
-            if (this.PaidAmount >= this.State.FinancingSumAmount && !this.State.SoldOut)
+            if (this.State.FinancingSumAmount > 0 && this.PaidAmount >= this.State.FinancingSumAmount && !this.State.SoldOut)
             {
                 Task.Factory.StartNew(() => this.SetToSoldOutAsync());
             }
@@ -210,7 +210,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Period = this.State.Period,
                 PledgeNo = this.State.PledgeNo,
                 ProductCategory = this.State.ProductCategory,
-                ProductId = this.State.Id,
+                ProductId = this.State.ProductId,
                 ProductName = this.State.ProductName,
                 ProductNo = this.State.ProductNo,
                 Repaid = this.State.Repaid,
@@ -240,21 +240,21 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task HitShelvesAsync(IssueRegularProduct command)
         {
-            if (this.State.Id == command.ProductId)
+            if (this.State.ProductId == command.ProductId)
             {
                 return;
             }
 
-            if (this.State.Id != Guid.Empty)
+            if (this.State.ProductId != Guid.Empty)
             {
-                this.GetLogger().Warn(1, "Conflict product id: UserId {0}, RegularProductHitShelvesCommand.ProductId {1}", this.State.Id, command.ProductId);
+                this.GetLogger().Warn(1, "Conflict product id: UserId {0}, RegularProductHitShelvesCommand.ProductId {1}", this.State.ProductId, command.ProductId);
                 return;
             }
 
             this.BeginProcessCommandAsync(command);
 
             DateTime now = DateTime.UtcNow.AddHours(8);
-            this.State.Id = command.ProductId;
+            this.State.ProductId = command.ProductId;
             this.State.Agreement1 = command.Agreement1;
             this.State.Agreement2 = command.Agreement2;
             this.State.Args = command.Args;
@@ -315,6 +315,61 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaiseRegularProductIssuedEvent();
+        }
+
+        /// <summary>
+        ///     migrate as an asynchronous operation.
+        /// </summary>
+        /// <param name="migrationDto">The migration dto.</param>
+        /// <returns>Task.</returns>
+        public async Task<RegularProductInfo> MigrateAsync(RegularProductMigrationDto migrationDto)
+        {
+            this.State.Agreement1 = migrationDto.Agreement1;
+            this.State.Agreement2 = migrationDto.Agreement2;
+            this.State.Args = migrationDto.Args;
+            this.State.BankName = migrationDto.BankName;
+            this.State.Drawee = migrationDto.Drawee;
+            this.State.DraweeInfo = migrationDto.DraweeInfo;
+            this.State.EndSellTime = migrationDto.EndSellTime;
+            this.State.EndorseImageLink = migrationDto.EndorseImageLink;
+            this.State.EnterpriseInfo = migrationDto.EnterpriseInfo;
+            this.State.EnterpriseLicense = migrationDto.EnterpriseLicense;
+            this.State.EnterpriseName = migrationDto.EnterpriseName;
+            this.State.FinancingSumAmount = migrationDto.FinancingSumAmount;
+            this.State.IssueNo = migrationDto.IssueNo;
+            this.State.IssueTime = migrationDto.IssueTime;
+            this.State.Orders = migrationDto.Orders;
+            this.State.Period = migrationDto.Period;
+            this.State.PledgeNo = migrationDto.PledgeNo;
+            this.State.ProductCategory = migrationDto.ProductCategory;
+            this.State.ProductId = migrationDto.ProductId;
+            this.State.ProductName = migrationDto.ProductName;
+            this.State.ProductNo = migrationDto.ProductNo;
+            this.State.Repaid = migrationDto.Repaid;
+            this.State.RepaidTime = migrationDto.RepaidTime;
+            this.State.RepaymentDeadline = migrationDto.RepaymentDeadline;
+            this.State.RiskManagement = migrationDto.RiskManagement;
+            this.State.RiskManagementInfo = migrationDto.RiskManagementInfo;
+            this.State.RiskManagementMode = migrationDto.RiskManagementMode;
+            this.State.SettleDate = migrationDto.SettleDate.Date;
+            this.State.SoldOut = migrationDto.SoldOut;
+            this.State.SoldOutTime = migrationDto.SoldOutTime;
+            this.State.StartSellTime = migrationDto.StartSellTime;
+            this.State.UnitPrice = migrationDto.UnitPrice;
+            this.State.Usage = migrationDto.Usage;
+            this.State.ValueDate = migrationDto.ValueDate;
+            this.State.ValueDateMode = migrationDto.ValueDateMode;
+            this.State.Yield = migrationDto.Yield;
+
+            this.State.Args.Add("MigratingTime", DateTime.UtcNow);
+
+            this.ReloadOrderData();
+
+            await this.State.WriteStateAsync();
+
+            await this.SyncAsync();
+
+            return await this.GetRegularProductInfoAsync();
         }
 
         /// <summary>
@@ -399,33 +454,12 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task SyncAsync()
+        public override async Task SyncAsync()
         {
             await DBSyncHelper.SyncRegularProduct(await this.GetRegularProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }
 
         #endregion IRegularProduct Members
-
-        //        /// <summary>
-        //        /// migrate as an asynchronous operation.
-        //        /// </summary>
-        //        /// <param name="migrationDto">The migration dto.</param>
-        //        /// <returns>Task.</returns>
-        //        public async Task MigrateAsync(RegularProductMigrationDto migrationDto)
-        //        {
-        //            this.State.Agreement1 = migrationDto.Agreement1;
-        //            this.State.Agreement2 = migrationDto.Agreement2;
-        //            this.State.Args = migrationDto.Args;
-        //            this.State.BankName = migrationDto.BankName;
-        //            this.State.Drawee = migrationDto.Drawee;
-        //            this.State.DraweeInfo = migrationDto.DraweeInfo;
-        //            this.State.EndSellTime = migrationDto.EndSellTime;
-        //            this.State.EndorseImageLink = migrationDto.EndorseImageLink;
-        //            this.State.EnterpriseInfo = migrationDto.EnterpriseInfo;
-        //            this.State.EnterpriseLicense = migrationDto.EnterpriseLicense;
-        //            this.State.EnterpriseName = migrationDto.EnterpriseName;
-        //            this.State.FinancingSumAmount = migrationDto
-        //        }
 
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.
@@ -461,7 +495,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         private async Task ProcessEventAsync(Event @event)
         {
-            @event.SourceId = this.State.Id.ToGuidString();
+            @event.SourceId = this.State.ProductId.ToGuidString();
             @event.SourceType = this.GetType().Name;
             @event.TimeStamp = DateTime.UtcNow;
 

@@ -131,6 +131,12 @@ namespace Yuyi.Jinyinmao.Domain
         long ProductCategory { get; set; }
 
         /// <summary>
+        /// Gets or sets the product identifier.
+        /// </summary>
+        /// <value>The product identifier.</value>
+        Guid ProductId { get; set; }
+
+        /// <summary>
         ///     Gets or sets the name of the product.
         /// </summary>
         /// <value>The name of the product.</value>

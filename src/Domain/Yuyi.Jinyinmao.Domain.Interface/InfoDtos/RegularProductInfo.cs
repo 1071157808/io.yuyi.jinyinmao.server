@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-08  3:30 PM
+// Last Modified On : 2015-07-25  5:39 PM
 // ***********************************************************************
 // <copyright file="RegularProductInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.

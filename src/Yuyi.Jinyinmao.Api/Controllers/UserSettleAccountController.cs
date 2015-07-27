@@ -56,7 +56,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     账户充值请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     USAD3:该银行卡不能用于易联支付
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("Deposit/Yilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> DepositFromYilian(DepositFromYilianRequest request)
@@ -107,9 +107,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     必须登录
         /// </remarks>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">USAI:查询不到该账户的信息</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Info"), CookieAuthorize, ResponseType(typeof(SettleAccountInfoResponse))]
         public async Task<IHttpActionResult> Info()
@@ -130,9 +130,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     必须登录
         /// </remarks>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">USAT1:交易流水不存在</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Transaction/{transactionIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> Transaction(string transactionIdentifier)
@@ -159,9 +159,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     必须登录，每页10条信息，页码从0开始，
         /// </remarks>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">USAT1:交易流水不存在</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Transactions/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<SettleAccountTransactionInfoResponse>))]
         public async Task<IHttpActionResult> Transactions(int pageIndex = 0)
@@ -187,7 +187,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     账户取现请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -205,7 +205,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     USAW7:取现失败
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> Withdrawal(WithdrawalRequest request)

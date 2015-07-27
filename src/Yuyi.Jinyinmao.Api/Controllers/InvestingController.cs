@@ -57,7 +57,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     金包银理财产品投资请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -77,7 +77,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     IRI8:该产品已售罄
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("JBY"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> JBYInvesting(InvestingRequest request)
@@ -148,7 +148,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     定期理财产品投资请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -166,7 +166,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     IRI7:购买失败
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("Regular"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> RegularInvesting(InvestingRequest request)
@@ -215,6 +215,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 Amount = request.Amount,
                 Args = this.BuildArgs(),
+                CouponId = request.CouponId,
                 ProductCategory = productInfo.ProductCategory,
                 ProductId = Guid.ParseExact(request.ProductIdentifier, "N"),
                 UserId = this.CurrentUser.Id
