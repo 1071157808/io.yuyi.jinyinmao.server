@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:18 PM
+// Last Modified On : 2015-07-15  12:43 PM
 // ***********************************************************************
 // <copyright file="VeriCodeService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -165,7 +165,7 @@ namespace Yuyi.Jinyinmao.Service
                 // 只取有效期内的验证码
                 DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
-                    .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == (int)type && v.BuildAt >= availableTime);
+                    .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == (int)type && v.BuildAt >= availableTime && !v.Used);
 
                 // 无该手机验证码记录，或者超过3次，验证码失效
                 if (veriCode == null || veriCode.ErrorCount >= 3)

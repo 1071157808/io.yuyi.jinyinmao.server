@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:13 PM
+// Last Modified On : 2015-07-15  12:42 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -405,6 +405,27 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IRegularProduct Members
+
+        //        /// <summary>
+        //        /// migrate as an asynchronous operation.
+        //        /// </summary>
+        //        /// <param name="migrationDto">The migration dto.</param>
+        //        /// <returns>Task.</returns>
+        //        public async Task MigrateAsync(RegularProductMigrationDto migrationDto)
+        //        {
+        //            this.State.Agreement1 = migrationDto.Agreement1;
+        //            this.State.Agreement2 = migrationDto.Agreement2;
+        //            this.State.Args = migrationDto.Args;
+        //            this.State.BankName = migrationDto.BankName;
+        //            this.State.Drawee = migrationDto.Drawee;
+        //            this.State.DraweeInfo = migrationDto.DraweeInfo;
+        //            this.State.EndSellTime = migrationDto.EndSellTime;
+        //            this.State.EndorseImageLink = migrationDto.EndorseImageLink;
+        //            this.State.EnterpriseInfo = migrationDto.EnterpriseInfo;
+        //            this.State.EnterpriseLicense = migrationDto.EnterpriseLicense;
+        //            this.State.EnterpriseName = migrationDto.EnterpriseName;
+        //            this.State.FinancingSumAmount = migrationDto
+        //        }
 
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.
