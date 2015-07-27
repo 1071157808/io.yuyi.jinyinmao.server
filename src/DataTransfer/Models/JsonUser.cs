@@ -1,33 +1,27 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// File             : TransSettleAccountTransaction.cs
+// File             : JsonUser.cs
 // Created          : 2015-07-27  6:28 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  6:41 PM
+// Last Modified On : 2015-07-27  6:40 PM
 // ***********************************************************************
-// <copyright file="TransSettleAccountTransaction.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JsonUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataTransfer.Models
 {
-    [Table("TransSettleAccountTransaction")]
-    public class TransSettleAccountTransaction
+    [Table("JsonUser")]
+    public class JsonUser
     {
-        [StringLength(30)]
-        public string BankCardNo { get; set; }
+        [Required]
+        public string Data { get; set; }
 
-        [Column(TypeName = "datetime2")]
-        public DateTime? CallbackTime { get; set; }
-
-        [Key]
-        [StringLength(50)]
-        public string OrderId { get; set; }
+        public int Id { get; set; }
     }
 }

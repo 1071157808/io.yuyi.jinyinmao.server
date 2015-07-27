@@ -11,16 +11,60 @@
 // </copyright>
 // ***********************************************************************
 
-using DataTransfer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataTransfer.Models;
 using Yuyi.Jinyinmao.Domain;
 
 namespace DataTransfer
 {
     internal class Utils
     {
+        public static Dictionary<Guid, Order> CreateOrders(List<Order> list)
+        {
+            Dictionary<Guid, Order> dic = new Dictionary<Guid, Order>();
+            if (list != null)
+            {
+                foreach (var item in list)
+                {
+                    dic.Add(item.OrderId, item);
+                }
+            }
+            return dic;
+        }
+
+        public static Dictionary<string, BankCard> GetBankCards(string userId)
+        {
+            var dic = new Dictionary<string, BankCard>();
+            using (var context = new OldDBContext())
+            {
+                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard
+                {
+                    AddingTime = b.AddingTime,
+                    Args = null,
+                    BankCardNo = b.BankCardNo,
+                    BankName = b.BankName,
+                    Cellphone = b.Cellphone,
+                    CityName = b.CityName,
+                    Dispaly = true,
+                    UserId = new Guid(b.UserId),
+                    Verified = true,
+                    VerifiedByYilian = true,
+                    VerifiedTime = b.VerifiedTime,
+                    WithdrawAmount = b.WithdrawAmount
+                });
+                if (bankCards != null)
+                {
+                    foreach (var item in bankCards)
+                    {
+                        dic.Add(item.BankCardNo, item);
+                    }
+                }
+            }
+            return dic;
+        }
+
         public static Credential GetCredential(int? credential = -1)
         {
             switch (credential)
@@ -154,51 +198,5 @@ namespace DataTransfer
 
             return result;
         }
-
-        public static Dictionary<Guid, Order> CreateOrders(List<Order> list)
-        {
-            Dictionary<Guid, Order> dic = new Dictionary<Guid, Order>();
-            if (list == null || list.Count != 0)
-            {
-                foreach (var item in list)
-                {
-                    dic.Add(item.OrderId, item);
-                }
-            }
-            return dic;
-        }
-
-
-        public static Dictionary<string, BankCard> GetBankCards(string userId)
-        {
-            var dic = new Dictionary<string, BankCard>();
-            using (var context = new OldDBContext())
-            {
-                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard()
-                {
-                    AddingTime = b.AddingTime.GetValueOrDefault(),
-                    Args = null,
-                    BankCardNo = b.BankCardNo,
-                    BankName = b.BankName,
-                    Cellphone = b.Cellphone,
-                    CityName = b.CityName,
-                    Dispaly = true,
-                    UserId = new Guid(b.UserId),
-                    Verified = true,
-                    VerifiedByYilian = true,
-                    VerifiedTime = b.VerifiedTime,
-                    WithdrawAmount = b.WithdrawAmount
-                });
-                if (bankCards != null || bankCards.Count() != 0)
-                {
-                    foreach (var item in bankCards)
-                    {
-                        dic.Add(item.BankCardNo, item);
-                    }
-                }
-            }
-            return dic;
-        }
-
     }
 }

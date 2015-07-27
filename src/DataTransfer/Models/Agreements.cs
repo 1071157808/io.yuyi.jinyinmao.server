@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Agreements.cs
-// Created          : 2015-07-27  9:16 AM
+// Created          : 2015-07-27  6:28 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  3:59 PM
+// Last Modified On : 2015-07-27  6:39 PM
 // ***********************************************************************
 // <copyright file="Agreements.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.

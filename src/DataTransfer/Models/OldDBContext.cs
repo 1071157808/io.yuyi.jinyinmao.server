@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : OldDBContext.cs
-// Created          : 2015-07-27  3:21 PM
+// Created          : 2015-07-27  6:28 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  4:15 PM
+// Last Modified On : 2015-07-27  6:40 PM
 // ***********************************************************************
 // <copyright file="OldDBContext.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -23,6 +23,10 @@ namespace DataTransfer.Models
         }
 
         public DbSet<Agreements> Agreements { get; set; }
+
+        public DbSet<JsonProduct> JsonProduct { get; set; }
+
+        public DbSet<JsonUser> JsonUser { get; set; }
 
         public DbSet<TransBankCard> TransBankCard { get; set; }
 

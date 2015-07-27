@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : TransRegularProductState.cs
-// Created          : 2015-07-27  9:16 AM
+// Created          : 2015-07-27  6:28 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  3:41 PM
+// Last Modified On : 2015-07-27  6:41 PM
 // ***********************************************************************
 // <copyright file="TransRegularProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.

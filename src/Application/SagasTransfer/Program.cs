@@ -1,13 +1,11 @@
-
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
-using Microsoft.WindowsAzure.Storage.Table;
-using Newtonsoft.Json;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using Microsoft.WindowsAzure.Storage.Table;
+using Serilog;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
 
@@ -27,14 +25,9 @@ namespace SagasTransfer
         {
             table.Execute(TableOperation.InsertOrReplace(entity));
         }
-        private static void Operation(CloudTable table, TableBatchOperation batch)
-        {
-            table.ExecuteBatch(batch);
-        }
 
         private static void Main(string[] args)
         {
-
             //string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             string baseDir = "e:/log";
             Console.WriteLine();
@@ -76,12 +69,18 @@ namespace SagasTransfer
             }
             Console.ReadKey();
         }
-        static void Transfer(string path)
+
+        private static void Operation(CloudTable table, TableBatchOperation batch)
         {
+            table.ExecuteBatch(batch);
+        }
 
-
-            TableRequestOptions request = new TableRequestOptions();
-            request.RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10);
+        private static void Transfer(string path)
+        {
+            TableRequestOptions request = new TableRequestOptions
+            {
+                RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
+            };
 
             DateTime now = DateTime.Now;
             string sagaName = "Sagas" + now.ToString("yyyyMMdd");
@@ -102,7 +101,7 @@ namespace SagasTransfer
             TableContinuationToken token = null;
             do
             {
-                var segement = table.ExecuteQuerySegmented<SagaStateRecord>(query, token);
+                var segement = table.ExecuteQuerySegmented(query, token);
                 list.AddRange(segement.Results);
                 token = segement.ContinuationToken;
             } while (token != null);
@@ -128,7 +127,7 @@ namespace SagasTransfer
                 Operation(table, batchDel);
             }
             Console.WriteLine(list.Count());
-            string line = string.Empty;
+            //string line = string.Empty;
             //if (File.Exists(path))
             //{
             //    using (StreamReader reader = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)))
@@ -147,11 +146,10 @@ namespace SagasTransfer
             list.Clear();
             do
             {
-                var segement = table.ExecuteQuerySegmented<SagaStateRecord>(query, token);
+                var segement = table.ExecuteQuerySegmented(query, token);
                 list.AddRange(segement.Results);
                 token = segement.ContinuationToken;
             } while (token != null);
-
 
             using (StreamWriter writer = new StreamWriter(new FileStream(path, FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite)))
             {

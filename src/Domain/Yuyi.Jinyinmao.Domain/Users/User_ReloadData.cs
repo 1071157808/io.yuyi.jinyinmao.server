@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : User_ReloadData.cs
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-30  1:20 AM
+// Last Modified On : 2015-07-27  5:50 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -107,8 +107,14 @@ namespace Yuyi.Jinyinmao.Domain
             JBYAccountTransaction lastReinvesting = this.State.JBYAccount.Values.Where(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0)
                 .OrderByDescending(t => t.ResultTime.GetValueOrDefault(DateTime.MinValue)).FirstOrDefault();
 
-            // ReSharper disable once MergeConditionalExpression
-            this.JBYLastInterest = lastReinvesting == null ? 0 : lastReinvesting.Amount;
+            if (lastReinvesting == null || lastReinvesting.ResultTime.GetValueOrDefault() <= now.AddHours(-22))
+            {
+                this.JBYLastInterest = 0L;
+            }
+            else
+            {
+                this.JBYLastInterest = lastReinvesting.Amount;
+            }
         }
 
         /// <summary>

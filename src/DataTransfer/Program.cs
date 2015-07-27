@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Program.cs
-// Created          : 2015-07-27  3:21 PM
+// Created          : 2015-07-27  6:28 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  4:14 PM
+// Last Modified On : 2015-07-27  6:42 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -26,7 +26,7 @@ namespace DataTransfer
     internal class Program
     {
         // private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-        private static readonly CloudTable TransJBYTransaction = null;
+        // private static readonly CloudTable TransJBYTransaction = null;
 
         private static readonly CloudTable TransOrder = null;
         private static readonly CloudTable TransRegularProduct = null;
@@ -173,8 +173,6 @@ namespace DataTransfer
             //    Console.WriteLine(e.Message);
             //}
         }
-
-       
 
         private static void RegularProductTransfer(Dictionary<string, object> productArgs)
         {
