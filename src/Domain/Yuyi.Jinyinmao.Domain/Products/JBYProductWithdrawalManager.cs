@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
@@ -100,6 +101,15 @@ namespace Yuyi.Jinyinmao.Domain.Products
         {
             await this.State.ReadStateAsync();
             this.ReloadTransactionData();
+        }
+
+        /// <summary>
+        ///     Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public override Task SyncAsync()
+        {
+            return TaskDone.Done;
         }
 
         private static DailyConfig GetTodayConfig()

@@ -601,18 +601,18 @@ GO
 SET NOEXEC OFF
 GO
 
-CREATE TABLE [dbo].[PrincipalVolumes] (
+CREATE TABLE [dbo].[PrincipalCoupons] (
 [Id] int NOT NULL IDENTITY(1,1) ,
 [UserIdentifier] varchar(50) COLLATE Chinese_PRC_CI_AS NOT NULL ,
-[Amount] decimal(18,6) NOT NULL ,
-[AddDate] datetime NOT NULL ,
-[EffectiveStartDate] datetime NOT NULL ,
-[EffectiveEndDate] datetime NOT NULL ,
-[UseFlag] int NOT NULL ,
-[UseTime] datetime NULL ,
+[Amount] bigint NOT NULL ,
+[AddTime] datetime2 NOT NULL ,
+[EffectiveStartTime] datetime2 NOT NULL ,
+[EffectiveEndTime] datetime2 NOT NULL ,
+[UseFlag] bit NOT NULL ,
+[UseTime] datetime2 NULL ,
 [OrderNo] varchar(20) COLLATE Chinese_PRC_CI_AS NULL ,
 [Remark] nvarchar(500) COLLATE Chinese_PRC_CI_AS NULL ,
-CONSTRAINT [PK_PRINCIPALVOLUMES] PRIMARY KEY ([Id])
+CONSTRAINT [PK_PRINCIPALCOUPONS] PRIMARY KEY ([Id])
 )
 ON [PRIMARY]
 GO

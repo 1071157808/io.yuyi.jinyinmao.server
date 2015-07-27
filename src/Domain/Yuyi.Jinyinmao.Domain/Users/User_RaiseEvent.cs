@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-30  1:20 AM
+// Last Modified On : 2015-07-26  2:56 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -77,7 +77,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         private async Task ProcessEventAsync(Event @event)
         {
-            @event.SourceId = this.State.Id.ToGuidString();
+            @event.SourceId = this.State.UserId.ToGuidString();
             @event.SourceType = this.GetType().Name;
             @event.TimeStamp = DateTime.UtcNow;
 

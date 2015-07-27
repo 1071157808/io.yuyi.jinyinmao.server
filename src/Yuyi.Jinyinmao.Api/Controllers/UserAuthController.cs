@@ -80,7 +80,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UAA5:该银行卡已经被绑定
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> Authenticate(AuthenticationRequest request)

@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  4:09 PM
+// Last Modified On : 2015-07-27  8:43 AM
 // ***********************************************************************
 // <copyright file="InvestingRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,6 +29,12 @@ namespace Yuyi.Jinyinmao.Api.Models.Investing
         /// </summary>
         [Required, Range(1, 10000000000), JsonProperty("amount")]
         public int Amount { get; set; }
+
+        /// <summary>
+        ///     代金券Id
+        /// </summary>
+        [JsonProperty("couponId")]
+        public int? CouponId { get; set; }
 
         /// <summary>
         ///     支付密码

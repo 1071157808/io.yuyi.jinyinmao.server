@@ -57,7 +57,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     添加银行卡请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -69,7 +69,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCABC4:该银行卡已经被使用
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("AddBankCard"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(BankCardInfoResponse))]
         public async Task<IHttpActionResult> AddBankCard(AddBankCardRequest request)
@@ -125,7 +125,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     添加银行卡请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -137,7 +137,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCABCBY5:该银行卡已经被使用
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("AddBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> AddBankCardByYilian(AddBankCardRequest request)
@@ -199,7 +199,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </remarks>
         /// <response code="200">注册成功</response>
         /// <response code="400">UBI1:无法获取用户信息</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Index"), CookieAuthorize, ResponseType(typeof(List<BankCardInfoResponse>))]
         public async Task<IHttpActionResult> Index()
@@ -222,7 +222,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </remarks>
         /// <response code="200">注册成功</response>
         /// <response code="400">UBI:无该银行卡信息</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Info/{bankCardNo:length(15,19)}"), CookieAuthorize, ResponseType(typeof(BankCardInfoResponse))]
         public async Task<IHttpActionResult> Info(string bankCardNo)
@@ -245,7 +245,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     隐藏银行卡请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -255,7 +255,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCDBC3:该银行卡尚有资金未完全取出
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("Remove"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> RemoveBankCard(DeleteBankCardRequest request)
@@ -299,7 +299,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     添加银行卡请求
         /// </param>
-        /// <response code="200">成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -313,7 +313,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UBCVBC5:该银行卡已经被使用
         /// </response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("VerifyBankCardByYilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> VerifyBankCardByYilian(VerifyBankCardRequest request)
@@ -369,7 +369,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </remarks>
         /// <response code="200">注册成功</response>
         /// <response code="400">UBWCI:无法获取用户信息</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Withdrawalable"), CookieAuthorize, ResponseType(typeof(List<BankCardInfoResponse>))]
         public async Task<IHttpActionResult> WithdrawalableCardInfos()
