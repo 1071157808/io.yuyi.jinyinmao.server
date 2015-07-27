@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : BackOfficeController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-08  3:34 PM
+// Last Modified On : 2015-07-27  6:15 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -194,7 +194,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            DailyConfig config = DailyConfigHelper.GetDailyConfig(DateTime.UtcNow.AddHours(8));
+            DailyConfig config = DailyConfigHelper.GetDailyConfig(request.StartSellTime);
 
             this.TraceWriter.Warn(this.Request, "Application", "JBYProductIssue. {0}", request.ToJson());
 
