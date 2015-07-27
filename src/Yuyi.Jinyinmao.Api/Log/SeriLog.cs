@@ -4,7 +4,7 @@
 // Created          : 2015-06-14  11:01 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  12:16 AM
+// Last Modified On : 2015-07-27  2:07 PM
 // ***********************************************************************
 // <copyright file="SeriLog.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,7 +42,7 @@ namespace Yuyi.Jinyinmao.Api.Log
         public static HttpConfiguration UseSeriLog(this HttpConfiguration config)
         {
             CloudStorageAccount storage = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
-            ILogger log = new LoggerConfiguration().WriteTo.AzureTableStorage(storage, "ApiLogs").CreateLogger();
+            ILogger log = new LoggerConfiguration().MinimumLevel.Warning().WriteTo.AzureTableStorage(storage, "ApiLogs").CreateLogger();
             Serilog.Log.Logger = log;
             config.Services.Replace(typeof(ITraceWriter), new SeriLogTraceWriter());
             config.Services.Add(typeof(IExceptionLogger), new SeriExceptionLogger());
