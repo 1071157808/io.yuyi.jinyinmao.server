@@ -98,7 +98,9 @@
     <Compile Include="Models\EndorseLinks.cs" />
     <Compile Include="Models\Entity\JBYAccountTransactionEntity.cs" />
     <Compile Include="Models\Entity\RegularProductEntity.cs" />
+    <Compile Include="Models\JsonJBYAccountTransaction.cs" />
     <Compile Include="Models\JsonProduct.cs" />
+    <Compile Include="Models\JsonSettleAccountTransaction.cs" />
     <Compile Include="Models\JsonUser.cs" />
     <Compile Include="Models\OldDBContext.cs" />
     <Compile Include="Models\Entity\OrderEntity.cs" />

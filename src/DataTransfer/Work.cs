@@ -272,6 +272,7 @@ namespace DataTransfer
                         Period = oldProduct.Period,
                         PledgeNo = oldProduct.PledgeNo,
                         ProductCategory = Utils.GetProductCategory(oldProduct.ProductCategory, oldProduct.ProductType),
+                        ProductId = new Guid(oldProduct.ProductId),
                         ProductName = Utils.GetProductName(oldProduct.ProductName),
                         ProductNo = oldProduct.ProductNo,
                         Repaid = oldProduct.Repaid,
@@ -308,21 +309,21 @@ namespace DataTransfer
                         {
                             Args = UserArgs,
                             Balance = -1,
-                            BankCardsCount = oldUser.BankCardsCount.GetValueOrDefault(),
+                            BankCardsCount = -1,
                             Cellphone = oldUser.Cellphone,
                             ClientType = oldUser.ClientType,
                             Closed = false,
                             ContractId = oldUser.ContractId,
                             Credential = Utils.GetCredential(oldUser.Credential),
-                            CredentialNo = oldUser.CredentialNo,
+                            CredentialNo =  string.IsNullOrEmpty(oldUser.CredentialNo) ? string.Empty : oldUser.CredentialNo,
                             Crediting = -1,
                             Debiting = 0,
                             HasSetPassword = oldUser.HasSetPassword > 0,
                             HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
                             InvestingInterest = -1,
                             InvestingPrincipal = -1,
-                            InviteBy = oldUser.InviteBy,
-                            JBYAccrualAmount = oldUser.JBYAccrualAmount * 100,
+                            InviteBy = string.IsNullOrEmpty(oldUser.InviteBy) ? string.Empty : oldUser.InviteBy,
+                            JBYAccrualAmount = -1,
                             JBYLastInterest = -1,
                             JBYTotalAmount = -1,
                             JBYTotalInterest = -1,
@@ -333,7 +334,7 @@ namespace DataTransfer
                             OutletCode = Utils.GetOutletCode(oldUser.OutletCode),
                             PasswordErrorCount = oldUser.PasswordErrorCount,
                             PaymentPasswordErrorCount = oldUser.PaymentPasswordErrorCount.GetValueOrDefault(),
-                            RealName = oldUser.RealName,
+                            RealName = string.IsNullOrEmpty(oldUser.RealName) ? string.Empty: oldUser.RealName,
                             RegisterTime = oldUser.RegisterTime,
                             TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
                             TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
@@ -393,6 +394,8 @@ namespace DataTransfer
                     #endregion orders
 
                     regularProduct.Orders = orders;
+                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(regularProduct) });
+                    context.SaveChanges();
 
                     #endregion product
 
@@ -410,7 +413,7 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var transUserInfos = context.TransUserInfo.Take(10).ToList();
+                var transUserInfos = context.TransUserInfo.ToList();
                 foreach (var transUserInfo in transUserInfos)
                 {
                     if (transUserInfo == null) continue;
@@ -516,6 +519,10 @@ namespace DataTransfer
                         Verified = transUserInfo.Verified.GetValueOrDefault(),
                         VerifiedTime = transUserInfo.VerifiedTime
                     };
+
+
+                    context.JsonUser.Add(new JsonUser { Data = JsonConvert.SerializeObject(user) });
+                    context.SaveChanges();
 
                     Console.WriteLine(JsonConvert.SerializeObject(user));
                 }
