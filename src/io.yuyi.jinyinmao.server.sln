@@ -92,6 +92,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Service.Coup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yuyi.Jinyinmao.Service.Coupon", "Services\Yuyi.Jinyinmao.Service.Coupon\Yuyi.Jinyinmao.Service.Coupon.csproj", "{EE7684A2-24B0-4633-AF3A-644148411750}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransfer", "DataTransfer\DataTransfer.csproj", "{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud|Any CPU = Cloud|Any CPU
@@ -427,6 +429,18 @@ Global
 		{EE7684A2-24B0-4633-AF3A-644148411750}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EE7684A2-24B0-4633-AF3A-644148411750}.Release|x86.ActiveCfg = Release|Any CPU
 		{EE7684A2-24B0-4633-AF3A-644148411750}.Release|x86.Build.0 = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Cloud|Any CPU.ActiveCfg = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Cloud|Any CPU.Build.0 = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Cloud|x86.ActiveCfg = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Cloud|x86.Build.0 = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Debug|x86.Build.0 = Debug|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -457,6 +471,7 @@ Global
 		{7E4D0F65-1AA1-4D50-8D05-80FE54CB23D4} = {996FF460-D625-4102-95F2-C02F5983C041}
 		{48362197-AA5F-4366-B39E-7C7642CB6F38} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
 		{EE7684A2-24B0-4633-AF3A-644148411750} = {5AB0F043-6026-4273-B365-0B1D9DC036CF}
+		{CF50CCD4-E31F-4FAC-A982-D76C4D238A6F} = {7E4D0F65-1AA1-4D50-8D05-80FE54CB23D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45;packages\EnterpriseLibrary.TransientFaultHandling.ServiceBus.6.0.1304.0\lib\NET45
