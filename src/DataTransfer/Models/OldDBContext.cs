@@ -23,59 +23,15 @@ namespace DataTransfer.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TransBankCard>()
+                .Property(e => e.BankCardNo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransBankCard>()
                 .Property(e => e.Cellphone)
                 .IsUnicode(false);
 
             modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.CredentialNo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.InviteBy)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.JBYLastInterest)
-                .HasPrecision(18, 6);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.JBYTotalInterest)
-                .HasPrecision(18, 6);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.JBYTotalPricipal)
-                .HasPrecision(18, 6);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.JBYWithdrawalableAmount)
-                .HasPrecision(18, 6);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.LoginNames)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.OutletCode)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
                 .Property(e => e.UserId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.EncryptedPassword)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.EncryptedPaymentPassword)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.Salt)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransBankCard>()
-                .Property(e => e.PaymentSalt)
                 .IsUnicode(false);
 
             modelBuilder.Entity<TransOrderInfo>()
