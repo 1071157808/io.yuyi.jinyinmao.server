@@ -18,6 +18,7 @@ using System.Linq;
 using DataTransfer.Models;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Newtonsoft.Json;
 
 namespace DataTransfer
 {
@@ -141,53 +142,57 @@ namespace DataTransfer
             {
                 var oldProductList = context.TransRegularProductState.Where(p => p.ProductId != "cc93b32c0536487fac57014b5b3de4b1").Take(10).ToList();
 
+                if(oldProductList == null || oldProductList.Count == 0) return;
+
                 foreach (var oldProduct in oldProductList)
                 {
                     //-1 condition, null
-                    // var agreement1 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement1);
-                    // var agreement2 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement2);
+                    if (oldProduct == null) continue;
 
-                    //                    RegularProductMigrationDto regularProduct = new RegularProductMigrationDto
-                    //                    {
-                    //                        Agreement1 = agreement1 != null ? agreement1.Content : string.Empty,
-                    //                        Agreement2 = agreement2 != null ? agreement2.Content : string.Empty,
-                    //                        Args = productArgs,
-                    //                        BankName = oldProduct.BankName, //186 items null, ignore
-                    //                        Drawee = oldProduct.Drawee,
-                    //                        DraweeInfo = oldProduct.DraweeInfo,
-                    //                        EndorseImageLink = oldProduct.EndorseImageLink,
-                    //                        EndSellTime = oldProduct.EndSellTime,
-                    //                        EnterpriseInfo = oldProduct.EnterpriseInfo,
-                    //                        EnterpriseLicense = oldProduct.EnterpriseInfo,
-                    //                        EnterpriseName = oldProduct.EnterpriseName,
-                    //                        FinancingSumAmount = (long)(oldProduct.FinancingSumAmount * oldProduct.UnitPrice * 100),
-                    //                        IssueNo = oldProduct.IssueNo,
-                    //                        IssueTime = oldProduct.IssueTime,
-                    //                        Period = oldProduct.Period,
-                    //                        PledgeNo = oldProduct.PledgeNo,
-                    //                        ProductCategory = Utils.GetProductCategory(oldProduct.ProductCategory, oldProduct.ProductType),
-                    //                        ProductName = Utils.GetProductName(oldProduct.ProductName),
-                    //                        ProductNo = oldProduct.ProductNo,
-                    //                        Repaid = oldProduct.Repaid,
-                    //                        RepaidTime = null,
-                    //                        RepaymentDeadline = oldProduct.RepaymentDeadline,
-                    //                        RiskManagement = oldProduct.RiskManagement,
-                    //                        RiskManagementInfo = oldProduct.RiskManagementInfo,
-                    //                        RiskManagementMode = Utils.GetRiskManagementMode(oldProduct.RiskManagementMode),
-                    //                        SettleDate = Utils.GetDate(oldProduct.SettleDate),
-                    //                        SoldOut = oldProduct.SoldOut,
-                    //                        SoldOutTime = oldProduct.SoldOutTime,
-                    //                        StartSellTime = oldProduct.StartSellTime,
-                    //                        UnitPrice = (int)(oldProduct.UnitPrice * 100),
-                    //                        Usage = oldProduct.Usage,
-                    //                        ValueDate = null,
-                    //                        ValueDateMode = 0,
-                    //                        Yield = (int)(oldProduct.Yield * 100)
-                    //                    };
+                    var agreement1 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement1);
+                    var agreement2 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement2);
+
+                    RegularProductMigrationDto regularProduct = new RegularProductMigrationDto
+                    {
+                        Agreement1 = agreement1 != null ? agreement1.Content : string.Empty,
+                        Agreement2 = agreement2 != null ? agreement2.Content : string.Empty,
+                        Args = productArgs,
+                        BankName = oldProduct.BankName, //186 items null, ignore
+                        Drawee = oldProduct.Drawee,
+                        DraweeInfo = oldProduct.DraweeInfo,
+                        EndorseImageLink = oldProduct.EndorseImageLink,
+                        EndSellTime = oldProduct.EndSellTime,
+                        EnterpriseInfo = oldProduct.EnterpriseInfo,
+                        EnterpriseLicense = oldProduct.EnterpriseInfo,
+                        EnterpriseName = oldProduct.EnterpriseName,
+                        FinancingSumAmount = (long)(oldProduct.FinancingSumAmount * oldProduct.UnitPrice * 100),
+                        IssueNo = oldProduct.IssueNo,
+                        IssueTime = oldProduct.IssueTime,
+                        Period = oldProduct.Period,
+                        PledgeNo = oldProduct.PledgeNo,
+                        ProductCategory = Utils.GetProductCategory(oldProduct.ProductCategory, oldProduct.ProductType),
+                        ProductName = Utils.GetProductName(oldProduct.ProductName),
+                        ProductNo = oldProduct.ProductNo,
+                        Repaid = oldProduct.Repaid,
+                        RepaidTime = null,
+                        RepaymentDeadline = oldProduct.RepaymentDeadline,
+                        RiskManagement = oldProduct.RiskManagement,
+                        RiskManagementInfo = oldProduct.RiskManagementInfo,
+                        RiskManagementMode = Utils.GetRiskManagementMode(oldProduct.RiskManagementMode),
+                        SettleDate = Utils.GetDate(oldProduct.SettleDate),
+                        SoldOut = oldProduct.SoldOut,
+                        SoldOutTime = oldProduct.SoldOutTime,
+                        StartSellTime = oldProduct.StartSellTime,
+                        UnitPrice = (int)(oldProduct.UnitPrice * 100),
+                        Usage = oldProduct.Usage,
+                        ValueDate = null,
+                        ValueDateMode = 0,
+                        Yield = (int)(oldProduct.Yield * 100)
+                    };
 
                     var oldOrderList = context.TransOrderInfo.Where(o => o.ProductId == oldProduct.ProductId).ToList();
 
-                    //Dictionary<Guid, OrderInfo> orders = new Dictionary<Guid, OrderInfo>();
+                    Dictionary<Guid, OrderInfo> orders = new Dictionary<Guid, OrderInfo>();
 
                     foreach (var oldOrder in oldOrderList)
                     {
@@ -281,7 +286,14 @@ namespace DataTransfer
                         SettleAccountTransactionList.Add(benJinTransaction);
                         SettleAccountTransactionList.Add(liXiTransaction);
                         SettleAccountTransactionList.Add(quXianTransaction);
+
+                        orders.Add(orderInfo.OrderId, orderInfo);
                     }
+
+                    regularProduct.Orders = orders;
+
+                    Console.WriteLine(JsonConvert.SerializeObject(regularProduct));
+
                 }
             }
         }
