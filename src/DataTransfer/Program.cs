@@ -24,91 +24,7 @@ namespace DataTransfer
         private static CloudTable transRegularProduct;
         private static CloudTable transJBYTransaction;
 
-        private static SettleAccountTransaction generateTransaction(TranscationState type, OrderInfo order, UserInfo user)
-        {
-            Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("Comment", "由原流水数据迁移");
-            dic.Add("IsRepaid", order.IsRepaid);
-
-            using (var context = new OldDBContext())
-            {
-                var oldTransaction = context.TransSettleAccountTransaction.Where(t => t.OrderId == order.OrderId.ToString().Replace("-", "") && order.ProductId.ToString() != "cc93b32c0536487fac57014b5b3de4b1").FirstOrDefault();
-                if (oldTransaction == null) return null;
-                //pre deal
-                SettleAccountTransaction transaction = new SettleAccountTransaction
-                {
-                    Amount = order.Principal * 100,
-                    Args = dic,
-                    BankCardNo = oldTransaction.BankCardNo,
-                    //ChannelCode
-                    OrderId = order.OrderId,
-                    ResultCode = 1,
-                    ResultTime = oldTransaction.CallbackTime == null ? order.OrderTime : oldTransaction.CallbackTime,
-                    SequenceNo = order.OrderNo,
-                    //Trade
-                    //TradeCode
-                    //TransactionId
-                    TransactionTime = order.OrderTime,
-                    //TransDesc 
-                    UserId = order.UserId,
-                    //UserInfo = user
-                };
-
-                //suf deal
-                switch (type)
-                {
-                    case TranscationState.ChongZhi:
-                        transaction.ChannelCode = 10010;
-                        transaction.Trade = Trade.Debit;
-                        transaction.TradeCode = 1005051001;
-                        transaction.TransactionId = Guid.NewGuid();
-                        transaction.TransDesc = "个人钱包账户充值";
-                        //transaction.OrderId = Guid.Empty;
-
-                        break;
-                    case TranscationState.GouMai:
-                        transaction.ChannelCode = 10000;
-                        transaction.Trade = Trade.Debit;
-                        transaction.TradeCode = 1005012004;
-                        transaction.TransactionId = order.AccountTransactionId;
-                        transaction.TransDesc = "购买银票或者商票产品(银行专区)";
-                        transaction.BankCardNo = string.Empty;
-
-                        break;
-                    case TranscationState.BenJin:
-                        transaction.ChannelCode = 10000;
-                        transaction.Trade = Trade.Credit;
-                        transaction.TradeCode = 1005011104;
-                        transaction.TransactionId = Guid.NewGuid();
-                        transaction.TransDesc = "钱包收到银票或者商票产品返还本金(银行专区)";
-
-                        break;
-                    case TranscationState.LiXi:
-                        transaction.ChannelCode = 10000;
-                        transaction.Trade = Trade.Credit;
-                        transaction.TradeCode = 1005011105;
-                        transaction.TransactionId = Guid.NewGuid();
-                        transaction.TransDesc = "钱包收到银票或者商票产品结算利息(银行专区)";
-
-                        break;
-                    case TranscationState.QuXian:
-                        transaction.ChannelCode = 10010;
-                        transaction.Trade = Trade.Credit;
-                        transaction.TradeCode = 1005052001;
-                        transaction.TransactionId = Guid.NewGuid();
-                        transaction.TransDesc = "个人钱包账户取现";
-
-                        break;
-                    default:
-                        transaction.ChannelCode = -1;
-
-                        break;
-                }
-
-                return transaction;
-            }
-
-        }
+        
 
         private static void SaveOrderInfoToAzure(OrderInfo order)
         {
@@ -151,6 +67,7 @@ namespace DataTransfer
 
         public static void Main(string[] args)
         {
+            Work.Run();
             //var id = Guid.NewGuid();
             //Console.WriteLine(id.ToString());
 
@@ -170,6 +87,7 @@ namespace DataTransfer
             //    transTransaction.CreateIfNotExists();
             //    transRegularProduct.CreateIfNotExists();
             //    transJBYTransaction.CreateIfNotExists();
+
             //    using (var context = new OldDBContext())
             //    {
             //        Dictionary<string, object> orderArgs = new Dictionary<string, object>();
@@ -442,16 +360,16 @@ namespace DataTransfer
         private static void RegularTransactionTransfer(OrderInfo order, UserInfo user)
         {
             List<SettleAccountTransaction> transactionList = new List<SettleAccountTransaction>();
-            SettleAccountTransaction chongZhiTransaction = generateTransaction(TranscationState.ChongZhi, order, user);
-            SettleAccountTransaction gouMaiTransaction = generateTransaction(TranscationState.GouMai, order, user);
-            SettleAccountTransaction benJinTransaction = generateTransaction(TranscationState.BenJin, order, user);
-            SettleAccountTransaction liXiTransaction = generateTransaction(TranscationState.LiXi, order, user);
-            SettleAccountTransaction quXianTransaction = generateTransaction(TranscationState.QuXian, order, user);
-            transactionList.Add(chongZhiTransaction);
-            transactionList.Add(gouMaiTransaction);
-            transactionList.Add(benJinTransaction);
-            transactionList.Add(liXiTransaction);
-            transactionList.Add(quXianTransaction);
+            //SettleAccountTransaction chongZhiTransaction = generateTransaction(TranscationState.ChongZhi, order, user);
+            //SettleAccountTransaction gouMaiTransaction = generateTransaction(TranscationState.GouMai, order, user);
+            //SettleAccountTransaction benJinTransaction = generateTransaction(TranscationState.BenJin, order, user);
+            //SettleAccountTransaction liXiTransaction = generateTransaction(TranscationState.LiXi, order, user);
+            //SettleAccountTransaction quXianTransaction = generateTransaction(TranscationState.QuXian, order, user);
+            //transactionList.Add(chongZhiTransaction);
+            //transactionList.Add(gouMaiTransaction);
+            //transactionList.Add(benJinTransaction);
+            //transactionList.Add(liXiTransaction);
+            //transactionList.Add(quXianTransaction);
             SaveTransactionToAzure(transactionList);
         }
 
