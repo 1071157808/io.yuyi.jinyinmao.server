@@ -176,7 +176,7 @@ namespace DataTransfer
             {
                 var bankCards = context.TransBankCard.Where(x => x.UserId == userId).Select(b => new BankCard()
                 {
-                    AddingTime = b.AddingTime.GetValueOrDefault(),
+                    AddingTime = b.AddingTime,
                     Args = null,
                     BankCardNo = b.BankCardNo,
                     BankName = b.BankName,

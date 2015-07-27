@@ -141,6 +141,8 @@ namespace DataTransfer
             }
         }
 
+        #region ProductTransfer
+
         private static void RegularProductTransfer(Dictionary<string, object> productArgs)
         {
             using (var context = new OldDBContext())
@@ -151,6 +153,7 @@ namespace DataTransfer
 
                 foreach (var oldProduct in oldProductList)
                 {
+                    #region product
                     //-1 condition, null
                     if (oldProduct == null) continue;
 
@@ -194,6 +197,8 @@ namespace DataTransfer
                         ValueDateMode = 0,
                         Yield = (int)(oldProduct.Yield * 100)
                     };
+
+                    #region orders
 
                     var oldOrderList = context.TransOrderInfo.Where(o => o.ProductId == oldProduct.ProductId).ToList();
 
@@ -292,7 +297,11 @@ namespace DataTransfer
                         orders.Add(orderInfo.OrderId, orderInfo);
                     }
 
+                    #endregion
+
                     regularProduct.Orders = orders;
+
+                    #endregion
 
                     Console.WriteLine(JsonConvert.SerializeObject(regularProduct));
 
@@ -300,6 +309,7 @@ namespace DataTransfer
             }
         }
 
+        #endregion
 
         #region UserTransfer
 
@@ -420,5 +430,19 @@ namespace DataTransfer
         {
             return SettleAccountTransactionList.Where(x => x.OrderId == new Guid(orderId) && x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
         }
+
+        private static void StorageDataToTempDB<T>(IList<T> list) where T : class
+        {
+            using (var context = new OldDBContext())
+            {
+                foreach (var item in list)
+                {
+                    context.Set<T>().Add(item);
+                }
+                context.SaveChanges();
+            }
+
+        }
+
     }
 }

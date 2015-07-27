@@ -6,11 +6,12 @@ namespace DataTransfer.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Agreements
+    [Table("JsonProduct")]
+    public partial class JsonProduct
     {
         public int Id { get; set; }
 
         [Required]
-        public string Content { get; set; }
+        public string Data { get; set; }
     }
 }
