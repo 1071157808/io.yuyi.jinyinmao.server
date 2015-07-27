@@ -1,69 +1,35 @@
-﻿using System;
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : Program.cs
+// Created          : 2015-07-27  3:21 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-27  3:42 PM
+// ***********************************************************************
+// <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yuyi.Jinyinmao.Domain.Dtos;
 using DataTransfer.Models;
+using DataTransfer.Models.Entity;
+using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
-using DataTransfer.Models.Entity;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace DataTransfer
 {
-    class Program
+    internal class Program
     {
-
         private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-
-        private static CloudTable transOrder;
-        private static CloudTable transTransaction;
-        private static CloudTable transRegularProduct;
         private static CloudTable transJBYTransaction;
-
-        
-
-        private static void SaveOrderInfoToAzure(OrderInfo order)
-        {
-            try
-            {
-                OrderEntity orderEntity = Utils.ReflectProperties<OrderEntity, OrderInfo>(order);
-                orderEntity.PartitionKey = order.UserId.ToString();
-                orderEntity.RowKey = order.OrderId.ToString();
-                transOrder.Execute(TableOperation.InsertOrReplace(orderEntity));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        private static void SaveTransactionToAzure(List<SettleAccountTransaction> transactionList)
-        {
-            try
-            {
-                TableBatchOperation batch = new TableBatchOperation();
-                for (int i = 0; i < transactionList.Count; i++)
-                {
-                    var transaction = transactionList.ElementAt(i);
-                    TransactionEntity transactionEntity = Utils.ReflectProperties<TransactionEntity, SettleAccountTransaction>(transaction);
-                    transactionEntity.PartitionKey = transaction.OrderId.ToString();
-                    transactionEntity.RowKey = transaction.TransactionId.ToString();
-                    var result = transTransaction.Execute(TableOperation.InsertOrReplace(transactionEntity));
-                    //batch.Insert(transactionEntity);
-                    Console.WriteLine(JsonConvert.SerializeObject(result));
-                }
-
-                // transTransaction.ExecuteBatch(batch);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
+        private static CloudTable transOrder;
+        private static CloudTable transRegularProduct;
+        private static CloudTable transTransaction;
 
         public static void Main(string[] args)
         {
@@ -73,7 +39,6 @@ namespace DataTransfer
 
             //try
             //{
-
             //    CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
             //    CloudTableClient client = account.CreateCloudTableClient();
             //    TableRequestOptions options = new TableRequestOptions();
@@ -208,21 +173,6 @@ namespace DataTransfer
             //}
         }
 
-        private static void SaveDataToAzure<TResult, TSource>(CloudTable table, TSource source, string partitionKey, string rowKey) where TResult : TableEntity, new()
-        {
-            try
-            {
-                TResult entity = Utils.ReflectProperties<TResult, TSource>(source);
-                entity.PartitionKey = partitionKey;
-                entity.RowKey = rowKey;
-                table.Execute(TableOperation.Insert(entity));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
         private static JBYAccountTransaction GenerateJBYTransaction(TranscationState type, OrderInfo order, UserInfo user)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -248,7 +198,7 @@ namespace DataTransfer
                     //TradeCode
                     //TransactionId
                     TransactionTime = order.OrderTime,
-                    //TransDesc 
+                    //TransDesc
                     UserId = order.UserId,
                     UserInfo = user
                 };
@@ -265,41 +215,65 @@ namespace DataTransfer
                         //transaction.OrderId = Guid.Empty;
 
                         break;
+
                     case TranscationState.ToJBY:
                         transaction.Trade = Trade.Credit;
                         transaction.TradeCode = 1005012003;
                         transaction.TransactionId = order.AccountTransactionId;
                         transaction.TransDesc = "钱包金额转为金包银金额";
                         break;
+
                     case TranscationState.RecieveByQianBao:
                         transaction.Trade = Trade.Debit;
                         transaction.TradeCode = 2001051102;
                         transaction.TransactionId = Guid.NewGuid();
                         transaction.TransDesc = "金包银金额收到钱包转入金额";
                         break;
+
                     case TranscationState.ToQianBao:
                         transaction.Trade = Trade.Credit;
                         transaction.TradeCode = 2001012002;
                         transaction.TransactionId = Guid.NewGuid();
                         transaction.TransDesc = "金包银金额转为钱包金额";
                         break;
+
                     case TranscationState.RecieveByJBY:
                         transaction.Trade = Trade.Debit;
                         transaction.TradeCode = 1005011103;
                         transaction.TransactionId = Guid.NewGuid();
                         transaction.TransDesc = "钱包收到金包银转入金额";
                         break;
+
                     case TranscationState.QuXian:
                         transaction.Trade = Trade.Credit;
                         transaction.TradeCode = 1005052001;
                         transaction.TransactionId = Guid.NewGuid();
                         transaction.TransDesc = "个人钱包账户取现";
                         break;
+
                     default:
                         break;
                 }
                 return transaction;
             }
+        }
+
+        private static void JBYTransactionTransfer(OrderInfo order, UserInfo user)
+        {
+            List<JBYAccountTransaction> transactionList = new List<JBYAccountTransaction>();
+            JBYAccountTransaction transChongZhi = GenerateJBYTransaction(TranscationState.ChongZhi, order, user);
+            JBYAccountTransaction transToJBY = GenerateJBYTransaction(TranscationState.ToJBY, order, user);
+            JBYAccountTransaction transRecieveByQianBao = GenerateJBYTransaction(TranscationState.RecieveByQianBao, order, user);
+            JBYAccountTransaction transToQianBao = GenerateJBYTransaction(TranscationState.ToQianBao, order, user);
+            JBYAccountTransaction transRecieveByJBY = GenerateJBYTransaction(TranscationState.RecieveByJBY, order, user);
+            JBYAccountTransaction transQuXian = GenerateJBYTransaction(TranscationState.QuXian, order, user);
+            transactionList.Add(transChongZhi);
+            transactionList.Add(transToJBY);
+            transactionList.Add(transRecieveByQianBao);
+            transactionList.Add(transToQianBao);
+            transactionList.Add(transRecieveByJBY);
+            transactionList.Add(transQuXian);
+            SaveJBYTransactionToAzure(transJBYTransaction, transactionList);
         }
 
         private static void RegularProductTransfer(Dictionary<string, object> productArgs)
@@ -310,7 +284,6 @@ namespace DataTransfer
 
                 foreach (var oldProduct in oldProductList)
                 {
-
                     //-1 condition, null
                     var agreement1 = context.Agreements.Where(a => a.Id == oldProduct.Agreement1).FirstOrDefault();
                     var agreement2 = context.Agreements.Where(a => a.Id == oldProduct.Agreement2).FirstOrDefault();
@@ -352,7 +325,7 @@ namespace DataTransfer
                         ValueDateMode = 0,
                         Yield = (int)(oldProduct.Yield * 100)
                     };
-                    SaveDataToAzure<RegularProductEntity, RegularProductMigrationDto>(transRegularProduct, regularProduct, regularProduct.ProductCategory.ToString(),oldProduct.ProductId);
+                    SaveDataToAzure<RegularProductEntity, RegularProductMigrationDto>(transRegularProduct, regularProduct, regularProduct.ProductCategory.ToString(), oldProduct.ProductId);
                 }
             }
         }
@@ -373,22 +346,19 @@ namespace DataTransfer
             SaveTransactionToAzure(transactionList);
         }
 
-        private static void JBYTransactionTransfer(OrderInfo order, UserInfo user)
+        private static void SaveDataToAzure<TResult, TSource>(CloudTable table, TSource source, string partitionKey, string rowKey) where TResult : TableEntity, new()
         {
-            List<JBYAccountTransaction> transactionList = new List<JBYAccountTransaction>();
-            JBYAccountTransaction transChongZhi = GenerateJBYTransaction(TranscationState.ChongZhi, order, user);
-            JBYAccountTransaction transToJBY = GenerateJBYTransaction(TranscationState.ToJBY, order, user);
-            JBYAccountTransaction transRecieveByQianBao = GenerateJBYTransaction(TranscationState.RecieveByQianBao, order, user);
-            JBYAccountTransaction transToQianBao = GenerateJBYTransaction(TranscationState.ToQianBao, order, user);
-            JBYAccountTransaction transRecieveByJBY = GenerateJBYTransaction(TranscationState.RecieveByJBY, order, user);
-            JBYAccountTransaction transQuXian = GenerateJBYTransaction(TranscationState.QuXian, order, user);
-            transactionList.Add(transChongZhi);
-            transactionList.Add(transToJBY);
-            transactionList.Add(transRecieveByQianBao);
-            transactionList.Add(transToQianBao);
-            transactionList.Add(transRecieveByJBY);
-            transactionList.Add(transQuXian);
-            SaveJBYTransactionToAzure(transJBYTransaction, transactionList);
+            try
+            {
+                TResult entity = Utils.ReflectProperties<TResult, TSource>(source);
+                entity.PartitionKey = partitionKey;
+                entity.RowKey = rowKey;
+                table.Execute(TableOperation.Insert(entity));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private static void SaveJBYTransactionToAzure(CloudTable table, List<JBYAccountTransaction> list)
@@ -408,6 +378,45 @@ namespace DataTransfer
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static void SaveOrderInfoToAzure(OrderInfo order)
+        {
+            try
+            {
+                OrderEntity orderEntity = Utils.ReflectProperties<OrderEntity, OrderInfo>(order);
+                orderEntity.PartitionKey = order.UserId.ToString();
+                orderEntity.RowKey = order.OrderId.ToString();
+                transOrder.Execute(TableOperation.InsertOrReplace(orderEntity));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void SaveTransactionToAzure(List<SettleAccountTransaction> transactionList)
+        {
+            try
+            {
+                TableBatchOperation batch = new TableBatchOperation();
+                for (int i = 0; i < transactionList.Count; i++)
+                {
+                    var transaction = transactionList.ElementAt(i);
+                    TransactionEntity transactionEntity = Utils.ReflectProperties<TransactionEntity, SettleAccountTransaction>(transaction);
+                    transactionEntity.PartitionKey = transaction.OrderId.ToString();
+                    transactionEntity.RowKey = transaction.TransactionId.ToString();
+                    var result = transTransaction.Execute(TableOperation.InsertOrReplace(transactionEntity));
+                    //batch.Insert(transactionEntity);
+                    Console.WriteLine(JsonConvert.SerializeObject(result));
+                }
+
+                // transTransaction.ExecuteBatch(batch);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }

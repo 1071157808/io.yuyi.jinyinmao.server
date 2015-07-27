@@ -1,13 +1,24 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : ValueInfo.cs
+// Created          : 2015-07-27  9:16 AM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-27  3:41 PM
+// ***********************************************************************
+// <copyright file="ValueInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DataTransfer.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
     [Table("ValueInfo")]
-    public partial class ValueInfo
+    public class ValueInfo
     {
         public int Id { get; set; }
 

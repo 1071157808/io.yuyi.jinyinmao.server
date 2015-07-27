@@ -87,7 +87,6 @@
     <Compile Include="Models\EndorseLinks.cs" />
     <Compile Include="Models\Entity\JBYAccountTransactionEntity.cs" />
     <Compile Include="Models\Entity\RegularProductEntity.cs" />
-    <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\OldDBContext.cs" />
     <Compile Include="Models\Entity\OrderEntity.cs" />
     <Compile Include="Models\Products.cs" />
@@ -95,6 +94,7 @@
     <Compile Include="Models\SalePeriod.cs" />
     <Compile Include="Models\TradeAcceptanceProducts.cs" />
     <Compile Include="Models\Entity\TransactionEntity.cs" />
+    <Compile Include="Models\TransBankCard.cs" />
     <Compile Include="Models\TranscationState.cs" />
     <Compile Include="Models\TransOrderInfo.cs" />
     <Compile Include="Models\TransRegularProductInfo.cs" />
@@ -111,7 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

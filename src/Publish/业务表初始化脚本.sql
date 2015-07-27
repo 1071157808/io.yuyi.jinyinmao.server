@@ -591,11 +591,11 @@ CREATE INDEX [IN_Cellphone_Type_Verified] ON [dbo].[VeriCodes]
 ([Cellphone] ASC, [Type] ASC, [Verified] ASC) 
 GO
 
-IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'PrincipalVolumes')
+IF NOT EXISTS (SELECT * FROM [sys].[tables] WHERE [name] = N'PrincipalCoupons')
   SET NOEXEC ON
 GO
 
-DROP TABLE [dbo].[PrincipalVolumes]
+DROP TABLE [dbo].[PrincipalCoupons]
 GO
 
 SET NOEXEC OFF
