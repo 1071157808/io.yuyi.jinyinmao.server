@@ -6,8 +6,8 @@ namespace DataTransfer.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("TransUserInfo")]
-    public partial class TransUserInfo
+    [Table("TransBankCard")]
+    public partial class TransBankCard
     {
         public int? Args { get; set; }
 
