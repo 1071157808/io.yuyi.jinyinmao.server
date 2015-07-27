@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  5:56 PM
+// Last Modified On : 2015-07-27  9:13 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -992,6 +992,8 @@ namespace Yuyi.Jinyinmao.Domain
             await this.State.WriteStateAsync();
 
             await this.SyncAsync();
+
+            await this.RegisterOrUpdateReminder("DailyWork", TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20));
 
             return await this.GetUserInfoAsync();
         }

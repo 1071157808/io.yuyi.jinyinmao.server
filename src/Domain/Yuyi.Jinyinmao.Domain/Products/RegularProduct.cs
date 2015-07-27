@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  10:14 AM
+// Last Modified On : 2015-07-27  9:13 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -144,7 +144,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task CheckSaleStatusAsync()
         {
-            if (this.PaidAmount >= this.State.FinancingSumAmount && !this.State.SoldOut)
+            if (this.State.FinancingSumAmount > 0 && this.PaidAmount >= this.State.FinancingSumAmount && !this.State.SoldOut)
             {
                 Task.Factory.StartNew(() => this.SetToSoldOutAsync());
             }
