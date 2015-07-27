@@ -4,7 +4,7 @@
 // Created          : 2015-07-27  3:21 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  3:42 PM
+// Last Modified On : 2015-07-27  4:14 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,11 +25,12 @@ namespace DataTransfer
 {
     internal class Program
     {
-        private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-        private static CloudTable transJBYTransaction;
-        private static CloudTable transOrder;
-        private static CloudTable transRegularProduct;
-        private static CloudTable transTransaction;
+        // private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
+        private static readonly CloudTable TransJBYTransaction = null;
+
+        private static readonly CloudTable TransOrder = null;
+        private static readonly CloudTable TransRegularProduct = null;
+        private static readonly CloudTable TransTransaction = null;
 
         public static void Main(string[] args)
         {
@@ -175,12 +176,21 @@ namespace DataTransfer
 
         private static JBYAccountTransaction GenerateJBYTransaction(TranscationState type, OrderInfo order, UserInfo user)
         {
-            Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("Comment", "由原流水数据迁移");
-            dic.Add("IsRepaid", order.IsRepaid);
+            Dictionary<string, object> dic = new Dictionary<string, object>
+            {
+                { "Comment", "由原流水数据迁移" },
+                { "IsRepaid", order.IsRepaid }
+            };
+
             using (var context = new OldDBContext())
             {
                 var oldTransaction = context.TransSettleAccountTransaction.FirstOrDefault(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
+
+                // TODO: oldTransaction null 值判断
+                if (oldTransaction == null)
+                {
+                    return null;
+                }
 
                 //pre deal
                 JBYAccountTransaction transaction = new JBYAccountTransaction
@@ -192,7 +202,7 @@ namespace DataTransfer
                     //ChannelCode
                     //OrderId = order.OrderId,
                     ResultCode = 1,
-                    ResultTime = oldTransaction.CallbackTime == null ? order.OrderTime : oldTransaction.CallbackTime,
+                    ResultTime = oldTransaction.CallbackTime ?? order.OrderTime,
                     //SequenceNo = order.OrderNo,
                     //Trade
                     //TradeCode
@@ -250,9 +260,6 @@ namespace DataTransfer
                         transaction.TransactionId = Guid.NewGuid();
                         transaction.TransDesc = "个人钱包账户取现";
                         break;
-
-                    default:
-                        break;
                 }
                 return transaction;
             }
@@ -273,7 +280,7 @@ namespace DataTransfer
             transactionList.Add(transToQianBao);
             transactionList.Add(transRecieveByJBY);
             transactionList.Add(transQuXian);
-            SaveJBYTransactionToAzure(transJBYTransaction, transactionList);
+            SaveJBYTransactionToAzure(TransJBYTransaction, transactionList);
         }
 
         private static void RegularProductTransfer(Dictionary<string, object> productArgs)
@@ -285,8 +292,8 @@ namespace DataTransfer
                 foreach (var oldProduct in oldProductList)
                 {
                     //-1 condition, null
-                    var agreement1 = context.Agreements.Where(a => a.Id == oldProduct.Agreement1).FirstOrDefault();
-                    var agreement2 = context.Agreements.Where(a => a.Id == oldProduct.Agreement2).FirstOrDefault();
+                    var agreement1 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement1);
+                    var agreement2 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement2);
 
                     RegularProductMigrationDto regularProduct = new RegularProductMigrationDto
                     {
@@ -306,16 +313,16 @@ namespace DataTransfer
                         IssueTime = oldProduct.IssueTime,
                         Period = oldProduct.Period,
                         PledgeNo = oldProduct.PledgeNo,
-                        ProductCategory = Utils.getProductCategory(oldProduct.ProductCategory, oldProduct.ProductType),
-                        ProductName = Utils.getProductName(oldProduct.ProductName),
+                        ProductCategory = Utils.GetProductCategory(oldProduct.ProductCategory, oldProduct.ProductType),
+                        ProductName = Utils.GetProductName(oldProduct.ProductName),
                         ProductNo = oldProduct.ProductNo,
                         Repaid = oldProduct.Repaid,
                         RepaidTime = null,
                         RepaymentDeadline = oldProduct.RepaymentDeadline,
                         RiskManagement = oldProduct.RiskManagement,
                         RiskManagementInfo = oldProduct.RiskManagementInfo,
-                        RiskManagementMode = Utils.getRiskManagementMode(oldProduct.RiskManagementMode),
-                        SettleDate = Utils.getDate(oldProduct.SettleDate),
+                        RiskManagementMode = Utils.GetRiskManagementMode(oldProduct.RiskManagementMode),
+                        SettleDate = Utils.GetDate(oldProduct.SettleDate),
                         SoldOut = oldProduct.SoldOut,
                         SoldOutTime = oldProduct.SoldOutTime,
                         StartSellTime = oldProduct.StartSellTime,
@@ -325,7 +332,7 @@ namespace DataTransfer
                         ValueDateMode = 0,
                         Yield = (int)(oldProduct.Yield * 100)
                     };
-                    SaveDataToAzure<RegularProductEntity, RegularProductMigrationDto>(transRegularProduct, regularProduct, regularProduct.ProductCategory.ToString(), oldProduct.ProductId);
+                    SaveDataToAzure<RegularProductEntity, RegularProductMigrationDto>(TransRegularProduct, regularProduct, regularProduct.ProductCategory.ToString(), oldProduct.ProductId);
                 }
             }
         }
@@ -361,7 +368,7 @@ namespace DataTransfer
             }
         }
 
-        private static void SaveJBYTransactionToAzure(CloudTable table, List<JBYAccountTransaction> list)
+        private static void SaveJBYTransactionToAzure(CloudTable table, IEnumerable<JBYAccountTransaction> list)
         {
             TableBatchOperation batch = new TableBatchOperation();
             try
@@ -388,7 +395,7 @@ namespace DataTransfer
                 OrderEntity orderEntity = Utils.ReflectProperties<OrderEntity, OrderInfo>(order);
                 orderEntity.PartitionKey = order.UserId.ToString();
                 orderEntity.RowKey = order.OrderId.ToString();
-                transOrder.Execute(TableOperation.InsertOrReplace(orderEntity));
+                TransOrder.Execute(TableOperation.InsertOrReplace(orderEntity));
             }
             catch (Exception e)
             {
@@ -400,14 +407,13 @@ namespace DataTransfer
         {
             try
             {
-                TableBatchOperation batch = new TableBatchOperation();
                 for (int i = 0; i < transactionList.Count; i++)
                 {
                     var transaction = transactionList.ElementAt(i);
                     TransactionEntity transactionEntity = Utils.ReflectProperties<TransactionEntity, SettleAccountTransaction>(transaction);
                     transactionEntity.PartitionKey = transaction.OrderId.ToString();
                     transactionEntity.RowKey = transaction.TransactionId.ToString();
-                    var result = transTransaction.Execute(TableOperation.InsertOrReplace(transactionEntity));
+                    var result = TransTransaction.Execute(TableOperation.InsertOrReplace(transactionEntity));
                     //batch.Insert(transactionEntity);
                     Console.WriteLine(JsonConvert.SerializeObject(result));
                 }

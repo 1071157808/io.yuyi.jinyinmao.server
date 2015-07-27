@@ -83,7 +83,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Coupon
                 Id = info.Id,
                 Remark = info.Remark,
                 UseFlag = info.UseFlag,
-                UseTime = info.UseTime
+                UseTime = info.UseTime.GetValueOrDefault()
             };
         }
     }
