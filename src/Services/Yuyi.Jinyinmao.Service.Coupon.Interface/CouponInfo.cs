@@ -78,6 +78,6 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Gets or sets the use time.
         /// </summary>
         /// <value>The use time.</value>
-        public DateTime UseTime { get; set; }
+        public DateTime? UseTime { get; set; }
     }
 }

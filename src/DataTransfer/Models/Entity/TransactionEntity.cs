@@ -1,15 +1,25 @@
-﻿using System;
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : TransactionEntity.cs
+// Created          : 2015-07-27  9:16 AM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-27  4:01 PM
+// ***********************************************************************
+// <copyright file="TransactionEntity.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
-using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace DataTransfer.Models.Entity
 {
-    class TransactionEntity : TableEntity
+    internal class TransactionEntity : TableEntity
     {
         public long Amount { get; set; }
 
@@ -96,6 +106,5 @@ namespace DataTransfer.Models.Entity
         /// </summary>
         /// <value>The user information.</value>
         public UserInfo UserInfo { get; set; }
-
     }
 }
