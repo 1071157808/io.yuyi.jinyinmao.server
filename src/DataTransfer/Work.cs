@@ -27,14 +27,12 @@ namespace DataTransfer
     /// </summary>
     public class Work
     {
-        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
-
-        [SuppressMessage("ReSharper", "CollectionNeverQueried.Local")]
-        private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
-
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
+
+        private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
+        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
 
         public static Dictionary<Guid, JBYAccountTransaction> GetJBYAccountTransaction(string userId)
         {
@@ -51,7 +49,7 @@ namespace DataTransfer
             ProductArgs.Add("Comment", "由原产品数据迁移");
 
             //get products
-            RegularProductTransfer(ProductArgs);
+            RegularProductTransfer();
             UserTransfer();
             Console.ReadKey();
         }
@@ -242,7 +240,7 @@ namespace DataTransfer
         #region ProductTransfer
 
         [SuppressMessage("ReSharper", "FunctionComplexityOverflow")]
-        private static void RegularProductTransfer(Dictionary<string, object> productArgs)
+        private static void RegularProductTransfer()
         {
             using (var context = new OldDBContext())
             {
@@ -264,7 +262,7 @@ namespace DataTransfer
                     {
                         Agreement1 = agreement1 != null ? agreement1.Content : string.Empty,
                         Agreement2 = agreement2 != null ? agreement2.Content : string.Empty,
-                        Args = productArgs,
+                        Args = ProductArgs,
                         BankName = oldProduct.BankName, //186 items null, ignore
                         Drawee = oldProduct.Drawee,
                         DraweeInfo = oldProduct.DraweeInfo,
