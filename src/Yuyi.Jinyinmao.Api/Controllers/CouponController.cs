@@ -4,7 +4,7 @@
 // Created          : 2015-07-26  5:57 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  8:46 AM
+// Last Modified On : 2015-07-27  10:02 AM
 // ***********************************************************************
 // <copyright file="CouponController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -75,10 +75,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     获取本金券列表
+        ///     删除本金券
         /// </summary>
         /// <remarks>
-        ///     会获取可以使用的本金券列表
+        ///     删除本金券
         /// </remarks>
         /// <param name="couponId">代金券Id</param>
         /// <response code="200"></response>
