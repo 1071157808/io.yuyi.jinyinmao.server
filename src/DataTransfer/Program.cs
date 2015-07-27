@@ -151,6 +151,7 @@ namespace DataTransfer
 
         public static void Main(string[] args)
         {
+            Work.Run();
             //var id = Guid.NewGuid();
             //Console.WriteLine(id.ToString());
 
