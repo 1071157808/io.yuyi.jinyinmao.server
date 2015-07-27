@@ -30,7 +30,10 @@ namespace DataTransfer
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
 
-        [SuppressMessage("ReSharper", "CollectionNeverQueried.Local")] private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
+        [SuppressMessage("ReSharper", "CollectionNeverQueried.Local")]
+        private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
+
+        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
 
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
@@ -45,7 +48,7 @@ namespace DataTransfer
 
             //get products
             RegularProductTransfer(ProductArgs);
-
+            UserTransfer();
             Console.ReadKey();
         }
 
@@ -149,7 +152,7 @@ namespace DataTransfer
             {
                 var oldProductList = context.TransRegularProductState.Where(p => p.ProductId != "cc93b32c0536487fac57014b5b3de4b1").Take(10).ToList();
 
-                if(oldProductList == null || oldProductList.Count == 0) return;
+                if (oldProductList == null || oldProductList.Count == 0) return;
 
                 foreach (var oldProduct in oldProductList)
                 {
@@ -366,7 +369,7 @@ namespace DataTransfer
                     #endregion
 
                     #region Order
-                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).Select(x => new Order()
+                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).ToList().Select(x => new Order()
                     {
                         AccountTransactionId = GetSettleTransactionId(x.OrderId),
                         Args = OrderArgs,
@@ -391,7 +394,7 @@ namespace DataTransfer
                         UserInfo = userInfo,
                         ValueDate = Utils.GetDate(x.ValueDate),
                         Yield = (int)(x.Yield * 100)
-                    }).ToList(); 
+                    }).ToList();
                     #endregion
 
                     var user = new UserMigrationDto()
@@ -403,7 +406,7 @@ namespace DataTransfer
                         Closed = false,
                         ContractId = transUserInfo.ContractId,
                         Credential = Utils.GetCredential(transUserInfo.Credential),
-                        CredentialNo = userInfo.CredentialNo,
+                        CredentialNo = transUserInfo.CredentialNo,
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword,
                         InviteBy = transUserInfo.InviteBy,
@@ -415,11 +418,13 @@ namespace DataTransfer
                         RealName = transUserInfo.RealName,
                         RegisterTime = transUserInfo.RegisterTime,
                         Salt = transUserInfo.Salt,
-                        SettleAccount = null,
+                        SettleAccount = GetSettleAccountTransaction(transUserInfo.UserId),
                         UserId = new Guid(transUserInfo.UserId),
                         Verified = transUserInfo.Verified.GetValueOrDefault(),
                         VerifiedTime = transUserInfo.VerifiedTime
                     };
+
+                    Console.WriteLine(JsonConvert.SerializeObject(user));
                 }
             }
         }
@@ -442,6 +447,144 @@ namespace DataTransfer
                 context.SaveChanges();
             }
 
+        }
+
+        public static Dictionary<Guid, JBYAccountTransaction> GetJBYAccountTransaction(string userId)
+        {
+            return null;
+        }
+
+        #region 通过UserId查询流水
+        /// <summary>
+        /// 通过UserId查询流水
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static Dictionary<Guid, SettleAccountTransaction> GetSettleAccountTransaction(string userId)
+        {
+            Dictionary<Guid, SettleAccountTransaction> dic = new Dictionary<Guid, SettleAccountTransaction>();
+            if (SettleAccountTransactionList != null && SettleAccountTransactionList.Count != 0)
+            {
+                var list = SettleAccountTransactionList.Where(x => x.UserId == new Guid(userId)).ToList();
+                if (list != null && list.Count != 0)
+                {
+                    foreach (var item in list)
+                    {
+                        dic.Add(item.TransactionId, item);
+                    }
+                }
+            }
+            return dic;
+        }
+        #endregion
+
+
+        private static JBYAccountTransaction GenerateJBYTransaction(TranscationState type, OrderInfo order, UserInfo user)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>
+            {
+                { "Comment", "由原流水数据迁移" },
+                { "IsRepaid", order.IsRepaid }
+            };
+
+            using (var context = new OldDBContext())
+            {
+                var oldTransaction = context.TransSettleAccountTransaction.FirstOrDefault(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
+
+                // TODO: oldTransaction null 值判断
+                if (oldTransaction == null)
+                {
+                    return null;
+                }
+
+                //pre deal
+                JBYAccountTransaction transaction = new JBYAccountTransaction
+                {
+                    Amount = order.Principal * 100,
+                    ProductId = new Guid("cc93b32c0536487fac57014b5b3de4b1"),
+                    Args = dic,
+                    //BankCardNo = oldTransaction.BankCardNo,
+                    //ChannelCode
+                    //OrderId = order.OrderId,
+                    ResultCode = 1,
+                    ResultTime = oldTransaction.CallbackTime ?? order.OrderTime,
+                    //SequenceNo = order.OrderNo,
+                    //Trade
+                    //TradeCode
+                    //TransactionId
+                    TransactionTime = order.OrderTime,
+                    //TransDesc
+                    UserId = order.UserId,
+                    UserInfo = user
+                };
+
+                //suf deal
+                switch (type)
+                {
+                    case TranscationState.ChongZhi:
+
+                        transaction.Trade = Trade.Debit;
+                        transaction.TradeCode = 1005051001;
+                        transaction.TransactionId = Guid.NewGuid();
+                        transaction.TransDesc = "个人钱包账户充值";
+                        //transaction.OrderId = Guid.Empty;
+
+                        break;
+
+                    case TranscationState.ToJBY:
+                        transaction.Trade = Trade.Credit;
+                        transaction.TradeCode = 1005012003;
+                        transaction.TransactionId = order.AccountTransactionId;
+                        transaction.TransDesc = "钱包金额转为金包银金额";
+                        break;
+
+                    case TranscationState.RecieveByQianBao:
+                        transaction.Trade = Trade.Debit;
+                        transaction.TradeCode = 2001051102;
+                        transaction.TransactionId = Guid.NewGuid();
+                        transaction.TransDesc = "金包银金额收到钱包转入金额";
+                        break;
+
+                    case TranscationState.ToQianBao:
+                        transaction.Trade = Trade.Credit;
+                        transaction.TradeCode = 2001012002;
+                        transaction.TransactionId = Guid.NewGuid();
+                        transaction.TransDesc = "金包银金额转为钱包金额";
+                        break;
+
+                    case TranscationState.RecieveByJBY:
+                        transaction.Trade = Trade.Debit;
+                        transaction.TradeCode = 1005011103;
+                        transaction.TransactionId = Guid.NewGuid();
+                        transaction.TransDesc = "钱包收到金包银转入金额";
+                        break;
+
+                    case TranscationState.QuXian:
+                        transaction.Trade = Trade.Credit;
+                        transaction.TradeCode = 1005052001;
+                        transaction.TransactionId = Guid.NewGuid();
+                        transaction.TransDesc = "个人钱包账户取现";
+                        break;
+                }
+                return transaction;
+            }
+        }
+
+        private static void JBYTransactionTransfer(OrderInfo order, UserInfo user)
+        {
+
+            JBYAccountTransaction transChongZhi = GenerateJBYTransaction(TranscationState.ChongZhi, order, user);
+            JBYAccountTransaction transToJBY = GenerateJBYTransaction(TranscationState.ToJBY, order, user);
+            JBYAccountTransaction transRecieveByQianBao = GenerateJBYTransaction(TranscationState.RecieveByQianBao, order, user);
+            JBYAccountTransaction transToQianBao = GenerateJBYTransaction(TranscationState.ToQianBao, order, user);
+            JBYAccountTransaction transRecieveByJBY = GenerateJBYTransaction(TranscationState.RecieveByJBY, order, user);
+            JBYAccountTransaction transQuXian = GenerateJBYTransaction(TranscationState.QuXian, order, user);
+            JBYAccountTransactionList.Add(transChongZhi);
+            JBYAccountTransactionList.Add(transToJBY);
+            JBYAccountTransactionList.Add(transRecieveByQianBao);
+            JBYAccountTransactionList.Add(transToQianBao);
+            JBYAccountTransactionList.Add(transRecieveByJBY);
+            JBYAccountTransactionList.Add(transQuXian);
         }
 
     }
