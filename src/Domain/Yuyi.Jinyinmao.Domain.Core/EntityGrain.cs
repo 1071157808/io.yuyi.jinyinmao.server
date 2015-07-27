@@ -4,7 +4,7 @@
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-10  5:18 PM
+// Last Modified On : 2015-07-26  10:12 AM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,16 +43,16 @@ namespace Yuyi.Jinyinmao.Domain
         #region IEntity Members
 
         /// <summary>
-        ///     Gets the identifier.
-        /// </summary>
-        /// <returns>Task&lt;Guid&gt;.</returns>
-        public Task<Guid> GetIdAsync() => Task.FromResult(this.State.Id);
-
-        /// <summary>
         ///     Reload state data as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
         public abstract Task ReloadAsync();
+
+        /// <summary>
+        ///     Synchronizes the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public abstract Task SyncAsync();
 
         #endregion IEntity Members
 

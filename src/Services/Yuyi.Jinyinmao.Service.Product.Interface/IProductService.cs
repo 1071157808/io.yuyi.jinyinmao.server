@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-28  10:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  1:48 AM
+// Last Modified On : 2015-07-26  9:25 AM
 // ***********************************************************************
 // <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Commands;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -37,19 +38,27 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task HitShelvesAsync(IssueJBYProduct command);
 
         /// <summary>
-        /// Refreshes the jyb product asynchronous.
+        ///     Migrates the asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <param name="migrationDto">The migration dto.</param>
+        /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
+        Task<RegularProductInfo> MigrateAsync(Guid productId, RegularProductMigrationDto migrationDto);
+
+        /// <summary>
+        ///     Refreshes the jyb product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task RefreshJybProductAsync();
 
         /// <summary>
-        /// Reloads the jby product asynchronous.
+        ///     Reloads the jby product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task ReloadJBYProductAsync();
 
         /// <summary>
-        /// Reloads the regular product asynchronous.
+        ///     Reloads the regular product asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
@@ -63,13 +72,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task RepayRegularProductAsync(Guid productId);
 
         /// <summary>
-        /// Sets the current jby product to sold out asynchronous.
+        ///     Sets the current jby product to sold out asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task SetCurrentJBYProductToSoldOutAsync();
 
         /// <summary>
-        /// Sets the regular product to sold out asynchronous.
+        ///     Sets the regular product to sold out asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>

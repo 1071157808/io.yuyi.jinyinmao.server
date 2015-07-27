@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  6:46 PM
+// Last Modified On : 2015-07-26  5:40 PM
 // ***********************************************************************
 // <copyright file="Order.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,8 +27,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
-        /// TODO:111
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         /// <summary>
         ///     Gets or sets the description.

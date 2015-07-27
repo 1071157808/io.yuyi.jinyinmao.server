@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-15  12:41 PM
+// Last Modified On : 2015-07-27  9:13 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,6 +25,8 @@ using Yuyi.Jinyinmao.Domain.Helper;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Helper;
 using Yuyi.Jinyinmao.Packages.Helper;
+using Yuyi.Jinyinmao.Service;
+using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -58,7 +60,7 @@ namespace Yuyi.Jinyinmao.Domain
                     card.BankName = command.BankName;
                     card.Cellphone = this.State.Cellphone;
                     card.CityName = command.CityName;
-                    card.UserId = this.State.Id;
+                    card.UserId = this.State.UserId;
                     card.Verified = false;
                     card.VerifiedByYilian = false;
                     card.VerifiedTime = null;
@@ -84,7 +86,7 @@ namespace Yuyi.Jinyinmao.Domain
                     Cellphone = this.State.Cellphone,
                     CityName = command.CityName,
                     Dispaly = true,
-                    UserId = this.State.Id,
+                    UserId = this.State.UserId,
                     Verified = false,
                     VerifiedByYilian = false,
                     VerifiedTime = null,
@@ -232,7 +234,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.State.WriteStateAsync();
 
-            await cellphone.Register(this.State.Id);
+            await cellphone.Register(this.State.UserId);
 
             await originalCellphone.Unregister();
 
@@ -267,7 +269,7 @@ namespace Yuyi.Jinyinmao.Domain
                         RemainCount = 10 - this.PasswordErrorCount,
                         Success = true,
                         UserExist = true,
-                        UserId = this.State.Id
+                        UserId = this.State.UserId
                     });
                 }
             }
@@ -280,7 +282,7 @@ namespace Yuyi.Jinyinmao.Domain
                 RemainCount = 10 - this.PasswordErrorCount,
                 Success = false,
                 UserExist = true,
-                UserId = this.State.Id
+                UserId = this.State.UserId
             });
         }
 
@@ -352,21 +354,21 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTransactionInfo, BankCardInfo&gt;&gt;.</returns>
         /// <exception cref="System.ApplicationException">
-        ///     Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}.FormatWith(this.State.Id, command.CommandId)
+        ///     Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
         ///     or
-        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.Id, command.CommandId)
+        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
         /// </exception>
         public async Task<Tuple<UserInfo, SettleAccountTransactionInfo, BankCardInfo>> DepositAsync(PayCommand command)
         {
             if (!this.State.Verified)
             {
-                throw new ApplicationException("Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}".FormatWith(this.State.UserId, command.CommandId));
             }
 
             BankCard card;
             if (!this.State.BankCards.TryGetValue(command.BankCardNo, out card))
             {
-                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.UserId, command.CommandId));
             }
 
             UserInfo userInfo = await this.GetUserInfoAsync();
@@ -392,7 +394,7 @@ namespace Yuyi.Jinyinmao.Domain
                     TransactionId = command.CommandId,
                     TransactionTime = DateTime.UtcNow.AddHours(8),
                     TransDesc = "充值申请",
-                    UserId = this.State.Id,
+                    UserId = this.State.UserId,
                     UserInfo = await this.GetUserInfoAsync()
                 };
 
@@ -425,20 +427,20 @@ namespace Yuyi.Jinyinmao.Domain
         {
             if (!this.State.Verified)
             {
-                throw new ApplicationException("Invalid PayByYilian command. UserId-{0}, CommandId-{1}.".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Invalid PayByYilian command. UserId-{0}, CommandId-{1}.".FormatWith(this.State.UserId, command.CommandId));
             }
 
             BankCard card;
             if (!this.State.BankCards.TryGetValue(command.BankCardNo, out card))
             {
-                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.UserId, command.CommandId));
             }
 
             SettleAccountTransaction transaction;
             if (!this.State.SettleAccount.TryGetValue(command.CommandId, out transaction))
             {
                 throw new ApplicationException("Missing SettleAccountTransaction. UserId-{0}, CommandId-{1}, SettleAccountTransactionId-{2} ."
-                    .FormatWith(this.State.Id, command.CommandId, command.CommandId));
+                    .FormatWith(this.State.UserId, command.CommandId, command.CommandId));
             }
 
             if (transaction.ResultCode != 0 && transaction.ResultTime.HasValue)
@@ -694,7 +696,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TodayWithdrawalCount = this.TodayWithdrawalCount,
                 TotalInterest = this.TotalInterest,
                 TotalPrincipal = this.TotalPrincipal,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 Verified = this.State.Verified,
                 VerifiedTime = this.State.VerifiedTime,
                 WithdrawalableAmount = withdrawalableAmount > 0 ? withdrawalableAmount : 0
@@ -782,7 +784,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "支付成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -809,7 +811,7 @@ namespace Yuyi.Jinyinmao.Domain
                 ResultTime = now,
                 SettleDate = DateTime.UtcNow, // to be updated
                 TransDesc = "购买成功",
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync(),
                 ValueDate = DateTime.UtcNow, // to be updated
                 Yield = 0 // to be updated
@@ -828,6 +830,27 @@ namespace Yuyi.Jinyinmao.Domain
             order.SettleDate = orderInfo.SettleDate;
             order.ValueDate = orderInfo.ValueDate;
             order.Yield = orderInfo.Yield;
+
+            if (command.CouponId != null)
+            {
+                ICouponService couponService = new CouponService();
+                CouponInfo coupon = await couponService.UseCouponAsync(command.CouponId.GetValueOrDefault(), this.State.UserId);
+
+                if (coupon != null)
+                {
+                    order.ExtraInterestRecords.Add(new ExtraInterestRecord
+                    {
+                        Amount = coupon.Amount,
+                        Description = "本金券" + coupon.Id,
+                        OperationId = command.CommandId
+                    });
+
+                    order.ExtraInterest += order.Interest * coupon.Amount / order.Principal;
+
+                    orderInfo.ExtraInterest = order.ExtraInterest;
+                    orderInfo.ExtraInterestRecords = order.ExtraInterestRecords;
+                }
+            }
 
             this.State.Orders.Add(order.OrderId, order);
 
@@ -879,7 +902,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "支付成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -896,7 +919,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "申购成功",
                 TransactionId = command.CommandId,
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -930,27 +953,73 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     migrate as an asynchronous operation.
+        /// </summary>
+        /// <param name="migrationDto">The migration dto.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public async Task<UserInfo> MigrateAsync(UserMigrationDto migrationDto)
+        {
+            this.State.Args = migrationDto.Args;
+            this.State.BankCards = migrationDto.BankCards;
+            this.State.Cellphone = migrationDto.Cellphone;
+            this.State.ClientType = migrationDto.ClientType;
+            this.State.Closed = migrationDto.Closed;
+            this.State.ContractId = migrationDto.ContractId;
+            this.State.Credential = migrationDto.Credential;
+            this.State.CredentialNo = migrationDto.CredentialNo;
+            this.State.EncryptedPassword = migrationDto.EncryptedPassword;
+            this.State.EncryptedPaymentPassword = migrationDto.EncryptedPaymentPassword;
+            this.State.InviteBy = migrationDto.InviteBy;
+            this.State.JBYAccount = migrationDto.JBYAccount;
+            this.State.LoginNames = migrationDto.LoginNames;
+            this.State.Orders = migrationDto.Orders;
+            this.State.OutletCode = migrationDto.OutletCode;
+            this.State.PaymentSalt = migrationDto.PaymentSalt;
+            this.State.RealName = migrationDto.RealName;
+            this.State.RegisterTime = migrationDto.RegisterTime;
+            this.State.Salt = migrationDto.Salt;
+            this.State.SettleAccount = migrationDto.SettleAccount;
+            this.State.UserId = migrationDto.UserId;
+            this.State.Verified = migrationDto.Verified;
+            this.State.VerifiedTime = migrationDto.VerifiedTime;
+
+            this.State.Args.Add("MigratingTime", DateTime.UtcNow);
+
+            this.ReloadJBYAccountData();
+            this.ReloadOrderInfosData();
+            this.ReloadSettleAccountData();
+
+            await this.State.WriteStateAsync();
+
+            await this.SyncAsync();
+
+            await this.RegisterOrUpdateReminder("DailyWork", TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20));
+
+            return await this.GetUserInfoAsync();
+        }
+
+        /// <summary>
         ///     Registers the specified user register.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
         public async Task<UserInfo> RegisterAsync(UserRegister command)
         {
-            if (this.State.Id == command.UserId)
+            if (this.State.UserId == command.UserId)
             {
                 return null;
             }
 
-            if (this.State.Id != Guid.Empty)
+            if (this.State.UserId != Guid.Empty)
             {
-                this.GetLogger().Warn(1, "Conflict user id: UserId {0}, UserRegisterCommand.UserId {1}", this.State.Id, command.UserId);
+                this.GetLogger().Warn(1, "Conflict user id: UserId {0}, UserRegisterCommand.UserId {1}", this.State.UserId, command.UserId);
                 return null;
             }
 
             this.BeginProcessCommandAsync(command);
 
             DateTime registerTime = DateTime.UtcNow.AddHours(8);
-            this.State.Id = command.UserId;
+            this.State.UserId = command.UserId;
             this.State.Args = command.Args;
             this.State.BankCards = new Dictionary<string, BankCard>();
             this.State.Cellphone = command.Cellphone;
@@ -992,7 +1061,7 @@ namespace Yuyi.Jinyinmao.Domain
             Order order;
             if (!this.State.Orders.TryGetValue(orderId, out order))
             {
-                throw new ApplicationException("Missing Order data. UserId-{0}, OrderId-{1}.".FormatWith(this.State.Id, orderId));
+                throw new ApplicationException("Missing Order data. UserId-{0}, OrderId-{1}.".FormatWith(this.State.UserId, orderId));
             }
 
             if (order.IsRepaid && order.RepaidTime.HasValue)
@@ -1033,7 +1102,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = Guid.NewGuid(),
                 TransDesc = "本金还款",
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -1052,7 +1121,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = Guid.NewGuid(),
                 TransDesc = "产品结息",
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -1113,21 +1182,21 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;Tuple&lt;UserInfo, BankCardInfo&gt;&gt;.</returns>
         /// <exception cref="System.ApplicationException">
-        ///     Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}.FormatWith(this.State.Id, command.CommandId)
+        ///     Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
         ///     or
-        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.Id, command.CommandId)
+        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
         /// </exception>
         public async Task<Tuple<UserInfo, BankCardInfo>> VerifyBankCardAsync(VerifyBankCard command)
         {
             if (!this.State.Verified)
             {
-                throw new ApplicationException("Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}".FormatWith(this.State.UserId, command.CommandId));
             }
 
             BankCard card;
             if (!this.State.BankCards.TryGetValue(command.BankCardNo, out card))
             {
-                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.UserId, command.CommandId));
             }
 
             this.BeginProcessCommandAsync(command);
@@ -1146,21 +1215,21 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ApplicationException">
-        ///     Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}..FormatWith(this.State.Id, command.CommandId)
+        ///     Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}..FormatWith(this.State.UserId, command.CommandId)
         ///     or
-        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.Id, command.CommandId)
+        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
         /// </exception>
         public async Task VerifyBankCardAsync(VerifyBankCard command, bool result, string message)
         {
             if (!this.State.Verified)
             {
-                throw new ApplicationException("Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}.".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Invalid VerifyBankCard command. UserId-{0}, CommandId-{1}.".FormatWith(this.State.UserId, command.CommandId));
             }
 
             BankCard card;
             if (!this.State.BankCards.TryGetValue(command.BankCardNo, out card))
             {
-                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.Id, command.CommandId));
+                throw new ApplicationException("Missing BankCard data. UserId-{0}, CommandId-{1}".FormatWith(this.State.UserId, command.CommandId));
             }
 
             if (card.VerifiedByYilian)
@@ -1230,7 +1299,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
                 TransDesc = "取现申请",
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -1281,7 +1350,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.AddHours(8),
                 TransDesc = "赎回申请",
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -1382,7 +1451,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "利息复投成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -1432,7 +1501,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = transaction.SettleAccountTransactionId,
                 TransactionTime = now,
                 TransDesc = "金包银赎回资金到账",
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -1511,7 +1580,7 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = "账户取现手续费",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
-                UserId = this.State.Id,
+                UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };
         }

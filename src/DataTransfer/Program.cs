@@ -154,140 +154,140 @@ namespace DataTransfer
             //var id = Guid.NewGuid();
             //Console.WriteLine(id.ToString());
 
-            try
-            {
+            //try
+            //{
 
-                CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
-                CloudTableClient client = account.CreateCloudTableClient();
-                TableRequestOptions options = new TableRequestOptions();
-                options.RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(2), 10);
-                client.DefaultRequestOptions = options;
-                transOrder = client.GetTableReference("TransOrder");
-                transTransaction = client.GetTableReference("TransTransaction");
-                transRegularProduct = client.GetTableReference("TransRegularProduct");
-                transJBYTransaction = client.GetTableReference("TransJBYTransaction");
-                transOrder.CreateIfNotExists();
-                transTransaction.CreateIfNotExists();
-                transRegularProduct.CreateIfNotExists();
-                transJBYTransaction.CreateIfNotExists();
-                using (var context = new OldDBContext())
-                {
-                    Dictionary<string, object> orderArgs = new Dictionary<string, object>();
-                    Dictionary<string, object> userArgs = new Dictionary<string, object>();
-                    Dictionary<string, object> productArgs = new Dictionary<string, object>();
+            //    CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
+            //    CloudTableClient client = account.CreateCloudTableClient();
+            //    TableRequestOptions options = new TableRequestOptions();
+            //    options.RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(2), 10);
+            //    client.DefaultRequestOptions = options;
+            //    transOrder = client.GetTableReference("TransOrder");
+            //    transTransaction = client.GetTableReference("TransTransaction");
+            //    transRegularProduct = client.GetTableReference("TransRegularProduct");
+            //    transJBYTransaction = client.GetTableReference("TransJBYTransaction");
+            //    transOrder.CreateIfNotExists();
+            //    transTransaction.CreateIfNotExists();
+            //    transRegularProduct.CreateIfNotExists();
+            //    transJBYTransaction.CreateIfNotExists();
+            //    using (var context = new OldDBContext())
+            //    {
+            //        Dictionary<string, object> orderArgs = new Dictionary<string, object>();
+            //        Dictionary<string, object> userArgs = new Dictionary<string, object>();
+            //        Dictionary<string, object> productArgs = new Dictionary<string, object>();
 
-                    orderArgs.Add("Comment", "由原订单数据迁移");
-                    userArgs.Add("Comment", "由原用户数据迁移");
-                    productArgs.Add("Comment", "由原产品数据迁移");
+            //        orderArgs.Add("Comment", "由原订单数据迁移");
+            //        userArgs.Add("Comment", "由原用户数据迁移");
+            //        productArgs.Add("Comment", "由原产品数据迁移");
 
-                    #region OrderRegion
-                    var oldOrderList = context.TransOrderInfo.Where(x=>x.ProductId != "cc93b32c0536487fac57014b5b3de4b1").Take(5).ToList();
+            //        #region OrderRegion
+            //        var oldOrderList = context.TransOrderInfo.Where(x=>x.ProductId != "cc93b32c0536487fac57014b5b3de4b1").Take(5).ToList();
 
-                    foreach (var oldOrder in oldOrderList)
-                    {
-                        var oldUser = context.TransUserInfo.Where(u => u.UserId == oldOrder.UserId).FirstOrDefault();
+            //        foreach (var oldOrder in oldOrderList)
+            //        {
+            //            var oldUser = context.TransUserInfo.Where(u => u.UserId == oldOrder.UserId).FirstOrDefault();
 
-                        UserInfo user = new UserInfo
-                        {
-                            Args = userArgs,
-                            Balance = -1,
-                            BankCardsCount = (int)oldUser.BankCardsCount,
-                            Cellphone = oldUser.Cellphone,
-                            ClientType = oldUser.ClientType,
-                            Closed = false,
-                            ContractId = oldUser.ContractId,
-                            Credential = Utils.getCredential(oldUser.Credential),
-                            CredentialNo = oldUser.CredentialNo,
-                            Crediting = -1,
-                            Debiting = 0,
-                            HasSetPassword = oldUser.HasSetPassword > 0,
-                            HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
-                            InvestingInterest = -1,
-                            InvestingPrincipal = -1,
-                            InviteBy = oldUser.InviteBy,
-                            JBYAccrualAmount = oldUser.JBYAccrualAmount * 100,
-                            JBYLastInterest = -1,
-                            JBYTotalAmount = -1,
-                            JBYTotalInterest = -1,
-                            JBYTotalPricipal = -1,
-                            JBYWithdrawalableAmount = -1,
-                            LoginNames = new List<string>() { oldUser.LoginNames },
-                            MonthWithdrawalCount = oldUser.MonthWithdrawalCount,
-                            OutletCode = Utils.getOutletCode(oldUser.OutletCode),
-                            PasswordErrorCount = oldUser.PasswordErrorCount,
-                            PaymentPasswordErrorCount = (int)oldUser.PaymentPasswordErrorCount,
-                            RealName = oldUser.RealName,
-                            RegisterTime = oldUser.RegisterTime,
-                            TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
-                            TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
-                            TotalInterest = oldUser.TotalInterest,
-                            TotalPrincipal = oldUser.TotalPrincipal,
-                            UserId = new Guid(oldUser.UserId),
-                            Verified = (bool)oldUser.Verified,
-                            VerifiedTime = oldUser.VerifiedTime,
-                            WithdrawalableAmount = oldUser.WithdrawalableAmount
-                        };
+            //            UserInfo user = new UserInfo
+            //            {
+            //                Args = userArgs,
+            //                Balance = -1,
+            //                BankCardsCount = (int)oldUser.BankCardsCount,
+            //                Cellphone = oldUser.Cellphone,
+            //                ClientType = oldUser.ClientType,
+            //                Closed = false,
+            //                ContractId = oldUser.ContractId,
+            //                Credential = Utils.getCredential(oldUser.Credential),
+            //                CredentialNo = oldUser.CredentialNo,
+            //                Crediting = -1,
+            //                Debiting = 0,
+            //                HasSetPassword = oldUser.HasSetPassword > 0,
+            //                HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
+            //                InvestingInterest = -1,
+            //                InvestingPrincipal = -1,
+            //                InviteBy = oldUser.InviteBy,
+            //                JBYAccrualAmount = oldUser.JBYAccrualAmount * 100,
+            //                JBYLastInterest = -1,
+            //                JBYTotalAmount = -1,
+            //                JBYTotalInterest = -1,
+            //                JBYTotalPricipal = -1,
+            //                JBYWithdrawalableAmount = -1,
+            //                LoginNames = new List<string>() { oldUser.LoginNames },
+            //                MonthWithdrawalCount = oldUser.MonthWithdrawalCount,
+            //                OutletCode = Utils.getOutletCode(oldUser.OutletCode),
+            //                PasswordErrorCount = oldUser.PasswordErrorCount,
+            //                PaymentPasswordErrorCount = (int)oldUser.PaymentPasswordErrorCount,
+            //                RealName = oldUser.RealName,
+            //                RegisterTime = oldUser.RegisterTime,
+            //                TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
+            //                TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
+            //                TotalInterest = oldUser.TotalInterest,
+            //                TotalPrincipal = oldUser.TotalPrincipal,
+            //                UserId = new Guid(oldUser.UserId),
+            //                Verified = (bool)oldUser.Verified,
+            //                VerifiedTime = oldUser.VerifiedTime,
+            //                WithdrawalableAmount = oldUser.WithdrawalableAmount
+            //            };
 
-                        //购买
-                        Guid transactionId = Guid.NewGuid();
+            //            //购买
+            //            Guid transactionId = Guid.NewGuid();
 
-                        //orderDic.Add("IsRepaid",oldOrder.IsRepaid);
-                        OrderInfo order = new OrderInfo
-                        {
-                            AccountTransactionId = transactionId,
-                            Args = orderArgs,
-                            Cellphone = oldOrder.Cellphone,
-                            ExtraInterest = (long)(oldOrder.ExtraInterest * 100),
-                            ExtraInterestRecords = new List<Yuyi.Jinyinmao.Domain.ExtraInterestRecord>(),
-                            ExtraYield = oldOrder.ExtraYield * 100,
-                            Interest = (long)(oldOrder.Interest * 100),
-                            IsRepaid = oldOrder.IsRepaid,
-                            OrderId = new Guid(oldOrder.OrderId),
-                            OrderNo = oldOrder.OrderNo,
-                            OrderTime = oldOrder.OrderTime,
-                            Principal = (long)(oldOrder.Principal * 100),
-                            ProductCategory = Utils.getProductCategory(oldOrder.ProductCategory, oldOrder.ProductType),
-                            ProductId = new Guid(oldOrder.ProductId),
-                            ProductSnapshot = null,
-                            RepaidTime = null,
-                            ResultCode = 10000,
-                            ResultTime = oldOrder.ResultTime,
-                            SettleDate = Utils.getDate(oldOrder.SettleDate),
-                            TransDesc = "充值成功，购买理财产品",
-                            UserId = new Guid(oldOrder.UserId),
-                            UserInfo = user,
-                            ValueDate = Utils.getDate(oldOrder.ValueDate),
-                            Yield = (int)(oldOrder.Yield * 100)
-                        };
-                        Console.WriteLine(oldOrder.OrderId);
-                       //SaveOrderInfoToAzure(order);
-                        SaveDataToAzure<OrderEntity, OrderInfo>(transOrder, order, order.UserId.ToString(), order.OrderId.ToString());
+            //            //orderDic.Add("IsRepaid",oldOrder.IsRepaid);
+            //            OrderInfo order = new OrderInfo
+            //            {
+            //                AccountTransactionId = transactionId,
+            //                Args = orderArgs,
+            //                Cellphone = oldOrder.Cellphone,
+            //                ExtraInterest = (long)(oldOrder.ExtraInterest * 100),
+            //                ExtraInterestRecords = new List<Yuyi.Jinyinmao.Domain.ExtraInterestRecord>(),
+            //                ExtraYield = oldOrder.ExtraYield * 100,
+            //                Interest = (long)(oldOrder.Interest * 100),
+            //                IsRepaid = oldOrder.IsRepaid,
+            //                OrderId = new Guid(oldOrder.OrderId),
+            //                OrderNo = oldOrder.OrderNo,
+            //                OrderTime = oldOrder.OrderTime,
+            //                Principal = (long)(oldOrder.Principal * 100),
+            //                ProductCategory = Utils.getProductCategory(oldOrder.ProductCategory, oldOrder.ProductType),
+            //                ProductId = new Guid(oldOrder.ProductId),
+            //                ProductSnapshot = null,
+            //                RepaidTime = null,
+            //                ResultCode = 10000,
+            //                ResultTime = oldOrder.ResultTime,
+            //                SettleDate = Utils.getDate(oldOrder.SettleDate),
+            //                TransDesc = "充值成功，购买理财产品",
+            //                UserId = new Guid(oldOrder.UserId),
+            //                UserInfo = user,
+            //                ValueDate = Utils.getDate(oldOrder.ValueDate),
+            //                Yield = (int)(oldOrder.Yield * 100)
+            //            };
+            //            Console.WriteLine(oldOrder.OrderId);
+            //           //SaveOrderInfoToAzure(order);
+            //            SaveDataToAzure<OrderEntity, OrderInfo>(transOrder, order, order.UserId.ToString(), order.OrderId.ToString());
 
-                        //create transaction
+            //            //create transaction
 
-                        if (order.ProductId == new Guid("cc93b32c0536487fac57014b5b3de4b1"))
-                        {
-                            JBYTransactionTransfer(order, user);
-                        }
-                        else
-                        {
-                            RegularTransactionTransfer(order, user);
-                        }
-                    }
-                    #endregion
+            //            if (order.ProductId == new Guid("cc93b32c0536487fac57014b5b3de4b1"))
+            //            {
+            //                JBYTransactionTransfer(order, user);
+            //            }
+            //            else
+            //            {
+            //                RegularTransactionTransfer(order, user);
+            //            }
+            //        }
+            //        #endregion
 
-                    #region productRegion
-                   // RegularProductTransfer(productArgs);
-                    #endregion
-                }
+            //        #region productRegion
+            //       // RegularProductTransfer(productArgs);
+            //        #endregion
+            //    }
 
-                Console.ReadKey();
+            //    Console.ReadKey();
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         private static void SaveDataToAzure<TResult, TSource>(CloudTable table, TSource source, string partitionKey, string rowKey) where TResult : TableEntity, new()

@@ -248,6 +248,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Controllers\BackOfficeController.cs" />
+    <Compile Include="Controllers\CouponController.cs" />
     <Compile Include="Controllers\CurrentProductController.cs" />
     <Compile Include="Controllers\DevController.cs" />
     <Compile Include="Controllers\InvestingController.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="Models\BackOffice\IssueJBYProductRequest.cs" />
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
     <Compile Include="Models\BackOffice\JBYProductRequest.cs" />
+    <Compile Include="Models\Coupon\CouponInfoResponse.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeResponse.cs" />
@@ -345,6 +347,14 @@
     <ProjectReference Include="..\Libraries\Yuyi.Jinyinmao.Resources\Yuyi.Jinyinmao.Resources.csproj">
       <Project>{e6b0bda3-6554-4f1e-af83-fd22c16b627e}</Project>
       <Name>Yuyi.Jinyinmao.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Coupon.Interface\Yuyi.Jinyinmao.Service.Coupon.Interface.csproj">
+      <Project>{48362197-aa5f-4366-b39e-7c7642cb6f38}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Coupon.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Coupon\Yuyi.Jinyinmao.Service.Coupon.csproj">
+      <Project>{ee7684a2-24b0-4633-af3a-644148411750}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Coupon</Name>
     </ProjectReference>
     <ProjectReference Include="..\Services\Yuyi.Jinyinmao.Service.Misc.Interface\Yuyi.Jinyinmao.Service.Misc.Interface.csproj">
       <Project>{0e048dcc-f815-4d24-87b4-4210fd89e500}</Project>

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
-// Created          : 2015-04-28  12:26 PM
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-23  9:50 PM
+// Last Modified On : 2015-07-26  9:25 AM
 // ***********************************************************************
 // <copyright file="IRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -70,6 +70,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
+        ///     Migrates the asynchronous.
+        /// </summary>
+        /// <param name="migrationDto">The migration dto.</param>
+        /// <returns>Task.</returns>
+        Task<RegularProductInfo> MigrateAsync(RegularProductMigrationDto migrationDto);
+
+        /// <summary>
         ///     Reloads the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
@@ -94,7 +101,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task SetToSoldOutAsync();
 
         /// <summary>
-        /// Synchronizes the asynchronous.
+        ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task SyncAsync();
