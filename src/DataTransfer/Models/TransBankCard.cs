@@ -1,13 +1,24 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : TransBankCard.cs
+// Created          : 2015-07-27  3:33 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-27  3:40 PM
+// ***********************************************************************
+// <copyright file="TransBankCard.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DataTransfer.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
     [Table("TransBankCard")]
-    public partial class TransBankCard
+    public class TransBankCard
     {
         public int? AddingTime { get; set; }
 

@@ -1,20 +1,27 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : Products.cs
+// Created          : 2015-07-27  9:16 AM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-27  3:37 PM
+// ***********************************************************************
+// <copyright file="Products.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DataTransfer.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
-    public partial class Products
+    public class Products
     {
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string ProductIdentifier { get; set; }
-
         public int ConsignmentAgreementId { get; set; }
+
+        public int Id { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime LaunchTime { get; set; }
@@ -22,6 +29,12 @@ namespace DataTransfer.Models
         public int Period { get; set; }
 
         public int PledgeAgreementId { get; set; }
+
+        public int ProductCategory { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string ProductIdentifier { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -43,7 +56,5 @@ namespace DataTransfer.Models
         public DateTime? SoldOutTime { get; set; }
 
         public decimal Yield { get; set; }
-
-        public int ProductCategory { get; set; }
     }
 }
