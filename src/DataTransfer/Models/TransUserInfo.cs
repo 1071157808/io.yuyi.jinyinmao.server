@@ -153,5 +153,21 @@ namespace DataTransfer.Models
         [Column(Order = 22)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int WithdrawalableAmount { get; set; }
+
+        [Key]
+        [Column(Order = 23)]
+        [StringLength(80)]
+        public string EncryptedPassword { get; set; }
+
+        [StringLength(80)]
+        public string EncryptedPaymentPassword { get; set; }
+
+        [Key]
+        [Column(Order = 24)]
+        [StringLength(80)]
+        public string Salt { get; set; }
+
+        [StringLength(80)]
+        public string PaymentSalt { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace DataTransfer.Models
         }
 
         public virtual DbSet<Agreements> Agreements { get; set; }
+        public virtual DbSet<TransBankCard> TransBankCard { get; set; }
         public virtual DbSet<TransOrderInfo> TransOrderInfo { get; set; }
         public virtual DbSet<TransRegularProductInfo> TransRegularProductInfo { get; set; }
         public virtual DbSet<TransRegularProductState> TransRegularProductState { get; set; }
@@ -21,6 +22,18 @@ namespace DataTransfer.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TransBankCard>()
+                .Property(e => e.BankCardNo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransBankCard>()
+                .Property(e => e.Cellphone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransBankCard>()
+                .Property(e => e.UserId)
+                .IsUnicode(false);
+
             modelBuilder.Entity<TransOrderInfo>()
                 .Property(e => e.AccountTransactionIdentifier)
                 .IsUnicode(false);
@@ -155,6 +168,22 @@ namespace DataTransfer.Models
 
             modelBuilder.Entity<TransUserInfo>()
                 .Property(e => e.UserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransUserInfo>()
+                .Property(e => e.EncryptedPassword)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransUserInfo>()
+                .Property(e => e.EncryptedPaymentPassword)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransUserInfo>()
+                .Property(e => e.Salt)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransUserInfo>()
+                .Property(e => e.PaymentSalt)
                 .IsUnicode(false);
         }
     }
