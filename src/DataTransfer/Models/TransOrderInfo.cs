@@ -1,13 +1,24 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : TransOrderInfo.cs
+// Created          : 2015-07-27  6:28 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-27  6:40 PM
+// ***********************************************************************
+// <copyright file="TransOrderInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DataTransfer.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
     [Table("TransOrderInfo")]
-    public partial class TransOrderInfo
+    public class TransOrderInfo
     {
         [Key]
         [Column(Order = 0)]
@@ -66,8 +77,6 @@ namespace DataTransfer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProductCategory { get; set; }
 
-        public int? ProductType { get; set; }
-
         [Key]
         [Column(Order = 12)]
         [StringLength(50)]
@@ -76,6 +85,8 @@ namespace DataTransfer.Models
         [Key]
         [Column(Order = 13)]
         public string ProductSnapshot { get; set; }
+
+        public int? ProductType { get; set; }
 
         public int? RepaidTime { get; set; }
 
