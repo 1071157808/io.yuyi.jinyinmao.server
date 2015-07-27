@@ -76,6 +76,7 @@ namespace Yuyi.Jinyinmao.Api
         private static void RegisterServices()
         {
             // This is where we tell Ninject how to resolve service requests
+            Kernel.Bind<ICouponService>().To<CouponService>().InSingletonScope();
             Kernel.Bind<IProductInfoService>().To<ProductInfoService>().InSingletonScope();
             Kernel.Bind<IProductService>().To<ProductService>().InSingletonScope();
             Kernel.Bind<ISmsService>().To<SmsService>().InSingletonScope();

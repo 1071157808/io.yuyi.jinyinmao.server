@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="index">页码，从0开始，最小为0</param>
         /// <param name="sortMode">排序规则 1 => 按下单时间排序，2 => 按结息日期排序</param>
         /// <response code="200"></response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Index/{index:min(0):int=0}/{sortMode:min(1):int=1}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<OrderInfoResponse>))]
         public async Task<IHttpActionResult> Index(int index = 0, int sortMode = 1)
@@ -75,7 +75,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="sortMode">排序规则 1 => 按下单时间排序，2 => 按结息日期排序</param>
         /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
         /// <response code="200"></response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("IndexByCategory/{index:min(0):int=0}/{sortMode:min(1):int=1}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<OrderInfoResponse>))]
         public async Task<IHttpActionResult> IndexByCategory(int index = 0, int sortMode = 1, [FromUri] long[] categories = null)
@@ -103,7 +103,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="orderIdentifier">订单唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">UOI:订单不存在</response>
-        /// <response code="401">UAUTH1:请先登录</response>
+        /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Info/{orderIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> Info(string orderIdentifier)

@@ -117,6 +117,7 @@
     <Compile Include="Dtos\JBYAccountInfo.cs" />
     <Compile Include="Dtos\RegularProductMigrationDto.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
+    <Compile Include="Dtos\UserMigrationDto.cs" />
     <Compile Include="EventProcessor\IBankCardHidenProcessor.cs" />
     <Compile Include="EventProcessor\IExtraInterestAddedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYReinvestedProcessor.cs" />

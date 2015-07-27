@@ -243,6 +243,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<bool> IsRegisteredAsync();
 
         /// <summary>
+        /// Migrates the asynchronous.
+        /// </summary>
+        /// <param name="migrationDto">The migration dto.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> MigrateAsync(UserMigrationDto migrationDto);
+
+        /// <summary>
         ///     Registers the specified user register.
         /// </summary>
         /// <param name="command"></param>

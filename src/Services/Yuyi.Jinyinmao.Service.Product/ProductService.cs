@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-14  5:44 PM
+// Last Modified On : 2015-07-26  9:23 AM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -212,6 +212,18 @@ namespace Yuyi.Jinyinmao.Service
         {
             IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.HitShelvesAsync(command);
+        }
+
+        /// <summary>
+        ///     Migrates the asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <param name="migrationDto">The migration dto.</param>
+        /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
+        public async Task<RegularProductInfo> MigrateAsync(Guid productId, RegularProductMigrationDto migrationDto)
+        {
+            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            return await product.MigrateAsync(migrationDto);
         }
 
         /// <summary>

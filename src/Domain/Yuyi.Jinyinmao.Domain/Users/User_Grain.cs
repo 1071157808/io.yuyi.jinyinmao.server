@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-24  3:24 PM
+// Last Modified On : 2015-07-26  10:14 AM
 // ***********************************************************************
 // <copyright file="User_Grain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,7 +43,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task SyncAsync()
+        public override async Task SyncAsync()
         {
             await DBSyncHelper.SyncUser(await this.GetUserInfoAsync());
             foreach (KeyValuePair<Guid, Order> order in this.State.Orders)
@@ -53,7 +53,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             foreach (KeyValuePair<string, BankCard> bankCard in this.State.BankCards)
             {
-                await DBSyncHelper.SyncBankCard(bankCard.Value.ToInfo(), this.State.Id.ToGuidString());
+                await DBSyncHelper.SyncBankCard(bankCard.Value.ToInfo(), this.State.UserId.ToGuidString());
             }
 
             foreach (KeyValuePair<Guid, JBYAccountTransaction> jbyAccountTransaction in this.State.JBYAccount)
