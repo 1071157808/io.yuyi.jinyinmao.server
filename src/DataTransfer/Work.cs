@@ -34,11 +34,6 @@ namespace DataTransfer
         private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
         private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
 
-        public static Dictionary<Guid, JBYAccountTransaction> GetJBYAccountTransaction(string userId)
-        {
-            return null;
-        }
-
         /// <summary>
         ///     Runs this instance.
         /// </summary>
@@ -466,8 +461,7 @@ namespace DataTransfer
                     #endregion userinfo
 
                     #region Order
-
-                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).ToList().Select(x => new Order
+                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).ToList().Select(x => new Order()
                     {
                         AccountTransactionId = GetSettleTransactionId(x.OrderId),
                         Args = OrderArgs,
@@ -586,7 +580,12 @@ namespace DataTransfer
             }
             return dic;
         }
+        #endregion
 
-        #endregion 通过UserId查询流水
+        public static Dictionary<Guid, JBYAccountTransaction> GetJBYAccountTransaction(string userId)
+        {
+            return null;
+        }
+
     }
 }

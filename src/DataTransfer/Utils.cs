@@ -39,7 +39,7 @@ namespace DataTransfer
             var dic = new Dictionary<string, BankCard>();
             using (var context = new OldDBContext())
             {
-                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).Select(b => new BankCard
+                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard
                 {
                     AddingTime = b.AddingTime,
                     Args = null,
