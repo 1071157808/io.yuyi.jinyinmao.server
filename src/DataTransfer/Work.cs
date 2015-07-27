@@ -204,10 +204,7 @@ namespace DataTransfer
                         var oldUser = context.TransUserInfo.FirstOrDefault(u => u.UserId == oldOrder.UserId);
 
                         // TODO: oldUser null 值判断
-                        if (oldUser == null)
-                        {
-                            continue;
-                        }
+                        if (oldUser == null) continue;
 
                         UserInfo userInfo = new UserInfo
                         {
