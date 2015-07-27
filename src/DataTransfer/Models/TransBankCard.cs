@@ -20,7 +20,7 @@ namespace DataTransfer.Models
     [Table("TransBankCard")]
     public class TransBankCard
     {
-        public int? AddingTime { get; set; }
+        public DateTime? AddingTime { get; set; }
 
         public int? Args { get; set; }
 

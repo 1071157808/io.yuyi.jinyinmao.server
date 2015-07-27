@@ -285,5 +285,126 @@ namespace DataTransfer
                 }
             }
         }
+
+
+        #region UserTransfer
+
+        private static void UserTransfer()
+        {
+            using (var context = new OldDBContext())
+            {
+                var transUserInfos = context.TransUserInfo.Take(10).ToList();
+                if (transUserInfos == null) return;
+                foreach (var transUserInfo in transUserInfos)
+                {
+                    if (transUserInfo == null) continue;
+                    #region userinfo
+                    UserInfo userInfo = new UserInfo
+                    {
+                        Args = UserArgs,
+                        Balance = -1,
+                        BankCardsCount = transUserInfo.BankCardsCount.GetValueOrDefault(),
+                        Cellphone = transUserInfo.Cellphone,
+                        ClientType = transUserInfo.ClientType,
+                        Closed = false,
+                        ContractId = transUserInfo.ContractId,
+                        Credential = Utils.GetCredential(transUserInfo.Credential),
+                        CredentialNo = transUserInfo.CredentialNo,
+                        Crediting = -1,
+                        Debiting = 0,
+                        HasSetPassword = transUserInfo.HasSetPassword.GetValueOrDefault() > 0,
+                        HasSetPaymentPassword = transUserInfo.HasSetPaymentPassword.GetValueOrDefault() > 0,
+                        InvestingInterest = -1,
+                        InvestingPrincipal = -1,
+                        InviteBy = transUserInfo.InviteBy,
+                        JBYAccrualAmount = transUserInfo.JBYAccrualAmount * 100,
+                        JBYLastInterest = -1,
+                        JBYTotalAmount = -1,
+                        JBYTotalInterest = -1,
+                        JBYTotalPricipal = -1,
+                        JBYWithdrawalableAmount = -1,
+                        LoginNames = new List<string>() { transUserInfo.LoginNames },
+                        MonthWithdrawalCount = transUserInfo.MonthWithdrawalCount,
+                        OutletCode = Utils.GetOutletCode(transUserInfo.OutletCode),
+                        PasswordErrorCount = transUserInfo.PasswordErrorCount,
+                        PaymentPasswordErrorCount = transUserInfo.PaymentPasswordErrorCount.GetValueOrDefault(),
+                        RealName = transUserInfo.RealName,
+                        RegisterTime = transUserInfo.RegisterTime,
+                        TodayJBYWithdrawalAmount = transUserInfo.TodayJBYWithdrawalAmount,
+                        TodayWithdrawalCount = transUserInfo.TodayWithdrawalCount,
+                        TotalInterest = transUserInfo.TotalInterest,
+                        TotalPrincipal = transUserInfo.TotalPrincipal,
+                        UserId = new Guid(transUserInfo.UserId),
+                        Verified = transUserInfo.Verified.GetValueOrDefault(),
+                        VerifiedTime = transUserInfo.VerifiedTime,
+                        WithdrawalableAmount = transUserInfo.WithdrawalableAmount
+                    };
+                    #endregion
+
+                    #region Order
+                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).Select(x => new Order()
+                    {
+                        AccountTransactionId = GetSettleTransactionId(x.OrderId),
+                        Args = OrderArgs,
+                        Cellphone = x.Cellphone,
+                        ExtraInterest = (long)x.ExtraInterest,
+                        ExtraInterestRecords = new List<Yuyi.Jinyinmao.Domain.ExtraInterestRecord>(),
+                        ExtraYield = (x.ExtraYield * 100),
+                        Interest = (long)x.Interest,
+                        IsRepaid = x.IsRepaid,
+                        OrderId = new Guid(x.OrderId),
+                        OrderNo = x.OrderNo,
+                        OrderTime = x.OrderTime,
+                        Principal = (long)(x.Principal * 100),
+                        ProductCategory = Utils.GetProductCategory(x.ProductCategory, x.ProductType),
+                        ProductId = new Guid(x.ProductId),
+                        ProductSnapshot = null,
+                        RepaidTime = null,
+                        ResultCode = 10000,
+                        SettleDate = Utils.GetDate(x.SettleDate),
+                        TransDesc = "充值成功，购买理财产品",
+                        UserId = new Guid(x.UserId),
+                        UserInfo = userInfo,
+                        ValueDate = Utils.GetDate(x.ValueDate),
+                        Yield = (int)(x.Yield * 100)
+                    }).ToList(); 
+                    #endregion
+
+                    var user = new UserMigrationDto()
+                    {
+                        Args = UserArgs,
+                        BankCards = Utils.GetBankCards(transUserInfo.UserId),
+                        Cellphone = transUserInfo.Cellphone,
+                        ClientType = transUserInfo.ClientType,
+                        Closed = false,
+                        ContractId = transUserInfo.ContractId,
+                        Credential = Utils.GetCredential(transUserInfo.Credential),
+                        CredentialNo = userInfo.CredentialNo,
+                        EncryptedPassword = transUserInfo.EncryptedPassword,
+                        EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword,
+                        InviteBy = transUserInfo.InviteBy,
+                        JBYAccount = null,
+                        LoginNames = new List<string>() { transUserInfo.LoginNames },
+                        Orders = Utils.CreateOrders(orders),
+                        OutletCode = transUserInfo.OutletCode,
+                        PaymentSalt = transUserInfo.PaymentSalt,
+                        RealName = transUserInfo.RealName,
+                        RegisterTime = transUserInfo.RegisterTime,
+                        Salt = transUserInfo.Salt,
+                        SettleAccount = null,
+                        UserId = new Guid(transUserInfo.UserId),
+                        Verified = transUserInfo.Verified.GetValueOrDefault(),
+                        VerifiedTime = transUserInfo.VerifiedTime
+                    };
+                }
+            }
+        }
+
+        #endregion
+
+        private static Guid GetSettleTransactionId(string orderId)
+        {
+            return SettleAccountTransactionList.Where(x => x.OrderId == new Guid(orderId) && x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
+        }
     }
 }
