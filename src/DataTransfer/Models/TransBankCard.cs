@@ -37,13 +37,10 @@ namespace DataTransfer.Models
         [StringLength(50)]
         public string UserId { get; set; }
 
-        [Key]
-        [Column(Order = 3)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Verified { get; set; }
+        public int? Verified { get; set; }
 
         [Key]
-        [Column(Order = 4)]
+        [Column(Order = 3)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int VerifiedByYilian { get; set; }
 
@@ -51,7 +48,7 @@ namespace DataTransfer.Models
         public DateTime? VerifiedTime { get; set; }
 
         [Key]
-        [Column(Order = 5)]
+        [Column(Order = 4)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int WithdrawAmount { get; set; }
     }
