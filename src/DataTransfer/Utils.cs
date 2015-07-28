@@ -21,51 +21,29 @@ namespace DataTransfer
 {
     internal class Utils
     {
-        public static Dictionary<Guid, Order> CreateOrders(List<Order> list)
-        {
-            Dictionary<Guid, Order> dic = new Dictionary<Guid, Order>();
-            if (list != null)
-            {
-                foreach (var item in list)
-                {
-                    dic.Add(item.OrderId, item);
-                }
-            }
-            return dic;
-        }
-
+        private readonly static Dictionary<string, object> Args = new Dictionary<string, object>() { { "Comment", "由原银行卡数据迁移" } };
         public static Dictionary<string, BankCard> GetBankCards(string userId)
-        {
-            var dic = new Dictionary<string, BankCard>();
-            Dictionary<string, object> args = new Dictionary<string, object>
-            {
-                { "Comment", "由原银行卡数据迁移" }
-            };
-
+        { 
+            Guid id = new Guid(userId);
             using (var context = new OldDBContext())
             {
                 var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard
                 {
                     AddingTime = b.AddingTime,
-                    Args = args,
+                    Args = Args,
                     BankCardNo = b.BankCardNo,
                     BankName = b.BankName,
                     Cellphone = b.Cellphone,
                     CityName = b.CityName,
                     Dispaly = true,
-                    UserId = new Guid(b.UserId),
                     Verified = true,
                     VerifiedByYilian = true,
+                    UserId = id,
                     VerifiedTime = b.VerifiedTime,
                     WithdrawAmount = b.WithdrawAmount
-                });
-
-                foreach (var item in bankCards)
-                {
-                    dic.Add(item.BankCardNo, item);
-                }
+                }).ToDictionary<BankCard, string>(x => x.BankCardNo);
+                return bankCards;
             }
-            return dic;
         }
 
         public static Credential GetCredential(int? credential = -1)
@@ -96,11 +74,8 @@ namespace DataTransfer
 
         public static string GetOutletCode(string outletCode)
         {
-            if (outletCode.Equals("901") || outletCode.Equals("902") || outletCode.Equals("903"))
-            {
-                return "";
-            }
-            return outletCode;
+            List<string> list = new List<string>() { "901", "902", "902" };
+            return list.IndexOf(outletCode) != -1 ? string.Empty : outletCode;
         }
 
         public static long GetProductCategory(int productCategory = 0, int? productType = 0)

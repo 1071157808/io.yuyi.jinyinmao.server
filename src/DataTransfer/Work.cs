@@ -30,12 +30,12 @@ namespace DataTransfer
         private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
-
+        private static readonly Guid JBYProductId = new Guid("cc93b32c0536487fac57014b5b3de4b1");
         [SuppressMessage("ReSharper", "CollectionNeverUpdated.Local")]
         private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
 
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
-
+        static int i = 0;
         /// <summary>
         ///     Runs this instance.
         /// </summary>
@@ -48,6 +48,7 @@ namespace DataTransfer
             //get products
             ProductTransfer();
             UserTransfer();
+            //Console.WriteLine(i);
             Console.ReadKey();
         }
 
@@ -73,7 +74,7 @@ namespace DataTransfer
                     JBYAccountTransaction transaction = new JBYAccountTransaction
                     {
                         Amount = order.Principal * 100,
-                        ProductId = new Guid("cc93b32c0536487fac57014b5b3de4b1"),
+                        ProductId = JBYProductId,
                         Args = dic,
                         //BankCardNo = oldTransaction.BankCardNo,
                         //ChannelCode
@@ -157,7 +158,7 @@ namespace DataTransfer
             {
                 foreach (var type in listType)
                 {
-                    var oldTransaction = context.TransSettleAccountTransaction.FirstOrDefault(t => t.OrderId == order.OrderId.ToString().Replace("-", "") && order.ProductId.ToString() != "cc93b32c0536487fac57014b5b3de4b1");
+                    var oldTransaction = context.TransSettleAccountTransaction.FirstOrDefault(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
                     if (oldTransaction == null) return;
                     //pre deal
                     SettleAccountTransaction transaction = new SettleAccountTransaction
@@ -248,11 +249,12 @@ namespace DataTransfer
         [SuppressMessage("ReSharper", "FunctionComplexityOverflow")]
         private static void ProductTransfer()
         {
+            DateTime now = DateTime.Now;
             using (var context = new OldDBContext())
             {
-                var oldProductList = context.TransRegularProductState.OrderByDescending(x => x.StartSellTime).Take(10).ToList();
+                var oldProductList = context.TransRegularProductState;
 
-                if (oldProductList.Count == 0) return;
+                if (oldProductList == null || oldProductList.Count() == 0) return;
 
                 foreach (var oldProduct in oldProductList)
                 {
@@ -304,7 +306,7 @@ namespace DataTransfer
 
                     #region orders
 
-                    var oldOrderList = context.TransOrderInfo.Where(o => o.ProductId == oldProduct.ProductId).ToList();
+                    var oldOrderList = context.TransOrderInfo.Where(o => o.ProductId == oldProduct.ProductId);
 
                     Dictionary<Guid, OrderInfo> orders = new Dictionary<Guid, OrderInfo>();
 
@@ -333,7 +335,7 @@ namespace DataTransfer
                             InvestingInterest = -1,
                             InvestingPrincipal = -1,
                             InviteBy = oldUser.InviteBy,
-                            JBYAccrualAmount = oldUser.JBYAccrualAmount * 100,
+                            JBYAccrualAmount = -1,
                             JBYLastInterest = -1,
                             JBYTotalAmount = -1,
                             JBYTotalInterest = -1,
@@ -373,8 +375,8 @@ namespace DataTransfer
                             OrderNo = oldOrder.OrderNo,
                             OrderTime = oldOrder.OrderTime,
                             Principal = (long)(oldOrder.Principal * 100),
-                            ProductCategory = Utils.GetProductCategory(oldOrder.ProductCategory, oldOrder.ProductType),
-                            ProductId = new Guid(oldOrder.ProductId),
+                            ProductCategory = product.ProductCategory,
+                            ProductId = product.ProductId,
                             ProductSnapshot = null,
                             RepaidTime = null,
                             ResultCode = 10000,
@@ -386,7 +388,7 @@ namespace DataTransfer
                             ValueDate = Utils.GetDate(oldOrder.ValueDate),
                             Yield = (int)(oldOrder.Yield * 100)
                         };
-                        if (product.ProductId == new Guid("cc93b32c0536487fac57014b5b3de4b1"))
+                        if (product.ProductId == JBYProductId)
                         {
                             GenerateJBYTransaction(new List<TranscationState>
                             { TranscationState.ChongZhi, TranscationState.ToJBY,TranscationState.RecieveByQianBao,
@@ -404,7 +406,11 @@ namespace DataTransfer
 
                     product.Orders = orders;
                     context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product) });
-
+                    //if (now.AddMinutes(1) <= DateTime.Now)
+                    //{
+                    //    return;
+                    //}
+                    //i++;
                     #endregion product
                 }
                 context.SaveChanges();
@@ -412,19 +418,20 @@ namespace DataTransfer
         }
 
         #endregion ProductTransfer
-
+        
         #region UserTransfer
 
         [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
         private static void UserTransfer()
         {
+
+            DateTime now = DateTime.Now;
             using (var context = new OldDBContext())
             {
-                var transUserInfos = context.TransUserInfo.ToList();
+                var transUserInfos = context.TransUserInfo;
                 foreach (var transUserInfo in transUserInfos)
                 {
                     if (transUserInfo == null) continue;
-
                     #region userinfo
 
                     UserInfo userInfo = new UserInfo
@@ -497,7 +504,7 @@ namespace DataTransfer
                         UserInfo = userInfo,
                         ValueDate = Utils.GetDate(x.ValueDate),
                         Yield = (int)(x.Yield * 100)
-                    }).ToList();
+                    }).ToDictionary<Order, Guid>(x => x.OrderId);
 
                     #endregion Order
 
@@ -509,28 +516,33 @@ namespace DataTransfer
                         ClientType = transUserInfo.ClientType,
                         Closed = false,
                         ContractId = transUserInfo.ContractId,
-                        Credential = Utils.GetCredential(transUserInfo.Credential),
+                        Credential = userInfo.Credential,
                         CredentialNo = transUserInfo.CredentialNo,
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = string.IsNullOrWhiteSpace(transUserInfo.EncryptedPaymentPassword) ? string.Empty : transUserInfo.EncryptedPaymentPassword,
-                        InviteBy = string.IsNullOrEmpty(transUserInfo.InviteBy) ? string.Empty : transUserInfo.InviteBy,
+                        InviteBy = userInfo.InviteBy,
                         JBYAccount = GetJBYAccountTransaction(transUserInfo.UserId),
-                        LoginNames = new List<string> { transUserInfo.LoginNames },
-                        Orders = Utils.CreateOrders(orders),
+                        LoginNames = userInfo.LoginNames,
+                        Orders = orders,
                         OutletCode = transUserInfo.OutletCode,
                         PaymentSalt = string.IsNullOrEmpty(transUserInfo.PaymentSalt) ? string.Empty : transUserInfo.PaymentSalt,
-                        RealName = string.IsNullOrEmpty(transUserInfo.RealName) ? string.Empty : transUserInfo.RealName,
+                        RealName = userInfo.RealName,
                         RegisterTime = transUserInfo.RegisterTime,
                         Salt = transUserInfo.Salt,
                         SettleAccount = GetSettleAccountTransaction(transUserInfo.UserId),
-                        UserId = new Guid(transUserInfo.UserId),
-                        Verified = transUserInfo.Verified.GetValueOrDefault(),
+                        UserId = userInfo.UserId,
+                        Verified = userInfo.Verified,
                         VerifiedTime = transUserInfo.VerifiedTime
                     };
 
-                    context.JsonUser.Add(new JsonUser { Data = JsonConvert.SerializeObject(user) });
-
-                    Console.WriteLine(JsonConvert.SerializeObject(user));
+                    string json = JsonConvert.SerializeObject(user);
+                    context.JsonUser.Add(new JsonUser { Data = json });
+                    //if (now.AddMinutes(1) <= DateTime.Now)
+                    //{
+                    //    return;
+                    //}
+                    //i++;
+                    //Console.WriteLine(json);
                 }
                 context.SaveChanges();
             }
@@ -569,12 +581,9 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
-                if (list.Count != 0)
+                if (list != null)
                 {
-                    foreach (JBYAccountTransaction trans in list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)))
-                    {
-                        dic.Add(trans.TransactionId, trans);
-                    }
+                    return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary<JBYAccountTransaction, Guid>(x => x.TransactionId);
                 }
             }
             return dic;
@@ -592,12 +601,9 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
-                if (list.Count != 0)
+                if (list!=null)
                 {
-                    foreach (SettleAccountTransaction trans in list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)))
-                    {
-                        dic.Add(trans.TransactionId, trans);
-                    }
+                    return list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)).ToDictionary<SettleAccountTransaction, Guid>(x => x.TransactionId);
                 }
             }
             return dic;
