@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:33 AM
+// Last Modified On : 2015-07-28  1:48 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -213,8 +213,6 @@ namespace Yuyi.Jinyinmao.Domain
             this.SettleAccountBalance = settleAccountBalance;
             this.DebitingSettleAccountAmount = debitingSettleAccountAmount;
             this.CreditingSettleAccountAmount = creditingSettleAccountAmount;
-
-            this.State.BankCards.Values.ForEach(c => c.WithdrawAmount = bankCards[c.BankCardNo]);
 
             long incomingAmount = bankCards.Sum(kv => kv.Value);
             long extraAmount = settleAccountBalance - incomingAmount;
