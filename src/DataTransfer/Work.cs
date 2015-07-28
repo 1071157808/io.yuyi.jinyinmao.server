@@ -246,7 +246,7 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var oldProductList = context.TransRegularProductState.Take(10).ToList();
+                var oldProductList = context.TransRegularProductState.OrderByDescending(x=>x.StartSellTime).Take(10).ToList();
 
                 if (oldProductList.Count == 0) return;
 
@@ -397,10 +397,11 @@ namespace DataTransfer
                     }
                     #endregion
                     product.Orders = orders;
-
+                    context.JsonProduct.Add(new JsonProduct() { Data=JsonConvert.SerializeObject(product)});
 
                     #endregion product
                 }
+                context.SaveChanges();
             }
         }
 
@@ -522,10 +523,10 @@ namespace DataTransfer
 
 
                     context.JsonUser.Add(new JsonUser { Data = JsonConvert.SerializeObject(user) });
-                    context.SaveChanges();
 
                     Console.WriteLine(JsonConvert.SerializeObject(user));
                 }
+                context.SaveChanges();
             }
         }
 
