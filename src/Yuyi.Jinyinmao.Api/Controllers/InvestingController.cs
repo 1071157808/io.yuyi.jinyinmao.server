@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : InvestingController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  4:07 PM
+// Last Modified On : 2015-07-27  7:31 PM
 // ***********************************************************************
 // <copyright file="InvestingController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -91,7 +91,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest("IRI2:支付密码错误，支付密码输入错误5次会锁定支付功能");
+                return this.BadRequest("IRI2:支付密码错误<br>错误5次会锁定支付功能");
             }
 
             SettleAccountInfo settleAccountInfo = await this.userInfoService.GetSettleAccountInfoAsync(this.CurrentUser.Id);

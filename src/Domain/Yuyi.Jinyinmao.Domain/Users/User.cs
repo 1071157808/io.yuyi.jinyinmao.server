@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : User.cs
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  9:13 AM
+// Last Modified On : 2015-07-28  11:36 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -465,20 +465,7 @@ namespace Yuyi.Jinyinmao.Domain
         public Task<BankCardInfo> GetBankCardInfoAsync(string bankCardNo)
         {
             BankCard card;
-            if (this.State.BankCards.TryGetValue(bankCardNo, out card))
-            {
-                long withdrawAmount = card.WithdrawAmount;
-                long extraAmount = this.SettleAccountBalance - this.State.BankCards.Values.Where(c => c.Verified).Sum(c => c.WithdrawAmount);
-                if (extraAmount > 0)
-                {
-                    withdrawAmount += extraAmount;
-                }
-
-                withdrawAmount = withdrawAmount > 0 ? withdrawAmount : 0;
-
-                return Task.FromResult(card.ToInfo(withdrawAmount));
-            }
-            return Task.FromResult<BankCardInfo>(null);
+            return this.State.BankCards.TryGetValue(bankCardNo, out card) ? Task.FromResult(card.ToInfo()) : Task.FromResult<BankCardInfo>(null);
         }
 
         /// <summary>
@@ -711,18 +698,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
         public Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync()
         {
-            List<BankCard> cards = this.State.BankCards.Values.Where(c => c.VerifiedByYilian && c.Dispaly).ToList();
-
-            long withdrawAmountSum = cards.Sum(c => c.WithdrawAmount);
-
-            List<BankCardInfo> infos = cards.Select(c =>
-            {
-                long withdrawAmount = this.SettleAccountBalance - withdrawAmountSum;
-                withdrawAmount = withdrawAmount > 0 ? withdrawAmount + c.WithdrawAmount : c.WithdrawAmount;
-                return c.ToInfo(withdrawAmount);
-            }).ToList();
-
-            return Task.FromResult(infos);
+            return Task.FromResult(this.State.BankCards.Values.Where(c => c.Dispaly && c.Verified).Select(c => c.ToInfo()).ToList());
         }
 
         /// <summary>
@@ -796,6 +772,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Args = command.Args,
                 Cellphone = this.State.Cellphone,
                 ExtraInterest = 0,
+                ExtraInterestRecords = new List<ExtraInterestRecord>(),
                 ExtraYield = 0,
                 Interest = 0, // to be updated
                 IsRepaid = false,

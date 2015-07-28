@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  5:50 PM
+// Last Modified On : 2015-07-28  11:33 AM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -150,14 +150,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadSettleAccountData()
         {
-            long settleAccountBalance = 0;
-            long debitingSettleAccountAmount = 0;
-            long creditingSettleAccountAmount = 0;
+            long settleAccountBalance = 0L;
+            long debitingSettleAccountAmount = 0L;
+            long creditingSettleAccountAmount = 0L;
             int todayWithdrawalCount = 0;
             int monthWithdrawalCount = 0;
 
-            Dictionary<string, long> bankCards = this.State.BankCards.ToDictionary(kv => kv.Key, kv => 0L);
-            bankCards.Add(string.Empty, 0);
+            Dictionary<string, long> bankCards = this.State.BankCards.Where(kv => kv.Value.Dispaly && kv.Value.Verified).ToDictionary(kv => kv.Key, kv => 0L);
 
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
             DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1).Date;
@@ -171,7 +170,11 @@ namespace Yuyi.Jinyinmao.Domain
                     if (transaction.ResultCode > 0)
                     {
                         settleAccountBalance += amount;
-                        bankCards[bankCardNo] += amount;
+
+                        if (transaction.TradeCode == TradeCodeHelper.TC1005051001 && transaction.BankCardNo.IsNotNullOrEmpty() && bankCards.ContainsKey(bankCardNo))
+                        {
+                            bankCards[bankCardNo] += amount;
+                        }
                     }
                     else if (transaction.ResultCode == 0)
                     {
@@ -181,7 +184,6 @@ namespace Yuyi.Jinyinmao.Domain
                 else if (transaction.Trade == Trade.Credit && transaction.ResultCode >= 0)
                 {
                     settleAccountBalance -= amount;
-                    bankCards[bankCardNo] -= amount;
 
                     if (transaction.TradeCode == TradeCodeHelper.TC1005052001)
                     {
@@ -193,6 +195,11 @@ namespace Yuyi.Jinyinmao.Domain
                         if (transaction.TransactionTime >= monthDate && transaction.TransactionTime < monthDate.AddMonths(1))
                         {
                             monthWithdrawalCount += 1;
+                        }
+
+                        if (transaction.BankCardNo.IsNotNullOrEmpty() && bankCards.ContainsKey(bankCardNo))
+                        {
+                            bankCards[bankCardNo] -= amount;
                         }
                     }
 
@@ -208,6 +215,18 @@ namespace Yuyi.Jinyinmao.Domain
             this.CreditingSettleAccountAmount = creditingSettleAccountAmount;
 
             this.State.BankCards.Values.ForEach(c => c.WithdrawAmount = bankCards[c.BankCardNo]);
+
+            long incomingAmount = bankCards.Sum(kv => kv.Value);
+            long extraAmount = settleAccountBalance - incomingAmount;
+            extraAmount = extraAmount > 0 ? extraAmount : 0;
+            foreach (BankCard bankCard in this.State.BankCards.Values)
+            {
+                if (bankCard.Dispaly && bankCard.Verified)
+                {
+                    bankCard.WithdrawAmount = bankCards[bankCard.BankCardNo] + extraAmount;
+                }
+                bankCard.WithdrawAmount = 0L;
+            }
 
             this.TodayWithdrawalCount = todayWithdrawalCount;
             this.MonthWithdrawalCount = monthWithdrawalCount;
