@@ -44,6 +44,8 @@ namespace DataTransfer
             ProductArgs.Add("Comment", "由原产品数据迁移");
 
             //get products
+            ProductTransfer();
+            UserTransfer();
             Console.ReadKey();
         }
 
@@ -244,7 +246,7 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var oldProductList = context.TransRegularProductState.Where(p => p.ProductId != "cc93b32c0536487fac57014b5b3de4b1").Take(10).ToList();
+                var oldProductList = context.TransRegularProductState.Take(10).ToList();
 
                 if (oldProductList.Count == 0) return;
 
@@ -504,7 +506,7 @@ namespace DataTransfer
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = string.IsNullOrWhiteSpace(transUserInfo.EncryptedPaymentPassword) ? string.Empty : transUserInfo.EncryptedPaymentPassword,
                         InviteBy = string.IsNullOrEmpty(transUserInfo.InviteBy) ? string.Empty : transUserInfo.InviteBy,
-                        JBYAccount = null,
+                        JBYAccount = GetJBYAccountTransaction(transUserInfo.UserId),
                         LoginNames = new List<string> { transUserInfo.LoginNames },
                         Orders = Utils.CreateOrders(orders),
                         OutletCode = transUserInfo.OutletCode,
