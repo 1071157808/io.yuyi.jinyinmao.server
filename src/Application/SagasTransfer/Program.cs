@@ -8,6 +8,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Serilog;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace SagasTransfer
 {
@@ -58,6 +60,7 @@ namespace SagasTransfer
                 string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
                 Console.WriteLine("transfer start");
 
+
                 Transfer(path);
 
                 Console.WriteLine("transfer finish");
@@ -75,8 +78,10 @@ namespace SagasTransfer
             table.ExecuteBatch(batch);
         }
 
-        private static void Transfer(string path)
+        private async static void  Transfer(string path)
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             TableRequestOptions request = new TableRequestOptions
             {
                 RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
@@ -101,7 +106,7 @@ namespace SagasTransfer
             TableContinuationToken token = null;
             do
             {
-                var segement = table.ExecuteQuerySegmented(query, token);
+                var segement = await table.ExecuteQuerySegmentedAsync(query, token);
                 list.AddRange(segement.Results);
                 token = segement.ContinuationToken;
             } while (token != null);
@@ -146,7 +151,7 @@ namespace SagasTransfer
             list.Clear();
             do
             {
-                var segement = table.ExecuteQuerySegmented(query, token);
+                var segement = await table.ExecuteQuerySegmentedAsync(query, token);
                 list.AddRange(segement.Results);
                 token = segement.ContinuationToken;
             } while (token != null);
@@ -155,7 +160,8 @@ namespace SagasTransfer
             {
                 Log.Logger = new LoggerConfiguration().WriteTo.TextWriter(writer, outputTemplate: "{Message}").CreateLogger();
             }
-
+            watch.Stop();
+            Console.WriteLine(watch.ToString());
             Console.WriteLine("end");
         }
     }

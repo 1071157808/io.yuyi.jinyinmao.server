@@ -37,12 +37,14 @@ namespace DataTransfer
         public static Dictionary<string, BankCard> GetBankCards(string userId)
         {
             var dic = new Dictionary<string, BankCard>();
+            Dictionary<string, object> args = new Dictionary<string, object>();
+            args.Add("Comment", "由原银行卡数据迁移");
             using (var context = new OldDBContext())
             {
-                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).Select(b => new BankCard
+                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard
                 {
                     AddingTime = b.AddingTime,
-                    Args = null,
+                    Args = args,
                     BankCardNo = b.BankCardNo,
                     BankName = b.BankName,
                     Cellphone = b.Cellphone,
