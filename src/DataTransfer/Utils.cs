@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Utils.cs
-// Created          : 2015-07-27  9:16 AM
+// Created          : 2015-07-28  11:38 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  4:14 PM
+// Last Modified On : 2015-07-28  11:45 AM
 // ***********************************************************************
 // <copyright file="Utils.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -37,8 +37,11 @@ namespace DataTransfer
         public static Dictionary<string, BankCard> GetBankCards(string userId)
         {
             var dic = new Dictionary<string, BankCard>();
-            Dictionary<string, object> args = new Dictionary<string, object>();
-            args.Add("Comment", "由原银行卡数据迁移");
+            Dictionary<string, object> args = new Dictionary<string, object>
+            {
+                { "Comment", "由原银行卡数据迁移" }
+            };
+
             using (var context = new OldDBContext())
             {
                 var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard
@@ -56,12 +59,10 @@ namespace DataTransfer
                     VerifiedTime = b.VerifiedTime,
                     WithdrawAmount = b.WithdrawAmount
                 });
-                if (bankCards != null)
+
+                foreach (var item in bankCards)
                 {
-                    foreach (var item in bankCards)
-                    {
-                        dic.Add(item.BankCardNo, item);
-                    }
+                    dic.Add(item.BankCardNo, item);
                 }
             }
             return dic;

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : BankCardInfo.cs
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  1:06 AM
+// Last Modified On : 2015-07-28  11:45 AM
 // ***********************************************************************
 // <copyright file="BankCardInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -23,31 +23,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
     /// </summary>
     public static class BankCardEx
     {
-        /// <summary>
-        ///     To the information.
-        /// </summary>
-        /// <param name="card">The card.</param>
-        /// <param name="withdrawAmount">The withdraw amount.</param>
-        /// <returns>BankCardInfo.</returns>
-        public static BankCardInfo ToInfo(this BankCard card, long withdrawAmount)
-        {
-            return new BankCardInfo
-            {
-                AddingTime = card.AddingTime,
-                Args = card.Args,
-                BankCardNo = card.BankCardNo,
-                BankName = card.BankName,
-                Cellphone = card.Cellphone,
-                CityName = card.CityName,
-                Dispaly = card.Dispaly,
-                UserId = card.UserId,
-                Verified = card.Verified,
-                VerifiedByYilian = card.VerifiedByYilian,
-                VerifiedTime = card.VerifiedTime.GetValueOrDefault(),
-                WithdrawAmount = withdrawAmount
-            };
-        }
-
         /// <summary>
         ///     To the information.
         /// </summary>

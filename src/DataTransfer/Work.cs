@@ -27,12 +27,14 @@ namespace DataTransfer
     /// </summary>
     public class Work
     {
+        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
-        private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
+        [SuppressMessage("ReSharper", "CollectionNeverUpdated.Local")]
         private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
-        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
+
+        private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
         /// <summary>
         ///     Runs this instance.
@@ -50,7 +52,8 @@ namespace DataTransfer
         }
 
         #region 生成流水
-        private static void GenerateJBYTransaction(List<TranscationState> listType, OrderInfo order, UserInfo user)
+
+        private static void GenerateJBYTransaction(IEnumerable<TranscationState> listType, OrderInfo order, UserInfo user)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>
             {
@@ -136,13 +139,13 @@ namespace DataTransfer
                             break;
                     }
                     context.JsonJBYAccountTransaction.Add(
-                        new JsonJBYAccountTransaction() { OrderId = order.OrderId.ToString(), UserId = user.UserId.ToString(), Data = JsonConvert.SerializeObject(transaction) });
+                        new JsonJBYAccountTransaction { OrderId = order.OrderId.ToString(), UserId = user.UserId.ToString(), Data = JsonConvert.SerializeObject(transaction) });
                 }
                 context.SaveChanges();
             }
         }
 
-        private static void GenerateRegularTransaction(List<TranscationState> listType, OrderInfo order, UserInfo user)
+        private static void GenerateRegularTransaction(IEnumerable<TranscationState> listType, OrderInfo order, UserInfo user)
         {
             Dictionary<string, object> dic = new Dictionary<string, object>
             {
@@ -232,12 +235,13 @@ namespace DataTransfer
                             break;
                     }
                     context.JsonSettleAccountTransaction.Add(
-                        new JsonSettleAccountTransaction() { OrderId = order.OrderId.ToString(), UserId = user.UserId.ToString(), Data = JsonConvert.SerializeObject(transaction) });
+                        new JsonSettleAccountTransaction { OrderId = order.OrderId.ToString(), UserId = user.UserId.ToString(), Data = JsonConvert.SerializeObject(transaction) });
                 }
                 context.SaveChanges();
             }
         }
-        #endregion
+
+        #endregion 生成流水
 
         #region ProductTransfer
 
@@ -246,7 +250,7 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var oldProductList = context.TransRegularProductState.OrderByDescending(x=>x.StartSellTime).Take(10).ToList();
+                var oldProductList = context.TransRegularProductState.OrderByDescending(x => x.StartSellTime).Take(10).ToList();
 
                 if (oldProductList.Count == 0) return;
 
@@ -384,20 +388,22 @@ namespace DataTransfer
                         };
                         if (product.ProductId == new Guid("cc93b32c0536487fac57014b5b3de4b1"))
                         {
-                            GenerateJBYTransaction(new List<TranscationState>() { TranscationState.ChongZhi, TranscationState.ToJBY,TranscationState.RecieveByQianBao,
+                            GenerateJBYTransaction(new List<TranscationState>
+                            { TranscationState.ChongZhi, TranscationState.ToJBY,TranscationState.RecieveByQianBao,
                                 TranscationState.ToQianBao, TranscationState.RecieveByJBY, TranscationState.QuXian }, orderInfo, userInfo);
                         }
                         else
                         {
                             GenerateRegularTransaction(new List<TranscationState> { TranscationState.ChongZhi, TranscationState.GouMai,
                                 TranscationState.BenJin, TranscationState.LiXi, TranscationState.QuXian }, orderInfo, userInfo);
-
                         }
                         orders.Add(orderInfo.OrderId, orderInfo);
                     }
-                    #endregion
+
+                    #endregion orders
+
                     product.Orders = orders;
-                    context.JsonProduct.Add(new JsonProduct() { Data=JsonConvert.SerializeObject(product)});
+                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product) });
 
                     #endregion product
                 }
@@ -465,7 +471,8 @@ namespace DataTransfer
                     #endregion userinfo
 
                     #region Order
-                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).ToList().Select(x => new Order()
+
+                    var orders = context.TransOrderInfo.Where(o => o.UserId == transUserInfo.UserId).ToList().Select(x => new Order
                     {
                         AccountTransactionId = GetSettleTransactionId(x.OrderId),
                         Args = OrderArgs,
@@ -521,7 +528,6 @@ namespace DataTransfer
                         VerifiedTime = transUserInfo.VerifiedTime
                     };
 
-
                     context.JsonUser.Add(new JsonUser { Data = JsonConvert.SerializeObject(user) });
 
                     Console.WriteLine(JsonConvert.SerializeObject(user));
@@ -552,30 +558,6 @@ namespace DataTransfer
         #region 通过UserId查询流水
 
         /// <summary>
-        ///     通过UserId查询流水
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public static Dictionary<Guid, SettleAccountTransaction> GetSettleAccountTransaction(string userId)
-        {
-            Dictionary<Guid, SettleAccountTransaction> dic = new Dictionary<Guid, SettleAccountTransaction>();
-
-            using (var context  = new OldDBContext())
-            {
-                var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
-                if (list.Count != 0)
-                {
-                    foreach (var item in list)
-                    {
-                        SettleAccountTransaction trans = JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data); 
-                        dic.Add(trans.TransactionId, trans);
-                    }
-                }
-            }
-            return dic;
-        }
-
-        /// <summary>
         ///     通过UserId查询金包银流水
         /// </summary>
         /// <param name="userId"></param>
@@ -589,9 +571,8 @@ namespace DataTransfer
                 var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
                 if (list.Count != 0)
                 {
-                    foreach (var item in list)
+                    foreach (JBYAccountTransaction trans in list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)))
                     {
-                        JBYAccountTransaction trans = JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data);
                         dic.Add(trans.TransactionId, trans);
                     }
                 }
@@ -599,6 +580,29 @@ namespace DataTransfer
             return dic;
         }
 
-        #endregion
+        /// <summary>
+        ///     通过UserId查询流水
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static Dictionary<Guid, SettleAccountTransaction> GetSettleAccountTransaction(string userId)
+        {
+            Dictionary<Guid, SettleAccountTransaction> dic = new Dictionary<Guid, SettleAccountTransaction>();
+
+            using (var context = new OldDBContext())
+            {
+                var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
+                if (list.Count != 0)
+                {
+                    foreach (SettleAccountTransaction trans in list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)))
+                    {
+                        dic.Add(trans.TransactionId, trans);
+                    }
+                }
+            }
+            return dic;
+        }
+
+        #endregion 通过UserId查询流水
     }
 }

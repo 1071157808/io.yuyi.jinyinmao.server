@@ -1,5 +1,19 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : Program.cs
+// Created          : 2015-07-28  11:38 AM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-28  11:39 AM
+// ***********************************************************************
+// <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.WindowsAzure.Storage;
@@ -8,8 +22,6 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Serilog;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace SagasTransfer
 {
@@ -60,7 +72,6 @@ namespace SagasTransfer
                 string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
                 Console.WriteLine("transfer start");
 
-
                 Transfer(path);
 
                 Console.WriteLine("transfer finish");
@@ -78,7 +89,7 @@ namespace SagasTransfer
             table.ExecuteBatch(batch);
         }
 
-        private async static void  Transfer(string path)
+        private static async void Transfer(string path)
         {
             Stopwatch watch = new Stopwatch();
             watch.Start();
@@ -118,8 +129,8 @@ namespace SagasTransfer
                 TableBatchOperation batchTransfer = new TableBatchOperation();
                 TableBatchOperation batchDel = new TableBatchOperation();
                 var saga = list.Find(x => x.PartitionKey == sagas.Key
-                            && (x.CurrentProcessingStatus == (int)DepositSagaStatus.Finished
-                            || x.CurrentProcessingStatus == (int)DepositSagaStatus.Fault));
+                                          && (x.CurrentProcessingStatus == (int)DepositSagaStatus.Finished
+                                              || x.CurrentProcessingStatus == (int)DepositSagaStatus.Fault));
                 if (saga == null) return;
 
                 foreach (var item in sagas)
