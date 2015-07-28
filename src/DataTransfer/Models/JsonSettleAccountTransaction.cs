@@ -17,5 +17,9 @@ namespace DataTransfer.Models
 
         [Required]
         public string Data { get; set; }
+
+        [Required]
+        [StringLength(32)]
+        public string OrderId { get; set; }
     }
 }

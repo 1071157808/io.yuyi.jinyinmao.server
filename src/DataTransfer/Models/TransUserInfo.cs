@@ -40,7 +40,7 @@ namespace DataTransfer.Models
 
         public int? Credential { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string CredentialNo { get; set; }
 
         [Key]
