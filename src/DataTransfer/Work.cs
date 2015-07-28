@@ -556,25 +556,46 @@ namespace DataTransfer
         public static Dictionary<Guid, SettleAccountTransaction> GetSettleAccountTransaction(string userId)
         {
             Dictionary<Guid, SettleAccountTransaction> dic = new Dictionary<Guid, SettleAccountTransaction>();
-            if (SettleAccountTransactionList != null && SettleAccountTransactionList.Count != 0)
+
+            using (var context  = new OldDBContext())
             {
-                var list = SettleAccountTransactionList.Where(x => x.UserId == new Guid(userId)).ToList();
+                var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
                 if (list.Count != 0)
                 {
                     foreach (var item in list)
                     {
-                        dic.Add(item.TransactionId, item);
+                        SettleAccountTransaction trans = JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data); 
+                        dic.Add(trans.TransactionId, trans);
                     }
                 }
             }
             return dic;
         }
-        #endregion
 
+        /// <summary>
+        ///     通过UserId查询金包银流水
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public static Dictionary<Guid, JBYAccountTransaction> GetJBYAccountTransaction(string userId)
         {
-            return null;
+            Dictionary<Guid, JBYAccountTransaction> dic = new Dictionary<Guid, JBYAccountTransaction>();
+
+            using (var context = new OldDBContext())
+            {
+                var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
+                if (list.Count != 0)
+                {
+                    foreach (var item in list)
+                    {
+                        JBYAccountTransaction trans = JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data);
+                        dic.Add(trans.TransactionId, trans);
+                    }
+                }
+            }
+            return dic;
         }
 
+        #endregion
     }
 }
