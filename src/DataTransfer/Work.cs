@@ -46,9 +46,9 @@ namespace DataTransfer
             ProductArgs.Add("Comment", "由原产品数据迁移");
 
             //get products
-            ProductTransfer();
+            //ProductTransfer();
             UserTransfer();
-            //Console.WriteLine(i);
+            Console.WriteLine(i);
             Console.ReadKey();
         }
 
@@ -64,6 +64,7 @@ namespace DataTransfer
 
             using (var context = new OldDBContext())
             {
+                var id = new Guid();
                 foreach (var type in listType)
                 {
                     var oldTransaction = context.TransSettleAccountTransaction.FirstOrDefault(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
@@ -79,9 +80,11 @@ namespace DataTransfer
                         //BankCardNo = oldTransaction.BankCardNo,
                         //ChannelCode
                         //OrderId = order.OrderId,
+                        PredeterminedResultDate = null,
                         ResultCode = 1,
                         ResultTime = oldTransaction.CallbackTime ?? order.OrderTime,
                         //SequenceNo = order.OrderNo,
+                        //SettleAccountTransactionId = null,
                         //Trade
                         //TradeCode
                         //TransactionId
@@ -100,6 +103,7 @@ namespace DataTransfer
                             transaction.TradeCode = 1005051001;
                             transaction.TransactionId = Guid.NewGuid();
                             transaction.TransDesc = "个人钱包账户充值";
+                            id = transaction.TransactionId;
                             //transaction.OrderId = Guid.Empty;
 
                             break;
@@ -109,6 +113,7 @@ namespace DataTransfer
                             transaction.TradeCode = 1005012003;
                             transaction.TransactionId = order.AccountTransactionId;
                             transaction.TransDesc = "钱包金额转为金包银金额";
+                            transaction.SettleAccountTransactionId = id;
                             break;
 
                         case TranscationState.RecieveByQianBao:
@@ -176,8 +181,8 @@ namespace DataTransfer
                         //TransactionId
                         TransactionTime = order.OrderTime,
                         //TransDesc
-                        UserId = order.UserId
-                        //UserInfo = user
+                        UserId = order.UserId,
+                        UserInfo = user
                     };
 
                     //suf deal
@@ -252,7 +257,7 @@ namespace DataTransfer
             DateTime now = DateTime.Now;
             using (var context = new OldDBContext())
             {
-                var oldProductList = context.TransRegularProductState;
+                var oldProductList = context.TransRegularProductState.Where(o=>o.ProductId == "cc93b32c0536487fac57014b5b3de4b1").OrderByDescending(o=>o.StartSellTime).Take(100);
 
                 if (oldProductList == null || oldProductList.Count() == 0) return;
 
@@ -287,6 +292,7 @@ namespace DataTransfer
                         ProductCategory = Utils.GetProductCategory(oldProduct.ProductCategory, oldProduct.ProductType),
                         ProductName = Utils.GetProductName(oldProduct.ProductName),
                         ProductNo = oldProduct.ProductNo,
+                        ProductId = new Guid(oldProduct.ProductId),
                         Repaid = oldProduct.Repaid,
                         RepaidTime = null,
                         RepaymentDeadline = oldProduct.RepaymentDeadline,
@@ -377,7 +383,40 @@ namespace DataTransfer
                             Principal = (long)(oldOrder.Principal * 100),
                             ProductCategory = product.ProductCategory,
                             ProductId = product.ProductId,
-                            ProductSnapshot = null,
+                            ProductSnapshot = new RegularProductInfo
+                            {
+                                Args = product.Args,
+                                BankName = product.BankName,
+                                Drawee = product.Drawee,
+                                DraweeInfo = product.DraweeInfo,
+                                EndorseImageLink = product.EndorseImageLink,
+                                EndSellTime = product.EndSellTime,
+                                EnterpriseInfo = product.EnterpriseInfo,
+                                EnterpriseLicense = product.EnterpriseInfo,
+                                EnterpriseName = product.EnterpriseName,
+                                FinancingSumAmount = product.FinancingSumAmount,
+                                IssueNo = product.IssueNo,
+                                IssueTime = product.IssueTime,
+                                Period = product.Period,
+                                PledgeNo = product.PledgeNo,
+                                ProductCategory = product.ProductCategory,
+                                ProductName = product.ProductName,
+                                ProductNo = product.ProductNo,
+                                ProductId = product.ProductId,
+                                Repaid = product.Repaid,
+                                RepaymentDeadline = product.RepaymentDeadline,
+                                RiskManagement = product.RiskManagement,
+                                RiskManagementInfo = product.RiskManagementInfo,
+                                RiskManagementMode = product.RiskManagementMode,
+                                SettleDate = product.SettleDate,
+                                SoldOut = product.SoldOut,
+                                SoldOutTime = product.SoldOutTime,
+                                StartSellTime = product.StartSellTime,
+                                UnitPrice = product.UnitPrice,
+                                Usage = product.Usage,
+                                ValueDateMode = 0,
+                                Yield = product.Yield
+                            },
                             RepaidTime = null,
                             ResultCode = 10000,
                             ResultTime = oldOrder.ResultTime,
@@ -537,11 +576,11 @@ namespace DataTransfer
 
                     string json = JsonConvert.SerializeObject(user);
                     context.JsonUser.Add(new JsonUser { Data = json });
-                    //if (now.AddMinutes(1) <= DateTime.Now)
-                    //{
-                    //    return;
-                    //}
-                    //i++;
+                    if (now.AddSeconds(30) <= DateTime.Now)
+                    {
+                        break;
+                    }
+                    i++;
                     //Console.WriteLine(json);
                 }
                 context.SaveChanges();
@@ -555,18 +594,6 @@ namespace DataTransfer
             return SettleAccountTransactionList.Where(x => x.OrderId == new Guid(orderId) && x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
         }
 
-        private static void StorageDataToTempDB<T>(IEnumerable<T> list) where T : class
-        {
-            using (var context = new OldDBContext())
-            {
-                foreach (var item in list)
-                {
-                    context.Set<T>().Add(item);
-                }
-                context.SaveChanges();
-            }
-        }
-
         #region 通过UserId查询流水
 
         /// <summary>
@@ -576,8 +603,6 @@ namespace DataTransfer
         /// <returns></returns>
         public static Dictionary<Guid, JBYAccountTransaction> GetJBYAccountTransaction(string userId)
         {
-            Dictionary<Guid, JBYAccountTransaction> dic = new Dictionary<Guid, JBYAccountTransaction>();
-
             using (var context = new OldDBContext())
             {
                 var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
@@ -585,8 +610,8 @@ namespace DataTransfer
                 {
                     return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary<JBYAccountTransaction, Guid>(x => x.TransactionId);
                 }
+                return null;
             }
-            return dic;
         }
 
         /// <summary>
@@ -596,8 +621,6 @@ namespace DataTransfer
         /// <returns></returns>
         public static Dictionary<Guid, SettleAccountTransaction> GetSettleAccountTransaction(string userId)
         {
-            Dictionary<Guid, SettleAccountTransaction> dic = new Dictionary<Guid, SettleAccountTransaction>();
-
             using (var context = new OldDBContext())
             {
                 var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
@@ -605,8 +628,8 @@ namespace DataTransfer
                 {
                     return list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)).ToDictionary<SettleAccountTransaction, Guid>(x => x.TransactionId);
                 }
+                return null;
             }
-            return dic;
         }
 
         #endregion 通过UserId查询流水
