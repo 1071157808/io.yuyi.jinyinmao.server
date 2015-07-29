@@ -16,14 +16,15 @@ using System.Collections.Generic;
 using System.Linq;
 using DataTransfer.Models;
 using Yuyi.Jinyinmao.Domain;
+using System.Threading.Tasks;
 
 namespace DataTransfer
 {
     internal class Utils
     {
         private readonly static Dictionary<string, object> Args = new Dictionary<string, object>() { { "Comment", "由原银行卡数据迁移" } };
-        public static Dictionary<string, BankCard> GetBankCards(string userId)
-        { 
+        public static async Task<Dictionary<string, BankCard>> GetBankCards(string userId)
+        {
             Guid id = new Guid(userId);
             using (var context = new OldDBContext())
             {
@@ -42,7 +43,7 @@ namespace DataTransfer
                     VerifiedTime = b.VerifiedTime,
                     WithdrawAmount = b.WithdrawAmount
                 }).ToDictionary<BankCard, string>(x => x.BankCardNo);
-                return bankCards;
+                return await Task.Run(() => { return bankCards; });
             }
         }
 
@@ -78,34 +79,40 @@ namespace DataTransfer
             return list.IndexOf(outletCode) != -1 ? string.Empty : outletCode;
         }
 
-        public static long GetProductCategory(int productCategory = 0, int? productType = 0)
+        public async static Task<long> GetProductCategoryAsync(int productCategory = 0, int? productType = 0)
         {
+            long num = -1;
             if (productType != 0)
             {
                 switch (productType)
                 {
                     case 10:
-                        return 100000010;
-
+                        num = 100000010;
+                        break;
                     case 20:
-                        return 100000020;
+                        num = 100000020;
+                        break;
                 }
-                return -1;
+                
             }
             switch (productCategory)
             {
                 case 20:
-                    return 210001010;
-
+                    num = 210001010;
+                    break;
                 case 30:
-                    return 210002020;
-
+                    num = 210002020;
+                    break;
                 case 40:
-                    return 210003010;
-
+                    num = 210003010;
+                    break;
                 default:
-                    return -1;
+                    num = -1;
+                    break;
+
             }
+            return await Task.Run(() => { return num; });
+
         }
 
         public static string GetProductName(string name)
