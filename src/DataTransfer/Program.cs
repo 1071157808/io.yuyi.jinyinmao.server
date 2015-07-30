@@ -13,24 +13,22 @@
 
 using System;
 using System.IO;
+using System.Diagnostics;
 using Moe.Lib;
+using System.Threading.Tasks;
 
 namespace DataTransfer
 {
     internal class Program
     {
-        // private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-        // private static readonly CloudTable TransJBYTransaction = null;
-
-        // private static readonly CloudTable TransOrder = null;
-        // private static readonly CloudTable TransRegularProduct = null;
-        // private static readonly CloudTable TransTransaction = null;
-
         public static void Main(string[] args)
         {
+            
             try
             {
+                Console.WriteLine("Start");
                 Work.Run().Wait();
+                Task.Run(() => { Console.WriteLine("finish"); });
             }
             catch (AggregateException exception)
             {
@@ -46,7 +44,6 @@ namespace DataTransfer
                 File.AppendAllText($"{DateTime.Now.ToString("yyyyMMdd")}_log.txt", e.GetExceptionString());
                 Console.ReadKey();
             }
-
             Console.ReadKey();
         }
     }

@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -28,20 +29,23 @@ namespace DataTransfer
     /// </summary>
     public class Work
     {
-        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
-        private static readonly Guid JBYProductId = new Guid("5e35201f315e41d4b11f014d6c01feb8");
+        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
+        private static readonly Guid JBYProductId;
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
-
-        [SuppressMessage("ReSharper", "CollectionNeverUpdated.Local")] private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
-
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
-        //static int i = 0;
-        /// <summary>
-        ///     Runs this instance.
-        /// </summary>
-        public static async Task Run()
+        static Work()
+        {
+            string StrJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
+            StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
+            JBYProductId = new Guid(StrJBYProductId);
+        }
+
+    /// <summary>
+    ///     Runs this instance.
+    /// </summary>
+    public static async Task Run()
         {
             OrderArgs.Add("Comment", "由原订单数据迁移");
             UserArgs.Add("Comment", "由原用户数据迁移");
@@ -96,7 +100,6 @@ namespace DataTransfer
             {
                 Task taskProduct = ProductTransferAsync(j * 10000, 10000, j);
                 list.Add(taskProduct);
-                Console.WriteLine(j);
             }
             Task.WaitAll(list.ToArray());
         }
@@ -109,7 +112,6 @@ namespace DataTransfer
             {
                 Task taskUser = UserTransferAsync(j * 10000, 10000, j);
                 list.Add(taskUser);
-                Console.WriteLine(j);
             }
             Task.WaitAll(list.ToArray());
         }
@@ -128,6 +130,8 @@ namespace DataTransfer
 
                 foreach (var oldProduct in oldProductList)
                 {
+                    bool result = await ProductExistsAsync(oldProduct.ProductId);
+                    if (result) continue;
                     #region product
 
                     //-1 condition, null
@@ -314,7 +318,7 @@ namespace DataTransfer
                     #endregion orders
 
                     product.Orders = orders;
-                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product) });
+                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = oldProduct.ProductId });
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count" + ++i);
 
                     #endregion product
@@ -337,6 +341,8 @@ namespace DataTransfer
                 foreach (var transUserInfo in transUserInfos)
                 {
                     if (transUserInfo == null) continue;
+                    bool result = await UserExistsAsync(transUserInfo.UserId);
+                    if (result) continue;
 
                     #region userinfo
 
@@ -450,7 +456,7 @@ namespace DataTransfer
                     };
 
                     string json = JsonConvert.SerializeObject(user);
-                    context.JsonUser.Add(new JsonUser { Data = json });
+                    context.JsonUser.Add(new JsonUser { Data = json, UserId = transUserInfo.UserId });
                     Console.WriteLine("user transfer start,threadId: " + threadId + ", count" + ++i);
                     //Console.WriteLine(json);
                 }
@@ -688,5 +694,23 @@ namespace DataTransfer
         }
 
         #endregion 通过UserId查询流水
+
+        private async static Task<bool> UserExistsAsync(string userId)
+        {
+            using (var context = new OldDBContext())
+            {
+                var user = context.JsonUser.FirstOrDefault(x => x.UserId == userId);
+                return await Task.Run(() => { return user != null; });
+            }
+        }
+
+        private async static Task<bool> ProductExistsAsync(string productId)
+        {
+            using (var context = new OldDBContext())
+            {
+                var product = context.JsonProduct.FirstOrDefault(x => x.ProductId == productId);
+                return await Task.Run(() => { return product != null; });
+            }
+        }
     }
 }
