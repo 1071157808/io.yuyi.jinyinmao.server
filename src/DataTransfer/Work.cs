@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -28,19 +29,23 @@ namespace DataTransfer
     /// </summary>
     public class Work
     {
-        private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
-        private static readonly string StrJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
-        private static readonly Guid JBYProductId = new Guid(StrJBYProductId);
+        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
+        private static readonly Guid JBYProductId;
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
-        [SuppressMessage("ReSharper", "CollectionNeverUpdated.Local")]
-        private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
 
-        /// <summary>
-        ///     Runs this instance.
-        /// </summary>
-        public static async Task Run()
+        static Work()
+        {
+            string StrJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
+            StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
+            JBYProductId = new Guid(StrJBYProductId);
+        }
+
+    /// <summary>
+    ///     Runs this instance.
+    /// </summary>
+    public static async Task Run()
         {
             OrderArgs.Add("Comment", "由原订单数据迁移");
             UserArgs.Add("Comment", "由原用户数据迁移");
