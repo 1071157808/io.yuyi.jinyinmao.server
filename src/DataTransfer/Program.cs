@@ -39,10 +39,7 @@ namespace DataTransfer
         {
             try
             {
-                int a = 1;
-                int b = 0;
-                Console.WriteLine(a/b);
-                //Work.Run().Wait();
+                Work.Run().Wait();
             }
             catch (AggregateException exception)
             {
