@@ -22,6 +22,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Serilog;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
+using System.Threading.Tasks;
 
 namespace SagasTransfer
 {
@@ -42,45 +43,46 @@ namespace SagasTransfer
 
         private static void Main(string[] args)
         {
-            //string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string baseDir = "e:/log";
-            Console.WriteLine();
-            try
-            {
-                IList<string> list = args.ToList();
-                int index = list.IndexOf("-S");
-                if (-1 != index && list.Count >= index + 2)
-                {
-                    connectionString = list[index + 1];
-                }
-                index = list.IndexOf("-D");
-                if (-1 != index && list.Count >= index + 2)
-                {
-                    transferConnectionString = list[index + 1];
-                }
+            ////string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            //string baseDir = "e:/log";
+            //Console.WriteLine();
+            //try
+            //{
+            //    IList<string> list = args.ToList();
+            //    int index = list.IndexOf("-S");
+            //    if (-1 != index && list.Count >= index + 2)
+            //    {
+            //        connectionString = list[index + 1];
+            //    }
+            //    index = list.IndexOf("-D");
+            //    if (-1 != index && list.Count >= index + 2)
+            //    {
+            //        transferConnectionString = list[index + 1];
+            //    }
 
-                index = list.IndexOf("-P");
-                if (-1 != index && list.Count >= index + 2)
-                {
-                    baseDir = list[index + 1];
-                }
-                DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, "Saga"));
-                if (!dir.Exists)
-                {
-                    dir.Create();
-                }
-                string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
-                Console.WriteLine("transfer start");
+            //    index = list.IndexOf("-P");
+            //    if (-1 != index && list.Count >= index + 2)
+            //    {
+            //        baseDir = list[index + 1];
+            //    }
+            //    DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, "Saga"));
+            //    if (!dir.Exists)
+            //    {
+            //        dir.Create();
+            //    }
+            //    string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
+            //    Console.WriteLine("transfer start");
 
-                Transfer(path);
+            //    Transfer(path);
 
-                Console.WriteLine("transfer finish");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("error");
-                new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir, "/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
-            }
+            //    Console.WriteLine("transfer finish");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("error");
+            //    new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir, "/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
+            //}
+            GetData();
             Console.ReadKey();
         }
 
@@ -174,6 +176,36 @@ namespace SagasTransfer
             watch.Stop();
             Console.WriteLine(watch.ToString());
             Console.WriteLine("end");
+        }
+
+        private async static Task GetData()
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            TableRequestOptions request = new TableRequestOptions
+            {
+                RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
+            };
+
+            DateTime now = DateTime.Now;
+            string sagaName = "Sagas" + now.ToString("yyyyMMdd");
+            CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
+            CloudTableClient client = account.CreateCloudTableClient();
+            client.DefaultRequestOptions = request;
+            var table = client.GetTableReference("Sagas");
+
+            TableContinuationToken toke = null;
+            var query = new TableQuery<SagaStateRecord>();
+            do
+            {
+                foreach (var item in await table.ExecuteQuerySegmentedAsync(query,toke))
+                {
+                    Console.WriteLine(item.PartitionKey);
+                }
+            } while (toke!=null);
+            watch.Stop();
+            Console.WriteLine(watch.Elapsed);
+            Console.ReadKey();
         }
     }
 }
