@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Program.cs
-// Created          : 2015-07-28  11:38 AM
+// Created          : 2015-07-30  7:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:39 AM
+// Last Modified On : 2015-07-30  11:00 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -27,12 +28,39 @@ namespace SagasTransfer
 {
     internal class Program
     {
-        private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-        private static string transferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
+        private static readonly string ConnectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
+        private static readonly string TransferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
 
         private static void DeleteTable(CloudTable table, TableEntity entity)
         {
             table.Execute(TableOperation.Delete(entity));
+        }
+
+        private static async Task GetData()
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            TableRequestOptions request = new TableRequestOptions
+            {
+                RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
+            };
+
+            CloudStorageAccount account = CloudStorageAccount.Parse(ConnectionString);
+            CloudTableClient client = account.CreateCloudTableClient();
+            client.DefaultRequestOptions = request;
+            var table = client.GetTableReference("Sagas");
+
+            var query = new TableQuery<SagaStateRecord>();
+            do
+            {
+                foreach (var item in await table.ExecuteQuerySegmentedAsync(query, null))
+                {
+                    Console.WriteLine(item.PartitionKey);
+                }
+            } while (false);
+            watch.Stop();
+            Console.WriteLine(watch.Elapsed);
+            Console.ReadKey();
         }
 
         private static void InsertTable(CloudTable table, TableEntity entity)
@@ -42,45 +70,46 @@ namespace SagasTransfer
 
         private static void Main(string[] args)
         {
-            //string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string baseDir = "e:/log";
-            Console.WriteLine();
-            try
-            {
-                IList<string> list = args.ToList();
-                int index = list.IndexOf("-S");
-                if (-1 != index && list.Count >= index + 2)
-                {
-                    connectionString = list[index + 1];
-                }
-                index = list.IndexOf("-D");
-                if (-1 != index && list.Count >= index + 2)
-                {
-                    transferConnectionString = list[index + 1];
-                }
+            ////string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            //string baseDir = "e:/log";
+            //Console.WriteLine();
+            //try
+            //{
+            //    IList<string> list = args.ToList();
+            //    int index = list.IndexOf("-S");
+            //    if (-1 != index && list.Count >= index + 2)
+            //    {
+            //        connectionString = list[index + 1];
+            //    }
+            //    index = list.IndexOf("-D");
+            //    if (-1 != index && list.Count >= index + 2)
+            //    {
+            //        transferConnectionString = list[index + 1];
+            //    }
 
-                index = list.IndexOf("-P");
-                if (-1 != index && list.Count >= index + 2)
-                {
-                    baseDir = list[index + 1];
-                }
-                DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, "Saga"));
-                if (!dir.Exists)
-                {
-                    dir.Create();
-                }
-                string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
-                Console.WriteLine("transfer start");
+            //    index = list.IndexOf("-P");
+            //    if (-1 != index && list.Count >= index + 2)
+            //    {
+            //        baseDir = list[index + 1];
+            //    }
+            //    DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, "Saga"));
+            //    if (!dir.Exists)
+            //    {
+            //        dir.Create();
+            //    }
+            //    string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
+            //    Console.WriteLine("transfer start");
 
-                Transfer(path);
+            //    Transfer(path);
 
-                Console.WriteLine("transfer finish");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("error");
-                new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir, "/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
-            }
+            //    Console.WriteLine("transfer finish");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("error");
+            //    new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir, "/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
+            //}
+            //GetData();
             Console.ReadKey();
         }
 
@@ -100,12 +129,12 @@ namespace SagasTransfer
 
             DateTime now = DateTime.Now;
             string sagaName = "Sagas" + now.ToString("yyyyMMdd");
-            CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);
+            CloudStorageAccount account = CloudStorageAccount.Parse(ConnectionString);
             CloudTableClient client = account.CreateCloudTableClient();
             client.DefaultRequestOptions = request;
             var table = client.GetTableReference("Sagas");
 
-            CloudStorageAccount transferAccount = CloudStorageAccount.Parse(transferConnectionString);
+            CloudStorageAccount transferAccount = CloudStorageAccount.Parse(TransferConnectionString);
             CloudTableClient transferClient = transferAccount.CreateCloudTableClient();
             var sagaTable = transferClient.GetTableReference(sagaName);
             transferClient.DefaultRequestOptions = request;
@@ -142,7 +171,7 @@ namespace SagasTransfer
                 Operation(sagaTable, batchTransfer);
                 Operation(table, batchDel);
             }
-            Console.WriteLine(list.Count());    
+            Console.WriteLine(list.Count());
             //string line = string.Empty;
             //if (File.Exists(path))
             //{

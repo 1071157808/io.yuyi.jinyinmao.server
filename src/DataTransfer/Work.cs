@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Work.cs
-// Created          : 2015-07-30  1:48 PM
+// Created          : 2015-07-30  7:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  3:10 PM
+// Last Modified On : 2015-07-30  8:29 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,12 +12,14 @@
 // ***********************************************************************
 
 using System;
-using System.Configuration;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DataTransfer.Models;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -29,30 +31,30 @@ namespace DataTransfer
     /// </summary>
     public class Work
     {
-        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly Guid JBYProductId;
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
+        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
         static Work()
         {
-            string StrJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
-            StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
-            JBYProductId = new Guid(StrJBYProductId);
+            string strJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
+            strJBYProductId = string.IsNullOrEmpty(strJBYProductId) ? StrDefaultJBYProductId : strJBYProductId;
+            JBYProductId = new Guid(strJBYProductId);
         }
 
-    /// <summary>
-    ///     Runs this instance.
-    /// </summary>
-    public static async Task Run()
+        /// <summary>
+        ///     Runs this instance.
+        /// </summary>
+        public static async Task Run()
         {
             OrderArgs.Add("Comment", "由原订单数据迁移");
             UserArgs.Add("Comment", "由原用户数据迁移");
             ProductArgs.Add("Comment", "由原产品数据迁移");
 
-            //get products
-            await ProductTask().ContinueWith(t => UserTask());
+            await ProductTask();
+            await UserTask();
 
             //ProductTransfer();
         }
@@ -65,21 +67,22 @@ namespace DataTransfer
             }
         }
 
+        [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
         private static async Task<Guid> GetSettleTransactionIdAsync(string orderId, string productId)
         {
             using (var context = new OldDBContext())
             {
-                if (new Guid(productId) == JBYProductId)
+                if (productId == JBYProductId.ToString("N"))
                 {
-                    var datas = context.JsonJBYAccountTransaction.Where(x => x.OrderId == orderId).Select(x => x.Data).ToList();
-                    var list = datas.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item)).ToList();
-                    return await Task.Run(() => list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault());
+                    List<string> datas = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
+                    var list = Enumerable.ToList(datas.Select(JsonConvert.DeserializeObject<JBYAccountTransaction>));
+                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
                 }
                 else
                 {
-                    var datas = context.JsonSettleAccountTransaction.Where(x => x.OrderId == orderId).Select(x => x.Data).ToList();
-                    var list = datas.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item)).ToList();
-                    return await Task.Run(() => list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault());
+                    var datas = await context.JsonSettleAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
+                    var list = Enumerable.ToList(datas.Select(JsonConvert.DeserializeObject<SettleAccountTransaction>));
+                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
                 }
             }
         }
@@ -92,28 +95,39 @@ namespace DataTransfer
             }
         }
 
+        private static async Task<bool> ProductExistsAsync(string productId)
+        {
+            using (var context = new OldDBContext())
+            {
+                var product = context.JsonProduct.FirstOrDefault(x => x.ProductId == productId);
+                return await Task.Run(() => product != null);
+            }
+        }
+
         private static async Task ProductTask()
         {
             double count = await GetProductCountAsync();
-            var list = new List<Task>();
             for (int j = 0; j < Math.Ceiling(count / 10000); j++)
             {
-                Task taskProduct = ProductTransferAsync(j * 10000, 10000, j);
-                list.Add(taskProduct);
+                await ProductTransferAsync(j * 10000, 10000, j);
             }
-            Task.WaitAll(list.ToArray());
+        }
+
+        private static async Task<bool> UserExistsAsync(string userId)
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.JsonUser.AsNoTracking().AnyAsync(x => x.UserId == userId);
+            }
         }
 
         private static async Task UserTask()
         {
             double count = await GetUserCountAsync();
-            List<Task> list = new List<Task>();
             for (int j = 0; j < Math.Ceiling(count / 10000); j++)
             {
-                Task taskUser = UserTransferAsync(j * 10000, 10000, j);
-                list.Add(taskUser);
+                await UserTransferAsync(j * 10000, 10000, j);
             }
-            Task.WaitAll(list.ToArray());
         }
 
         #region ProductTransfer
@@ -132,10 +146,10 @@ namespace DataTransfer
                 {
                     bool result = await ProductExistsAsync(oldProduct.ProductId);
                     if (result) continue;
+
                     #region product
 
                     //-1 condition, null
-                    if (oldProduct == null) continue;
 
                     var agreement1 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement1);
                     var agreement2 = context.Agreements.FirstOrDefault(a => a.Id == oldProduct.Agreement2);
@@ -337,7 +351,7 @@ namespace DataTransfer
             int i = 0;
             using (var context = new OldDBContext())
             {
-                var transUserInfos = context.TransUserInfo.OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount);
+                List<TransUserInfo> transUserInfos = await context.TransUserInfo.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).ToListAsync();
                 foreach (var transUserInfo in transUserInfos)
                 {
                     if (transUserInfo == null) continue;
@@ -356,14 +370,14 @@ namespace DataTransfer
                         Closed = false,
                         ContractId = transUserInfo.ContractId,
                         Credential = Utils.GetCredential(transUserInfo.Credential),
-                        CredentialNo = !string.IsNullOrWhiteSpace(transUserInfo.CredentialNo) ? transUserInfo.CredentialNo : string.Empty,
+                        CredentialNo = transUserInfo.CredentialNo.IsNotNullOrEmpty() ? transUserInfo.CredentialNo : string.Empty,
                         Crediting = -1,
                         Debiting = 0,
                         HasSetPassword = transUserInfo.HasSetPassword.GetValueOrDefault() > 0,
                         HasSetPaymentPassword = transUserInfo.HasSetPaymentPassword.GetValueOrDefault() > 0,
                         InvestingInterest = -1,
                         InvestingPrincipal = -1,
-                        InviteBy = !string.IsNullOrWhiteSpace(transUserInfo.InviteBy) ? transUserInfo.InviteBy : string.Empty,
+                        InviteBy = transUserInfo.InviteBy.IsNotNullOrWhiteSpace() ? transUserInfo.InviteBy : string.Empty,
                         JBYAccrualAmount = -1,
                         JBYLastInterest = -1,
                         JBYTotalAmount = -1,
@@ -381,7 +395,7 @@ namespace DataTransfer
                         TodayWithdrawalCount = transUserInfo.TodayWithdrawalCount,
                         TotalInterest = transUserInfo.TotalInterest,
                         TotalPrincipal = transUserInfo.TotalPrincipal,
-                        UserId = new Guid(transUserInfo.UserId),
+                        UserId = Guid.ParseExact(transUserInfo.UserId, "N"),
                         Verified = transUserInfo.Verified.GetValueOrDefault(),
                         VerifiedTime = transUserInfo.VerifiedTime,
                         WithdrawalableAmount = transUserInfo.WithdrawalableAmount
@@ -393,31 +407,33 @@ namespace DataTransfer
 
                     var listOrder = new List<Order>();
 
-                    foreach (var x in context.TransOrderInfo.Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId))
+                    List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId).ToListAsync();
+
+                    foreach (var x in verifiedUsers)
                     {
-                        var accountTransactionId = await GetSettleTransactionIdAsync(x.OrderId, x.ProductId);
+                        Guid accountTransactionId = await GetSettleTransactionIdAsync(x.OrderId, x.ProductId);
                         listOrder.Add(new Order
                         {
                             AccountTransactionId = accountTransactionId,
                             Args = OrderArgs,
                             Cellphone = x.Cellphone,
-                            ExtraInterest = (long)x.ExtraInterest,
+                            ExtraInterest = (long)(x.ExtraInterest * 100),
                             ExtraInterestRecords = new List<ExtraInterestRecord>(),
                             ExtraYield = (x.ExtraYield * 100),
-                            Interest = (long)x.Interest,
+                            Interest = (long)(x.Interest * 100),
                             IsRepaid = x.IsRepaid,
-                            OrderId = new Guid(x.OrderId),
+                            OrderId = Guid.ParseExact(x.OrderId, "N"),
                             OrderNo = x.OrderNo,
                             OrderTime = x.OrderTime,
                             Principal = (long)(x.Principal * 100),
                             ProductCategory = await Utils.GetProductCategoryAsync(x.ProductCategory, x.ProductType),
-                            ProductId = new Guid(x.ProductId),
+                            ProductId = Guid.ParseExact(x.ProductId, "N"),
                             ProductSnapshot = null,
                             RepaidTime = null,
                             ResultCode = 10000,
                             SettleDate = Utils.GetDate(x.SettleDate),
                             TransDesc = "充值成功，购买理财产品",
-                            UserId = new Guid(x.UserId),
+                            UserId = new Guid(x.UserId), //TODO
                             UserInfo = userInfo,
                             ValueDate = Utils.GetDate(x.ValueDate),
                             Yield = (int)(x.Yield * 100)
@@ -674,8 +690,8 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
-                return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId));
+                var list = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
+                return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId);
             }
         }
 
@@ -688,29 +704,11 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
-                return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId));
+                var list = await context.JsonSettleAccountTransaction.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
+                return list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId);
             }
         }
 
         #endregion 通过UserId查询流水
-
-        private async static Task<bool> UserExistsAsync(string userId)
-        {
-            using (var context = new OldDBContext())
-            {
-                var user = context.JsonUser.FirstOrDefault(x => x.UserId == userId);
-                return await Task.Run(() => { return user != null; });
-            }
-        }
-
-        private async static Task<bool> ProductExistsAsync(string productId)
-        {
-            using (var context = new OldDBContext())
-            {
-                var product = context.JsonProduct.FirstOrDefault(x => x.ProductId == productId);
-                return await Task.Run(() => { return product != null; });
-            }
-        }
     }
 }

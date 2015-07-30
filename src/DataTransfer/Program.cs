@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Program.cs
-// Created          : 2015-07-30  7:21 PM
+// Created          : 2015-07-30  7:51 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  7:36 PM
+// Last Modified On : 2015-07-30  7:54 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using Moe.Lib;
 
 namespace DataTransfer
@@ -26,7 +25,8 @@ namespace DataTransfer
             {
                 Console.WriteLine("Start");
                 Work.Run().Wait();
-                Task.Run(() => Console.WriteLine("finish"));
+                Console.WriteLine("Finish");
+                //MemoryWork.Run().Wait();
             }
             catch (AggregateException exception)
             {
