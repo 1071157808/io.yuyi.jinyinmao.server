@@ -22,6 +22,7 @@ using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using System.Threading.Tasks;
 using Moe.Lib;
+using System.IO;
 
 namespace DataTransfer
 {
@@ -38,20 +39,23 @@ namespace DataTransfer
         {
             try
             {
-                Work.Run().Wait();
+                int a = 1;
+                int b = 0;
+                Console.WriteLine(a/b);
+                //Work.Run().Wait();
             }
             catch (AggregateException exception)
             {
                 Console.WriteLine(exception.Message + exception.StackTrace);
                 foreach (var item in exception.InnerExceptions)
                 {
-                    Console.WriteLine(item.GetExceptionString());
+                    File.AppendAllText($"{DateTime.Now.ToString("yyyyMMdd")}_log.txt", item.GetExceptionString());
                 }
                 Console.ReadKey();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.GetExceptionString());
+                File.AppendAllText($"{DateTime.Now.ToString("yyyyMMdd")}_log.txt", e.GetExceptionString());
                 Console.ReadKey();
             }
            
