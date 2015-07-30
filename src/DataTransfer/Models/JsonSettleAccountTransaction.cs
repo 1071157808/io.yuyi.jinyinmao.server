@@ -25,11 +25,11 @@ namespace DataTransfer.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(32)]
+        [StringLength(50)]
         public string OrderId { get; set; }
 
         [Required]
-        [StringLength(32)]
+        [StringLength(50)]
         public string UserId { get; set; }
     }
 }

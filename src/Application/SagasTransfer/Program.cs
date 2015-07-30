@@ -142,7 +142,7 @@ namespace SagasTransfer
                 Operation(sagaTable, batchTransfer);
                 Operation(table, batchDel);
             }
-            Console.WriteLine(list.Count());
+            Console.WriteLine(list.Count());    
             //string line = string.Empty;
             //if (File.Exists(path))
             //{
