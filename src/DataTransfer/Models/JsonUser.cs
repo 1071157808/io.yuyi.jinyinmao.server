@@ -23,5 +23,8 @@ namespace DataTransfer.Models
         public string Data { get; set; }
 
         public int Id { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
     }
 }

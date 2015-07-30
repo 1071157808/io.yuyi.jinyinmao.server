@@ -50,7 +50,8 @@ namespace DataTransfer
             //get products
             try
             {
-               await ProductTask().ContinueWith(t=> UserTask());
+                //await ProductTask();
+                await ProductTask().ContinueWith(t => UserTask());
             }
             catch (Exception ex)
             {
@@ -71,7 +72,6 @@ namespace DataTransfer
             {
                 Task taskProduct = ProductTransferAsync(j * 10000, 10000, j);
                 list.Add(taskProduct);
-                Console.WriteLine(j);
             }
             Task.WaitAll(list.ToArray());
         }
@@ -302,6 +302,8 @@ namespace DataTransfer
 
                 foreach (var oldProduct in oldProductList)
                 {
+                    bool result = await ProductExistsAsync(oldProduct.ProductId);
+                    if (result) continue;
                     #region product
 
                     //-1 condition, null
@@ -483,7 +485,7 @@ namespace DataTransfer
                     #endregion orders
 
                     product.Orders = orders;
-                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product) });
+                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = oldProduct.ProductId });
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count" + ++i);
                     #endregion product
                 }
@@ -506,6 +508,9 @@ namespace DataTransfer
                 foreach (var transUserInfo in transUserInfos)
                 {
                     if (transUserInfo == null) continue;
+                    bool result = await UserExistsAsync(transUserInfo.UserId);
+                    if (result) continue;
+
                     #region userinfo
 
                     UserInfo userInfo = new UserInfo
@@ -616,7 +621,7 @@ namespace DataTransfer
                     };
 
                     string json = JsonConvert.SerializeObject(user);
-                    context.JsonUser.Add(new JsonUser { Data = json });
+                    context.JsonUser.Add(new JsonUser { Data = json, UserId = transUserInfo.UserId });
                     Console.WriteLine("user transfer start,threadId: " + threadId + ", count" + ++i);
                     //Console.WriteLine(json);
                 }
@@ -704,6 +709,25 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 return await Task.Run(() => { return context.Set<TransRegularProductState>().Count(); });
+            }
+        }
+
+        private async static Task<bool> UserExistsAsync(string userId)
+        {
+            using (var context = new OldDBContext())
+            {
+                var user = context.JsonUser.FirstOrDefault(x => x.UserId == userId);
+                return await Task.Run(() => { return user != null; });
+            }
+        }
+
+
+        private async static Task<bool> ProductExistsAsync(string productId)
+        {
+            using (var context = new OldDBContext())
+            {
+                var product = context.JsonProduct.FirstOrDefault(x => x.ProductId == productId);
+                return await Task.Run(() => { return product != null; });
             }
         }
     }
