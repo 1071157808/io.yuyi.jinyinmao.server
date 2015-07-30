@@ -223,7 +223,10 @@ namespace Yuyi.Jinyinmao.Domain
                 {
                     bankCard.WithdrawAmount = bankCards[bankCard.BankCardNo] + extraAmount;
                 }
-                bankCard.WithdrawAmount = 0L;
+                else
+                {
+                    bankCard.WithdrawAmount = 0L;
+                }
             }
 
             this.TodayWithdrawalCount = todayWithdrawalCount;

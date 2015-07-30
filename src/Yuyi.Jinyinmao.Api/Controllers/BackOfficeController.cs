@@ -140,7 +140,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     JBY产品上架请求，计息方式固定为T+1，起息方式的参数值现在没有实际的业务作用
         /// </param>
-        /// <response code="200">上架成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -153,15 +153,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     上架失败：产品停售时间小于开售时间
         ///     <br />
         ///     上架失败：产品每份单价不能被融资总金额整除
-        ///     <br />
-        ///     上架失败：产品编号已存在
-        ///     <br />
-        ///     上架失败：产品编号已存在
         /// </response>
         /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
         [Route("CurrentProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> JBYProductIssue(IssueJBYProductRequest request)
         {
@@ -226,7 +221,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="request">
         ///     产品上架请求
         /// </param>
-        /// <response code="200">上架成功</response>
+        /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
@@ -243,7 +238,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
         [Route("RegularProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> RegularProductIssue(IssueProductRequest request)
         {
@@ -320,7 +314,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
-        ///     产品编号错误
+        ///     产品唯一标识错误
         /// </response>
         /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
@@ -331,7 +325,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid productId;
             if (!Guid.TryParseExact(productIdentifier, "N", out productId))
             {
-                return this.BadRequest("产品编号错误");
+                return this.BadRequest("产品唯一标识错误");
             }
 
             this.productService.RepayRegularProductAsync(productId);
@@ -346,9 +340,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="transactionIdentifier">交易流水唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">
-        ///     用户编号错误
+        ///     用户唯一标识错误
         ///     <br />
-        ///     流水编号错误
+        ///     流水唯一标识错误
         ///     <br />
         ///     交易流水不存在
         ///     <br />
@@ -364,13 +358,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid userId;
             if (!Guid.TryParseExact(userIdentifier, "N", out userId))
             {
-                return this.BadRequest("用户编号错误");
+                return this.BadRequest("用户唯一标识错误");
             }
 
             Guid transactionId;
             if (!Guid.TryParseExact(transactionIdentifier, "N", out transactionId))
             {
-                return this.BadRequest("流水编号错误");
+                return this.BadRequest("流水唯一标识错误");
             }
 
             SettleAccountTransactionInfo info = await this.userService.WithdrawalResultedAsync(userId, transactionId);

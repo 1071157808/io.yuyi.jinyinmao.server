@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : CouponController.cs
 // Created          : 2015-07-26  5:57 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  10:02 AM
+// Last Modified On : 2015-07-30  1:47 AM
 // ***********************************************************************
 // <copyright file="CouponController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -46,7 +46,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取直接使用的本金券
         /// </summary>
         /// <remarks>
-        ///     会获取可以使用的一张本金券
+        ///     会获取可以使用的一张本金券，如果没有可用的本金券，则返回空body
         /// </remarks>
         /// <response code="200"></response>
         /// <response code="401">AUTH:请先登录</response>
@@ -55,7 +55,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> GetCoupon()
         {
             CouponInfo coupon = await this.couponService.GetCouponAsync(this.CurrentUser.Id);
-            return this.Ok(coupon.ToResponse());
+
+            return coupon == null ? this.Ok() : this.Ok(coupon.ToResponse());
         }
 
         /// <summary>
@@ -82,12 +83,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </remarks>
         /// <param name="couponId">代金券Id</param>
         /// <response code="200"></response>
+        /// <response code="400">
+        ///     CRC1:未找到指定的本金券
+        /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [HttpGet, Route("Remove/{couponId:int:min(1)}"), CookieAuthorize, ResponseType(typeof(List<CouponInfoResponse>))]
         public async Task<IHttpActionResult> RemoveCoupon(int couponId)
         {
             CouponInfo coupon = await this.couponService.RemoveCouponAsync(couponId, this.CurrentUser.Id);
+
+            if (coupon == null)
+            {
+                return this.BadRequest("CRC1:未找到指定的本金券");
+            }
+
             return this.Ok(coupon.ToResponse());
         }
     }

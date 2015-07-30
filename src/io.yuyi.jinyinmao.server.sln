@@ -27,7 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7-Publish", "7-Publish", "{
 	ProjectSection(SolutionItems) = preProject
 		Publish\ApiKeys.json = Publish\ApiKeys.json
 		Publish\业务表初始化脚本.sql = Publish\业务表初始化脚本.sql
-		Publish\业务配置.md = Publish\业务配置.md
 		Publish\内存集群数据持久化数据库初始化脚本.sql = Publish\内存集群数据持久化数据库初始化脚本.sql
 		Publish\内存集群数据持久化数据库表结构初始化脚本.sql = Publish\内存集群数据持久化数据库表结构初始化脚本.sql
 		Publish\数据库用户初始化脚本.sql = Publish\数据库用户初始化脚本.sql

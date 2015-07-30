@@ -15,11 +15,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 using DataTransfer.Models;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using System.Threading.Tasks;
 
 namespace DataTransfer
 {
@@ -29,15 +29,14 @@ namespace DataTransfer
     public class Work
     {
         private static readonly List<JBYAccountTransaction> JBYAccountTransactionList = new List<JBYAccountTransaction>();
-        private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
-        private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
         private static readonly string StrJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly Guid JBYProductId = new Guid(StrJBYProductId);
+        private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
         [SuppressMessage("ReSharper", "CollectionNeverUpdated.Local")]
         private static readonly List<SettleAccountTransaction> SettleAccountTransactionList = new List<SettleAccountTransaction>();
 
-        private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
-        //static int i = 0;
         /// <summary>
         ///     Runs this instance.
         /// </summary>
@@ -48,26 +47,50 @@ namespace DataTransfer
             ProductArgs.Add("Comment", "由原产品数据迁移");
 
             //get products
-            try
-            {
-                //await ProductTask();
-                await ProductTask().ContinueWith(t => UserTask());
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            await ProductTask().ContinueWith(t => UserTask());
 
             //ProductTransfer();
+        }
 
+        private async static Task<int> GetProductCountAsync()
+        {
+            using (var context = new OldDBContext())
+            {
+                return await Task.Run(() => context.Set<TransRegularProductState>().Count());
+            }
+        }
+
+        private async static Task<Guid> GetSettleTransactionIdAsync(string orderId, string productId)
+        {
+            using (var context = new OldDBContext())
+            {
+                if (new Guid(productId) == JBYProductId)
+                {
+                    var datas = context.JsonJBYAccountTransaction.Where(x => x.OrderId == orderId).Select(x => x.Data).ToList();
+                    var list = datas.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item)).ToList();
+                    return await Task.Run(() => list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault());
+                }
+                else
+                {
+                    var datas = context.JsonSettleAccountTransaction.Where(x => x.OrderId == orderId).Select(x => x.Data).ToList();
+                    var list = datas.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item)).ToList();
+                    return await Task.Run(() => list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault());
+                }
+            }
+        }
+
+        private async static Task<int> GetUserCountAsync()
+        {
+            using (var context = new OldDBContext())
+            {
+                return await Task.Run(() => context.Set<TransUserInfo>().Count());
+            }
         }
 
         private async static Task ProductTask()
         {
             double count = await GetProductCountAsync();
-            List<Task> list = new List<Task>();
-            list = new List<Task>();
+            var list = new List<Task>();
             for (int j = 0; j < Math.Ceiling(count / 10000); j++)
             {
                 Task taskProduct = ProductTransferAsync(j * 10000, 10000, j);
@@ -80,12 +103,10 @@ namespace DataTransfer
         {
             double count = await GetUserCountAsync();
             List<Task> list = new List<Task>();
-            list = new List<Task>();
             for (int j = 0; j < Math.Ceiling(count / 10000); j++)
             {
                 Task taskUser = UserTransferAsync(j * 10000, 10000, j);
                 list.Add(taskUser);
-                Console.WriteLine(j);
             }
             Task.WaitAll(list.ToArray());
         }
@@ -293,12 +314,11 @@ namespace DataTransfer
         private async static Task ProductTransferAsync(int skipCount, int takeCount, int threadId)
         {
             int i = 0;
-            DateTime now = DateTime.Now;
             using (var context = new OldDBContext())
             {
                 var oldProductList = context.TransRegularProductState.OrderBy(o => o.ProductId).Skip(skipCount).Take(takeCount);
 
-                if (oldProductList == null || oldProductList.Count() == 0) return;
+                if (!oldProductList.Any()) return;
 
                 foreach (var oldProduct in oldProductList)
                 {
@@ -487,6 +507,7 @@ namespace DataTransfer
                     product.Orders = orders;
                     context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = oldProduct.ProductId });
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count" + ++i);
+
                     #endregion product
                 }
                 await context.SaveChangesAsync();
@@ -501,7 +522,6 @@ namespace DataTransfer
         private async static Task UserTransferAsync(int skipCount, int takeCount, int threadId)
         {
             int i = 0;
-            DateTime now = DateTime.Now;
             using (var context = new OldDBContext())
             {
                 var transUserInfos = context.TransUserInfo.OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount);
@@ -591,8 +611,10 @@ namespace DataTransfer
                         });
                     }
 
-                    var orders = listOrder.ToDictionary<Order, Guid>(x => x.OrderId);
+                    var orders = listOrder.ToDictionary(x => x.OrderId);
+
                     #endregion Order
+
                     var user = new UserMigrationDto
                     {
                         Args = UserArgs,
@@ -631,39 +653,6 @@ namespace DataTransfer
 
         #endregion UserTransfer
 
-        private async static Task<Guid> GetSettleTransactionIdAsync(string orderId, string productId)
-        {
-            using (var context = new OldDBContext())
-            {
-                if (new Guid(productId) == JBYProductId)
-                {
-                    var datas = context.JsonJBYAccountTransaction.Where(x => x.OrderId == orderId).Select(x => x.Data).ToList();
-                    var list = new List<JBYAccountTransaction>();
-                    if (datas != null)
-                    {
-                        foreach (var item in datas)
-                        {
-                            list.Add(JsonConvert.DeserializeObject<JBYAccountTransaction>(item));
-                        }
-                    }
-                    return await Task.Run(() => { return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault(); });
-                }
-                else
-                {
-                    var datas = context.JsonSettleAccountTransaction.Where(x => x.OrderId == orderId).Select(x => x.Data).ToList();
-                    var list = new List<SettleAccountTransaction>();
-                    if (datas != null)
-                    {
-                        foreach (var item in datas)
-                        {
-                            list.Add(JsonConvert.DeserializeObject<SettleAccountTransaction>(item));
-                        }
-                    }
-                    return await Task.Run(() => { return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault(); });
-                }
-            }
-        }
-
         #region 通过UserId查询流水
 
         /// <summary>
@@ -676,7 +665,7 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
-                return await Task.Run(() => { return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary<JBYAccountTransaction, Guid>(x => x.TransactionId); });
+                return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId));
             }
         }
 
@@ -690,27 +679,11 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 var list = context.JsonSettleAccountTransaction.Where(x => x.UserId == userId).ToList();
-                return await Task.Run(() => { return list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)).ToDictionary<SettleAccountTransaction, Guid>(x => x.TransactionId); });
+                return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<SettleAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId));
             }
         }
 
         #endregion 通过UserId查询流水
-
-        private async static Task<int> GetUserCountAsync()
-        {
-            using (var context = new OldDBContext())
-            {
-                return await Task.Run(() => { return context.Set<TransUserInfo>().Count(); });
-            }
-        }
-
-        private async static Task<int> GetProductCountAsync()
-        {
-            using (var context = new OldDBContext())
-            {
-                return await Task.Run(() => { return context.Set<TransRegularProductState>().Count(); });
-            }
-        }
 
         private async static Task<bool> UserExistsAsync(string userId)
         {
@@ -720,7 +693,6 @@ namespace DataTransfer
                 return await Task.Run(() => { return user != null; });
             }
         }
-
 
         private async static Task<bool> ProductExistsAsync(string productId)
         {

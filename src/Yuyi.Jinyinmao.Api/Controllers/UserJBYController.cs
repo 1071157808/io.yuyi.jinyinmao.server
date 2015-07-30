@@ -164,7 +164,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UJW1:请重置支付密码后再试
         ///     <br />
-        ///     UJW2:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     UJW2:支付密码错误&lt;br&gt;错误5次会锁定支付功能
         ///     <br />
         ///     UJW3:暂时无法赎回
         ///     <br />
@@ -188,7 +188,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest("UJW2:支付密码错误，支付密码输入错误5次会锁定支付功能");
+                return this.BadRequest("UJW2:支付密码错误<br>错误5次会锁定支付功能");
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
