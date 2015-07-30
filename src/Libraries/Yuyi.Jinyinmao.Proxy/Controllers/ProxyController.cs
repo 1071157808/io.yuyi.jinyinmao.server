@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : ProxyController.cs
 // Created          : 2015-07-02  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-06  6:04 AM
+// Last Modified On : 2015-07-29  4:21 PM
 // ***********************************************************************
 // <copyright file="ProxyController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -100,8 +100,9 @@ namespace Yuyi.Jinyinmao.Proxy.Controllers
                 {
                     HttpResponseMessage response = await client.SendAsync(request);
                     response.Headers.Remove("Server");
-                    response.Headers.Remove("X-Powered-By");
                     response.Headers.Remove("X-AspNet-Version");
+                    response.Headers.Remove("X-Powered-By");
+                    response.Headers.TryAddWithoutValidation("X-Date", response.Headers.Date.GetValueOrDefault(new DateTimeOffset(DateTime.UtcNow)).ToString("R"));
                     return this.ResponseMessage(response);
                 }
                 catch (Exception e)

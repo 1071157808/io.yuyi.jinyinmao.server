@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : RegularProductController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-11  12:32 PM
+// Last Modified On : 2015-07-30  1:43 PM
 // ***********************************************************************
 // <copyright file="RegularProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -81,7 +81,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取产品信息
         /// </summary>
-        /// <remarks>需要使用产品唯一标识调用接口，接口数据会有1分钟的缓存，包括销售份额数据也会缓存</remarks>
+        /// <remarks>
+        ///     需要使用产品唯一标识调用接口，接口数据会有1分钟的缓存，包括销售份额数据也会缓存
+        /// </remarks>
         /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">RPRI:无此产品信息</response>
@@ -108,8 +110,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取产品的已售金额
         /// </summary>
-        /// <remarks>该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
-        /// <param name="productIdentifier">项目唯一标识，32位字符串，不是项目编号</param>
+        /// <remarks>
+        ///     该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}
+        /// </remarks>
+        /// <param name="productIdentifier">项目唯一标识</param>
         /// <response code="200"></response>
         /// <response code="400">RPGSP:无产品信息</response>
         /// <response code="500"></response>

@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:36 AM
+// Last Modified On : 2015-07-30  1:43 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -282,7 +282,7 @@ namespace Yuyi.Jinyinmao.Domain
                 RemainCount = 10 - this.PasswordErrorCount,
                 Success = false,
                 UserExist = true,
-                UserId = this.State.UserId
+                UserId = Guid.Empty
             });
         }
 

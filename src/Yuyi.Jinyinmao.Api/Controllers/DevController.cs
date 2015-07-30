@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : DevController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  9:15 AM
+// Last Modified On : 2015-07-30  1:43 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,8 +41,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     CancelOrderFromProduct
         /// </summary>
-        /// <param name="productIdentifier">productIdentifier</param>
-        /// <param name="orderIdentifier">orderIdentifier</param>
+        /// <param name="productIdentifier">产品唯一标识</param>
+        /// <param name="orderIdentifier">订单唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -65,9 +65,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     Changes the cellphone.
         /// </summary>
-        /// <param name="userIdentifier">The user identifier.</param>
-        /// <param name="cellphone">The cellphone.</param>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <param name="cellphone">需要修改为的手机号</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
         [Route("ChangeCellphone/{userIdentifier:length(32)}/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ChangeCellphone(string userIdentifier, string cellphone)
         {
@@ -107,7 +110,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     CheckProductSaleStatus
         /// </summary>
-        /// <param name="productIdentifier">productIdentifier</param>
+        /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -123,7 +126,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     DepositSaga
         /// </summary>
-        /// <param name="sagaIdentifier">sagaIdentifier</param>
+        /// <param name="sagaIdentifier">支付流程唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -140,8 +143,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     DoDailyWork
         /// </summary>
-        /// <param name="userIdentifier">userIdentifier</param>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        /// <param name="userIdentifier">用户唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -220,7 +222,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     ReloadProduct
         /// </summary>
-        /// <param name="productIdentifier">productIdentifier</param>
+        /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -236,7 +238,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     ReloadUser
         /// </summary>
-        /// <param name="userIdentifier">userIdentifier</param>
+        /// <param name="userIdentifier">用户唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -266,7 +268,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     SetProductToOnSale
         /// </summary>
-        /// <param name="productIdentifier">productIdentifier</param>
+        /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -282,8 +284,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     SetProductToSoldOut
         /// </summary>
-        /// <param name="productIdentifier">productIdentifier</param>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -313,7 +314,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     SyncProduct
         /// </summary>
-        /// <param name="productIdentifier">productIdentifier</param>
+        /// <param name="productIdentifier">产品唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -329,7 +330,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     SyncUser
         /// </summary>
-        /// <param name="userIdentifier">userIdentifier</param>
+        /// <param name="userIdentifier">用户唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -345,6 +346,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     UnregisteredCellphone
         /// </summary>
+        /// <param name="cellphone">手机号</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>

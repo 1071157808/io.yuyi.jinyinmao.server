@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-10  11:31 PM
+// File             : CurrentProductController.cs
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-23  12:59 PM
+// Last Modified On : 2015-07-30  1:32 PM
 // ***********************************************************************
 // <copyright file="CurrentProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -53,7 +53,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     Content[string]: 协议内容
         /// </returns>
         /// <response code="200"></response>
-        /// <response code="401">CPGA:无此协议</response>
+        /// <response code="400">CPGA:无此协议</response>
         /// <response code="500"></response>
         [HttpGet, Route("Agreement/{productIdentifier:length(32)}-{agreementIndex:int}")]
         public async Task<IHttpActionResult> GetAgreement(string productIdentifier, int agreementIndex)
@@ -102,7 +102,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <summary>
         ///     获取金包银产品的已售金额
         /// </summary>
-        /// <remarks>该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}</remarks>
+        /// <remarks>
+        ///     该接口是实时接口，返回值为：{"Paid": "已售金额，以“分”为单位"}
+        /// </remarks>
         /// <response code="200"></response>
         /// <response code="404">无该产品</response>
         /// <response code="500"></response>

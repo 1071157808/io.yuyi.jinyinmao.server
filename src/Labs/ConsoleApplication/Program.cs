@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : Program.cs
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-20  12:55 PM
+// Last Modified On : 2015-07-29  11:33 AM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -108,8 +108,8 @@ namespace ConsoleApplication
 
         private static void Main(string[] args)
         {
-            string password = MD5Hash.ComputeMD5Hash("81cc6acb");
-            Console.WriteLine(password == "4094122b55ff30796dde034c4d145bd4");
+            var t = new DateTimeOffset(DateTime.UtcNow);
+            Console.WriteLine(t.ToString("R"));
         }
     }
 }

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : UserAuthController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  11:47 AM
+// Last Modified On : 2015-07-30  1:43 PM
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -149,7 +149,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     如果手机号已经注册过，则不能再用于注册
         /// </remarks>
         /// <param name="cellphone">
-        ///     手机号[Required]
+        ///     手机号
         /// </param>
         /// <response code="200"></response>
         /// <response code="400">UACC:手机号格式不正确</response>
@@ -175,7 +175,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     必须登录
         /// </remarks>
         /// <param name="request">
-        ///     请求
+        ///     检验支付密码请求
         /// </param>
         /// <response code="200"></response>
         /// <response code="400">
@@ -183,7 +183,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     UACPP1:请重置支付密码后再试
         ///     <br />
-        ///     UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     UACPP1:支付密码错误&lt;br&gt;错误5次会锁定支付功能
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
@@ -197,7 +197,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UACPP1:请重置支付密码后再试");
             }
 
-            return !result.Success ? this.BadRequest("UACPP1:支付密码错误，支付密码输入错误5次会锁定支付功能")
+            return !result.Success ? this.BadRequest("UACPP1:支付密码错误<br>错误5次会锁定支付功能")
                 : this.Ok();
         }
 

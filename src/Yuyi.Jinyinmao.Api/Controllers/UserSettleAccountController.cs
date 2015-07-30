@@ -62,7 +62,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     USAD1:请重置支付密码后再试
         ///     <br />
-        ///     USAD2:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     USAD2:支付密码错误&lt;br&gt;错误5次会锁定支付功能
         ///     <br />
         ///     USAD3:该银行卡不能用于易联支付
         /// </response>
@@ -80,7 +80,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest("USAD2:支付密码错误，支付密码输入错误5次会锁定支付功能");
+                return this.BadRequest("USAD2:支付密码错误<br>错误5次会锁定支付功能");
             }
 
             BankCardInfo bankCardInfo = await this.userInfoService.GetBankCardInfoAsync(this.CurrentUser.Id, request.BankCardNo);
@@ -201,7 +201,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     USAW5:请重置支付密码后再试
         ///     <br />
-        ///     USAW6:支付密码错误，支付密码输入错误5次会锁定支付功能
+        ///     USAW6:支付密码错误&lt;br&gt;错误5次会锁定支付功能
         ///     <br />
         ///     USAW7:取现失败
         /// </response>
@@ -219,7 +219,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest("USAW6:支付密码错误，支付密码输入错误5次会锁定支付功能");
+                return this.BadRequest("USAW6:支付密码错误<br>错误5次会锁定支付功能");
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
