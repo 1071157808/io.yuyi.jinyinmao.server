@@ -64,7 +64,7 @@ namespace DataTransfer
 
         private async static Task ProductTask()
         {
-            double count = await GetProductCount();
+            double count = await GetProductCountAsync();
             List<Task> list = new List<Task>();
             list = new List<Task>();
             for (int j = 0; j < Math.Ceiling(count / 10000); j++)
@@ -78,7 +78,7 @@ namespace DataTransfer
 
         private async static Task UserTask()
         {
-            double count = await GetProductCount();
+            double count = await GetUserCountAsync();
             List<Task> list = new List<Task>();
             list = new List<Task>();
             for (int j = 0; j < Math.Ceiling(count / 10000); j++)
@@ -557,7 +557,7 @@ namespace DataTransfer
 
                     foreach (var x in context.TransOrderInfo.Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId))
                     {
-                        var accountTransactionId = await GetSettleTransactionId(x.OrderId, x.ProductId);
+                        var accountTransactionId = await GetSettleTransactionIdAsync(x.OrderId, x.ProductId);
                         listOrder.Add(new Order
                         {
                             AccountTransactionId = accountTransactionId,
@@ -601,7 +601,7 @@ namespace DataTransfer
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = string.IsNullOrWhiteSpace(transUserInfo.EncryptedPaymentPassword) ? string.Empty : transUserInfo.EncryptedPaymentPassword,
                         InviteBy = userInfo.InviteBy,
-                        JBYAccount = await GetJBYAccountTransaction(transUserInfo.UserId),
+                        JBYAccount = await GetJBYAccountTransactionAsync(transUserInfo.UserId),
                         LoginNames = userInfo.LoginNames,
                         Orders = orders,
                         OutletCode = transUserInfo.OutletCode,
@@ -609,7 +609,7 @@ namespace DataTransfer
                         RealName = userInfo.RealName,
                         RegisterTime = transUserInfo.RegisterTime,
                         Salt = transUserInfo.Salt,
-                        SettleAccount = await GetSettleAccountTransaction(transUserInfo.UserId),
+                        SettleAccount = await GetSettleAccountTransactionAsync(transUserInfo.UserId),
                         UserId = userInfo.UserId,
                         Verified = userInfo.Verified,
                         VerifiedTime = transUserInfo.VerifiedTime
@@ -626,7 +626,7 @@ namespace DataTransfer
 
         #endregion UserTransfer
 
-        private async static Task<Guid> GetSettleTransactionId(string orderId, string productId)
+        private async static Task<Guid> GetSettleTransactionIdAsync(string orderId, string productId)
         {
             using (var context = new OldDBContext())
             {
@@ -666,7 +666,7 @@ namespace DataTransfer
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async static Task<Dictionary<Guid, JBYAccountTransaction>> GetJBYAccountTransaction(string userId)
+        public async static Task<Dictionary<Guid, JBYAccountTransaction>> GetJBYAccountTransactionAsync(string userId)
         {
             using (var context = new OldDBContext())
             {
@@ -680,7 +680,7 @@ namespace DataTransfer
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async static Task<Dictionary<Guid, SettleAccountTransaction>> GetSettleAccountTransaction(string userId)
+        public async static Task<Dictionary<Guid, SettleAccountTransaction>> GetSettleAccountTransactionAsync(string userId)
         {
             using (var context = new OldDBContext())
             {
@@ -691,7 +691,7 @@ namespace DataTransfer
 
         #endregion 通过UserId查询流水
 
-        private async static Task<int> GetUserCount()
+        private async static Task<int> GetUserCountAsync()
         {
             using (var context = new OldDBContext())
             {
@@ -699,7 +699,7 @@ namespace DataTransfer
             }
         }
 
-        private async static Task<int> GetProductCount()
+        private async static Task<int> GetProductCountAsync()
         {
             using (var context = new OldDBContext())
             {
