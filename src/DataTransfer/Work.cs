@@ -42,18 +42,17 @@ namespace DataTransfer
             JBYProductId = new Guid(StrJBYProductId);
         }
 
-    /// <summary>
-    ///     Runs this instance.
-    /// </summary>
-    public static async Task Run()
+        /// <summary>
+        ///     Runs this instance.
+        /// </summary>
+        public static async Task Run()
         {
             OrderArgs.Add("Comment", "由原订单数据迁移");
             UserArgs.Add("Comment", "由原用户数据迁移");
             ProductArgs.Add("Comment", "由原产品数据迁移");
-
             //get products
-            await ProductTask().ContinueWith(t => UserTask());
-
+            Task task = ProductTask().ContinueWith(t => UserTask());
+            await task;
             //ProductTransfer();
         }
 
@@ -101,7 +100,8 @@ namespace DataTransfer
                 Task taskProduct = ProductTransferAsync(j * 10000, 10000, j);
                 list.Add(taskProduct);
             }
-            Task.WaitAll(list.ToArray());
+            
+            await Task.WhenAll(list.ToArray());
         }
 
         private static async Task UserTask()
@@ -113,7 +113,8 @@ namespace DataTransfer
                 Task taskUser = UserTransferAsync(j * 10000, 10000, j);
                 list.Add(taskUser);
             }
-            Task.WaitAll(list.ToArray());
+
+            await Task.WhenAll(list.ToArray());
         }
 
         #region ProductTransfer
@@ -675,7 +676,7 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 var list = context.JsonJBYAccountTransaction.Where(x => x.UserId == userId).ToList();
-                return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId));
+                return await Task.Run(() => { return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId); });
             }
         }
 
