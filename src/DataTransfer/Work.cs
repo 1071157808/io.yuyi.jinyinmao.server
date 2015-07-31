@@ -34,12 +34,14 @@ namespace DataTransfer
         private static readonly Guid JBYProductId;
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
-        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
+        private static readonly string StrDefaultJBYProductId;
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
         static Work()
         {
-            StrDefaultJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId").IsNotNullOrEmpty() ? ConfigurationManager.AppSettings.Get("StrJBYProductId") : "5e35201f315e41d4b11f014d6c01feb8";
+            StrDefaultJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId").IsNotNullOrEmpty()
+                ? ConfigurationManager.AppSettings.Get("StrJBYProductId")
+                : "5e35201f315e41d4b11f014d6c01feb8";
             JBYProductId = Guid.ParseExact(StrDefaultJBYProductId, "N");
         }
 
@@ -199,141 +201,122 @@ namespace DataTransfer
 
                     #region orders
 
-                    List<TransOrderInfo> oldOrderList = await context.TransOrderInfo.AsNoTracking().Where(o => o.ProductId == oldProduct.ProductId).ToListAsync();
-                    List<TransJbyOrderInfo> oldJbyOrderList = await context.TransJbyOrderInfo.AsNoTracking().ToListAsync();
-
                     Dictionary<Guid, OrderInfo> orders = new Dictionary<Guid, OrderInfo>();
-
-                    foreach (var oldOrder in oldOrderList)
+                    if (product.ProductId == JBYProductId)
                     {
-                        TransUserInfo oldUser = await context.TransUserInfo.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == oldOrder.UserId);
-
-                        // TODO: oldUser null 值判断
-                        if (oldUser == null) continue;
-
-                        UserInfo userInfo = new UserInfo
+                        List<TransJbyOrderInfo> oldJbyOrderList = await context.TransJbyOrderInfo.AsNoTracking().ToListAsync();
+                        foreach (TransJbyOrderInfo oldOrder in oldJbyOrderList)
                         {
-                            Args = UserArgs,
-                            Balance = -1,
-                            BankCardsCount = oldUser.BankCardsCount.GetValueOrDefault(),
-                            Cellphone = oldUser.Cellphone,
-                            ClientType = oldUser.ClientType,
-                            Closed = false,
-                            ContractId = oldUser.ContractId,
-                            Credential = Utils.GetCredential(oldUser.Credential),
-                            CredentialNo = oldUser.CredentialNo,
-                            Crediting = -1,
-                            Debiting = 0,
-                            HasSetPassword = oldUser.HasSetPassword > 0,
-                            HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
-                            InvestingInterest = -1,
-                            InvestingPrincipal = -1,
-                            InviteBy = oldUser.InviteBy,
-                            JBYAccrualAmount = -1,
-                            JBYLastInterest = -1,
-                            JBYTotalAmount = -1,
-                            JBYTotalInterest = -1,
-                            JBYTotalPricipal = -1,
-                            JBYWithdrawalableAmount = -1,
-                            LoginNames = new List<string> { oldUser.LoginNames },
-                            MonthWithdrawalCount = oldUser.MonthWithdrawalCount,
-                            OutletCode = Utils.GetOutletCode(oldUser.OutletCode),
-                            PasswordErrorCount = oldUser.PasswordErrorCount,
-                            PaymentPasswordErrorCount = oldUser.PaymentPasswordErrorCount.GetValueOrDefault(),
-                            RealName = oldUser.RealName,
-                            RegisterTime = oldUser.RegisterTime,
-                            TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
-                            TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
-                            TotalInterest = oldUser.TotalInterest,
-                            TotalPrincipal = oldUser.TotalPrincipal,
-                            UserId = Guid.ParseExact(oldUser.UserId, "N"),
-                            Verified = oldUser.Verified.GetValueOrDefault(),
-                            VerifiedTime = oldUser.VerifiedTime,
-                            WithdrawalableAmount = oldUser.WithdrawalableAmount
-                        };
+                            UserInfo userInfo = await CreateUserInfoAsync(oldOrder.UserId);
+                            if (userInfo == null) continue;
 
-                        //购买transaction
-                        Guid transactionId = Guid.NewGuid();
+                            Guid transactionId = Guid.NewGuid();
 
-                        OrderInfo orderInfo = new OrderInfo
-                        {
-                            AccountTransactionId = transactionId,
-                            Args = OrderArgs,
-                            Cellphone = oldOrder.Cellphone,
-                            ExtraInterest = (long)(oldOrder.ExtraInterest * 100),
-                            ExtraInterestRecords = new List<ExtraInterestRecord>(),
-                            ExtraYield = oldOrder.ExtraYield * 100,
-                            Interest = (long)(oldOrder.Interest * 100),
-                            IsRepaid = oldOrder.IsRepaid,
-                            OrderId = Guid.ParseExact(oldOrder.OrderId, "N"),
-                            OrderNo = oldOrder.OrderNo,
-                            OrderTime = oldOrder.OrderTime,
-                            Principal = (long)(oldOrder.Principal * 100),
-                            ProductCategory = product.ProductCategory,
-                            ProductId = product.ProductId,
-                            ProductSnapshot = new RegularProductInfo
+                            OrderInfo orderInfo = new OrderInfo
                             {
-                                Args = product.Args,
-                                BankName = product.BankName,
-                                Drawee = product.Drawee,
-                                DraweeInfo = product.DraweeInfo,
-                                EndorseImageLink = product.EndorseImageLink,
-                                EndSellTime = product.EndSellTime,
-                                EnterpriseInfo = product.EnterpriseInfo,
-                                EnterpriseLicense = product.EnterpriseInfo,
-                                EnterpriseName = product.EnterpriseName,
-                                FinancingSumAmount = product.FinancingSumAmount,
-                                IssueNo = product.IssueNo,
-                                IssueTime = product.IssueTime,
-                                Period = product.Period,
-                                PledgeNo = product.PledgeNo,
-                                ProductCategory = product.ProductCategory,
-                                ProductName = product.ProductName,
-                                ProductNo = product.ProductNo,
-                                ProductId = product.ProductId,
-                                Repaid = product.Repaid,
-                                RepaymentDeadline = product.RepaymentDeadline,
-                                RiskManagement = product.RiskManagement,
-                                RiskManagementInfo = product.RiskManagementInfo,
-                                RiskManagementMode = product.RiskManagementMode,
-                                SettleDate = product.SettleDate,
-                                SoldOut = product.SoldOut,
-                                SoldOutTime = product.SoldOutTime,
-                                StartSellTime = product.StartSellTime,
-                                UnitPrice = product.UnitPrice,
-                                Usage = product.Usage,
-                                ValueDateMode = 0,
-                                Yield = product.Yield
-                            },
-                            RepaidTime = null,
-                            ResultCode = 10000,
-                            ResultTime = oldOrder.ResultTime,
-                            SettleDate = Utils.GetDate(oldOrder.SettleDate),
-                            TransDesc = "充值成功，购买理财产品",
-                            UserId = Guid.ParseExact(oldOrder.UserId, "N"),
-                            UserInfo = userInfo,
-                            ValueDate = Utils.GetDate(oldOrder.ValueDate),
-                            Yield = (int)(oldOrder.Yield * 100)
-                        };
-                        if (product.ProductId == JBYProductId)
-                        {
-                            await GenerateJbyTransactionAsync(new List<TranscationState>
+                                IsRepaid = oldOrder.IsRepaid.GetValueOrDefault(),
+                                Principal = (long)(oldOrder.Principal * 100),
+                                OrderTime = oldOrder.OrderTime,
+                                OrderId = Guid.ParseExact(oldOrder.OrderId, "N"),
+                                UserId = Guid.ParseExact(oldOrder.UserId, "N")
+                            };
+
+                            if (oldOrder.Type == 10)
                             {
-                                TranscationState.ChongZhi, TranscationState.ToJBY, TranscationState.RecieveByQianBao,
-                                TranscationState.ToQianBao, TranscationState.RecieveByJBY, TranscationState.QuXian
-                            }, orderInfo, userInfo);
+                                await GenerateJbyTransactionAsync(new List<TranscationState>
+                                {
+                                    TranscationState.ChongZhi,
+                                    TranscationState.ToJBY,
+                                    TranscationState.RecieveByQianBao
+                                }, orderInfo, userInfo);
+                            }
+                            else
+                            {
+                                await GenerateJbyTransactionAsync(new List<TranscationState>
+                                {
+                                    TranscationState.ToQianBao,
+                                    TranscationState.RecieveByJBY,
+                                    TranscationState.QuXian
+                                }, orderInfo, userInfo);
+                            }
                         }
-                        else
-                        {
-                            await GenerateRegularTransactionAsync(new List<TranscationState>
-                            {
-                                TranscationState.ChongZhi, TranscationState.GouMai,
-                                TranscationState.BenJin, TranscationState.LiXi, TranscationState.QuXian
-                            }, orderInfo, userInfo);
-                        }
-                        orders.Add(orderInfo.OrderId, orderInfo);
                     }
+                    else
+                    {
+                        List<TransOrderInfo> oldOrderList = await context.TransOrderInfo.AsNoTracking().Where(o => o.ProductId == oldProduct.ProductId).ToListAsync();
+                        foreach (var oldOrder in oldOrderList)
+                        {
+                            UserInfo userInfo = await CreateUserInfoAsync(oldOrder.UserId);
+                            if (userInfo == null) continue;
 
+                            //购买transaction
+                            Guid transactionId = Guid.NewGuid();
+
+                            OrderInfo orderInfo = new OrderInfo
+                            {
+                                AccountTransactionId = transactionId,
+                                Args = OrderArgs,
+                                Cellphone = oldOrder.Cellphone,
+                                ExtraInterest = (long)(oldOrder.ExtraInterest * 100),
+                                ExtraInterestRecords = new List<ExtraInterestRecord>(),
+                                ExtraYield = oldOrder.ExtraYield * 100,
+                                Interest = (long)(oldOrder.Interest * 100),
+                                IsRepaid = oldOrder.IsRepaid,
+                                OrderId = Guid.ParseExact(oldOrder.OrderId, "N"),
+                                OrderNo = oldOrder.OrderNo,
+                                OrderTime = oldOrder.OrderTime,
+                                Principal = (long)(oldOrder.Principal * 100),
+                                ProductCategory = product.ProductCategory,
+                                ProductId = product.ProductId,
+                                ProductSnapshot = new RegularProductInfo
+                                {
+                                    Args = product.Args,
+                                    BankName = product.BankName,
+                                    Drawee = product.Drawee,
+                                    DraweeInfo = product.DraweeInfo,
+                                    EndorseImageLink = product.EndorseImageLink,
+                                    EndSellTime = product.EndSellTime,
+                                    EnterpriseInfo = product.EnterpriseInfo,
+                                    EnterpriseLicense = product.EnterpriseInfo,
+                                    EnterpriseName = product.EnterpriseName,
+                                    FinancingSumAmount = product.FinancingSumAmount,
+                                    IssueNo = product.IssueNo,
+                                    IssueTime = product.IssueTime,
+                                    Period = product.Period,
+                                    PledgeNo = product.PledgeNo,
+                                    ProductCategory = product.ProductCategory,
+                                    ProductName = product.ProductName,
+                                    ProductNo = product.ProductNo,
+                                    ProductId = product.ProductId,
+                                    Repaid = product.Repaid,
+                                    RepaymentDeadline = product.RepaymentDeadline,
+                                    RiskManagement = product.RiskManagement,
+                                    RiskManagementInfo = product.RiskManagementInfo,
+                                    RiskManagementMode = product.RiskManagementMode,
+                                    SettleDate = product.SettleDate,
+                                    SoldOut = product.SoldOut,
+                                    SoldOutTime = product.SoldOutTime,
+                                    StartSellTime = product.StartSellTime,
+                                    UnitPrice = product.UnitPrice,
+                                    Usage = product.Usage,
+                                    ValueDateMode = 0,
+                                    Yield = product.Yield
+                                },
+                                RepaidTime = null,
+                                ResultCode = 10000,
+                                ResultTime = oldOrder.ResultTime,
+                                SettleDate = Utils.GetDate(oldOrder.SettleDate),
+                                TransDesc = "充值成功，购买理财产品",
+                                UserId = Guid.ParseExact(oldOrder.UserId, "N"),
+                                UserInfo = userInfo,
+                                ValueDate = Utils.GetDate(oldOrder.ValueDate),
+                                Yield = (int)(oldOrder.Yield * 100)
+                            };
+                            await GenerateRegularTransactionAsync(new List<TranscationState>
+                            { TranscationState.ChongZhi, TranscationState.GouMai, TranscationState.BenJin, TranscationState.LiXi, TranscationState.QuXian }, orderInfo, userInfo);
+                            orders.Add(orderInfo.OrderId, orderInfo);
+                        }
+                    }
                     #endregion orders
                     product.Orders = product.ProductId == JBYProductId ? new Dictionary<Guid, OrderInfo>() : orders;
                     context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = product.ProductId });
@@ -509,10 +492,11 @@ namespace DataTransfer
                 Guid id = Guid.NewGuid();
                 foreach (TranscationState type in listType)
                 {
-                    TransSettleAccountTransaction oldTransaction = await context.TransSettleAccountTransaction.AsNoTracking().FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
+                    TransSettleAccountTransaction oldTransaction =
+                        await
+                            context.TransSettleAccountTransaction.AsNoTracking()
+                                .FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
 
-                    // TODO: oldTransaction null 值判断
-                    if (oldTransaction == null) return;
                     //pre deal
                     JBYAccountTransaction transaction = new JBYAccountTransaction
                     {
@@ -524,7 +508,7 @@ namespace DataTransfer
                         //OrderId = order.OrderId,
                         PredeterminedResultDate = null,
                         ResultCode = 1,
-                        ResultTime = oldTransaction.CallbackTime ?? order.OrderTime,
+                        ResultTime = (oldTransaction?.CallbackTime != null) ? oldTransaction.CallbackTime : order.OrderTime,
                         //SequenceNo = order.OrderNo,
                         //SettleAccountTransactionId = null,
                         //Trade
@@ -605,9 +589,10 @@ namespace DataTransfer
             {
                 foreach (TranscationState type in listType)
                 {
-                    TransSettleAccountTransaction oldTransaction = await context.TransSettleAccountTransaction.AsNoTracking()
-                        .FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
-                    if (oldTransaction == null) return;
+                    TransSettleAccountTransaction oldTransaction =
+                        await context.TransSettleAccountTransaction.AsNoTracking()
+                            .FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
+
                     //pre deal
                     SettleAccountTransaction transaction = new SettleAccountTransaction
                     {
@@ -617,7 +602,7 @@ namespace DataTransfer
                         //ChannelCode
                         OrderId = order.OrderId,
                         ResultCode = 1,
-                        ResultTime = oldTransaction.CallbackTime ?? order.OrderTime,
+                        ResultTime = (oldTransaction?.CallbackTime != null) ? oldTransaction.CallbackTime : order.OrderTime,
                         SequenceNo = order.OrderNo,
                         //Trade
                         //TradeCode
@@ -725,5 +710,55 @@ namespace DataTransfer
         #endregion 通过UserId查询流水
 
 
+        private async static Task<UserInfo> CreateUserInfoAsync(string strUserId)
+        {
+            using (OldDBContext context = new OldDBContext())
+            {
+                TransUserInfo oldUser = await context.TransUserInfo.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == strUserId);
+                if (oldUser == null) return null;
+
+                UserInfo userInfo = new UserInfo
+                {
+                    Args = UserArgs,
+                    Balance = -1,
+                    BankCardsCount = oldUser.BankCardsCount.GetValueOrDefault(),
+                    Cellphone = oldUser.Cellphone,
+                    ClientType = oldUser.ClientType,
+                    Closed = false,
+                    ContractId = oldUser.ContractId,
+                    Credential = Utils.GetCredential(oldUser.Credential),
+                    CredentialNo = oldUser.CredentialNo,
+                    Crediting = -1,
+                    Debiting = 0,
+                    HasSetPassword = oldUser.HasSetPassword > 0,
+                    HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
+                    InvestingInterest = -1,
+                    InvestingPrincipal = -1,
+                    InviteBy = oldUser.InviteBy,
+                    JBYAccrualAmount = -1,
+                    JBYLastInterest = -1,
+                    JBYTotalAmount = -1,
+                    JBYTotalInterest = -1,
+                    JBYTotalPricipal = -1,
+                    JBYWithdrawalableAmount = -1,
+                    LoginNames = new List<string> { oldUser.LoginNames },
+                    MonthWithdrawalCount = oldUser.MonthWithdrawalCount,
+                    OutletCode = Utils.GetOutletCode(oldUser.OutletCode),
+                    PasswordErrorCount = oldUser.PasswordErrorCount,
+                    PaymentPasswordErrorCount = oldUser.PaymentPasswordErrorCount.GetValueOrDefault(),
+                    RealName = oldUser.RealName,
+                    RegisterTime = oldUser.RegisterTime,
+                    TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
+                    TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
+                    TotalInterest = oldUser.TotalInterest,
+                    TotalPrincipal = oldUser.TotalPrincipal,
+                    UserId = Guid.ParseExact(oldUser.UserId, "N"),
+                    Verified = oldUser.Verified.GetValueOrDefault(),
+                    VerifiedTime = oldUser.VerifiedTime,
+                    WithdrawalableAmount = oldUser.WithdrawalableAmount
+                };
+                return userInfo;
+            }
+        }
     }
 }
