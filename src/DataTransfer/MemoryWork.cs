@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,11 +38,8 @@ namespace DataTransfer
 
         public async static Task Run()
         {
-<<<<<<< HEAD
-=======
-            var p = await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
 
->>>>>>> 9c4e87b661f54ba3c479ac65a0d27fc2b9851619
+            var p = await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
             List<RegularProductMigrationDto> productList = await GetProductsAsync();
             foreach (var item in productList)
             {
@@ -61,8 +59,8 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var list = context.JsonProduct.Select(item => item.Data).Take(10).ToList();
-                return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<RegularProductMigrationDto>(item)).ToList());
+                List<string> list = await context.JsonProduct.AsNoTracking().Select(item => item.Data).ToListAsync();
+                return list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x)).ToList();
             }
         }
 
@@ -70,8 +68,8 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                var list = context.JsonUser.Select(item => item.Data).ToList();
-                return await Task.Run(() => list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)).ToList());
+                List<string> list = await context.JsonUser.AsNoTracking().Select(x => x.Data).ToListAsync();
+                return list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)).ToList();
             }
         }
     }
