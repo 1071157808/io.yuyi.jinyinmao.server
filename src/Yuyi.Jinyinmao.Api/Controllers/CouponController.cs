@@ -4,7 +4,7 @@
 // Created          : 2015-07-26  5:57 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  1:47 AM
+// Last Modified On : 2015-07-31  12:54 PM
 // ***********************************************************************
 // <copyright file="CouponController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -72,6 +72,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> GetCoupons()
         {
             List<CouponInfo> coupons = await this.couponService.GetCouponsAsync(this.CurrentUser.Id);
+
             return this.Ok(coupons.Select(c => c.ToResponse()).ToList());
         }
 

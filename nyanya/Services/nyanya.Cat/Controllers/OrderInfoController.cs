@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : nyanya
-// Author           : Siqi Lu
+// File             : OrderInfoController.cs
 // Created          : 2015-05-18  2:54 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  4:57 PM
+// Last Modified On : 2015-07-31  2:19 PM
 // ***********************************************************************
 // <copyright file="OrderInfoController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -290,7 +290,7 @@ namespace nyanya.Cat.Controllers
         {
             string content = await this.orderInfoService.GetConsignmentAgreementAsync(orderIdentifier);
 
-            if (StringEx.IsNullOrWhiteSpace(content))
+            if (content.IsNullOrWhiteSpace())
             {
                 return this.BadRequest("订单不存在");
             }
@@ -310,7 +310,7 @@ namespace nyanya.Cat.Controllers
         {
             string content = await this.orderInfoService.GetPledgeAgreementAsync(orderIdentifier);
 
-            if (StringEx.IsNullOrWhiteSpace(content))
+            if (content.IsNullOrWhiteSpace())
             {
                 return this.BadRequest("订单不存在");
             }
@@ -553,6 +553,8 @@ namespace nyanya.Cat.Controllers
         [HttpPost, Route("RedeemPrincipal"), TokenAuthorize, EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2), ResponseType(typeof(RedeemBillResponse))]
         public async Task<IHttpActionResult> RedeemPrincipal(RedeemPrincipalRequest request)
         {
+            return this.BadRequest("金银猫正在努力升级，暂时无法提现。<br>8月3日（周一）9：00就可以申请见到你的毛爷爷了哦");
+
             if (!this.IsInt(request.RedeemPrincipal.ToString()))
             {
                 return this.BadRequest("提现金额不能有小数");

@@ -98,7 +98,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MemoryWork.cs" />
     <Compile Include="Models\Agreements.cs" />
     <Compile Include="Models\BankAcceptanceProducts.cs" />
     <Compile Include="Models\EndorseLinks.cs" />

@@ -204,6 +204,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
+        /// Gets the settling order infos asynchronous.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        /// <returns>Task&lt;List&lt;OrderInfo&gt;&gt;.</returns>
+        Task<List<OrderInfo>> GetSettlingOrderInfosAsync(int count);
+
+        /// <summary>
         ///     Gets the user information asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>

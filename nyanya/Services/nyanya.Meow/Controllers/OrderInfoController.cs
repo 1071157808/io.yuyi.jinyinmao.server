@@ -1,6 +1,15 @@
-// FileInformation: nyanya/nyanya.Meow/OrderInfoController.cs
-// CreatedTime: 2014/08/29   2:26 PM
-// LastUpdatedTime: 2014/09/01   5:27 PM
+// ***********************************************************************
+// Project          : nyanya
+// File             : OrderInfoController.cs
+// Created          : 2015-05-18  2:55 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-31  2:18 PM
+// ***********************************************************************
+// <copyright file="OrderInfoController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +25,6 @@ using Cat.Domain.Orders.ReadModels;
 using Cat.Domain.Orders.Services.DTO;
 using Cat.Domain.Orders.Services.Interfaces;
 using Cat.Domain.Products.Models;
-using Cat.Domain.Products.Services.DTO;
 using Cat.Domain.Products.Services.Interfaces;
 using Cat.Domain.Users.ReadModels;
 using Cat.Domain.Users.Services.DTO;
@@ -71,12 +79,12 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// 获取用户【500元本金活动】状态
+        ///     获取用户【500元本金活动】状态
         /// </summary>
         /// <returns>
-        /// Status：状态(10=>不符合，20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
-        /// ExtraInterest：额外收益
-        /// MiniCash: 起投金额
+        ///     Status：状态(10=>不符合，20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
+        ///     ExtraInterest：额外收益
+        ///     MiniCash: 起投金额
         /// </returns>
         [HttpGet, Route("GetActivityStatus1000")]
         [TokenAuthorize]
@@ -91,7 +99,7 @@ namespace nyanya.Meow.Controllers
                 return this.BadRequest("无法获取用户信息");
             }
 
-            return this.Ok(await GetUserActivityStatu_1000(userInfo));
+            return this.Ok(await this.GetUserActivityStatu_1000(userInfo));
         }
 
         /// <summary>
@@ -294,10 +302,10 @@ namespace nyanya.Meow.Controllers
         ///     用户资产包提现所需参数
         /// </summary>
         /// <returns>
-        /// RedeemCount：用户当日已提现次数
-        /// TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
-        /// InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
-        /// AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
+        ///     RedeemCount：用户当日已提现次数
+        ///     TodayIsInvesting：今天是否有投资金额 10 => 是 20 => 否
+        ///     InvestingAndUnRedeemPrincipal：今天投资金额和还未处理的提现金额的总和
+        ///     AvailableRedeemPrincipal（当天实际可以提现的本金）  = 当前正在投资总额 - 今天投资金额和还未处理的提现金额的总和）
         /// </returns>
         [HttpGet, Route("ZCB/RedeemParameter")]
         [TokenAuthorize]
@@ -399,28 +407,28 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// 资产包认购/提现流程列表
+        ///     资产包认购/提现流程列表
         /// </summary>
         /// <param name="pageIndex">pageIndex(int &gt;= 1): 页码</param>
         /// <returns>
-        /// HasNextPage: 是否有下一页
-        /// PageIndex: 页码
-        /// PageSize: 一页节点数量
-        /// TotalCount: 所有的节点数量
-        /// TotalPageCount: 总页数
-        /// ZCBBills：节点列表
-        /// -- BillIdentifier[string]：流水标示号
-        /// -- ProductIdentifier[string]：项目唯一标识
-        /// -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
-        /// -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
-        /// -- Principal[decimal]：交易金额
-        /// -- BankCardNo[string]：银行卡号
-        /// -- BankName[string]：银行名称
-        /// -- BankCardCity[string]：开户行城市全称，如 上海|上海
-        /// -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
-        /// -- Remark[string]：流水信息描述
-        /// -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
-        /// -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
+        ///     HasNextPage: 是否有下一页
+        ///     PageIndex: 页码
+        ///     PageSize: 一页节点数量
+        ///     TotalCount: 所有的节点数量
+        ///     TotalPageCount: 总页数
+        ///     ZCBBills：节点列表
+        ///     -- BillIdentifier[string]：流水标示号
+        ///     -- ProductIdentifier[string]：项目唯一标识
+        ///     -- CreateTime[yyyy-MM-ddTHH:mm:ss]：创建时间
+        ///     -- Type[int]：交易类型 10 =&gt; 认购 20 =&gt; 提现
+        ///     -- Principal[decimal]：交易金额
+        ///     -- BankCardNo[string]：银行卡号
+        ///     -- BankName[string]：银行名称
+        ///     -- BankCardCity[string]：开户行城市全称，如 上海|上海
+        ///     -- Status[int]：流水状态 10 =&gt; 付款中 20 =&gt; 认购成功 30 =&gt; 认购失败 40 =&gt; 取现已申请 50 =&gt; 取现成功 60 =&gt; 提现失败
+        ///     -- Remark[string]：流水信息描述
+        ///     -- DalayDate[yyyy-MM-ddTHH:mm:ss]：预计提现到账时间
+        ///     -- AgreementName[string]：协议名称（Status=20或Status=50的时候，该变量才会有值）
         /// </returns>
         [HttpGet, Route("ZCB/ZCBBill"), Route("ZCB/ZCBBill/{pageIndex:min(1):int=1}")]
         [RangeFilter("pageIndex", 1)]
@@ -433,7 +441,7 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// 资产包订单用户总览
+        ///     资产包订单用户总览
         /// </summary>
         /// ProductIdentifier[string]: 产品唯一标示符
         /// ProductNo[string]: 产品编号
@@ -480,17 +488,17 @@ namespace nyanya.Meow.Controllers
         /// <param name="startTime">startTime(yyyy-MM-dd)：开始时间</param>
         /// <param name="endTime">endTime(yyyy-MM-dd)：结束时间</param>
         /// <returns>
-        /// HasNextPage：是否有下一页
-        /// PageIndex：页码
-        /// PageSize：一页节点数量
-        /// TotalCount：所有的节点数量
-        /// TotalPageCount：总页数
-        /// ZCBUserBills：节点列表
-        /// -- BillDate[yyyy-MM-dd]：日期
-        /// -- Principal[decimal]：投资总额
-        /// -- Yield[decimal]：收益率
-        /// -- Interest[decimal]：收益
-        /// -- Remark[string]：备注
+        ///     HasNextPage：是否有下一页
+        ///     PageIndex：页码
+        ///     PageSize：一页节点数量
+        ///     TotalCount：所有的节点数量
+        ///     TotalPageCount：总页数
+        ///     ZCBUserBills：节点列表
+        ///     -- BillDate[yyyy-MM-dd]：日期
+        ///     -- Principal[decimal]：投资总额
+        ///     -- Yield[decimal]：收益率
+        ///     -- Interest[decimal]：收益
+        ///     -- Remark[string]：备注
         /// </returns>
         [HttpGet, Route("ZCB/ZCBUserBill"), Route("ZCB/ZCBUserBill/{pageIndex:min(1):int=1}")]
         [RangeFilter("pageIndex", 1)]
@@ -507,27 +515,27 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// 赎回本金
+        ///     赎回本金
         /// </summary>
         /// <param name="request">
-        /// ProductNo[string]：产品编号
-        /// BankCardNo[string]：银行卡号
-        /// RedeemPrincipal[decimal]：赎回本金
-        /// PaymentPassword[string]：支付密码
+        ///     ProductNo[string]：产品编号
+        ///     BankCardNo[string]：银行卡号
+        ///     RedeemPrincipal[decimal]：赎回本金
+        ///     PaymentPassword[string]：支付密码
         /// </param>
         /// <returns>
-        /// @{h2@} HttpStatusCode:200 @{/h2@}
-        /// No Content
-        /// @{h2@} HttpStatusCode:400 @{/h2@}
-        /// "提现金额不能有小数"
-        /// "为保障您的资金账户安全，请重置支付密码后再试"
-        /// "支付密码错误，您还有{0}次机会"
-        /// "订单不存在"
-        /// "购买当日不能取款"
-        /// "当日取款次数已满2次"
-        /// "输入金额大于可取回金额"
-        /// "输入金额大于单次取款限额"
-        /// "输入金额大于项目可取限额"
+        ///     @{h2@} HttpStatusCode:200 @{/h2@}
+        ///     No Content
+        ///     @{h2@} HttpStatusCode:400 @{/h2@}
+        ///     "提现金额不能有小数"
+        ///     "为保障您的资金账户安全，请重置支付密码后再试"
+        ///     "支付密码错误，您还有{0}次机会"
+        ///     "订单不存在"
+        ///     "购买当日不能取款"
+        ///     "当日取款次数已满2次"
+        ///     "输入金额大于可取回金额"
+        ///     "输入金额大于单次取款限额"
+        ///     "输入金额大于项目可取限额"
         /// </returns>
         [HttpPost, Route("RedeemPrincipal")]
         [TokenAuthorize]
@@ -535,7 +543,9 @@ namespace nyanya.Meow.Controllers
         [ResponseType(typeof(RedeemBillResponse))]
         public async Task<IHttpActionResult> RedeemPrincipal(RedeemPrincipalRequest request)
         {
-            if (!IsInt(request.RedeemPrincipal.ToString()))
+            return this.BadRequest("金银猫正在努力升级，暂时无法提现。<br>8月3日（周一）9：00就可以申请见到你的毛爷爷了哦");
+
+            if (!this.IsInt(request.RedeemPrincipal.ToString()))
             {
                 return this.BadRequest("提现金额不能有小数");
             }
@@ -560,9 +570,9 @@ namespace nyanya.Meow.Controllers
             {
                 return this.BadRequest("当日取款次数已满2次");
             }
-            Product productResult = await productService.GetProductByNo(request.ProductNo);
+            Product productResult = await this.productService.GetProductByNo(request.ProductNo);
             if (productResult == null || productResult.ProductIdentifier == "" ||
-                    productResult.ProductType != ProductType.ZCBAcceptance)
+                productResult.ProductType != ProductType.ZCBAcceptance)
             {
                 return this.BadRequest("产品错误");
             }
@@ -601,7 +611,7 @@ namespace nyanya.Meow.Controllers
                 {
                     return this.BadRequest("请稍后再试");
                 }
-                return this.Ok(new RedeemBillResponse()
+                return this.Ok(new RedeemBillResponse
                 {
                     RedeemDays = redeemDays + 1
                 });
@@ -613,7 +623,7 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// Builds the redeem principal command.
+        ///     Builds the redeem principal command.
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="info">The information.</param>
@@ -631,13 +641,13 @@ namespace nyanya.Meow.Controllers
         }
 
         /// <summary>
-        /// 获取用户【500元本金活动】状态
+        ///     获取用户【500元本金活动】状态
         /// </summary>
         /// <param name="userInfo">用户信息</param>
         /// <returns>
-        /// Status：状态(20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
-        /// ExtraInterest：额外收益
-        /// MiniCash: 起投金额
+        ///     Status：状态(20=>符合但没有下单，30=>符合且已经下单，40=>已过期)
+        ///     ExtraInterest：额外收益
+        ///     MiniCash: 起投金额
         /// </returns>
         private async Task<UserActivityResponse> GetUserActivityStatu_1000(UserInfo userInfo)
         {

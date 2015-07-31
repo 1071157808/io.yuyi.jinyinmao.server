@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : UserService.cs
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-24  4:45 PM
+// Last Modified On : 2015-07-31  12:33 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -382,6 +382,18 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = UserFactory.GetGrain(userId);
             return user.GetSettleAccountTransactionInfosAsync(pageIndex, pageSize);
+        }
+
+        /// <summary>
+        ///     Gets the settling order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>Task&lt;List&lt;OrderInfo&gt;&gt;.</returns>
+        public Task<List<OrderInfo>> GetSettlingOrderInfosAsync(Guid userId, int count)
+        {
+            IUser user = UserFactory.GetGrain(userId);
+            return user.GetSettlingOrderInfosAsync(count);
         }
 
         /// <summary>
