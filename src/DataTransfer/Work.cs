@@ -170,7 +170,7 @@ namespace DataTransfer
                         EndorseImageLink = oldProduct.EndorseImageLink,
                         EndSellTime = oldProduct.EndSellTime,
                         EnterpriseInfo = oldProduct.EnterpriseInfo,
-                        EnterpriseLicense = oldProduct.EnterpriseInfo,
+                        EnterpriseLicense = oldProduct.EnterpriseLicense,
                         EnterpriseName = oldProduct.EnterpriseName,
                         FinancingSumAmount = (long)(oldProduct.FinancingSumAmount * oldProduct.UnitPrice * 100),
                         IssueNo = oldProduct.IssueNo,
