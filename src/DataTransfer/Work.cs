@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Work.cs
-// Created          : 2015-07-30  7:51 PM
+// Created          : 2015-07-31  2:27 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  8:29 PM
+// Last Modified On : 2015-07-31  2:36 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
