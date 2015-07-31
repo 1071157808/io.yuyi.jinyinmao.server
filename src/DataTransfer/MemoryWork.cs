@@ -37,6 +37,11 @@ namespace DataTransfer
 
         public async static Task Run()
         {
+<<<<<<< HEAD
+=======
+            var p = await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
+
+>>>>>>> 9c4e87b661f54ba3c479ac65a0d27fc2b9851619
             List<RegularProductMigrationDto> productList = await GetProductsAsync();
             foreach (var item in productList)
             {

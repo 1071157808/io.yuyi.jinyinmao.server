@@ -27,7 +27,7 @@ namespace DataTransfer
 
         public static async Task<Dictionary<string, BankCard>> GetBankCards(string userId)
         {
-            Guid id = new Guid(userId);
+            Guid id = Guid.ParseExact(userId, "N");
             using (var context = new OldDBContext())
             {
                 Dictionary<string, BankCard> bankCards = (await context.TransBankCard.AsNoTracking().Where(x => x.UserId == userId).ToListAsync()).Select(b => new BankCard

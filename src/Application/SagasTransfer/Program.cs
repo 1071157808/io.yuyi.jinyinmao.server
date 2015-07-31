@@ -109,7 +109,7 @@ namespace SagasTransfer
             //    Console.WriteLine("error");
             //    new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir, "/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
             //}
-            //GetData();
+            GetData().Wait();
             Console.ReadKey();
         }
 
