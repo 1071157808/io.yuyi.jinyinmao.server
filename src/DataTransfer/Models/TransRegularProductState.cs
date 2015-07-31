@@ -50,7 +50,7 @@ namespace DataTransfer.Models
         [StringLength(80)]
         public string EnterpriseLicense { get; set; }
 
-        [StringLength(80)]
+        [StringLength(300)]
         public string EnterpriseName { get; set; }
 
         [Key]
@@ -134,7 +134,7 @@ namespace DataTransfer.Models
         [Column(Order = 18)]
         public decimal UnitPrice { get; set; }
 
-        [StringLength(200)]
+        [StringLength(1000)]
         public string Usage { get; set; }
 
         [Column(TypeName = "datetime2")]

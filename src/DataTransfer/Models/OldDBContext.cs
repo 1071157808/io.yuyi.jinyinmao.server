@@ -8,7 +8,7 @@ namespace DataTransfer.Models
     public partial class OldDBContext : DbContext
     {
         public OldDBContext()
-            : base("name=OldDBContext1")
+            : base("name=OldDBContext")
         {
         }
 
@@ -21,7 +21,6 @@ namespace DataTransfer.Models
         public virtual DbSet<TransBankCard> TransBankCard { get; set; }
         public virtual DbSet<TransJbyOrderInfo> TransJbyOrderInfo { get; set; }
         public virtual DbSet<TransOrderInfo> TransOrderInfo { get; set; }
-        public virtual DbSet<TransRegularProductInfo> TransRegularProductInfo { get; set; }
         public virtual DbSet<TransRegularProductState> TransRegularProductState { get; set; }
         public virtual DbSet<TransSettleAccountTransaction> TransSettleAccountTransaction { get; set; }
         public virtual DbSet<TransUserInfo> TransUserInfo { get; set; }
@@ -117,26 +116,6 @@ namespace DataTransfer.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<TransOrderInfo>()
-                .Property(e => e.Yield)
-                .HasPrecision(5, 3);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.EndorseImageLink)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.ProductId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.ProductNo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.UnitPrice)
-                .HasPrecision(18, 6);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
                 .Property(e => e.Yield)
                 .HasPrecision(5, 3);
 
