@@ -412,7 +412,7 @@ namespace DataTransfer
                         #region Order
 
                         List<Order> listOrder = new List<Order>();
-                        List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId).ToListAsync();
+                        List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId && o.ProductId != StrDefaultJBYProductId).ToListAsync();
                         foreach (var x in verifiedUsers)
                         {
                             Guid accountTransactionId = await GetSettleTransactionIdAsync(Guid.ParseExact(x.OrderId, "N"), Guid.ParseExact(x.ProductId, "N"));
@@ -479,9 +479,9 @@ namespace DataTransfer
                         context.JsonUser.Add(new JsonUser { Data = json, UserId = userInfo.UserId });
                         Console.WriteLine("user transfer start,threadId: " + threadId + ", count: " + ++i);
                         //Console.WriteLine(json);
-                        await context.SaveChangesAsync();
+                        
                     }
-                    
+                    await context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
