@@ -1,16 +1,27 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : MemoryWork.cs
+// Created          : 2015-07-31  8:58 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-31  9:02 PM
+// ***********************************************************************
+// <copyright file="MemoryWork.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DataTransfer.Models;
-using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans;
-using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
@@ -18,14 +29,16 @@ namespace DataTransfer
 {
     public class MemoryWork
     {
+        [SuppressMessage("ReSharper", "NotAccessedField.Local")]
         private static readonly Guid JBYProductId;
+
         private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
 
         static MemoryWork()
         {
-            string StrJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
-            StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
-            JBYProductId = new Guid(StrJBYProductId);
+            string strJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
+            strJBYProductId = string.IsNullOrEmpty(strJBYProductId) ? StrDefaultJBYProductId : strJBYProductId;
+            JBYProductId = new Guid(strJBYProductId);
 
             if (GrainClient.IsInitialized)
             {
@@ -36,10 +49,9 @@ namespace DataTransfer
             Console.ReadKey();
         }
 
-        public async static Task Run()
+        public static async Task Run()
         {
-
-            var p = await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
+            await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
             List<RegularProductMigrationDto> productList = await GetProductsAsync();
             foreach (var item in productList)
             {
@@ -51,11 +63,11 @@ namespace DataTransfer
             List<UserMigrationDto> userList = await GetUsersAsync();
             foreach (var item in userList)
             {
-                var user = await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
+                await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
             }
         }
 
-        private async static Task<List<RegularProductMigrationDto>> GetProductsAsync()
+        private static async Task<List<RegularProductMigrationDto>> GetProductsAsync()
         {
             using (var context = new OldDBContext())
             {
@@ -64,7 +76,7 @@ namespace DataTransfer
             }
         }
 
-        private async static Task<List<UserMigrationDto>> GetUsersAsync()
+        private static async Task<List<UserMigrationDto>> GetUsersAsync()
         {
             using (var context = new OldDBContext())
             {

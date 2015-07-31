@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ClientConfiguration xmlns="urn:orleans">
-  <Gateway Address="172.27.1.6" Port="30000" />
+  <SystemStore SystemStoreType="AzureTable"
+               DeploymentId="4b53c97a2a9f4a0097f3bfbc5921f442"
+               DataConnectionString="BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==" />
   <Messaging ResponseTimeout="120" ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Warning" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true">
-    <TraceLevelOverride LogPrefix="Application" TraceLevel="Warning" />
+  <Tracing DefaultTraceLevel="Info" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true">
+    <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
   </Tracing>
 </ClientConfiguration>

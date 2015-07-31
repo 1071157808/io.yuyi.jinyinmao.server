@@ -23,10 +23,10 @@ namespace DataTransfer
         {
             try
             {
-                Console.WriteLine("Start");
-                Work.Run().Wait();
-                Console.WriteLine("Finish");
-                //MemoryWork.Run().Wait();
+                //                Console.WriteLine("Start");
+                //                Work.Run().Wait();
+                //                Console.WriteLine("Finish");
+                MemoryWork.Run().Wait();
             }
             catch (AggregateException exception)
             {

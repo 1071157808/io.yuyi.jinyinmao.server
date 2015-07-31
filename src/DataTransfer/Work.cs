@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Work.cs
-// Created          : 2015-07-31  7:39 PM
+// Created          : 2015-07-31  8:58 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  7:51 PM
+// Last Modified On : 2015-07-31  9:02 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,6 +29,8 @@ namespace DataTransfer
     /// <summary>
     ///     Work.
     /// </summary>
+    [SuppressMessage("ReSharper", "ConvertConditionalTernaryToNullCoalescing")]
+    [SuppressMessage("ReSharper", "ConstantConditionalAccessQualifier")]
     public class Work
     {
         private static readonly Guid JBYProductId;
@@ -62,6 +64,57 @@ namespace DataTransfer
         }
 
         #endregion Runs this instance
+
+        private static async Task<UserInfo> CreateUserInfoAsync(string strUserId)
+        {
+            using (OldDBContext context = new OldDBContext())
+            {
+                TransUserInfo oldUser = await context.TransUserInfo.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == strUserId);
+                if (oldUser == null) return null;
+
+                UserInfo userInfo = new UserInfo
+                {
+                    Args = UserArgs,
+                    Balance = -1,
+                    BankCardsCount = oldUser.BankCardsCount.GetValueOrDefault(),
+                    Cellphone = oldUser.Cellphone,
+                    ClientType = oldUser.ClientType,
+                    Closed = false,
+                    ContractId = oldUser.ContractId,
+                    Credential = Utils.GetCredential(oldUser.Credential),
+                    CredentialNo = oldUser.CredentialNo,
+                    Crediting = -1,
+                    Debiting = 0,
+                    HasSetPassword = oldUser.HasSetPassword > 0,
+                    HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
+                    InvestingInterest = -1,
+                    InvestingPrincipal = -1,
+                    InviteBy = oldUser.InviteBy,
+                    JBYAccrualAmount = -1,
+                    JBYLastInterest = -1,
+                    JBYTotalAmount = -1,
+                    JBYTotalInterest = -1,
+                    JBYTotalPricipal = -1,
+                    JBYWithdrawalableAmount = -1,
+                    LoginNames = new List<string> { oldUser.LoginNames },
+                    MonthWithdrawalCount = oldUser.MonthWithdrawalCount,
+                    OutletCode = Utils.GetOutletCode(oldUser.OutletCode),
+                    PasswordErrorCount = oldUser.PasswordErrorCount,
+                    PaymentPasswordErrorCount = oldUser.PaymentPasswordErrorCount.GetValueOrDefault(),
+                    RealName = oldUser.RealName,
+                    RegisterTime = oldUser.RegisterTime,
+                    TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
+                    TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
+                    TotalInterest = oldUser.TotalInterest,
+                    TotalPrincipal = oldUser.TotalPrincipal,
+                    UserId = Guid.ParseExact(oldUser.UserId, "N"),
+                    Verified = oldUser.Verified.GetValueOrDefault(),
+                    VerifiedTime = oldUser.VerifiedTime,
+                    WithdrawalableAmount = oldUser.WithdrawalableAmount
+                };
+                return userInfo;
+            }
+        }
 
         [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
         [SuppressMessage("ReSharper", "RedundantTypeArgumentsOfMethod")]
@@ -164,6 +217,7 @@ namespace DataTransfer
                     };
 
                     #region orders
+
                     Dictionary<Guid, OrderInfo> orders = new Dictionary<Guid, OrderInfo>();
                     if (product.ProductId == JBYProductId)
                     {
@@ -172,8 +226,6 @@ namespace DataTransfer
                         {
                             UserInfo userInfo = await CreateUserInfoAsync(oldOrder.UserId);
                             if (userInfo == null) continue;
-
-                            Guid transactionId = Guid.NewGuid();
 
                             OrderInfo orderInfo = new OrderInfo
                             {
@@ -287,6 +339,7 @@ namespace DataTransfer
                             orders.Add(orderInfo.OrderId, orderInfo);
                         }
                     }
+
                     #endregion orders
 
                     product.Orders = product.ProductId == JBYProductId ? new Dictionary<Guid, OrderInfo>() : orders;
@@ -722,55 +775,5 @@ namespace DataTransfer
         }
 
         #endregion 通过UserId查询流水
-        private async static Task<UserInfo> CreateUserInfoAsync(string strUserId)
-        {
-            using (OldDBContext context = new OldDBContext())
-            {
-                TransUserInfo oldUser = await context.TransUserInfo.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == strUserId);
-                if (oldUser == null) return null;
-
-                UserInfo userInfo = new UserInfo
-                {
-                    Args = UserArgs,
-                    Balance = -1,
-                    BankCardsCount = oldUser.BankCardsCount.GetValueOrDefault(),
-                    Cellphone = oldUser.Cellphone,
-                    ClientType = oldUser.ClientType,
-                    Closed = false,
-                    ContractId = oldUser.ContractId,
-                    Credential = Utils.GetCredential(oldUser.Credential),
-                    CredentialNo = oldUser.CredentialNo,
-                    Crediting = -1,
-                    Debiting = 0,
-                    HasSetPassword = oldUser.HasSetPassword > 0,
-                    HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
-                    InvestingInterest = -1,
-                    InvestingPrincipal = -1,
-                    InviteBy = oldUser.InviteBy,
-                    JBYAccrualAmount = -1,
-                    JBYLastInterest = -1,
-                    JBYTotalAmount = -1,
-                    JBYTotalInterest = -1,
-                    JBYTotalPricipal = -1,
-                    JBYWithdrawalableAmount = -1,
-                    LoginNames = new List<string> { oldUser.LoginNames },
-                    MonthWithdrawalCount = oldUser.MonthWithdrawalCount,
-                    OutletCode = Utils.GetOutletCode(oldUser.OutletCode),
-                    PasswordErrorCount = oldUser.PasswordErrorCount,
-                    PaymentPasswordErrorCount = oldUser.PaymentPasswordErrorCount.GetValueOrDefault(),
-                    RealName = oldUser.RealName,
-                    RegisterTime = oldUser.RegisterTime,
-                    TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
-                    TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
-                    TotalInterest = oldUser.TotalInterest,
-                    TotalPrincipal = oldUser.TotalPrincipal,
-                    UserId = Guid.ParseExact(oldUser.UserId, "N"),
-                    Verified = oldUser.Verified.GetValueOrDefault(),
-                    VerifiedTime = oldUser.VerifiedTime,
-                    WithdrawalableAmount = oldUser.WithdrawalableAmount
-                };
-                return userInfo;
-            }
-        }
     }
 }
