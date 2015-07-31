@@ -1,11 +1,21 @@
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : OldDBContext.cs
+// Created          : 2015-07-31  7:39 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-07-31  7:41 PM
+// ***********************************************************************
+// <copyright file="OldDBContext.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System.Data.Entity;
+
 namespace DataTransfer.Models
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-
-    public partial class OldDBContext : DbContext
+    public class OldDBContext : DbContext
     {
         public OldDBContext()
             : base("name=OldDBContext")
@@ -13,16 +23,27 @@ namespace DataTransfer.Models
         }
 
         public virtual DbSet<Agreements> Agreements { get; set; }
+
         public virtual DbSet<JsonJBYAccountTransaction> JsonJBYAccountTransaction { get; set; }
+
         public virtual DbSet<JsonJBYOrder> JsonJBYOrder { get; set; }
+
         public virtual DbSet<JsonProduct> JsonProduct { get; set; }
+
         public virtual DbSet<JsonSettleAccountTransaction> JsonSettleAccountTransaction { get; set; }
+
         public virtual DbSet<JsonUser> JsonUser { get; set; }
+
         public virtual DbSet<TransBankCard> TransBankCard { get; set; }
+
         public virtual DbSet<TransJbyOrderInfo> TransJbyOrderInfo { get; set; }
+
         public virtual DbSet<TransOrderInfo> TransOrderInfo { get; set; }
+
         public virtual DbSet<TransRegularProductState> TransRegularProductState { get; set; }
+
         public virtual DbSet<TransSettleAccountTransaction> TransSettleAccountTransaction { get; set; }
+
         public virtual DbSet<TransUserInfo> TransUserInfo { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

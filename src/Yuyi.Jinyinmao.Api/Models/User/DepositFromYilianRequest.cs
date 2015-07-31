@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : DepositFromYilianRequest.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  3:45 AM
+// Last Modified On : 2015-07-31  6:38 PM
 // ***********************************************************************
 // <copyright file="DepositFromYilianRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -28,8 +28,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     支付金额，以“分”为单位
         /// </summary>
         /// <value>The amount.</value>
-        [Required, Range(100, 200000000), JsonProperty("amount")]
-        public int Amount { get; set; }
+        [Required, Range(1, 200000000), JsonProperty("amount")]
+        public long Amount { get; set; }
 
         /// <summary>
         ///     银行卡号，15到19位

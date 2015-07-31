@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : InvestingRequest.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  8:43 AM
+// Last Modified On : 2015-07-31  7:26 PM
 // ***********************************************************************
 // <copyright file="InvestingRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
 
-namespace Yuyi.Jinyinmao.Api.Models.Investing
+namespace Yuyi.Jinyinmao.Api.Models
 {
     /// <summary>
     ///     InvestingRequest.

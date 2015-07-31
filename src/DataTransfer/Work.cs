@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Work.cs
-// Created          : 2015-07-31  2:27 PM
+// Created          : 2015-07-31  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  2:36 PM
+// Last Modified On : 2015-07-31  7:51 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,7 +45,8 @@ namespace DataTransfer
             JBYProductId = Guid.ParseExact(StrDefaultJBYProductId, "N");
         }
 
-        #region  Runs this instance
+        #region Runs this instance
+
         /// <summary>
         ///     Runs this instance.
         /// </summary>
@@ -59,50 +60,11 @@ namespace DataTransfer
 
             //ProductTransfer();
         }
-        #endregion
 
-        #region 创建多个Task
-        private static async Task<int> GetUserCountAsync()
-        {
-            using (var context = new OldDBContext())
-            {
-                return await context.Set<TransUserInfo>().AsNoTracking().CountAsync();
-            }
-        }
+        #endregion Runs this instance
 
-        private static async Task<int> GetProductCountAsync()
-        {
-            using (var context = new OldDBContext())
-            {
-                return await context.Set<TransRegularProductState>().AsNoTracking().CountAsync();
-            }
-        }
-
-        private static async Task ProductTask()
-        {
-            double count = await GetProductCountAsync();
-            List<Task> list = new List<Task>();
-            for (int j = 0; j < Math.Ceiling(count / 10000); j++)
-            {
-                //await ProductTransferAsync(j * 10000, 10000, j);
-                list.Add(ProductTransferAsync(j * 10000, 10000, j));
-            }
-            await Task.WhenAll(list.ToArray());
-        }
-
-        private static async Task UserTask()
-        {
-            double count = await GetUserCountAsync();
-            List<Task> list = new List<Task>();
-            for (int j = 0; j < Math.Ceiling(count / 10000); j++)
-            {             
-                list.Add(UserTransferAsync(j * 10000, 10000, j));
-            }
-            await Task.WhenAll(list.ToArray());
-        }
-        #endregion
-
-
+        [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
+        [SuppressMessage("ReSharper", "RedundantTypeArgumentsOfMethod")]
         private static async Task<Guid> GetSettleTransactionIdAsync(Guid orderId, Guid productId)
         {
             using (var context = new OldDBContext())
@@ -110,27 +72,21 @@ namespace DataTransfer
                 if (productId == JBYProductId)
                 {
                     List<string> datas = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
-                    List<JBYAccountTransaction> list = datas.Select(JsonConvert.DeserializeObject<JBYAccountTransaction>).ToList();
+                    List<JBYAccountTransaction> list =
+                        datas.Select(x => JsonConvert.DeserializeObject<JBYAccountTransaction>(x)).ToList();
                     return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
                 }
                 else
                 {
                     List<string> datas = await context.JsonSettleAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
-                    List<SettleAccountTransaction> list = datas.Select(JsonConvert.DeserializeObject<SettleAccountTransaction>).ToList();
+                    List<SettleAccountTransaction> list =
+                        datas.Select(x => JsonConvert.DeserializeObject<SettleAccountTransaction>(x)).ToList();
                     return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
                 }
             }
         }
 
-        private async static Task<bool> UserExistsAsync(Guid userId)
-        {
-            using (var context = new OldDBContext())
-            {
-                return await context.JsonUser.AsNoTracking().AnyAsync(x => x.UserId == userId);
-            }
-        }
-
-        private async static Task<bool> ProductExistsAsync(Guid productId)
+        private static async Task<bool> ProductExistsAsync(Guid productId)
         {
             using (var context = new OldDBContext())
             {
@@ -138,6 +94,13 @@ namespace DataTransfer
             }
         }
 
+        private static async Task<bool> UserExistsAsync(Guid userId)
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.JsonUser.AsNoTracking().AnyAsync(x => x.UserId == userId);
+            }
+        }
 
         #region ProductTransfer
 
@@ -157,6 +120,7 @@ namespace DataTransfer
                     if (result) continue;
 
                     #region product
+
                     Agreements agreement1 = await context.Agreements.AsNoTracking().FirstOrDefaultAsync(a => a.Id == oldProduct.Agreement1);
                     Agreements agreement2 = await context.Agreements.AsNoTracking().FirstOrDefaultAsync(a => a.Id == oldProduct.Agreement2);
 
@@ -170,8 +134,8 @@ namespace DataTransfer
                         DraweeInfo = oldProduct.DraweeInfo,
                         EndorseImageLink = oldProduct.EndorseImageLink,
                         EndSellTime = oldProduct.EndSellTime,
-                        EnterpriseInfo = oldProduct.EnterpriseInfo.IsNullOrEmpty()?string.Empty:oldProduct.EnterpriseInfo,
-                        EnterpriseLicense = oldProduct.EnterpriseLicense.IsNullOrEmpty()?string.Empty: oldProduct.EnterpriseLicense,
+                        EnterpriseInfo = oldProduct.EnterpriseInfo.IsNullOrEmpty() ? string.Empty : oldProduct.EnterpriseInfo,
+                        EnterpriseLicense = oldProduct.EnterpriseLicense.IsNullOrEmpty() ? string.Empty : oldProduct.EnterpriseLicense,
                         EnterpriseName = oldProduct.EnterpriseName,
                         FinancingSumAmount = (long)(oldProduct.FinancingSumAmount * oldProduct.UnitPrice * 100),
                         IssueNo = oldProduct.IssueNo,
@@ -200,7 +164,6 @@ namespace DataTransfer
                     };
 
                     #region orders
-
                     Dictionary<Guid, OrderInfo> orders = new Dictionary<Guid, OrderInfo>();
                     if (product.ProductId == JBYProductId)
                     {
@@ -318,6 +281,7 @@ namespace DataTransfer
                         }
                     }
                     #endregion orders
+
                     product.Orders = product.ProductId == JBYProductId ? new Dictionary<Guid, OrderInfo>() : orders;
                     context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = product.ProductId });
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count: " + ++i);
@@ -335,147 +299,180 @@ namespace DataTransfer
         [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
         private static async Task UserTransferAsync(int skipCount, int takeCount, int threadId)
         {
-            try
+            int i = 0;
+            using (OldDBContext context = new OldDBContext())
             {
-                int i = 0;
-                using (OldDBContext context = new OldDBContext())
+                List<TransUserInfo> transUserInfos = await context.TransUserInfo.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).ToListAsync();
+                foreach (TransUserInfo transUserInfo in transUserInfos)
                 {
-                    List<TransUserInfo> transUserInfos = await context.TransUserInfo.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).ToListAsync();
-                    foreach (TransUserInfo transUserInfo in transUserInfos)
+                    if (transUserInfo == null) continue;
+                    bool result = await UserExistsAsync(Guid.ParseExact(transUserInfo.UserId, "N"));
+                    if (result) continue;
+
+                    #region userinfo
+
+                    UserInfo userInfo = new UserInfo
                     {
-                        if (transUserInfo == null) continue;
-                        bool result = await UserExistsAsync(Guid.ParseExact(transUserInfo.UserId, "N"));
-                        if (result) continue;
+                        Args = UserArgs,
+                        Balance = -1,
+                        BankCardsCount = transUserInfo.BankCardsCount.GetValueOrDefault(),
+                        Cellphone = transUserInfo.Cellphone,
+                        ClientType = transUserInfo.ClientType,
+                        Closed = false,
+                        ContractId = transUserInfo.ContractId,
+                        Credential = Utils.GetCredential(transUserInfo.Credential),
+                        CredentialNo = transUserInfo.CredentialNo.IsNotNullOrEmpty() ? transUserInfo.CredentialNo : string.Empty,
+                        Crediting = -1,
+                        Debiting = 0,
+                        HasSetPassword = transUserInfo.HasSetPassword.GetValueOrDefault() > 0,
+                        HasSetPaymentPassword = transUserInfo.HasSetPaymentPassword.GetValueOrDefault() > 0,
+                        InvestingInterest = -1,
+                        InvestingPrincipal = -1,
+                        InviteBy = transUserInfo.InviteBy.IsNotNullOrEmpty() ? transUserInfo.InviteBy : string.Empty,
+                        JBYAccrualAmount = -1,
+                        JBYLastInterest = -1,
+                        JBYTotalAmount = -1,
+                        JBYTotalInterest = -1,
+                        JBYTotalPricipal = -1,
+                        JBYWithdrawalableAmount = -1,
+                        LoginNames = new List<string> { transUserInfo.LoginNames },
+                        MonthWithdrawalCount = transUserInfo.MonthWithdrawalCount,
+                        OutletCode = Utils.GetOutletCode(transUserInfo.OutletCode),
+                        PasswordErrorCount = transUserInfo.PasswordErrorCount,
+                        PaymentPasswordErrorCount = transUserInfo.PaymentPasswordErrorCount.GetValueOrDefault(),
+                        RealName = transUserInfo.RealName.IsNullOrEmpty() ? string.Empty : transUserInfo.RealName,
+                        RegisterTime = transUserInfo.RegisterTime,
+                        TodayJBYWithdrawalAmount = transUserInfo.TodayJBYWithdrawalAmount,
+                        TodayWithdrawalCount = transUserInfo.TodayWithdrawalCount,
+                        TotalInterest = transUserInfo.TotalInterest,
+                        TotalPrincipal = transUserInfo.TotalPrincipal,
+                        UserId = Guid.ParseExact(transUserInfo.UserId, "N"),
+                        Verified = transUserInfo.Verified.GetValueOrDefault(),
+                        VerifiedTime = transUserInfo.VerifiedTime,
+                        WithdrawalableAmount = transUserInfo.WithdrawalableAmount
+                    };
 
-                        #region userinfo
+                    #endregion userinfo
 
-                        UserInfo userInfo = new UserInfo
+                    #region Order
+
+                    List<Order> listOrder = new List<Order>();
+                    List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId && o.ProductId != StrDefaultJBYProductId).ToListAsync();
+                    foreach (var x in verifiedUsers)
+                    {
+                        Guid accountTransactionId = await GetSettleTransactionIdAsync(Guid.ParseExact(x.OrderId, "N"), Guid.ParseExact(x.ProductId, "N"));
+                        listOrder.Add(new Order
                         {
-                            Args = UserArgs,
-                            Balance = -1,
-                            BankCardsCount = transUserInfo.BankCardsCount.GetValueOrDefault(),
-                            Cellphone = transUserInfo.Cellphone,
-                            ClientType = transUserInfo.ClientType,
-                            Closed = false,
-                            ContractId = transUserInfo.ContractId,
-                            Credential = Utils.GetCredential(transUserInfo.Credential),
-                            CredentialNo = transUserInfo.CredentialNo.IsNotNullOrEmpty() ? transUserInfo.CredentialNo : string.Empty,
-                            Crediting = -1,
-                            Debiting = 0,
-                            HasSetPassword = transUserInfo.HasSetPassword.GetValueOrDefault() > 0,
-                            HasSetPaymentPassword = transUserInfo.HasSetPaymentPassword.GetValueOrDefault() > 0,
-                            InvestingInterest = -1,
-                            InvestingPrincipal = -1,
-                            InviteBy = transUserInfo.InviteBy.IsNotNullOrEmpty() ? transUserInfo.InviteBy : string.Empty,
-                            JBYAccrualAmount = -1,
-                            JBYLastInterest = -1,
-                            JBYTotalAmount = -1,
-                            JBYTotalInterest = -1,
-                            JBYTotalPricipal = -1,
-                            JBYWithdrawalableAmount = -1,
-                            LoginNames = new List<string> { transUserInfo.LoginNames },
-                            MonthWithdrawalCount = transUserInfo.MonthWithdrawalCount,
-                            OutletCode = Utils.GetOutletCode(transUserInfo.OutletCode),
-                            PasswordErrorCount = transUserInfo.PasswordErrorCount,
-                            PaymentPasswordErrorCount = transUserInfo.PaymentPasswordErrorCount.GetValueOrDefault(),
-                            RealName = transUserInfo.RealName.IsNullOrEmpty() ? string.Empty : transUserInfo.RealName,
-                            RegisterTime = transUserInfo.RegisterTime,
-                            TodayJBYWithdrawalAmount = transUserInfo.TodayJBYWithdrawalAmount,
-                            TodayWithdrawalCount = transUserInfo.TodayWithdrawalCount,
-                            TotalInterest = transUserInfo.TotalInterest,
-                            TotalPrincipal = transUserInfo.TotalPrincipal,
-                            UserId = Guid.ParseExact(transUserInfo.UserId, "N"),
-                            Verified = transUserInfo.Verified.GetValueOrDefault(),
-                            VerifiedTime = transUserInfo.VerifiedTime,
-                            WithdrawalableAmount = transUserInfo.WithdrawalableAmount
-                        };
-
-                        #endregion userinfo
-
-                        #region Order
-
-                        List<Order> listOrder = new List<Order>();
-                        List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId && o.ProductId != StrDefaultJBYProductId).ToListAsync();
-                        foreach (var x in verifiedUsers)
-                        {
-                            Guid accountTransactionId = await GetSettleTransactionIdAsync(Guid.ParseExact(x.OrderId, "N"), Guid.ParseExact(x.ProductId, "N"));
-                            listOrder.Add(new Order
-                            {
-                                AccountTransactionId = accountTransactionId,
-                                Args = OrderArgs,
-                                Cellphone = x.Cellphone,
-                                ExtraInterest = (long)(x.ExtraInterest * 100),
-                                ExtraInterestRecords = new List<ExtraInterestRecord>(),
-                                ExtraYield = (x.ExtraYield * 100),
-                                Interest = (long)(x.Interest * 100),
-                                IsRepaid = x.IsRepaid,
-                                OrderId = Guid.ParseExact(x.OrderId, "N"),
-                                OrderNo = x.OrderNo,
-                                OrderTime = x.OrderTime,
-                                Principal = (long)(x.Principal * 100),
-                                ProductCategory = await Utils.GetProductCategoryAsync(x.ProductCategory, x.ProductType),
-                                ProductId = Guid.ParseExact(x.ProductId, "N"),
-                                ProductSnapshot = null,
-                                RepaidTime = null,
-                                ResultCode = 10000,
-                                SettleDate = Utils.GetDate(x.SettleDate),
-                                TransDesc = "充值成功，购买理财产品",
-                                UserId = userInfo.UserId,
-                                UserInfo = userInfo,
-                                ValueDate = Utils.GetDate(x.ValueDate),
-                                Yield = (int)(x.Yield * 100)
-                            });
-                        }
-
-                        Dictionary<Guid, Order> orders = listOrder.ToDictionary(x => x.OrderId);
-
-                        #endregion Order
-
-                        var user = new UserMigrationDto
-                        {
-                            Args = UserArgs,
-                            BankCards = await Utils.GetBankCards(transUserInfo.UserId),
-                            Cellphone = transUserInfo.Cellphone,
-                            ClientType = transUserInfo.ClientType,
-                            Closed = false,
-                            ContractId = transUserInfo.ContractId,
-                            Credential = userInfo.Credential,
-                            CredentialNo = transUserInfo.CredentialNo,
-                            EncryptedPassword = transUserInfo.EncryptedPassword,
-                            EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword.IsNullOrEmpty() ? string.Empty : transUserInfo.EncryptedPaymentPassword,
-                            InviteBy = userInfo.InviteBy,
-                            JBYAccount = await GetJBYAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
-                            LoginNames = userInfo.LoginNames,
-                            Orders = orders,
-                            OutletCode = transUserInfo.OutletCode,
-                            PaymentSalt = transUserInfo.PaymentSalt.IsNullOrEmpty() ? string.Empty : transUserInfo.PaymentSalt,
-                            RealName = userInfo.RealName,
-                            RegisterTime = transUserInfo.RegisterTime,
-                            Salt = transUserInfo.Salt,
-                            SettleAccount = await GetSettleAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                            AccountTransactionId = accountTransactionId,
+                            Args = OrderArgs,
+                            Cellphone = x.Cellphone,
+                            ExtraInterest = (long)(x.ExtraInterest * 100),
+                            ExtraInterestRecords = new List<ExtraInterestRecord>(),
+                            ExtraYield = (x.ExtraYield * 100),
+                            Interest = (long)(x.Interest * 100),
+                            IsRepaid = x.IsRepaid,
+                            OrderId = Guid.ParseExact(x.OrderId, "N"),
+                            OrderNo = x.OrderNo,
+                            OrderTime = x.OrderTime,
+                            Principal = (long)(x.Principal * 100),
+                            ProductCategory = await Utils.GetProductCategoryAsync(x.ProductCategory, x.ProductType),
+                            ProductId = Guid.ParseExact(x.ProductId, "N"),
+                            ProductSnapshot = null,
+                            RepaidTime = null,
+                            ResultCode = 10000,
+                            SettleDate = Utils.GetDate(x.SettleDate),
+                            TransDesc = "充值成功，购买理财产品",
                             UserId = userInfo.UserId,
-                            Verified = userInfo.Verified,
-                            VerifiedTime = transUserInfo.VerifiedTime
-                        };
-
-                        string json = JsonConvert.SerializeObject(user);
-                        context.JsonUser.Add(new JsonUser { Data = json, UserId = userInfo.UserId });
-                        Console.WriteLine("user transfer start,threadId: " + threadId + ", count: " + ++i);
-                        //Console.WriteLine(json);
-                        
+                            UserInfo = userInfo,
+                            ValueDate = Utils.GetDate(x.ValueDate),
+                            Yield = (int)(x.Yield * 100)
+                        });
                     }
-                    await context.SaveChangesAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                    
-                throw;
-            }
 
+                    Dictionary<Guid, Order> orders = listOrder.ToDictionary(x => x.OrderId);
+
+                    #endregion Order
+
+                    var user = new UserMigrationDto
+                    {
+                        Args = UserArgs,
+                        BankCards = await Utils.GetBankCards(transUserInfo.UserId),
+                        Cellphone = transUserInfo.Cellphone,
+                        ClientType = transUserInfo.ClientType,
+                        Closed = false,
+                        ContractId = transUserInfo.ContractId,
+                        Credential = userInfo.Credential,
+                        CredentialNo = transUserInfo.CredentialNo,
+                        EncryptedPassword = transUserInfo.EncryptedPassword,
+                        EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword.IsNullOrEmpty() ? string.Empty : transUserInfo.EncryptedPaymentPassword,
+                        InviteBy = userInfo.InviteBy,
+                        JBYAccount = await GetJBYAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                        LoginNames = userInfo.LoginNames,
+                        Orders = orders,
+                        OutletCode = transUserInfo.OutletCode,
+                        PaymentSalt = transUserInfo.PaymentSalt.IsNullOrEmpty() ? string.Empty : transUserInfo.PaymentSalt,
+                        RealName = userInfo.RealName,
+                        RegisterTime = transUserInfo.RegisterTime,
+                        Salt = transUserInfo.Salt,
+                        SettleAccount = await GetSettleAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                        UserId = userInfo.UserId,
+                        Verified = userInfo.Verified,
+                        VerifiedTime = transUserInfo.VerifiedTime
+                    };
+
+                    string json = JsonConvert.SerializeObject(user);
+                    context.JsonUser.Add(new JsonUser { Data = json, UserId = userInfo.UserId });
+                    Console.WriteLine("user transfer start,threadId: " + threadId + ", count: " + ++i);
+                    //Console.WriteLine(json);
+                }
+                await context.SaveChangesAsync();
+            }
         }
 
         #endregion UserTransfer
+
+        #region 创建多个Task
+
+        private static async Task<int> GetProductCountAsync()
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.Set<TransRegularProductState>().AsNoTracking().CountAsync();
+            }
+        }
+
+        private static async Task<int> GetUserCountAsync()
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.Set<TransUserInfo>().AsNoTracking().CountAsync();
+            }
+        }
+
+        private static async Task ProductTask()
+        {
+            double count = await GetProductCountAsync();
+            List<Task> list = new List<Task>();
+            for (int j = 0; j < Math.Ceiling(count / 10000); j++)
+            {
+                //await ProductTransferAsync(j * 10000, 10000, j);
+                list.Add(ProductTransferAsync(j * 10000, 10000, j));
+            }
+            await Task.WhenAll(list.ToArray());
+        }
+
+        private static async Task UserTask()
+        {
+            double count = await GetUserCountAsync();
+            List<Task> list = new List<Task>();
+            for (int j = 0; j < Math.Ceiling(count / 10000); j++)
+            {
+                list.Add(UserTransferAsync(j * 10000, 10000, j));
+            }
+            await Task.WhenAll(list.ToArray());
+        }
+
+        #endregion 创建多个Task
 
         #region 生成流水
 
@@ -708,8 +705,6 @@ namespace DataTransfer
         }
 
         #endregion 通过UserId查询流水
-
-
         private async static Task<UserInfo> CreateUserInfoAsync(string strUserId)
         {
             using (OldDBContext context = new OldDBContext())

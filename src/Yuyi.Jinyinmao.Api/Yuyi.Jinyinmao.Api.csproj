@@ -288,6 +288,7 @@
     <Compile Include="Models\User\CheckPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\DeleteBankCardRequest.cs" />
     <Compile Include="Models\User\DepositFromYilianRequest.cs" />
+    <Compile Include="Models\User\InsertSettleAccountTransactionRequest.cs" />
     <Compile Include="Models\User\JBYAccountInfoResponse.cs" />
     <Compile Include="Models\User\JBYTranscationInfoResponse.cs" />
     <Compile Include="Models\User\JBYWithdrawalRequest.cs" />

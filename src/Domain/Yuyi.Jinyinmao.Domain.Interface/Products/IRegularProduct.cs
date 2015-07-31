@@ -44,6 +44,12 @@ namespace Yuyi.Jinyinmao.Domain
         Task CheckSaleStatusAsync();
 
         /// <summary>
+        /// Dumps the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task DumpAsync();
+
+        /// <summary>
         ///     Gets the agreement asynchronous.
         /// </summary>
         /// <param name="agreementIndex">Index of the agreement.</param>

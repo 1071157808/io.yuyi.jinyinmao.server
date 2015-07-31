@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : EventProcessor.cs
 // Created          : 2015-04-26  11:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-11  10:10 AM
+// Last Modified On : 2015-07-31  4:18 PM
 // ***********************************************************************
 // <copyright file="EventProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     The factory
         /// </summary>
-        [SuppressMessage("ReSharper", "StaticMemberInGenericType")] private static readonly MessagingFactory Factory;
+        [SuppressMessage("ReSharper", "StaticMemberInGenericType")]
+        [SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable")]
+        private static readonly MessagingFactory Factory;
 
         /// <summary>
         ///     Initializes static members of the <see cref="EventProcessor{TEvent}" /> class.
@@ -59,16 +61,17 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="event">The event.</param>
         /// <returns>Task.</returns>
-        public virtual async Task ProcessEventAsync(TEvent @event)
+        public virtual Task ProcessEventAsync(TEvent @event)
         {
-            await this.ProcessingEventAsync(@event, async e =>
-            {
-                string topicName = e.GetType().Name.ToUnderScope();
-
-                TopicClient client = Factory.CreateTopicClient(topicName);
-
-                await client.SendAsync(new BrokeredMessage(e.ToJson()));
-            });
+            return TaskDone.Done;
+            //            await this.ProcessingEventAsync(@event, async e =>
+            //            {
+            //                string topicName = e.GetType().Name.ToUnderScope();
+            //
+            //                TopicClient client = Factory.CreateTopicClient(topicName);
+            //
+            //                await client.SendAsync(new BrokeredMessage(e.ToJson()));
+            //            });
         }
 
         /// <summary>

@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  1:43 PM
+// Last Modified On : 2015-07-31  6:41 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,10 +21,11 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Tracing;
+using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
-using Yuyi.Jinyinmao.Api.Models.Order;
+using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
@@ -157,6 +158,52 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     DumpJBYProduct
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("DumpJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> DumpJBYProduct()
+        {
+            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).DumpAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     DumpProduct
+        /// </summary>
+        /// <param name="productIdentifier">产品唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("DumpProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> DumpProduct(string productIdentifier)
+        {
+            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            await RegularProductFactory.GetGrain(productId).DumpAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     DumpUser
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("DumpUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> DumpUser(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            await UserFactory.GetGrain(userId).DumpAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     The default action of the service.
         /// </summary>
         [HttpGet, Route("")]
@@ -189,6 +236,34 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                     ConfigurationProperties = this.Configuration.Properties,
                     ServerIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString()
                 });
+        }
+
+        /// <summary>
+        ///     InsertSettleAccountTranscation
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("InsertSettleAccountTranscation"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        public async Task<IHttpActionResult> InsertSettleAccountTranscation(InsertSettleAccountTransactionRequest request)
+        {
+            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
+
+            InsertSettleAccountTransactionDto dto = new InsertSettleAccountTransactionDto
+            {
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                OrderId = request.OrderId.GetValueOrDefault(Guid.Empty),
+                Trade = request.Trade,
+                TradeCode = request.TradeCode,
+                TransDesc = request.TransDesc,
+                UserId = userId
+            };
+
+            await UserFactory.GetGrain(userId).InsertSettleAccountTranscationAsync(dto);
+            return this.Ok();
         }
 
         /// <summary>

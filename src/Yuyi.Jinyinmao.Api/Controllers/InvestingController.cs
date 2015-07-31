@@ -19,8 +19,6 @@ using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
-using Yuyi.Jinyinmao.Api.Models.Investing;
-using Yuyi.Jinyinmao.Api.Models.Order;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
