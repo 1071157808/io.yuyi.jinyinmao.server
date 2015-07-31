@@ -241,6 +241,27 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Gets the settling order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>Task&lt;List&lt;OrderInfo&gt;&gt;.</returns>
+        public async Task<List<OrderInfo>> GetSettlingOrderInfosAsync(Guid userId, int count)
+        {
+            string cacheName = "User-Settling-Orders";
+            string cacheId = "{0}-{1}".FormatWith(userId.ToGuidString(), count);
+            List<OrderInfo> orders = SiloClusterConfig.CacheTable.ReadDataFromTableCache<List<OrderInfo>>(cacheName, cacheId, TimeSpan.FromMinutes(1));
+
+            if (orders == null)
+            {
+                orders = await this.innerService.GetSettlingOrderInfosAsync(userId, count);
+                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, orders);
+            }
+
+            return orders;
+        }
+
+        /// <summary>
         ///     Gets the sign up user identifier information asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>

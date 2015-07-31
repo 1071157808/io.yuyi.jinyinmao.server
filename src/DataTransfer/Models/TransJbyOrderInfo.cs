@@ -87,7 +87,7 @@ namespace DataTransfer.Models
         [Column(TypeName = "datetime2")]
         public DateTime? ValueDate { get; set; }
 
-        public int? Yield { get; set; }
+        public decimal? Yield { get; set; }
 
         [Key]
         [Column(Order = 9)]

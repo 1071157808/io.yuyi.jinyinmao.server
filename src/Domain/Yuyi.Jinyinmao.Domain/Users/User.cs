@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  1:43 AM
+// Last Modified On : 2015-07-31  12:27 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -1383,6 +1383,23 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IUser Members
+
+        /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
+        public Task<List<OrderInfo>> GetSettlingOrderInfosAsync(int count)
+        {
+            count = count < 1 ? 0 : count;
+            DateTime now = DateTime.UtcNow.AddHours(8);
+
+            IList<Order> orders = this.State.Orders.Values.ToList();
+
+            orders = orders.Where(o => o.SettleDate >= now).OrderBy(o => o.SettleDate).ThenByDescending(o => o.OrderTime).Take(count).ToList();
+
+            return Task.FromResult(orders.Select(o => o.ToInfo()).ToList());
+        }
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.

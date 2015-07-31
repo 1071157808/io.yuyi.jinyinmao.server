@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Work.cs
-// Created          : 2015-07-30  1:48 PM
+// Created          : 2015-07-31  2:27 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  3:10 PM
+// Last Modified On : 2015-07-31  2:36 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,17 +12,17 @@
 // ***********************************************************************
 
 using System;
-using System.Configuration;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DataTransfer.Models;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using System.Data.Entity;
-using Moe.Lib;
 
 namespace DataTransfer
 {
@@ -31,10 +31,10 @@ namespace DataTransfer
     /// </summary>
     public class Work
     {
-        private static readonly string StrDefaultJBYProductId;
         private static readonly Guid JBYProductId;
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
+        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
 
         static Work()
@@ -43,6 +43,7 @@ namespace DataTransfer
             JBYProductId = Guid.ParseExact(StrDefaultJBYProductId, "N");
         }
 
+        #region  Runs this instance
         /// <summary>
         ///     Runs this instance.
         /// </summary>
@@ -51,10 +52,20 @@ namespace DataTransfer
             OrderArgs.Add("Comment", "由原订单数据迁移");
             UserArgs.Add("Comment", "由原用户数据迁移");
             ProductArgs.Add("Comment", "由原产品数据迁移");
-            //get products
             await ProductTask();
             await UserTask();
+
             //ProductTransfer();
+        } 
+        #endregion
+
+        #region 创建多个Task
+        private static async Task<int> GetUserCountAsync()
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.Set<TransUserInfo>().AsNoTracking().CountAsync();
+            }
         }
 
         private static async Task<int> GetProductCountAsync()
@@ -62,33 +73,6 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 return await context.Set<TransRegularProductState>().AsNoTracking().CountAsync();
-            }
-        }
-
-        private static async Task<Guid> GetSettleTransactionIdAsync(Guid orderId, Guid productId)
-        {
-            using (var context = new OldDBContext())
-            {
-                if (productId == JBYProductId)
-                {
-                    List<string> datas = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
-                    List<JBYAccountTransaction> list = datas.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item)).ToList();
-                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
-                }
-                else
-                {
-                    List<string> datas = await context.JsonSettleAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
-                    List<SettleAccountTransaction> list = datas.Select(JsonConvert.DeserializeObject<SettleAccountTransaction>).ToList();
-                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
-                }
-            }
-        }
-
-        private static async Task<int> GetUserCountAsync()
-        {
-            using (var context = new OldDBContext())
-            {
-                return await context.Set<TransUserInfo>().AsNoTracking().CountAsync();
             }
         }
 
@@ -114,7 +98,45 @@ namespace DataTransfer
                 list.Add(UserTransferAsync(j * 10000, 10000, j));
             }
             await Task.WhenAll(list.ToArray());
+        } 
+        #endregion
+
+
+        private static async Task<Guid> GetSettleTransactionIdAsync(Guid orderId, Guid productId)
+        {
+            using (var context = new OldDBContext())
+            {
+                if (productId == JBYProductId)
+                {
+                    List<string> datas = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
+                    List<JBYAccountTransaction> list = datas.Select(JsonConvert.DeserializeObject<JBYAccountTransaction>).ToList();
+                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
+                }
+                else
+                {
+                    List<string> datas = await context.JsonSettleAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
+                    List<SettleAccountTransaction> list = datas.Select(JsonConvert.DeserializeObject<SettleAccountTransaction>).ToList();
+                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
+                }
+            }
         }
+
+        private async static Task<bool> UserExistsAsync(Guid userId)
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.JsonUser.AsNoTracking().AnyAsync(x => x.UserId == userId);
+            }
+        }
+
+        private async static Task<bool> ProductExistsAsync(Guid productId)
+        {
+            using (var context = new OldDBContext())
+            {
+                return await context.JsonProduct.AsNoTracking().AnyAsync(x => x.ProductId == productId);
+            }
+        }
+        
 
         #region ProductTransfer
 
@@ -132,6 +154,7 @@ namespace DataTransfer
                 {
                     bool result = await ProductExistsAsync(Guid.ParseExact(oldProduct.ProductId, "N"));
                     if (result) continue;
+
                     #region product
                     Agreements agreement1 = await context.Agreements.AsNoTracking().FirstOrDefaultAsync(a => a.Id == oldProduct.Agreement1);
                     Agreements agreement2 = await context.Agreements.AsNoTracking().FirstOrDefaultAsync(a => a.Id == oldProduct.Agreement2);
@@ -388,8 +411,8 @@ namespace DataTransfer
                     #region Order
 
                     List<Order> listOrder = new List<Order>();
-
-                    foreach (TransOrderInfo x in await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId && o.ProductId != StrDefaultJBYProductId).ToListAsync())
+                    List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId).ToListAsync();
+                    foreach (var x in verifiedUsers)
                     {
                         Guid accountTransactionId = await GetSettleTransactionIdAsync(Guid.ParseExact(x.OrderId, "N"), Guid.ParseExact(x.ProductId, "N"));
                         listOrder.Add(new Order
@@ -693,20 +716,6 @@ namespace DataTransfer
 
         #endregion 通过UserId查询流水
 
-        private async static Task<bool> UserExistsAsync(Guid userId)
-        {
-            using (var context = new OldDBContext())
-            {
-                return await context.JsonUser.AsNoTracking().AnyAsync(x => x.UserId == userId);
-            }
-        }
-
-        private async static Task<bool> ProductExistsAsync(Guid productId)
-        {
-            using (var context = new OldDBContext())
-            {
-                return await context.JsonProduct.AsNoTracking().AnyAsync(x => x.ProductId == productId);
-            }
-        }
+      
     }
 }

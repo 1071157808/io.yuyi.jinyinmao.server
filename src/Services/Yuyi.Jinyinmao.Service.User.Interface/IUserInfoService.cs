@@ -165,6 +165,14 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(Guid userId, int pageIndex, int pageSize);
 
         /// <summary>
+        /// Gets the settling order infos asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>Task&lt;List&lt;OrderInfo&gt;&gt;.</returns>
+        Task<List<OrderInfo>> GetSettlingOrderInfosAsync(Guid userId, int count);
+
+        /// <summary>
         ///     Gets the sign up user identifier information asynchronous.
         /// </summary>
         /// <param name="cellphone">The cellphone.</param>

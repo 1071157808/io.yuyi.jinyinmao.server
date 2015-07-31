@@ -8,7 +8,7 @@ namespace DataTransfer.Models
     public partial class OldDBContext : DbContext
     {
         public OldDBContext()
-            : base("name=OldDBContext")
+            : base("name=OldDBContext1")
         {
         }
 
@@ -71,6 +71,10 @@ namespace DataTransfer.Models
             modelBuilder.Entity<TransJbyOrderInfo>()
                 .Property(e => e.UserId)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.Yield)
+                .HasPrecision(5, 3);
 
             modelBuilder.Entity<TransOrderInfo>()
                 .Property(e => e.AccountTransactionIdentifier)

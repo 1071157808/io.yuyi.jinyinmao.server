@@ -1,27 +1,27 @@
-﻿using System;
-using System.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using DataTransfer.Models;
-using Yuyi.Jinyinmao.Domain.Dtos;
 using Moe.Lib;
+using Newtonsoft.Json;
 using Orleans;
 using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain;
-using System.IO;
+using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace DataTransfer
 {
     public class MemoryWork
     {
-        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly Guid JBYProductId;
+        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
+
         static MemoryWork()
         {
-
             string StrJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
             StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
             JBYProductId = new Guid(StrJBYProductId);
@@ -35,11 +35,13 @@ namespace DataTransfer
             Console.ReadKey();
         }
 
-
         public async static Task Run()
         {
+<<<<<<< HEAD
+=======
             var p = await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
 
+>>>>>>> 9c4e87b661f54ba3c479ac65a0d27fc2b9851619
             List<RegularProductMigrationDto> productList = await GetProductsAsync();
             foreach (var item in productList)
             {
@@ -48,15 +50,12 @@ namespace DataTransfer
                 Console.WriteLine(JsonConvert.SerializeObject(product));
             }
 
-
             List<UserMigrationDto> userList = await GetUsersAsync();
             foreach (var item in userList)
             {
                 var user = await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
             }
-
         }
-
 
         private async static Task<List<RegularProductMigrationDto>> GetProductsAsync()
         {
@@ -65,7 +64,6 @@ namespace DataTransfer
                 var list = context.JsonProduct.Select(item => item.Data).Take(10).ToList();
                 return await Task.Run(() => list.Select(item => JsonConvert.DeserializeObject<RegularProductMigrationDto>(item)).ToList());
             }
-
         }
 
         private async static Task<List<UserMigrationDto>> GetUsersAsync()
@@ -76,6 +74,5 @@ namespace DataTransfer
                 return await Task.Run(() => list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)).ToList());
             }
         }
-
     }
 }

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Utils.cs
-// Created          : 2015-07-28  11:38 AM
+// Created          : 2015-07-30  1:48 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:45 AM
+// Last Modified On : 2015-07-30  8:29 PM
 // ***********************************************************************
 // <copyright file="Utils.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,25 +13,24 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using DataTransfer.Models;
 using Yuyi.Jinyinmao.Domain;
-using System.Data.Entity;
 
 namespace DataTransfer
 {
     internal class Utils
     {
-        private readonly static Dictionary<string, object> Args = new Dictionary<string, object> { { "Comment", "由原银行卡数据迁移" } };
+        private static readonly Dictionary<string, object> Args = new Dictionary<string, object> { { "Comment", "由原银行卡数据迁移" } };
 
         public static async Task<Dictionary<string, BankCard>> GetBankCards(string userId)
         {
-            Guid id = Guid.ParseExact(userId,"N");
+            Guid id = Guid.ParseExact(userId, "N");
             using (var context = new OldDBContext())
             {
-                List<TransBankCard> bankCards = await context.TransBankCard.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
-                return bankCards.Select(b => new BankCard
+                Dictionary<string, BankCard> bankCards = (await context.TransBankCard.AsNoTracking().Where(x => x.UserId == userId).ToListAsync()).Select(b => new BankCard
                 {
                     AddingTime = b.AddingTime,
                     Args = Args,
@@ -46,6 +45,8 @@ namespace DataTransfer
                     VerifiedTime = b.VerifiedTime,
                     WithdrawAmount = b.WithdrawAmount
                 }).ToDictionary(x => x.BankCardNo);
+
+                return bankCards;
             }
         }
 
@@ -81,34 +82,32 @@ namespace DataTransfer
             return list.IndexOf(outletCode) != -1 ? string.Empty : outletCode;
         }
 
-        public async static Task<long> GetProductCategoryAsync(int productCategory = 0, int? productType = 0)
+        public static Task<long> GetProductCategoryAsync(int productCategory = 0, int? productType = 0)
         {
-
             if (productType != 0)
             {
                 switch (productType)
                 {
                     case 10:
-                        return await Task.FromResult(100000010L);
+                        return Task.FromResult(100000010L);
 
                     case 20:
-
-                        return await Task.FromResult(100000020L);
+                        return Task.FromResult(100000020L);
                 }
             }
             switch (productCategory)
             {
                 case 20:
-                    return await Task.FromResult(210001010L);
+                    return Task.FromResult(210001010L);
 
                 case 30:
-                    return await Task.FromResult(210002020L);
+                    return Task.FromResult(210002020L);
 
                 case 40:
-                    return await Task.FromResult(210003010L);
-
+                    return Task.FromResult(210003010L);
             }
-            return await Task.FromResult(-1L);
+
+            return Task.FromResult(-1L);
         }
 
         public static string GetProductName(string name)

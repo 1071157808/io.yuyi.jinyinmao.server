@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : UserOrderController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-24  3:24 PM
+// Last Modified On : 2015-07-31  12:39 PM
 // ***********************************************************************
 // <copyright file="UserOrderController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,8 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -121,6 +123,26 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        ///     即将结息的订单列表
+        /// </summary>
+        /// <remarks>
+        ///     默认数量为5
+        /// </remarks>
+        /// <param name="count">订单数量</param>
+        /// <response code="200"></response>
+        /// <response code="401">AUTH:请先登录</response>
+        /// <response code="500"></response>
+        [HttpGet, Route("Settling/{count:min(0):int=5}"), CookieAuthorize, ResponseType(typeof(List<OrderInfoResponse>))]
+        public async Task<IHttpActionResult> Settling(int count = 5)
+        {
+            count = count < 0 ? 1 : count;
+
+            List<OrderInfo> infos = await this.userInfoService.GetSettlingOrderInfosAsync(this.CurrentUser.Id, count);
+
+            return this.Ok(infos.Select(o => o.ToResponse()).ToList());
         }
     }
 }
