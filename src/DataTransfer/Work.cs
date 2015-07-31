@@ -275,8 +275,15 @@ namespace DataTransfer
                                 ValueDate = Utils.GetDate(oldOrder.ValueDate),
                                 Yield = (int)(oldOrder.Yield * 100)
                             };
-                            await GenerateRegularTransactionAsync(new List<TranscationState>
-                            { TranscationState.ChongZhi, TranscationState.GouMai, TranscationState.BenJin, TranscationState.LiXi, TranscationState.QuXian }, orderInfo, userInfo);
+                            await GenerateRegularTransactionAsync(
+                                new List<TranscationState>
+                                {
+                                    TranscationState.ChongZhi,
+                                    TranscationState.GouMai,
+                                    TranscationState.BenJin,
+                                    TranscationState.LiXi,
+                                    TranscationState.QuXian
+                                }, orderInfo, userInfo);
                             orders.Add(orderInfo.OrderId, orderInfo);
                         }
                     }
@@ -568,7 +575,12 @@ namespace DataTransfer
                             break;
                     }
                     context.JsonJBYAccountTransaction.Add(
-                        new JsonJBYAccountTransaction { OrderId = order.OrderId, UserId = user.UserId, Data = JsonConvert.SerializeObject(transaction) });
+                        new JsonJBYAccountTransaction
+                        {
+                            OrderId = order.OrderId,
+                            UserId = user.UserId,
+                            Data = JsonConvert.SerializeObject(transaction)
+                        });
                 }
                 await context.SaveChangesAsync();
             }
@@ -666,7 +678,12 @@ namespace DataTransfer
                             break;
                     }
                     context.JsonSettleAccountTransaction.Add(
-                        new JsonSettleAccountTransaction { OrderId = order.OrderId, UserId = user.UserId, Data = JsonConvert.SerializeObject(transaction) });
+                        new JsonSettleAccountTransaction
+                        {
+                            OrderId = order.OrderId,
+                            UserId = user.UserId,
+                            Data = JsonConvert.SerializeObject(transaction)
+                        });
                 }
                 await context.SaveChangesAsync();
             }
