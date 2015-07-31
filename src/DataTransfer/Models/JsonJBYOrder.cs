@@ -1,31 +1,20 @@
-// ***********************************************************************
-// Project          : io.yuyi.jinyinmao.server
-// File             : JsonJBYOrder.cs
-// Created          : 2015-07-28  11:38 AM
-//
-// Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:40 AM
-// ***********************************************************************
-// <copyright file="JsonJBYOrder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
-//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
-// </copyright>
-// ***********************************************************************
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace DataTransfer.Models
 {
-    [Table("JsonJBYOrder")]
-    public class JsonJBYOrder
-    {
-        [Required]
-        public string Data { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
+    [Table("JsonJBYOrder")]
+    public partial class JsonJBYOrder
+    {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(32)]
+        [StringLength(50)]
         public string OrderId { get; set; }
+
+        [Required]
+        public string Data { get; set; }
     }
 }

@@ -1,24 +1,13 @@
-// ***********************************************************************
-// Project          : io.yuyi.jinyinmao.server
-// File             : TransOrderInfo.cs
-// Created          : 2015-07-28  11:38 AM
-//
-// Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:42 AM
-// ***********************************************************************
-// <copyright file="TransOrderInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
-//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
-// </copyright>
-// ***********************************************************************
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace DataTransfer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
     [Table("TransOrderInfo")]
-    public class TransOrderInfo
+    public partial class TransOrderInfo
     {
         [Key]
         [Column(Order = 0)]
@@ -77,16 +66,14 @@ namespace DataTransfer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ProductCategory { get; set; }
 
+        public int? ProductType { get; set; }
+
         [Key]
         [Column(Order = 12)]
         [StringLength(50)]
         public string ProductId { get; set; }
 
-        [Key]
-        [Column(Order = 13)]
-        public string ProductSnapshot { get; set; }
-
-        public int? ProductType { get; set; }
+        public int? ProductSnapshot { get; set; }
 
         public int? RepaidTime { get; set; }
 
@@ -96,25 +83,25 @@ namespace DataTransfer.Models
         public DateTime? ResultTime { get; set; }
 
         [Key]
-        [Column(Order = 14, TypeName = "datetime2")]
+        [Column(Order = 13, TypeName = "datetime2")]
         public DateTime SettleDate { get; set; }
 
         [StringLength(200)]
         public string TransDesc { get; set; }
 
         [Key]
-        [Column(Order = 15)]
+        [Column(Order = 14)]
         [StringLength(50)]
         public string UserId { get; set; }
 
         public int? UserInfo { get; set; }
 
         [Key]
-        [Column(Order = 16, TypeName = "datetime2")]
+        [Column(Order = 15, TypeName = "datetime2")]
         public DateTime ValueDate { get; set; }
 
         [Key]
-        [Column(Order = 17)]
+        [Column(Order = 16)]
         public decimal Yield { get; set; }
     }
 }
