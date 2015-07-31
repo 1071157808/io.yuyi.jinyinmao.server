@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-10  11:58 PM
+// File             : IJBYProduct.cs
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  8:20 PM
+// Last Modified On : 2015-07-31  8:54 PM
 // ***********************************************************************
 // <copyright file="IJBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -32,13 +32,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info);
 
         /// <summary>
-        /// Checks the sale status asynchronous.
+        ///     Checks the sale status asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task CheckSaleStatusAsync();
 
         /// <summary>
-        /// Dumps the asynchronous.
+        ///     Dumps the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task DumpAsync();
@@ -70,13 +70,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task HitShelvesAsync(IssueJBYProduct command);
 
         /// <summary>
-        /// Refreshes the asynchronous.
+        ///     Refreshes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task RefreshAsync();
+        Task RefreshAsync(bool force = false);
 
         /// <summary>
-        /// Reloads the asynchronous.
+        ///     Reloads the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task ReloadAsync();
@@ -88,7 +88,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task SetToSoldOutAsync();
 
         /// <summary>
-        /// Synchronizes the asynchronous.
+        ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task SyncAsync();

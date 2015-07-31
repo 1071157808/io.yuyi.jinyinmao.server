@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : JBYProduct.cs
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  10:24 AM
+// Last Modified On : 2015-07-31  8:54 PM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -140,11 +140,12 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Gets the product information asynchronous.
         /// </summary>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
-        public Task<JBYProductInfo> GetProductInfoAsync()
+        public async Task<JBYProductInfo> GetProductInfoAsync()
         {
             if (this.State.ProductNo.IsNullOrEmpty())
             {
-                return Task.FromResult<JBYProductInfo>(null);
+                await this.RefreshAsync(true);
+                return null;
             }
 
             JBYProductInfo info = new JBYProductInfo
@@ -168,7 +169,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 Yield = this.State.Yield
             };
 
-            return Task.FromResult(info);
+            return info;
         }
 
         /// <summary>
@@ -213,9 +214,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     refresh as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task RefreshAsync()
+        public async Task RefreshAsync(bool force = false)
         {
-            if (!this.State.SoldOut || !this.State.SoldOutTime.HasValue)
+            if (!force && (!this.State.SoldOut || !this.State.SoldOutTime.HasValue))
             {
                 return;
             }
