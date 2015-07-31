@@ -41,7 +41,7 @@ namespace DataTransfer
         {
             string StrJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
             StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
-            JBYProductId = new Guid(StrJBYProductId);
+            JBYProductId = Guid.ParseExact(StrJBYProductId, "N");
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DataTransfer
         {
             using (var context = new OldDBContext())
             {
-                if (new Guid(productId) == JBYProductId)
+                if (Guid.ParseExact(productId,"N") == JBYProductId)
                 {
                     List<string> datas = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
                     List<JBYAccountTransaction> list = datas.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item)).ToList();
@@ -288,7 +288,7 @@ namespace DataTransfer
                             ResultTime = oldOrder.ResultTime,
                             SettleDate = Utils.GetDate(oldOrder.SettleDate),
                             TransDesc = "充值成功，购买理财产品",
-                            UserId = new Guid(oldOrder.UserId),
+                            UserId = Guid.ParseExact(oldOrder.UserId,"N"),
                             UserInfo = userInfo,
                             ValueDate = Utils.GetDate(oldOrder.ValueDate),
                             Yield = (int)(oldOrder.Yield * 100)
@@ -475,7 +475,7 @@ namespace DataTransfer
 
             using (var context = new OldDBContext())
             {
-                Guid id = new Guid();
+                Guid id = Guid.NewGuid();
                 foreach (var type in listType)
                 {
                     TransSettleAccountTransaction oldTransaction = await context.TransSettleAccountTransaction.AsNoTracking().FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
