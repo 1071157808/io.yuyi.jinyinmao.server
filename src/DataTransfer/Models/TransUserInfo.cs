@@ -1,24 +1,13 @@
-// ***********************************************************************
-// Project          : io.yuyi.jinyinmao.server
-// File             : TransUserInfo.cs
-// Created          : 2015-07-28  11:38 AM
-//
-// Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:43 AM
-// ***********************************************************************
-// <copyright file="TransUserInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
-//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
-// </copyright>
-// ***********************************************************************
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace DataTransfer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
     [Table("TransUserInfo")]
-    public class TransUserInfo
+    public partial class TransUserInfo
     {
         public int? Args { get; set; }
 
@@ -63,14 +52,6 @@ namespace DataTransfer.Models
         [Column(Order = 6)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Debiting { get; set; }
-
-        [Key]
-        [Column(Order = 23)]
-        [StringLength(80)]
-        public string EncryptedPassword { get; set; }
-
-        [StringLength(80)]
-        public string EncryptedPaymentPassword { get; set; }
 
         public int? HasSetPassword { get; set; }
 
@@ -131,20 +112,12 @@ namespace DataTransfer.Models
 
         public int? PaymentPasswordErrorCount { get; set; }
 
-        [StringLength(80)]
-        public string PaymentSalt { get; set; }
-
         [StringLength(20)]
         public string RealName { get; set; }
 
         [Key]
         [Column(Order = 16, TypeName = "datetime2")]
         public DateTime RegisterTime { get; set; }
-
-        [Key]
-        [Column(Order = 24)]
-        [StringLength(80)]
-        public string Salt { get; set; }
 
         [Key]
         [Column(Order = 17)]
@@ -180,5 +153,21 @@ namespace DataTransfer.Models
         [Column(Order = 22)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int WithdrawalableAmount { get; set; }
+
+        [Key]
+        [Column(Order = 23)]
+        [StringLength(80)]
+        public string EncryptedPassword { get; set; }
+
+        [StringLength(80)]
+        public string EncryptedPaymentPassword { get; set; }
+
+        [Key]
+        [Column(Order = 24)]
+        [StringLength(80)]
+        public string Salt { get; set; }
+
+        [StringLength(80)]
+        public string PaymentSalt { get; set; }
     }
 }

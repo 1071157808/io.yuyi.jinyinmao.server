@@ -1,21 +1,11 @@
-// ***********************************************************************
-// Project          : io.yuyi.jinyinmao.server
-// File             : OldDBContext.cs
-// Created          : 2015-07-28  11:38 AM
-//
-// Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:41 AM
-// ***********************************************************************
-// <copyright file="OldDBContext.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
-//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
-// </copyright>
-// ***********************************************************************
-
-using System.Data.Entity;
-
 namespace DataTransfer.Models
 {
-    public class OldDBContext : DbContext
+    using System;
+    using System.Data.Entity;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
+
+    public partial class OldDBContext : DbContext
     {
         public OldDBContext()
             : base("name=OldDBContext")
@@ -23,27 +13,16 @@ namespace DataTransfer.Models
         }
 
         public virtual DbSet<Agreements> Agreements { get; set; }
-
         public virtual DbSet<JsonJBYAccountTransaction> JsonJBYAccountTransaction { get; set; }
-
         public virtual DbSet<JsonJBYOrder> JsonJBYOrder { get; set; }
-
         public virtual DbSet<JsonProduct> JsonProduct { get; set; }
-
         public virtual DbSet<JsonSettleAccountTransaction> JsonSettleAccountTransaction { get; set; }
-
         public virtual DbSet<JsonUser> JsonUser { get; set; }
-
         public virtual DbSet<TransBankCard> TransBankCard { get; set; }
-
+        public virtual DbSet<TransJbyOrderInfo> TransJbyOrderInfo { get; set; }
         public virtual DbSet<TransOrderInfo> TransOrderInfo { get; set; }
-
-        public virtual DbSet<TransRegularProductInfo> TransRegularProductInfo { get; set; }
-
         public virtual DbSet<TransRegularProductState> TransRegularProductState { get; set; }
-
         public virtual DbSet<TransSettleAccountTransaction> TransSettleAccountTransaction { get; set; }
-
         public virtual DbSet<TransUserInfo> TransUserInfo { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -59,6 +38,42 @@ namespace DataTransfer.Models
             modelBuilder.Entity<TransBankCard>()
                 .Property(e => e.UserId)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.AccountTransactionIdentifier)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.Args)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.Cellphone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.OrderId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.OrderNo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.Principal)
+                .HasPrecision(18, 6);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.ProductId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.UserId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TransJbyOrderInfo>()
+                .Property(e => e.Yield)
+                .HasPrecision(5, 3);
 
             modelBuilder.Entity<TransOrderInfo>()
                 .Property(e => e.AccountTransactionIdentifier)
@@ -101,26 +116,6 @@ namespace DataTransfer.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<TransOrderInfo>()
-                .Property(e => e.Yield)
-                .HasPrecision(5, 3);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.EndorseImageLink)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.ProductId)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.ProductNo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
-                .Property(e => e.UnitPrice)
-                .HasPrecision(18, 6);
-
-            modelBuilder.Entity<TransRegularProductInfo>()
                 .Property(e => e.Yield)
                 .HasPrecision(5, 3);
 

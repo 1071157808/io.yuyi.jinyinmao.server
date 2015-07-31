@@ -103,13 +103,13 @@
     <Compile Include="Models\EndorseLinks.cs" />
     <Compile Include="Models\Entity\JBYAccountTransactionEntity.cs" />
     <Compile Include="Models\Entity\RegularProductEntity.cs" />
+    <Compile Include="Models\Entity\OrderEntity.cs" />
     <Compile Include="Models\JsonJBYAccountTransaction.cs" />
     <Compile Include="Models\JsonJBYOrder.cs" />
     <Compile Include="Models\JsonProduct.cs" />
     <Compile Include="Models\JsonSettleAccountTransaction.cs" />
     <Compile Include="Models\JsonUser.cs" />
     <Compile Include="Models\OldDBContext.cs" />
-    <Compile Include="Models\Entity\OrderEntity.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="Models\SaleInfo.cs" />
     <Compile Include="Models\SalePeriod.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="Models\Entity\TransactionEntity.cs" />
     <Compile Include="Models\TransBankCard.cs" />
     <Compile Include="Models\TranscationState.cs" />
+    <Compile Include="Models\TransJbyOrderInfo.cs" />
     <Compile Include="Models\TransOrderInfo.cs" />
     <Compile Include="Models\TransRegularProductInfo.cs" />
     <Compile Include="Models\TransRegularProductState.cs" />

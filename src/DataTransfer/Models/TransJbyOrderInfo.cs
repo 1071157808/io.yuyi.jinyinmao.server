@@ -6,8 +6,8 @@ namespace DataTransfer.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("TransOrderInfo")]
-    public partial class TransOrderInfo
+    [Table("TransJbyOrderInfo")]
+    public partial class TransJbyOrderInfo
     {
         [Key]
         [Column(Order = 0)]
@@ -19,57 +19,46 @@ namespace DataTransfer.Models
         [StringLength(1)]
         public string Args { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [StringLength(15)]
+        [StringLength(20)]
         public string Cellphone { get; set; }
 
-        [Key]
-        [Column(Order = 3)]
-        public decimal ExtraInterest { get; set; }
+        public int? ExtraInterest { get; set; }
 
         public int? ExtraInterestRecords { get; set; }
 
         [Key]
-        [Column(Order = 4)]
+        [Column(Order = 2)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ExtraYield { get; set; }
 
-        [Key]
-        [Column(Order = 5)]
-        public decimal Interest { get; set; }
+        public int? Interest { get; set; }
+
+        public bool? IsRepaid { get; set; }
 
         [Key]
-        [Column(Order = 6)]
-        public bool IsRepaid { get; set; }
-
-        [Key]
-        [Column(Order = 7)]
+        [Column(Order = 3)]
         [StringLength(50)]
         public string OrderId { get; set; }
 
         [Key]
-        [Column(Order = 8)]
-        [StringLength(20)]
+        [Column(Order = 4)]
+        [StringLength(50)]
         public string OrderNo { get; set; }
 
         [Key]
-        [Column(Order = 9, TypeName = "datetime2")]
+        [Column(Order = 5, TypeName = "datetime2")]
         public DateTime OrderTime { get; set; }
 
         [Key]
-        [Column(Order = 10)]
+        [Column(Order = 6)]
         public decimal Principal { get; set; }
 
-        [Key]
-        [Column(Order = 11)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductCategory { get; set; }
+        public int? ProductCategory { get; set; }
 
         public int? ProductType { get; set; }
 
         [Key]
-        [Column(Order = 12)]
+        [Column(Order = 7)]
         [StringLength(50)]
         public string ProductId { get; set; }
 
@@ -82,26 +71,27 @@ namespace DataTransfer.Models
         [Column(TypeName = "datetime2")]
         public DateTime? ResultTime { get; set; }
 
-        [Key]
-        [Column(Order = 13, TypeName = "datetime2")]
-        public DateTime SettleDate { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime? SettleDate { get; set; }
 
         [StringLength(200)]
         public string TransDesc { get; set; }
 
         [Key]
-        [Column(Order = 14)]
+        [Column(Order = 8)]
         [StringLength(50)]
         public string UserId { get; set; }
 
         public int? UserInfo { get; set; }
 
-        [Key]
-        [Column(Order = 15, TypeName = "datetime2")]
-        public DateTime ValueDate { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime? ValueDate { get; set; }
+
+        public decimal? Yield { get; set; }
 
         [Key]
-        [Column(Order = 16)]
-        public decimal Yield { get; set; }
+        [Column(Order = 9)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Type { get; set; }
     }
 }
