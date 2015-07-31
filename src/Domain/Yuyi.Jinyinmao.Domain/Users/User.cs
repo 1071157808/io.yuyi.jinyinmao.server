@@ -723,6 +723,45 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        /// insert settle account transcation as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionDto">The transaction dto.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public async Task<SettleAccountTransactionInfo> InsertSettleAccountTranscationAsync(InsertSettleAccountTransactionDto transactionDto)
+        {
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            SettleAccountTransaction transaction = new SettleAccountTransaction
+            {
+                Amount = transactionDto.Amount,
+                Args = transactionDto.Args,
+                BankCardNo = transactionDto.BankCardNo,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                OrderId = transactionDto.OrderId,
+                ResultCode = 1,
+                ResultTime = now,
+                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                Trade = transactionDto.Trade,
+                TradeCode = TradeCodeHelper.TC1005051001,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                TransDesc = transactionDto.TransDesc,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            this.State.SettleAccount.Add(transaction.TransactionId, transaction);
+
+            await this.State.WriteStateAsync();
+            this.ReloadSettleAccountData();
+
+            SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
+
+            await this.RaiseTransactionInsertdEvent(transactionDto, transactionInfo);
+
+            return transactionInfo;
+        }
+
+        /// <summary>
         ///     Investings the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>

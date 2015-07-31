@@ -114,6 +114,7 @@
     <Compile Include="Commands\VerifyBankCard.cs" />
     <Compile Include="Commands\Withdrawal.cs" />
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
+    <Compile Include="Dtos\InsertSettleAccountTransactionDto.cs" />
     <Compile Include="Dtos\JBYAccountInfo.cs" />
     <Compile Include="Dtos\RegularProductMigrationDto.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />
@@ -124,12 +125,14 @@
     <Compile Include="EventProcessor\IJBYWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalResultedProcessor.cs" />
     <Compile Include="EventProcessor\IRegularProductRepaid.cs" />
+    <Compile Include="EventProcessor\ISettleAccountTransactionInsertedProcessor.cs" />
     <Compile Include="Events\BankCardHiden.cs" />
     <Compile Include="Events\ExtraInterestAdded.cs" />
     <Compile Include="Events\JBYReinvested.cs" />
     <Compile Include="Events\JBYWithdrawalAccepted.cs" />
     <Compile Include="Events\JBYWithdrawalResulted.cs" />
     <Compile Include="Events\RegularProductRepaid.cs" />
+    <Compile Include="Events\SettleAccountTransactionInserted.cs" />
     <Compile Include="InfoDtos\JBYProductInfo.cs" />
     <Compile Include="InfoDtos\OrderInfo.cs" />
     <Compile Include="InfoDtos\RegularProductInfo.cs" />

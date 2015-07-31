@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : OrderInfoResponse.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:07 PM
+// Last Modified On : 2015-07-31  6:31 PM
 // ***********************************************************************
 // <copyright file="OrderInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
-namespace Yuyi.Jinyinmao.Api.Models.Order
+namespace Yuyi.Jinyinmao.Api.Models
 {
     /// <summary>
     ///     OrderInfoResponse.

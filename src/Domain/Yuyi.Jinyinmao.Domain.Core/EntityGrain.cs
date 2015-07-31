@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : EntityGrain.cs
 // Created          : 2015-04-24  8:15 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  10:12 AM
+// Last Modified On : 2015-07-31  4:36 PM
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -57,6 +57,15 @@ namespace Yuyi.Jinyinmao.Domain
         #endregion IEntity Members
 
         /// <summary>
+        ///     Dumps the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public Task DumpAsync()
+        {
+            return this.State.WriteStateAsync();
+        }
+
+        /// <summary>
         ///     This method is called at the end of the process of activating a grain.
         ///     It is called before any messages have been dispatched to the grain.
         ///     For grains with declared persistent state, this method is called after the State property has been populated.
@@ -66,7 +75,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.CommandStore = new CommandStore();
             this.EventStore = new EventStore();
 
-            this.RegisterTimer(o => this.SaveStateChangesAsync(), new object(), TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1));
+            this.RegisterTimer(o => this.SaveStateChangesAsync(), new object(), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
 
             return base.OnActivateAsync();
         }

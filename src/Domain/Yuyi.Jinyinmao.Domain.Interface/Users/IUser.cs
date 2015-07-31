@@ -115,6 +115,12 @@ namespace Yuyi.Jinyinmao.Domain
         Task DoDailyWorkAsync(bool force = false);
 
         /// <summary>
+        /// Dumps the asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task DumpAsync();
+
+        /// <summary>
         ///     Gets the bank card information asynchronous.
         /// </summary>
         /// <param name="bankCardNo">The bank card no.</param>
@@ -228,6 +234,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
         Task HideBankCardAsync(HideBankCard command);
+
+        /// <summary>
+        /// Inserts the settle account transcation asynchronous.
+        /// </summary>
+        /// <param name="transactionDto">The transaction dto.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> InsertSettleAccountTranscationAsync(InsertSettleAccountTransactionDto transactionDto);
 
         /// <summary>
         ///     Investings the asynchronous.

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : User_RaiseEvent.cs
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  2:56 PM
+// Last Modified On : 2015-07-31  4:41 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -49,7 +49,8 @@ namespace Yuyi.Jinyinmao.Domain
             { typeof(JBYWithdrawalResulted), e => JBYWithdrawalResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) },
             { typeof(JBYReinvested), e => JBYReinvestedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYReinvested)e) },
             { typeof(BankCardHiden), e => BankCardHidenProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((BankCardHiden)e) },
-            { typeof(ExtraInterestAdded), e => ExtraInterestAddedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) }
+            { typeof(ExtraInterestAdded), e => ExtraInterestAddedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) },
+            { typeof(SettleAccountTransactionInserted), e => SettleAccountTransactionInsertedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((SettleAccountTransactionInserted)e) }
         };
 
         /// <summary>
@@ -310,6 +311,17 @@ namespace Yuyi.Jinyinmao.Domain
                     UserInfo = await this.GetUserInfoAsync()
                 };
             }
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseTransactionInsertdEvent(InsertSettleAccountTransactionDto transactionDto, SettleAccountTransactionInfo transactionInfo)
+        {
+            SettleAccountTransactionInserted @event = new SettleAccountTransactionInserted
+            {
+                Args = transactionDto.Args,
+                TransactionInfo = transactionInfo
+            };
 
             await this.ProcessEventAsync(@event);
         }
