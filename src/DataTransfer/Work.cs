@@ -4,7 +4,7 @@
 // Created          : 2015-07-31  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  7:47 PM
+// Last Modified On : 2015-07-31  7:51 PM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -62,6 +62,7 @@ namespace DataTransfer
         #endregion Runs this instance
 
         [SuppressMessage("ReSharper", "InvokeAsExtensionMethod")]
+        [SuppressMessage("ReSharper", "RedundantTypeArgumentsOfMethod")]
         private static async Task<Guid> GetSettleTransactionIdAsync(Guid orderId, Guid productId)
         {
             using (var context = new OldDBContext())
