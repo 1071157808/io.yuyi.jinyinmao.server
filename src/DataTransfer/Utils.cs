@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataTransfer.Models;
 using Yuyi.Jinyinmao.Domain;
+using System.Data.Entity;
 
 namespace DataTransfer
 {
@@ -26,10 +27,11 @@ namespace DataTransfer
 
         public static async Task<Dictionary<string, BankCard>> GetBankCards(string userId)
         {
-            Guid id = new Guid(userId);
+            Guid id = Guid.ParseExact(userId,"N");
             using (var context = new OldDBContext())
             {
-                var bankCards = context.TransBankCard.Where(x => x.UserId == userId).ToList().Select(b => new BankCard
+                List<TransBankCard> bankCards = await context.TransBankCard.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
+                return bankCards.Select(b => new BankCard
                 {
                     AddingTime = b.AddingTime,
                     Args = Args,
@@ -44,7 +46,6 @@ namespace DataTransfer
                     VerifiedTime = b.VerifiedTime,
                     WithdrawAmount = b.WithdrawAmount
                 }).ToDictionary(x => x.BankCardNo);
-                return await Task.Run(() => bankCards);
             }
         }
 
@@ -82,43 +83,32 @@ namespace DataTransfer
 
         public async static Task<long> GetProductCategoryAsync(int productCategory = 0, int? productType = 0)
         {
-            long num;
+
             if (productType != 0)
             {
                 switch (productType)
                 {
                     case 10:
-                        /*
-                                                num = 100000010;
-                        */
-                        break;
+                        return await Task.FromResult(100000010L);
 
                     case 20:
-                        /*
-                                                num = 100000020;
-                        */
-                        break;
+
+                        return await Task.FromResult(100000020L);
                 }
             }
             switch (productCategory)
             {
                 case 20:
-                    num = 210001010;
-                    break;
+                    return await Task.FromResult(210001010L);
 
                 case 30:
-                    num = 210002020;
-                    break;
+                    return await Task.FromResult(210002020L);
 
                 case 40:
-                    num = 210003010;
-                    break;
+                    return await Task.FromResult(210003010L);
 
-                default:
-                    num = -1;
-                    break;
             }
-            return await Task.Run(() => num);
+            return await Task.FromResult(-1L);
         }
 
         public static string GetProductName(string name)

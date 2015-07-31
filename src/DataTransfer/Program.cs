@@ -27,9 +27,9 @@ namespace DataTransfer
             try
             {
                 Console.WriteLine("Start");
-                //Work.Run();
+                Work.Run().Wait();
                 Console.WriteLine("finsi");
-                MemoryWork.Run().Wait();
+                //MemoryWork.Run().Wait();
             }
             catch (AggregateException exception)
             {

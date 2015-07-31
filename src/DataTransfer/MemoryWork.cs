@@ -26,7 +26,7 @@ namespace DataTransfer
             StrJBYProductId = string.IsNullOrEmpty(StrJBYProductId) ? StrDefaultJBYProductId : StrJBYProductId;
             JBYProductId = new Guid(StrJBYProductId);
 
-            if (AzureClient.IsInitialized || GrainClient.IsInitialized)
+            if (GrainClient.IsInitialized)
             {
                 return;
             }
@@ -38,6 +38,7 @@ namespace DataTransfer
 
         public async static Task Run()
         {
+            var p = await RegularProductFactory.GetGrain(Guid.NewGuid()).GetRegularProductInfoAsync();
 
             List<RegularProductMigrationDto> productList = await GetProductsAsync();
             foreach (var item in productList)
