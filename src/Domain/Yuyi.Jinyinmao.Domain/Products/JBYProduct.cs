@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  8:54 PM
+// Last Modified On : 2015-08-01  1:01 PM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -99,7 +99,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public Task CheckSaleStatusAsync()
         {
-            if ((this.PaidAmount >= this.State.FinancingSumAmount || this.State.EndSellTime.AddMinutes(3) <= DateTime.UtcNow.AddHours(8)) && !this.State.SoldOut)
+            if (!this.State.SoldOut && (this.PaidAmount >= this.State.FinancingSumAmount || this.State.EndSellTime.AddMinutes(3) <= DateTime.UtcNow.AddHours(8)))
             {
                 Task.Factory.StartNew(() => this.SetToSoldOutAsync());
             }
@@ -142,10 +142,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
         public async Task<JBYProductInfo> GetProductInfoAsync()
         {
-            if (this.State.ProductNo.IsNullOrEmpty())
+            if (this.State.ProductId == Guid.Empty)
             {
                 await this.RefreshAsync(true);
-                return null;
             }
 
             JBYProductInfo info = new JBYProductInfo

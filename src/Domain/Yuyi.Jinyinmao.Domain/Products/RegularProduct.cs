@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : RegularProduct.cs
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  9:13 AM
+// Last Modified On : 2015-08-01  1:01 PM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -187,7 +187,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         public Task<RegularProductInfo> GetRegularProductInfoAsync()
         {
-            if (this.State.ProductNo.IsNullOrEmpty())
+            if (this.State.ProductId == Guid.Empty)
             {
                 return Task.FromResult<RegularProductInfo>(null);
             }

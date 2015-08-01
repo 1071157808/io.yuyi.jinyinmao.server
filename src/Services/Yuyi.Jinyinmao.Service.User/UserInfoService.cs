@@ -165,19 +165,9 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         /// <param name="orderId">The order identifier.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        public async Task<OrderInfo> GetOrderInfoAsync(Guid userId, Guid orderId)
+        public Task<OrderInfo> GetOrderInfoAsync(Guid userId, Guid orderId)
         {
-            string cacheName = "User-Order";
-            string cacheId = "{0}-{1}".FormatWith(userId.ToGuidString(), orderId.ToGuidString());
-            OrderInfo order = SiloClusterConfig.CacheTable.ReadDataFromTableCache<OrderInfo>(cacheName, cacheId, TimeSpan.FromMinutes(1));
-
-            if (order == null)
-            {
-                order = await this.innerService.GetOrderInfoAsync(userId, orderId);
-                await SiloClusterConfig.CacheTable.SetDataToStorageCacheAsync(cacheName, cacheId, order);
-            }
-
-            return order;
+            return this.innerService.GetOrderInfoAsync(userId, orderId);
         }
 
         /// <summary>
