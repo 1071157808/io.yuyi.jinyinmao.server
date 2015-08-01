@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Assembly         : nyanya
 // Author           : Siqi Lu
 // Created          : 2015-03-04  6:31 PM
@@ -102,6 +102,8 @@ namespace nyanya.Cat.Controllers
         [HttpPost, Route(""), TokenAuthorize, EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2)]
         public async Task<IHttpActionResult> Investing(InvestingRequest request)
         {
+            return this.BadRequest("金银猫正在努力的升级，暂时无法购买，8月3日（周一）9：00再一起愉快的理财吧。");
+
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Identifier, request.PaymentPassword);
 
             if (result.Lock)

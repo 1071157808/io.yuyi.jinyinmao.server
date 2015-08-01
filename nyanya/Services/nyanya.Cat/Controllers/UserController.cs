@@ -1,7 +1,22 @@
-﻿// FileInformation: nyanya/nyanya.Cat/UserController.cs
-// CreatedTime: 2015/03/05   9:54 PM
-// LastUpdatedTime: 2015/03/12   6:18 PM
+// ***********************************************************************
+// Project          : nyanya
+// File             : UserController.cs
+// Created          : 2015-05-18  2:54 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-08-01  8:34 PM
+// ***********************************************************************
+// <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
 
+using System;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Description;
+using System.Web.Security;
 using Cat.Commands.Users;
 using Cat.Domain.Auth.Models;
 using Cat.Domain.Auth.Services.DTO;
@@ -19,12 +34,6 @@ using nyanya.AspDotNet.Common.Controller;
 using nyanya.AspDotNet.Common.Filters;
 using nyanya.Cat.Filters;
 using nyanya.Cat.Models;
-using System;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.Description;
-using System.Web.Security;
 
 namespace nyanya.Cat.Controllers
 {
@@ -103,6 +112,8 @@ namespace nyanya.Cat.Controllers
         [EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2)]
         public async Task<IHttpActionResult> AddBankCard(AddBankCardRequest request)
         {
+            return this.BadRequest("金银猫正在努力升级，暂时无法绑卡哦。<br>8月3日（周一）9：00就可以继续愉快的添加银行卡啦。");
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
 
             if (userInfo == null)
@@ -173,6 +184,8 @@ namespace nyanya.Cat.Controllers
         [ValidateModelState(Order = 1)]
         public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法重置密码呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCode.VeriCodeType.ResetLoginPassword);
             if (!result.Result)
             {
@@ -217,6 +230,8 @@ namespace nyanya.Cat.Controllers
         [ValidateModelState(Order = 1)]
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法重置密码呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCode.VeriCodeType.ResetPaymentPassword);
             if (!result.Result)
             {
@@ -290,6 +305,8 @@ namespace nyanya.Cat.Controllers
         [EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2)]
         public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法重置密码呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UserInfo info = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
             if (await this.userService.CompareWithLoginPassword(this.CurrentUser.Identifier, request.Password))
             {
@@ -330,7 +347,7 @@ namespace nyanya.Cat.Controllers
         {
             if (this.CurrentUser.Cellphone == request.Name && this.CurrentUser.ExpiryTime > DateTime.Now.AddMinutes(5))
             {
-                var rCode = DesHelper.DesEncrypt(string.Format("{0},{1}", CurrentUser.Identifier, DateTime.Now.AddMinutes(1).ToBinary()));
+                var rCode = DesHelper.DesEncrypt(string.Format("{0},{1}", this.CurrentUser.Identifier, DateTime.Now.AddMinutes(1).ToBinary()));
                 return this.Ok(new SignInResponse { RemainCount = 5, Successful = true, UserExist = true, RCode = rCode });
             }
             SignInResult signInResult = await this.SignInAsync(request.Name, request.Password);
@@ -394,6 +411,8 @@ namespace nyanya.Cat.Controllers
         [ValidateModelState(Order = 1)]
         public async Task<IHttpActionResult> SignUp(SignUpRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法注册呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCode.VeriCodeType.SignUp);
 
             if (!result.Result)

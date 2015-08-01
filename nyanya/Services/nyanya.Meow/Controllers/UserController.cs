@@ -1,7 +1,22 @@
-﻿// FileInformation: nyanya/nyanya.Meow/UserController.cs
-// CreatedTime: 2015/03/04   6:31 PM
-// LastUpdatedTime: 2015/03/13   1:45 AM
+// ***********************************************************************
+// Project          : nyanya
+// File             : UserController.cs
+// Created          : 2015-05-18  2:55 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-08-01  8:29 PM
+// ***********************************************************************
+// <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
 
+using System;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Description;
+using System.Web.Security;
 using Cat.Commands.Users;
 using Cat.Domain.Auth.Models;
 using Cat.Domain.Auth.Services.DTO;
@@ -18,12 +33,6 @@ using nyanya.AspDotNet.Common.Controller;
 using nyanya.AspDotNet.Common.Filters;
 using nyanya.Meow.Filters;
 using nyanya.Meow.Models;
-using System;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.Description;
-using System.Web.Security;
 
 namespace nyanya.Meow.Controllers
 {
@@ -93,6 +102,8 @@ namespace nyanya.Meow.Controllers
         [EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2)]
         public async Task<IHttpActionResult> AddBankCard(AddBankCardRequest request)
         {
+            return this.BadRequest("金银猫正在努力升级，暂时无法绑卡哦。<br>8月3日（周一）9：00就可以继续愉快的添加银行卡啦。");
+
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
 
             if (userInfo == null)
@@ -141,7 +152,7 @@ namespace nyanya.Meow.Controllers
             AddBankCardResult result = await this.userService.AddBankCardStatusAsync(this.CurrentUser.Identifier, request.BankCardNo);
             if (result == null)
             {
-                return BadRequest("找不到银行卡");
+                return this.BadRequest("找不到银行卡");
             }
             return this.Ok(result);
         }
@@ -183,6 +194,8 @@ namespace nyanya.Meow.Controllers
         [ValidateModelState(Order = 1)]
         public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法重置密码呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCode.VeriCodeType.ResetLoginPassword);
             if (!result.Result)
             {
@@ -227,6 +240,8 @@ namespace nyanya.Meow.Controllers
         [ValidateModelState(Order = 1)]
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法重置密码呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCode.VeriCodeType.ResetPaymentPassword);
             if (!result.Result)
             {
@@ -300,6 +315,8 @@ namespace nyanya.Meow.Controllers
         [EmptyParameterFilter("request", Order = 1), ValidateModelState(Order = 2)]
         public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法重置密码呢。8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UserInfo info = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Identifier);
             if (await this.userService.CompareWithLoginPassword(this.CurrentUser.Identifier, request.Password))
             {
@@ -402,6 +419,8 @@ namespace nyanya.Meow.Controllers
         [ValidateModelState(Order = 1)]
         public async Task<IHttpActionResult> SignUp(SignUpRequest request)
         {
+            return this.BadRequest("金银猫正在升级，暂时无法注册呢。<br>8月3日（周一）9：00再来加入金银猫吧，我们约好了哦。");
+
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCode.VeriCodeType.SignUp);
 
             if (!result.Result)
