@@ -594,7 +594,7 @@ namespace DataTransfer
                         case TranscationState.ToJBY:
                             transaction.Trade = Trade.Credit;
                             transaction.TradeCode = 1005012003;
-                            transaction.TransactionId = order.AccountTransactionId;
+                            transaction.TransactionId = Guid.NewGuid();
                             transaction.TransDesc = "钱包金额转为金包银金额";
                             transaction.SettleAccountTransactionId = id;
                             break;
@@ -758,6 +758,7 @@ namespace DataTransfer
                 List<JsonJBYAccountTransaction> list = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
                 return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId);
             }
+
         }
 
         /// <summary>
