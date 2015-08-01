@@ -4,7 +4,7 @@
 // Created          : 2015-07-31  6:28 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  7:27 PM
+// Last Modified On : 2015-08-01  6:46 PM
 // ***********************************************************************
 // <copyright file="InsertSettleAccountTransactionRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     流水对应的银行卡号
         /// </summary>
-        [Required, Range(1, 200000000), JsonProperty("bankCardNo")]
+        [Required, JsonProperty("bankCardNo")]
         public string BankCardNo { get; set; }
 
         /// <summary>

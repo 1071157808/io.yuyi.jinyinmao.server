@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : MemoryWork.cs
-// Created          : 2015-07-31  8:58 PM
+// Created          : 2015-08-01  5:33 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  9:02 PM
+// Last Modified On : 2015-08-01  5:34 PM
 // ***********************************************************************
 // <copyright file="MemoryWork.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,18 +24,21 @@ using Newtonsoft.Json;
 using Orleans;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Moe.Lib;
 
 namespace DataTransfer
 {
+    /// <summary>
+    ///     MemoryWork.
+    /// </summary>
     public class MemoryWork
     {
         [SuppressMessage("ReSharper", "NotAccessedField.Local")]
         private static readonly Guid JBYProductId;
 
-        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly int ProductExecuteDataCount;
+        private static readonly string StrDefaultJBYProductId = "5e35201f315e41d4b11f014d6c01feb8";
         private static readonly int UserExecuteDataCount;
+
         static MemoryWork()
         {
             string strJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId");
@@ -55,15 +58,19 @@ namespace DataTransfer
             int.TryParse(ConfigurationManager.AppSettings.Get("UserExecuteDataCount"), out UserExecuteDataCount);
         }
 
+        /// <summary>
+        ///     Runs this instance.
+        /// </summary>
+        /// <returns>Task.</returns>
         public static async Task Run()
         {
             //await ProductTaskAsync();
             await UserTaskAsync();
         }
 
-
         #region 创建多个数据迁移任务
-        private async static Task ProductTaskAsync()
+
+        private static async Task ProductTaskAsync()
         {
             double count = await GetProductCountAsync();
             List<Task> list = new List<Task>();
@@ -74,7 +81,7 @@ namespace DataTransfer
             await Task.WhenAll(list.ToArray());
         }
 
-        private async static Task UserTaskAsync()
+        private static async Task UserTaskAsync()
         {
             double count = await GetUserCountAsync();
             List<Task> list = new List<Task>();
@@ -83,10 +90,12 @@ namespace DataTransfer
                 list.Add(UserMigrationAsync(UserExecuteDataCount, i * UserExecuteDataCount, i));
             }
             await Task.WhenAll(list.ToArray());
-        } 
-        #endregion
+        }
+
+        #endregion 创建多个数据迁移任务
 
         #region 分批次数据转移
+
         private static async Task ProductMigrationAsync(int takeCount, int skipCount, int threadId)
         {
             using (var context = new OldDBContext())
@@ -120,10 +129,12 @@ namespace DataTransfer
                     await UserFactory.GetGrain(Guid.NewGuid()).MigrateAsync(item);
                 }
             }
-        } 
-        #endregion
+        }
+
+        #endregion 分批次数据转移
 
         #region 获取Product和User数量
+
         private static async Task<double> GetProductCountAsync()
         {
             using (OldDBContext context = new OldDBContext())
@@ -140,7 +151,8 @@ namespace DataTransfer
                 double count = await context.JsonUser.AsNoTracking().Select(x => x.UserId).CountAsync();
                 return count;
             }
-        } 
-        #endregion
+        }
+
+        #endregion 获取Product和User数量
     }
 }

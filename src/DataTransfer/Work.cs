@@ -36,10 +36,11 @@ namespace DataTransfer
         private static readonly Guid JBYProductId;
         private static readonly Dictionary<string, object> OrderArgs = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> ProductArgs = new Dictionary<string, object>();
+        private static readonly int ProductExecuteDataCount;
         private static readonly string StrDefaultJBYProductId;
         private static readonly Dictionary<string, object> UserArgs = new Dictionary<string, object>();
-        private static readonly int ProductExecuteDataCount;
         private static readonly int UserExecuteDataCount;
+
         static Work()
         {
             StrDefaultJBYProductId = ConfigurationManager.AppSettings.Get("StrJBYProductId").IsNotNullOrEmpty()
@@ -337,14 +338,14 @@ namespace DataTransfer
                                 Yield = (int)(oldOrder.Yield * 100)
                             };
 
-                            List<TranscationState> states = new List<TranscationState>()
+                            List<TranscationState> states = new List<TranscationState>
                             {
                                 TranscationState.ChongZhi,
                                 TranscationState.GouMai
                             };
                             if (orderInfo.IsRepaid)
                             {
-                                states.AddRange(new List<TranscationState>()
+                                states.AddRange(new List<TranscationState>
                                 {
                                     TranscationState.BenJin,
                                     TranscationState.LiXi,
@@ -354,7 +355,6 @@ namespace DataTransfer
 
                             await GenerateRegularTransactionAsync(states, orderInfo, userInfo);
                             orders.Add(orderInfo.OrderId, orderInfo);
-
                         }
                         product.Orders = orders;
                         context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = product.ProductId });
@@ -823,7 +823,6 @@ namespace DataTransfer
                 List<JsonJBYAccountTransaction> list = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
                 return list.Select(item => JsonConvert.DeserializeObject<JBYAccountTransaction>(item.Data)).ToDictionary(x => x.TransactionId);
             }
-
         }
 
         /// <summary>
