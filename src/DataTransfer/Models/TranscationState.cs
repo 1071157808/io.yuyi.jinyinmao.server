@@ -21,9 +21,9 @@ namespace DataTransfer.Models
         BenJin = 30,
         LiXi = 40,
         QuXian = 50,
-        ToJBY = 60,
-        ToQianBao = 70,
-        RecieveByQianBao = 80,
-        RecieveByJBY = 90
+        QianBaoToJBY = 60,
+        JBYToQianBao = 70,
+        JBYRecieveFromQianBao = 80,
+        QianBaoRecieveFromJBY = 90
     }
 }
