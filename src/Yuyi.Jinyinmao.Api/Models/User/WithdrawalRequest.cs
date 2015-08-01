@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-04  12:29 AM
+// File             : WithdrawalRequest.cs
+// Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-10  11:27 AM
+// Last Modified On : 2015-08-01  1:58 PM
 // ***********************************************************************
 // <copyright file="WithdrawalRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Newtonsoft.Json;
+using Yuyi.Jinyinmao.Api.Validations;
 
 namespace Yuyi.Jinyinmao.Api.Models
 {
@@ -40,7 +41,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     支付密码
         /// </summary>
-        [Required, StringLength(18, MinimumLength = 6), JsonProperty("paymentPassword")]
+        [Required, StringLength(18, MinimumLength = 6), PaymentPasswordFormat, JsonProperty("paymentPassword")]
         public string PaymentPassword { get; set; }
     }
 }
