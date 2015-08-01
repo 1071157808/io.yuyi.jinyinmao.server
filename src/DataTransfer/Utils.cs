@@ -84,17 +84,6 @@ namespace DataTransfer
 
         public static Task<long> GetProductCategoryAsync(int productCategory = 0, int? productType = 0)
         {
-            if (productType != 0)
-            {
-                switch (productType)
-                {
-                    case 10:
-                        return Task.FromResult(100000010L);
-
-                    case 20:
-                        return Task.FromResult(100000020L);
-                }
-            }
             switch (productCategory)
             {
                 case 20:
@@ -105,6 +94,18 @@ namespace DataTransfer
 
                 case 40:
                     return Task.FromResult(210003010L);
+            }
+
+            if (productType != 0)
+            {
+                switch (productType)
+                {
+                    case 10:
+                        return Task.FromResult(100000010L);
+
+                    case 20:
+                        return Task.FromResult(100000020L);
+                }
             }
 
             return Task.FromResult(-1L);
