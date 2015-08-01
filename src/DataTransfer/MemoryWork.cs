@@ -50,6 +50,7 @@ namespace DataTransfer
             }
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             GrainClient.Initialize(Path.Combine(baseDir, "ReleaseConfiguration.xml"));
+            GrainClient.SetResponseTimeout(TimeSpan.FromMinutes(2));
 
             ProductExecuteDataCount = 2000;
             UserExecuteDataCount = 4000;
@@ -100,9 +101,20 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 List<string> list = await context.JsonProduct.AsNoTracking().OrderBy(x => x.ProductId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                foreach (RegularProductMigrationDto item in list.Select(x => JsonConvert.DeserializeObject(x)))
+                var datas = list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x));
+                RegularProductMigrationDto product;
+                try
                 {
-                    await RegularProductFactory.GetGrain(Guid.NewGuid()).MigrateAsync(item);
+                    for (int i = 0; i < datas.Count(); i++)
+                    {
+                        product = datas.ElementAt(i);
+                        await RegularProductFactory.GetGrain(Guid.NewGuid()).MigrateAsync(product);
+                    }
+                }
+                catch (Exception ex)
+                {
+                        
+                    throw;
                 }
             }
         }
@@ -112,7 +124,7 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 List<string> list = await context.JsonUser.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                foreach (UserMigrationDto item in list.Select(x => JsonConvert.DeserializeObject(x)))
+                foreach (UserMigrationDto item in list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)))
                 {
                     await UserFactory.GetGrain(Guid.NewGuid()).MigrateAsync(item);
                 }

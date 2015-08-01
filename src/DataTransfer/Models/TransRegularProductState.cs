@@ -1,24 +1,13 @@
-// ***********************************************************************
-// Project          : io.yuyi.jinyinmao.server
-// File             : TransRegularProductState.cs
-// Created          : 2015-07-31  7:39 PM
-//
-// Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  7:42 PM
-// ***********************************************************************
-// <copyright file="TransRegularProductState.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
-//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
-// </copyright>
-// ***********************************************************************
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace DataTransfer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
     [Table("TransRegularProductState")]
-    public class TransRegularProductState
+    public partial class TransRegularProductState
     {
         [Key]
         [Column(Order = 0)]
@@ -29,6 +18,11 @@ namespace DataTransfer.Models
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Agreement2 { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        [StringLength(50)]
+        public string ProductId { get; set; }
 
         public int? Args { get; set; }
 
@@ -89,9 +83,9 @@ namespace DataTransfer.Models
         public int ProductCategory { get; set; }
 
         [Key]
-        [Column(Order = 2)]
-        [StringLength(50)]
-        public string ProductId { get; set; }
+        [Column(Order = 10)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ProductType { get; set; }
 
         [Key]
         [Column(Order = 11)]
@@ -102,11 +96,6 @@ namespace DataTransfer.Models
         [Column(Order = 12)]
         [StringLength(40)]
         public string ProductNo { get; set; }
-
-        [Key]
-        [Column(Order = 10)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int ProductType { get; set; }
 
         [Key]
         [Column(Order = 13)]
