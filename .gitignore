@@ -7,7 +7,7 @@
 !Yuyi.Jinyinmao.Domain.User
 !Yuyi.Jinyinmao.Service.User
 *.sln.docstates
-.vs/
+.vs
 
 # Build results
 [Dd]ebug/

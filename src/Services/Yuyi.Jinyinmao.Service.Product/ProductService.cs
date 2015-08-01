@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : ProductService.cs
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  9:23 AM
+// Last Modified On : 2015-08-02  7:35 AM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -149,7 +149,14 @@ namespace Yuyi.Jinyinmao.Service
                     .Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
             }
 
-            IList<RegularProductInfo> infos = items.Select(i => i.ToInfo()).ToList();
+            List<RegularProduct> onSellProducts = items.Where(p => !p.SoldOut).ToList();
+            List<RegularProduct> soldOutProducts = items.Where(p => p.SoldOut).ToList();
+
+            List<RegularProduct> products = new List<RegularProduct>();
+            products.AddRange(onSellProducts.OrderBy(p => p.StartSellTime));
+            products.AddRange(soldOutProducts);
+
+            IList<RegularProductInfo> infos = products.Select(p => p.ToInfo()).ToList();
 
             await this.FillWithSaleData(infos);
 
@@ -185,7 +192,14 @@ namespace Yuyi.Jinyinmao.Service
                     .Take(number).ToListAsync();
             }
 
-            IList<RegularProductInfo> infos = items.Select(i => i.ToInfo()).ToList();
+            List<RegularProduct> onSellProducts = items.Where(p => !p.SoldOut).ToList();
+            List<RegularProduct> soldOutProducts = items.Where(p => p.SoldOut).ToList();
+
+            List<RegularProduct> products = new List<RegularProduct>();
+            products.AddRange(onSellProducts.OrderBy(p => p.StartSellTime));
+            products.AddRange(soldOutProducts);
+
+            IList<RegularProductInfo> infos = products.Select(p => p.ToInfo()).ToList();
 
             await this.FillWithSaleData(infos);
 
@@ -294,8 +308,8 @@ namespace Yuyi.Jinyinmao.Service
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                .ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
-                .ThenByDescending(p => p.IssueNo);
+                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 
         private async Task FillWithSaleData(IEnumerable<RegularProductInfo> infos)
