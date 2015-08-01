@@ -134,14 +134,14 @@ namespace DataTransfer
                     List<string> datas = await context.JsonJBYAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
                     List<JBYAccountTransaction> list =
                         datas.Select(x => JsonConvert.DeserializeObject<JBYAccountTransaction>(x)).ToList();
-                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
+                    return list.Where(x => x.TradeCode == 2001051102 || x.TradeCode == 2001012002).Select(x => x.TransactionId).FirstOrDefault();
                 }
                 else
                 {
                     List<string> datas = await context.JsonSettleAccountTransaction.AsNoTracking().Where(x => x.OrderId == orderId).Select(x => x.Data).ToListAsync();
                     List<SettleAccountTransaction> list =
                         datas.Select(x => JsonConvert.DeserializeObject<SettleAccountTransaction>(x)).ToList();
-                    return list.Where(x => x.TradeCode == 10000).Select(x => x.TransactionId).FirstOrDefault();
+                    return list.Where(x => x.TradeCode == 1005012004).Select(x => x.TransactionId).FirstOrDefault();
                 }
             }
         }
@@ -171,6 +171,7 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 var oldProductList = context.TransRegularProductState.AsNoTracking().OrderBy(o => o.ProductId).Skip(skipCount).Take(takeCount);
+
 
                 if (!oldProductList.Any()) return;
 
@@ -262,6 +263,7 @@ namespace DataTransfer
                                 }, orderInfo, userInfo);
                             }
                         }
+                        product.Orders = new Dictionary<Guid, OrderInfo>();
                     }
                     else
                     {
@@ -348,19 +350,18 @@ namespace DataTransfer
                                     TranscationState.LiXi,
                                     TranscationState.QuXian
                                 });
-
                             }
 
                             await GenerateRegularTransactionAsync(states, orderInfo, userInfo);
                             orders.Add(orderInfo.OrderId, orderInfo);
 
                         }
+                        product.Orders = orders;
+                        context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = product.ProductId });
                     }
 
                     #endregion orders
 
-                    product.Orders = product.ProductId == JBYProductId ? new Dictionary<Guid, OrderInfo>() : orders;
-                    context.JsonProduct.Add(new JsonProduct { Data = JsonConvert.SerializeObject(product), ProductId = product.ProductId });
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count: " + ++i);
 
                     #endregion product
@@ -434,10 +435,14 @@ namespace DataTransfer
                     #region Order
 
                     List<Order> listOrder = new List<Order>();
-                    List<TransOrderInfo> verifiedUsers = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId && o.ProductId != StrDefaultJBYProductId).ToListAsync();
-                    foreach (var x in verifiedUsers)
+                    List<TransOrderInfo> orderInfos = await context.TransOrderInfo.AsNoTracking().Where(o => userInfo.Verified && o.UserId == transUserInfo.UserId && o.ProductId != StrDefaultJBYProductId).ToListAsync();
+                    foreach (var x in orderInfos)
                     {
                         Guid accountTransactionId = await GetSettleTransactionIdAsync(Guid.ParseExact(x.OrderId, "N"), Guid.ParseExact(x.ProductId, "N"));
+                        TransRegularProductState product =
+                           await context.TransRegularProductState.AsNoTracking()
+                                .FirstOrDefaultAsync(p => p.ProductId == x.ProductId);
+
                         listOrder.Add(new Order
                         {
                             AccountTransactionId = accountTransactionId,
@@ -454,7 +459,41 @@ namespace DataTransfer
                             Principal = (long)(x.Principal * 100),
                             ProductCategory = await Utils.GetProductCategoryAsync(x.ProductCategory, x.ProductType),
                             ProductId = Guid.ParseExact(x.ProductId, "N"),
-                            ProductSnapshot = null,
+                            ProductSnapshot = product == null ? new RegularProductInfo() :
+                            new RegularProductInfo
+                            {
+                                Args = ProductArgs,
+                                BankName = product.BankName,
+                                Drawee = product.Drawee,
+                                DraweeInfo = product.DraweeInfo,
+                                EndorseImageLink = product.EndorseImageLink,
+                                EndSellTime = product.EndSellTime,
+                                EnterpriseInfo = product.EnterpriseInfo,
+                                EnterpriseLicense = product.EnterpriseInfo,
+                                EnterpriseName = product.EnterpriseName,
+                                FinancingSumAmount = product.FinancingSumAmount,
+                                IssueNo = product.IssueNo,
+                                IssueTime = product.IssueTime,
+                                Period = product.Period,
+                                PledgeNo = product.PledgeNo,
+                                ProductCategory = product.ProductCategory,
+                                ProductName = product.ProductName,
+                                ProductNo = product.ProductNo,
+                                ProductId = Guid.ParseExact(product.ProductId, "N"),
+                                Repaid = product.Repaid,
+                                RepaymentDeadline = product.RepaymentDeadline,
+                                RiskManagement = product.RiskManagement,
+                                RiskManagementInfo = product.RiskManagementInfo,
+                                RiskManagementMode = Utils.GetRiskManagementMode(product.RiskManagementMode),
+                                SettleDate = product.SettleDate,
+                                SoldOut = product.SoldOut,
+                                SoldOutTime = product.SoldOutTime,
+                                StartSellTime = product.StartSellTime,
+                                UnitPrice = (long)(product.UnitPrice * 100),
+                                Usage = product.Usage,
+                                ValueDateMode = 0,
+                                Yield = (int)(product.Yield * 100)
+                            },
                             RepaidTime = null,
                             ResultCode = 10000,
                             SettleDate = Utils.GetDate(x.SettleDate),
@@ -470,31 +509,31 @@ namespace DataTransfer
 
                     #endregion Order
 
-                    var user = new UserMigrationDto
+                    UserMigrationDto user = new UserMigrationDto
                     {
                         Args = UserArgs,
                         BankCards = await Utils.GetBankCards(transUserInfo.UserId),
-                        Cellphone = transUserInfo.Cellphone,
-                        ClientType = transUserInfo.ClientType,
+                        Cellphone = userInfo.Cellphone,
+                        ClientType = userInfo.ClientType,
                         Closed = false,
-                        ContractId = transUserInfo.ContractId,
+                        ContractId = userInfo.ContractId,
                         Credential = userInfo.Credential,
-                        CredentialNo = transUserInfo.CredentialNo,
+                        CredentialNo = userInfo.CredentialNo,
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword.IsNullOrEmpty() ? string.Empty : transUserInfo.EncryptedPaymentPassword,
                         InviteBy = userInfo.InviteBy,
                         JBYAccount = await GetJBYAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
                         LoginNames = userInfo.LoginNames,
                         Orders = orders,
-                        OutletCode = transUserInfo.OutletCode,
+                        OutletCode = userInfo.OutletCode,
                         PaymentSalt = transUserInfo.PaymentSalt.IsNullOrEmpty() ? string.Empty : transUserInfo.PaymentSalt,
                         RealName = userInfo.RealName,
-                        RegisterTime = transUserInfo.RegisterTime,
+                        RegisterTime = userInfo.RegisterTime,
                         Salt = transUserInfo.Salt,
                         SettleAccount = await GetSettleAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
                         UserId = userInfo.UserId,
                         Verified = userInfo.Verified,
-                        VerifiedTime = transUserInfo.VerifiedTime
+                        VerifiedTime = userInfo.VerifiedTime
                     };
 
                     string json = JsonConvert.SerializeObject(user);
@@ -677,12 +716,14 @@ namespace DataTransfer
                         await context.TransSettleAccountTransaction.AsNoTracking()
                             .FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
 
+                    bool isOrderTransactionId = false;
+
                     //pre deal
                     SettleAccountTransaction transaction = new SettleAccountTransaction
                     {
                         Amount = order.Principal,
                         Args = dic,
-                        BankCardNo = oldTransaction.BankCardNo,
+                        BankCardNo = oldTransaction.BankCardNo.IsNotNullOrEmpty()? oldTransaction.BankCardNo :string.Empty,
                         //ChannelCode
                         OrderId = order.OrderId,
                         ResultCode = 1,
@@ -716,6 +757,7 @@ namespace DataTransfer
                             transaction.TransactionId = order.AccountTransactionId;
                             transaction.TransDesc = "购买银票或者商票产品(银行专区)";
                             transaction.BankCardNo = string.Empty;
+                            isOrderTransactionId = true;
 
                             break;
 
