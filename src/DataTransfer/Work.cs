@@ -66,7 +66,7 @@ namespace DataTransfer
             UserArgs.Add("Comment", "由原用户数据迁移");
             ProductArgs.Add("Comment", "由原产品数据迁移");
             await ProductTask();
-            //await UserTask();
+            await UserTask();
 
             //ProductTransfer();
         }

@@ -64,7 +64,7 @@ namespace DataTransfer
         /// <returns>Task.</returns>
         public static async Task Run()
         {
-            //await ProductTaskAsync();
+            await ProductTaskAsync();
             await UserTaskAsync();
         }
 
