@@ -66,7 +66,7 @@ namespace DataTransfer
             UserArgs.Add("Comment", "由原用户数据迁移");
             ProductArgs.Add("Comment", "由原产品数据迁移");
             await ProductTask();
-            await UserTask();
+            //await UserTask();
 
             //ProductTransfer();
         }
@@ -180,7 +180,7 @@ namespace DataTransfer
                 {
                     bool result = await ProductExistsAsync(Guid.ParseExact(oldProduct.ProductId, "N"));
                     if (result) continue;
-
+                    if (oldProduct.ProductId == StrDefaultJBYProductId && await context.JsonJBYAccountTransaction.AsNoTracking().Select(a => a.Id).CountAsync() > 0) continue;
                     #region product
 
                     Agreements agreement1 = await context.Agreements.AsNoTracking().FirstOrDefaultAsync(a => a.Id == oldProduct.Agreement1);
@@ -688,6 +688,8 @@ namespace DataTransfer
                             transaction.SettleAccountTransactionId = shuHuiId;
                             break;
                     }
+
+                    
                     context.JsonJBYAccountTransaction.Add(
                         new JsonJBYAccountTransaction
                         {
