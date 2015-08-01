@@ -23,23 +23,23 @@ namespace DataTransfer
         {
             try
             {
-                //                Console.WriteLine("Start");
-                //                Work.Run().Wait();
-                //                Console.WriteLine("Finish");
-                MemoryWork.Run().Wait();
+                Console.WriteLine("Start");
+                Work.Run().Wait();
+                Console.WriteLine("Finish");
+                //MemoryWork.Run().Wait();
             }
             catch (AggregateException exception)
             {
                 Console.WriteLine(exception.Message + exception.StackTrace);
                 foreach (var item in exception.InnerExceptions)
                 {
-                    File.AppendAllText($"{DateTime.Now.ToString("yyyyMMdd")}_log.txt", item.GetExceptionString());
+                    File.AppendAllText(DateTime.Now.ToString("yyyyMMdd")+"_log.txt", item.GetExceptionString());
                 }
                 Console.ReadKey();
             }
             catch (Exception e)
             {
-                File.AppendAllText($"{DateTime.Now.ToString("yyyyMMdd")}_log.txt", e.GetExceptionString());
+                File.AppendAllText(DateTime.Now.ToString("yyyyMMdd") + "_log.txt", e.GetExceptionString());
                 Console.ReadKey();
             }
             Console.ReadKey();
