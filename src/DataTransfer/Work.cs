@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Work.cs
-// Created          : 2015-07-31  8:58 PM
+// Created          : 2015-08-02  7:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  9:02 PM
+// Last Modified On : 2015-08-02  7:20 AM
 // ***********************************************************************
 // <copyright file="Work.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -50,8 +50,8 @@ namespace DataTransfer
                 ? int.Parse((ConfigurationManager.AppSettings.Get("ProductExecuteDataCount")))
                 : 2000;
             UserExecuteDataCount = ConfigurationManager.AppSettings.Get("UserExecuteDataCount").IsNotNullOrEmpty()
-               ? int.Parse((ConfigurationManager.AppSettings.Get("UserExecuteDataCount")))
-               : 2000;
+                ? int.Parse((ConfigurationManager.AppSettings.Get("UserExecuteDataCount")))
+                : 2000;
             JBYProductId = Guid.ParseExact(StrDefaultJBYProductId, "N");
         }
 
@@ -173,7 +173,6 @@ namespace DataTransfer
             {
                 var oldProductList = context.TransRegularProductState.AsNoTracking().OrderBy(o => o.ProductId).Skip(skipCount).Take(takeCount);
 
-
                 if (!oldProductList.Any()) return;
 
                 foreach (var oldProduct in oldProductList)
@@ -181,6 +180,7 @@ namespace DataTransfer
                     bool result = await ProductExistsAsync(Guid.ParseExact(oldProduct.ProductId, "N"));
                     if (result) continue;
                     if (oldProduct.ProductId == StrDefaultJBYProductId && await context.JsonJBYAccountTransaction.AsNoTracking().Select(a => a.Id).CountAsync() > 0) continue;
+
                     #region product
 
                     Agreements agreement1 = await context.Agreements.AsNoTracking().FirstOrDefaultAsync(a => a.Id == oldProduct.Agreement1);
@@ -375,6 +375,7 @@ namespace DataTransfer
         #region UserTransfer
 
         [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
+        [SuppressMessage("ReSharper", "FunctionComplexityOverflow")]
         private static async Task UserTransferAsync(int skipCount, int takeCount, int threadId)
         {
             int i = 0;
@@ -440,7 +441,7 @@ namespace DataTransfer
                     {
                         Guid accountTransactionId = await GetSettleTransactionIdAsync(Guid.ParseExact(x.OrderId, "N"), Guid.ParseExact(x.ProductId, "N"));
                         TransRegularProductState product =
-                           await context.TransRegularProductState.AsNoTracking()
+                            await context.TransRegularProductState.AsNoTracking()
                                 .FirstOrDefaultAsync(p => p.ProductId == x.ProductId);
 
                         listOrder.Add(new Order
@@ -460,40 +461,40 @@ namespace DataTransfer
                             ProductCategory = await Utils.GetProductCategoryAsync(x.ProductCategory, x.ProductType),
                             ProductId = Guid.ParseExact(x.ProductId, "N"),
                             ProductSnapshot = product == null ? new RegularProductInfo() :
-                            new RegularProductInfo
-                            {
-                                Args = ProductArgs,
-                                BankName = product.BankName,
-                                Drawee = product.Drawee,
-                                DraweeInfo = product.DraweeInfo,
-                                EndorseImageLink = product.EndorseImageLink,
-                                EndSellTime = product.EndSellTime,
-                                EnterpriseInfo = product.EnterpriseInfo,
-                                EnterpriseLicense = product.EnterpriseInfo,
-                                EnterpriseName = product.EnterpriseName,
-                                FinancingSumAmount = product.FinancingSumAmount,
-                                IssueNo = product.IssueNo,
-                                IssueTime = product.IssueTime,
-                                Period = product.Period,
-                                PledgeNo = product.PledgeNo,
-                                ProductCategory = product.ProductCategory,
-                                ProductName = product.ProductName,
-                                ProductNo = product.ProductNo,
-                                ProductId = Guid.ParseExact(product.ProductId, "N"),
-                                Repaid = product.Repaid,
-                                RepaymentDeadline = product.RepaymentDeadline,
-                                RiskManagement = product.RiskManagement,
-                                RiskManagementInfo = product.RiskManagementInfo,
-                                RiskManagementMode = Utils.GetRiskManagementMode(product.RiskManagementMode),
-                                SettleDate = product.SettleDate,
-                                SoldOut = product.SoldOut,
-                                SoldOutTime = product.SoldOutTime,
-                                StartSellTime = product.StartSellTime,
-                                UnitPrice = (long)(product.UnitPrice * 100),
-                                Usage = product.Usage,
-                                ValueDateMode = 0,
-                                Yield = (int)(product.Yield * 100)
-                            },
+                                new RegularProductInfo
+                                {
+                                    Args = ProductArgs,
+                                    BankName = product.BankName,
+                                    Drawee = product.Drawee,
+                                    DraweeInfo = product.DraweeInfo,
+                                    EndorseImageLink = product.EndorseImageLink,
+                                    EndSellTime = product.EndSellTime,
+                                    EnterpriseInfo = product.EnterpriseInfo,
+                                    EnterpriseLicense = product.EnterpriseInfo,
+                                    EnterpriseName = product.EnterpriseName,
+                                    FinancingSumAmount = product.FinancingSumAmount,
+                                    IssueNo = product.IssueNo,
+                                    IssueTime = product.IssueTime,
+                                    Period = product.Period,
+                                    PledgeNo = product.PledgeNo,
+                                    ProductCategory = product.ProductCategory,
+                                    ProductName = product.ProductName,
+                                    ProductNo = product.ProductNo,
+                                    ProductId = Guid.ParseExact(product.ProductId, "N"),
+                                    Repaid = product.Repaid,
+                                    RepaymentDeadline = product.RepaymentDeadline,
+                                    RiskManagement = product.RiskManagement,
+                                    RiskManagementInfo = product.RiskManagementInfo,
+                                    RiskManagementMode = Utils.GetRiskManagementMode(product.RiskManagementMode),
+                                    SettleDate = product.SettleDate,
+                                    SoldOut = product.SoldOut,
+                                    SoldOutTime = product.SoldOutTime,
+                                    StartSellTime = product.StartSellTime,
+                                    UnitPrice = (long)(product.UnitPrice * 100),
+                                    Usage = product.Usage,
+                                    ValueDateMode = 0,
+                                    Yield = (int)(product.Yield * 100)
+                                },
                             RepaidTime = null,
                             ResultCode = 10000,
                             SettleDate = Utils.GetDate(x.SettleDate),
@@ -689,7 +690,6 @@ namespace DataTransfer
                             break;
                     }
 
-                    
                     context.JsonJBYAccountTransaction.Add(
                         new JsonJBYAccountTransaction
                         {
@@ -718,14 +718,12 @@ namespace DataTransfer
                         await context.TransSettleAccountTransaction.AsNoTracking()
                             .FirstOrDefaultAsync(t => t.OrderId == order.OrderId.ToString().Replace("-", ""));
 
-                    bool isOrderTransactionId = false;
-
                     //pre deal
                     SettleAccountTransaction transaction = new SettleAccountTransaction
                     {
                         Amount = order.Principal,
                         Args = dic,
-                        BankCardNo = oldTransaction.BankCardNo.IsNotNullOrEmpty()? oldTransaction.BankCardNo :string.Empty,
+                        BankCardNo = oldTransaction.BankCardNo.IsNotNullOrEmpty() ? oldTransaction.BankCardNo : string.Empty,
                         //ChannelCode
                         OrderId = order.OrderId,
                         ResultCode = 1,
@@ -759,7 +757,6 @@ namespace DataTransfer
                             transaction.TransactionId = order.AccountTransactionId;
                             transaction.TransDesc = "购买银票或者商票产品(银行专区)";
                             transaction.BankCardNo = string.Empty;
-                            isOrderTransactionId = true;
 
                             break;
 

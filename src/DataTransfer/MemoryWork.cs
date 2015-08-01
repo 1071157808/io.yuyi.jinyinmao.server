@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : MemoryWork.cs
-// Created          : 2015-08-01  5:33 PM
+// Created          : 2015-08-02  7:06 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-01  5:34 PM
+// Last Modified On : 2015-08-02  7:20 AM
 // ***********************************************************************
 // <copyright file="MemoryWork.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -101,20 +101,11 @@ namespace DataTransfer
             using (var context = new OldDBContext())
             {
                 List<string> list = await context.JsonProduct.AsNoTracking().OrderBy(x => x.ProductId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                var datas = list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x));
-                RegularProductMigrationDto product;
-                try
+                var datas = list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x)).ToList();
+                for (int i = 0; i < datas.Count(); i++)
                 {
-                    for (int i = 0; i < datas.Count(); i++)
-                    {
-                        product = datas.ElementAt(i);
-                        await RegularProductFactory.GetGrain(Guid.NewGuid()).MigrateAsync(product);
-                    }
-                }
-                catch (Exception ex)
-                {
-                        
-                    throw;
+                    var product = datas.ElementAt(i);
+                    await RegularProductFactory.GetGrain(Guid.NewGuid()).MigrateAsync(product);
                 }
             }
         }

@@ -25,26 +25,28 @@ namespace DataTransfer
             {
                 string arg = args[0].IsNullOrEmpty() ? "0" : args[0];
 
-                if (arg == "0")
+                switch (arg)
                 {
-                    Console.WriteLine("Start Full Mode");
-                    Work.Run().Wait();
-                    MemoryWork.Run().Wait();
-                    Console.WriteLine("Finish");
-                }
-                else if (arg == "1")
-                {
-                    Console.WriteLine("Start DB Mode");
-                    Work.Run().Wait();
-                    //MemoryWork.Run().Wait();
-                    Console.WriteLine("Finish");
-                }
-                else if (arg == "2")
-                {
-                    Console.WriteLine("Start Memory Mode");
-                    //Work.Run().Wait();
-                    MemoryWork.Run().Wait();
-                    Console.WriteLine("Finish");
+                    case "0":
+                        Console.WriteLine("Start Full Mode");
+                        Work.Run().Wait();
+                        MemoryWork.Run().Wait();
+                        Console.WriteLine("Finish");
+                        break;
+
+                    case "1":
+                        Console.WriteLine("Start DB Mode");
+                        Work.Run().Wait();
+                        //MemoryWork.Run().Wait();
+                        Console.WriteLine("Finish");
+                        break;
+
+                    case "2":
+                        Console.WriteLine("Start Memory Mode");
+                        //Work.Run().Wait();
+                        MemoryWork.Run().Wait();
+                        Console.WriteLine("Finish");
+                        break;
                 }
             }
             catch (AggregateException exception)
