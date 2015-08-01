@@ -23,7 +23,7 @@ namespace DataTransfer
         {
             try
             {
-                string arg = args[0].IsNullOrEmpty() ? "0" : "1";
+                string arg = args[0].IsNullOrEmpty() ? "0" : args[0];
 
                 if (arg == "0")
                 {
