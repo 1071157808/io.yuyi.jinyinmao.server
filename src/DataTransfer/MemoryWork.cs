@@ -78,6 +78,10 @@ namespace DataTransfer
             }
         }
 
+        /// <summary>
+        /// Runs the user.
+        /// </summary>
+        /// <returns>Task.</returns>
         public static async Task RunUser()
         {
             try
@@ -89,7 +93,6 @@ namespace DataTransfer
                 Console.WriteLine(ex.GetExceptionString());
                 throw;
             }
-
         }
 
         #region 创建多个数据迁移任务
@@ -123,7 +126,7 @@ namespace DataTransfer
         {
             double count = await GetUserCountAsync();
             List<Task> list = new List<Task>();
-            
+
             try
             {
                 for (int i = 0; i < Math.Ceiling(count / UserExecuteDataCount); i++)
@@ -143,12 +146,66 @@ namespace DataTransfer
                 WriteException(exception);
                 throw;
             }
-            
         }
 
         #endregion 创建多个数据迁移任务
 
         #region 分批次数据转移
+
+        /// <summary>
+        /// Writes the exception.
+        /// </summary>
+        /// <param name="e">The e.</param>
+        public static void WriteException(Exception e)
+        {
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            if (e.InnerException != null)
+            {
+                WriteException(e.InnerException);
+            }
+
+            AggregateException e1 = e as AggregateException;
+            if (e1 != null)
+            {
+                foreach (Exception innerException in e1.InnerExceptions)
+                {
+                    WriteException(innerException);
+                }
+            }
+
+            DbEntityValidationException exception = e as DbEntityValidationException;
+            if (exception != null)
+            {
+                Console.WriteLine(
+                    exception.EntityValidationErrors.Select(
+                        err => err.ValidationErrors.Select(v => v.ErrorMessage + v.PropertyName).Join(",")).Join(","));
+            }
+
+            Console.WriteLine(e.Message);
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            var c = Console.ReadKey();
+            Console.WriteLine(c);
+        }
 
         private static async Task ProductMigrationAsync(int takeCount, int skipCount, int threadId)
         {
@@ -179,7 +236,6 @@ namespace DataTransfer
                         Console.WriteLine("?????????????????????????????????????");
                         WriteException(e);
                     }
-
                 }
                 if (list != null)
                 {
@@ -190,21 +246,25 @@ namespace DataTransfer
                         {
                             product.RiskManagement = product.RiskManagementMode;
                             string riskManagementMode = "商票贷";
-                            string NV = product.ProductNo.ToString().Substring(0, 2).ToUpperInvariant();
-                            switch (NV)
+                            string nv = product.ProductNo.Substring(0, 2).ToUpperInvariant();
+                            switch (nv)
                             {
                                 case "DB":
                                     riskManagementMode = "担保贷";
                                     break;
+
                                 case "BL":
                                     riskManagementMode = "保理贷";
                                     break;
+
                                 case "A1":
                                     riskManagementMode = "银保贷";
                                     break;
+
                                 case "B1":
                                     riskManagementMode = "银保贷";
                                     break;
+
                                 case "YB":
                                     riskManagementMode = "银保贷";
                                     break;
@@ -218,18 +278,20 @@ namespace DataTransfer
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
                             WriteException(e);
                             Console.WriteLine(product.ToJson());
                             WriteException(e);
@@ -247,57 +309,6 @@ namespace DataTransfer
             }
         }
 
-        public static void WriteException(Exception e)
-        {
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            if (e.InnerException != null)
-            {
-                WriteException(e.InnerException);
-            }
-
-            AggregateException e1 = e as AggregateException;
-            if (e1 != null)
-            {
-                foreach (Exception innerException in e1.InnerExceptions)
-                {
-                    WriteException(e1);
-                }
-            }
-
-            DbEntityValidationException exception = e as DbEntityValidationException;
-            if (exception != null)
-            {
-                Console.WriteLine(
-                    exception.EntityValidationErrors.Select(
-                        err => err.ValidationErrors.Select(v => v.ErrorMessage + v.PropertyName).Join(",")).Join(","));
-            }
-
-            Console.WriteLine(e.Message);
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            var c = Console.ReadKey();
-            Console.WriteLine(c);
-        }
-
         private static async Task UserMigrationAsync(int takeCount, int skipCount, int threadId)
         {
             int i = 0;
@@ -312,19 +323,20 @@ namespace DataTransfer
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
-                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
+                        Console.WriteLine("??????????????????????????????????????????????????????");
                         WriteException(e);
                     }
                 }
@@ -340,18 +352,19 @@ namespace DataTransfer
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
-                            Console.WriteLine("#################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
+                            Console.WriteLine("#########################################################");
                             WriteException(e);
                             Console.WriteLine(item.ToJson());
                             var c = Console.ReadKey();
@@ -359,7 +372,6 @@ namespace DataTransfer
                         }
                     }
                 }
-
             }
             catch (Exception exception)
             {
