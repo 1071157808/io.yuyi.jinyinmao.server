@@ -14,7 +14,6 @@ namespace DataTransfer.Models
 
         public virtual DbSet<Agreements> Agreements { get; set; }
         public virtual DbSet<JsonJBYAccountTransaction> JsonJBYAccountTransaction { get; set; }
-        public virtual DbSet<JsonJBYOrder> JsonJBYOrder { get; set; }
         public virtual DbSet<JsonProduct> JsonProduct { get; set; }
         public virtual DbSet<JsonSettleAccountTransaction> JsonSettleAccountTransaction { get; set; }
         public virtual DbSet<JsonUser> JsonUser { get; set; }

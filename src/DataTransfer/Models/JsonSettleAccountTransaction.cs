@@ -16,6 +16,5 @@ namespace DataTransfer.Models
         public string Data { get; set; }
 
         public Guid OrderId { get; set; }
-
     }
 }

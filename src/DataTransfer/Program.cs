@@ -30,22 +30,20 @@ namespace DataTransfer
                     Console.WriteLine("Start Full Mode");
                     Work.Run().Wait();
                     MemoryWork.Run().Wait();
-                    Console.WriteLine("Finish");
                 }
                 else if (arg == "1")
                 {
                     Console.WriteLine("Start DB Mode");
                     Work.Run().Wait();
                     //MemoryWork.Run().Wait();
-                    Console.WriteLine("Finish");
                 }
                 else if (arg == "2")
                 {
                     Console.WriteLine("Start Memory Mode");
                     //Work.Run().Wait();
                     MemoryWork.Run().Wait();
-                    Console.WriteLine("Finish");
                 }
+                Console.WriteLine("Finish");
             }
             catch (AggregateException exception)
             {

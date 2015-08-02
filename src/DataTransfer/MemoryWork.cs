@@ -15,11 +15,13 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DataTransfer.Models;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans;
 using Yuyi.Jinyinmao.Domain;
@@ -64,8 +66,17 @@ namespace DataTransfer
         /// <returns>Task.</returns>
         public static async Task Run()
         {
-            await ProductTaskAsync();
-            await UserTaskAsync();
+            try
+            {
+                await ProductTaskAsync();
+               // await UserTaskAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetExceptionString());
+                throw;
+            }
+
         }
 
         #region 创建多个数据迁移任务
@@ -98,36 +109,99 @@ namespace DataTransfer
 
         private static async Task ProductMigrationAsync(int takeCount, int skipCount, int threadId)
         {
-            using (var context = new OldDBContext())
+            int ci = 0;
+            int j = 1;
+            try
             {
-                List<string> list = await context.JsonProduct.AsNoTracking().OrderBy(x => x.ProductId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                var datas = list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x));
-                RegularProductMigrationDto product;
-                try
-                {
-                    for (int i = 0; i < datas.Count(); i++)
-                    {
-                        product = datas.ElementAt(i);
-                        await RegularProductFactory.GetGrain(Guid.NewGuid()).MigrateAsync(product);
-                    }
-                }
-                catch (Exception ex)
-                {
-                        
-                    throw;
-                }
+                //int i = 0;
+                //List<string> list = null;
+                //using (var context = new OldDBContext())
+                //{
+                //    list = await context.JsonProduct.AsNoTracking().OrderBy(x => x.ProductId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
+
+                //}
+                //if (list != null)
+                //{
+                //    foreach (RegularProductMigrationDto product in list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x)))
+                //    {
+                //        i++;
+                //        try
+                //        {
+                //            var info = await RegularProductFactory.GetGrain(product.ProductId).MigrateAsync(product);
+                //            Console.WriteLine(info.ProductId.ToGuidString());
+                //            Console.WriteLine(i);
+                //        }
+                //        catch (Exception e)
+                //        {
+                //            WriteException(e);
+                //            Console.ReadKey();
+                //        }
+                //    }
+                //}
+                Console.WriteLine(j/ci);
+               
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetExceptionString());
+                Console.ReadKey();
+                throw;
+            }
+        }
+
+        private static void WriteException(Exception e)
+        {
+            if (e.InnerException != null)
+            {
+                WriteException(e.InnerException);
+            }
+
+            DbEntityValidationException exception = e as DbEntityValidationException;
+            if (exception != null)
+            {
+                Console.WriteLine(
+                    exception.EntityValidationErrors.Select(
+                        err => err.ValidationErrors.Select(v => v.ErrorMessage + v.PropertyName).Join(",")).Join(","));
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+            }
+
+            Console.WriteLine(e.Message);
+            Console.ReadKey();
         }
 
         private static async Task UserMigrationAsync(int takeCount, int skipCount, int threadId)
         {
-            using (var context = new OldDBContext())
+            try
             {
-                List<string> list = await context.JsonUser.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                foreach (UserMigrationDto item in list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)))
+                List<string> list = null;
+                using (var context = new OldDBContext())
                 {
-                    await UserFactory.GetGrain(Guid.NewGuid()).MigrateAsync(item);
+                    list = await context.JsonUser.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
                 }
+                if (list != null)
+                {
+                    foreach (UserMigrationDto item in list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)))
+                    {
+                        await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
+                    }
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.GetExceptionString());
+                throw;
             }
         }
 

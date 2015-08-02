@@ -363,10 +363,10 @@ namespace DataTransfer
                     #endregion orders
 
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count: " + ++i);
-
                     #endregion product
                 }
                 await context.SaveChangesAsync();
+
             }
         }
 
@@ -522,7 +522,7 @@ namespace DataTransfer
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword.IsNullOrEmpty() ? string.Empty : transUserInfo.EncryptedPaymentPassword,
                         InviteBy = userInfo.InviteBy,
-                        JBYAccount = await GetJBYAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                        JBYAccount = await GetJBYAccountTransactionAsync(userInfo.UserId),
                         LoginNames = userInfo.LoginNames,
                         Orders = orders,
                         OutletCode = userInfo.OutletCode,
@@ -530,7 +530,7 @@ namespace DataTransfer
                         RealName = userInfo.RealName,
                         RegisterTime = userInfo.RegisterTime,
                         Salt = transUserInfo.Salt,
-                        SettleAccount = await GetSettleAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                        SettleAccount = await GetSettleAccountTransactionAsync(userInfo.UserId),
                         UserId = userInfo.UserId,
                         Verified = userInfo.Verified,
                         VerifiedTime = userInfo.VerifiedTime
@@ -540,6 +540,7 @@ namespace DataTransfer
                     context.JsonUser.Add(new JsonUser { Data = json, UserId = userInfo.UserId });
                     Console.WriteLine("user transfer start,threadId: " + threadId + ", count: " + ++i);
                     //Console.WriteLine(json);
+                    
                 }
                 await context.SaveChangesAsync();
             }
