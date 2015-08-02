@@ -27,10 +27,12 @@ namespace DataTransfer
 
                 switch (arg)
                 {
+
                     case "0":
                         Console.WriteLine("Start Full Mode");
                         Work.Run().Wait();
-                        MemoryWork.Run().Wait();
+                        MemoryWork.RunProduct().Wait();
+                        MemoryWork.RunUser().Wait();
                         Console.WriteLine("Finish");
                         break;
 
@@ -42,12 +44,19 @@ namespace DataTransfer
                         break;
 
                     case "2":
-                        Console.WriteLine("Start Memory Mode");
+                        Console.WriteLine("Start Product Memory Mode");
                         //Work.Run().Wait();
-                        MemoryWork.Run().Wait();
+                        MemoryWork.RunProduct().Wait();
+                        Console.WriteLine("Finish");
+                        break;
+                    case "3":
+                        Console.WriteLine("Start User Memory Mode");
+                        //Work.Run().Wait();
+                        MemoryWork.RunUser().Wait();
                         Console.WriteLine("Finish");
                         break;
                 }
+                Console.WriteLine("Finish");
             }
             catch (AggregateException exception)
             {

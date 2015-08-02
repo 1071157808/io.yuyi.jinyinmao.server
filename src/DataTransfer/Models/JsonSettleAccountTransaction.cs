@@ -39,7 +39,6 @@ namespace DataTransfer.Models
         /// </summary>
         /// <value>The order identifier.</value>
         public Guid OrderId { get; set; }
-
         /// <summary>
         ///     Gets or sets the user identifier.
         /// </summary>

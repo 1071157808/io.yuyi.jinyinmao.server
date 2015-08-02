@@ -85,19 +85,19 @@ namespace DataTransfer
                     Args = UserArgs,
                     Balance = -1,
                     BankCardsCount = oldUser.BankCardsCount.GetValueOrDefault(),
-                    Cellphone = oldUser.Cellphone,
+                    Cellphone = oldUser.Cellphone.Substring(0, 11),
                     ClientType = oldUser.ClientType,
                     Closed = false,
                     ContractId = oldUser.ContractId,
                     Credential = Utils.GetCredential(oldUser.Credential),
-                    CredentialNo = oldUser.CredentialNo,
+                    CredentialNo = oldUser.CredentialNo == null ? string.Empty : oldUser.CredentialNo,
                     Crediting = -1,
                     Debiting = 0,
                     HasSetPassword = oldUser.HasSetPassword > 0,
                     HasSetPaymentPassword = oldUser.HasSetPaymentPassword > 0,
                     InvestingInterest = -1,
                     InvestingPrincipal = -1,
-                    InviteBy = oldUser.InviteBy,
+                    InviteBy = oldUser.InviteBy == null ? string.Empty : oldUser.InviteBy,
                     JBYAccrualAmount = -1,
                     JBYLastInterest = -1,
                     JBYTotalAmount = -1,
@@ -111,14 +111,14 @@ namespace DataTransfer
                     PaymentPasswordErrorCount = oldUser.PaymentPasswordErrorCount.GetValueOrDefault(),
                     RealName = oldUser.RealName,
                     RegisterTime = oldUser.RegisterTime,
-                    TodayJBYWithdrawalAmount = oldUser.TodayJBYWithdrawalAmount,
-                    TodayWithdrawalCount = oldUser.TodayWithdrawalCount,
-                    TotalInterest = oldUser.TotalInterest,
-                    TotalPrincipal = oldUser.TotalPrincipal,
+                    TodayJBYWithdrawalAmount = -1,
+                    TodayWithdrawalCount = -1,
+                    TotalInterest = -1,
+                    TotalPrincipal = -1,
                     UserId = Guid.ParseExact(oldUser.UserId, "N"),
                     Verified = oldUser.Verified.GetValueOrDefault(),
                     VerifiedTime = oldUser.VerifiedTime,
-                    WithdrawalableAmount = oldUser.WithdrawalableAmount
+                    WithdrawalableAmount = -1
                 };
                 return userInfo;
             }
@@ -191,28 +191,28 @@ namespace DataTransfer
                         Agreement1 = agreement1 != null ? agreement1.Content : string.Empty,
                         Agreement2 = agreement2 != null ? agreement2.Content : string.Empty,
                         Args = ProductArgs,
-                        BankName = oldProduct.BankName, //186 items null, ignore
+                        BankName = oldProduct.BankName,                      //186 items null, ignore
                         Drawee = oldProduct.Drawee,
                         DraweeInfo = oldProduct.DraweeInfo,
                         EndorseImageLink = oldProduct.EndorseImageLink,
                         EndSellTime = oldProduct.EndSellTime,
                         EnterpriseInfo = oldProduct.EnterpriseInfo.IsNullOrEmpty() ? string.Empty : oldProduct.EnterpriseInfo,
                         EnterpriseLicense = oldProduct.EnterpriseLicense.IsNullOrEmpty() ? string.Empty : oldProduct.EnterpriseLicense,
-                        EnterpriseName = oldProduct.EnterpriseName,
+                        EnterpriseName = oldProduct.EnterpriseName.IsNullOrEmpty() ? string.Empty : oldProduct.EnterpriseName,
                         FinancingSumAmount = (long)(oldProduct.FinancingSumAmount * oldProduct.UnitPrice * 100),
                         IssueNo = oldProduct.IssueNo,
                         IssueTime = oldProduct.IssueTime,
                         Period = oldProduct.Period,
-                        PledgeNo = oldProduct.PledgeNo,
+                        PledgeNo = oldProduct.PledgeNo.IsNullOrEmpty()? "-1" : oldProduct.PledgeNo,
                         ProductCategory = await Utils.GetProductCategoryAsync(oldProduct.ProductCategory, oldProduct.ProductType),
                         ProductName = Utils.GetProductName(oldProduct.ProductName),
                         ProductNo = oldProduct.ProductNo,
                         ProductId = Guid.ParseExact(oldProduct.ProductId, "N"),
                         Repaid = oldProduct.Repaid,
-                        RepaidTime = null,
+                        RepaidTime = oldProduct.RepaymentDeadline.Date,
                         RepaymentDeadline = oldProduct.RepaymentDeadline,
-                        RiskManagement = oldProduct.RiskManagement,
-                        RiskManagementInfo = oldProduct.RiskManagementInfo,
+                        RiskManagement = oldProduct.RiskManagement == null ? string.Empty : oldProduct.RiskManagement,
+                        RiskManagementInfo = oldProduct.RiskManagementInfo == null ? oldProduct.RiskManagement : oldProduct.RiskManagementInfo,
                         RiskManagementMode = Utils.GetRiskManagementMode(oldProduct.RiskManagementMode),
                         SettleDate = Utils.GetDate(oldProduct.SettleDate),
                         SoldOut = oldProduct.SoldOut,
@@ -281,14 +281,14 @@ namespace DataTransfer
                             {
                                 AccountTransactionId = transactionId,
                                 Args = OrderArgs,
-                                Cellphone = oldOrder.Cellphone,
+                                Cellphone = oldOrder.Cellphone.Substring(0, 11),
                                 ExtraInterest = (long)(oldOrder.ExtraInterest * 100),
                                 ExtraInterestRecords = new List<ExtraInterestRecord>(),
                                 ExtraYield = oldOrder.ExtraYield * 100,
                                 Interest = (long)(oldOrder.Interest * 100),
                                 IsRepaid = oldOrder.IsRepaid,
                                 OrderId = Guid.ParseExact(oldOrder.OrderId, "N"),
-                                OrderNo = oldOrder.OrderNo,
+                                OrderNo = oldOrder.OrderNo == null ? string.Empty : oldOrder.OrderNo,
                                 OrderTime = oldOrder.OrderTime,
                                 Principal = (long)(oldOrder.Principal * 100),
                                 ProductCategory = product.ProductCategory,
@@ -302,7 +302,7 @@ namespace DataTransfer
                                     EndorseImageLink = product.EndorseImageLink,
                                     EndSellTime = product.EndSellTime,
                                     EnterpriseInfo = product.EnterpriseInfo,
-                                    EnterpriseLicense = product.EnterpriseInfo,
+                                    EnterpriseLicense = product.EnterpriseLicense,
                                     EnterpriseName = product.EnterpriseName,
                                     FinancingSumAmount = product.FinancingSumAmount,
                                     IssueNo = product.IssueNo,
@@ -322,7 +322,7 @@ namespace DataTransfer
                                     SoldOut = product.SoldOut,
                                     SoldOutTime = product.SoldOutTime,
                                     StartSellTime = product.StartSellTime,
-                                    UnitPrice = product.UnitPrice,
+                                    UnitPrice = (long)product.UnitPrice,
                                     Usage = product.Usage,
                                     ValueDateMode = 0,
                                     Yield = product.Yield
@@ -363,10 +363,10 @@ namespace DataTransfer
                     #endregion orders
 
                     Console.WriteLine("product transfer start,threadId: " + threadId + ", count: " + ++i);
-
                     #endregion product
                 }
                 await context.SaveChangesAsync();
+
             }
         }
 
@@ -395,7 +395,7 @@ namespace DataTransfer
                         Args = UserArgs,
                         Balance = -1,
                         BankCardsCount = transUserInfo.BankCardsCount.GetValueOrDefault(),
-                        Cellphone = transUserInfo.Cellphone,
+                        Cellphone = transUserInfo.Cellphone.Substring(0, 11),
                         ClientType = transUserInfo.ClientType,
                         Closed = false,
                         ContractId = transUserInfo.ContractId,
@@ -415,20 +415,20 @@ namespace DataTransfer
                         JBYTotalPricipal = -1,
                         JBYWithdrawalableAmount = -1,
                         LoginNames = new List<string> { transUserInfo.LoginNames },
-                        MonthWithdrawalCount = transUserInfo.MonthWithdrawalCount,
+                        MonthWithdrawalCount = -1,
                         OutletCode = Utils.GetOutletCode(transUserInfo.OutletCode),
                         PasswordErrorCount = transUserInfo.PasswordErrorCount,
                         PaymentPasswordErrorCount = transUserInfo.PaymentPasswordErrorCount.GetValueOrDefault(),
                         RealName = transUserInfo.RealName.IsNullOrEmpty() ? string.Empty : transUserInfo.RealName,
                         RegisterTime = transUserInfo.RegisterTime,
-                        TodayJBYWithdrawalAmount = transUserInfo.TodayJBYWithdrawalAmount * 100,
-                        TodayWithdrawalCount = transUserInfo.TodayWithdrawalCount,
-                        TotalInterest = transUserInfo.TotalInterest * 100,
-                        TotalPrincipal = transUserInfo.TotalPrincipal * 100,
+                        TodayJBYWithdrawalAmount = -1,
+                        TodayWithdrawalCount = -1,
+                        TotalInterest = -1,
+                        TotalPrincipal = -1,
                         UserId = Guid.ParseExact(transUserInfo.UserId, "N"),
                         Verified = transUserInfo.Verified.GetValueOrDefault(),
                         VerifiedTime = transUserInfo.VerifiedTime,
-                        WithdrawalableAmount = transUserInfo.WithdrawalableAmount * 100
+                        WithdrawalableAmount = -1
                     };
 
                     #endregion userinfo
@@ -448,20 +448,21 @@ namespace DataTransfer
                         {
                             AccountTransactionId = accountTransactionId,
                             Args = OrderArgs,
-                            Cellphone = x.Cellphone,
-                            ExtraInterest = (long)(x.ExtraInterest * 100),
+                            Cellphone = x.Cellphone.Substring(0, 11),
+                            ExtraInterest = (long) (x.ExtraInterest*100),
                             ExtraInterestRecords = new List<ExtraInterestRecord>(),
-                            ExtraYield = (x.ExtraYield * 100),
-                            Interest = (long)(x.Interest * 100),
+                            ExtraYield = (x.ExtraYield*100),
+                            Interest = (long) (x.Interest*100),
                             IsRepaid = x.IsRepaid,
                             OrderId = Guid.ParseExact(x.OrderId, "N"),
-                            OrderNo = x.OrderNo,
+                            OrderNo = x.OrderNo == null ? string.Empty : x.OrderNo,
                             OrderTime = x.OrderTime,
-                            Principal = (long)(x.Principal * 100),
+                            Principal = (long) (x.Principal*100),
                             ProductCategory = await Utils.GetProductCategoryAsync(x.ProductCategory, x.ProductType),
                             ProductId = Guid.ParseExact(x.ProductId, "N"),
-                            ProductSnapshot = product == null ? new RegularProductInfo() :
-                                new RegularProductInfo
+                            ProductSnapshot = product == null
+                                ? new RegularProductInfo()
+                                : new RegularProductInfo
                                 {
                                     Args = ProductArgs,
                                     BankName = product.BankName,
@@ -469,40 +470,47 @@ namespace DataTransfer
                                     DraweeInfo = product.DraweeInfo,
                                     EndorseImageLink = product.EndorseImageLink,
                                     EndSellTime = product.EndSellTime,
-                                    EnterpriseInfo = product.EnterpriseInfo,
-                                    EnterpriseLicense = product.EnterpriseInfo,
-                                    EnterpriseName = product.EnterpriseName,
+                                    EnterpriseInfo =
+                                        product.EnterpriseInfo.IsNullOrEmpty() ? string.Empty : product.EnterpriseInfo,
+                                    EnterpriseLicense =
+                                        product.EnterpriseLicense.IsNullOrEmpty()
+                                            ? string.Empty
+                                            : product.EnterpriseLicense,
+                                    EnterpriseName =
+                                        product.EnterpriseName.IsNullOrEmpty() ? string.Empty : product.EnterpriseName,
                                     FinancingSumAmount = product.FinancingSumAmount,
                                     IssueNo = product.IssueNo,
                                     IssueTime = product.IssueTime,
                                     Period = product.Period,
-                                    PledgeNo = product.PledgeNo,
-                                    ProductCategory = product.ProductCategory,
-                                    ProductName = product.ProductName,
-                                    ProductNo = product.ProductNo,
+                                    PledgeNo = product.PledgeNo.IsNullOrEmpty() ? "-1" : product.PledgeNo,
+                                    ProductCategory =
+                                        await
+                                            Utils.GetProductCategoryAsync(product.ProductCategory, product.ProductType),
+                                    ProductName = Utils.GetProductName(product.ProductName),
+                                    ProductNo = product.ProductNo == null ? string.Empty : product.ProductNo,
                                     ProductId = Guid.ParseExact(product.ProductId, "N"),
                                     Repaid = product.Repaid,
                                     RepaymentDeadline = product.RepaymentDeadline,
                                     RiskManagement = product.RiskManagement,
                                     RiskManagementInfo = product.RiskManagementInfo,
                                     RiskManagementMode = Utils.GetRiskManagementMode(product.RiskManagementMode),
-                                    SettleDate = product.SettleDate,
+                                    SettleDate = Utils.GetDate(product.SettleDate),
                                     SoldOut = product.SoldOut,
                                     SoldOutTime = product.SoldOutTime,
                                     StartSellTime = product.StartSellTime,
-                                    UnitPrice = (long)(product.UnitPrice * 100),
-                                    Usage = product.Usage,
+                                    UnitPrice = (long) (product.UnitPrice*100),
+                                    Usage = product.Usage == null ? string.Empty : product.Usage,
                                     ValueDateMode = 0,
-                                    Yield = (int)(product.Yield * 100)
+                                    Yield = (int) (product.Yield*100)
                                 },
-                            RepaidTime = null,
+                            RepaidTime = product.RepaymentDeadline.Date,
                             ResultCode = 10000,
                             SettleDate = Utils.GetDate(x.SettleDate),
                             TransDesc = "充值成功，购买理财产品",
                             UserId = userInfo.UserId,
                             UserInfo = userInfo,
                             ValueDate = Utils.GetDate(x.ValueDate),
-                            Yield = (int)(x.Yield * 100)
+                            Yield = (int) (x.Yield*100)
                         });
                     }
 
@@ -514,7 +522,7 @@ namespace DataTransfer
                     {
                         Args = UserArgs,
                         BankCards = await Utils.GetBankCards(transUserInfo.UserId),
-                        Cellphone = userInfo.Cellphone,
+                        Cellphone = userInfo.Cellphone.Substring(0, 11),
                         ClientType = userInfo.ClientType,
                         Closed = false,
                         ContractId = userInfo.ContractId,
@@ -523,7 +531,7 @@ namespace DataTransfer
                         EncryptedPassword = transUserInfo.EncryptedPassword,
                         EncryptedPaymentPassword = transUserInfo.EncryptedPaymentPassword.IsNullOrEmpty() ? string.Empty : transUserInfo.EncryptedPaymentPassword,
                         InviteBy = userInfo.InviteBy,
-                        JBYAccount = await GetJBYAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                        JBYAccount = await GetJBYAccountTransactionAsync(userInfo.UserId),
                         LoginNames = userInfo.LoginNames,
                         Orders = orders,
                         OutletCode = userInfo.OutletCode,
@@ -531,7 +539,7 @@ namespace DataTransfer
                         RealName = userInfo.RealName,
                         RegisterTime = userInfo.RegisterTime,
                         Salt = transUserInfo.Salt,
-                        SettleAccount = await GetSettleAccountTransactionAsync(Guid.ParseExact(transUserInfo.UserId, "N")),
+                        SettleAccount = await GetSettleAccountTransactionAsync(userInfo.UserId),
                         UserId = userInfo.UserId,
                         Verified = userInfo.Verified,
                         VerifiedTime = userInfo.VerifiedTime
@@ -541,6 +549,7 @@ namespace DataTransfer
                     context.JsonUser.Add(new JsonUser { Data = json, UserId = userInfo.UserId });
                     Console.WriteLine("user transfer start,threadId: " + threadId + ", count: " + ++i);
                     //Console.WriteLine(json);
+
                 }
                 await context.SaveChangesAsync();
             }
@@ -570,23 +579,52 @@ namespace DataTransfer
         {
             double count = await GetProductCountAsync();
             List<Task> list = new List<Task>();
-            for (int j = 0; j < Math.Ceiling(count / ProductExecuteDataCount); j++)
+            try
             {
-                //await ProductTransferAsync(j * 10000, 10000, j);
-                list.Add(ProductTransferAsync(j * ProductExecuteDataCount, ProductExecuteDataCount, j));
+                for (int j = 0; j < Math.Ceiling(count / ProductExecuteDataCount); j++)
+                {
+                    list.Add(ProductTransferAsync(j * ProductExecuteDataCount, ProductExecuteDataCount, j));
+
+                    if (list.Count == 14)
+                    {
+                        await Task.WhenAll(list);
+                        list.Clear();
+                    }
+                }
+                await Task.WhenAll(list.ToArray());
             }
-            await Task.WhenAll(list.ToArray());
+            catch (Exception exception)
+            {
+                MemoryWork.WriteException(exception);
+                throw;
+            }
         }
 
         private static async Task UserTask()
         {
             double count = await GetUserCountAsync();
             List<Task> list = new List<Task>();
-            for (int j = 0; j < Math.Ceiling(count / UserExecuteDataCount); j++)
+            try
             {
-                list.Add(UserTransferAsync(j * UserExecuteDataCount, UserExecuteDataCount, j));
+                for (int j = 0; j < Math.Ceiling(count / UserExecuteDataCount); j++)
+                {
+                    list.Add(UserTransferAsync(j * UserExecuteDataCount, UserExecuteDataCount, j));
+
+                    if (list.Count == 14)
+                    {
+                        await Task.WhenAll(list);
+                        list.Clear();
+                    }
+                }
+
+                await Task.WhenAll(list.ToArray());
+
             }
-            await Task.WhenAll(list.ToArray());
+            catch (Exception exception)
+            {
+                MemoryWork.WriteException(exception);
+                throw;
+            }
         }
 
         #endregion 创建多个Task

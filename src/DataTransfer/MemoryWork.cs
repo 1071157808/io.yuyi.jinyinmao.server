@@ -15,11 +15,13 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DataTransfer.Models;
+using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans;
 using Yuyi.Jinyinmao.Domain;
@@ -62,10 +64,32 @@ namespace DataTransfer
         ///     Runs this instance.
         /// </summary>
         /// <returns>Task.</returns>
-        public static async Task Run()
+        public static async Task RunProduct()
         {
-            await ProductTaskAsync();
-            await UserTaskAsync();
+            try
+            {
+                await ProductTaskAsync();
+                //await UserTaskAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetExceptionString());
+                throw;
+            }
+        }
+
+        public static async Task RunUser()
+        {
+            try
+            {
+                await UserTaskAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetExceptionString());
+                throw;
+            }
+
         }
 
         #region 创建多个数据迁移任务
@@ -74,22 +98,52 @@ namespace DataTransfer
         {
             double count = await GetProductCountAsync();
             List<Task> list = new List<Task>();
-            for (int i = 0; i < Math.Ceiling(count / ProductExecuteDataCount); i++)
+            try
             {
-                list.Add(ProductMigrationAsync(ProductExecuteDataCount, i * ProductExecuteDataCount, i));
+                for (int i = 0; i < Math.Ceiling(count / ProductExecuteDataCount); i++)
+                {
+                    list.Add(ProductMigrationAsync(ProductExecuteDataCount, i * ProductExecuteDataCount, i));
+                    if (list.Count == 14)
+                    {
+                        await Task.WhenAll(list);
+                        list.Clear();
+                    }
+                }
+
+                await Task.WhenAll(list);
             }
-            await Task.WhenAll(list.ToArray());
+            catch (Exception exception)
+            {
+                WriteException(exception);
+                throw;
+            }
         }
 
         private static async Task UserTaskAsync()
         {
             double count = await GetUserCountAsync();
             List<Task> list = new List<Task>();
-            for (int i = 0; i < Math.Ceiling(count / UserExecuteDataCount); i++)
+            
+            try
             {
-                list.Add(UserMigrationAsync(UserExecuteDataCount, i * UserExecuteDataCount, i));
+                for (int i = 0; i < Math.Ceiling(count / UserExecuteDataCount); i++)
+                {
+                    list.Add(UserMigrationAsync(UserExecuteDataCount, i * UserExecuteDataCount, i));
+                    if (list.Count == 14)
+                    {
+                        await Task.WhenAll(list);
+                        list.Clear();
+                    }
+                }
+
+                await Task.WhenAll(list);
             }
-            await Task.WhenAll(list.ToArray());
+            catch (Exception exception)
+            {
+                WriteException(exception);
+                throw;
+            }
+            
         }
 
         #endregion 创建多个数据迁移任务
@@ -98,27 +152,222 @@ namespace DataTransfer
 
         private static async Task ProductMigrationAsync(int takeCount, int skipCount, int threadId)
         {
-            using (var context = new OldDBContext())
+            try
             {
-                List<string> list = await context.JsonProduct.AsNoTracking().OrderBy(x => x.ProductId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                var datas = list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x)).ToList();
-                for (int i = 0; i < datas.Count(); i++)
+                int i = 0;
+                List<string> list = null;
+                using (var context = new OldDBContext())
                 {
-                    var product = datas.ElementAt(i);
-                    await RegularProductFactory.GetGrain(Guid.NewGuid()).MigrateAsync(product);
+                    try
+                    {
+                        list = await context.JsonProduct.AsNoTracking().OrderBy(x => x.ProductId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        WriteException(e);
+                    }
+
+                }
+                if (list != null)
+                {
+                    foreach (RegularProductMigrationDto product in list.Select(x => JsonConvert.DeserializeObject<RegularProductMigrationDto>(x)))
+                    {
+                        i++;
+                        try
+                        {
+                            product.RiskManagement = product.RiskManagementMode;
+                            string riskManagementMode = "商票贷";
+                            string NV = product.ProductNo.ToString().Substring(0, 2).ToUpperInvariant();
+                            switch (NV)
+                            {
+                                case "DB":
+                                    riskManagementMode = "担保贷";
+                                    break;
+                                case "BL":
+                                    riskManagementMode = "保理贷";
+                                    break;
+                                case "A1":
+                                    riskManagementMode = "银保贷";
+                                    break;
+                                case "B1":
+                                    riskManagementMode = "银保贷";
+                                    break;
+                                case "YB":
+                                    riskManagementMode = "银保贷";
+                                    break;
+                            }
+
+                            product.RiskManagementMode = riskManagementMode;
+
+                            var info = await RegularProductFactory.GetGrain(product.ProductId).MigrateAsync(product);
+                            Console.WriteLine(info.ProductId.ToGuidString());
+                            Console.WriteLine(i);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            WriteException(e);
+                            Console.WriteLine(product.ToJson());
+                            WriteException(e);
+                            throw;
+                        }
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetExceptionString());
+                var c = Console.ReadKey();
+                Console.WriteLine(c);
+                throw;
+            }
+        }
+
+        public static void WriteException(Exception e)
+        {
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            if (e.InnerException != null)
+            {
+                WriteException(e.InnerException);
+            }
+
+            AggregateException e1 = e as AggregateException;
+            if (e1 != null)
+            {
+                foreach (Exception innerException in e1.InnerExceptions)
+                {
+                    WriteException(e1);
+                }
+            }
+
+            DbEntityValidationException exception = e as DbEntityValidationException;
+            if (exception != null)
+            {
+                Console.WriteLine(
+                    exception.EntityValidationErrors.Select(
+                        err => err.ValidationErrors.Select(v => v.ErrorMessage + v.PropertyName).Join(",")).Join(","));
+            }
+
+            Console.WriteLine(e.Message);
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            var c = Console.ReadKey();
+            Console.WriteLine(c);
         }
 
         private static async Task UserMigrationAsync(int takeCount, int skipCount, int threadId)
         {
-            using (var context = new OldDBContext())
+            int i = 0;
+            try
             {
-                List<string> list = await context.JsonUser.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
-                foreach (UserMigrationDto item in list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)))
+                List<string> list = null;
+                using (var context = new OldDBContext())
                 {
-                    await UserFactory.GetGrain(Guid.NewGuid()).MigrateAsync(item);
+                    try
+                    {
+                        list = await context.JsonUser.AsNoTracking().OrderBy(x => x.UserId).Skip(skipCount).Take(takeCount).Select(x => x.Data).ToListAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        Console.WriteLine("?????????????????????????????????????");
+                        WriteException(e);
+                    }
                 }
+                if (list != null)
+                {
+                    foreach (UserMigrationDto item in list.Select(x => JsonConvert.DeserializeObject<UserMigrationDto>(x)))
+                    {
+                        try
+                        {
+                            var info = await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
+                            Console.WriteLine(info.UserId.ToGuidString());
+                            Console.WriteLine(++i);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            Console.WriteLine("#################################");
+                            WriteException(e);
+                            Console.WriteLine(item.ToJson());
+                            var c = Console.ReadKey();
+                            Console.WriteLine(c);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.GetExceptionString());
+                WriteException(exception);
+                var c = Console.ReadKey();
+                Console.WriteLine(c);
+                throw;
             }
         }
 

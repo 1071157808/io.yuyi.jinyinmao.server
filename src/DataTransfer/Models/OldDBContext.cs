@@ -40,6 +40,7 @@ namespace DataTransfer.Models
         /// <value>The json jby account transaction.</value>
         public virtual DbSet<JsonJBYAccountTransaction> JsonJBYAccountTransaction { get; set; }
 
+
         /// <summary>
         ///     Gets or sets the json jby order.
         /// </summary>
@@ -50,6 +51,7 @@ namespace DataTransfer.Models
         ///     Gets or sets the json product.
         /// </summary>
         /// <value>The json product.</value>
+
         public virtual DbSet<JsonProduct> JsonProduct { get; set; }
 
         /// <summary>
