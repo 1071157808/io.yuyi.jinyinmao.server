@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : MemoryWork.cs
-// Created          : 2015-08-02  7:06 AM
+// Created          : 2015-08-02  11:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-02  7:20 AM
+// Last Modified On : 2015-08-03  5:14 AM
 // ***********************************************************************
 // <copyright file="MemoryWork.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -79,7 +79,7 @@ namespace DataTransfer
         }
 
         /// <summary>
-        /// Runs the user.
+        ///     Runs the user.
         /// </summary>
         /// <returns>Task.</returns>
         public static async Task RunUser()
@@ -153,7 +153,7 @@ namespace DataTransfer
         #region 分批次数据转移
 
         /// <summary>
-        /// Writes the exception.
+        ///     Writes the exception.
         /// </summary>
         /// <param name="e">The e.</param>
         public static void WriteException(Exception e)
@@ -346,8 +346,35 @@ namespace DataTransfer
                     {
                         try
                         {
+                            foreach (KeyValuePair<Guid, Order> order in item.Orders)
+                            {
+                                order.Value.ResultTime = order.Value.OrderTime;
+                            }
+
+                            foreach (var t in item.SettleAccount)
+                            {
+                                if (t.Value.SequenceNo.IsNullOrEmpty())
+                                {
+                                    t.Value.SequenceNo = string.Empty;
+                                }
+
+                                t.Value.BankCardNo = string.Empty;
+
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
+                            }
+
                             var info = await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
-                            Console.WriteLine(info.UserId.ToGuidString());
+                            Console.WriteLine(info.Cellphone);
                             Console.WriteLine(++i);
                         }
                         catch (Exception e)
@@ -366,7 +393,7 @@ namespace DataTransfer
                             Console.WriteLine("#########################################################");
                             Console.WriteLine("#########################################################");
                             WriteException(e);
-                            Console.WriteLine(item.ToJson());
+                            Console.WriteLine(item.Cellphone);
                             var c = Console.ReadKey();
                             Console.WriteLine(c);
                         }

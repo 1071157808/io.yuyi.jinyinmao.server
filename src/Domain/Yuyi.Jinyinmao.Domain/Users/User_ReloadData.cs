@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  1:48 PM
+// Last Modified On : 2015-08-03  5:13 AM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -222,6 +222,10 @@ namespace Yuyi.Jinyinmao.Domain
                 if (bankCard.Dispaly && bankCard.Verified)
                 {
                     bankCard.WithdrawAmount = bankCards[bankCard.BankCardNo] + extraAmount;
+                    if (bankCard.WithdrawAmount < 0)
+                    {
+                        bankCard.WithdrawAmount = 0L;
+                    }
                 }
                 else
                 {
