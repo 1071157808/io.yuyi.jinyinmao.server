@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-02  8:26 AM
+// Last Modified On : 2015-08-02  2:20 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -1030,8 +1030,6 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SyncAsync();
 
             await this.RegisterOrUpdateReminder("DailyWork", TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(20));
-
-            SiloClusterTraceLogger.Log("User {0} migrated".FormatWith(this.State.UserId));
 
             return await this.GetUserInfoAsync();
         }
