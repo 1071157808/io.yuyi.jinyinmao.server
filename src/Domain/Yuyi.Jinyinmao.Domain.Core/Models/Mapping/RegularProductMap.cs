@@ -1,13 +1,13 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : RegularProductMap.cs
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-30  3:56 AM
+// Last Modified On : 2015-08-02  11:37 AM
 // ***********************************************************************
-// <copyright file="RegularProductMap.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="RegularProductMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
@@ -35,15 +35,15 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             this.Property(t => t.ProductName)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             this.Property(t => t.ProductNo)
                 .IsRequired()
-                .HasMaxLength(40);
+                .HasMaxLength(100);
 
             this.Property(t => t.PledgeNo)
                 .IsRequired()
-                .HasMaxLength(40);
+                .HasMaxLength(100);
 
             this.Property(t => t.Info)
                 .IsRequired();

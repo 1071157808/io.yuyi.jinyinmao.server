@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : BankCardMap.cs
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  1:05 AM
+// Last Modified On : 2015-08-02  11:37 AM
 // ***********************************************************************
 // <copyright file="BankCardMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,11 +39,11 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             this.Property(t => t.BankName)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(50);
 
             this.Property(t => t.CityName)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(50);
 
             this.Property(t => t.Info)
                 .IsRequired();
