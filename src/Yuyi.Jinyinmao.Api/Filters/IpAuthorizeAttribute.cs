@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : IpAuthorizeAttribute.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  6:24 PM
+// Last Modified On : 2015-08-03  7:46 AM
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -89,7 +89,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 return request.IsLocal() || ip == "::1" || this.AdminIps.Contains(ip);
             }
 
-            return this.AllowedIps.Contains(ip) || ip == "::1" || this.AdminIps.Contains(ip);
+            return this.AllowedIps.Contains(ip) || request.IsLocal() || ip == "::1" || this.AdminIps.Contains(ip);
         }
     }
 }

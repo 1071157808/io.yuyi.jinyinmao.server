@@ -244,33 +244,33 @@ namespace DataTransfer
                         i++;
                         try
                         {
-                            product.RiskManagement = product.RiskManagementMode;
-                            string riskManagementMode = "商票贷";
-                            string nv = product.ProductNo.Substring(0, 2).ToUpperInvariant();
-                            switch (nv)
-                            {
-                                case "DB":
-                                    riskManagementMode = "担保贷";
-                                    break;
-
-                                case "BL":
-                                    riskManagementMode = "保理贷";
-                                    break;
-
-                                case "A1":
-                                    riskManagementMode = "银保贷";
-                                    break;
-
-                                case "B1":
-                                    riskManagementMode = "银保贷";
-                                    break;
-
-                                case "YB":
-                                    riskManagementMode = "银保贷";
-                                    break;
-                            }
-
-                            product.RiskManagementMode = riskManagementMode;
+                            //                            product.RiskManagement = product.RiskManagementMode;
+                            //                            string riskManagementMode = "商票贷";
+                            //                            string nv = product.ProductNo.Substring(0, 2).ToUpperInvariant();
+                            //                            switch (nv)
+                            //                            {
+                            //                                case "DB":
+                            //                                    riskManagementMode = "担保贷";
+                            //                                    break;
+                            //
+                            //                                case "BL":
+                            //                                    riskManagementMode = "保理贷";
+                            //                                    break;
+                            //
+                            //                                case "A1":
+                            //                                    riskManagementMode = "银保贷";
+                            //                                    break;
+                            //
+                            //                                case "B1":
+                            //                                    riskManagementMode = "银保贷";
+                            //                                    break;
+                            //
+                            //                                case "YB":
+                            //                                    riskManagementMode = "银保贷";
+                            //                                    break;
+                            //                            }
+                            //
+                            //                            product.RiskManagementMode = riskManagementMode;
 
                             var info = await RegularProductFactory.GetGrain(product.ProductId).MigrateAsync(product);
                             Console.WriteLine(info.ProductId.ToGuidString());
