@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  12:27 PM
+// Last Modified On : 2015-08-02  2:20 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -641,6 +641,23 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Gets the order infos asynchronous.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
+        public Task<List<OrderInfo>> GetSettlingOrderInfosAsync(int count)
+        {
+            count = count < 1 ? 0 : count;
+            DateTime now = DateTime.UtcNow.AddHours(8);
+
+            IList<Order> orders = this.State.Orders.Values.ToList();
+
+            orders = orders.Where(o => o.SettleDate >= now).OrderBy(o => o.SettleDate).ThenByDescending(o => o.OrderTime).Take(count).ToList();
+
+            return Task.FromResult(orders.Select(o => o.ToInfo()).ToList());
+        }
+
+        /// <summary>
         ///     Gets the user information asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -723,7 +740,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// insert settle account transcation as an asynchronous operation.
+        ///     insert settle account transcation as an asynchronous operation.
         /// </summary>
         /// <param name="transactionDto">The transaction dto.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
@@ -1000,6 +1017,9 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.VerifiedTime = migrationDto.VerifiedTime;
 
             this.State.Args.Add("MigratingTime", DateTime.UtcNow);
+
+            ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
+            await cellphone.Register(this.State.UserId);
 
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
@@ -1422,23 +1442,6 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IUser Members
-
-        /// <summary>
-        ///     Gets the order infos asynchronous.
-        /// </summary>
-        /// <param name="count">The count.</param>
-        /// <returns>Task&lt;Tuple&lt;System.Int32, List&lt;OrderInfo&gt;&gt;&gt;.</returns>
-        public Task<List<OrderInfo>> GetSettlingOrderInfosAsync(int count)
-        {
-            count = count < 1 ? 0 : count;
-            DateTime now = DateTime.UtcNow.AddHours(8);
-
-            IList<Order> orders = this.State.Orders.Values.ToList();
-
-            orders = orders.Where(o => o.SettleDate >= now).OrderBy(o => o.SettleDate).ThenByDescending(o => o.OrderTime).Take(count).ToList();
-
-            return Task.FromResult(orders.Select(o => o.ToInfo()).ToList());
-        }
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.

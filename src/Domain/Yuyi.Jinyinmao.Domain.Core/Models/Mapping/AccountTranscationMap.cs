@@ -1,12 +1,12 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : AccountTranscationMap.cs
 // Created          : 2015-04-29  5:29 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  1:18 PM
+// Last Modified On : 2015-08-02  11:36 AM
 // ***********************************************************************
-// <copyright file="AccountTransactionMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="AccountTranscationMap.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -35,7 +35,7 @@ namespace Yuyi.Jinyinmao.Domain.Models.Mapping
 
             this.Property(t => t.SequenceNo)
                 .IsRequired()
-                .HasMaxLength(30);
+                .HasMaxLength(100);
 
             this.Property(t => t.UserIdentifier)
                 .IsRequired()

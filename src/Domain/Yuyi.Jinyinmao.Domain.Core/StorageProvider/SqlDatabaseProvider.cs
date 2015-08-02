@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : SqlDatabaseProvider.cs
 // Created          : 2015-04-26  11:36 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-03  10:11 PM
+// Last Modified On : 2015-08-02  9:21 AM
 // ***********************************************************************
 // <copyright file="SqlDatabaseProvider.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
