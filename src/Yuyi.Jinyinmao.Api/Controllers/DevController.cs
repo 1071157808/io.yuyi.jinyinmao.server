@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  7:46 AM
+// Last Modified On : 2015-08-03  11:36 AM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -239,6 +239,32 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     InsertJBYAccountTranscation
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("InsertJBYAccountTranscation"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYTransactionInfoResponse))]
+        public async Task<IHttpActionResult> InsertJBYAccountTranscation(InsertJBYAccountTransactionRequest request)
+        {
+            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
+
+            InsertJBYAccountTransactionDto dto = new InsertJBYAccountTransactionDto
+            {
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                Trade = request.Trade,
+                TradeCode = request.TradeCode,
+                TransDesc = request.TransDesc,
+                UserId = userId
+            };
+
+            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).InsertJBYAccountTranscationAsync(dto);
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
         ///     InsertSettleAccountTranscation
         /// </summary>
         /// <response code="200"></response>
@@ -262,8 +288,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 UserId = userId
             };
 
-            await UserFactory.GetGrain(userId).InsertSettleAccountTranscationAsync(dto);
-            return this.Ok();
+            SettleAccountTransactionInfo info = await UserFactory.GetGrain(userId).InsertSettleAccountTranscationAsync(dto);
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>

@@ -236,6 +236,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task HideBankCardAsync(HideBankCard command);
 
         /// <summary>
+        /// Inserts the jby account transcation asynchronous.
+        /// </summary>
+        /// <param name="transactionDto">The transaction dto.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto);
+
+        /// <summary>
         /// Inserts the settle account transcation asynchronous.
         /// </summary>
         /// <param name="transactionDto">The transaction dto.</param>

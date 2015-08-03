@@ -156,19 +156,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">
       <Project>{5245a89c-fd02-404a-a0a3-c1b5f197e426}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Yuyi.Jinyinmao.Domain.Interface\Yuyi.Jinyinmao.Domain.Interface.csproj">
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Interface\Yuyi.Jinyinmao.Domain.Interface.csproj">
       <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Yuyi.Jinyinmao.Domain\Yuyi.Jinyinmao.Domain.csproj">
+    <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain\Yuyi.Jinyinmao.Domain.csproj">
       <Project>{bd85b692-cb20-481b-9628-452d41971a92}</Project>
       <Name>Yuyi.Jinyinmao.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Yuyi.Jinyinmao.Api\Yuyi.Jinyinmao.Api.csproj">
+    <ProjectReference Include="..\..\Yuyi.Jinyinmao.Api\Yuyi.Jinyinmao.Api.csproj">
       <Project>{456102ac-0c43-4f46-8ef1-aadfc0651b57}</Project>
       <Name>Yuyi.Jinyinmao.Api</Name>
     </ProjectReference>

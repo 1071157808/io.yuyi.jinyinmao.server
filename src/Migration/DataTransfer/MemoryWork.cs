@@ -356,21 +356,19 @@ namespace DataTransfer
                                 if (t.Value.SequenceNo.IsNullOrEmpty())
                                 {
                                     t.Value.SequenceNo = string.Empty;
+
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
+                                    Console.WriteLine(item.Cellphone + t.Value.TransactionId);
                                 }
 
                                 t.Value.BankCardNo = string.Empty;
-
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
-                                Console.WriteLine(item.Cellphone + t.Value.TransactionId + t.Value.TransDesc);
                             }
 
                             var info = await UserFactory.GetGrain(item.UserId).MigrateAsync(item);

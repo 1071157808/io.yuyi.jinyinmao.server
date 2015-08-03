@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-02  2:20 PM
+// Last Modified On : 2015-08-03  11:25 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -1442,6 +1442,44 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IUser Members
+
+        /// <summary>
+        ///     Insert jby account transcation as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionDto">The transaction dto.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto)
+        {
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            JBYAccountTransaction transaction = new JBYAccountTransaction
+            {
+                Amount = transactionDto.Amount,
+                Args = transactionDto.Args,
+                PredeterminedResultDate = now,
+                ProductId = SpecialIdHelper.ReversalJBYTransactionProductId,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleAccountTransactionId = Guid.Empty,
+                Trade = transactionDto.Trade,
+                TradeCode = transactionDto.TradeCode,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                TransDesc = transactionDto.TransDesc,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            this.State.JBYAccount.Add(transaction.TransactionId, transaction);
+
+            await this.State.WriteStateAsync();
+            this.ReloadJBYAccountData();
+
+            JBYAccountTransactionInfo transactionInfo = transaction.ToInfo();
+
+            await this.RaiseTransactionInsertdEvent(transactionDto, transactionInfo);
+
+            return transactionInfo;
+        }
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.
