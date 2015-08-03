@@ -7143,6 +7143,12 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(1656425842, null );
             }
             
+            System.Threading.Tasks.Task<int> Yuyi.Jinyinmao.Domain.IUser.RemoveJBYReversalTransactionsAsync()
+            {
+
+                return base.InvokeMethodAsync<System.Int32>(-311225426, null );
+            }
+            
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.RepayOrderAsync(System.Guid @orderId, System.DateTime @repaidTime)
             {
 
@@ -7297,6 +7303,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).RegisterAsync((Yuyi.Jinyinmao.Domain.Commands.UserRegister)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1656425842: 
                                 return ((IUser)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -311225426: 
+                                return ((IUser)grain).RemoveJBYReversalTransactionsAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1599467507: 
                                 return ((IUser)grain).RepayOrderAsync((Guid)arguments[0], (DateTime)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 405897552: 
@@ -7413,6 +7421,8 @@ namespace Yuyi.Jinyinmao.Domain
                             return "RegisterAsync";
                     case 1656425842:
                             return "ReloadAsync";
+                    case -311225426:
+                            return "RemoveJBYReversalTransactionsAsync";
                     case 1599467507:
                             return "RepayOrderAsync";
                     case 405897552:

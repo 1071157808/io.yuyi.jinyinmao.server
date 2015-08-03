@@ -1594,6 +1594,24 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        /// remove jby reversal transactions as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        public async Task<int> RemoveJBYReversalTransactionsAsync()
+        {
+            List<Guid> transactions = this.State.JBYAccount.Where(t => t.Value.TradeCode == 2001011101).Select(t => t.Key).ToList();
+            foreach (Guid transactionId in transactions)
+            {
+                this.State.JBYAccount.Remove(transactionId);
+            }
+
+            await this.State.WriteStateAsync();
+            this.ReloadJBYAccountData();
+
+            return transactions.Count;
+        }
+
+        /// <summary>
         ///     Builds the interest.
         /// </summary>
         /// <param name="valueDate">The value date.</param>

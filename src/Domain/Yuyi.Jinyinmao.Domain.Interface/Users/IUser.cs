@@ -290,6 +290,12 @@ namespace Yuyi.Jinyinmao.Domain
         Task ReloadAsync();
 
         /// <summary>
+        /// Removes the jby reversal transactions asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        Task<int> RemoveJBYReversalTransactionsAsync();
+
+        /// <summary>
         ///     Repays the order asynchronous.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>

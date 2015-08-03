@@ -353,6 +353,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     ReloadUser
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("RemoveJBYReversalTransactions/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> RemoveJBYReversalTransactions(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            await UserFactory.GetGrain(userId).RemoveJBYReversalTransactionsAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     SetJBYProductToSoldOut
         /// </summary>
         /// <response code="200"></response>

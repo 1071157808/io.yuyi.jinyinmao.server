@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  5:13 AM
+// Last Modified On : 2015-08-03  12:46 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Domain
                     {
                         debitedTransAmount += transaction.Amount;
 
-                        if (transaction.ProductId == SpecialIdHelper.ReinvestingJBYTransactionProductId)
+                        if (transaction.TradeCode == TradeCodeHelper.TC2001011106)
                         {
                             jBYTotalInterest += transaction.Amount;
                         }
