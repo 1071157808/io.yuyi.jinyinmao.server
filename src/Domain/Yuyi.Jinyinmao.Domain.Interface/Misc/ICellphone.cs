@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : ICellphone.cs
 // Created          : 2015-04-28  11:26 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-29  12:11 PM
+// Last Modified On : 2015-08-03  5:39 PM
 // ***********************************************************************
 // <copyright file="ICellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -32,21 +32,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Registers this instance.
         /// </summary>
-        /// <returns>System.Threading.Tasks.Task.</returns>
-        Task Register();
-
-        /// <summary>
-        ///     Registers this instance.
-        /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>System.Threading.Tasks.Task.</returns>
         Task Register(Guid userId);
-
-        /// <summary>
-        ///     Resets the user identifier.
-        /// </summary>
-        /// <returns>Task.</returns>
-        Task ResetUserIdentifier();
 
         /// <summary>
         ///     Unregisters this instance.

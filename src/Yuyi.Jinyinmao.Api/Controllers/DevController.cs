@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  11:36 AM
+// Last Modified On : 2015-08-03  4:44 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -418,18 +419,31 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// Synchronizes all cellphone.
+        ///     SetProductToSoldOut
         /// </summary>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("SyncAllCellphone"), IpAuthorize(OnlyLocalHost = true)]
+        [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
         public async Task<IHttpActionResult> SyncAllCellphone()
         {
-            List<KeyValuePair<string, string>> cellphones;
+            Dictionary<string, string> userCellphones = new Dictionary<string, string>();
             using (JYMDBContext db = new JYMDBContext())
             {
-                cellphones = await db.Users.AsNoTracking().Select(u => new KeyValuePair<string, string>(u.UserIdentifier, u.Cellphone)).ToListAsync();
+                var cellphones = await db.Users.AsNoTracking().Select(u => new { u.UserIdentifier, u.Cellphone }).ToListAsync();
+
+                foreach (var c in cellphones)
+                {
+                    if (!userCellphones.ContainsKey(c.UserIdentifier))
+                    {
+                        userCellphones.Add(c.UserIdentifier, c.Cellphone);
+                    }
+                }
             }
 
-            foreach (var c in cellphones)
+            foreach (var c in userCellphones)
             {
                 ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(c.Value));
                 await cellphone.Register(Guid.Parse(c.Key));

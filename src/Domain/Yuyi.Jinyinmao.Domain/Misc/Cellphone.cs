@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : Cellphone.cs
 // Created          : 2015-04-28  11:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-29  12:10 PM
+// Last Modified On : 2015-08-03  5:39 PM
 // ***********************************************************************
 // <copyright file="Cellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -44,32 +44,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Registers this instance.
         /// </summary>
-        /// <returns>System.Threading.Tasks.Task.</returns>
-        public async Task Register()
-        {
-            this.State.Registered = true;
-            await this.State.WriteStateAsync();
-        }
-
-        /// <summary>
-        ///     Registers this instance.
-        /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>System.Threading.Tasks.Task.</returns>
         public async Task Register(Guid userId)
         {
             this.State.Registered = true;
             this.State.UserId = userId;
-            await this.State.WriteStateAsync();
-        }
-
-        /// <summary>
-        ///     Resets the user identifier.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public async Task ResetUserIdentifier()
-        {
-            this.State.UserId = Guid.NewGuid();
             await this.State.WriteStateAsync();
         }
 
@@ -94,11 +74,7 @@ namespace Yuyi.Jinyinmao.Domain
         public override async Task OnActivateAsync()
         {
             this.State.Cellphone = this.GetPrimaryKeyLong().ToString().Substring(7);
-            if (!this.State.UserId.HasValue)
-            {
-                this.State.UserId = Guid.NewGuid();
-                await this.State.WriteStateAsync();
-            }
+            this.State.UserId = Guid.NewGuid();
             await base.OnActivateAsync();
         }
     }

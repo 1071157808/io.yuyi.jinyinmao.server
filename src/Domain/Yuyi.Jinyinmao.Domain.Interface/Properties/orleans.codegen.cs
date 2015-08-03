@@ -6714,22 +6714,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo>(38380462, null );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Register()
-            {
-
-                return base.InvokeMethodAsync<object>(528260870, null );
-            }
-            
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Register(System.Guid @userId)
             {
 
                 return base.InvokeMethodAsync<object>(-1640712768, new object[] {@userId} );
-            }
-            
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.ResetUserIdentifier()
-            {
-
-                return base.InvokeMethodAsync<object>(238144245, null );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Unregister()
@@ -6766,12 +6754,8 @@ namespace Yuyi.Jinyinmao.Domain
                         {
                             case 38380462: 
                                 return ((ICellphone)grain).GetCellphoneInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 528260870: 
-                                return ((ICellphone)grain).Register().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1640712768: 
                                 return ((ICellphone)grain).Register((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 238144245: 
-                                return ((ICellphone)grain).ResetUserIdentifier().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1879022777: 
                                 return ((ICellphone)grain).Unregister().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
@@ -6800,12 +6784,8 @@ namespace Yuyi.Jinyinmao.Domain
                     {
                         case 38380462:
                             return "GetCellphoneInfoAsync";
-                    case 528260870:
-                            return "Register";
                     case -1640712768:
                             return "Register";
-                    case 238144245:
-                            return "ResetUserIdentifier";
                     case 1879022777:
                             return "Unregister";
                     
