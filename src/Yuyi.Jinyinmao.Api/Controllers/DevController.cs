@@ -12,6 +12,8 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,6 +30,7 @@ using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
 
@@ -411,6 +414,27 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
             await RegularProductFactory.GetGrain(productId).SetToSoldOutAsync();
+            return this.Ok();
+        }
+
+        /// <summary>
+        /// Synchronizes all cellphone.
+        /// </summary>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        public async Task<IHttpActionResult> SyncAllCellphone()
+        {
+            List<KeyValuePair<string, string>> cellphones;
+            using (JYMDBContext db = new JYMDBContext())
+            {
+                cellphones = await db.Users.AsNoTracking().Select(u => new KeyValuePair<string, string>(u.UserIdentifier, u.Cellphone)).ToListAsync();
+            }
+
+            foreach (var c in cellphones)
+            {
+                ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(c.Value));
+                await cellphone.Register(Guid.Parse(c.Key));
+            }
+
             return this.Ok();
         }
 
