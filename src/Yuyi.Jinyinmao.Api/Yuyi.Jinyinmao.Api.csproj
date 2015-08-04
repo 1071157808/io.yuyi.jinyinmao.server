@@ -272,6 +272,7 @@
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
     <Compile Include="Models\BackOffice\JBYProductRequest.cs" />
     <Compile Include="Models\Coupon\CouponInfoResponse.cs" />
+    <Compile Include="Models\Dev\SetSettleAccountTransactionResultRequest.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeResponse.cs" />
@@ -284,6 +285,7 @@
     <Compile Include="Models\User\AddBankCardRequest.cs" />
     <Compile Include="Models\User\AuthenticationRequest.cs" />
     <Compile Include="Models\User\BankCardInfoResponse.cs" />
+    <Compile Include="Models\User\CellphoneInfoResponse.cs" />
     <Compile Include="Models\User\CheckCellphoneResponse.cs" />
     <Compile Include="Models\User\CheckPaymentPasswordRequest.cs" />
     <Compile Include="Models\User\DeleteBankCardRequest.cs" />

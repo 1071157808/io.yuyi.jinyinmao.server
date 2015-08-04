@@ -318,6 +318,16 @@ namespace Yuyi.Jinyinmao.Domain
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
+        /// Sets the settle account transaction result asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
+
+        /// <summary>
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>

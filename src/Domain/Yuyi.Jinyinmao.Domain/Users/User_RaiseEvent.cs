@@ -142,6 +142,20 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
+        private async Task RaiseDepositResultedEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info, bool result, string message)
+        {
+            DepositResulted @event = new DepositResulted
+            {
+                Args = args,
+                Result = result,
+                TransDesc = message,
+                TransactionInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
         /// <summary>
         ///     Raises the extra interest added event.
         /// </summary>

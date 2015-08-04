@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  12:46 PM
+// Last Modified On : 2015-08-04  1:42 PM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -103,7 +103,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.TodayJBYWithdrawalAmount = todayJBYWithdrawalAmount;
 
-            this.JBYAccrualAmount = this.GetJBYAccrualAmount(DateTime.UtcNow.AddHours(8));
+            this.JBYAccrualAmount = this.GetJBYAccrualAmount(now);
             JBYAccountTransaction lastReinvesting = this.State.JBYAccount.Values.Where(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0)
                 .OrderByDescending(t => t.ResultTime.GetValueOrDefault(DateTime.MinValue)).FirstOrDefault();
 

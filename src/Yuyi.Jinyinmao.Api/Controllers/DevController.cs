@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  4:44 PM
+// Last Modified On : 2015-08-04  4:32 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,6 +29,8 @@ using Moe.AspNet.Utility;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Api.Models.Product;
+using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Models;
@@ -303,11 +305,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("RefreshJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("RefreshJBYProduct"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYInfoResponse))]
         public async Task<IHttpActionResult> RefreshJBYProduct()
         {
             await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).RefreshAsync();
             return this.Ok();
+        }
+
+        /// <summary>
+        ///     ReloadCellphone
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("ReloadCellphone/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(CellphoneInfoResponse))]
+        public async Task<IHttpActionResult> ReloadCellphone(string cellphone)
+        {
+            CellphoneInfo info = await CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone)).ReloadAsync();
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -373,6 +389,23 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     ReprocessDepositSaga
+        /// </summary>
+        /// <param name="sagaIdentifier">支付流程唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("ReprocessDepositSaga/{sagaIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> ReprocessDepositSaga(string sagaIdentifier)
+        {
+            Guid sagaId = Guid.ParseExact(sagaIdentifier, "N");
+            await DepositSagaFactory.GetGrain(sagaId).ReprocessAsync();
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     SetJBYProductToSoldOut
         /// </summary>
         /// <response code="200"></response>
@@ -419,6 +452,27 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     Sets the settle account transaction result.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        [Route("SetSettleAccountTransactionResult"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        public async Task<IHttpActionResult> SetSettleAccountTransactionResult(SetSettleAccountTransactionResultRequest request)
+        {
+            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
+            Guid transacationId = Guid.ParseExact(request.TransactionIdentifier, "N");
+
+            SettleAccountTransactionInfo info = await UserFactory.GetGrain(userId).SetSettleAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的账户流水");
+            }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
         ///     SetProductToSoldOut
         /// </summary>
         /// <response code="200"></response>
@@ -446,7 +500,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             foreach (var c in userCellphones)
             {
                 ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(c.Value));
-                await cellphone.Register(Guid.Parse(c.Key));
+                await cellphone.RegisterAsync(Guid.Parse(c.Key));
             }
 
             return this.Ok();
@@ -512,7 +566,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
             {
                 await CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone))
-                    .Unregister();
+                    .UnregisterAsync();
             }
             return this.Ok();
         }

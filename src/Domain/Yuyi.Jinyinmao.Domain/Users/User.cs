@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  11:25 AM
+// Last Modified On : 2015-08-03  9:16 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -234,9 +234,9 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.State.WriteStateAsync();
 
-            await cellphone.Register(this.State.UserId);
+            await cellphone.RegisterAsync(this.State.UserId);
 
-            await originalCellphone.Unregister();
+            await originalCellphone.UnregisterAsync();
 
             return await this.GetUserInfoAsync();
         }
@@ -412,17 +412,21 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     deposit resulted as an asynchronous operation.
+        /// deposit resulted as an asynchronous operation.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ApplicationException">
-        ///     Missing SettleAccountTransaction {0}..FormatWith(command.CommandId)
-        ///     or
-        ///     Missing BankCard {0}..FormatWith(transaction.BankCardNo)
+        /// Invalid PayByYilian command. UserId-{0}, CommandId-{1}..FormatWith(this.State.UserId, command.CommandId)
+        /// or
+        /// Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
+        /// or
+        /// Missing SettleAccountTransaction. UserId-{0}, CommandId-{1}, SettleAccountTransactionId-{2} .
+        ///                     .FormatWith(this.State.UserId, command.CommandId, command.CommandId)
         /// </exception>
+
         public async Task DepositResultedAsync(PayCommand command, bool result, string message)
         {
             if (!this.State.Verified)
@@ -740,6 +744,44 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Insert jby account transcation as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionDto">The transaction dto.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto)
+        {
+            DateTime now = DateTime.UtcNow.AddHours(8);
+            JBYAccountTransaction transaction = new JBYAccountTransaction
+            {
+                Amount = transactionDto.Amount,
+                Args = transactionDto.Args,
+                PredeterminedResultDate = now,
+                ProductId = SpecialIdHelper.ReversalJBYTransactionProductId,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleAccountTransactionId = Guid.Empty,
+                Trade = transactionDto.Trade,
+                TradeCode = transactionDto.TradeCode,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                TransDesc = transactionDto.TransDesc,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            this.State.JBYAccount.Add(transaction.TransactionId, transaction);
+
+            await this.State.WriteStateAsync();
+            this.ReloadJBYAccountData();
+
+            JBYAccountTransactionInfo transactionInfo = transaction.ToInfo();
+
+            await this.RaiseTransactionInsertdEvent(transactionDto, transactionInfo);
+
+            return transactionInfo;
+        }
+
+        /// <summary>
         ///     insert settle account transcation as an asynchronous operation.
         /// </summary>
         /// <param name="transactionDto">The transaction dto.</param>
@@ -1019,7 +1061,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.Args.Add("MigratingTime", DateTime.UtcNow);
 
             ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
-            await cellphone.Register(this.State.UserId);
+            await cellphone.RegisterAsync(this.State.UserId);
 
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
@@ -1084,6 +1126,24 @@ namespace Yuyi.Jinyinmao.Domain
             await this.RaiseUserRegisteredEvent(command);
 
             return await this.GetUserInfoAsync();
+        }
+
+        /// <summary>
+        ///     remove jby reversal transactions as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        public async Task<int> RemoveJBYReversalTransactionsAsync()
+        {
+            List<Guid> transactions = this.State.JBYAccount.Where(t => t.Value.TradeCode == 2001011101).Select(t => t.Key).ToList();
+            foreach (Guid transactionId in transactions)
+            {
+                this.State.JBYAccount.Remove(transactionId);
+            }
+
+            await this.State.WriteStateAsync();
+            this.ReloadJBYAccountData();
+
+            return transactions.Count;
         }
 
         /// <summary>
@@ -1210,6 +1270,38 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaisePaymentPasswordSetEvent(command);
+        }
+
+        /// <summary>
+        /// Set transaction result as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public async Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args)
+        {
+            SettleAccountTransaction transaction;
+            if (!this.State.SettleAccount.TryGetValue(transactionId, out transaction))
+            {
+                return null;
+            }
+
+            if (transaction.ResultCode != 0 && transaction.ResultTime.HasValue)
+            {
+                return null;
+            }
+
+            transaction.ResultCode = result ? 1 : -1;
+            transaction.ResultTime = DateTime.UtcNow.AddHours(8);
+            transaction.TransDesc = message;
+
+            await this.SaveStateAsync();
+            this.ReloadSettleAccountData();
+            await this.RaiseDepositResultedEvent(args, transaction.ToInfo(), result, message);
+
+            return transaction.ToInfo();
         }
 
         /// <summary>
@@ -1444,44 +1536,6 @@ namespace Yuyi.Jinyinmao.Domain
         #endregion IUser Members
 
         /// <summary>
-        ///     Insert jby account transcation as an asynchronous operation.
-        /// </summary>
-        /// <param name="transactionDto">The transaction dto.</param>
-        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        public async Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto)
-        {
-            DateTime now = DateTime.UtcNow.AddHours(8);
-            JBYAccountTransaction transaction = new JBYAccountTransaction
-            {
-                Amount = transactionDto.Amount,
-                Args = transactionDto.Args,
-                PredeterminedResultDate = now,
-                ProductId = SpecialIdHelper.ReversalJBYTransactionProductId,
-                ResultCode = 1,
-                ResultTime = now,
-                SettleAccountTransactionId = Guid.Empty,
-                Trade = transactionDto.Trade,
-                TradeCode = transactionDto.TradeCode,
-                TransactionId = Guid.NewGuid(),
-                TransactionTime = now,
-                TransDesc = transactionDto.TransDesc,
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-
-            this.State.JBYAccount.Add(transaction.TransactionId, transaction);
-
-            await this.State.WriteStateAsync();
-            this.ReloadJBYAccountData();
-
-            JBYAccountTransactionInfo transactionInfo = transaction.ToInfo();
-
-            await this.RaiseTransactionInsertdEvent(transactionDto, transactionInfo);
-
-            return transactionInfo;
-        }
-
-        /// <summary>
         ///     jby compute interest as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
@@ -1591,24 +1645,6 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadSettleAccountData();
 
             await this.RaiseJBYWithdrawalResultedEvent(transaction.ToInfo(), settleAccountTransaction.ToInfo());
-        }
-
-        /// <summary>
-        /// remove jby reversal transactions as an asynchronous operation.
-        /// </summary>
-        /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public async Task<int> RemoveJBYReversalTransactionsAsync()
-        {
-            List<Guid> transactions = this.State.JBYAccount.Where(t => t.Value.TradeCode == 2001011101).Select(t => t.Key).ToList();
-            foreach (Guid transactionId in transactions)
-            {
-                this.State.JBYAccount.Remove(transactionId);
-            }
-
-            await this.State.WriteStateAsync();
-            this.ReloadJBYAccountData();
-
-            return transactions.Count;
         }
 
         /// <summary>

@@ -6714,16 +6714,22 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo>(38380462, null );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Register(System.Guid @userId)
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.RegisterAsync(System.Guid @userId)
             {
 
-                return base.InvokeMethodAsync<object>(-1640712768, new object[] {@userId} );
+                return base.InvokeMethodAsync<object>(1247904134, new object[] {@userId} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.Unregister()
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo> Yuyi.Jinyinmao.Domain.ICellphone.ReloadAsync()
             {
 
-                return base.InvokeMethodAsync<object>(1879022777, null );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.CellphoneInfo>(1656425842, null );
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.ICellphone.UnregisterAsync()
+            {
+
+                return base.InvokeMethodAsync<object>(-507305401, null );
             }
         }
     }
@@ -6754,10 +6760,12 @@ namespace Yuyi.Jinyinmao.Domain
                         {
                             case 38380462: 
                                 return ((ICellphone)grain).GetCellphoneInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case -1640712768: 
-                                return ((ICellphone)grain).Register((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 1879022777: 
-                                return ((ICellphone)grain).Unregister().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 1247904134: 
+                                return ((ICellphone)grain).RegisterAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 1656425842: 
+                                return ((ICellphone)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -507305401: 
+                                return ((ICellphone)grain).UnregisterAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -6784,10 +6792,12 @@ namespace Yuyi.Jinyinmao.Domain
                     {
                         case 38380462:
                             return "GetCellphoneInfoAsync";
-                    case -1640712768:
-                            return "Register";
-                    case 1879022777:
-                            return "Unregister";
+                    case 1247904134:
+                            return "RegisterAsync";
+                    case 1656425842:
+                            return "ReloadAsync";
+                    case -507305401:
+                            return "UnregisterAsync";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
@@ -7147,6 +7157,12 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(2116538135, new object[] {@command} );
             }
             
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.SetSettleAccountTransactionResultAsync(System.Guid @transactionId, bool @result, string @message, Dictionary<String,Object> @args)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(877844628, new object[] {@transactionId, @result, @message, @args} );
+            }
+            
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.SyncAsync()
             {
 
@@ -7291,6 +7307,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).ResetLoginPasswordAsync((Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 2116538135: 
                                 return ((IUser)grain).SetPaymentPasswordAsync((Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 877844628: 
+                                return ((IUser)grain).SetSettleAccountTransactionResultAsync((Guid)arguments[0], (Boolean)arguments[1], (String)arguments[2], (Dictionary<String,Object>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1937280616: 
                                 return ((IUser)grain).SyncAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 331700856: 
@@ -7409,6 +7427,8 @@ namespace Yuyi.Jinyinmao.Domain
                             return "ResetLoginPasswordAsync";
                     case 2116538135:
                             return "SetPaymentPasswordAsync";
+                    case 877844628:
+                            return "SetSettleAccountTransactionResultAsync";
                     case 1937280616:
                             return "SyncAsync";
                     case 331700856:
@@ -7828,6 +7848,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
     using Orleans.Runtime;
     using System.Collections;
     using Yuyi.Jinyinmao.Domain.Dtos;
+    using System.Threading.Tasks;
+    using System.Threading;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.8.0")]
@@ -7974,10 +7996,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 return base.InvokeMethodAsync<object>(-1227025117, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.Products.IJBYProduct.RefreshAsync(bool @force)
+            System.Threading.Tasks.Task<System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo>> Yuyi.Jinyinmao.Domain.Products.IJBYProduct.RefreshAsync(bool @force)
             {
 
-                return base.InvokeMethodAsync<object>(1085919239, new object[] {@force} );
+                return base.InvokeMethodAsync<System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo>>(1085919239, new object[] {@force} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.Products.IJBYProduct.ReloadAsync()
@@ -8039,7 +8061,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                             case -1227025117: 
                                 return ((IJBYProduct)grain).HitShelvesAsync((Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1085919239: 
-                                return ((IJBYProduct)grain).RefreshAsync((Boolean)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IJBYProduct)grain).RefreshAsync((Boolean)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1656425842: 
                                 return ((IJBYProduct)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1119823572: 
@@ -8409,6 +8431,12 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
                 return base.InvokeMethodAsync<object>(1442573781, null );
             }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.Sagas.IDepositSaga.ReprocessAsync()
+            {
+
+                return base.InvokeMethodAsync<object>(180595817, null );
+            }
         }
     }
     
@@ -8440,6 +8468,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                                 return ((IDepositSaga)grain).BeginProcessAsync((DepositSagaInitData)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1442573781: 
                                 return ((IDepositSaga)grain).ProcessAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 180595817: 
+                                return ((IDepositSaga)grain).ReprocessAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
@@ -8468,6 +8498,8 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
                             return "BeginProcessAsync";
                     case 1442573781:
                             return "ProcessAsync";
+                    case 180595817:
+                            return "ReprocessAsync";
                     
                         default: 
                             throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);

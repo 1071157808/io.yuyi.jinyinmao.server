@@ -213,11 +213,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     refresh as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task RefreshAsync(bool force = false)
+        public async Task<Task<JBYProductInfo>> RefreshAsync(bool force = false)
         {
             if (!force && (!this.State.SoldOut || !this.State.SoldOutTime.HasValue))
             {
-                return;
+                return this.GetProductInfoAsync();
             }
 
             string productIdentifier = this.State.ProductId.ToGuidString();
@@ -260,6 +260,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
                 await this.RaiseJBYPorductUpdatedEvent();
             }
+
+            return this.GetProductInfoAsync();
         }
 
         /// <summary>

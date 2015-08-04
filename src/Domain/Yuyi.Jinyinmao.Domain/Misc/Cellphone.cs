@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  5:39 PM
+// Last Modified On : 2015-08-03  9:36 PM
 // ***********************************************************************
 // <copyright file="Cellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -46,7 +47,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>System.Threading.Tasks.Task.</returns>
-        public async Task Register(Guid userId)
+        public async Task RegisterAsync(Guid userId)
         {
             this.State.Registered = true;
             this.State.UserId = userId;
@@ -54,10 +55,20 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Reload cellphone as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task<CellphoneInfo> ReloadAsync()
+        {
+            await this.State.ReadStateAsync();
+            return await this.GetCellphoneInfoAsync();
+        }
+
+        /// <summary>
         ///     Unregisters this instance.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task Unregister()
+        public async Task UnregisterAsync()
         {
             this.State.Registered = false;
             this.State.UserId = Guid.NewGuid();
@@ -73,8 +84,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public override async Task OnActivateAsync()
         {
-            this.State.Cellphone = this.GetPrimaryKeyLong().ToString().Substring(7);
-            this.State.UserId = Guid.NewGuid();
+            if (this.State.Cellphone.IsNullOrEmpty())
+            {
+                this.State.Cellphone = this.GetPrimaryKeyLong().ToString().Substring(7);
+                this.State.UserId = Guid.NewGuid();
+            }
+
             await base.OnActivateAsync();
         }
     }

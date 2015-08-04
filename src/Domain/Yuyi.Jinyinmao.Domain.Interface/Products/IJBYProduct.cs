@@ -73,7 +73,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Refreshes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task RefreshAsync(bool force = false);
+        Task<Task<JBYProductInfo>> RefreshAsync(bool force = false);
 
         /// <summary>
         ///     Reloads the asynchronous.

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-14  6:03 PM
+// File             : IDepositSaga.cs
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-21  7:50 PM
+// Last Modified On : 2015-08-04  4:24 PM
 // ***********************************************************************
 // <copyright file="IDepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,5 +33,11 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         /// </summary>
         /// <returns>Task.</returns>
         Task ProcessAsync();
+
+        /// <summary>
+        ///     Reprocess asynchronous.
+        /// </summary>
+        /// <returns>Task.</returns>
+        Task ReprocessAsync();
     }
 }

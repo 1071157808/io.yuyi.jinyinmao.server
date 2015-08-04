@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserRegisteredProcessor.cs
 // Created          : 2015-05-27  7:39 PM
@@ -43,7 +43,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
             await this.ProcessingEventAsync(@event, async e =>
             {
                 ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(e.UserInfo.Cellphone));
-                await cellphone.Register(e.UserInfo.UserId);
+                await cellphone.RegisterAsync(e.UserInfo.UserId);
             });
 
             await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUser(e.UserInfo));
