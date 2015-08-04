@@ -6959,10 +6959,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.CheckPaymentPasswordResult>(1179038347, new object[] {@paymentPassword} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.ClearUnauthenticatedInfoAsync()
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.UserInfo> Yuyi.Jinyinmao.Domain.IUser.ClearUnauthenticatedInfoAsync()
             {
 
-                return base.InvokeMethodAsync<object>(859174464, null );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.UserInfo>(859174464, null );
             }
             
             System.Threading.Tasks.Task<System.Tuple<Yuyi.Jinyinmao.Domain.Dtos.UserInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo, Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>> Yuyi.Jinyinmao.Domain.IUser.DepositAsync(Yuyi.Jinyinmao.Domain.Commands.PayCommand @command)
@@ -7133,10 +7133,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(1656425842, null );
             }
             
-            System.Threading.Tasks.Task<int> Yuyi.Jinyinmao.Domain.IUser.RemoveJBYReversalTransactionsAsync()
+            System.Threading.Tasks.Task<bool> Yuyi.Jinyinmao.Domain.IUser.RemoveJBYTransactionsAsync(System.Guid @transactionId)
             {
 
-                return base.InvokeMethodAsync<System.Int32>(-311225426, null );
+                return base.InvokeMethodAsync<System.Boolean>(-1470330856, new object[] {@transactionId} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.RepayOrderAsync(System.Guid @orderId, System.DateTime @repaidTime)
@@ -7242,7 +7242,7 @@ namespace Yuyi.Jinyinmao.Domain
                             case 1179038347: 
                                 return ((IUser)grain).CheckPaymentPasswordAsync((String)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 859174464: 
-                                return ((IUser)grain).ClearUnauthenticatedInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IUser)grain).ClearUnauthenticatedInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -532442069: 
                                 return ((IUser)grain).DepositAsync((Yuyi.Jinyinmao.Domain.Commands.PayCommand)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -1410398648: 
@@ -7299,8 +7299,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).RegisterAsync((Yuyi.Jinyinmao.Domain.Commands.UserRegister)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1656425842: 
                                 return ((IUser)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case -311225426: 
-                                return ((IUser)grain).RemoveJBYReversalTransactionsAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -1470330856: 
+                                return ((IUser)grain).RemoveJBYTransactionsAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1599467507: 
                                 return ((IUser)grain).RepayOrderAsync((Guid)arguments[0], (DateTime)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 405897552: 
@@ -7419,8 +7419,8 @@ namespace Yuyi.Jinyinmao.Domain
                             return "RegisterAsync";
                     case 1656425842:
                             return "ReloadAsync";
-                    case -311225426:
-                            return "RemoveJBYReversalTransactionsAsync";
+                    case -1470330856:
+                            return "RemoveJBYTransactionsAsync";
                     case 1599467507:
                             return "RepayOrderAsync";
                     case 405897552:

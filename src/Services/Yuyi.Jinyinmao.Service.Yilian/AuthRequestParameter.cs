@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : AuthRequestParameter.cs
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  10:46 AM
+// Last Modified On : 2015-08-04  5:40 PM
 // ***********************************************************************
 // <copyright file="AuthRequestParameter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -61,8 +61,8 @@ namespace Yuyi.Jinyinmao.Service
                 IDNo = idNo,
                 // 手机号
                 MobileNo = mobileNo,
-                // 回调URL
-                MerchantUrl = "",
+                //                // 回调URL
+                //                MerchantUrl = "",
                 // 模拟产品编号
                 MerOrderNo = "A" + userId.ToUpperInvariant()
             };

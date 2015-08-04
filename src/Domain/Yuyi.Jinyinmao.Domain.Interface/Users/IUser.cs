@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : IUser.cs
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-30  1:19 AM
+// Last Modified On : 2015-08-04  10:04 PM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -86,10 +86,10 @@ namespace Yuyi.Jinyinmao.Domain
         Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(string paymentPassword);
 
         /// <summary>
-        ///     Clears the unauthenticated information.
+        ///     Clears the unauthenticated information asynchronous.
         /// </summary>
-        /// <returns>Task.</returns>
-        Task ClearUnauthenticatedInfoAsync();
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> ClearUnauthenticatedInfoAsync();
 
         /// <summary>
         ///     Deposits the asynchronous.
@@ -115,7 +115,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task DoDailyWorkAsync(bool force = false);
 
         /// <summary>
-        /// Dumps the asynchronous.
+        ///     Dumps the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task DumpAsync();
@@ -210,7 +210,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(int pageIndex, int pageSize);
 
         /// <summary>
-        /// Gets the settling order infos asynchronous.
+        ///     Gets the settling order infos asynchronous.
         /// </summary>
         /// <param name="count">The count.</param>
         /// <returns>Task&lt;List&lt;OrderInfo&gt;&gt;.</returns>
@@ -236,14 +236,14 @@ namespace Yuyi.Jinyinmao.Domain
         Task HideBankCardAsync(HideBankCard command);
 
         /// <summary>
-        /// Inserts the jby account transcation asynchronous.
+        ///     Inserts the jby account transcation asynchronous.
         /// </summary>
         /// <param name="transactionDto">The transaction dto.</param>
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
         Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto);
 
         /// <summary>
-        /// Inserts the settle account transcation asynchronous.
+        ///     Inserts the settle account transcation asynchronous.
         /// </summary>
         /// <param name="transactionDto">The transaction dto.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
@@ -270,7 +270,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<bool> IsRegisteredAsync();
 
         /// <summary>
-        /// Migrates the asynchronous.
+        ///     Migrates the asynchronous.
         /// </summary>
         /// <param name="migrationDto">The migration dto.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -290,10 +290,10 @@ namespace Yuyi.Jinyinmao.Domain
         Task ReloadAsync();
 
         /// <summary>
-        /// Removes the jby reversal transactions asynchronous.
+        ///     Removes the jby transactions asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int32&gt;.</returns>
-        Task<int> RemoveJBYReversalTransactionsAsync();
+        Task<bool> RemoveJBYTransactionsAsync(Guid transactionId);
 
         /// <summary>
         ///     Repays the order asynchronous.
@@ -318,7 +318,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
-        /// Sets the settle account transaction result asynchronous.
+        ///     Sets the settle account transaction result asynchronous.
         /// </summary>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>

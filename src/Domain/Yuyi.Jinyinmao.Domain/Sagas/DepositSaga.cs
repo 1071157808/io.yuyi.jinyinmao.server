@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  4:22 PM
+// Last Modified On : 2015-08-04  10:21 PM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -114,6 +114,21 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             }
         }
 
+        /// <summary>
+        ///     Reprocess as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public async Task ReprocessAsync()
+        {
+            if (this.State.Status == DepositSagaStatus.Fault || this.State.Status == DepositSagaStatus.Finished)
+            {
+                this.State.Status = DepositSagaStatus.Init;
+                this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+                await this.RegisterReminder();
+                this.ProcessAsync().Forget();
+            }
+        }
+
         #endregion IDepositSaga Members
 
         /// <summary>
@@ -131,21 +146,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
             this.YilianService = new YilianPaymentGatewayService();
             return base.OnActivateAsync();
-        }
-
-        /// <summary>
-        ///     Reprocess as an asynchronous operation.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public async Task ReprocessAsync()
-        {
-            if (this.State.Status == DepositSagaStatus.Fault)
-            {
-                this.State.Status = DepositSagaStatus.Init;
-                this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
-                await this.RegisterReminder();
-                this.ProcessAsync().Forget();
-            }
         }
 
         private static PaymentRequestParameter BuildRequestParameter(string batchNo, string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId, long amount)

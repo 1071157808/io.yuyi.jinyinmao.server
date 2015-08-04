@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  4:32 PM
+// Last Modified On : 2015-08-04  5:21 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,9 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -33,7 +30,6 @@ using Yuyi.Jinyinmao.Api.Models.Product;
 using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
 
@@ -128,6 +124,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid productId = Guid.ParseExact(productIdentifier, "N");
             await RegularProductFactory.GetGrain(productId).CheckSaleStatusAsync();
             return this.Ok();
+        }
+
+        /// <summary>
+        ///     ClearUnauthenticatedInfoAsync
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("ClearUnauthenticatedInfoAsync/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(UserInfoResponse))]
+        public async Task<IHttpActionResult> ClearUnauthenticatedInfoAsync(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            UserInfo info = await UserFactory.GetGrain(userId).ClearUnauthenticatedInfoAsync();
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -373,19 +384,22 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     ReloadUser
+        /// RemoveJBYReversalTransactions
         /// </summary>
         /// <param name="userIdentifier">用户唯一标识</param>
+        /// <param name="transactionIdentifier">流水唯一标识</param>
         /// <response code="200"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("RemoveJBYReversalTransactions/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
-        public async Task<IHttpActionResult> RemoveJBYReversalTransactions(string userIdentifier)
+        [Route("RemoveJBYReversalTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        public async Task<IHttpActionResult> RemoveJBYReversalTransaction(string userIdentifier, string transactionIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
-            await UserFactory.GetGrain(userId).RemoveJBYReversalTransactionsAsync();
-            return this.Ok();
+            Guid transactionId = Guid.ParseExact(transactionIdentifier, "N");
+
+            bool result = await UserFactory.GetGrain(userId).RemoveJBYTransactionsAsync(transactionId);
+            return this.Ok(new { Result = result });
         }
 
         /// <summary>
@@ -470,40 +484,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(info.ToResponse());
-        }
-
-        /// <summary>
-        ///     SetProductToSoldOut
-        /// </summary>
-        /// <response code="200"></response>
-        /// <response code="401"></response>
-        /// <response code="403"></response>
-        /// <response code="500"></response>
-        [Route("SyncAllCellphone"), IpAuthorize(OnlyLocalHost = true)]
-        [SuppressMessage("ReSharper", "LoopCanBePartlyConvertedToQuery")]
-        public async Task<IHttpActionResult> SyncAllCellphone()
-        {
-            Dictionary<string, string> userCellphones = new Dictionary<string, string>();
-            using (JYMDBContext db = new JYMDBContext())
-            {
-                var cellphones = await db.Users.AsNoTracking().Select(u => new { u.UserIdentifier, u.Cellphone }).ToListAsync();
-
-                foreach (var c in cellphones)
-                {
-                    if (!userCellphones.ContainsKey(c.UserIdentifier))
-                    {
-                        userCellphones.Add(c.UserIdentifier, c.Cellphone);
-                    }
-                }
-            }
-
-            foreach (var c in userCellphones)
-            {
-                ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(c.Value));
-                await cellphone.RegisterAsync(Guid.Parse(c.Key));
-            }
-
-            return this.Ok();
         }
 
         /// <summary>

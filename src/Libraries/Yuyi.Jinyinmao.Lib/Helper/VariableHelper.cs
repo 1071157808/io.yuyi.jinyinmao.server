@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : VariableHelper.cs
 // Created          : 2015-05-25  1:25 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-25  1:25 AM
+// Last Modified On : 2015-08-04  7:16 PM
 // ***********************************************************************
 // <copyright file="VariableHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,6 +36,6 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <summary>
         ///     The withdrawal charge fee
         /// </summary>
-        public static readonly int WithdrawalChargeFee = 200;
+        public static readonly int WithdrawalChargeFee = 0;
     }
 }

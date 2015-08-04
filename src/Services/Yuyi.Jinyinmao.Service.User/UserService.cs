@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  12:33 PM
+// Last Modified On : 2015-08-04  6:31 PM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -421,8 +421,8 @@ namespace Yuyi.Jinyinmao.Service
         public async Task<UserInfo> GetUserInfoAsync(Guid userId)
         {
             IUser user = UserFactory.GetGrain(userId);
-            UserInfo info = await user.GetUserInfoAsync();
-            return info.Cellphone.IsNullOrEmpty() ? null : info;
+            UserInfo userInfo = await user.GetUserInfoAsync();
+            return userInfo.Cellphone.IsNullOrEmpty() ? null : userInfo;
         }
 
         /// <summary>

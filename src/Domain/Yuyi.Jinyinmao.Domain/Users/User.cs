@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  9:16 PM
+// Last Modified On : 2015-08-04  10:00 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -253,8 +253,10 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 return Task.FromResult(new CheckPasswordResult
                 {
+                    RemainCount = 10 - this.PasswordErrorCount,
                     Success = false,
-                    UserExist = false
+                    UserExist = false,
+                    UserId = this.State.UserId
                 });
             }
 
@@ -335,7 +337,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Clears the unauthenticated information asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task ClearUnauthenticatedInfoAsync()
+        public async Task<UserInfo> ClearUnauthenticatedInfoAsync()
         {
             if (!this.State.Verified)
             {
@@ -343,9 +345,16 @@ namespace Yuyi.Jinyinmao.Domain
                 this.State.Credential = Credential.None;
                 this.State.CredentialNo = string.Empty;
                 this.State.VerifiedTime = null;
+
+                IEnumerable<string> unverifiedBankCards = this.State.BankCards.Where(c => !c.Value.Verified).Select(c => c.Key);
+                foreach (string bankCardNo in unverifiedBankCards)
+                {
+                    this.State.BankCards.Remove(bankCardNo);
+                }
             }
 
             await this.SaveStateAsync();
+            return await this.GetUserInfoAsync();
         }
 
         /// <summary>
@@ -374,7 +383,7 @@ namespace Yuyi.Jinyinmao.Domain
             UserInfo userInfo = await this.GetUserInfoAsync();
 
             SettleAccountTransaction transaction;
-            SettleAccountTransactionInfo transactionInfo = null;
+            SettleAccountTransactionInfo transactionInfo;
             if (!this.State.SettleAccount.TryGetValue(command.CommandId, out transaction))
             {
                 this.BeginProcessCommandAsync(command);
@@ -408,25 +417,26 @@ namespace Yuyi.Jinyinmao.Domain
                 await this.RaisePayingByYilianEvent(command, transactionInfo);
             }
 
+            transactionInfo = transaction.ToInfo();
+
             return new Tuple<UserInfo, SettleAccountTransactionInfo, BankCardInfo>(userInfo, transactionInfo, card.ToInfo());
         }
 
         /// <summary>
-        /// deposit resulted as an asynchronous operation.
+        ///     deposit resulted as an asynchronous operation.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
         /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
         /// <exception cref="System.ApplicationException">
-        /// Invalid PayByYilian command. UserId-{0}, CommandId-{1}..FormatWith(this.State.UserId, command.CommandId)
-        /// or
-        /// Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
-        /// or
-        /// Missing SettleAccountTransaction. UserId-{0}, CommandId-{1}, SettleAccountTransactionId-{2} .
-        ///                     .FormatWith(this.State.UserId, command.CommandId, command.CommandId)
+        ///     Invalid PayByYilian command. UserId-{0}, CommandId-{1}..FormatWith(this.State.UserId, command.CommandId)
+        ///     or
+        ///     Missing BankCard data. UserId-{0}, CommandId-{1}.FormatWith(this.State.UserId, command.CommandId)
+        ///     or
+        ///     Missing SettleAccountTransaction. UserId-{0}, CommandId-{1}, SettleAccountTransactionId-{2} .
+        ///     .FormatWith(this.State.UserId, command.CommandId, command.CommandId)
         /// </exception>
-
         public async Task DepositResultedAsync(PayCommand command, bool result, string message)
         {
             if (!this.State.Verified)
@@ -1129,24 +1139,6 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     remove jby reversal transactions as an asynchronous operation.
-        /// </summary>
-        /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public async Task<int> RemoveJBYReversalTransactionsAsync()
-        {
-            List<Guid> transactions = this.State.JBYAccount.Where(t => t.Value.TradeCode == 2001011101).Select(t => t.Key).ToList();
-            foreach (Guid transactionId in transactions)
-            {
-                this.State.JBYAccount.Remove(transactionId);
-            }
-
-            await this.State.WriteStateAsync();
-            this.ReloadJBYAccountData();
-
-            return transactions.Count;
-        }
-
-        /// <summary>
         ///     Repays the order asynchronous.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>
@@ -1273,7 +1265,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Set transaction result as an asynchronous operation.
+        ///     Set transaction result as an asynchronous operation.
         /// </summary>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>
@@ -1534,6 +1526,25 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IUser Members
+
+        /// <summary>
+        ///     Remove jby transactions as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        public async Task<bool> RemoveJBYTransactionsAsync(Guid transactionId)
+        {
+            if (this.State.JBYAccount.ContainsKey(transactionId))
+            {
+                this.State.JBYAccount.Remove(transactionId);
+                await this.State.WriteStateAsync();
+                this.ReloadJBYAccountData();
+
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.

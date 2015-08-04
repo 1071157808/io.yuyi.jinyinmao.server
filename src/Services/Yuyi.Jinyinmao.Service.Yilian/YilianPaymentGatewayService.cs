@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Service
 
             UserAuthRequestReturnUrl = "https://api.jinyinmao.com.cn/";
             PaymentRequestReturnUrl = "https://api.jinyinmao.com.cn/";
-            RetryPolicy = new RetryPolicy<HttpTransientErrorDetectionStrategy>(5, TimeSpan.FromSeconds(2));
+            RetryPolicy = new RetryPolicy<HttpTransientErrorDetectionStrategy>(20, TimeSpan.FromSeconds(2));
         }
 
         /// <summary>

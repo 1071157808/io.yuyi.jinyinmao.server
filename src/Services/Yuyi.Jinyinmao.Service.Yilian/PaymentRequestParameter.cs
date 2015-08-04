@@ -65,8 +65,8 @@ namespace Yuyi.Jinyinmao.Service
                 IDNo = idNo.ToUpperInvariant(),
                 // 手机号
                 MobileNo = mobileNo,
-                // 回调URL
-                MerchantUrl = "",
+                //                // 回调URL
+                //                MerchantUrl = "",
                 // 产品编号
                 MerOrderNo = pn.ToUpperInvariant()
             };
