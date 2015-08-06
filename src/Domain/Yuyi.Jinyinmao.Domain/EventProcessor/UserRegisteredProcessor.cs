@@ -46,7 +46,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
                 await cellphone.RegisterAsync(e.UserInfo.UserId);
             });
 
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUser(e.UserInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUserAsync(e.UserInfo));
 
             await base.ProcessEventAsync(@event);
         }

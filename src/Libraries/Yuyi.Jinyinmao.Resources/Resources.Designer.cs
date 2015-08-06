@@ -8,15 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.CodeDom.Compiler;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Resources;
-using System.Runtime.CompilerServices;
-
 namespace Yuyi.Jinyinmao {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -24,27 +19,27 @@ namespace Yuyi.Jinyinmao {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [DebuggerNonUserCode()]
-    [CompilerGenerated()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
         
-        private static ResourceManager resourceMan;
+        private static global::System.Resources.ResourceManager resourceMan;
         
-        private static CultureInfo resourceCulture;
+        private static global::System.Globalization.CultureInfo resourceCulture;
         
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public static ResourceManager ResourceManager {
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if (ReferenceEquals(resourceMan, null)) {
-                    ResourceManager temp = new ResourceManager("Yuyi.Jinyinmao.Resources", typeof(Resources).Assembly);
+                if (object.ReferenceEquals(resourceMan, null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Yuyi.Jinyinmao.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -55,8 +50,8 @@ namespace Yuyi.Jinyinmao {
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public static CultureInfo Culture {
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -66,7 +61,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】.
+        ///   Looks up a localized string similar to 金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333（工作人员不会向您索取银行卡密码）.
         /// </summary>
         public static string Sms_DepositFailed {
             get {
@@ -111,7 +106,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您的登录密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】.
+        ///   Looks up a localized string similar to 您的登录密码修改成功，如非本人操作，请立刻致电4008556333（工作人员不会向您索取验证码）.
         /// </summary>
         public static string Sms_ResetLoginPawword {
             get {
@@ -120,7 +115,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您的支付密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】.
+        ///   Looks up a localized string similar to 您的支付密码修改成功，如非本人操作，请立刻致电4008556333（工作人员不会向您索取验证码）.
         /// </summary>
         public static string Sms_ResetPaymentPawword {
             get {
@@ -138,7 +133,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
+        ///   Looks up a localized string similar to 验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码】.
         /// </summary>
         public static string Sms_VeriCode {
             get {
@@ -147,7 +142,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
+        ///   Looks up a localized string similar to 您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码）.
         /// </summary>
         public static string Sms_VeriCode_ResetLoginPawword {
             get {
@@ -156,7 +151,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
+        ///   Looks up a localized string similar to 您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码）.
         /// </summary>
         public static string Sms_VeriCode_ResetPaymentPawword {
             get {
@@ -165,7 +160,7 @@ namespace Yuyi.Jinyinmao {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】.
+        ///   Looks up a localized string similar to 您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码）.
         /// </summary>
         public static string Sms_VeriCode_SignUp {
             get {

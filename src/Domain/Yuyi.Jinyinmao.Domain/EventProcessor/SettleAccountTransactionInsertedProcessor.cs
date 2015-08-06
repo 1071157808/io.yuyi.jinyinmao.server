@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : ISettleAccountTransactionInsertedProcessor.cs
 // Created          : 2015-07-31  4:28 PM
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(SettleAccountTransactionInserted @event)
         {
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTransaction(e.TransactionInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTransactionAsync(e.TransactionInfo));
 
             await base.ProcessEventAsync(@event);
         }

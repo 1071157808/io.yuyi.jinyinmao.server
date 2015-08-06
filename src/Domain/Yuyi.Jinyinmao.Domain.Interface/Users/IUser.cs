@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  10:04 PM
+// Last Modified On : 2015-08-07  1:50 AM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -55,6 +55,30 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="message">The message.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         Task<UserInfo> AuthenticateResultedAsync(Authenticate command, bool result, string message);
+
+        /// <summary>
+        ///     Cancels the jby account transaction asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args);
+
+        /// <summary>
+        ///     Cancels the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> CancelOrderAsync(Guid orderId, Dictionary<string, object> args);
+
+        /// <summary>
+        ///     Cancels the settle account transaction asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> CancelSettleAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args);
 
         /// <summary>
         ///     Changes the cellphone asynchronous.
@@ -270,6 +294,12 @@ namespace Yuyi.Jinyinmao.Domain
         Task<bool> IsRegisteredAsync();
 
         /// <summary>
+        /// Locks the asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> LockAsync();
+
+        /// <summary>
         ///     Migrates the asynchronous.
         /// </summary>
         /// <param name="migrationDto">The migration dto.</param>
@@ -298,10 +328,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Repays the order asynchronous.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         /// <param name="orderId">The order identifier.</param>
         /// <param name="repaidTime">The repaid time.</param>
         /// <returns>Task.</returns>
-        Task RepayOrderAsync(Guid orderId, DateTime repaidTime);
+        Task RepayOrderAsync(Dictionary<string, object> args, Guid orderId, DateTime repaidTime);
 
         /// <summary>
         ///     Resets the login password.
@@ -309,6 +340,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
         Task ResetLoginPasswordAsync(ResetLoginPassword command);
+
+        /// <summary>
+        ///     Sets the jby account transaction result asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
 
         /// <summary>
         ///     Sets the payment password asynchronous.
@@ -332,6 +373,44 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task.</returns>
         Task SyncAsync();
+
+        /// <summary>
+        ///     Transfers the into jby transaction asynchronous.
+        /// </summary>
+        /// <param name="jbyInfo">The jby information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        Task TransferIntoJBYTransactionAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo);
+
+        /// <summary>
+        ///     Transfers the information order asynchronous.
+        /// </summary>
+        /// <param name="orderInfo">The order information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        Task TransferIntoOrderAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo);
+
+        /// <summary>
+        ///     Transfers the jby transaction asynchronous.
+        /// </summary>
+        /// <param name="jbyId">The jby identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> TransferJBYTransactionAsync(Guid jbyId, Dictionary<string, object> args);
+
+        /// <summary>
+        ///     Transfers the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> TransferOrderAsync(Guid orderId, Dictionary<string, object> args);
+
+        /// <summary>
+        /// Unlocks the asynchronous.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> UnlockAsync();
 
         /// <summary>
         ///     Verifies the bank card asynchronous.

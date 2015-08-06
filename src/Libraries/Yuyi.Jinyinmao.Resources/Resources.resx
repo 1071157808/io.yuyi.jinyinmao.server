@@ -124,7 +124,7 @@
     <value>您尾号为{0}的借记卡已经绑定成功。现在即可开始购买。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_DepositFailed" xml:space="preserve">
-    <value>金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333【工作人员不会向您索取银行卡密码】</value>
+    <value>金银猫账户充值失败，充值银行卡尾号为{0}，金额{1}元。失败原因：{2}。如需帮助，请致电4008556333（工作人员不会向您索取银行卡密码）</value>
   </data>
   <data name="Sms_DepositSuccessed" xml:space="preserve">
     <value>金银猫账户充值成功，充值银行卡尾号为{0}，金额{1}元。如非本人操作，请致电4008556333</value>
@@ -142,24 +142,24 @@
     <value>恭喜您成功注册金银猫。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_VeriCode" xml:space="preserve">
-    <value>验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
+    <value>验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码】</value>
   </data>
   <data name="Sms_VeriCode_ResetLoginPawword" xml:space="preserve">
-    <value>您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
+    <value>您正在修改登录密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码）</value>
   </data>
   <data name="Sms_VeriCode_ResetPaymentPawword" xml:space="preserve">
-    <value>您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
+    <value>您正在修改支付密码，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码）</value>
   </data>
   <data name="Sms_VeriCode_SignUp" xml:space="preserve">
-    <value>您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333【工作人员不会向您索取验证码】</value>
+    <value>您正在注册金银猫账户，验证码 {0}，{1}分钟内有效。请勿泄漏。如非本人操作，请致电4008556333（工作人员不会向您索取验证码）</value>
   </data>
   <data name="Sms_WithdrawalResulted" xml:space="preserve">
     <value>您申请金银猫账户提现已被银行受理，银行卡尾号为{0}，金额{1}元。请注意查收。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_ResetLoginPawword" xml:space="preserve">
-    <value>您的登录密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】</value>
+    <value>您的登录密码修改成功，如非本人操作，请立刻致电4008556333（工作人员不会向您索取验证码）</value>
   </data>
   <data name="Sms_ResetPaymentPawword" xml:space="preserve">
-    <value>您的支付密码修改成功，如非本人操作，请立刻致电4008556333【工作人员不会向您索取验证码】</value>
+    <value>您的支付密码修改成功，如非本人操作，请立刻致电4008556333（工作人员不会向您索取验证码）</value>
   </data>
 </root>

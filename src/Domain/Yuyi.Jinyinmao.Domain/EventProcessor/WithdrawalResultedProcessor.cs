@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-27  7:39 PM
@@ -40,7 +40,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
                 }
             });
 
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTransaction(e.WithdrawalTransactionInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncSettleAccountTransactionAsync(e.WithdrawalTransactionInfo));
 
             await base.ProcessEventAsync(@event);
         }

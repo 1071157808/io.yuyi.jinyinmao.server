@@ -121,6 +121,13 @@
     <Compile Include="Dtos\SettleAccountInfo.cs" />
     <Compile Include="Dtos\UserMigrationDto.cs" />
     <Compile Include="EventProcessor\IBankCardHidenProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYAccountTransactionResultedProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYAccountTransactionCanceledProcessor.cs" />
+    <Compile Include="EventProcessor\IJBYTransactionTransferedProcessor.cs" />
+    <Compile Include="EventProcessor\IOrderCanceledProcessor.cs" />
+    <Compile Include="EventProcessor\IOrderTransferedProcessor.cs" />
+    <Compile Include="EventProcessor\ISettleAccountTransactionCanceledProcessor.cs" />
+    <Compile Include="EventProcessor\ISettleAccountTransactionResultedProcessor.cs" />
     <Compile Include="EventProcessor\IExtraInterestAddedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYReinvestedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalAcceptedProcessor.cs" />
@@ -129,6 +136,13 @@
     <Compile Include="EventProcessor\IJBYAccountTransactionInsertedProcessor.cs" />
     <Compile Include="EventProcessor\ISettleAccountTransactionInsertedProcessor.cs" />
     <Compile Include="Events\BankCardHiden.cs" />
+    <Compile Include="Events\JBYAccountTransactionResulted.cs" />
+    <Compile Include="Events\JBYAccountTransactionCanceled.cs" />
+    <Compile Include="Events\JBYTransactionTransfered.cs" />
+    <Compile Include="Events\OrderCanceled.cs" />
+    <Compile Include="Events\OrderTransfered.cs" />
+    <Compile Include="Events\SettleAccountTransactionCanceled.cs" />
+    <Compile Include="Events\SettleAccountTransactionResulted.cs" />
     <Compile Include="Events\ExtraInterestAdded.cs" />
     <Compile Include="Events\JBYReinvested.cs" />
     <Compile Include="Events\JBYWithdrawalAccepted.cs" />

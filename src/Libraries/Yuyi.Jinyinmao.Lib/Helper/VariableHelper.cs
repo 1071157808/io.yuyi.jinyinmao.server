@@ -11,6 +11,8 @@
 // </copyright>
 // ***********************************************************************
 
+using System;
+
 namespace Yuyi.Jinyinmao.Packages.Helper
 {
     /// <summary>
@@ -32,6 +34,11 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         ///     The month free withrawal limit count
         /// </summary>
         public static readonly int MonthFreeWithrawalLimitCount = 4;
+
+        /// <summary>
+        /// The transfer destination identifier
+        /// </summary>
+        public static readonly Guid TransferDestinationId = new Guid("b1aa2356-9102-4259-9f28-46457dab7cc1");
 
         /// <summary>
         ///     The withdrawal charge fee

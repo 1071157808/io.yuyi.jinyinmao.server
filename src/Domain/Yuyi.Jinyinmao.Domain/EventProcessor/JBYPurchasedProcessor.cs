@@ -2,7 +2,7 @@
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-27  7:39 PM
-// 
+//
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-06-30  1:19 AM
 // ***********************************************************************
@@ -42,13 +42,13 @@ namespace Yuyi.Jinyinmao.Domain.Events
 
             await this.ProcessingEventAsync(@event, async e =>
             {
-                await DBSyncHelper.SyncJBYAccountTransaction(e.JBYTransactionInfo);
-                await DBSyncHelper.SyncSettleAccountTransaction(e.SettleTransactionInfo);
+                await DBSyncHelper.SyncJBYAccountTransactionAsync(e.JBYTransactionInfo);
+                await DBSyncHelper.SyncSettleAccountTransactionAsync(e.SettleTransactionInfo);
             });
 
             await base.ProcessEventAsync(@event);
         }
 
-        #endregion
+        #endregion IJBYPurchasedProcessor Members
     }
 }

@@ -59,7 +59,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             try
             {
-                if (force || (DateTime.UtcNow.AddHours(8).Hour <= 4 && DateTime.UtcNow.AddHours(8).Hour >= 1))
+                if (force || (DateTime.UtcNow.AddHours(8).Hour <= 5 && DateTime.UtcNow.AddHours(8).Hour >= 2))
                 {
                     StringBuilder builder = new StringBuilder();
                     builder.Append("UserDailyWork: UserId-{0}\n".FormatWith(this.State.UserId));

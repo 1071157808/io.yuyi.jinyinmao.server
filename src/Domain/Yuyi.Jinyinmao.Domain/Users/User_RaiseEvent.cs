@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  11:35 AM
+// Last Modified On : 2015-08-07  2:10 AM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -51,7 +51,13 @@ namespace Yuyi.Jinyinmao.Domain
             { typeof(BankCardHiden), e => BankCardHidenProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((BankCardHiden)e) },
             { typeof(ExtraInterestAdded), e => ExtraInterestAddedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) },
             { typeof(SettleAccountTransactionInserted), e => SettleAccountTransactionInsertedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((SettleAccountTransactionInserted)e) },
-            { typeof(JBYAccountTransactionInserted), e => JBYAccountTransactionInsertedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYAccountTransactionInserted)e) }
+            { typeof(JBYAccountTransactionInserted), e => JBYAccountTransactionInsertedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYAccountTransactionInserted)e) },
+            { typeof(SettleAccountTransactionResulted), e => SettleAccountTransactionResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((SettleAccountTransactionResulted)e) },
+            { typeof(JBYAccountTransactionResulted), e => JBYAccountTransactionResultedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYAccountTransactionResulted)e) },
+            { typeof(SettleAccountTransactionCanceled), e => SettleAccountTransactionCanceledProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((SettleAccountTransactionCanceled)e) },
+            { typeof(JBYAccountTransactionCanceled), e => JBYAccountTransactionCanceledProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYAccountTransactionCanceled)e) },
+            { typeof(OrderTransfered), e => OrderTransferedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((OrderTransfered)e) },
+            { typeof(JBYTransactionTransfered), e => JBYTransactionTransferedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) }
         };
 
         /// <summary>
@@ -128,6 +134,14 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
+        /// <summary>
+        ///     Raises the deposit resulted event.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="info">The information.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
         private async Task RaiseDepositResultedEvent(Command command, SettleAccountTransactionInfo info, bool result, string message)
         {
             DepositResulted @event = new DepositResulted
@@ -142,6 +156,14 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
+        /// <summary>
+        ///     Raises the deposit resulted event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="info">The information.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
         private async Task RaiseDepositResultedEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info, bool result, string message)
         {
             DepositResulted @event = new DepositResulted
@@ -178,6 +200,46 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
+        /// <summary>
+        ///     Raises the settle account transaction resulted event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="info">The information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseJBYAccountTransactionCanceledEvent(Dictionary<string, object> args, JBYAccountTransactionInfo info)
+        {
+            JBYAccountTransactionCanceled @event = new JBYAccountTransactionCanceled
+            {
+                Args = args,
+                TransactionInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the settle account transaction resulted event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="info">The information.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseJBYAccountTransactionResultedEvent(Dictionary<string, object> args, JBYAccountTransactionInfo info, bool result, string message)
+        {
+            JBYAccountTransactionResulted @event = new JBYAccountTransactionResulted
+            {
+                Args = args,
+                Result = result,
+                TransDesc = message,
+                TransactionInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
         private async Task RaiseJBYPurchasedEvent(JBYInvesting command, JBYAccountTransactionInfo jbyTransaction, SettleAccountTransactionInfo settleTransaction)
         {
             JBYPurchased @event = new JBYPurchased
@@ -197,6 +259,26 @@ namespace Yuyi.Jinyinmao.Domain
             {
                 Args = new Dictionary<string, object>(),
                 TransactionInfo = jbyAccountTransactionInfo,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the jby transaction transfered event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="jbyInfo">The jby information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseJBYTransactionTransferedEvent(Dictionary<string, object> args, JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo)
+        {
+            JBYTransactionTransfered @event = new JBYTransactionTransfered
+            {
+                Args = args,
+                JBYInfo = jbyInfo,
+                TransactionInfo = transactionInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -245,18 +327,40 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Raises the order built event.
+        ///     Raises the order canceled event.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         /// <param name="orderInfo">The order information.</param>
         /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseOrderPaidEvent(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
+        private async Task RaiseOrderCanceledEvent(Dictionary<string, object> args, OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
+        {
+            OrderCanceled @event = new OrderCanceled
+            {
+                Args = args,
+                OrderInfo = orderInfo,
+                TransactionInfo = transactionInfo,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the order paid event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="orderInfo">The order information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseOrderPaidEvent(Dictionary<string, object> args, OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
         {
             OrderPaid @event = new OrderPaid
             {
-                Args = new Dictionary<string, object>(),
+                Args = args,
                 OrderInfo = orderInfo,
-                TransactionInfo = transactionInfo
+                TransactionInfo = transactionInfo,
+                UserInfo = await this.GetUserInfoAsync()
             };
 
             await this.ProcessEventAsync(@event);
@@ -265,19 +369,40 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Raises the order repaid event.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         /// <param name="orderInfo">The order information.</param>
         /// <param name="principalTransactionInfo">The principal transaction information.</param>
         /// <param name="interestTransactionInfo">The interest transaction information.</param>
-        private async void RaiseOrderRepaidEvent(OrderInfo orderInfo, SettleAccountTransactionInfo principalTransactionInfo, SettleAccountTransactionInfo interestTransactionInfo)
+        private async Task RaiseOrderRepaidEvent(Dictionary<string, object> args, OrderInfo orderInfo, SettleAccountTransactionInfo principalTransactionInfo, SettleAccountTransactionInfo interestTransactionInfo)
         {
             OrderRepaid @event = new OrderRepaid
             {
-                Args = new Dictionary<string, object>(),
+                Args = args,
                 InterestTransactionInfo = interestTransactionInfo,
                 OrderInfo = orderInfo,
                 PriIntSumAmount = principalTransactionInfo.Amount + interestTransactionInfo.Amount,
                 PrincipalTransactionInfo = principalTransactionInfo,
                 RepaidTime = orderInfo.ResultTime.GetValueOrDefault(),
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the order built event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="orderInfo">The order information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseOrderTransferedEvent(Dictionary<string, object> args, OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
+        {
+            OrderTransfered @event = new OrderTransfered
+            {
+                Args = args,
+                OrderInfo = orderInfo,
+                TransactionInfo = transactionInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 
@@ -326,6 +451,46 @@ namespace Yuyi.Jinyinmao.Domain
                     UserInfo = await this.GetUserInfoAsync()
                 };
             }
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the settle account transaction resulted event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="info">The information.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseSettleAccountTransactionCanceledEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info)
+        {
+            SettleAccountTransactionCanceled @event = new SettleAccountTransactionCanceled
+            {
+                Args = args,
+                TransactionInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        /// <summary>
+        ///     Raises the settle account transaction resulted event.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <param name="info">The information.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <returns>Task.</returns>
+        private async Task RaiseSettleAccountTransactionResultedEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info, bool result, string message)
+        {
+            SettleAccountTransactionResulted @event = new SettleAccountTransactionResulted
+            {
+                Args = args,
+                Result = result,
+                TransDesc = message,
+                TransactionInfo = info,
+                UserInfo = await this.GetUserInfoAsync()
+            };
 
             await this.ProcessEventAsync(@event);
         }

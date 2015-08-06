@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  10:00 PM
+// Last Modified On : 2015-08-07  1:21 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,6 +45,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;BankCardInfo&gt;.</returns>
         public async Task<BankCardInfo> AddBankCardAsync(AddBankCard command)
         {
+            if (this.State.Closed)
+            {
+                return null;
+            }
+
             BankCard card;
             if (this.State.BankCards.TryGetValue(command.BankCardNo, out card))
             {
@@ -110,6 +115,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         public async Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command)
         {
+            if (this.State.Closed)
+            {
+                return null;
+            }
+
             Order order;
             if (!this.State.Orders.TryGetValue(command.OrderId, out order))
             {
@@ -211,6 +221,65 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Cancel jby account transaction as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args)
+        {
+            JBYAccountTransaction transaction;
+            if (!this.State.JBYAccount.TryGetValue(transactionId, out transaction))
+            {
+                return null;
+            }
+
+            bool result = true;
+
+            if (transaction.TradeCode == TradeCodeHelper.TC2001051102)
+            {
+                IJBYProduct product = JBYProductFactory.GetGrain(transaction.ProductId);
+                result = await product.CancelJBYTransactionAsync(transaction.TransactionId);
+            }
+
+            if (result)
+            {
+                this.State.JBYAccount.Remove(transaction.TransactionId);
+
+                await this.SaveStateAsync();
+                this.ReloadJBYAccountData();
+                await this.RaiseJBYAccountTransactionCanceledEvent(args, transaction.ToInfo());
+
+                return transaction.ToInfo();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Cancel settle account transaction as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public async Task<SettleAccountTransactionInfo> CancelSettleAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args)
+        {
+            SettleAccountTransaction transaction;
+            if (!this.State.SettleAccount.TryGetValue(transactionId, out transaction))
+            {
+                return null;
+            }
+
+            this.State.SettleAccount.Remove(transaction.TransactionId);
+
+            await this.SaveStateAsync();
+            this.ReloadSettleAccountData();
+            await this.RaiseSettleAccountTransactionCanceledEvent(args, transaction.ToInfo());
+
+            return transaction.ToInfo();
+        }
+
+        /// <summary>
         ///     Changes the cellphone asynchronous.
         /// </summary>
         /// <param name="cellphoneNo">The cellphone no.</param>
@@ -249,7 +318,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;CheckPasswordResult&gt;.</returns>
         public Task<CheckPasswordResult> CheckPasswordAsync(string loginName, string password)
         {
-            if (this.State.Cellphone.IsNullOrEmpty() || this.PasswordErrorCount > 10)
+            if (this.State.Cellphone.IsNullOrEmpty() || this.PasswordErrorCount > 10 || this.State.Closed)
             {
                 return Task.FromResult(new CheckPasswordResult
                 {
@@ -837,6 +906,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task<OrderInfo> InvestingAsync(RegularInvesting command)
         {
+            if (this.State.Closed)
+            {
+                return null;
+            }
+
             Order order;
             if (this.State.Orders.TryGetValue(command.CommandId, out order))
             {
@@ -945,7 +1019,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadSettleAccountData();
             this.ReloadOrderInfosData();
 
-            await this.RaiseOrderPaidEvent(orderInfo, transactionInfo);
+            await this.RaiseOrderPaidEvent(command.Args, orderInfo, transactionInfo);
 
             return orderInfo;
         }
@@ -957,6 +1031,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;TransactionInfo&gt;.</returns>
         public async Task<JBYAccountTransactionInfo> InvestingAsync(JBYInvesting command)
         {
+            if (this.State.Closed)
+            {
+                return null;
+            }
+
             JBYAccountTransaction transaction;
             if (this.State.JBYAccount.TryGetValue(command.CommandId, out transaction))
             {
@@ -1035,6 +1114,21 @@ namespace Yuyi.Jinyinmao.Domain
         public Task<bool> IsRegisteredAsync()
         {
             return Task.FromResult(this.State.Cellphone.IsNotNullOrEmpty() && this.State.RegisterTime > DateTime.MinValue);
+        }
+
+        /// <summary>
+        /// lock as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public async Task<UserInfo> LockAsync()
+        {
+            this.State.Closed = true;
+
+            await this.State.WriteStateAsync();
+
+            await this.SyncAsync();
+
+            return await this.GetUserInfoAsync();
         }
 
         /// <summary>
@@ -1139,12 +1233,33 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        ///     Remove jby transactions as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        public async Task<bool> RemoveJBYTransactionsAsync(Guid transactionId)
+        {
+            if (this.State.JBYAccount.ContainsKey(transactionId))
+            {
+                this.State.JBYAccount.Remove(transactionId);
+                await this.State.WriteStateAsync();
+                this.ReloadJBYAccountData();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         ///     Repays the order asynchronous.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         /// <param name="orderId">The order identifier.</param>
         /// <param name="repaidTime">The repaid time.</param>
         /// <returns>Task.</returns>
-        public async Task RepayOrderAsync(Guid orderId, DateTime repaidTime)
+        /// <exception cref="System.ApplicationException">Missing Order data. UserId-{0}, OrderId-{1}..FormatWith(this.State.UserId, orderId)</exception>
+        public async Task RepayOrderAsync(Dictionary<string, object> args, Guid orderId, DateTime repaidTime)
         {
             Order order;
             if (!this.State.Orders.TryGetValue(orderId, out order))
@@ -1220,7 +1335,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadSettleAccountData();
             this.ReloadOrderInfosData();
 
-            this.RaiseOrderRepaidEvent(order.ToInfo(), principalTransaction.ToInfo(), interestTransaction.ToInfo());
+            await this.RaiseOrderRepaidEvent(args, order.ToInfo(), principalTransaction.ToInfo(), interestTransaction.ToInfo());
         }
 
         /// <summary>
@@ -1239,6 +1354,33 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaiseLoginPasswordResetEvent(command);
+        }
+
+        /// <summary>
+        ///     Set transaction result as an asynchronous operation.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <param name="result">if set to <c>true</c> [result].</param>
+        /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args)
+        {
+            JBYAccountTransaction transaction;
+            if (!this.State.JBYAccount.TryGetValue(transactionId, out transaction))
+            {
+                return null;
+            }
+
+            transaction.ResultCode = result ? 1 : -1;
+            transaction.ResultTime = DateTime.UtcNow.AddHours(8);
+            transaction.TransDesc = message;
+
+            await this.SaveStateAsync();
+            this.ReloadJBYAccountData();
+            await this.RaiseJBYAccountTransactionResultedEvent(args, transaction.ToInfo(), result, message);
+
+            return transaction.ToInfo();
         }
 
         /// <summary>
@@ -1280,20 +1422,226 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
-            if (transaction.ResultCode != 0 && transaction.ResultTime.HasValue)
-            {
-                return null;
-            }
-
             transaction.ResultCode = result ? 1 : -1;
             transaction.ResultTime = DateTime.UtcNow.AddHours(8);
             transaction.TransDesc = message;
 
             await this.SaveStateAsync();
             this.ReloadSettleAccountData();
-            await this.RaiseDepositResultedEvent(args, transaction.ToInfo(), result, message);
+            await this.RaiseSettleAccountTransactionResultedEvent(args, transaction.ToInfo(), result, message);
 
             return transaction.ToInfo();
+        }
+
+        /// <summary>
+        ///     transfer into order as an asynchronous operation.
+        /// </summary>
+        /// <param name="jbyInfo">The jby information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        public async Task TransferIntoJBYTransactionAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo)
+        {
+            SettleAccountTransaction transaction = new SettleAccountTransaction
+            {
+                Amount = transactionInfo.Amount,
+                Args = new Dictionary<string, object>(),
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                OrderId = Guid.NewGuid(),
+                ResultCode = transactionInfo.ResultCode,
+                ResultTime = transactionInfo.ResultTime,
+                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                Trade = transactionInfo.Trade,
+                TradeCode = transactionInfo.TradeCode,
+                TransDesc = transactionInfo.TransDesc,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = transactionInfo.TransactionTime,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            JBYAccountTransaction jbyTransaction = new JBYAccountTransaction
+            {
+                Amount = jbyInfo.Amount,
+                Args = new Dictionary<string, object>(),
+                PredeterminedResultDate = jbyInfo.PredeterminedResultDate,
+                ResultCode = jbyInfo.ResultCode,
+                ResultTime = jbyInfo.ResultTime,
+                SettleAccountTransactionId = transaction.TransactionId,
+                Trade = jbyInfo.Trade,
+                TradeCode = jbyInfo.TradeCode,
+                TransDesc = jbyInfo.TransDesc,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = jbyInfo.TransactionTime,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            this.State.JBYAccount.Add(jbyTransaction.TransactionId, jbyTransaction);
+            this.State.SettleAccount.Add(transaction.TransactionId, transaction);
+
+            await this.SaveStateAsync();
+            this.ReloadJBYAccountData();
+            this.ReloadSettleAccountData();
+
+            await this.SyncAsync();
+        }
+
+        /// <summary>
+        ///     transfer into order as an asynchronous operation.
+        /// </summary>
+        /// <param name="orderInfo">The order information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        public async Task TransferIntoOrderAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
+        {
+            SettleAccountTransaction transaction = new SettleAccountTransaction
+            {
+                Amount = transactionInfo.Amount,
+                Args = new Dictionary<string, object>(),
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                OrderId = Guid.NewGuid(),
+                ResultCode = transactionInfo.ResultCode,
+                ResultTime = transactionInfo.ResultTime,
+                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                Trade = transactionInfo.Trade,
+                TradeCode = transactionInfo.TradeCode,
+                TransDesc = transactionInfo.TransDesc,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = transactionInfo.TransactionTime,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            Order order = new Order
+            {
+                AccountTransactionId = transaction.TransactionId,
+                Args = new Dictionary<string, object>(),
+                Cellphone = this.State.Cellphone,
+                ExtraInterest = orderInfo.ExtraInterest,
+                ExtraInterestRecords = orderInfo.ExtraInterestRecords,
+                ExtraYield = orderInfo.ExtraYield,
+                Interest = orderInfo.Interest,
+                IsRepaid = orderInfo.IsRepaid,
+                OrderId = Guid.NewGuid(),
+                OrderNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                OrderTime = orderInfo.OrderTime,
+                Principal = orderInfo.Principal,
+                ProductCategory = orderInfo.ProductCategory,
+                ProductId = orderInfo.ProductId,
+                ProductSnapshot = orderInfo.ProductSnapshot,
+                RepaidTime = orderInfo.ResultTime,
+                ResultCode = orderInfo.ResultCode,
+                ResultTime = orderInfo.ResultTime,
+                SettleDate = orderInfo.SettleDate,
+                TransDesc = orderInfo.TransDesc,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync(),
+                ValueDate = orderInfo.ValueDate,
+                Yield = orderInfo.Yield
+            };
+
+            this.State.SettleAccount.Add(transaction.TransactionId, transaction);
+            this.State.Orders.Add(order.OrderId, order);
+
+            await this.SaveStateAsync();
+            this.ReloadSettleAccountData();
+            this.ReloadOrderInfosData();
+
+            await this.SyncAsync();
+        }
+
+        /// <summary>
+        /// transfer jby transaction as an asynchronous operation.
+        /// </summary>
+        /// <param name="jbyId">The jby identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> TransferJBYTransactionAsync(Guid jbyId, Dictionary<string, object> args)
+        {
+            JBYAccountTransaction jbyTransaction;
+            if (!this.State.JBYAccount.TryGetValue(jbyId, out jbyTransaction))
+            {
+                return null;
+            }
+
+            SettleAccountTransaction transaction = this.State.SettleAccount.Values.FirstOrDefault(t => t.TradeCode == TradeCodeHelper.TC1005012003 && t.Amount == jbyTransaction.Amount && t.ResultCode > 0);
+            if (transaction == null)
+            {
+                return null;
+            }
+
+            this.State.JBYAccount.Remove(jbyTransaction.TransactionId);
+            this.State.SettleAccount.Remove(transaction.TransactionId);
+
+            JBYAccountTransactionInfo jbyTransactionInfo = jbyTransaction.ToInfo();
+            SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
+
+            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+            await user.TransferIntoJBYTransactionAsync(jbyTransactionInfo, transactionInfo);
+
+            await this.SaveStateAsync();
+            this.ReloadJBYAccountData();
+            this.ReloadSettleAccountData();
+
+            await this.RaiseJBYTransactionTransferedEvent(args, jbyTransactionInfo, transactionInfo);
+
+            return jbyTransactionInfo;
+        }
+
+        /// <summary>
+        /// Transfer order as an asynchronous operation.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task.</returns>
+        public async Task<OrderInfo> TransferOrderAsync(Guid orderId, Dictionary<string, object> args)
+        {
+            Order order;
+            if (!this.State.Orders.TryGetValue(orderId, out order))
+            {
+                return null;
+            }
+
+            Guid transactionId = order.AccountTransactionId;
+            SettleAccountTransaction transaction;
+            if (!this.State.SettleAccount.TryGetValue(transactionId, out transaction))
+            {
+                return null;
+            }
+
+            this.State.SettleAccount.Remove(transactionId);
+            this.State.Orders.Remove(order.OrderId);
+
+            IRegularProduct product = RegularProductFactory.GetGrain(order.ProductId);
+            OrderInfo orderInfo = await product.TransferOrderAsync(order.UserId);
+
+            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+            await user.TransferIntoOrderAsync(order.ToInfo(), transaction.ToInfo());
+
+            await this.SaveStateAsync();
+            this.ReloadSettleAccountData();
+            this.ReloadOrderInfosData();
+
+            await this.RaiseOrderTransferedEvent(args, order.ToInfo(), transaction.ToInfo());
+
+            return orderInfo;
+        }
+
+        /// <summary>
+        /// unlock as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public async Task<UserInfo> UnlockAsync()
+        {
+            this.State.Closed = false;
+
+            await this.State.WriteStateAsync();
+
+            await this.SyncAsync();
+
+            return await this.GetUserInfoAsync();
         }
 
         /// <summary>
@@ -1375,6 +1723,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task<SettleAccountTransactionInfo> WithdrawalAsync(Withdrawal command)
         {
+            if (this.State.Closed)
+            {
+                return null;
+            }
+
             SettleAccountTransaction transaction;
             if (this.State.SettleAccount.TryGetValue(command.CommandId, out transaction))
             {
@@ -1443,6 +1796,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
         public async Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command)
         {
+            if (this.State.Closed)
+            {
+                return null;
+            }
+
             JBYAccountTransaction transaction;
             if (this.State.JBYAccount.TryGetValue(command.CommandId, out transaction))
             {
@@ -1528,22 +1886,34 @@ namespace Yuyi.Jinyinmao.Domain
         #endregion IUser Members
 
         /// <summary>
-        ///     Remove jby transactions as an asynchronous operation.
+        /// cancel order as an asynchronous operation.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <returns>Task&lt;System.Int32&gt;.</returns>
-        public async Task<bool> RemoveJBYTransactionsAsync(Guid transactionId)
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public async Task<OrderInfo> CancelOrderAsync(Guid orderId, Dictionary<string, object> args)
         {
-            if (this.State.JBYAccount.ContainsKey(transactionId))
+            Order order;
+            if (!this.State.Orders.TryGetValue(orderId, out order))
             {
-                this.State.JBYAccount.Remove(transactionId);
-                await this.State.WriteStateAsync();
-                this.ReloadJBYAccountData();
-
-                return true;
+                return null;
             }
 
-            return false;
+            SettleAccountTransaction transaction;
+            if (!this.State.SettleAccount.TryGetValue(order.AccountTransactionId, out transaction))
+            {
+                return null;
+            }
+
+            this.State.Orders.Remove(order.OrderId);
+            this.State.SettleAccount.Remove(transaction.TransactionId);
+
+            await this.SaveStateAsync();
+            this.ReloadOrderInfosData();
+            this.ReloadSettleAccountData();
+            await this.RaiseOrderCanceledEvent(args, order.ToInfo(), transaction.ToInfo());
+
+            return order.ToInfo();
         }
 
         /// <summary>

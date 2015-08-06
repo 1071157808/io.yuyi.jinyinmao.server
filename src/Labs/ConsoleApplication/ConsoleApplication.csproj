@@ -132,6 +132,10 @@
       <Project>{A2075913-20FC-496C-9F53-BCA0762ECEF1}</Project>
       <Name>Yuyi.Jinyinmao.Service.Product</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Yilian\Yuyi.Jinyinmao.Service.Yilian.csproj">
+      <Project>{850e78f8-beee-4dd2-b4d9-ceebe0f4dd5d}</Project>
+      <Name>Yuyi.Jinyinmao.Service.Yilian</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

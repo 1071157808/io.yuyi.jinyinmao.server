@@ -32,6 +32,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info);
 
         /// <summary>
+        /// Cancels the jby transaction asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        Task<bool> CancelJBYTransactionAsync(Guid transactionId);
+
+        /// <summary>
         ///     Checks the sale status asynchronous.
         /// </summary>
         /// <returns>Task.</returns>

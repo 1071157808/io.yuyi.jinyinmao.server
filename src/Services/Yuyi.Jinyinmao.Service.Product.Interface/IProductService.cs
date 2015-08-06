@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : IProductService.cs
 // Created          : 2015-04-28  10:57 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  9:25 AM
+// Last Modified On : 2015-08-07  1:35 AM
 // ***********************************************************************
 // <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -68,8 +69,9 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Repays the asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
+        /// <param name="args">The arguments.</param>
         /// <returns>Task.</returns>
-        Task RepayRegularProductAsync(Guid productId);
+        Task RepayRegularProductAsync(Guid productId, Dictionary<string, object> args);
 
         /// <summary>
         ///     Sets the current jby product to sold out asynchronous.

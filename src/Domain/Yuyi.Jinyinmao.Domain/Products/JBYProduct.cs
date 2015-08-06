@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-01  1:01 PM
+// Last Modified On : 2015-08-05  11:30 PM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -91,6 +91,34 @@ namespace Yuyi.Jinyinmao.Domain.Products
             await this.CheckSaleStatusAsync();
 
             return transactionInfo.ProductId;
+        }
+
+        /// <summary>
+        ///     Cancels the jby transaction asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task&lt;System.Boolean&gt;.</returns>
+        public async Task<bool> CancelJBYTransactionAsync(Guid transactionId)
+        {
+            if (this.State.SoldOut || this.State.SoldOutTime.HasValue)
+            {
+                return false;
+            }
+
+            JBYAccountTransactionInfo transactionInfo;
+            if (this.State.Transactions.TryGetValue(transactionId, out transactionInfo))
+            {
+                this.State.Transactions.Remove(transactionInfo.TransactionId);
+
+                await this.SaveStateAsync();
+
+                this.ReloadTransactionData();
+                await this.CheckSaleStatusAsync();
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -300,7 +328,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public override async Task SyncAsync()
         {
-            await DBSyncHelper.SyncJBYProduct(await this.GetProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
+            await DBSyncHelper.SyncJBYProductAsync(await this.GetProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }
 
         #endregion IJBYProduct Members

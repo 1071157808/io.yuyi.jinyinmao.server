@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : YilianPaymentGatewayService.cs
 // Created          : 2015-04-26  11:05 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-02  1:19 PM
+// Last Modified On : 2015-08-05  3:41 AM
 // ***********************************************************************
 // <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,7 +22,6 @@ using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
 using Yuyi.Jinyinmao.Packages;
 
 namespace Yuyi.Jinyinmao.Service
@@ -219,57 +218,58 @@ namespace Yuyi.Jinyinmao.Service
                 return null;
             }
 
-            string schemaString = @"{
-            'description': 'Yilian QueryAuth Callback',
-            'type': 'object',
-            'properties':
-            {
-                'BATCH_NO':{'type':'string'},
-                'MSG_SIGN':{'type':'string'},
-                'MSG_TYPE':{'type':'string'},
+            //            string schemaString = @"{
+            //            'description': 'Yilian QueryAuth Callback',
+            //            'type': 'object',
+            //            'properties':
+            //            {
+            //                'BATCH_NO':{'type':'string'},
+            //                'MSG_SIGN':{'type':'string'},
+            //                'MSG_TYPE':{'type':'string'},
+            //
+            //                'TRANS_DETAILS':{'type':'array',
+            //                    'items':{'type': 'object',
+            //                             'properties':
+            //                                {
+            //                                    'ACC_CITY':{'type':'string'},
+            //                                    'ACC_NAME':{'type':'string'},
+            //                                    'ACC_NO':{'type':'string'},
+            //                                    'ACC_PROP':{'type':'string'},
+            //                                    'ACC_PROVINCE':{'type':'string'},
+            //                                    'ACC_TYPE':{'type':'string'},
+            //                                    'AMOUNT':{'type':'string'},
+            //                                    'BANK_CODE':{'type':'string'},
+            //                                    'BANK_NO':{'type':'string'},
+            //                                    'CNY':{'type':'string'},
+            //                                    'EXCHANGE_RATE':{'type':'string'},
+            //                                    'ID_NO':{'type':'string'},
+            //                                    'ID_TYPE':{'type':'string'},
+            //                                    'MER_ORDER_NO':{'type':'string'},
+            //                                    'MOBILE_NO':{'type':'string'},
+            //                                    'PAY_STATE':{'type':'string'},
+            //                                    'QUERY_NO_FLAG':{'type':'string'},
+            //                                    'REMARK':{'type':'string'},
+            //                                    'RESERVE':{'type':'string'},
+            //                                    'RETURN_URL':{'type':'string'},
+            //                                    'SETT_AMOUNT':{'type':'string'},
+            //                                    'SETT_DATE':{'type':'string'},
+            //                                    'SN':{'type':'string'},
+            //                                    'TRANS_DESC':{'type':'string'},
+            //                                    'USER_LEVEL':{'type':'string'}
+            //                                }
+            //                    }
+            //                },
+            //                'TRANS_STATE':{'type':'string'},
+            //                'USER_NAME':{'typr':'string'},
+            //                'VERSION':{'typr':'string'},
+            //             }}";
 
-                'TRANS_DETAILS':{'type':'array',
-                    'items':{'type': 'object',
-                             'properties':
-                                {
-                                    'ACC_CITY':{'type':'string'},
-                                    'ACC_NAME':{'type':'string'},
-                                    'ACC_NO':{'type':'string'},
-                                    'ACC_PROP':{'type':'string'},
-                                    'ACC_PROVINCE':{'type':'string'},
-                                    'ACC_TYPE':{'type':'string'},
-                                    'AMOUNT':{'type':'string'},
-                                    'BANK_CODE':{'type':'string'},
-                                    'BANK_NO':{'type':'string'},
-                                    'CNY':{'type':'string'},
-                                    'EXCHANGE_RATE':{'type':'string'},
-                                    'ID_NO':{'type':'string'},
-                                    'ID_TYPE':{'type':'string'},
-                                    'MER_ORDER_NO':{'type':'string'},
-                                    'MOBILE_NO':{'type':'string'},
-                                    'PAY_STATE':{'type':'string'},
-                                    'QUERY_NO_FLAG':{'type':'string'},
-                                    'REMARK':{'type':'string'},
-                                    'RESERVE':{'type':'string'},
-                                    'RETURN_URL':{'type':'string'},
-                                    'SETT_AMOUNT':{'type':'string'},
-                                    'SETT_DATE':{'type':'string'},
-                                    'SN':{'type':'string'},
-                                    'TRANS_DESC':{'type':'string'},
-                                    'USER_LEVEL':{'type':'string'}
-                                }
-                    }
-                },
-                'TRANS_STATE':{'type':'string'},
-                'USER_NAME':{'typr':'string'},
-                'VERSION':{'typr':'string'},
-             }}";
-
-            JSchema schema = JSchema.Parse(schemaString);
+            // schema = JSchema.Parse(schemaString);
 
             JObject reply = JObject.Parse(responseString);
 
-            return !reply.IsValid(schema) ? null : reply;
+            //return !reply.IsValid(schema) ? null : reply;
+            return reply;
         }
     }
 }

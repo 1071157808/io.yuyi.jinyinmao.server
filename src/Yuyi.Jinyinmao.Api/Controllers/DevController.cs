@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  5:21 PM
+// Last Modified On : 2015-08-05  11:06 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,6 +42,50 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     public class DevController : ApiControllerBase
     {
         /// <summary>
+        /// Cancels the jby account transaction.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="transactionIdentifier">The transaction identifier.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("CancelJBYAccountTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYTransactionInfoResponse))]
+        public async Task<IHttpActionResult> CancelJBYAccountTransaction(string userIdentifier, string transactionIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid transacationId = Guid.ParseExact(transactionIdentifier, "N");
+
+            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).CancelJBYAccountTransactionAsync(transacationId, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的账户流水");
+            }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        /// Cancels the order.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="orderIdentifier">The order identifier.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("CancelOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> CancelOrder(string userIdentifier, string orderIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid orderId = Guid.ParseExact(orderIdentifier, "N");
+
+            OrderInfo info = await UserFactory.GetGrain(userId).CancelOrderAsync(orderId, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的订单");
+            }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
         ///     CancelOrderFromProduct
         /// </summary>
         /// <param name="productIdentifier">产品唯一标识</param>
@@ -63,6 +107,28 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(order.ToResponse());
+        }
+
+        /// <summary>
+        /// Cancels the settle account transaction result.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="transactionIdentifier">The transaction identifier.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("CancelSettleAccountTransactionResult/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        public async Task<IHttpActionResult> CancelSettleAccountTransactionResult(string userIdentifier, string transactionIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid transacationId = Guid.ParseExact(transactionIdentifier, "N");
+
+            SettleAccountTransactionInfo info = await UserFactory.GetGrain(userId).CancelSettleAccountTransactionAsync(transacationId, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的账户流水");
+            }
+
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -384,7 +450,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// RemoveJBYReversalTransactions
+        ///     RemoveJBYReversalTransactions
         /// </summary>
         /// <param name="userIdentifier">用户唯一标识</param>
         /// <param name="transactionIdentifier">流水唯一标识</param>
@@ -417,6 +483,27 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             await DepositSagaFactory.GetGrain(sagaId).ReprocessAsync();
 
             return this.Ok();
+        }
+
+        /// <summary>
+        ///     Sets the jby account transaction result.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("SetJBYAccountTransactionResult"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYTransactionInfoResponse))]
+        public async Task<IHttpActionResult> SetJBYAccountTransactionResult(SetJBYAccountTransactionResultRequest request)
+        {
+            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
+            Guid transacationId = Guid.ParseExact(request.TransactionIdentifier, "N");
+
+            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).SetJBYAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的账户流水");
+            }
+
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -530,6 +617,50 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             await UserFactory.GetGrain(userId).SyncAsync();
             return this.Ok();
+        }
+
+        /// <summary>
+        /// Transfers the jby transaction.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="transactionIdentifier">The transaction identifier.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("TransferJBYTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYInfoResponse))]
+        public async Task<IHttpActionResult> TransferJBYTransaction(string userIdentifier, string transactionIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid transactionId = Guid.ParseExact(transactionIdentifier, "N");
+
+            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).TransferJBYTransactionAsync(transactionId, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的账户流水");
+            }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        /// Transfers the order.
+        /// </summary>
+        /// <param name="userIdentifier">The user identifier.</param>
+        /// <param name="orderIdentifier">The order identifier.</param>
+        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
+        [Route("CancelOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> TransferOrder(string userIdentifier, string orderIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid orderId = Guid.ParseExact(orderIdentifier, "N");
+
+            OrderInfo info = await UserFactory.GetGrain(userId).TransferOrderAsync(orderId, this.BuildArgs());
+
+            if (info == null)
+            {
+                return this.BadRequest("未找到对应的订单");
+            }
+
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>

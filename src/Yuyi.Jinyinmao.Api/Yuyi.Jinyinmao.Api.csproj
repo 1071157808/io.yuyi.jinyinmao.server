@@ -260,7 +260,7 @@
     <Compile Include="Controllers\UserJBYController.cs" />
     <Compile Include="Controllers\UserOrderController.cs" />
     <Compile Include="Controllers\UserSettleAccountController.cs" />
-    <Compile Include="Filters\CookieAuthorizeAttribute.cs" />
+    <Compile Include="Controllers\CookieAuthorizeAttribute.cs" />
     <Compile Include="Filters\HMACAuthenticationAttribute.cs" />
     <Compile Include="Filters\IpAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -272,6 +272,7 @@
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
     <Compile Include="Models\BackOffice\JBYProductRequest.cs" />
     <Compile Include="Models\Coupon\CouponInfoResponse.cs" />
+    <Compile Include="Models\Dev\SetJBYAccountTransactionResultRequest.cs" />
     <Compile Include="Models\Dev\SetSettleAccountTransactionResultRequest.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />
     <Compile Include="Models\Misc\SendVeriCodeRequest.cs" />

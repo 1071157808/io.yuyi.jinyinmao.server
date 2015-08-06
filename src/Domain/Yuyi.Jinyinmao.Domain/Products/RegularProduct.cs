@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-02  2:19 PM
+// Last Modified On : 2015-08-07  1:21 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,6 +24,7 @@ using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -386,8 +387,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         /// <returns>Task.</returns>
-        public async Task RepayAsync()
+        public async Task RepayAsync(Dictionary<string, object> args)
         {
             if (!this.State.SoldOut)
             {
@@ -403,7 +405,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             foreach (OrderInfo order in this.PaidOrders)
             {
-                await UserFactory.GetGrain(order.UserId).RepayOrderAsync(order.OrderId, now);
+                await UserFactory.GetGrain(order.UserId).RepayOrderAsync(args, order.OrderId, now);
                 order.IsRepaid = true;
                 order.RepaidTime = order.RepaidTime.HasValue ? order.RepaidTime : now;
             }
@@ -456,7 +458,31 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public override async Task SyncAsync()
         {
-            await DBSyncHelper.SyncRegularProduct(await this.GetRegularProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
+            await DBSyncHelper.SyncRegularProductAsync(await this.GetRegularProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
+        }
+
+        /// <summary>
+        ///     Transfers the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public async Task<OrderInfo> TransferOrderAsync(Guid orderId)
+        {
+            OrderInfo order;
+            if (this.State.Orders.TryGetValue(orderId, out order))
+            {
+                IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+                UserInfo userInfo = await user.GetUserInfoAsync();
+
+                order.UserInfo = userInfo;
+                order.Cellphone = userInfo.Cellphone;
+                order.AccountTransactionId = Guid.Empty;
+                order.UserId = userInfo.UserId;
+                this.ReloadOrderData();
+                return order;
+            }
+
+            return null;
         }
 
         #endregion IRegularProduct Members

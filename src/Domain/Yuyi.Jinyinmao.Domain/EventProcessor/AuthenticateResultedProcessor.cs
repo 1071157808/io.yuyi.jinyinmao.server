@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-04-27  6:08 PM
@@ -41,8 +41,8 @@ namespace Yuyi.Jinyinmao.Domain.Events
                 }
             });
 
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUser(e.UserInfo));
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncBankCard(e.BankCardInfo, e.UserInfo.UserId.ToGuidString()));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncUserAsync(e.UserInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncBankCardAsync(e.BankCardInfo, e.UserInfo.UserId.ToGuidString()));
 
             await base.ProcessEventAsync(@event);
         }

@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-06-05  1:34 AM
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(ExtraInterestAdded @event)
         {
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncOrder(e.OrderInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncOrderAsync(e.OrderInfo));
 
             await base.ProcessEventAsync(@event);
         }

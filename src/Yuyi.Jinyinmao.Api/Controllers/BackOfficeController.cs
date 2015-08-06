@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  6:15 PM
+// Last Modified On : 2015-08-07  1:36 AM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -327,7 +327,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("产品唯一标识错误");
             }
 
-            this.productService.RepayRegularProductAsync(productId);
+            this.productService.RepayRegularProductAsync(productId, this.BuildArgs());
 
             return this.Ok();
         }

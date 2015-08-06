@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(JBYProductSoldOut @event)
         {
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYProduct(e.ProductInfo, e.Agreement1, e.Agreement2));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYProductAsync(e.ProductInfo, e.Agreement1, e.Agreement2));
 
             await this.ProcessingEventAsync(@event, async e =>
             {

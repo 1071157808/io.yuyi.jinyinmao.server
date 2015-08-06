@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-18  11:05 PM
@@ -29,7 +29,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(JBYWithdrawalAccepted @event)
         {
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYAccountTransaction(e.TransactionInfo));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYAccountTransactionAsync(e.TransactionInfo));
 
             await base.ProcessEventAsync(@event);
         }

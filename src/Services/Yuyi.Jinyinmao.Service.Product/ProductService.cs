@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-02  7:35 AM
+// Last Modified On : 2015-08-07  1:34 AM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -272,17 +272,6 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Repays the asynchronous.
-        /// </summary>
-        /// <param name="productId">The product identifier.</param>
-        /// <returns>Task.</returns>
-        public async Task RepayRegularProductAsync(Guid productId)
-        {
-            IRegularProduct product = RegularProductFactory.GetGrain(productId);
-            await product.RepayAsync();
-        }
-
-        /// <summary>
         ///     Sets the current jby product to sold out asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
@@ -305,10 +294,22 @@ namespace Yuyi.Jinyinmao.Service
 
         #endregion IProductService Members
 
+        /// <summary>
+        ///     Repays the asynchronous.
+        /// </summary>
+        /// <param name="productId">The product identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task.</returns>
+        public async Task RepayRegularProductAsync(Guid productId, Dictionary<string, object> args)
+        {
+            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            await product.RepayAsync(args);
+        }
+
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
                 .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 

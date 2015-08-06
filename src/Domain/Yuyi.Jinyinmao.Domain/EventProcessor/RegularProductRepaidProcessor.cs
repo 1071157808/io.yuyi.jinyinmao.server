@@ -1,4 +1,4 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-18  12:23 AM
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain.EventProcessor
         /// <returns>Task.</returns>
         public override async Task ProcessEventAsync(RegularProductRepaid @event)
         {
-            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncRegularProduct(e.ProductInfo, e.Agreement1, e.Agreement2));
+            await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncRegularProductAsync(e.ProductInfo, e.Agreement1, e.Agreement2));
 
             await base.ProcessEventAsync(@event);
         }

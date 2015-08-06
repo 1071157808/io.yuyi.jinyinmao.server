@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : IRegularProduct.cs
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-26  9:25 AM
+// Last Modified On : 2015-08-07  1:21 AM
 // ***********************************************************************
 // <copyright file="IRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
@@ -44,7 +45,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task CheckSaleStatusAsync();
 
         /// <summary>
-        /// Dumps the asynchronous.
+        ///     Dumps the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
         Task DumpAsync();
@@ -91,8 +92,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
+        /// <param name="args">The arguments.</param>
         /// <returns>Task.</returns>
-        Task RepayAsync();
+        Task RepayAsync(Dictionary<string, object> args);
 
         /// <summary>
         ///     Sets to on sale asynchronous.
@@ -111,5 +113,12 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task.</returns>
         Task SyncAsync();
+
+        /// <summary>
+        ///     Transfers the order asynchronous.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        Task<OrderInfo> TransferOrderAsync(Guid orderId);
     }
 }
