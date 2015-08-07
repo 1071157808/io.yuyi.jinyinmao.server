@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  2:10 AM
+// Last Modified On : 2015-08-07  1:37 PM
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -57,7 +57,8 @@ namespace Yuyi.Jinyinmao.Domain
             { typeof(SettleAccountTransactionCanceled), e => SettleAccountTransactionCanceledProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((SettleAccountTransactionCanceled)e) },
             { typeof(JBYAccountTransactionCanceled), e => JBYAccountTransactionCanceledProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYAccountTransactionCanceled)e) },
             { typeof(OrderTransfered), e => OrderTransferedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((OrderTransfered)e) },
-            { typeof(JBYTransactionTransfered), e => JBYTransactionTransferedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) }
+            { typeof(JBYTransactionTransfered), e => JBYTransactionTransferedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) },
+            { typeof(OrderCanceled), e => OrderCanceledProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((OrderCanceled)e) }
         };
 
         /// <summary>

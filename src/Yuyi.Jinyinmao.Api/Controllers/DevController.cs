@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-05  11:06 PM
+// Last Modified On : 2015-08-07  2:10 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,7 +42,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     public class DevController : ApiControllerBase
     {
         /// <summary>
-        /// Cancels the jby account transaction.
+        ///     Cancels the jby account transaction.
         /// </summary>
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
@@ -64,7 +64,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// Cancels the order.
+        ///     Cancels the order.
         /// </summary>
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="orderIdentifier">The order identifier.</param>
@@ -110,7 +110,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// Cancels the settle account transaction result.
+        ///     Cancels the settle account transaction result.
         /// </summary>
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
@@ -376,6 +376,24 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
+        ///     LockUser
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("LockUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(UserInfoResponse))]
+        public async Task<IHttpActionResult> LockUser(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+
+            UserInfo info = await UserFactory.GetGrain(userId).LockAsync();
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
         ///     RefreshJBYProduct
         /// </summary>
         /// <response code="200"></response>
@@ -620,7 +638,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// Transfers the jby transaction.
+        ///     Transfers the jby transaction.
         /// </summary>
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
@@ -642,12 +660,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// Transfers the order.
+        ///     Transfers the order.
         /// </summary>
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="orderIdentifier">The order identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("CancelOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
+        [Route("TransferOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> TransferOrder(string userIdentifier, string orderIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
@@ -659,6 +677,24 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 return this.BadRequest("未找到对应的订单");
             }
+
+            return this.Ok(info.ToResponse());
+        }
+
+        /// <summary>
+        ///     UnlockUser
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("UnlockUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(UserInfoResponse))]
+        public async Task<IHttpActionResult> UnlockUser(string userIdentifier)
+        {
+            Guid userId = Guid.ParseExact(userIdentifier, "N");
+
+            UserInfo info = await UserFactory.GetGrain(userId).UnlockAsync();
 
             return this.Ok(info.ToResponse());
         }

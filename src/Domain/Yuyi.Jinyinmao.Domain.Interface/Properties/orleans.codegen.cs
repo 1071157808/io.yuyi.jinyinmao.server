@@ -8784,28 +8784,28 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<object>(1937280616, null );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.TransferIntoJBYTransactionAsync(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo @jbyInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo @transactionInfo)
-            {
-
-                return base.InvokeMethodAsync<object>(1619821607, new object[] {@jbyInfo, @transactionInfo} );
-            }
-            
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.TransferIntoOrderAsync(Yuyi.Jinyinmao.Domain.Dtos.OrderInfo @orderInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo @transactionInfo)
-            {
-
-                return base.InvokeMethodAsync<object>(533150502, new object[] {@orderInfo, @transactionInfo} );
-            }
-            
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.TransferJBYTransactionAsync(System.Guid @jbyId, Dictionary<String,Object> @args)
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(1692068578, new object[] {@jbyId, @args} );
             }
             
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.TransferJBYTransactionInAsync(Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo @jbyInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo @transactionInfo)
+            {
+
+                return base.InvokeMethodAsync<object>(1297983555, new object[] {@jbyInfo, @transactionInfo} );
+            }
+            
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo> Yuyi.Jinyinmao.Domain.IUser.TransferOrderAsync(System.Guid @orderId, Dictionary<String,Object> @args)
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(2145976136, new object[] {@orderId, @args} );
+            }
+            
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.TransferOrderInAsync(Yuyi.Jinyinmao.Domain.Dtos.OrderInfo @orderInfo, Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo @transactionInfo)
+            {
+
+                return base.InvokeMethodAsync<object>(-2094042266, new object[] {@orderInfo, @transactionInfo} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.UserInfo> Yuyi.Jinyinmao.Domain.IUser.UnlockAsync()
@@ -8966,14 +8966,14 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).SetSettleAccountTransactionResultAsync((Guid)arguments[0], (Boolean)arguments[1], (String)arguments[2], (Dictionary<String,Object>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1937280616: 
                                 return ((IUser)grain).SyncAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 1619821607: 
-                                return ((IUser)grain).TransferIntoJBYTransactionAsync((JBYAccountTransactionInfo)arguments[0], (SettleAccountTransactionInfo)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
-                            case 533150502: 
-                                return ((IUser)grain).TransferIntoOrderAsync((OrderInfo)arguments[0], (SettleAccountTransactionInfo)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1692068578: 
                                 return ((IUser)grain).TransferJBYTransactionAsync((Guid)arguments[0], (Dictionary<String,Object>)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 1297983555: 
+                                return ((IUser)grain).TransferJBYTransactionInAsync((JBYAccountTransactionInfo)arguments[0], (SettleAccountTransactionInfo)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 2145976136: 
                                 return ((IUser)grain).TransferOrderAsync((Guid)arguments[0], (Dictionary<String,Object>)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -2094042266: 
+                                return ((IUser)grain).TransferOrderInAsync((OrderInfo)arguments[0], (SettleAccountTransactionInfo)arguments[1]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -2131817909: 
                                 return ((IUser)grain).UnlockAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 331700856: 
@@ -9106,14 +9106,14 @@ namespace Yuyi.Jinyinmao.Domain
                             return "SetSettleAccountTransactionResultAsync";
                     case 1937280616:
                             return "SyncAsync";
-                    case 1619821607:
-                            return "TransferIntoJBYTransactionAsync";
-                    case 533150502:
-                            return "TransferIntoOrderAsync";
                     case 1692068578:
                             return "TransferJBYTransactionAsync";
+                    case 1297983555:
+                            return "TransferJBYTransactionInAsync";
                     case 2145976136:
                             return "TransferOrderAsync";
+                    case -2094042266:
+                            return "TransferOrderInAsync";
                     case -2131817909:
                             return "UnlockAsync";
                     case 331700856:

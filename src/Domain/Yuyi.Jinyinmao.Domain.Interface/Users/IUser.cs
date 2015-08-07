@@ -375,22 +375,6 @@ namespace Yuyi.Jinyinmao.Domain
         Task SyncAsync();
 
         /// <summary>
-        ///     Transfers the into jby transaction asynchronous.
-        /// </summary>
-        /// <param name="jbyInfo">The jby information.</param>
-        /// <param name="transactionInfo">The transaction information.</param>
-        /// <returns>Task.</returns>
-        Task TransferIntoJBYTransactionAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo);
-
-        /// <summary>
-        ///     Transfers the information order asynchronous.
-        /// </summary>
-        /// <param name="orderInfo">The order information.</param>
-        /// <param name="transactionInfo">The transaction information.</param>
-        /// <returns>Task.</returns>
-        Task TransferIntoOrderAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo);
-
-        /// <summary>
         ///     Transfers the jby transaction asynchronous.
         /// </summary>
         /// <param name="jbyId">The jby identifier.</param>
@@ -399,12 +383,28 @@ namespace Yuyi.Jinyinmao.Domain
         Task<JBYAccountTransactionInfo> TransferJBYTransactionAsync(Guid jbyId, Dictionary<string, object> args);
 
         /// <summary>
+        ///     Transfers the into jby transaction asynchronous.
+        /// </summary>
+        /// <param name="jbyInfo">The jby information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        Task TransferJBYTransactionInAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo);
+
+        /// <summary>
         ///     Transfers the order asynchronous.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         Task<OrderInfo> TransferOrderAsync(Guid orderId, Dictionary<string, object> args);
+
+        /// <summary>
+        ///     Transfers the information order asynchronous.
+        /// </summary>
+        /// <param name="orderInfo">The order information.</param>
+        /// <param name="transactionInfo">The transaction information.</param>
+        /// <returns>Task.</returns>
+        Task TransferOrderInAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo);
 
         /// <summary>
         /// Unlocks the asynchronous.

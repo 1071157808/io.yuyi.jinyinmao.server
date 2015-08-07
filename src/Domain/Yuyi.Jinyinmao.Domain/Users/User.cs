@@ -1434,12 +1434,50 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        /// transfer jby transaction as an asynchronous operation.
+        /// </summary>
+        /// <param name="jbyId">The jby identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> TransferJBYTransactionAsync(Guid jbyId, Dictionary<string, object> args)
+        {
+            JBYAccountTransaction jbyTransaction;
+            if (!this.State.JBYAccount.TryGetValue(jbyId, out jbyTransaction))
+            {
+                return null;
+            }
+
+            SettleAccountTransaction transaction = this.State.SettleAccount.Values.FirstOrDefault(t => t.TradeCode == TradeCodeHelper.TC1005012003 && t.Amount == jbyTransaction.Amount && t.ResultCode > 0);
+            if (transaction == null)
+            {
+                return null;
+            }
+
+            this.State.JBYAccount.Remove(jbyTransaction.TransactionId);
+            this.State.SettleAccount.Remove(transaction.TransactionId);
+
+            JBYAccountTransactionInfo jbyTransactionInfo = jbyTransaction.ToInfo();
+            SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
+
+            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+            await user.TransferJBYTransactionInAsync(jbyTransactionInfo, transactionInfo);
+
+            await this.SaveStateAsync();
+            this.ReloadJBYAccountData();
+            this.ReloadSettleAccountData();
+
+            await this.RaiseJBYTransactionTransferedEvent(args, jbyTransactionInfo, transactionInfo);
+
+            return jbyTransactionInfo;
+        }
+
+        /// <summary>
         ///     transfer into order as an asynchronous operation.
         /// </summary>
         /// <param name="jbyInfo">The jby information.</param>
         /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
-        public async Task TransferIntoJBYTransactionAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo)
+        public async Task TransferJBYTransactionInAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo)
         {
             SettleAccountTransaction transaction = new SettleAccountTransaction
             {
@@ -1488,12 +1526,51 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
+        /// Transfer order as an asynchronous operation.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task.</returns>
+        public async Task<OrderInfo> TransferOrderAsync(Guid orderId, Dictionary<string, object> args)
+        {
+            Order order;
+            if (!this.State.Orders.TryGetValue(orderId, out order))
+            {
+                return null;
+            }
+
+            Guid transactionId = order.AccountTransactionId;
+            SettleAccountTransaction transaction;
+            if (!this.State.SettleAccount.TryGetValue(transactionId, out transaction))
+            {
+                return null;
+            }
+
+            this.State.SettleAccount.Remove(transactionId);
+            this.State.Orders.Remove(order.OrderId);
+
+            IRegularProduct product = RegularProductFactory.GetGrain(order.ProductId);
+            OrderInfo orderInfo = await product.TransferOrderAsync(order.UserId);
+
+            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+            await user.TransferOrderInAsync(order.ToInfo(), transaction.ToInfo());
+
+            await this.SaveStateAsync();
+            this.ReloadSettleAccountData();
+            this.ReloadOrderInfosData();
+
+            await this.RaiseOrderTransferedEvent(args, order.ToInfo(), transaction.ToInfo());
+
+            return orderInfo;
+        }
+
+        /// <summary>
         ///     transfer into order as an asynchronous operation.
         /// </summary>
         /// <param name="orderInfo">The order information.</param>
         /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
-        public async Task TransferIntoOrderAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
+        public async Task TransferOrderInAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
         {
             SettleAccountTransaction transaction = new SettleAccountTransaction
             {
@@ -1550,83 +1627,6 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadOrderInfosData();
 
             await this.SyncAsync();
-        }
-
-        /// <summary>
-        /// transfer jby transaction as an asynchronous operation.
-        /// </summary>
-        /// <param name="jbyId">The jby identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        public async Task<JBYAccountTransactionInfo> TransferJBYTransactionAsync(Guid jbyId, Dictionary<string, object> args)
-        {
-            JBYAccountTransaction jbyTransaction;
-            if (!this.State.JBYAccount.TryGetValue(jbyId, out jbyTransaction))
-            {
-                return null;
-            }
-
-            SettleAccountTransaction transaction = this.State.SettleAccount.Values.FirstOrDefault(t => t.TradeCode == TradeCodeHelper.TC1005012003 && t.Amount == jbyTransaction.Amount && t.ResultCode > 0);
-            if (transaction == null)
-            {
-                return null;
-            }
-
-            this.State.JBYAccount.Remove(jbyTransaction.TransactionId);
-            this.State.SettleAccount.Remove(transaction.TransactionId);
-
-            JBYAccountTransactionInfo jbyTransactionInfo = jbyTransaction.ToInfo();
-            SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
-
-            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
-            await user.TransferIntoJBYTransactionAsync(jbyTransactionInfo, transactionInfo);
-
-            await this.SaveStateAsync();
-            this.ReloadJBYAccountData();
-            this.ReloadSettleAccountData();
-
-            await this.RaiseJBYTransactionTransferedEvent(args, jbyTransactionInfo, transactionInfo);
-
-            return jbyTransactionInfo;
-        }
-
-        /// <summary>
-        /// Transfer order as an asynchronous operation.
-        /// </summary>
-        /// <param name="orderId">The order identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task.</returns>
-        public async Task<OrderInfo> TransferOrderAsync(Guid orderId, Dictionary<string, object> args)
-        {
-            Order order;
-            if (!this.State.Orders.TryGetValue(orderId, out order))
-            {
-                return null;
-            }
-
-            Guid transactionId = order.AccountTransactionId;
-            SettleAccountTransaction transaction;
-            if (!this.State.SettleAccount.TryGetValue(transactionId, out transaction))
-            {
-                return null;
-            }
-
-            this.State.SettleAccount.Remove(transactionId);
-            this.State.Orders.Remove(order.OrderId);
-
-            IRegularProduct product = RegularProductFactory.GetGrain(order.ProductId);
-            OrderInfo orderInfo = await product.TransferOrderAsync(order.UserId);
-
-            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
-            await user.TransferIntoOrderAsync(order.ToInfo(), transaction.ToInfo());
-
-            await this.SaveStateAsync();
-            this.ReloadSettleAccountData();
-            this.ReloadOrderInfosData();
-
-            await this.RaiseOrderTransferedEvent(args, order.ToInfo(), transaction.ToInfo());
-
-            return orderInfo;
         }
 
         /// <summary>

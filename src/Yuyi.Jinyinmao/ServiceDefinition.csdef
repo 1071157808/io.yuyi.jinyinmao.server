@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
-                   schemaVersion="2015-04.2.6">
+<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
   <WebRole name="Yuyi.Jinyinmao.Api" vmsize="Standard_D4">
     <Sites>
       <Site name="Web">
@@ -26,6 +24,8 @@
     <Endpoints>
       <InputEndpoint name="HTTP" protocol="http" port="80" />
       <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="SSLCertificate" />
+      <InternalEndpoint name="ZabbixAgent" protocol="tcp" port="10050" />
+      <InternalEndpoint name="ZabbixTrapper" protocol="tcp" port="10051" />
     </Endpoints>
     <Startup>
       <Task commandLine="EnableCompression.cmd" executionContext="elevated" taskType="simple">
@@ -54,6 +54,8 @@
     <Endpoints>
       <InternalEndpoint name="OrleansSiloEndpoint" protocol="tcp" port="11111" />
       <InternalEndpoint name="OrleansProxyEndpoint" protocol="tcp" port="30000" />
+      <InternalEndpoint name="ZabbixAgent" protocol="tcp" port="10050" />
+      <InternalEndpoint name="ZabbixTrapper" protocol="tcp" port="10051" />
     </Endpoints>
     <Startup>
       <Task commandLine="CounterControl.exe" executionContext="elevated" taskType="simple" />
