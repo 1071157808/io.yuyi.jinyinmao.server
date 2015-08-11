@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using Serilog;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
@@ -28,181 +29,146 @@ namespace SagasTransfer
 {
     internal class Program
     {
-        private static readonly string ConnectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
-        private static readonly string TransferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
-
-        private static void DeleteTable(CloudTable table, TableEntity entity)
-        {
-            table.Execute(TableOperation.Delete(entity));
-        }
-
-        private static async Task GetData()
-        {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            TableRequestOptions request = new TableRequestOptions
-            {
-                RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
-            };
-
-            CloudStorageAccount account = CloudStorageAccount.Parse(ConnectionString);
-            CloudTableClient client = account.CreateCloudTableClient();
-            client.DefaultRequestOptions = request;
-            var table = client.GetTableReference("Sagas");
-
-            var query = new TableQuery<SagaStateRecord>();
-            do
-            {
-                foreach (var item in await table.ExecuteQuerySegmentedAsync(query, null))
-                {
-                    Console.WriteLine(item.PartitionKey);
-                }
-            } while (false);
-            watch.Stop();
-            Console.WriteLine(watch.Elapsed);
-            Console.ReadKey();
-        }
-
-        private static void InsertTable(CloudTable table, TableEntity entity)
-        {
-            table.Execute(TableOperation.InsertOrReplace(entity));
-        }
-
+        private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
+        private static string transferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
         private static void Main(string[] args)
         {
-            ////string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            //string baseDir = "e:/log";
-            //Console.WriteLine();
-            //try
-            //{
-            //    IList<string> list = args.ToList();
-            //    int index = list.IndexOf("-S");
-            //    if (-1 != index && list.Count >= index + 2)
-            //    {
-            //        connectionString = list[index + 1];
-            //    }
-            //    index = list.IndexOf("-D");
-            //    if (-1 != index && list.Count >= index + 2)
-            //    {
-            //        transferConnectionString = list[index + 1];
-            //    }
+            string tableName = "Sagas";
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            baseDir = "e:/log";
+            Console.WriteLine();
+            try
+            {
+                IList<string> list = args.ToList();
+                int index = list.IndexOf("-S");
+                if (-1 != index && list.Count >= index + 2)
+                {
+                    connectionString = list[index + 1];
+                }
+                index = list.IndexOf("-D");
+                if (-1 != index && list.Count >= index + 2)
+                {
+                    transferConnectionString = list[index + 1];
+                }
 
-            //    index = list.IndexOf("-P");
-            //    if (-1 != index && list.Count >= index + 2)
-            //    {
-            //        baseDir = list[index + 1];
-            //    }
-            //    DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, "Saga"));
-            //    if (!dir.Exists)
-            //    {
-            //        dir.Create();
-            //    }
-            //    string path = Path.Combine(dir.FullName, $"{DateTime.Now.ToString("yyyyMMdd")}.csv");
-            //    Console.WriteLine("transfer start");
+                index = list.IndexOf("-P");
+                if (-1 != index && list.Count >= index + 2)
+                {
+                    baseDir = list[index + 1];
+                }
 
-            //    Transfer(path);
-
-            //    Console.WriteLine("transfer finish");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("error");
-            //    new LoggerConfiguration().WriteTo.RollingFile(Path.Combine(baseDir, "/Error/Log-{Date}.txt")).CreateLogger().Information("{@ex}", ex);
-            //}
-            GetData().Wait();
+                index = list.IndexOf("-T");
+                if (-1 != index && list.Count >= index + 2)
+                {
+                    tableName = list[index + 1];
+                }
+                DirectoryInfo dir = new DirectoryInfo(Path.Combine(baseDir, tableName));
+                if (!dir.Exists)
+                {
+                    dir.Create();
+                }
+                Console.WriteLine("Start");
+                //Task.Run(() => Transfer("Sagas20150728", tableName + DateTime.Now.ToString("yyyyMMdd"))).Wait();
+                //Task.Run(() => SaveToFile(dir.FullName, "Sagas")).Wait();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error");
+                new LoggerConfiguration().WriteTo.RollingFile("Error/Log-{Date}.txt").CreateLogger().Error("{@ex}", ex);
+            }
+            Console.WriteLine("Finish");
             Console.ReadKey();
         }
 
-        private static void Operation(CloudTable table, TableBatchOperation batch)
+
+        private static async Task Transfer(string sourceName, string targetName)
         {
-            table.ExecuteBatch(batch);
+            try
+            {
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
+                TableRequestOptions request = new TableRequestOptions
+                {
+                    RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
+                };
+
+                CloudStorageAccount sourceAccount = CloudStorageAccount.Parse(transferConnectionString);
+                CloudTableClient sourceClient = sourceAccount.CreateCloudTableClient();
+                CloudTable sourceTable = sourceClient.GetTableReference(sourceName);
+
+                CloudStorageAccount targetAccount = CloudStorageAccount.Parse(transferConnectionString);
+                CloudTableClient targetClient = targetAccount.CreateCloudTableClient();
+                CloudTable targetTable = targetClient.GetTableReference(targetName);
+
+                await sourceTable.CreateIfNotExistsAsync();
+                await targetTable.CreateIfNotExistsAsync();
+
+                TableQuery<SagaStateRecord> query =
+                    new TableQuery<SagaStateRecord>().Where(
+                        TableQuery.CombineFilters(
+                            TableQuery.GenerateFilterConditionForInt("CurrentProcessingStatus", QueryComparisons.Equal,
+                                (int)DepositSagaStatus.Finished), TableOperators.Or,
+                            TableQuery.GenerateFilterConditionForInt("CurrentProcessingStatus", QueryComparisons.Equal,
+                                (int)DepositSagaStatus.Fault))).Select(new string[] { "PartitionKey" });
+                TableContinuationToken token = null;
+                do
+                {
+                    TableQuerySegment<SagaStateRecord> segement =
+                        await sourceTable.ExecuteQuerySegmentedAsync<SagaStateRecord>(query, token);
+                    token = segement.ContinuationToken;
+
+                    foreach (string partitionKey in segement.Results.Select(x => x.PartitionKey).Distinct())
+                    {
+                        TableQuery<SagaStateRecord> query1 =
+                            new TableQuery<SagaStateRecord>().Where(TableQuery.GenerateFilterCondition("PartitionKey",
+                                QueryComparisons.Equal, partitionKey));
+                        TableBatchOperation batchInsert = new TableBatchOperation();
+                        TableBatchOperation batchDel = new TableBatchOperation();
+                        foreach (SagaStateRecord entity in sourceTable.ExecuteQuery(query1))
+                        {
+                            batchInsert.InsertOrReplace(entity);
+                            batchDel.Delete(entity);
+                        }
+                        await targetTable.ExecuteBatchAsync(batchInsert);
+                        await sourceTable.ExecuteBatchAsync(batchDel);
+                    }
+
+                } while (token != null);
+
+                watch.Stop();
+                Console.WriteLine(watch.Elapsed);
+            }
+            catch (AggregateException e)
+            {
+                new LoggerConfiguration().WriteTo.RollingFile("Error/Log-{Date}.txt")
+                    .CreateLogger()
+                    .Error("{@ex}", e.GetBaseException());
+            }
+            catch (Exception exception)
+            {
+                ILogger logger = new LoggerConfiguration().WriteTo.RollingFile("Error/Log-{Date}.txt")
+                    .CreateLogger();
+                logger.Error("{@ex}", exception.GetBaseException());
+
+            }
         }
 
-        private static async void Transfer(string path)
+        private static async Task SaveToFile(string path, string tableName)
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
             TableRequestOptions request = new TableRequestOptions
             {
                 RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
             };
 
-            DateTime now = DateTime.Now;
-            string sagaName = "Sagas" + now.ToString("yyyyMMdd");
-            CloudStorageAccount account = CloudStorageAccount.Parse(ConnectionString);
+            CloudStorageAccount account = CloudStorageAccount.Parse(transferConnectionString);
             CloudTableClient client = account.CreateCloudTableClient();
-            client.DefaultRequestOptions = request;
-            var table = client.GetTableReference("Sagas");
-
-            CloudStorageAccount transferAccount = CloudStorageAccount.Parse(TransferConnectionString);
-            CloudTableClient transferClient = transferAccount.CreateCloudTableClient();
-            var sagaTable = transferClient.GetTableReference(sagaName);
-            transferClient.DefaultRequestOptions = request;
-            table.CreateIfNotExists();
-            sagaTable.CreateIfNotExists();
-
-            var query = new TableQuery<SagaStateRecord>().Take(2);
-            List<SagaStateRecord> list = new List<SagaStateRecord>();
-            TableContinuationToken token = null;
-            do
-            {
-                var segement = await table.ExecuteQuerySegmentedAsync(query, token);
-                list.AddRange(segement.Results);
-                token = segement.ContinuationToken;
-            } while (token != null);
-            Console.WriteLine(list.Count());
-            var group = list.GroupBy(x => x.PartitionKey);
-
-            foreach (var sagas in group)
-            {
-                TableBatchOperation batchTransfer = new TableBatchOperation();
-                TableBatchOperation batchDel = new TableBatchOperation();
-                var saga = list.Find(x => x.PartitionKey == sagas.Key
-                                          && (x.CurrentProcessingStatus == (int)DepositSagaStatus.Finished
-                                              || x.CurrentProcessingStatus == (int)DepositSagaStatus.Fault));
-                if (saga == null) return;
-
-                foreach (var item in sagas)
-                {
-                    batchTransfer.InsertOrReplace(item);
-                    batchDel.Delete(item);
-                }
-
-                Operation(sagaTable, batchTransfer);
-                Operation(table, batchDel);
-            }
-            Console.WriteLine(list.Count());
-            //string line = string.Empty;
-            //if (File.Exists(path))
+            CloudTable table = client.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+            //if (tableName == "Sagas")
             //{
-            //    using (StreamReader reader = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)))
-            //    {
-            //        string temp;
-            //        while ((temp = reader.ReadLine()) != null)
-            //        {
-            //            line = temp;
-            //        }
-            //    }
+            //    await Util.SaveToFile<SagaStateRecord>(table, path);
             //}
-
-            //string rowKey = string.IsNullOrWhiteSpace(line) ? "" : line.Split(',')[1];
-            //query = sagaTable.CreateQuery<SagaStateRecord>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThan, rowKey));
-            //token = null;
-            list.Clear();
-            do
-            {
-                var segement = await table.ExecuteQuerySegmentedAsync(query, token);
-                list.AddRange(segement.Results);
-                token = segement.ContinuationToken;
-            } while (token != null);
-
-            using (StreamWriter writer = new StreamWriter(new FileStream(path, FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite)))
-            {
-                Log.Logger = new LoggerConfiguration().WriteTo.TextWriter(writer, outputTemplate: "{Message}").CreateLogger();
-            }
-            watch.Stop();
-            Console.WriteLine(watch.ToString());
-            Console.WriteLine("end");
+            await Util.SaveToFile<SagaStateRecord>(table, path);
         }
     }
 }
