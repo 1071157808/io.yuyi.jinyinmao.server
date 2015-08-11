@@ -70,6 +70,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     订单列表
         /// </summary>
         /// <remarks>
+        ///     根据产品分类查询登录用户订单，默认查询所有订单
         ///     每页数量为10个，页数从0开始。
         /// </remarks>
         /// <param name="index">页码，从0开始，最小为0</param>
