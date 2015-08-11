@@ -45,8 +45,8 @@
     <OutputPath>bin\Cloud\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MoeLib, Version=3.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeLib.3.1.6.0\lib\net45\MoeLib.dll</HintPath>
+    <Reference Include="MoeLib, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeLib.3.2.3.0\lib\net45\MoeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -58,7 +58,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Orleans, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Orleans.Core.1.0.7\lib\net45\Orleans.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Orleans.Core.1.0.9\lib\net45\Orleans.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
