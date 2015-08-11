@@ -161,7 +161,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public DateTime RegisterTime { get; set; }
 
         /// <summary>
-        ///     当天金包银已经申请体现的总额
+        ///     当天金包银已经申请提现的总额
         /// </summary>
         [Required, JsonProperty("todayJBYWithdrawalAmount")]
         public long TodayJBYWithdrawalAmount { get; set; }

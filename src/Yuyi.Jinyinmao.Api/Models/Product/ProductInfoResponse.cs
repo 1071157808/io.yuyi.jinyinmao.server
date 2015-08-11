@@ -58,7 +58,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public string DraweeInfo { get; set; }
 
         /// <summary>
-        ///     图片地址，绝对路径
+        ///     背书图片地址，绝对路径
         /// </summary>
         [Required, JsonProperty("endorseImageLink")]
         public string EndorseImageLink { get; set; }

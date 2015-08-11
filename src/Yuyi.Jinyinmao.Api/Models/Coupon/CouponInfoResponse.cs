@@ -22,51 +22,43 @@ namespace Yuyi.Jinyinmao.Api.Models.Coupon
     public class CouponInfoResponse
     {
         /// <summary>
-        ///     Gets or sets the add time.
+        ///     添加时间
         /// </summary>
-        /// <value>The add time.</value>
         public DateTime AddTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the amount.
+        ///     金额，以分为单位
         /// </summary>
-        /// <value>The amount.</value>
         public long Amount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the effective end time.
+        ///     有效时间
         /// </summary>
-        /// <value>The effective end time.</value>
         public DateTime EffectiveEndTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the effective start time.
+        ///     起效时间
         /// </summary>
-        /// <value>The effective start time.</value>
         public DateTime EffectiveStartTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the identifier.
+        ///     代金券Id
         /// </summary>
-        /// <value>The identifier.</value>
         public int Id { get; set; }
 
         /// <summary>
-        ///     Gets or sets the remark.
+        ///     备注
         /// </summary>
-        /// <value>The remark.</value>
         public string Remark { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether [use flag].
+        ///     是否已使用
         /// </summary>
-        /// <value><c>true</c> if [use flag]; otherwise, <c>false</c>.</value>
         public bool UseFlag { get; set; }
 
         /// <summary>
-        ///     Gets or sets the use time.
+        ///     使用时间
         /// </summary>
-        /// <value>The use time.</value>
         public DateTime UseTime { get; set; }
     }
 

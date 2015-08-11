@@ -125,7 +125,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     钱包流水信息
+        ///     根据流水编号查询钱包流水信息
         /// </summary>
         /// <remarks>
         ///     必须登录
