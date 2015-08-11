@@ -27,7 +27,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Coupon
         public DateTime AddTime { get; set; }
 
         /// <summary>
-        ///     金额
+        ///     金额，以分为单位
         /// </summary>
         public long Amount { get; set; }
 
