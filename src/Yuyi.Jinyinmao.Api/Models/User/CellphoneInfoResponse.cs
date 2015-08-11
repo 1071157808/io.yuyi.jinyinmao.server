@@ -23,21 +23,19 @@ namespace Yuyi.Jinyinmao.Api.Models.User
     public class CellphoneInfoResponse : IResponse
     {
         /// <summary>
-        ///     Gets or sets the cellphone.
+        ///     手机号
         /// </summary>
-        /// <value>The cellphone.</value>
         public string Cellphone { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this cellphone is registered.
+        ///     是否已注册
         /// </summary>
         /// <value><c>true</c> if registered; otherwise, <c>false</c>.</value>
         public bool Registered { get; set; }
 
         /// <summary>
-        ///     Gets or sets the user identifier.
+        ///     用户唯一标识
         /// </summary>
-        /// <value>The user identifier.</value>
         public string UserIdentifier { get; set; }
     }
 

@@ -45,7 +45,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取产品协议模板
         /// </summary>
         /// <remarks>
-        ///     需要使用使用产品唯一标识调用接口，接口数据会只读取缓存中的数据
+        ///     需要使用产品唯一标识调用接口，接口数据会只读取缓存中的数据
         ///     <br />
         ///     返回值为：{"Content": "协议内容"}
         /// </remarks>
@@ -157,7 +157,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取产品信息列表
         /// </summary>
         /// <remarks>
-        ///     每页数量为10个，页数从0开始。接口数据有有1分钟的缓存。
+        ///     每页数量为10个，页数从0开始。接口数据有1分钟的缓存。
         /// </remarks>
         /// <param name="index">页码，从0开始，最小为0</param>
         /// <param name="categories">产品分类，默认值为100000010，详细的产品分类参考文档，可以传递数组 </param>
