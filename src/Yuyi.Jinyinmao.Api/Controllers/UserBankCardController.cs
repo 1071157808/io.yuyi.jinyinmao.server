@@ -195,7 +195,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <remarks>
         ///     会获取所有的银行卡信息，无分页功能，排序规则为易联认证的优先，然后按添加时间倒序
         ///     <br />
-        ///     这里的银行卡的可提现额为只考虑单卡进出的体现额度
+        ///     这里的银行卡的可提现额为只考虑单卡进出的提现额度
         /// </remarks>
         /// <response code="200">注册成功</response>
         /// <response code="400">UBI1:无法获取用户信息</response>
@@ -218,7 +218,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取用户可以用于取现的银行卡信息
         /// </summary>
         /// <remarks>
-        ///     会获取所有的银行卡信息，无分页功能，排序规则为按可体现额度从大到小排序
+        ///     会获取所有的银行卡信息，无分页功能，排序规则为按可提现额度从大到小排序
         /// </remarks>
         /// <response code="200">注册成功</response>
         /// <response code="400">UBI:无该银行卡信息</response>
@@ -365,7 +365,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     获取用户可以用于取现的银行卡信息
         /// </summary>
         /// <remarks>
-        ///     会获取所有的银行卡信息，无分页功能，排序规则为按可体现额度从大到小排序
+        ///     会获取所有的银行卡信息，无分页功能，排序规则为按可提现额度从大到小排序
         /// </remarks>
         /// <response code="200">注册成功</response>
         /// <response code="400">UBWCI:无法获取用户信息</response>
