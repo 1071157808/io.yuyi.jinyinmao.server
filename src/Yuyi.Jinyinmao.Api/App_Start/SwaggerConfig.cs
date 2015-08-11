@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : SwaggerConfig.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  9:32 AM
+// Last Modified On : 2015-08-11  11:45 AM
 // ***********************************************************************
 // <copyright file="SwaggerConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -234,24 +234,4 @@ namespace Yuyi.Jinyinmao.Api
                 //c.EnableOAuth2Support("test-client-id", "test-realm", "Swagger UI");
             });
     }
-
-    //    internal class OperationFilter : IOperationFilter
-    //    {
-    //        #region IOperationFilter Members
-    //
-    //        public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
-    //        {
-    //            operation.consumes.Clear();
-    //            operation.consumes.Add("application/json");
-    //            operation.consumes.Add("text/json");
-    //            operation.produces.Clear();
-    //            operation.produces.Add("application/json");
-    //            operation.produces.Add("text/json");
-    //            operation.produces.Add("application/javascript");
-    //            operation.produces.Add("application/json-p");
-    //            operation.produces.Add("text/javascript");
-    //        }
-    //
-    //        #endregion IOperationFilter Members
-    //    }
 }
