@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  2:10 PM
+// Last Modified On : 2015-08-09  1:49 AM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -613,7 +613,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ReloadProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SyncProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SyncProduct(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");

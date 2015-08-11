@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  1:21 AM
+// Last Modified On : 2015-08-09  1:13 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -254,6 +254,37 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             return null;
+        }
+
+        /// <summary>
+        ///     cancel order as an asynchronous operation.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;OrderInfo&gt;.</returns>
+        public async Task<OrderInfo> CancelOrderAsync(Guid orderId, Dictionary<string, object> args)
+        {
+            Order order;
+            if (!this.State.Orders.TryGetValue(orderId, out order))
+            {
+                return null;
+            }
+
+            SettleAccountTransaction transaction;
+            if (!this.State.SettleAccount.TryGetValue(order.AccountTransactionId, out transaction))
+            {
+                return null;
+            }
+
+            this.State.Orders.Remove(order.OrderId);
+            this.State.SettleAccount.Remove(transaction.TransactionId);
+
+            await this.SaveStateAsync();
+            this.ReloadOrderInfosData();
+            this.ReloadSettleAccountData();
+            await this.RaiseOrderCanceledEvent(args, order.ToInfo(), transaction.ToInfo());
+
+            return order.ToInfo();
         }
 
         /// <summary>
@@ -1117,7 +1148,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// lock as an asynchronous operation.
+        ///     lock as an asynchronous operation.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public async Task<UserInfo> LockAsync()
@@ -1434,7 +1465,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// transfer jby transaction as an asynchronous operation.
+        ///     transfer jby transaction as an asynchronous operation.
         /// </summary>
         /// <param name="jbyId">The jby identifier.</param>
         /// <param name="args">The arguments.</param>
@@ -1479,6 +1510,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task TransferJBYTransactionInAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo)
         {
+            Guid transactionId = Guid.NewGuid();
+
             SettleAccountTransaction transaction = new SettleAccountTransaction
             {
                 Amount = transactionInfo.Amount,
@@ -1488,11 +1521,11 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = Guid.NewGuid(),
                 ResultCode = transactionInfo.ResultCode,
                 ResultTime = transactionInfo.ResultTime,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = transactionInfo.SequenceNo,
                 Trade = transactionInfo.Trade,
                 TradeCode = transactionInfo.TradeCode,
                 TransDesc = transactionInfo.TransDesc,
-                TransactionId = Guid.NewGuid(),
+                TransactionId = transactionId,
                 TransactionTime = transactionInfo.TransactionTime,
                 UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
@@ -1505,7 +1538,7 @@ namespace Yuyi.Jinyinmao.Domain
                 PredeterminedResultDate = jbyInfo.PredeterminedResultDate,
                 ResultCode = jbyInfo.ResultCode,
                 ResultTime = jbyInfo.ResultTime,
-                SettleAccountTransactionId = transaction.TransactionId,
+                SettleAccountTransactionId = transactionId,
                 Trade = jbyInfo.Trade,
                 TradeCode = jbyInfo.TradeCode,
                 TransDesc = jbyInfo.TransDesc,
@@ -1526,7 +1559,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Transfer order as an asynchronous operation.
+        ///     Transfer order as an asynchronous operation.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>
         /// <param name="args">The arguments.</param>
@@ -1550,7 +1583,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.Orders.Remove(order.OrderId);
 
             IRegularProduct product = RegularProductFactory.GetGrain(order.ProductId);
-            OrderInfo orderInfo = await product.TransferOrderAsync(order.UserId);
+            OrderInfo orderInfo = await product.TransferOrderAsync(order.OrderId);
 
             IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
             await user.TransferOrderInAsync(order.ToInfo(), transaction.ToInfo());
@@ -1572,20 +1605,23 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task TransferOrderInAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
         {
+            Guid orderId = Guid.NewGuid();
+            Guid transactionId = Guid.NewGuid();
+
             SettleAccountTransaction transaction = new SettleAccountTransaction
             {
                 Amount = transactionInfo.Amount,
                 Args = new Dictionary<string, object>(),
                 BankCardNo = string.Empty,
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
-                OrderId = Guid.NewGuid(),
+                OrderId = orderId,
                 ResultCode = transactionInfo.ResultCode,
                 ResultTime = transactionInfo.ResultTime,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = transactionInfo.SequenceNo,
                 Trade = transactionInfo.Trade,
                 TradeCode = transactionInfo.TradeCode,
                 TransDesc = transactionInfo.TransDesc,
-                TransactionId = Guid.NewGuid(),
+                TransactionId = transactionId,
                 TransactionTime = transactionInfo.TransactionTime,
                 UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
@@ -1593,7 +1629,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             Order order = new Order
             {
-                AccountTransactionId = transaction.TransactionId,
+                AccountTransactionId = transactionId,
                 Args = new Dictionary<string, object>(),
                 Cellphone = this.State.Cellphone,
                 ExtraInterest = orderInfo.ExtraInterest,
@@ -1601,8 +1637,8 @@ namespace Yuyi.Jinyinmao.Domain
                 ExtraYield = orderInfo.ExtraYield,
                 Interest = orderInfo.Interest,
                 IsRepaid = orderInfo.IsRepaid,
-                OrderId = Guid.NewGuid(),
-                OrderNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                OrderId = orderId,
+                OrderNo = orderInfo.OrderNo,
                 OrderTime = orderInfo.OrderTime,
                 Principal = orderInfo.Principal,
                 ProductCategory = orderInfo.ProductCategory,
@@ -1630,7 +1666,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// unlock as an asynchronous operation.
+        ///     unlock as an asynchronous operation.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public async Task<UserInfo> UnlockAsync()
@@ -1884,37 +1920,6 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IUser Members
-
-        /// <summary>
-        /// cancel order as an asynchronous operation.
-        /// </summary>
-        /// <param name="orderId">The order identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        public async Task<OrderInfo> CancelOrderAsync(Guid orderId, Dictionary<string, object> args)
-        {
-            Order order;
-            if (!this.State.Orders.TryGetValue(orderId, out order))
-            {
-                return null;
-            }
-
-            SettleAccountTransaction transaction;
-            if (!this.State.SettleAccount.TryGetValue(order.AccountTransactionId, out transaction))
-            {
-                return null;
-            }
-
-            this.State.Orders.Remove(order.OrderId);
-            this.State.SettleAccount.Remove(transaction.TransactionId);
-
-            await this.SaveStateAsync();
-            this.ReloadOrderInfosData();
-            this.ReloadSettleAccountData();
-            await this.RaiseOrderCanceledEvent(args, order.ToInfo(), transaction.ToInfo());
-
-            return order.ToInfo();
-        }
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.
