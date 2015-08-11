@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  11:45 AM
+// Last Modified On : 2015-08-11  4:29 PM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,7 +41,7 @@ namespace Yuyi.Jinyinmao.Api
             config.UseOrderedFilter();
             config.UseSeriLog();
 
-            config.EnableSystemDiagnosticsTracing();
+            //config.EnableSystemDiagnosticsTracing();
 
             JsonMediaTypeFormatter formatter = new JsonMediaTypeFormatter
             {
