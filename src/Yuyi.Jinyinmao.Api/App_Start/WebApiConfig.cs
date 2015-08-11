@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : WebApiConfig.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  3:35 PM
+// Last Modified On : 2015-08-11  11:45 AM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -47,11 +47,11 @@ namespace Yuyi.Jinyinmao.Api
             {
                 SerializerSettings =
                 {
-                    NullValueHandling = NullValueHandling.Include,
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                     DateFormatString = "G",
                     DefaultValueHandling = DefaultValueHandling.Populate,
                     Formatting = Formatting.None,
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    NullValueHandling = NullValueHandling.Include
                 }
             };
 
@@ -112,10 +112,6 @@ namespace Yuyi.Jinyinmao.Api
                 PreflightMaxAge = 300L
             };
 
-            this.policy.ExposedHeaders.Add("X-JYM-AUTH");
-            this.policy.ExposedHeaders.Add("X-JYM-CorsProxy-Url");
-            this.policy.ExposedHeaders.Add("X-JYM-IP");
-            this.policy.ExposedHeaders.Add("X-JYM-UserAgent");
             this.policy.ExposedHeaders.Add("Set-Cookie");
             this.policy.ExposedHeaders.Add("Date");
         }
