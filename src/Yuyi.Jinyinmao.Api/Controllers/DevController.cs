@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-09  1:49 AM
+// Last Modified On : 2015-08-11  6:59 PM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -26,8 +26,6 @@ using Moe.AspNet.Utility;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
-using Yuyi.Jinyinmao.Api.Models.Product;
-using Yuyi.Jinyinmao.Api.Models.User;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
@@ -400,7 +398,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("RefreshJBYProduct"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYInfoResponse))]
+        [Route("RefreshJBYProduct"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYProductInfoResponse))]
         public async Task<IHttpActionResult> RefreshJBYProduct()
         {
             await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).RefreshAsync();
@@ -643,7 +641,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("TransferJBYTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYInfoResponse))]
+        [Route("TransferJBYTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYProductInfoResponse))]
         public async Task<IHttpActionResult> TransferJBYTransaction(string userIdentifier, string transactionIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");

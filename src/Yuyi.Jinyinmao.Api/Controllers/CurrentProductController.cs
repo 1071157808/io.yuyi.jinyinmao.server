@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  1:32 PM
+// Last Modified On : 2015-08-11  6:59 PM
 // ***********************************************************************
 // <copyright file="CurrentProductController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Moe.Lib;
-using Yuyi.Jinyinmao.Api.Models.Product;
+using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -86,7 +86,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </remarks>
         /// <response code="200"></response>
         /// <response code="500"></response>
-        [HttpGet, Route("JBY"), ResponseType(typeof(JBYInfoResponse))]
+        [HttpGet, Route("JBY"), ResponseType(typeof(JBYProductInfoResponse))]
         public async Task<IHttpActionResult> GetJBYInfo()
         {
             JBYProductInfo info = await this.productInfoService.GetJBYProductInfoAsync();

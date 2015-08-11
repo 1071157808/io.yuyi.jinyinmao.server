@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Util.cs
-// Created          : 2015-07-27  6:28 PM
+// Created          : 2015-08-11  4:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  6:49 PM
+// Last Modified On : 2015-08-11  4:40 PM
 // ***********************************************************************
 // <copyright file="Util.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -18,8 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
 using Serilog;
 using Yuyi.Jinyinmao.Domain;
@@ -28,24 +26,6 @@ namespace SagasTransfer
 {
     public static class Util
     {
-        public static SagaStateRecordResult InitData(SagaStateRecord s)
-        {
-            return new SagaStateRecordResult
-            {
-                PartitionKey = s.PartitionKey,
-                RowKey = s.RowKey,
-                BeginTime = s.BeginTime,
-                CurrentProcessingStatus = s.CurrentProcessingStatus,
-                Info = s.Info,
-                Message = s.Message,
-                SagaId = s.SagaId,
-                SagaState = s.SagaState,
-                SagaType = s.SagaType,
-                State = s.State,
-                UpdateTime = s.UpdateTime
-            };
-        }
-
         /// <summary>
         ///     保存csv文件
         /// </summary>
@@ -137,6 +117,23 @@ namespace SagasTransfer
             return "";
         }
 
+        public static SagaStateRecordResult InitData(SagaStateRecord s)
+        {
+            return new SagaStateRecordResult
+            {
+                PartitionKey = s.PartitionKey,
+                RowKey = s.RowKey,
+                BeginTime = s.BeginTime,
+                CurrentProcessingStatus = s.CurrentProcessingStatus,
+                Info = s.Info,
+                Message = s.Message,
+                SagaId = s.SagaId,
+                SagaState = s.SagaState,
+                SagaType = s.SagaType,
+                State = s.State,
+                UpdateTime = s.UpdateTime
+            };
+        }
 
         public static async Task SaveToFile<T>(CloudTable table, string path) where T : TableEntity, new()
         {
@@ -151,25 +148,22 @@ namespace SagasTransfer
                 TableQuery<T> query = new TableQuery<T>();
                 TableContinuationToken token = null;
                 using (StreamWriter writer = new StreamWriter(
-                   new FileStream(fullName, FileMode.Append, FileAccess.Write, FileShare.Write), Encoding.UTF8))
+                    new FileStream(fullName, FileMode.Append, FileAccess.Write, FileShare.Write), Encoding.UTF8))
                 {
-                    ILogger logger = new LoggerConfiguration().WriteTo.TextWriter(writer, outputTemplate: "{Message}").CreateLogger();
                     do
                     {
                         TableQuerySegment<T> segement =
-                            await table.ExecuteQuerySegmentedAsync<T>(query, token);
+                            await table.ExecuteQuerySegmentedAsync(query, token);
                         token = segement.ContinuationToken;
-                        writer.WriteLine(GetCsvContent<T>(segement.Results));
+                        writer.WriteLine(GetCsvContent(segement.Results));
                     } while (token != null);
                 }
             }
             catch (Exception ex)
             {
-
                 new LoggerConfiguration().WriteTo.RollingFile("Error/Log-{Date}.txt")
                     .CreateLogger()
                     .Error("{@ex}", ex.GetBaseException());
-
             }
         }
     }

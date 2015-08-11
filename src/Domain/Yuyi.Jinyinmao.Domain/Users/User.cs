@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-09  1:13 AM
+// Last Modified On : 2015-08-11  8:24 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -777,6 +777,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public Task<UserInfo> GetUserInfoAsync()
         {
+            if (this.State.Cellphone.IsNullOrWhiteSpace())
+            {
+                return Task.FromResult<UserInfo>(null);
+            }
+
             long withdrawalableAmount = this.SettleAccountBalance - this.GetWithrawalCharge();
 
             UserInfo userInfo = new UserInfo

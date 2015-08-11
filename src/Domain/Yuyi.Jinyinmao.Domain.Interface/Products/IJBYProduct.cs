@@ -74,7 +74,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task HitShelvesAsync(IssueJBYProduct command);
+        Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command);
 
         /// <summary>
         ///     Refreshes the asynchronous.

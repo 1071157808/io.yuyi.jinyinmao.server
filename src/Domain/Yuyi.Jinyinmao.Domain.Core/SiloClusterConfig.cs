@@ -29,6 +29,8 @@ namespace Yuyi.Jinyinmao.Domain
     {
         static SiloClusterConfig()
         {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+
             string storageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
             ServiceBusConnectionString = CloudConfigurationManager.GetSetting("ServiceBusConnectionString");
 

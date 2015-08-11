@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  10:14 AM
+// Last Modified On : 2015-08-11  7:01 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -31,7 +32,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     /// <summary>
     ///     BackOfficeController.
     /// </summary>
-    [RoutePrefix("BackOffice"), IpAuthorize]
+    [RoutePrefix("BackOffice")]
+    [IpAuthorize]
     public class BackOfficeController : ApiControllerBase
     {
         private readonly IProductInfoService productInfoService;
@@ -61,10 +63,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     无该用户信息
         /// </response>
-        /// <response code="401">认证失败</response>
-        /// <response code="403">未授权</response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("UserInfo/{userIdentifier:length(32)}"), ResponseType(typeof(UserInfoResponse))]
+        [Route("UserInfo/{userIdentifier:length(32)}")]
+        [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> GetUserInfo(string userIdentifier)
         {
             Guid userId;
@@ -74,7 +77,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo info = await this.userService.GetUserInfoAsync(userId);
-
             if (info == null)
             {
                 return this.BadRequest("无该用户信息");
@@ -87,8 +89,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     发行金包银理财产品
         /// </summary>
         /// <param name="request">
-        ///     JBY产品上架请求，计息方式固定为T+1，起息方式的参数值现在没有实际的业务作用
+        ///     金包银产品上架请求
         /// </param>
+        /// <remarks>
+        ///     计息方式固定为T+1，起息方式的参数值现在没有实际的业务作用
+        /// </remarks>
         /// <response code="200"></response>
         /// <response code="400">
         ///     请求格式不合法
@@ -106,7 +111,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401">认证失败</response>
         /// <response code="403">未授权</response>
         /// <response code="500"></response>
-        [Route("CurrentProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("CurrentProduct/Issue")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(JBYProductInfoResponse))]
         public async Task<IHttpActionResult> JBYProductIssue(IssueJBYProductRequest request)
         {
             bool result = await this.productInfoService.CheckProductNoExistsAsync(request.ProductNo);
@@ -140,13 +148,18 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             DailyConfig config = DailyConfigHelper.GetDailyConfig(request.StartSellTime);
 
-            this.TraceWriter.Warn(this.Request, "Application", "JBYProductIssue. {0}", request.ToJson());
+            this.TraceWriter.Info(this.Request, "BackOffice", "JBYProductIssue. {0}", request.ToJson());
 
-            await this.productService.HitShelvesAsync(new IssueJBYProduct
+            Dictionary<string, object> args = this.BuildArgs(new Dictionary<string, object>
+            {
+                { "IssueRequest", request.ToJson(string.Empty) }
+            });
+
+            JBYProductInfo jbyProductInfo = await this.productService.HitShelvesAsync(new IssueJBYProduct
             {
                 Agreement1 = request.Agreement1,
                 Agreement2 = request.Agreement2,
-                Args = this.BuildArgs(),
+                Args = args,
                 EndSellTime = request.EndSellTime,
                 FinancingSumAmount = request.FinancingSumAmount,
                 IssueNo = request.IssueNo,
@@ -161,14 +174,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 Yield = config.JBYYield
             });
 
-            return this.Ok();
+            return this.Ok(jbyProductInfo.ToResponse());
         }
 
         /// <summary>
         ///     发行定期理财产品
         /// </summary>
         /// <param name="request">
-        ///     产品上架请求
+        ///     定期理财产品上架请求
         /// </param>
         /// <response code="200"></response>
         /// <response code="400">
@@ -184,10 +197,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     上架失败：产品每份单价不能被融资总金额整除
         /// </response>
-        /// <response code="401">认证失败</response>
-        /// <response code="403">未授权</response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("RegularProduct/Issue"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("RegularProduct/Issue")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(RegularProductInfoResponse))]
         public async Task<IHttpActionResult> RegularProductIssue(IssueProductRequest request)
         {
             bool result = await this.productInfoService.CheckProductNoExistsAsync(request.ProductNo);
@@ -216,41 +232,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            this.TraceWriter.Warn(this.Request, "Application", "RegularProductIssue. {0}", request.ToJson());
+            this.TraceWriter.Info(this.Request, "BackOffice", "RegularProductIssue. {0}", request.ToJson());
 
-            await this.productService.HitShelvesAsync(new IssueRegularProduct
-            {
-                Agreement1 = request.Agreement1,
-                Agreement2 = request.Agreement2,
-                Args = this.BuildArgs(),
-                BankName = request.BankName,
-                Drawee = request.Drawee,
-                DraweeInfo = request.DraweeInfo,
-                EndorseImageLink = request.EndorseImageLink,
-                EndSellTime = request.EndSellTime,
-                EnterpriseInfo = request.EnterpriseInfo,
-                EnterpriseLicense = request.EnterpriseLicense,
-                EnterpriseName = request.EnterpriseName,
-                FinancingSumCount = request.FinancingSumAmount,
-                IssueNo = request.IssueNo,
-                Period = request.Period,
-                PledgeNo = request.PledgeNo,
-                ProductCategory = request.ProductCategory,
-                ProductId = Guid.NewGuid(),
-                ProductName = request.ProductName,
-                ProductNo = request.ProductNo,
-                RepaymentDeadline = request.RepaymentDeadline.Date,
-                RiskManagement = request.RiskManagement,
-                RiskManagementInfo = request.RiskManagementInfo,
-                RiskManagementMode = request.RiskManagementMode,
-                SettleDate = request.SettleDate.Date,
-                StartSellTime = request.StartSellTime,
-                UnitPrice = request.UnitPrice,
-                Usage = request.Usage,
-                ValueDate = request.ValueDate?.Date,
-                ValueDateMode = request.ValueDateMode,
-                Yield = request.Yield
-            });
+            await this.productService.HitShelvesAsync(this.BuildCommand(request));
 
             return this.Ok();
         }
@@ -329,6 +313,43 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(info.ToResponse());
+        }
+
+        private IssueRegularProduct BuildCommand(IssueProductRequest request)
+        {
+            return new IssueRegularProduct
+            {
+                Agreement1 = request.Agreement1,
+                Agreement2 = request.Agreement2,
+                Args = this.BuildArgs(),
+                BankName = request.BankName,
+                Drawee = request.Drawee,
+                DraweeInfo = request.DraweeInfo,
+                EndorseImageLink = request.EndorseImageLink,
+                EndSellTime = request.EndSellTime,
+                EnterpriseInfo = request.EnterpriseInfo,
+                EnterpriseLicense = request.EnterpriseLicense,
+                EnterpriseName = request.EnterpriseName,
+                FinancingSumCount = request.FinancingSumAmount,
+                IssueNo = request.IssueNo,
+                Period = request.Period,
+                PledgeNo = request.PledgeNo,
+                ProductCategory = request.ProductCategory,
+                ProductId = Guid.NewGuid(),
+                ProductName = request.ProductName,
+                ProductNo = request.ProductNo,
+                RepaymentDeadline = request.RepaymentDeadline.Date,
+                RiskManagement = request.RiskManagement,
+                RiskManagementInfo = request.RiskManagementInfo,
+                RiskManagementMode = request.RiskManagementMode,
+                SettleDate = request.SettleDate.Date,
+                StartSellTime = request.StartSellTime,
+                UnitPrice = request.UnitPrice,
+                Usage = request.Usage,
+                ValueDate = request.ValueDate?.Date,
+                ValueDateMode = request.ValueDateMode,
+                Yield = request.Yield
+            };
         }
     }
 }

@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : SagaOperation.cs
+// Created          : 2015-08-11  4:31 PM
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-08-11  4:39 PM
+// ***********************************************************************
+// <copyright file="SagaOperation.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
-using Serilog;
-using Yuyi.Jinyinmao.Domain;
 
 namespace SagasTransfer
 {
-    class SagaOperation : Base
+    internal class SagaOperation : Base
     {
-        public override async Task TransferAsync(string sourceName, string targetName)
+        public override async Task SaveToFileAsync(CloudTable table, string path, string tableName)
         {
             await Task.Delay(1);
         }
 
-        public override async Task SaveToFileAsync(CloudTable table,string path, string tableName)
+        public override async Task TransferAsync(string sourceName, string targetName)
         {
             await Task.Delay(1);
         }

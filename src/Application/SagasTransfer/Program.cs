@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Program.cs
-// Created          : 2015-07-30  7:51 PM
+// Created          : 2015-08-11  4:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  11:00 PM
+// Last Modified On : 2015-08-11  4:40 PM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,13 +14,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
-using Newtonsoft.Json;
 using Serilog;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Sagas;
@@ -29,13 +28,15 @@ namespace SagasTransfer
 {
     internal class Program
     {
+        [SuppressMessage("ReSharper", "NotAccessedField.Local")]
         private static string connectionString = "BlobEndpoint=https://jymstoredev.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredev.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredev.table.core.chinacloudapi.cn/;AccountName=jymstoredev;AccountKey=1dCLRLeIeUlLAIBsS9rYdCyFg3UNU239MkwzNOj3BYbREOlnBmM4kfTPrgvKDhSmh6sRp2MdkEYJTv4Ht3fCcg==";
+
         private static string transferConnectionString = "BlobEndpoint=https://jymstoredevlocal.blob.core.chinacloudapi.cn/;QueueEndpoint=https://jymstoredevlocal.queue.core.chinacloudapi.cn/;TableEndpoint=https://jymstoredevlocal.table.core.chinacloudapi.cn/;AccountName=jymstoredevlocal;AccountKey=sw0XYWye73+JhBp1vNLpH9lUOUWit7nphWW2AFC322ucEBAXFZaRvcsRyhosGsD1VK3bUnCnW0nRSoW0yh2uDA==";
+
         private static void Main(string[] args)
         {
             string tableName = "Sagas";
-            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            baseDir = "e:/log";
+            var baseDir = "e:/log";
             Console.WriteLine();
             try
             {
@@ -80,6 +81,18 @@ namespace SagasTransfer
             Console.ReadKey();
         }
 
+        private static async Task SaveToFile(string path, string tableName)
+        {
+            CloudStorageAccount account = CloudStorageAccount.Parse(transferConnectionString);
+            CloudTableClient client = account.CreateCloudTableClient();
+            CloudTable table = client.GetTableReference(tableName);
+            await table.CreateIfNotExistsAsync();
+            //if (tableName == "Sagas")
+            //{
+            //    await Util.SaveToFile<SagaStateRecord>(table, path);
+            //}
+            await Util.SaveToFile<SagaStateRecord>(table, path);
+        }
 
         private static async Task Transfer(string sourceName, string targetName)
         {
@@ -87,10 +100,6 @@ namespace SagasTransfer
             {
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
-                TableRequestOptions request = new TableRequestOptions
-                {
-                    RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
-                };
 
                 CloudStorageAccount sourceAccount = CloudStorageAccount.Parse(transferConnectionString);
                 CloudTableClient sourceClient = sourceAccount.CreateCloudTableClient();
@@ -109,12 +118,12 @@ namespace SagasTransfer
                             TableQuery.GenerateFilterConditionForInt("CurrentProcessingStatus", QueryComparisons.Equal,
                                 (int)DepositSagaStatus.Finished), TableOperators.Or,
                             TableQuery.GenerateFilterConditionForInt("CurrentProcessingStatus", QueryComparisons.Equal,
-                                (int)DepositSagaStatus.Fault))).Select(new string[] { "PartitionKey" });
+                                (int)DepositSagaStatus.Fault))).Select(new[] { "PartitionKey" });
                 TableContinuationToken token = null;
                 do
                 {
                     TableQuerySegment<SagaStateRecord> segement =
-                        await sourceTable.ExecuteQuerySegmentedAsync<SagaStateRecord>(query, token);
+                        await sourceTable.ExecuteQuerySegmentedAsync(query, token);
                     token = segement.ContinuationToken;
 
                     foreach (string partitionKey in segement.Results.Select(x => x.PartitionKey).Distinct())
@@ -132,7 +141,6 @@ namespace SagasTransfer
                         await targetTable.ExecuteBatchAsync(batchInsert);
                         await sourceTable.ExecuteBatchAsync(batchDel);
                     }
-
                 } while (token != null);
 
                 watch.Stop();
@@ -149,26 +157,7 @@ namespace SagasTransfer
                 ILogger logger = new LoggerConfiguration().WriteTo.RollingFile("Error/Log-{Date}.txt")
                     .CreateLogger();
                 logger.Error("{@ex}", exception.GetBaseException());
-
             }
-        }
-
-        private static async Task SaveToFile(string path, string tableName)
-        {
-            TableRequestOptions request = new TableRequestOptions
-            {
-                RetryPolicy = new LinearRetry(TimeSpan.FromSeconds(5), 10)
-            };
-
-            CloudStorageAccount account = CloudStorageAccount.Parse(transferConnectionString);
-            CloudTableClient client = account.CreateCloudTableClient();
-            CloudTable table = client.GetTableReference(tableName);
-            await table.CreateIfNotExistsAsync();
-            //if (tableName == "Sagas")
-            //{
-            //    await Util.SaveToFile<SagaStateRecord>(table, path);
-            //}
-            await Util.SaveToFile<SagaStateRecord>(table, path);
         }
     }
 }

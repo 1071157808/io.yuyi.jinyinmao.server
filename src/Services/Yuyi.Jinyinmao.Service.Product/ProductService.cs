@@ -218,14 +218,14 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Hits the shelves.
+        /// Hits the shelves.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        public async Task HitShelvesAsync(IssueJBYProduct command)
+        /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
+        public async Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command)
         {
             IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
-            await jbyProduct.HitShelvesAsync(command);
+            return await jbyProduct.HitShelvesAsync(command);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Yuyi.Jinyinmao.Service
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
                 .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 

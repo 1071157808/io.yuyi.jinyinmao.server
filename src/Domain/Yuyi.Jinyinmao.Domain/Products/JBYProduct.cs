@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-05  11:30 PM
+// Last Modified On : 2015-08-11  6:59 PM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -204,13 +204,14 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public async Task HitShelvesAsync(IssueJBYProduct command)
+        public async Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command)
         {
             this.BeginProcessCommandAsync(command);
 
             if (this.State.ProductId == Guid.Empty)
             {
                 this.State.ProductId = command.ProductId;
+
                 this.State.Agreement1 = command.Agreement1;
                 this.State.Agreement2 = command.Agreement2;
                 this.State.Args = command.Args;
@@ -235,6 +236,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
             }
 
             await this.RaiseJBYProductIssuedEvent(command);
+
+            return await this.GetProductInfoAsync();
         }
 
         /// <summary>

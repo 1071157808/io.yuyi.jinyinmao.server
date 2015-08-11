@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-25  4:38 PM
+// File             : ProductInfoResponse.cs
+// Created          : 2015-08-11  4:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:41 PM
+// Last Modified On : 2015-08-11  6:59 PM
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,7 +13,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Newtonsoft.Json;
@@ -24,25 +23,21 @@ namespace Yuyi.Jinyinmao.Api.Models
     /// <summary>
     ///     RegularProductInfoResponse.
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    public class RegularProductInfoResponse : IResponse
+    public sealed class RegularProductInfoResponse : IResponse
     {
         /// <summary>
-        ///     银行名称，可能为空
+        ///     银行名称
         /// </summary>
         [JsonProperty("bankName")]
         public string BankName { get; set; }
 
         /// <summary>
-        /// 当前购买时计算使用的起息日
+        ///     当前购买时计算使用的起息日
         /// </summary>
-        [JsonProperty("currentValueDate")]
+        [Required, JsonProperty("currentValueDate")]
         public DateTime CurrentValueDate
         {
-            get
-            {
-                return this.SpecifyValueDate ? this.ValueDate.Date : DateTime.UtcNow.AddHours(8).Date;
-            }
+            get { return this.SpecifyValueDate ? this.ValueDate.Date : DateTime.UtcNow.AddHours(8).Date; }
         }
 
         /// <summary>

@@ -248,14 +248,16 @@ namespace Yuyi.Jinyinmao.Domain
 
             if (this.State.ProductId != Guid.Empty)
             {
-                this.GetLogger().Warn(1, "Conflict product id: UserId {0}, RegularProductHitShelvesCommand.ProductId {1}", this.State.ProductId, command.ProductId);
+                this.GetLogger().Warn(ErrorCode.ApplicationGrainIdConflict, "Conflict product id: ProductId {0}, RegularProductHitShelvesCommand.ProductId {1}", this.State.ProductId, command.ProductId);
                 return;
             }
 
             this.BeginProcessCommandAsync(command);
 
             DateTime now = DateTime.UtcNow.AddHours(8);
+
             this.State.ProductId = command.ProductId;
+
             this.State.Agreement1 = command.Agreement1;
             this.State.Agreement2 = command.Agreement2;
             this.State.Args = command.Args;

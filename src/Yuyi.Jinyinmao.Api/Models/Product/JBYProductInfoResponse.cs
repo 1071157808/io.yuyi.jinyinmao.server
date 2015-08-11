@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : JBYProductInfoResponse.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:47 PM
+// Last Modified On : 2015-08-11  6:59 PM
 // ***********************************************************************
-// <copyright file="JBYInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -19,13 +19,13 @@ using Moe.Lib;
 using Newtonsoft.Json;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
-namespace Yuyi.Jinyinmao.Api.Models.Product
+namespace Yuyi.Jinyinmao.Api.Models
 {
     /// <summary>
-    ///     JBYInfoResponse.
+    ///     JBYProductInfoResponse.
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    public class JBYInfoResponse : IResponse
+    public class JBYProductInfoResponse : IResponse
     {
         /// <summary>
         ///     停售时间（北京时间）
@@ -126,7 +126,7 @@ namespace Yuyi.Jinyinmao.Api.Models.Product
 
     internal static class JBYProductInfoEx
     {
-        internal static JBYInfoResponse ToResponse(this JBYProductInfo info) => new JBYInfoResponse
+        internal static JBYProductInfoResponse ToResponse(this JBYProductInfo info) => new JBYProductInfoResponse
         {
             EndSellTime = info.EndSellTime,
             FinancingSumAmount = info.FinancingSumAmount,

@@ -1,21 +1,22 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : CellphoneInfoResponse.cs
-// Created          : 2015-08-04  4:25 PM
+// Created          : 2015-08-11  4:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  4:30 PM
+// Last Modified On : 2015-08-11  6:29 PM
 // ***********************************************************************
 // <copyright file="CellphoneInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
-namespace Yuyi.Jinyinmao.Api.Models.User
+namespace Yuyi.Jinyinmao.Api.Models
 {
     /// <summary>
     ///     CellphoneInfoResponse.
@@ -25,17 +26,19 @@ namespace Yuyi.Jinyinmao.Api.Models.User
         /// <summary>
         ///     手机号
         /// </summary>
+        [Required]
         public string Cellphone { get; set; }
 
         /// <summary>
         ///     是否已注册
         /// </summary>
-        /// <value><c>true</c> if registered; otherwise, <c>false</c>.</value>
+        [Required]
         public bool Registered { get; set; }
 
         /// <summary>
         ///     用户唯一标识
         /// </summary>
+        [Required]
         public string UserIdentifier { get; set; }
     }
 

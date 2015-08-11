@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-25  4:38 PM
+// File             : ApiControllerBase.cs
+// Created          : 2015-07-27  12:43 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-03  4:19 PM
+// Last Modified On : 2015-08-11  7:01 PM
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
