@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:00 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  1:34 AM
+// Last Modified On : 2015-08-12  3:27 AM
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,6 +17,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
+using Orleans;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -67,7 +68,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.String&gt;.</returns>
         public Task<string> GetAgreementAsync(Guid productId, int agreementIndex)
         {
-            IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
+            IRegularProduct regularProduct = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             return regularProduct.GetAgreementAsync(agreementIndex);
         }
 
@@ -79,7 +80,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.String&gt;.</returns>
         public Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex)
         {
-            IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct product = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             return product.GetAgreementAsync(agreementIndex);
         }
 
@@ -102,7 +103,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
         public async Task<JBYProductInfo> GetJBYProductInfoAsync()
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             return await jbyProduct.GetProductInfoAsync();
         }
 
@@ -112,7 +113,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.Int64&gt;.</returns>
         public async Task<long> GetJBYProductPaidAmountAsync()
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             return await jbyProduct.GetJBYProductPaidAmountAsync();
         }
 
@@ -123,7 +124,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         public async Task<RegularProductInfo> GetProductInfoAsync(Guid productId)
         {
-            IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
+            IRegularProduct regularProduct = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             return await regularProduct.GetRegularProductInfoAsync();
         }
 
@@ -170,7 +171,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;System.Int32&gt;.</returns>
         public Task<long> GetProductPaidAmountAsync(Guid productId)
         {
-            IRegularProduct regularProduct = RegularProductFactory.GetGrain(productId);
+            IRegularProduct regularProduct = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             return regularProduct.GetProductPaidAmountAsync();
         }
 
@@ -213,18 +214,18 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task HitShelvesAsync(IssueRegularProduct command)
         {
-            IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(command.ProductId);
             return product.HitShelvesAsync(command);
         }
 
         /// <summary>
-        /// Hits the shelves.
+        ///     Hits the shelves.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
         public async Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command)
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             return await jbyProduct.HitShelvesAsync(command);
         }
 
@@ -236,7 +237,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         public async Task<RegularProductInfo> MigrateAsync(Guid productId, RegularProductMigrationDto migrationDto)
         {
-            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             return await product.MigrateAsync(migrationDto);
         }
 
@@ -246,7 +247,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task RefreshJybProductAsync()
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.RefreshAsync();
         }
 
@@ -256,7 +257,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task ReloadJBYProductAsync()
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.ReloadAsync();
         }
 
@@ -267,7 +268,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task ReloadRegularProductAsync(Guid productId)
         {
-            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.ReloadAsync();
         }
 
@@ -277,7 +278,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task SetCurrentJBYProductToSoldOutAsync()
         {
-            IJBYProduct jbyProduct = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.SetToSoldOutAsync();
         }
 
@@ -288,11 +289,9 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task SetRegularProductToSoldOutAsync(Guid productId)
         {
-            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.SetToSoldOutAsync();
         }
-
-        #endregion IProductService Members
 
         /// <summary>
         ///     Repays the asynchronous.
@@ -302,14 +301,16 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task RepayRegularProductAsync(Guid productId, Dictionary<string, object> args)
         {
-            IRegularProduct product = RegularProductFactory.GetGrain(productId);
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.RepayAsync(args);
         }
+
+        #endregion IProductService Members
 
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
                 .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 

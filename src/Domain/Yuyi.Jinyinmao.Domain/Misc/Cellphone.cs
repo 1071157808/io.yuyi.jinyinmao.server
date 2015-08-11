@@ -4,7 +4,7 @@
 // Created          : 2015-04-28  11:28 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  9:36 PM
+// Last Modified On : 2015-08-12  2:39 AM
 // ***********************************************************************
 // <copyright file="Cellphone.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -51,7 +51,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             this.State.Registered = true;
             this.State.UserId = userId;
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task<CellphoneInfo> ReloadAsync()
         {
-            await this.State.ReadStateAsync();
+            await this.ReadStateAsync();
             return await this.GetCellphoneInfoAsync();
         }
 
@@ -72,7 +72,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             this.State.Registered = false;
             this.State.UserId = Guid.NewGuid();
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
         }
 
         #endregion ICellphone Members

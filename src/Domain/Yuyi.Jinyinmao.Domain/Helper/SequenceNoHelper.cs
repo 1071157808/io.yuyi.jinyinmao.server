@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using System.Threading.Tasks;
+using Orleans;
 
 namespace Yuyi.Jinyinmao.Domain.Helper
 {
@@ -24,7 +25,7 @@ namespace Yuyi.Jinyinmao.Domain.Helper
 
         static SequenceNoHelper()
         {
-            Generator = SequenceGeneratorFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            Generator = GrainClient.GrainFactory.GetGrain<ISequenceGenerator>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
         }
 
         /// <summary>

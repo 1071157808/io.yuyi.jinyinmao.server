@@ -4,7 +4,7 @@
 // Created          : 2015-07-31  4:27 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  4:28 PM
+// Last Modified On : 2015-08-12  3:25 AM
 // ***********************************************************************
 // <copyright file="ISettleAccountTransactionInsertedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface ISettleAccountTransactionInsertedProcessor
     /// </summary>
-    public interface ISettleAccountTransactionInsertedProcessor : IGrain
+    public interface ISettleAccountTransactionInsertedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

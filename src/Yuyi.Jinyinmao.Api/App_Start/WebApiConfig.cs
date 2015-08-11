@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  4:29 PM
+// Last Modified On : 2015-08-12  2:29 AM
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,6 +39,7 @@ namespace Yuyi.Jinyinmao.Api
         public static void Register(HttpConfiguration config)
         {
             config.UseOrderedFilter();
+
             config.UseSeriLog();
 
             //config.EnableSystemDiagnosticsTracing();

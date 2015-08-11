@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IBankCardAddedProcessor
     /// </summary>
-    public interface IBankCardAddedProcessor : IGrain
+    public interface IBankCardAddedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

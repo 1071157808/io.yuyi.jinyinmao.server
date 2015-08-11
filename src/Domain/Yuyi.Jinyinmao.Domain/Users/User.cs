@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  8:24 PM
+// Last Modified On : 2015-08-12  3:26 AM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -238,7 +238,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             if (transaction.TradeCode == TradeCodeHelper.TC2001051102)
             {
-                IJBYProduct product = JBYProductFactory.GetGrain(transaction.ProductId);
+                IJBYProduct product = this.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
                 result = await product.CancelJBYTransactionAsync(transaction.TransactionId);
             }
 
@@ -317,14 +317,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public async Task<UserInfo> ChangeCellphoneAsync(string cellphoneNo)
         {
-            ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphoneNo));
+            ICellphone cellphone = this.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphoneNo));
             CellphoneInfo cellphoneInfo = await cellphone.GetCellphoneInfoAsync();
             if (cellphoneInfo.Registered)
             {
                 return null;
             }
 
-            ICellphone originalCellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
+            ICellphone originalCellphone = this.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
 
             this.State.LoginNames.Remove(this.State.Cellphone);
             this.State.Cellphone = cellphoneNo;
@@ -332,7 +332,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.BankCards.ForEach(c => c.Value.Cellphone = cellphoneNo);
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
 
             await cellphone.RegisterAsync(this.State.UserId);
 
@@ -886,7 +886,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.JBYAccount.Add(transaction.TransactionId, transaction);
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
             this.ReloadJBYAccountData();
 
             JBYAccountTransactionInfo transactionInfo = transaction.ToInfo();
@@ -925,7 +925,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.SettleAccount.Add(transaction.TransactionId, transaction);
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
             this.ReloadSettleAccountData();
 
             SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
@@ -1012,7 +1012,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Yield = 0 // to be updated
             };
 
-            IRegularProduct product = RegularProductFactory.GetGrain(command.ProductId);
+            IRegularProduct product = this.GrainFactory.GetGrain<IRegularProduct>(command.ProductId);
             OrderInfo orderInfo = await product.BuildOrderAsync(order.ToInfo());
 
             if (orderInfo == null)
@@ -1123,7 +1123,7 @@ namespace Yuyi.Jinyinmao.Domain
                 UserInfo = await this.GetUserInfoAsync()
             };
 
-            IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            IJBYProduct product = this.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             Guid? result = await product.BuildJBYTransactionAsync(jbyTransaction.ToInfo());
             if (result.HasValue)
             {
@@ -1160,7 +1160,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             this.State.Closed = true;
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
 
             await this.SyncAsync();
 
@@ -1200,14 +1200,14 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.State.Args.Add("MigratingTime", DateTime.UtcNow);
 
-            ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
+            ICellphone cellphone = this.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(this.State.Cellphone));
             await cellphone.RegisterAsync(this.State.UserId);
 
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
             this.ReloadSettleAccountData();
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
 
             await this.SyncAsync();
 
@@ -1278,7 +1278,7 @@ namespace Yuyi.Jinyinmao.Domain
             if (this.State.JBYAccount.ContainsKey(transactionId))
             {
                 this.State.JBYAccount.Remove(transactionId);
-                await this.State.WriteStateAsync();
+                await this.WriteStateAsync();
                 this.ReloadJBYAccountData();
 
                 return true;
@@ -1495,7 +1495,7 @@ namespace Yuyi.Jinyinmao.Domain
             JBYAccountTransactionInfo jbyTransactionInfo = jbyTransaction.ToInfo();
             SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
 
-            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+            IUser user = this.GrainFactory.GetGrain<IUser>(VariableHelper.TransferDestinationId);
             await user.TransferJBYTransactionInAsync(jbyTransactionInfo, transactionInfo);
 
             await this.SaveStateAsync();
@@ -1587,10 +1587,10 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.SettleAccount.Remove(transactionId);
             this.State.Orders.Remove(order.OrderId);
 
-            IRegularProduct product = RegularProductFactory.GetGrain(order.ProductId);
+            IRegularProduct product = this.GrainFactory.GetGrain<IRegularProduct>(order.ProductId);
             OrderInfo orderInfo = await product.TransferOrderAsync(order.OrderId);
 
-            IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+            IUser user = this.GrainFactory.GetGrain<IUser>(VariableHelper.TransferDestinationId);
             await user.TransferOrderInAsync(order.ToInfo(), transaction.ToInfo());
 
             await this.SaveStateAsync();
@@ -1678,7 +1678,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             this.State.Closed = false;
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
 
             await this.SyncAsync();
 
@@ -1873,7 +1873,7 @@ namespace Yuyi.Jinyinmao.Domain
                 UserInfo = await this.GetUserInfoAsync()
             };
 
-            IJBYProductWithdrawalManager manager = JBYProductWithdrawalManagerFactory.GetGrain(GrainTypeHelper.GetJBYProductWithdrawalManagerGrainTypeLongKey());
+            IJBYProductWithdrawalManager manager = this.GrainFactory.GetGrain<IJBYProductWithdrawalManager>(GrainTypeHelper.GetJBYProductWithdrawalManagerGrainTypeLongKey());
             DateTime? predeterminedResultDate = await manager.BuildWithdrawalTransactionAsync(transaction.ToInfo());
 
             if (predeterminedResultDate == null)

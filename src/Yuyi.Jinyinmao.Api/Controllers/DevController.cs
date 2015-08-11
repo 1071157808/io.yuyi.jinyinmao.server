@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  6:59 PM
+// Last Modified On : 2015-08-12  3:27 AM
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,6 +24,7 @@ using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
 using Moe.Lib;
+using Orleans;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain;
@@ -45,13 +46,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("CancelJBYAccountTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYTransactionInfoResponse))]
+        [Route("CancelJBYAccountTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> CancelJBYAccountTransaction(string userIdentifier, string transactionIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid transacationId = Guid.ParseExact(transactionIdentifier, "N");
 
-            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).CancelJBYAccountTransactionAsync(transacationId, this.BuildArgs());
+            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).CancelJBYAccountTransactionAsync(transacationId, this.BuildArgs());
 
             if (info == null)
             {
@@ -67,13 +72,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="orderIdentifier">The order identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("CancelOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
+        [Route("CancelOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> CancelOrder(string userIdentifier, string orderIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid orderId = Guid.ParseExact(orderIdentifier, "N");
 
-            OrderInfo info = await UserFactory.GetGrain(userId).CancelOrderAsync(orderId, this.BuildArgs());
+            OrderInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).CancelOrderAsync(orderId, this.BuildArgs());
 
             if (info == null)
             {
@@ -92,12 +101,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("CancelOrderFromProduct/{productIdentifier:length(32)}-{orderIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
+        [Route("CancelOrderFromProduct/{productIdentifier:length(32)}-{orderIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> CancelOrderFromProduct(string productIdentifier, string orderIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
             Guid orderId = Guid.ParseExact(orderIdentifier, "N");
-            OrderInfo order = await RegularProductFactory.GetGrain(productId).CancelOrderAsync(orderId);
+            OrderInfo order = await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).CancelOrderAsync(orderId);
 
             if (order == null)
             {
@@ -113,13 +124,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("CancelSettleAccountTransactionResult/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        [Route("CancelSettleAccountTransactionResult/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> CancelSettleAccountTransactionResult(string userIdentifier, string transactionIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid transacationId = Guid.ParseExact(transactionIdentifier, "N");
 
-            SettleAccountTransactionInfo info = await UserFactory.GetGrain(userId).CancelSettleAccountTransactionAsync(transacationId, this.BuildArgs());
+            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).CancelSettleAccountTransactionAsync(transacationId, this.BuildArgs());
 
             if (info == null)
             {
@@ -138,12 +153,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ChangeCellphone/{userIdentifier:length(32)}/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("ChangeCellphone/{userIdentifier:length(32)}/{cellphone:length(11)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ChangeCellphone(string userIdentifier, string cellphone)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
 
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
+            ICellphone cellphoneGrain = GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo cellphoneInfo = await cellphoneGrain.GetCellphoneInfoAsync();
             if (cellphoneInfo.Registered)
             {
@@ -152,7 +168,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
             {
-                IUser user = UserFactory.GetGrain(userId);
+                IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
                 UserInfo info = await user.ChangeCellphoneAsync(cellphone);
                 await user.SyncAsync();
                 return this.Ok(info);
@@ -167,10 +183,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("CheckJBYProductSaleStatus"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("CheckJBYProductSaleStatus")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> CheckJBYProductSaleStatus()
         {
-            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).CheckSaleStatusAsync();
+            await GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).CheckSaleStatusAsync();
             return this.Ok();
         }
 
@@ -182,11 +199,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("CheckProductSaleStatus/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("CheckProductSaleStatus/{productIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> CheckProductSaleStatus(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            await RegularProductFactory.GetGrain(productId).CheckSaleStatusAsync();
+            await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).CheckSaleStatusAsync();
             return this.Ok();
         }
 
@@ -197,11 +215,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ClearUnauthenticatedInfoAsync/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(UserInfoResponse))]
+        [Route("ClearUnauthenticatedInfoAsync/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> ClearUnauthenticatedInfoAsync(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
-            UserInfo info = await UserFactory.GetGrain(userId).ClearUnauthenticatedInfoAsync();
+            UserInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).ClearUnauthenticatedInfoAsync();
             return this.Ok(info.ToResponse());
         }
 
@@ -213,11 +233,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("DepositSaga/{sagaIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("DepositSaga/{sagaIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DepositSaga(string sagaIdentifier)
         {
             Guid sagaId = Guid.ParseExact(sagaIdentifier, "N");
-            await DepositSagaFactory.GetGrain(sagaId).ProcessAsync();
+            await GrainClient.GrainFactory.GetGrain<IDepositSaga>(sagaId).ProcessAsync();
 
             return this.Ok();
         }
@@ -230,11 +251,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("DoDailyWork/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("DoDailyWork/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DoDailyWork(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
-            await UserFactory.GetGrain(userId).DoDailyWorkAsync(true);
+            await GrainClient.GrainFactory.GetGrain<IUser>(userId).DoDailyWorkAsync(true);
             return this.Ok();
         }
 
@@ -245,10 +267,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("DumpJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("DumpJBYProduct")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DumpJBYProduct()
         {
-            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).DumpAsync();
+            await GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).DumpAsync();
             return this.Ok();
         }
 
@@ -260,11 +283,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("DumpProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("DumpProduct/{productIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DumpProduct(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            await RegularProductFactory.GetGrain(productId).DumpAsync();
+            await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).DumpAsync();
             return this.Ok();
         }
 
@@ -276,18 +300,20 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("DumpUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("DumpUser/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DumpUser(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
-            await UserFactory.GetGrain(userId).DumpAsync();
+            await GrainClient.GrainFactory.GetGrain<IUser>(userId).DumpAsync();
             return this.Ok();
         }
 
         /// <summary>
         ///     The default action of the service.
         /// </summary>
-        [HttpGet, Route("")]
+        [HttpGet]
+        [Route("")]
         public IHttpActionResult Get()
         {
             this.TraceWriter.Debug(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Debug test");
@@ -326,7 +352,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("InsertJBYAccountTranscation"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYTransactionInfoResponse))]
+        [Route("InsertJBYAccountTranscation")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> InsertJBYAccountTranscation(InsertJBYAccountTransactionRequest request)
         {
             Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
@@ -341,7 +371,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 UserId = userId
             };
 
-            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).InsertJBYAccountTranscationAsync(dto);
+            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).InsertJBYAccountTranscationAsync(dto);
             return this.Ok(info.ToResponse());
         }
 
@@ -352,7 +382,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("InsertSettleAccountTranscation"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        [Route("InsertSettleAccountTranscation")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> InsertSettleAccountTranscation(InsertSettleAccountTransactionRequest request)
         {
             Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
@@ -369,7 +403,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 UserId = userId
             };
 
-            SettleAccountTransactionInfo info = await UserFactory.GetGrain(userId).InsertSettleAccountTranscationAsync(dto);
+            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).InsertSettleAccountTranscationAsync(dto);
             return this.Ok(info.ToResponse());
         }
 
@@ -381,12 +415,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("LockUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(UserInfoResponse))]
+        [Route("LockUser/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> LockUser(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
 
-            UserInfo info = await UserFactory.GetGrain(userId).LockAsync();
+            UserInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).LockAsync();
 
             return this.Ok(info.ToResponse());
         }
@@ -398,10 +434,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("RefreshJBYProduct"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYProductInfoResponse))]
+        [Route("RefreshJBYProduct")]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(JBYProductInfoResponse))]
         public async Task<IHttpActionResult> RefreshJBYProduct()
         {
-            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).RefreshAsync();
+            await GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).RefreshAsync();
             return this.Ok();
         }
 
@@ -412,10 +450,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ReloadCellphone/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(CellphoneInfoResponse))]
+        [Route("ReloadCellphone/{cellphone:length(11)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(CellphoneInfoResponse))]
         public async Task<IHttpActionResult> ReloadCellphone(string cellphone)
         {
-            CellphoneInfo info = await CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone)).ReloadAsync();
+            CellphoneInfo info = await GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone)).ReloadAsync();
             return this.Ok(info.ToResponse());
         }
 
@@ -426,10 +466,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ReloadJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("ReloadJBYProduct")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReloadJBYProduct()
         {
-            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).ReloadAsync();
+            await GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).ReloadAsync();
             return this.Ok();
         }
 
@@ -441,11 +482,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ReloadProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("ReloadProduct/{productIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReloadProduct(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            await RegularProductFactory.GetGrain(productId).ReloadAsync();
+            await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).ReloadAsync();
             return this.Ok();
         }
 
@@ -457,11 +499,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ReloadUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("ReloadUser/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReloadUser(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
-            await UserFactory.GetGrain(userId).ReloadAsync();
+            await GrainClient.GrainFactory.GetGrain<IUser>(userId).ReloadAsync();
             return this.Ok();
         }
 
@@ -474,13 +517,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("RemoveJBYReversalTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("RemoveJBYReversalTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> RemoveJBYReversalTransaction(string userIdentifier, string transactionIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid transactionId = Guid.ParseExact(transactionIdentifier, "N");
 
-            bool result = await UserFactory.GetGrain(userId).RemoveJBYTransactionsAsync(transactionId);
+            bool result = await GrainClient.GrainFactory.GetGrain<IUser>(userId).RemoveJBYTransactionsAsync(transactionId);
             return this.Ok(new { Result = result });
         }
 
@@ -492,11 +536,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("ReprocessDepositSaga/{sagaIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("ReprocessDepositSaga/{sagaIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReprocessDepositSaga(string sagaIdentifier)
         {
             Guid sagaId = Guid.ParseExact(sagaIdentifier, "N");
-            await DepositSagaFactory.GetGrain(sagaId).ReprocessAsync();
+            await GrainClient.GrainFactory.GetGrain<IDepositSaga>(sagaId).ReprocessAsync();
 
             return this.Ok();
         }
@@ -506,13 +551,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("SetJBYAccountTransactionResult"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYTransactionInfoResponse))]
+        [Route("SetJBYAccountTransactionResult")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> SetJBYAccountTransactionResult(SetJBYAccountTransactionResultRequest request)
         {
             Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
             Guid transacationId = Guid.ParseExact(request.TransactionIdentifier, "N");
 
-            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).SetJBYAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
+            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).SetJBYAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
 
             if (info == null)
             {
@@ -529,10 +578,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("SetJBYProductToSoldOut"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SetJBYProductToSoldOut")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SetJBYProductToSoldOut()
         {
-            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).SetToSoldOutAsync();
+            await GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).SetToSoldOutAsync();
             return this.Ok();
         }
 
@@ -544,11 +594,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("SetProductToOnSale/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SetProductToOnSale/{productIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SetProductToOnSale(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            await RegularProductFactory.GetGrain(productId).SetToOnSaleAsync();
+            await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).SetToOnSaleAsync();
             return this.Ok();
         }
 
@@ -560,11 +611,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("SetProductToSoldOut/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SetProductToSoldOut/{productIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SetProductToSoldOut(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            await RegularProductFactory.GetGrain(productId).SetToSoldOutAsync();
+            await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).SetToSoldOutAsync();
             return this.Ok();
         }
 
@@ -573,13 +625,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        [Route("SetSettleAccountTransactionResult"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        [Route("SetSettleAccountTransactionResult")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> SetSettleAccountTransactionResult(SetSettleAccountTransactionResultRequest request)
         {
             Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
             Guid transacationId = Guid.ParseExact(request.TransactionIdentifier, "N");
 
-            SettleAccountTransactionInfo info = await UserFactory.GetGrain(userId).SetSettleAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
+            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).SetSettleAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
 
             if (info == null)
             {
@@ -596,10 +652,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("SyncJBYProduct"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SyncJBYProduct")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SyncJBYProduct()
         {
-            await JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).SyncAsync();
+            await GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey()).SyncAsync();
             return this.Ok();
         }
 
@@ -611,11 +668,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("SyncProduct/{productIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SyncProduct/{productIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SyncProduct(string productIdentifier)
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
-            await RegularProductFactory.GetGrain(productId).SyncAsync();
+            await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).SyncAsync();
             return this.Ok();
         }
 
@@ -627,11 +685,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("SyncUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("SyncUser/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SyncUser(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
-            await UserFactory.GetGrain(userId).SyncAsync();
+            await GrainClient.GrainFactory.GetGrain<IUser>(userId).SyncAsync();
             return this.Ok();
         }
 
@@ -641,13 +700,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="transactionIdentifier">The transaction identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("TransferJBYTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(JBYProductInfoResponse))]
+        [Route("TransferJBYTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(JBYProductInfoResponse))]
         public async Task<IHttpActionResult> TransferJBYTransaction(string userIdentifier, string transactionIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid transactionId = Guid.ParseExact(transactionIdentifier, "N");
 
-            JBYAccountTransactionInfo info = await UserFactory.GetGrain(userId).TransferJBYTransactionAsync(transactionId, this.BuildArgs());
+            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).TransferJBYTransactionAsync(transactionId, this.BuildArgs());
 
             if (info == null)
             {
@@ -663,13 +726,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <param name="userIdentifier">The user identifier.</param>
         /// <param name="orderIdentifier">The order identifier.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("TransferOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}"), ActionParameterRequired, ActionParameterValidate(Order = 1), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(OrderInfoResponse))]
+        [Route("TransferOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(OrderInfoResponse))]
         public async Task<IHttpActionResult> TransferOrder(string userIdentifier, string orderIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             Guid orderId = Guid.ParseExact(orderIdentifier, "N");
 
-            OrderInfo info = await UserFactory.GetGrain(userId).TransferOrderAsync(orderId, this.BuildArgs());
+            OrderInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).TransferOrderAsync(orderId, this.BuildArgs());
 
             if (info == null)
             {
@@ -687,12 +754,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("UnlockUser/{userIdentifier:length(32)}"), IpAuthorize(OnlyLocalHost = true), ResponseType(typeof(UserInfoResponse))]
+        [Route("UnlockUser/{userIdentifier:length(32)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> UnlockUser(string userIdentifier)
         {
             Guid userId = Guid.ParseExact(userIdentifier, "N");
 
-            UserInfo info = await UserFactory.GetGrain(userId).UnlockAsync();
+            UserInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).UnlockAsync();
 
             return this.Ok(info.ToResponse());
         }
@@ -705,12 +774,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="401"></response>
         /// <response code="403"></response>
         /// <response code="500"></response>
-        [Route("UnregisteredCellphone/{cellphone:length(11)}"), IpAuthorize(OnlyLocalHost = true)]
+        [Route("UnregisteredCellphone/{cellphone:length(11)}")]
+        [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> UnregisteredCellphone(string cellphone)
         {
             if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
             {
-                await CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone))
+                await GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone))
                     .UnregisterAsync();
             }
             return this.Ok();

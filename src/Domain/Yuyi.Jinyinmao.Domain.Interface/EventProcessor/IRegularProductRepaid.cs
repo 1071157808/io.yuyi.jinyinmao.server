@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IRegularProductRepaid
     /// </summary>
-    public interface IRegularProductRepaidProcessor : IGrain
+    public interface IRegularProductRepaidProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

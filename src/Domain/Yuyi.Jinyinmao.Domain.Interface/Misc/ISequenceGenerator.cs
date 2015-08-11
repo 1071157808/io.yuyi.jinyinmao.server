@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-28  11:27 AM
+// File             : ISequenceGenerator.cs
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  10:26 PM
+// Last Modified On : 2015-08-12  3:26 AM
 // ***********************************************************************
 // <copyright file="ISequenceGenerator.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Interface ISequenceGenerator
     /// </summary>
-    public interface ISequenceGenerator : IGrain
+    public interface ISequenceGenerator : IGrainWithIntegerKey
     {
         /// <summary>
         ///     Generates the no asynchronous.

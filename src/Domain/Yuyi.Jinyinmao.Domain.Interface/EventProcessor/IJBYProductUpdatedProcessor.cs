@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IJBYProductUpdatedProcessor
     /// </summary>
-    public interface IJBYProductUpdatedProcessor : IGrain
+    public interface IJBYProductUpdatedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

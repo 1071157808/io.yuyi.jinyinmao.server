@@ -4,7 +4,7 @@
 // Created          : 2015-08-06  12:44 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-06  12:46 AM
+// Last Modified On : 2015-08-12  3:26 AM
 // ***********************************************************************
 // <copyright file="IJBYTransactionTransferedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IJBYTransactionTransferedProcessor
     /// </summary>
-    public interface IJBYTransactionTransferedProcessor : IGrain
+    public interface IJBYTransactionTransferedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

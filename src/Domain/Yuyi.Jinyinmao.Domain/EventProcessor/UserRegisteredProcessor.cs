@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserRegisteredProcessor.cs
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  5:39 PM
+// Last Modified On : 2015-08-12  2:44 AM
 // ***********************************************************************
 // <copyright file="UserRegisteredProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,7 +42,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
 
             await this.ProcessingEventAsync(@event, async e =>
             {
-                ICellphone cellphone = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(e.UserInfo.Cellphone));
+                ICellphone cellphone = this.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(e.UserInfo.Cellphone));
                 await cellphone.RegisterAsync(e.UserInfo.UserId);
             });
 

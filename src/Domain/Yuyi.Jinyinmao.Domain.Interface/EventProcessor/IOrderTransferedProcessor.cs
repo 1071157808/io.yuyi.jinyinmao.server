@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-04  5:21 AM
+// File             : IOrderTransferedProcessor.cs
+// Created          : 2015-08-06  12:08 AM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  12:19 AM
+// Last Modified On : 2015-08-12  3:25 AM
 // ***********************************************************************
-// <copyright file="IOrderPaidProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="IOrderTransferedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -17,9 +17,9 @@ using Orleans;
 namespace Yuyi.Jinyinmao.Domain.Events
 {
     /// <summary>
-    /// Interface IOrderTransferedProcessor
+    ///     Interface IOrderTransferedProcessor
     /// </summary>
-    public interface IOrderTransferedProcessor : IGrain
+    public interface IOrderTransferedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  1:50 AM
+// Last Modified On : 2015-08-12  2:44 AM
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,7 +24,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Interface IUser
     /// </summary>
-    public interface IUser : IGrain
+    public interface IUser : IGrainWithGuidKey
     {
         /// <summary>
         ///     Adds the bank card asynchronous.
@@ -294,7 +294,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<bool> IsRegisteredAsync();
 
         /// <summary>
-        /// Locks the asynchronous.
+        ///     Locks the asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         Task<UserInfo> LockAsync();
@@ -407,7 +407,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task TransferOrderInAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo);
 
         /// <summary>
-        /// Unlocks the asynchronous.
+        ///     Unlocks the asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         Task<UserInfo> UnlockAsync();

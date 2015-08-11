@@ -4,7 +4,7 @@
 // Created          : 2015-08-05  5:58 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-05  7:13 PM
+// Last Modified On : 2015-08-12  3:26 AM
 // ***********************************************************************
 // <copyright file="IJBYAccountTransactionResultedProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IJBYAccountTransactionResultedProcessor
     /// </summary>
-    public interface IJBYAccountTransactionResultedProcessor : IGrain
+    public interface IJBYAccountTransactionResultedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

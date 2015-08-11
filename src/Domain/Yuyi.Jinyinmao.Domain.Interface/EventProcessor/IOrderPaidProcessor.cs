@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IOrderBuiltProcessor
     /// </summary>
-    public interface IOrderPaidProcessor : IGrain
+    public interface IOrderPaidProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

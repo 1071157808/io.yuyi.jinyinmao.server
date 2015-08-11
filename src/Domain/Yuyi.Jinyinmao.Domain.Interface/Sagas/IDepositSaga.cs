@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  4:24 PM
+// Last Modified On : 2015-08-12  3:25 AM
 // ***********************************************************************
 // <copyright file="IDepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     /// <summary>
     ///     Interface IDepositSaga
     /// </summary>
-    public interface IDepositSaga : IGrain
+    public interface IDepositSaga : IGrainWithGuidKey
     {
         /// <summary>
         ///     Begins the process.

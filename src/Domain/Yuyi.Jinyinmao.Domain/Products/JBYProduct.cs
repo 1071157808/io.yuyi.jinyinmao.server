@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  6:59 PM
+// Last Modified On : 2015-08-12  3:51 AM
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -38,9 +38,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
         {
-            { typeof(JBYProductIssued), e => JBYProductIssuedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYProductIssued)e) },
-            { typeof(JBYProductSoldOut), e => JBYProductSoldOutProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYProductSoldOut)e) },
-            { typeof(JBYProductUpdated), e => JBYProductUpdatedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((JBYProductUpdated)e) }
+            { typeof(JBYProductIssued), e => GrainClient.GrainFactory.GetGrain<IJBYProductIssuedProcessor>(e.EventId).ProcessEventAsync((JBYProductIssued)e) },
+            { typeof(JBYProductSoldOut), e => GrainClient.GrainFactory.GetGrain<IJBYProductSoldOutProcessor>(e.EventId).ProcessEventAsync((JBYProductSoldOut)e) },
+            { typeof(JBYProductUpdated), e => GrainClient.GrainFactory.GetGrain<IJBYProductUpdatedProcessor>(e.EventId).ProcessEventAsync((JBYProductUpdated)e) }
         };
 
         private long PaidAmount { get; set; }
@@ -301,7 +301,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public override async Task ReloadAsync()
         {
-            await this.State.ReadStateAsync();
+            await this.ReadStateAsync();
             this.ReloadTransactionData();
             await this.SyncAsync();
         }

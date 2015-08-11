@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface ISettleAccountTransactionResultedProcessor
     /// </summary>
-    public interface ISettleAccountTransactionResultedProcessor : IGrain
+    public interface ISettleAccountTransactionResultedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

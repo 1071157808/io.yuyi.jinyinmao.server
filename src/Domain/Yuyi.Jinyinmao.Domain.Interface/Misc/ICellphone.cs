@@ -21,7 +21,7 @@ namespace Yuyi.Jinyinmao.Domain
     /// <summary>
     ///     Interface ICellphone
     /// </summary>
-    public interface ICellphone : IGrain
+    public interface ICellphone : IGrainWithIntegerKey
     {
         /// <summary>
         ///     Gets the cellphone information.

@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface ILoginPasswordResetProcessor
     /// </summary>
-    public interface ILoginPasswordResetProcessor : IGrain
+    public interface ILoginPasswordResetProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

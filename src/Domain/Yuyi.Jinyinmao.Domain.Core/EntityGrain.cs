@@ -62,7 +62,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task DumpAsync()
         {
-            return this.State.WriteStateAsync();
+            return this.WriteStateAsync();
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public override async Task OnDeactivateAsync()
         {
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
 
             await base.OnDeactivateAsync();
         }
@@ -143,7 +143,7 @@ namespace Yuyi.Jinyinmao.Domain
             if (this.StateChanged)
             {
                 this.StateChanged = false;
-                await this.State.WriteStateAsync();
+                await this.WriteStateAsync();
             }
         }
 

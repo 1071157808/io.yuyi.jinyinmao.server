@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-11  4:45 AM
+// File             : JBYProductSoldOutProcessor.cs
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-23  1:33 PM
+// Last Modified On : 2015-08-12  2:45 AM
 // ***********************************************************************
 // <copyright file="JBYProductSoldOutProcessor.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -34,7 +34,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
 
             await this.ProcessingEventAsync(@event, async e =>
             {
-                IJBYProduct product = JBYProductFactory.GetGrain(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+                IJBYProduct product = this.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
                 await product.RefreshAsync();
             });
 

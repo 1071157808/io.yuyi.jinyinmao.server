@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  1:21 AM
+// Last Modified On : 2015-08-12  2:39 AM
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,9 +39,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
         {
-            { typeof(RegularProductSoldOut), e => RegularProductSoldOutProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((RegularProductSoldOut)e) },
-            { typeof(RegularProductIssued), e => RegularProductIssuedProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((RegularProductIssued)e) },
-            { typeof(RegularProductRepaid), e => RegularProductRepaidProcessorFactory.GetGrain(e.EventId).ProcessEventAsync((RegularProductRepaid)e) }
+            { typeof(RegularProductSoldOut), e => GrainClient.GrainFactory.GetGrain<IRegularProductSoldOutProcessor>(e.EventId).ProcessEventAsync((RegularProductSoldOut)e) },
+            { typeof(RegularProductIssued), e => GrainClient.GrainFactory.GetGrain<IRegularProductIssuedProcessor>(e.EventId).ProcessEventAsync((RegularProductIssued)e) },
+            { typeof(RegularProductRepaid), e => GrainClient.GrainFactory.GetGrain<IRegularProductRepaidProcessor>(e.EventId).ProcessEventAsync((RegularProductRepaid)e) }
         };
 
         private long PaidAmount { get; set; }
@@ -368,7 +368,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.ReloadOrderData();
 
-            await this.State.WriteStateAsync();
+            await this.WriteStateAsync();
 
             await this.SyncAsync();
 
@@ -381,7 +381,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public override async Task ReloadAsync()
         {
-            await this.State.ReadStateAsync();
+            await this.ReadStateAsync();
             this.ReloadOrderData();
             await this.SyncAsync();
         }
@@ -407,7 +407,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             foreach (OrderInfo order in this.PaidOrders)
             {
-                await UserFactory.GetGrain(order.UserId).RepayOrderAsync(args, order.OrderId, now);
+                await this.GrainFactory.GetGrain<IUser>(order.UserId).RepayOrderAsync(args, order.OrderId, now);
                 order.IsRepaid = true;
                 order.RepaidTime = order.RepaidTime.HasValue ? order.RepaidTime : now;
             }
@@ -473,7 +473,7 @@ namespace Yuyi.Jinyinmao.Domain
             OrderInfo order;
             if (this.State.Orders.TryGetValue(orderId, out order))
             {
-                IUser user = UserFactory.GetGrain(VariableHelper.TransferDestinationId);
+                IUser user = this.GrainFactory.GetGrain<IUser>(VariableHelper.TransferDestinationId);
                 UserInfo userInfo = await user.GetUserInfoAsync();
 
                 order.UserInfo = userInfo;

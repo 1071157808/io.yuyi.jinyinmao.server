@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : WorkerRole.cs
 // Created          : 2015-05-25  4:00 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  7:08 PM
+// Last Modified On : 2015-08-12  3:25 AM
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -96,7 +96,7 @@ namespace Yuyi.Jinyinmao.Silo
             // It is IMPORTANT to start the silo not in OnStart but in Run.
             // Azure may not have the firewalls open yet (on the remote silos) at the OnStart phase.
             this.orleansAzureSilo = new AzureSilo();
-            bool ok = this.orleansAzureSilo.Start(RoleEnvironment.DeploymentId, RoleEnvironment.CurrentRoleInstance, config);
+            bool ok = this.orleansAzureSilo.Start(config);
 
             Trace.TraceInformation("OrleansAzureSilos-OnStart Orleans silo started ok=" + ok, "Information");
 

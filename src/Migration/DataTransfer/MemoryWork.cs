@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : MemoryWork.cs
-// Created          : 2015-08-02  11:31 PM
+// Created          : 2015-08-03  8:20 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  5:14 AM
+// Last Modified On : 2015-08-12  3:25 AM
 // ***********************************************************************
 // <copyright file="MemoryWork.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -272,7 +272,7 @@ namespace DataTransfer
                             //
                             //                            product.RiskManagementMode = riskManagementMode;
 
-                            var info = await RegularProductFactory.GetGrain(product.ProductId).MigrateAsync(product);
+                            var info = await GrainClient.GrainFactory.GetGrain<IRegularProduct>(product.ProductId).MigrateAsync(product);
                             Console.WriteLine(info.ProductId.ToGuidString());
                             Console.WriteLine(i);
                         }
@@ -371,7 +371,7 @@ namespace DataTransfer
                                 t.Value.BankCardNo = string.Empty;
                             }
 
-                            var info = await UserFactory.GetGrain(item.UserId).MigrateAsync(item);
+                            var info = await GrainClient.GrainFactory.GetGrain<IUser>(item.UserId).MigrateAsync(item);
                             Console.WriteLine(info.Cellphone);
                             Console.WriteLine(++i);
                         }

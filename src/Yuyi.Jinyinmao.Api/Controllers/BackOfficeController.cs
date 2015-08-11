@@ -4,7 +4,7 @@
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  7:01 PM
+// Last Modified On : 2015-08-12  2:36 AM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -70,8 +70,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> GetUserInfo(string userIdentifier)
         {
-            Guid userId;
-            if (!Guid.TryParseExact(userIdentifier, "N", out userId))
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
             {
                 return this.BadRequest("无该用户信息");
             }
@@ -108,8 +108,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     上架失败：产品每份单价不能被融资总金额整除
         /// </response>
-        /// <response code="401">认证失败</response>
-        /// <response code="403">未授权</response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("CurrentProduct/Issue")]
         [ActionParameterRequired]
@@ -249,8 +249,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     产品唯一标识错误
         /// </response>
-        /// <response code="401">认证失败</response>
-        /// <response code="403">未授权</response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("RegularProduct/Repay/{productIdentifier:length(32)}")]
         public IHttpActionResult RegularProductRepay(string productIdentifier)
@@ -281,8 +281,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     <br />
         ///     交易流水操作失败
         /// </response>
-        /// <response code="401">认证失败</response>
-        /// <response code="403">未授权</response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("Withdrawal/{userIdentifier:length(32)}-{transactionIdentifier:length(32)}")]
         [ResponseType(typeof(SettleAccountTransactionInfoResponse))]

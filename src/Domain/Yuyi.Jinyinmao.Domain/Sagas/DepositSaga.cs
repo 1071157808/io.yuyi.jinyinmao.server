@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  10:21 PM
+// Last Modified On : 2015-08-12  2:44 AM
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
     public class DepositSaga : SagaGrain<IDepositSagaState>, IDepositSaga
     {
         private IUser User { get; set; }
-
         private IYilianPaymentGatewayService YilianService { get; set; }
 
         #region IDepositSaga Members
@@ -47,7 +46,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             this.State.Status = DepositSagaStatus.Init;
             this.State.BeginTime = DateTime.UtcNow;
 
-            this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+            this.User = this.GrainFactory.GetGrain<IUser>(this.State.InitData.InitUserInfo.UserId);
             await this.RegisterReminder();
             this.ProcessAsync().Forget();
         }
@@ -123,7 +122,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             if (this.State.Status == DepositSagaStatus.Fault || this.State.Status == DepositSagaStatus.Finished)
             {
                 this.State.Status = DepositSagaStatus.Init;
-                this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+                this.User = this.GrainFactory.GetGrain<IUser>(this.State.InitData.InitUserInfo.UserId);
                 await this.RegisterReminder();
                 this.ProcessAsync().Forget();
             }
@@ -141,7 +140,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         {
             if (this.State.InitData != null && this.State.InitData.InitUserInfo != null)
             {
-                this.User = UserFactory.GetGrain(this.State.InitData.InitUserInfo.UserId);
+                this.User = this.GrainFactory.GetGrain<IUser>(this.State.InitData.InitUserInfo.UserId);
             }
 
             this.YilianService = new YilianPaymentGatewayService();

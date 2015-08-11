@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserService.cs
-// Created          : 2015-04-19  5:34 PM
-//
+// Created          : 2015-08-12  2:04 AM
+// 
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  6:31 PM
+// Last Modified On : 2015-08-12  3:27 AM
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Moe.Lib;
+using Orleans;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -41,7 +42,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task<BankCardInfo> AddBankCardAsync(AddBankCard command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.AddBankCardAsync(command);
         }
 
@@ -53,10 +54,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task AddBankCardAsync(AddBankCard addBankCardCommand, VerifyBankCard verifyBankCardCommand)
         {
-            IUser user = UserFactory.GetGrain(addBankCardCommand.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(addBankCardCommand.UserId);
             UserInfo userInfo = await user.GetUserInfoAsync();
 
-            IDepositSaga saga = DepositSagaFactory.GetGrain(addBankCardCommand.CommandId);
+            IDepositSaga saga = GrainClient.GrainFactory.GetGrain<IDepositSaga>(addBankCardCommand.CommandId);
             await saga.BeginProcessAsync(new DepositSagaInitData
             {
                 AddBankCardCommand = addBankCardCommand,
@@ -75,7 +76,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         public Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.AddExtraInterestToOrderAsync(command);
         }
 
@@ -86,7 +87,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task AuthenticateAsync(Authenticate command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.AuthenticateAsync(command);
         }
 
@@ -98,10 +99,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task AuthenticateAsync(AddBankCard addBankCardCommand, Authenticate authenticateCommand)
         {
-            IUser user = UserFactory.GetGrain(addBankCardCommand.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(addBankCardCommand.UserId);
             UserInfo userInfo = await user.GetUserInfoAsync();
 
-            IDepositSaga saga = DepositSagaFactory.GetGrain(addBankCardCommand.CommandId);
+            IDepositSaga saga = GrainClient.GrainFactory.GetGrain<IDepositSaga>(addBankCardCommand.CommandId);
             await saga.BeginProcessAsync(new DepositSagaInitData
             {
                 AddBankCardCommand = addBankCardCommand,
@@ -133,7 +134,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;CheckCellphoneResult&gt;.</returns>
         public async Task<CheckCellphoneResult> CheckCellphoneAsync(string cellphone)
         {
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
+            ICellphone cellphoneGrain = GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
 
             return new CheckCellphoneResult
@@ -163,7 +164,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignInResult&gt;.</returns>
         public Task<bool> CheckPasswordAsync(Guid userId, string password)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.CheckPasswordAsync(password);
         }
 
@@ -175,9 +176,9 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignInResult&gt;.</returns>
         public async Task<SignInResult> CheckPasswordViaCellphoneAsync(string cellphone, string password)
         {
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
+            ICellphone cellphoneGrain = GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
-            IUser user = UserFactory.GetGrain(info.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(info.UserId);
             CheckPasswordResult result = await user.CheckPasswordAsync(cellphone, password);
             return new SignInResult
             {
@@ -197,7 +198,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;CheckPaymentPasswordResult&gt;.</returns>
         public Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(Guid userId, string paymentPassword)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.CheckPaymentPasswordAsync(paymentPassword);
         }
 
@@ -207,7 +208,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="userId">The user identifier.</param>
         public Task ClearUnauthenticatedInfo(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.ClearUnauthenticatedInfoAsync();
         }
 
@@ -218,10 +219,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task DepositAsync(PayByYilian command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             UserInfo userInfo = await user.GetUserInfoAsync();
 
-            IDepositSaga saga = DepositSagaFactory.GetGrain(command.CommandId);
+            IDepositSaga saga = GrainClient.GrainFactory.GetGrain<IDepositSaga>(command.CommandId);
             await saga.BeginProcessAsync(new DepositSagaInitData
             {
                 AddBankCardCommand = null,
@@ -241,7 +242,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;BankCardInfo&gt;.</returns>
         public Task<BankCardInfo> GetBankCardInfoAsync(Guid userId, string bankCardNo)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetBankCardInfoAsync(bankCardNo);
         }
 
@@ -252,7 +253,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
         public Task<List<BankCardInfo>> GetBankCardInfosAsync(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetBankCardInfosAsync();
         }
 
@@ -263,7 +264,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;JBYAccountInfo&gt;.</returns>
         public Task<JBYAccountInfo> GetJBYAccountInfoAsync(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetJBYAccountInfoAsync();
         }
 
@@ -276,7 +277,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
         public Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountReinvestingTransactionInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetJBYAccountReinvestingTransactionInfosAsync(pageIndex, pageSize);
         }
 
@@ -288,7 +289,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
         public Task<JBYAccountTransactionInfo> GetJBYAccountTransactionInfoAsync(Guid userId, Guid transactionId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetJBYAccountTransactionInfoAsync(transactionId);
         }
 
@@ -301,7 +302,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;PaginatedList&lt;JBYAccountTransactionInfo&gt;&gt;.</returns>
         public Task<PaginatedList<JBYAccountTransactionInfo>> GetJBYAccountTransactionInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetJBYAccountTransactionInfosAsync(pageIndex, pageSize);
         }
 
@@ -313,7 +314,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         public Task<OrderInfo> GetOrderInfoAsync(Guid userId, Guid orderId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetOrderInfoAsync(orderId);
         }
 
@@ -327,7 +328,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;PaginatedList&lt;OrderInfo&gt;&gt;.</returns>
         public async Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             Tuple<int, List<OrderInfo>> result = await user.GetOrderInfosAsync(pageIndex, pageSize, ordersSortMode);
             return new PaginatedList<OrderInfo>(pageIndex, pageSize, result.Item1, result.Item2);
         }
@@ -343,7 +344,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>PaginatedList&lt;OrderInfo&gt;.</returns>
         public async Task<PaginatedList<OrderInfo>> GetOrderInfosAsync(Guid userId, int pageIndex, int pageSize, OrdersSortMode ordersSortMode, long[] categories)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             Tuple<int, List<OrderInfo>> result = await user.GetOrderInfosAsync(pageIndex, pageSize, ordersSortMode, categories);
             return new PaginatedList<OrderInfo>(pageIndex, pageSize, result.Item1, result.Item2);
         }
@@ -355,7 +356,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SettleAccountInfo&gt;.</returns>
         public Task<SettleAccountInfo> GetSettleAccountInfoAsync(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetSettleAccountInfoAsync();
         }
 
@@ -367,7 +368,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
         public Task<SettleAccountTransactionInfo> GetSettleAccountTransactionInfoAsync(Guid userId, Guid transactionId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetSettleAccountTransactionInfoAsync(transactionId);
         }
 
@@ -380,7 +381,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;PaginatedList&lt;SettleAccountTransactionInfo&gt;&gt;.</returns>
         public Task<PaginatedList<SettleAccountTransactionInfo>> GetSettleAccountTransactionInfosAsync(Guid userId, int pageIndex, int pageSize)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetSettleAccountTransactionInfosAsync(pageIndex, pageSize);
         }
 
@@ -392,7 +393,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;List&lt;OrderInfo&gt;&gt;.</returns>
         public Task<List<OrderInfo>> GetSettlingOrderInfosAsync(Guid userId, int count)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetSettlingOrderInfosAsync(count);
         }
 
@@ -403,7 +404,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SignUpUserIdInfo&gt;.</returns>
         public async Task<SignUpUserIdInfo> GetSignUpUserIdInfoAsync(string cellphone)
         {
-            ICellphone cellphoneGrain = CellphoneFactory.GetGrain(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
+            ICellphone cellphoneGrain = GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
             CellphoneInfo info = await cellphoneGrain.GetCellphoneInfoAsync();
             return new SignUpUserIdInfo
             {
@@ -420,7 +421,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         public async Task<UserInfo> GetUserInfoAsync(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             UserInfo userInfo = await user.GetUserInfoAsync();
             return userInfo.Cellphone.IsNullOrEmpty() ? null : userInfo;
         }
@@ -432,7 +433,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;List&lt;BankCardInfo&gt;&gt;.</returns>
         public Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.GetWithdrawalableBankCardInfosAsync();
         }
 
@@ -443,7 +444,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task HideBankCardAsync(HideBankCard command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.HideBankCardAsync(command);
         }
 
@@ -454,7 +455,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task<OrderInfo> InvestingAsync(RegularInvesting command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.InvestingAsync(command);
         }
 
@@ -465,7 +466,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
         public Task<JBYAccountTransactionInfo> InvestingAsync(JBYInvesting command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.InvestingAsync(command);
         }
 
@@ -475,7 +476,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
         public Task<UserInfo> RegisterUserAsync(UserRegister command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.RegisterAsync(command);
         }
 
@@ -486,7 +487,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task ReloadDataAsync(Guid userId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.ReloadAsync();
         }
 
@@ -497,7 +498,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task ResetLoginPasswordAsync(ResetLoginPassword command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.ResetLoginPasswordAsync(command);
         }
 
@@ -508,7 +509,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public Task SetPaymentPasswordAsync(SetPaymentPassword command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.SetPaymentPasswordAsync(command);
         }
 
@@ -519,10 +520,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task.</returns>
         public async Task VerifyBankCardAsync(VerifyBankCard verifyBankCardCommand)
         {
-            IUser user = UserFactory.GetGrain(verifyBankCardCommand.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(verifyBankCardCommand.UserId);
             UserInfo userInfo = await user.GetUserInfoAsync();
 
-            IDepositSaga saga = DepositSagaFactory.GetGrain(verifyBankCardCommand.CommandId);
+            IDepositSaga saga = GrainClient.GrainFactory.GetGrain<IDepositSaga>(verifyBankCardCommand.CommandId);
             await saga.BeginProcessAsync(new DepositSagaInitData
             {
                 AddBankCardCommand = null,
@@ -541,7 +542,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
         public Task<SettleAccountTransactionInfo> WithdrawalAsync(Withdrawal command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.WithdrawalAsync(command);
         }
 
@@ -552,7 +553,7 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
         public Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command)
         {
-            IUser user = UserFactory.GetGrain(command.UserId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.WithdrawalAsync(command);
         }
 
@@ -564,10 +565,10 @@ namespace Yuyi.Jinyinmao.Service
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
         public Task<SettleAccountTransactionInfo> WithdrawalResultedAsync(Guid userId, Guid transactionId)
         {
-            IUser user = UserFactory.GetGrain(userId);
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.WithdrawalResultedAsync(transactionId);
         }
 
-        #endregion IUserService Members
+        #endregion
     }
 }

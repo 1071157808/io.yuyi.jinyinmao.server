@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public override async Task ReloadAsync()
         {
-            await this.State.ReadStateAsync();
+            await this.ReadStateAsync();
             this.ReloadSettleAccountData();
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();

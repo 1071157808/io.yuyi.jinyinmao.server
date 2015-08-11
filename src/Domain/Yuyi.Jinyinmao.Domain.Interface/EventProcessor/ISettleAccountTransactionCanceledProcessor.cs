@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface ISettleAccountTransactionCanceledProcessor
     /// </summary>
-    public interface ISettleAccountTransactionCanceledProcessor : IGrain
+    public interface ISettleAccountTransactionCanceledProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

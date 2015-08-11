@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-12  12:55 AM
+// File             : IJBYProductWithdrawalManager.cs
+// Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  2:01 PM
+// Last Modified On : 2015-08-12  2:44 AM
 // ***********************************************************************
 // <copyright file="IJBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,7 +21,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
     /// <summary>
     ///     Interface IJBYProductWithdrawalManager
     /// </summary>
-    public interface IJBYProductWithdrawalManager : IGrain
+    public interface IJBYProductWithdrawalManager : IGrainWithIntegerKey
     {
         /// <summary>
         ///     Builds the withdrawal transaction asynchronous.

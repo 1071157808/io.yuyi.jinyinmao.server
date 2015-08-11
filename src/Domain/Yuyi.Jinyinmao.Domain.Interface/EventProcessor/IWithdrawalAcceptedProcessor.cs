@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IWithdrawalAcceptedProcessor
     /// </summary>
-    public interface IWithdrawalAcceptedProcessor : IGrain
+    public interface IWithdrawalAcceptedProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

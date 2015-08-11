@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     IPayingByYilianProcessor.
     /// </summary>
-    public interface IPayingByYilianProcessor : IGrain
+    public interface IPayingByYilianProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

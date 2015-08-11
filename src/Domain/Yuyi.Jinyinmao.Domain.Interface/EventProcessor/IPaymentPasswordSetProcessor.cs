@@ -19,7 +19,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
     /// <summary>
     ///     Interface IPaymentPasswordSet
     /// </summary>
-    public interface IPaymentPasswordSetProcessor : IGrain
+    public interface IPaymentPasswordSetProcessor : IGrainWithGuidKey
     {
         /// <summary>
         ///     Processes the event asynchronous.

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-12  1:00 AM
+// File             : JBYProductWithdrawalManager.cs
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-27  1:29 PM
+// Last Modified On : 2015-08-12  2:39 AM
 // ***********************************************************************
 // <copyright file="JBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,7 +29,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public class JBYProductWithdrawalManager : EntityGrain<IJBYProductWithdrawalManagerState>, IJBYProductWithdrawalManager
     {
         private static Tuple<DateTime, DailyConfig> todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.MinValue, null);
-
         private long WithdrawalAmount { get; set; }
 
         #region IJBYProductWithdrawalManager Members
@@ -99,7 +98,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public override async Task ReloadAsync()
         {
-            await this.State.ReadStateAsync();
+            await this.ReadStateAsync();
             this.ReloadTransactionData();
         }
 

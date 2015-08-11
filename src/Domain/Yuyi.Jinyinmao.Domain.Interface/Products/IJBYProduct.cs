@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:35 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  8:54 PM
+// Last Modified On : 2015-08-12  2:45 AM
 // ***********************************************************************
 // <copyright file="IJBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,7 +22,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
     /// <summary>
     ///     Interface IJBYProduct
     /// </summary>
-    public interface IJBYProduct : IGrain
+    public interface IJBYProduct : IGrainWithIntegerKey
     {
         /// <summary>
         ///     Builds the jby transaction asynchronous.
@@ -32,7 +32,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info);
 
         /// <summary>
-        /// Cancels the jby transaction asynchronous.
+        ///     Cancels the jby transaction asynchronous.
         /// </summary>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <returns>Task&lt;System.Boolean&gt;.</returns>
