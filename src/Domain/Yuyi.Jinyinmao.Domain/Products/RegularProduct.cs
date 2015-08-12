@@ -239,7 +239,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public async Task HitShelvesAsync(IssueRegularProduct command)
+        public async Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command)
         {
             if (this.State.ProductId == command.ProductId)
             {
@@ -318,6 +318,7 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaiseRegularProductIssuedEvent();
+            return await this.GetRegularProductInfoAsync();
         }
 
         /// <summary>
@@ -379,11 +380,12 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Reload state data as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public override async Task ReloadAsync()
+        public override async Task<RegularProductInfo> ReloadAsync()
         {
             await this.ReadStateAsync();
             this.ReloadOrderData();
             await this.SyncAsync();
+            return await this.GetRegularProductInfoAsync();
         }
 
         /// <summary>

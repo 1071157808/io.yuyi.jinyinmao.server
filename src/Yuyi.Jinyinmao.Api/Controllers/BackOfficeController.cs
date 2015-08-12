@@ -253,7 +253,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("RegularProduct/Repay/{productIdentifier:length(32)}")]
-        public IHttpActionResult RegularProductRepay(string productIdentifier)
+        public async Task<IHttpActionResult> RegularProductRepay(string productIdentifier)
         {
             Guid productId;
             if (!Guid.TryParseExact(productIdentifier, "N", out productId))
@@ -261,9 +261,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("产品唯一标识错误");
             }
 
-            this.productService.RepayRegularProductAsync(productId, this.BuildArgs());
+            RegularProductInfo productInfo = await this.productService.RepayRegularProductAsync(productId, this.BuildArgs());
 
-            return this.Ok();
+            return this.Ok(productInfo.ToResponse());
         }
 
         /// <summary>
