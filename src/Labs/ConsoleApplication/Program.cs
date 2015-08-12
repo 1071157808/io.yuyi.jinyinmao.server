@@ -4,7 +4,7 @@
 // Created          : 2015-04-19  5:34 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-05  11:30 PM
+// Last Modified On : 2015-08-12  9:16 AM
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -71,9 +71,14 @@ namespace ConsoleApplication
 
         private static void Main(string[] args)
         {
-            var g = new Guid("b1aa2356-9102-4259-9f28-46457dab7cc1");
-            Console.WriteLine(g);
-            DoSomething().Wait();
+            var t1 = DateTime.Now.ToChinaStandardTime();
+            Console.WriteLine(t1);
+            Console.WriteLine(t1.Kind);
+            Console.WriteLine(t1.ToChinaStandardTime());
+            var t2 = DateTime.UtcNow.ToChinaStandardTime();
+            Console.WriteLine(t2);
+            Console.WriteLine(t2.Kind);
+            Console.WriteLine(t2.ToChinaStandardTime());
         }
     }
 }
