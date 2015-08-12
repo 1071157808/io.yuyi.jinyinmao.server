@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// File             : ISequenceGenerator.cs
-// Created          : 2015-05-27  7:35 PM
+// File             : IBonusManager.cs
+// Created          : 2015-08-12  12:55 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  3:26 AM
+// Last Modified On : 2015-08-12  12:56 PM
 // ***********************************************************************
-// <copyright file="ISequenceGenerator.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="IBonusManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -14,17 +14,18 @@
 using System.Threading.Tasks;
 using Orleans;
 
-namespace Yuyi.Jinyinmao.Domain
+namespace Yuyi.Jinyinmao.Domain.Misc
 {
     /// <summary>
-    ///     Interface ISequenceGenerator
+    ///     Interface IBonusManager
     /// </summary>
-    public interface ISequenceGenerator : IGrainWithGuidKey
+    public interface IBonusManager : IGrainWithGuidKey
     {
         /// <summary>
-        ///     Generates the no asynchronous.
+        /// Gets the bonus amount.
         /// </summary>
-        /// <returns>Task&lt;System.String&gt;.</returns>
-        Task<string> GenerateNoAsync();
+        /// <param name="baseAmount">The base amount.</param>
+        /// <returns>Task&lt;System.Int64&gt;.</returns>
+        Task<long> GetBonusAmount(long baseAmount);
     }
 }

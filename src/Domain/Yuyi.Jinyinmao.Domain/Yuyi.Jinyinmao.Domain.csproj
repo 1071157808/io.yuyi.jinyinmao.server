@@ -185,6 +185,7 @@
     <Compile Include="EventProcessor\WithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\WithdrawalResultedProcessor.cs" />
     <Compile Include="Helper\SequenceNoHelper.cs" />
+    <Compile Include="Misc\BonusManager.cs" />
     <Compile Include="Misc\Cellphone.cs" />
     <Compile Include="EventProcessor\AuthenticateResultedProcessor.cs" />
     <Compile Include="EventProcessor\LoginPasswordResetProcessor.cs" />

@@ -379,7 +379,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Reload state data as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public override async Task ReloadAsync()
+        public async Task ReloadAsync()
         {
             await this.ReadStateAsync();
             this.ReloadOrderData();
@@ -458,7 +458,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public override async Task SyncAsync()
+        public async Task SyncAsync()
         {
             await DBSyncHelper.SyncRegularProductAsync(await this.GetRegularProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }

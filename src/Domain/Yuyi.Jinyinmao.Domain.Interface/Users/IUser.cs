@@ -383,6 +383,13 @@ namespace Yuyi.Jinyinmao.Domain
         Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
 
         /// <summary>
+        /// Signs the asynchronous.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        Task<SettleAccountTransactionInfo> SignAsync(Dictionary<string, object> args);
+
+        /// <summary>
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>

@@ -32,6 +32,14 @@ namespace Yuyi.Jinyinmao.Domain.Events
     using System.Runtime.Serialization;
     
 }
+namespace Yuyi.Jinyinmao.Domain.Misc
+{
+    using Orleans;
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization;
+    
+}
 namespace Yuyi.Jinyinmao.Domain
 {
     using System;
@@ -526,14 +534,6 @@ namespace Yuyi.Jinyinmao.Domain
             return result;
         }
     }
-}
-namespace Yuyi.Jinyinmao.Domain.Misc
-{
-    using Orleans;
-    using System;
-    using System.Runtime.InteropServices;
-    using System.Runtime.Serialization;
-    
 }
 namespace Yuyi.Jinyinmao.Domain.Products
 {

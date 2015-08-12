@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-24  10:11 PM
+// File             : SequenceNoHelper.cs
+// Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  10:14 PM
+// Last Modified On : 2015-08-12  3:05 PM
 // ***********************************************************************
 // <copyright file="SequenceNoHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,7 +25,7 @@ namespace Yuyi.Jinyinmao.Domain.Helper
 
         static SequenceNoHelper()
         {
-            Generator = GrainClient.GrainFactory.GetGrain<ISequenceGenerator>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
+            Generator = GrainClient.GrainFactory.GetGrain<ISequenceGenerator>(GrainTypeHelper.GetSequenceGeneratorGrainTypeKey());
         }
 
         /// <summary>

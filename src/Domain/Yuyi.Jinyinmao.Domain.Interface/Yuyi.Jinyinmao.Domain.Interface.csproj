@@ -183,6 +183,7 @@
     <Compile Include="Events\WithdrawalResulted.cs" />
     <Compile Include="Dtos\JBYAccountTranscationInfo.cs" />
     <Compile Include="Dtos\SettleAccountTranscationInfo.cs" />
+    <Compile Include="Misc\IBonusManager.cs" />
     <Compile Include="Misc\ISequenceGenerator.cs" />
     <Compile Include="Order\Order.cs" />
     <Compile Include="Order\OrdersSortMode.cs" />

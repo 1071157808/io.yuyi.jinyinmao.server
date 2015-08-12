@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Packages.Helper;
@@ -30,6 +29,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public class JBYProductWithdrawalManager : EntityGrain<IJBYProductWithdrawalManagerState>, IJBYProductWithdrawalManager
     {
         private static Tuple<DateTime, DailyConfig> todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.MinValue, null);
+
         private long WithdrawalAmount { get; set; }
 
         #region IJBYProductWithdrawalManager Members
@@ -41,19 +41,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task&lt;System.Int32&gt;.</returns>
         public async Task<DateTime?> BuildWithdrawalTransactionAsync(JBYAccountTransactionInfo info)
         {
-            DailyConfig dailyConfig = GetTodayConfig();
             JBYAccountTransactionInfo transaction;
             if (!this.State.WithdrawalTransactions.TryGetValue(info.TransactionId, out transaction))
             {
-                DateTime predeterminedResultDate = DateTime.UtcNow.ToChinaStandardTime().Date;
-                if (this.WithdrawalAmount + info.Amount <= dailyConfig.JBYWithdrawalLimit)
-                {
-                    int waitingDays = (int)((this.WithdrawalAmount + info.Amount) / dailyConfig.JBYWithdrawalLimit) + 1;
-
-                    DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
-
-                    predeterminedResultDate = config.Date;
-                }
+                DateTime predeterminedResultDate = this.GetPredeterminedResultDate(info.Amount);
 
                 transaction = new JBYAccountTransactionInfo
                 {
@@ -83,6 +74,22 @@ namespace Yuyi.Jinyinmao.Domain.Products
             return transaction.PredeterminedResultDate;
         }
 
+        private DateTime GetPredeterminedResultDate(long amount)
+        {
+            DateTime predeterminedResultDate = DateTime.UtcNow.ToChinaStandardTime().Date;
+            DailyConfig dailyConfig = GetTodayConfig();
+
+            if (this.WithdrawalAmount + amount <= dailyConfig.JBYWithdrawalLimit)
+            {
+                int waitingDays = (int)((this.WithdrawalAmount + amount) / dailyConfig.JBYWithdrawalLimit) + 1;
+
+                DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
+
+                predeterminedResultDate = config.Date;
+            }
+            return predeterminedResultDate;
+        }
+
         #endregion IJBYProductWithdrawalManager Members
 
         /// <summary>
@@ -97,25 +104,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
             this.ReloadTransactionData();
 
             return base.OnActivateAsync();
-        }
-
-        /// <summary>
-        ///     Reload state data as an asynchronous operation.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public override async Task ReloadAsync()
-        {
-            await this.ReadStateAsync();
-            this.ReloadTransactionData();
-        }
-
-        /// <summary>
-        ///     Synchronizes the asynchronous.
-        /// </summary>
-        /// <returns>Task.</returns>
-        public override Task SyncAsync()
-        {
-            return TaskDone.Done;
         }
 
         private static DailyConfig GetTodayConfig()

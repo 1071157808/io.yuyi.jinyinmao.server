@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : UserController.cs
 // Created          : 2015-05-25  4:38 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-27  12:40 PM
+// Last Modified On : 2015-08-12  3:29 PM
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,8 +16,10 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Tracing;
 using Moe.Lib;
+using Orleans;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -54,7 +56,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route(""), CookieAuthorize, ResponseType(typeof(UserInfoResponse))]
+        [HttpGet]
+        [Route("")]
+        [CookieAuthorize]
+        [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> Get()
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
@@ -65,6 +70,31 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(userInfo.ToResponse());
+        }
+
+        /// <summary>
+        ///     签到
+        /// </summary>
+        /// <response code="200"></response>
+        /// <response code="400">
+        ///     US:无法获取用户信息
+        /// </response>
+        /// <response code="401"></response>
+        /// <response code="500"></response>
+        [HttpGet]
+        [Route("Sign")]
+        [CookieAuthorize]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        public async Task<IHttpActionResult> Sign()
+        {
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+            if (userInfo == null)
+            {
+                this.TraceWriter.Warn(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UG:无法获取用户信息");
+            }
+
+            return this.Ok((await GrainClient.GrainFactory.GetGrain<IUser>(userInfo.UserId).SignAsync(this.BuildArgs())).ToResponse());
         }
     }
 }

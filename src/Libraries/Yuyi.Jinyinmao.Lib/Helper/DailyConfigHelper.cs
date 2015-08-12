@@ -190,6 +190,12 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     public class DailyConfig
     {
         /// <summary>
+        /// Gets or sets the bonus amount.
+        /// </summary>
+        /// <value>The bonus amount.</value>
+        public long BonusAmount { get; set; }
+
+        /// <summary>
         ///     Gets or sets the date.
         /// </summary>
         /// <value>The date.</value>

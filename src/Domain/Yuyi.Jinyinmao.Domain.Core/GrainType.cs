@@ -47,14 +47,24 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public const long Trillion = 1000000000000;
 
+        private static readonly Guid BonusManagerGrainTypeKey = new Guid("3E132EF1-55C2-439D-A7D0-F8BCAC498230");
+
         private static readonly Lazy<long> JBYProductGrainTypeLongKey = new Lazy<long>(()
-            => GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030));
+                    => GetGrainTypeLongKey(GrainType.JBY, ProductCategoryCodeHelper.PC100000030));
 
         private static readonly Lazy<long> JBYProductWithdrawalManagerGrainTypeLongKey = new Lazy<long>(()
             => GetGrainTypeLongKey(GrainType.JBYWithdrawalManager, ProductCategoryCodeHelper.PC100000030));
 
-        private static readonly Lazy<Guid> SequenceGeneratorGrainTypeKey = new Lazy<Guid>(()
-            => Guid.Parse("C8F98650-25EA-41D8-BF6F-6F0044716FA0"));
+        private static readonly Guid SequenceGeneratorGrainTypeKey = new Guid("C8F98650-25EA-41D8-BF6F-6F0044716FA0");
+
+        /// <summary>
+        /// Gets the bonus manager grain type key.
+        /// </summary>
+        /// <returns>Guid.</returns>
+        public static Guid GetBonusManagerGrainTypeKey()
+        {
+            return BonusManagerGrainTypeKey;
+        }
 
         /// <summary>
         /// Gets the cellphone grain type long key.
@@ -123,7 +133,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Guid.</returns>
         public static Guid GetSequenceGeneratorGrainTypeKey()
         {
-            return SequenceGeneratorGrainTypeKey.Value;
+            return SequenceGeneratorGrainTypeKey;
         }
     }
 }

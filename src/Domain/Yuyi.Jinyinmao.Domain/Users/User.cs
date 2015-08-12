@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  12:13 PM
+// Last Modified On : 2015-08-12  3:05 PM
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -22,6 +22,7 @@ using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Helper;
+using Yuyi.Jinyinmao.Domain.Misc;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Helper;
 using Yuyi.Jinyinmao.Packages.Helper;
@@ -1956,6 +1957,47 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         #endregion IUser Members
+
+        /// <summary>
+        ///     Sign as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public async Task<SettleAccountTransactionInfo> SignAsync(Dictionary<string, object> args)
+        {
+            if (this.Signed)
+            {
+                return null;
+            }
+
+            long bonusAmount = await this.GrainFactory.GetGrain<IBonusManager>(GrainTypeHelper.GetBonusManagerGrainTypeKey()).GetBonusAmount(this.InvestingPrincipal + this.JBYTotalAmount);
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+
+            SettleAccountTransaction transaction = new SettleAccountTransaction
+            {
+                Amount = bonusAmount,
+                Args = args,
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                OrderId = Guid.Empty,
+                ResultCode = 1,
+                ResultTime = now,
+                SequenceNo = string.Empty,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC1005011107,
+                UserInfo = await this.GetUserInfoAsync(),
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                UserId = this.State.UserId,
+                TransDesc = "签到奖励"
+            };
+
+            this.State.SettleAccount.Add(transaction.TransactionId, transaction);
+
+            await this.SaveStateAsync();
+            this.ReloadSettleAccountData();
+
+            return transaction.ToInfo();
+        }
 
         /// <summary>
         ///     jby compute interest as an asynchronous operation.

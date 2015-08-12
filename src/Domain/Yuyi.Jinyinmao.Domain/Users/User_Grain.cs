@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-06  12:16 AM
+// Last Modified On : 2015-08-12  3:04 PM
 // ***********************************************************************
 // <copyright file="User_Grain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Reload state data as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public override async Task ReloadAsync()
+        public async Task ReloadAsync()
         {
             await this.ReadStateAsync();
             this.ReloadSettleAccountData();
@@ -43,7 +43,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Synchronizes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public override async Task SyncAsync()
+        public async Task SyncAsync()
         {
             await DBSyncHelper.SyncUserAsync(await this.GetUserInfoAsync());
             foreach (KeyValuePair<Guid, Order> order in this.State.Orders)
