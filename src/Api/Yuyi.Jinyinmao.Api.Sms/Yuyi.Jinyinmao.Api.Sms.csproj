@@ -76,8 +76,8 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.5.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MoeAspNet, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MoeAspNet.3.2.3.0\lib\net45\MoeAspNet.dll</HintPath>
+    <Reference Include="MoeAspNet, Version=3.2.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MoeAspNet.3.2.5.0\lib\net45\MoeAspNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MoeLib, Version=3.2.4.0, Culture=neutral, processorArchitecture=MSIL">
