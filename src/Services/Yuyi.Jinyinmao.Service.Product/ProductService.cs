@@ -212,10 +212,10 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public Task HitShelvesAsync(IssueRegularProduct command)
+        public async Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command)
         {
             IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(command.ProductId);
-            return product.HitShelvesAsync(command);
+            return await product.HitShelvesAsync(command);
         }
 
         /// <summary>
@@ -255,10 +255,11 @@ namespace Yuyi.Jinyinmao.Service
         ///     Reloads the jby product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task ReloadJBYProductAsync()
+        public async Task<JBYProductInfo> ReloadJBYProductAsync()
         {
             IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.ReloadAsync();
+            return await this.GetJBYProductInfoAsync();
         }
 
         /// <summary>
@@ -266,20 +267,22 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
-        public async Task ReloadRegularProductAsync(Guid productId)
+        public async Task<RegularProductInfo> ReloadRegularProductAsync(Guid productId)
         {
             IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.ReloadAsync();
+            return await this.GetProductInfoAsync(productId);
         }
 
         /// <summary>
         ///     Sets the current jby product to sold out asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task SetCurrentJBYProductToSoldOutAsync()
+        public async Task<JBYProductInfo> SetCurrentJBYProductToSoldOutAsync()
         {
             IJBYProduct jbyProduct = GrainClient.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
             await jbyProduct.SetToSoldOutAsync();
+            return await this.GetJBYProductInfoAsync();
         }
 
         /// <summary>
@@ -287,10 +290,11 @@ namespace Yuyi.Jinyinmao.Service
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
-        public async Task SetRegularProductToSoldOutAsync(Guid productId)
+        public async Task<RegularProductInfo> SetRegularProductToSoldOutAsync(Guid productId)
         {
             IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.SetToSoldOutAsync();
+            return await this.GetProductInfoAsync(productId);
         }
 
         /// <summary>
@@ -299,10 +303,11 @@ namespace Yuyi.Jinyinmao.Service
         /// <param name="productId">The product identifier.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task.</returns>
-        public async Task RepayRegularProductAsync(Guid productId, Dictionary<string, object> args)
+        public async Task<RegularProductInfo> RepayRegularProductAsync(Guid productId, Dictionary<string, object> args)
         {
             IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.RepayAsync(args);
+            return await this.GetProductInfoAsync(productId);
         }
 
         #endregion IProductService Members
@@ -310,7 +315,7 @@ namespace Yuyi.Jinyinmao.Service
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
                 .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 

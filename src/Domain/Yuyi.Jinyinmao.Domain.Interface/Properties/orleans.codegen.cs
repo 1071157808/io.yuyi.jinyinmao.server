@@ -7821,10 +7821,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1332928782, null );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.HitShelvesAsync(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct @command)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo> Yuyi.Jinyinmao.Domain.IRegularProduct.HitShelvesAsync(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct @command)
             {
 
-                return base.InvokeMethodAsync<object>(1863529337, new object[] {@command} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1863529337, new object[] {@command} );
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo> Yuyi.Jinyinmao.Domain.IRegularProduct.MigrateAsync(Yuyi.Jinyinmao.Domain.Dtos.RegularProductMigrationDto @migrationDto)
@@ -7833,10 +7833,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1088042999, new object[] {@migrationDto} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.ReloadAsync()
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo> Yuyi.Jinyinmao.Domain.IRegularProduct.ReloadAsync()
             {
 
-                return base.InvokeMethodAsync<object>(1656425842, null );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1656425842, null );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.RepayAsync(Dictionary<String,Object> @args)
@@ -7910,11 +7910,11 @@ namespace Yuyi.Jinyinmao.Domain
                             case 1332928782: 
                                 return ((IRegularProduct)grain).GetRegularProductInfoAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1863529337: 
-                                return ((IRegularProduct)grain).HitShelvesAsync((Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IRegularProduct)grain).HitShelvesAsync((Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1088042999: 
                                 return ((IRegularProduct)grain).MigrateAsync((Yuyi.Jinyinmao.Domain.Dtos.RegularProductMigrationDto)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1656425842: 
-                                return ((IRegularProduct)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IRegularProduct)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2055162176: 
                                 return ((IRegularProduct)grain).RepayAsync((Dictionary<String,Object>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1048514759: 

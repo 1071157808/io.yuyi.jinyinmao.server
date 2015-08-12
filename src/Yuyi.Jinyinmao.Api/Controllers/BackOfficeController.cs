@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : BackOfficeController.cs
-// Created          : 2015-05-25  4:38 PM
+// Created          : 2015-08-12  5:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:36 AM
+// Last Modified On : 2015-08-12  5:32 PM
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -234,9 +234,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             this.TraceWriter.Info(this.Request, "BackOffice", "RegularProductIssue. {0}", request.ToJson());
 
-            await this.productService.HitShelvesAsync(this.BuildCommand(request));
+            RegularProductInfo regularProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
 
-            return this.Ok();
+            if (regularProductInfo == null)
+            {
+                return this.BadRequest("上架失败");
+            }
+
+            return this.Ok(regularProductInfo.ToResponse());
         }
 
         /// <summary>
@@ -253,7 +258,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="403"></response>
         /// <response code="500"></response>
         [Route("RegularProduct/Repay/{productIdentifier:length(32)}")]
-        public IHttpActionResult RegularProductRepay(string productIdentifier)
+        public async Task<IHttpActionResult> RegularProductRepay(string productIdentifier)
         {
             Guid productId;
             if (!Guid.TryParseExact(productIdentifier, "N", out productId))
@@ -261,9 +266,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("产品唯一标识错误");
             }
 
-            this.productService.RepayRegularProductAsync(productId, this.BuildArgs());
+            RegularProductInfo productInfo = await this.productService.RepayRegularProductAsync(productId, this.BuildArgs());
 
-            return this.Ok();
+            return this.Ok(productInfo.ToResponse());
         }
 
         /// <summary>
