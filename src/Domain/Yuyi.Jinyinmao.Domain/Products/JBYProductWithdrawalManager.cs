@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -44,15 +45,21 @@ namespace Yuyi.Jinyinmao.Domain.Products
             JBYAccountTransactionInfo transaction;
             if (!this.State.WithdrawalTransactions.TryGetValue(info.TransactionId, out transaction))
             {
-                int waitingDays = (int)((this.WithdrawalAmount + info.Amount) / dailyConfig.JBYWithdrawalLimit) + 1;
+                DateTime predeterminedResultDate = DateTime.UtcNow.ToChinaStandardTime().Date;
+                if (this.WithdrawalAmount + info.Amount <= dailyConfig.JBYWithdrawalLimit)
+                {
+                    int waitingDays = (int)((this.WithdrawalAmount + info.Amount) / dailyConfig.JBYWithdrawalLimit) + 1;
 
-                DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
+                    DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
+
+                    predeterminedResultDate = config.Date;
+                }
 
                 transaction = new JBYAccountTransactionInfo
                 {
                     Amount = info.Amount,
                     Args = info.Args,
-                    PredeterminedResultDate = config.Date,
+                    PredeterminedResultDate = predeterminedResultDate,
                     ProductId = info.ProductId,
                     ResultCode = info.ResultCode,
                     ResultTime = info.ResultTime,

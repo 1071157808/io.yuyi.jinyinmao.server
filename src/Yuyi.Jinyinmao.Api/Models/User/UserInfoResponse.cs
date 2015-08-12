@@ -4,7 +4,7 @@
 // Created          : 2015-08-11  4:31 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  7:59 PM
+// Last Modified On : 2015-08-12  11:04 AM
 // ***********************************************************************
 // <copyright file="UserInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,6 +41,20 @@ namespace Yuyi.Jinyinmao.Api.Models
         [Required]
         [JsonProperty("bankCardsCount")]
         public int BankCardsCount { get; set; }
+
+        /// <summary>
+        ///     银行专区预期收益，以“分”为单位
+        /// </summary>
+        [Required]
+        [JsonProperty("bankInvestingInterest")]
+        public long BankInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     银行专区在投资金，以“分”为单位
+        /// </summary>
+        [Required]
+        [JsonProperty("bankInvestingPrincipal")]
+        public long BankInvestingPrincipal { get; set; }
 
         /// <summary>
         ///     手机号
@@ -92,56 +106,56 @@ namespace Yuyi.Jinyinmao.Api.Models
         public bool HasSetPaymentPassword { get; set; }
 
         /// <summary>
-        ///     预期收益
+        ///     预期收益，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("investingInterest")]
         public long InvestingInterest { get; set; }
 
         /// <summary>
-        ///     在投资金
+        ///     在投资金，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("investingPrincipal")]
         public long InvestingPrincipal { get; set; }
 
         /// <summary>
-        ///     金包银计息金额
+        ///     金包银计息金额，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("jBYAccrualAmount")]
         public long JBYAccrualAmount { get; set; }
 
         /// <summary>
-        ///     金包银最近一次的收益
+        ///     金包银最近一次的收益，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("jBYLastInterest")]
         public long JBYLastInterest { get; set; }
 
         /// <summary>
-        ///     金包银总资产，在途及已经确认的入账减去已经确认的出账
+        ///     金包银总资产，在途及已经确认的入账减去已经确认的出账，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("jBYTotalAmount")]
         public long JBYTotalAmount { get; set; }
 
         /// <summary>
-        ///     金包银累积收益
+        ///     金包银累积收益，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("jBYTotalInterest")]
         public long JBYTotalInterest { get; set; }
 
         /// <summary>
-        ///     金包银累积入账投资
+        ///     金包银累积入账投资，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("jBYTotalPricipal")]
         public long JBYTotalPricipal { get; set; }
 
         /// <summary>
-        ///     金包银可取现金额
+        ///     金包银可取现金额，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("jBYWithdrawalableAmount")]
@@ -183,7 +197,28 @@ namespace Yuyi.Jinyinmao.Api.Models
         public DateTime RegisterTime { get; set; }
 
         /// <summary>
-        ///     当天金包银已经申请提现的总额
+        ///     商票预期收益，以“分”为单位
+        /// </summary>
+        [Required]
+        [JsonProperty("shangInvestingInterest")]
+        public long ShangInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     商票在投资金，以“分”为单位
+        /// </summary>
+        [Required]
+        [JsonProperty("shangInvestingPrincipal")]
+        public long ShangInvestingPrincipal { get; set; }
+
+        /// <summary>
+        /// 今天是否签到
+        /// </summary>
+        [Required]
+        [JsonProperty("signed")]
+        public bool Signed { get; set; }
+
+        /// <summary>
+        ///     当天金包银已经申请提现的总额，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("todayJBYWithdrawalAmount")]
@@ -197,14 +232,14 @@ namespace Yuyi.Jinyinmao.Api.Models
         public int TodayWithdrawalCount { get; set; }
 
         /// <summary>
-        ///     总收益
+        ///     总收益，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("totalInterest")]
         public long TotalInterest { get; set; }
 
         /// <summary>
-        ///     总本金
+        ///     总本金，以“分”为单位
         /// </summary>
         [Required]
         [JsonProperty("totalPrincipal")]
@@ -234,7 +269,23 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     可取现账户余额，以“分”为单位
         /// </summary>
+        [Required]
+        [JsonProperty("withdrawalableAmount")]
         public long WithdrawalableAmount { get; set; }
+
+        /// <summary>
+        ///     银票预期收益，以“分”为单位
+        /// </summary>
+        [Required]
+        [JsonProperty("yinInvestingInterest")]
+        public long YinInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     银票在投资金，以“分”为单位
+        /// </summary>
+        [Required]
+        [JsonProperty("yinInvestingPrincipal")]
+        public long YinInvestingPrincipal { get; set; }
     }
 
     internal static partial class UserInfoEx
@@ -272,7 +323,13 @@ namespace Yuyi.Jinyinmao.Api.Models
                 UserIdentifier = info.UserId.ToGuidString(),
                 Verified = info.Verified,
                 VerifiedTime = info.VerifiedTime.GetValueOrDefault(),
-                WithdrawalableAmount = info.WithdrawalableAmount
+                WithdrawalableAmount = info.WithdrawalableAmount,
+                BankInvestingInterest = info.BankInvestingInterest,
+                BankInvestingPrincipal = info.BankInvestingPrincipal,
+                YinInvestingInterest = info.YinInvestingInterest,
+                YinInvestingPrincipal = info.YinInvestingPrincipal,
+                ShangInvestingInterest = info.ShangInvestingInterest,
+                ShangInvestingPrincipal = info.ShangInvestingPrincipal
             };
         }
     }

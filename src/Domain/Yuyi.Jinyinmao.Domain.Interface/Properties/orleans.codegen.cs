@@ -7,6 +7,10 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+
+using System.Threading.Tasks;
+using Yuyi.Jinyinmao.Domain.Commands;
+
 #if !EXCLUDE_CODEGEN
 #pragma warning disable 162
 #pragma warning disable 219
@@ -8437,7 +8441,7 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(1030635906, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.WithdrawalAsync(Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal @command)
+            Task<JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.JBYWithdrawalAsync(JBYWithdrawal command)
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(180708551, new object[] {@command} );
@@ -8588,7 +8592,7 @@ namespace Yuyi.Jinyinmao.Domain
                             case 1030635906: 
                                 return ((IUser)grain).WithdrawalAsync((Yuyi.Jinyinmao.Domain.Commands.Withdrawal)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 180708551: 
-                                return ((IUser)grain).WithdrawalAsync((Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                                return ((IUser)grain).JBYWithdrawalAsync((Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 910331770: 
                                 return ((IUser)grain).WithdrawalResultedAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             default: 

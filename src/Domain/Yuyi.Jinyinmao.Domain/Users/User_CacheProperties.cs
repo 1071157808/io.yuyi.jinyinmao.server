@@ -1,15 +1,20 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
+// File             : User_CacheProperties.cs
 // Created          : 2015-05-07  12:25 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-23  2:37 PM
+// Last Modified On : 2015-08-12  11:38 AM
 // ***********************************************************************
 // <copyright file="User_CacheProperties.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
+
+using System;
+using System.Linq;
+using Moe.Lib;
+using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -122,5 +127,50 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The total principal.</value>
         private long TotalPrincipal { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the yin investing principal.
+        /// </summary>
+        /// <value>The yin investing principal.</value>
+        private long YinInvestingPrincipal { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the yin investing interest.
+        /// </summary>
+        /// <value>The yin investing interest.</value>
+        private long YinInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the shang investing principal.
+        /// </summary>
+        /// <value>The shang investing principal.</value>
+        private long ShangInvestingPrincipal { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the shang investing interest.
+        /// </summary>
+        /// <value>The shang investing interest.</value>
+        private long ShangInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the bank investing principal.
+        /// </summary>
+        /// <value>The bank investing principal.</value>
+        private long BankInvestingPrincipal { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the bank investing interest.
+        /// </summary>
+        /// <value>The bank investing interest.</value>
+        private long BankInvestingInterest { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="User"/> is signed.
+        /// </summary>
+        /// <value><c>true</c> if signed; otherwise, <c>false</c>.</value>
+        private bool Signed
+        {
+            get { return this.State.SettleAccount.Values.Any(t => t.TradeCode == TradeCodeHelper.TC1005011107 && t.TransactionTime >= DateTime.UtcNow.ToChinaStandardTime().Date); }
+        }
     }
 }

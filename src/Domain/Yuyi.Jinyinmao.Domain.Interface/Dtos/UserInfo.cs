@@ -118,6 +118,18 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public int BankCardsCount { get; set; }
 
         /// <summary>
+        ///     Gets or sets the bank investing interest.
+        /// </summary>
+        /// <value>The bank investing interest.</value>
+        public long BankInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the bank investing principal.
+        /// </summary>
+        /// <value>The bank investing principal.</value>
+        public long BankInvestingPrincipal { get; set; }
+
+        /// <summary>
         ///     Gets or sets the cellphone.
         /// </summary>
         /// <value>The cellphone.</value>
@@ -275,6 +287,24 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public DateTime RegisterTime { get; set; }
 
         /// <summary>
+        ///     Gets or sets the shang investing interest.
+        /// </summary>
+        /// <value>The shang investing interest.</value>
+        public long ShangInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the shang investing principal.
+        /// </summary>
+        /// <value>The shang investing principal.</value>
+        public long ShangInvestingPrincipal { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="UserInfo"/> is signed.
+        /// </summary>
+        /// <value><c>true</c> if signed; otherwise, <c>false</c>.</value>
+        public bool Signed { get; set; }
+
+        /// <summary>
         ///     Gets or sets the today jby withdrawal amount.
         /// </summary>
         /// <value>The today jby withdrawal amount.</value>
@@ -321,5 +351,17 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         /// </summary>
         /// <value>The withdrawalable amount.</value>
         public long WithdrawalableAmount { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the yin investing interest.
+        /// </summary>
+        /// <value>The yin investing interest.</value>
+        public long YinInvestingInterest { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the yin investing principal.
+        /// </summary>
+        /// <value>The yin investing principal.</value>
+        public long YinInvestingPrincipal { get; set; }
     }
 }

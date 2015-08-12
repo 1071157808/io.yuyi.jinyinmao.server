@@ -4,7 +4,7 @@
 // Created          : 2015-05-27  7:39 PM
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  8:57 AM
+// Last Modified On : 2015-08-12  10:36 AM
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,11 +41,10 @@ namespace Yuyi.Jinyinmao.Domain
 
         private void ReloadJBYAccountData()
         {
-            DateTime now = DateTime.UtcNow.ToChinaStandardTime()
-            DateTime todayDate = DateTime.UtcNow.ToChinaStandardTime().Date;
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+            DateTime today = now.Date;
 
             long debitTransAmount = 0L;
-            long debitingTransAmount = 0L;
             long debitedTransAmount = 0L;
             long creditedTransAmount = 0L;
             long creditingTransAmount = 0L;
@@ -54,9 +53,6 @@ namespace Yuyi.Jinyinmao.Domain
             long jBYTotalInterest = 0L;
 
             long todayInvestingAmount = 0L;
-
-            DateTime now = DateTime.UtcNow.AddHours(8);
-            DateTime today = now.Date;
 
             foreach (JBYAccountTransaction transaction in this.State.JBYAccount.Values)
             {
@@ -90,7 +86,7 @@ namespace Yuyi.Jinyinmao.Domain
                         creditingTransAmount += transaction.Amount;
                     }
 
-                    if (transaction.TransactionTime >= todayDate && transaction.TransactionTime < todayDate.AddDays(1) && transaction.ResultCode >= 0)
+                    if (transaction.TransactionTime >= today && transaction.TransactionTime < today.AddDays(1) && transaction.ResultCode >= 0)
                     {
                         todayJBYWithdrawalAmount += transaction.Amount;
                     }
@@ -124,10 +120,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         private void ReloadOrderInfosData()
         {
-            long totalPrincipal = 0;
-            long totalInterest = 0;
-            long investingPrincipal = 0;
-            long investingInterest = 0;
+            long totalPrincipal = 0L;
+            long totalInterest = 0L;
+            long investingPrincipal = 0L;
+            long investingInterest = 0L;
+            long yinInvestingPrincipal = 0L;
+            long yinInvestingInterest = 0L;
+            long shangInvestingPrincipal = 0L;
+            long shangInvestingInterest = 0L;
+            long bankInvestingPrincipal = 0L;
+            long bankInvestingInterest = 0L;
 
             foreach (Order order in this.State.Orders.Values.Where(order => order.ResultCode > 0))
             {
@@ -136,8 +138,27 @@ namespace Yuyi.Jinyinmao.Domain
 
                 if (!order.IsRepaid)
                 {
-                    investingPrincipal += order.Principal;
-                    investingInterest += (order.Interest + order.ExtraInterest);
+                    long principal = order.Principal;
+                    long interest = order.Interest + order.ExtraInterest;
+
+                    investingPrincipal += principal;
+                    investingInterest += interest;
+
+                    if (order.ProductCategory == ProductCategoryCodeHelper.PC100000010)
+                    {
+                        yinInvestingPrincipal += principal;
+                        yinInvestingInterest += interest;
+                    }
+                    else if (order.ProductCategory == ProductCategoryCodeHelper.PC100000020)
+                    {
+                        shangInvestingPrincipal += principal;
+                        shangInvestingInterest += interest;
+                    }
+                    else if (ProductCategoryCodeHelper.IsBankRegularProduct(order.ProductCategory))
+                    {
+                        bankInvestingPrincipal += principal;
+                        bankInvestingInterest += interest;
+                    }
                 }
             }
 
@@ -145,6 +166,12 @@ namespace Yuyi.Jinyinmao.Domain
             this.TotalInterest = totalInterest;
             this.InvestingPrincipal = investingPrincipal;
             this.InvestingInterest = investingInterest;
+            this.YinInvestingPrincipal = yinInvestingPrincipal;
+            this.YinInvestingInterest = yinInvestingInterest;
+            this.ShangInvestingPrincipal = shangInvestingPrincipal;
+            this.ShangInvestingInterest = shangInvestingInterest;
+            this.BankInvestingPrincipal = bankInvestingPrincipal;
+            this.BankInvestingInterest = bankInvestingInterest;
         }
 
         /// <summary>
@@ -163,7 +190,7 @@ namespace Yuyi.Jinyinmao.Domain
             DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
             DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1).Date;
 
-            foreach (SettleAccountTransaction transaction in this.State.SettleAccount.Values)
+            foreach (SettleAccountTransaction transaction in this.State.SettleAccount.Values.OrderBy(t => t.TransactionTime))
             {
                 long amount = transaction.Amount;
                 string bankCardNo = transaction.BankCardNo;
@@ -202,6 +229,10 @@ namespace Yuyi.Jinyinmao.Domain
                         if (transaction.BankCardNo.IsNotNullOrEmpty() && bankCards.ContainsKey(bankCardNo))
                         {
                             bankCards[bankCardNo] -= amount;
+                            if (bankCards[bankCardNo] < 0)
+                            {
+                                bankCards[bankCardNo] = 0L;
+                            }
                         }
                     }
 

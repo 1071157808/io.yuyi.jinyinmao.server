@@ -294,6 +294,20 @@ namespace Yuyi.Jinyinmao.Domain
         Task<bool> IsRegisteredAsync();
 
         /// <summary>
+        ///     Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        Task<JBYAccountTransactionInfo> JBYWithdrawalAsync(JBYWithdrawal command);
+
+        /// <summary>
+        /// Jby the withdrawal resulted asynchronous.
+        /// </summary>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>Task.</returns>
+        Task JBYWithdrawalResultedAsync(Guid transactionId);
+
+        /// <summary>
         ///     Locks the asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -434,13 +448,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
         Task<SettleAccountTransactionInfo> WithdrawalAsync(Withdrawal command);
-
-        /// <summary>
-        ///     Withdrawals the asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
         ///     Withdrawals the resulted asynchronous.

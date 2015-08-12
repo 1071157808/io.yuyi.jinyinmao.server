@@ -1,4 +1,4 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // Author           : Siqi Lu
 // Created          : 2015-05-18  11:05 PM
@@ -11,7 +11,9 @@
 // </copyright>
 // ***********************************************************************
 
+using System;
 using System.Threading.Tasks;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Domain.Events
 {
@@ -30,6 +32,14 @@ namespace Yuyi.Jinyinmao.Domain.Events
         public override async Task ProcessEventAsync(JBYWithdrawalAccepted @event)
         {
             await this.ProcessingEventAsync(@event, async e => await DBSyncHelper.SyncJBYAccountTransactionAsync(e.TransactionInfo));
+
+            await this.ProcessingEventAsync(@event, async e =>
+            {
+                if (DateTime.UtcNow.ToChinaStandardTime() >= e.TransactionInfo.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue))
+                {
+                    await this.GrainFactory.GetGrain<IUser>(e.UserInfo.UserId).JBYWithdrawalResultedAsync(e.TransactionInfo.TransactionId);
+                }
+            });
 
             await base.ProcessEventAsync(@event);
         }

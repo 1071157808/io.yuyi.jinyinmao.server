@@ -150,9 +150,9 @@
     <Compile Include="Events\RegularProductRepaid.cs" />
     <Compile Include="Events\JBYAccountTransactionInserted.cs" />
     <Compile Include="Events\SettleAccountTransactionInserted.cs" />
-    <Compile Include="InfoDtos\JBYProductInfo.cs" />
-    <Compile Include="InfoDtos\OrderInfo.cs" />
-    <Compile Include="InfoDtos\RegularProductInfo.cs" />
+    <Compile Include="Dtos\JBYProductInfo.cs" />
+    <Compile Include="Dtos\OrderInfo.cs" />
+    <Compile Include="Dtos\RegularProductInfo.cs" />
     <Compile Include="EventProcessor\IBankCardAddedProcessor.cs" />
     <Compile Include="EventProcessor\IDepositResultedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYProductIssuedProcessor.cs" />
@@ -181,8 +181,8 @@
     <Compile Include="Events\VerifyBankCardResulted.cs" />
     <Compile Include="Events\WithdrawalAccepted.cs" />
     <Compile Include="Events\WithdrawalResulted.cs" />
-    <Compile Include="InfoDtos\JBYAccountTranscationInfo.cs" />
-    <Compile Include="InfoDtos\SettleAccountTranscationInfo.cs" />
+    <Compile Include="Dtos\JBYAccountTranscationInfo.cs" />
+    <Compile Include="Dtos\SettleAccountTranscationInfo.cs" />
     <Compile Include="Misc\ISequenceGenerator.cs" />
     <Compile Include="Order\Order.cs" />
     <Compile Include="Order\OrdersSortMode.cs" />
@@ -201,10 +201,10 @@
     <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\ResetLoginPassword.cs" />
     <Compile Include="Commands\SetPaymentPassword.cs" />
-    <Compile Include="InfoDtos\BankCardInfo.cs" />
+    <Compile Include="Dtos\BankCardInfo.cs" />
     <Compile Include="Dtos\CellphoneInfo.cs" />
     <Compile Include="Dtos\CheckPasswordResult.cs" />
-    <Compile Include="InfoDtos\UserInfo.cs" />
+    <Compile Include="Dtos\UserInfo.cs" />
     <Compile Include="Users\Credential.cs" />
     <Compile Include="EventProcessor\IAuthenticateResultedProcessor.cs" />
     <Compile Include="EventProcessor\ILoginPasswordResetProcessor.cs" />

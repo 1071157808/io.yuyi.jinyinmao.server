@@ -2,7 +2,7 @@
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserService.cs
 // Created          : 2015-08-12  2:04 AM
-// 
+//
 // Last Modified By : Siqi Lu
 // Last Modified On : 2015-08-12  3:27 AM
 // ***********************************************************************
@@ -554,7 +554,7 @@ namespace Yuyi.Jinyinmao.Service
         public Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command)
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
-            return user.WithdrawalAsync(command);
+            return user.JBYWithdrawalAsync(command);
         }
 
         /// <summary>
@@ -569,6 +569,6 @@ namespace Yuyi.Jinyinmao.Service
             return user.WithdrawalResultedAsync(transactionId);
         }
 
-        #endregion
+        #endregion IUserService Members
     }
 }

@@ -24,24 +24,9 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         public static long PC100000010 => 100000010;
 
         /// <summary>
-        ///     商业承兑(非指定)
+        ///     商业承兑
         /// </summary>
         public static long PC100000020 => 100000020;
-
-        /// <summary>
-        ///     商业承兑(国企担保)
-        /// </summary>
-        public static long PC100000021 => 100000021;
-
-        /// <summary>
-        ///     商业承兑(银行担保)
-        /// </summary>
-        public static long PC100000022 => 100000022;
-
-        /// <summary>
-        ///     商业承兑(保理业务)
-        /// </summary>
-        public static long PC100000023 => 100000023;
 
         /// <summary>
         ///     金包银
@@ -69,24 +54,53 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         public static long PC210002020 => 210002020;
 
         /// <summary>
+        /// 阜新银票
+        /// </summary>
+        public static long PC210003010 => 210003010;
+
+        /// <summary>
+        /// 阜新商票
+        /// </summary>
+        public static long PC210003020 => 210003020;
+
+        /// <summary>
+        /// Determines whether [is bank regular product] [the specified product category code].
+        /// </summary>
+        /// <param name="productCategoryCode">The product category code.</param>
+        /// <returns>System.Boolean.</returns>
+        public static bool IsBankRegularProduct(long productCategoryCode)
+        {
+            return productCategoryCode >= 210000000 && productCategoryCode < 300000000;
+        }
+
+        /// <summary>
         ///     Determines whether [is jinyinmao jby product] [the specified product category code].
         /// </summary>
         /// <param name="productCategoryCode">The product category code.</param>
         /// <returns><c>true</c> if [is jinyinmao jby product] [the specified product category code]; otherwise, <c>false</c>.</returns>
-        public static bool IsJinyinmaoJBYProduct(long productCategoryCode) => productCategoryCode == 100000030;
+        public static bool IsJinyinmaoJBYProduct(long productCategoryCode)
+        {
+            return productCategoryCode == 100000030;
+        }
 
         /// <summary>
         ///     Determines whether [is jinyinmao product] [the specified product category code].
         /// </summary>
         /// <param name="productCategoryCode">The product category code.</param>
         /// <returns><c>true</c> if [is jinyinmao product] [the specified product category code]; otherwise, <c>false</c>.</returns>
-        public static bool IsJinyinmaoProduct(long productCategoryCode) => productCategoryCode >= 100000000 && productCategoryCode < 200000000;
+        public static bool IsJinyinmaoProduct(long productCategoryCode)
+        {
+            return productCategoryCode >= 100000000 && productCategoryCode < 200000000;
+        }
 
         /// <summary>
         ///     Determines whether [is jinyinmao regular product] [the specified product category code].
         /// </summary>
         /// <param name="productCategoryCode">The product category code.</param>
         /// <returns><c>true</c> if [is jinyinmao regular product] [the specified product category code]; otherwise, <c>false</c>.</returns>
-        public static bool IsJinyinmaoRegularProduct(long productCategoryCode) => productCategoryCode >= 100000000 && productCategoryCode < 100000030;
+        public static bool IsJinyinmaoRegularProduct(long productCategoryCode)
+        {
+            return productCategoryCode >= 100000000 && productCategoryCode < 100000030;
+        }
     }
 }
