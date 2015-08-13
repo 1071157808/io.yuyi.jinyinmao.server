@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : User_ReloadData.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  10:36 AM
+// Last Modified On : 2015-08-13  17:39
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,21 +24,6 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public partial class User
     {
-        private static Tuple<DateTime, DateTime> lastInvestingConfirmTime = new Tuple<DateTime, DateTime>(DateTime.MinValue, DateTime.UtcNow);
-
-        private static DateTime GetLastInvestingConfirmTime()
-        {
-            if (lastInvestingConfirmTime.Item1 < DateTime.UtcNow.AddHours(8).Date.AddMinutes(20))
-            {
-                DailyConfig todayConfig = DailyConfigHelper.GetTodayDailyConfig();
-                DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(todayConfig.IsWorkDay ? 0 : 1);
-
-                lastInvestingConfirmTime = new Tuple<DateTime, DateTime>(DateTime.UtcNow.AddHours(8), confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1));
-            }
-
-            return lastInvestingConfirmTime.Item2;
-        }
-
         private void ReloadJBYAccountData()
         {
             DateTime now = DateTime.UtcNow.ToChinaStandardTime();
@@ -50,7 +35,7 @@ namespace Yuyi.Jinyinmao.Domain
             long creditingTransAmount = 0L;
 
             long todayJBYWithdrawalAmount = 0L;
-            long jBYTotalInterest = 0L;
+            long jbyTotalInterest = 0L;
 
             long todayInvestingAmount = 0L;
 
@@ -66,7 +51,7 @@ namespace Yuyi.Jinyinmao.Domain
 
                         if (transaction.TradeCode == TradeCodeHelper.TC2001011106)
                         {
-                            jBYTotalInterest += transaction.Amount;
+                            jbyTotalInterest += transaction.Amount;
                         }
 
                         if (transaction.ResultTime.GetValueOrDefault().Date == today)
@@ -96,7 +81,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.JBYTotalAmount = debitTransAmount - creditedTransAmount;
             this.JBYWithdrawalableAmount = debitedTransAmount - todayInvestingAmount - creditedTransAmount - creditingTransAmount;
 
-            this.JBYTotalInterest = jBYTotalInterest;
+            this.JBYTotalInterest = jbyTotalInterest;
             this.JBYTotalPricipal = debitedTransAmount;
 
             this.TodayJBYWithdrawalAmount = todayJBYWithdrawalAmount;
