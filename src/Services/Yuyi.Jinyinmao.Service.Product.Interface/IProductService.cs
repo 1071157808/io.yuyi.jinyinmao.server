@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : IProductService.cs
-// Created          : 2015-04-28  10:57 AM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  6:59 PM
+// Last Modified On : 2015-08-13  23:24
 // ***********************************************************************
 // <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
@@ -66,17 +65,20 @@ namespace Yuyi.Jinyinmao.Service.Interface
         Task<RegularProductInfo> ReloadRegularProductAsync(Guid productId);
 
         /// <summary>
-        ///     Repays the asynchronous.
+        ///     Repays the regular product asynchronous.
         /// </summary>
-        /// <param name="productId">The product identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task.</returns>
-        Task<RegularProductInfo> RepayRegularProductAsync(Guid productId, Dictionary<string, object> args);
+        /// <param name="productRepayCommand">The product repay command.</param>
+        /// <returns>
+        ///     Task.
+        /// </returns>
+        Task<RegularProductInfo> RepayRegularProductAsync(ProductRepay productRepayCommand);
 
         /// <summary>
         ///     Sets the current jby product to sold out asynchronous.
         /// </summary>
-        /// <returns>Task.</returns>
+        /// <returns>
+        ///     Task.
+        /// </returns>
         Task<JBYProductInfo> SetCurrentJBYProductToSoldOutAsync();
 
         /// <summary>

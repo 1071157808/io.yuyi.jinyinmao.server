@@ -7839,10 +7839,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1656425842, null );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.RepayAsync(Dictionary<String,Object> @args)
+            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.RepayAsync(Yuyi.Jinyinmao.Domain.Commands.ProductRepay @productRepayCommand)
             {
 
-                return base.InvokeMethodAsync<object>(2055162176, new object[] {@args} );
+                return base.InvokeMethodAsync<object>(1711884060, new object[] {@productRepayCommand} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.SetToOnSaleAsync()
@@ -7915,8 +7915,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IRegularProduct)grain).MigrateAsync((Yuyi.Jinyinmao.Domain.Dtos.RegularProductMigrationDto)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1656425842: 
                                 return ((IRegularProduct)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 2055162176: 
-                                return ((IRegularProduct)grain).RepayAsync((Dictionary<String,Object>)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case 1711884060: 
+                                return ((IRegularProduct)grain).RepayAsync((Yuyi.Jinyinmao.Domain.Commands.ProductRepay)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1048514759: 
                                 return ((IRegularProduct)grain).SetToOnSaleAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1119823572: 
@@ -7969,7 +7969,7 @@ namespace Yuyi.Jinyinmao.Domain
                             return "MigrateAsync";
                     case 1656425842:
                             return "ReloadAsync";
-                    case 2055162176:
+                    case 1711884060:
                             return "RepayAsync";
                     case -1048514759:
                             return "SetToOnSaleAsync";
@@ -10655,6 +10655,45 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.RegularProductMigrationDto), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Commands_ProductRepaySerialization
+    {
+        
+        static Yuyi_Jinyinmao_Domain_Commands_ProductRepaySerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.ProductRepay input = ((Yuyi.Jinyinmao.Domain.Commands.ProductRepay)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ProductId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.ProductRepay result = new Yuyi.Jinyinmao.Domain.Commands.ProductRepay();
+            result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
+            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.ProductRepay), DeepCopier, Serializer, Deserializer);
         }
     }
     

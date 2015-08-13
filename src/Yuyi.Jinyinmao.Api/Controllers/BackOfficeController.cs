@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : BackOfficeController.cs
-// Created          : 2015-08-12  5:25 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  5:32 PM
+// Last Modified On : 2015-08-13  23:57
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -146,33 +146,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            DailyConfig config = DailyConfigHelper.GetDailyConfig(request.StartSellTime);
-
+            // TODO: log
             this.TraceWriter.Info(this.Request, "BackOffice", "JBYProductIssue. {0}", request.ToJson());
 
-            Dictionary<string, object> args = this.BuildArgs(new Dictionary<string, object>
-            {
-                { "IssueRequest", request.ToJson(string.Empty) }
-            });
-
-            JBYProductInfo jbyProductInfo = await this.productService.HitShelvesAsync(new IssueJBYProduct
-            {
-                Agreement1 = request.Agreement1,
-                Agreement2 = request.Agreement2,
-                Args = args,
-                EndSellTime = request.EndSellTime,
-                FinancingSumAmount = request.FinancingSumAmount,
-                IssueNo = request.IssueNo,
-                IssueTime = DateTime.UtcNow.AddHours(8),
-                ProductCategory = request.ProductCategory,
-                ProductId = Guid.NewGuid(),
-                ProductName = request.ProductName,
-                ProductNo = request.ProductNo,
-                StartSellTime = request.StartSellTime,
-                UnitPrice = request.UnitPrice,
-                ValueDateMode = request.ValueDateMode,
-                Yield = config.JBYYield
-            });
+            JBYProductInfo jbyProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
 
             return this.Ok(jbyProductInfo.ToResponse());
         }
@@ -232,6 +209,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
+            //TODO: log
             this.TraceWriter.Info(this.Request, "BackOffice", "RegularProductIssue. {0}", request.ToJson());
 
             RegularProductInfo regularProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
@@ -260,13 +238,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("RegularProduct/Repay/{productIdentifier:length(32)}")]
         public async Task<IHttpActionResult> RegularProductRepay(string productIdentifier)
         {
-            Guid productId;
-            if (!Guid.TryParseExact(productIdentifier, "N", out productId))
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
             {
                 return this.BadRequest("产品唯一标识错误");
             }
 
-            RegularProductInfo productInfo = await this.productService.RepayRegularProductAsync(productId, this.BuildArgs());
+            RegularProductInfo productInfo = await this.productService.RepayRegularProductAsync(this.BuildProductRepayCommand(productId));
 
             return this.Ok(productInfo.ToResponse());
         }
@@ -322,11 +300,16 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
         private IssueRegularProduct BuildCommand(IssueProductRequest request)
         {
+            Dictionary<string, object> args = this.BuildArgs(new Dictionary<string, object>
+            {
+                { "IssueRequest", request.ToJson(string.Empty) }
+            });
+
             return new IssueRegularProduct
             {
                 Agreement1 = request.Agreement1,
                 Agreement2 = request.Agreement2,
-                Args = this.BuildArgs(),
+                Args = args,
                 BankName = request.BankName,
                 Drawee = request.Drawee,
                 DraweeInfo = request.DraweeInfo,
@@ -354,6 +337,43 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 ValueDate = request.ValueDate?.Date,
                 ValueDateMode = request.ValueDateMode,
                 Yield = request.Yield
+            };
+        }
+
+        private IssueJBYProduct BuildCommand(IssueJBYProductRequest request)
+        {
+            DailyConfig config = DailyConfigHelper.GetDailyConfig(request.StartSellTime);
+            Dictionary<string, object> args = this.BuildArgs(new Dictionary<string, object>
+            {
+                { "IssueRequest", request.ToJson(string.Empty) }
+            });
+
+            return new IssueJBYProduct
+            {
+                Agreement1 = request.Agreement1,
+                Agreement2 = request.Agreement2,
+                Args = args,
+                EndSellTime = request.EndSellTime,
+                FinancingSumAmount = request.FinancingSumAmount,
+                IssueNo = request.IssueNo,
+                IssueTime = DateTime.UtcNow.AddHours(8),
+                ProductCategory = request.ProductCategory,
+                ProductId = Guid.NewGuid(),
+                ProductName = request.ProductName,
+                ProductNo = request.ProductNo,
+                StartSellTime = request.StartSellTime,
+                UnitPrice = request.UnitPrice,
+                ValueDateMode = request.ValueDateMode,
+                Yield = config.JBYYield
+            };
+        }
+
+        private ProductRepay BuildProductRepayCommand(Guid productId)
+        {
+            return new ProductRepay
+            {
+                Args = this.BuildArgs(),
+                ProductId = productId
             };
         }
     }

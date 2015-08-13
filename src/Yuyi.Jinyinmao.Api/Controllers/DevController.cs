@@ -31,6 +31,7 @@ using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
+using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
@@ -40,6 +41,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     [RoutePrefix("")]
     public class DevController : ApiControllerBase
     {
+        private readonly IUserService userService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DevController"/> class.
+        /// </summary>
+        /// <param name="userService">The user service.</param>
+        public DevController(IUserService userService)
+        {
+            this.userService = userService;
+        }
+
         /// <summary>
         ///     Cancels the jby account transaction.
         /// </summary>
@@ -343,6 +355,38 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                     ConfigurationProperties = this.Configuration.Properties,
                     ServerIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString()
                 });
+        }
+
+        /// <summary>
+        ///     用户信息
+        /// </summary>
+        /// <param name="userIdentifier">用户唯一标识</param>
+        /// <response code="200"></response>
+        /// <response code="400">
+        ///     请求格式不合法
+        ///     <br />
+        ///     无该用户信息
+        /// </response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("UserInfo/{userIdentifier:length(32)}")]
+        [ResponseType(typeof(UserInfoResponse))]
+        public async Task<IHttpActionResult> GetUserInfo(string userIdentifier)
+        {
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("无该用户信息");
+            }
+
+            UserInfo info = await this.userService.GetUserInfoAsync(userId);
+            if (info == null)
+            {
+                return this.BadRequest("无该用户信息");
+            }
+
+            return this.Ok(info.ToResponse());
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : IUser.cs
-// Created          : 2015-05-27  7:35 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:44 AM
+// Last Modified On : 2015-08-13  23:59
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -301,7 +301,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<JBYAccountTransactionInfo> JBYWithdrawalAsync(JBYWithdrawal command);
 
         /// <summary>
-        /// Jby the withdrawal resulted asynchronous.
+        ///     Jby the withdrawal resulted asynchronous.
         /// </summary>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <returns>Task.</returns>
@@ -340,19 +340,15 @@ namespace Yuyi.Jinyinmao.Domain
         Task<bool> RemoveJBYTransactionsAsync(Guid transactionId);
 
         /// <summary>
-        ///     Repays the order asynchronous.
+        /// Repays the order asynchronous.
         /// </summary>
-        /// <param name="args">The arguments.</param>
-        /// <param name="orderId">The order identifier.</param>
-        /// <param name="repaidTime">The repaid time.</param>
-        /// <returns>Task.</returns>
-        Task RepayOrderAsync(Dictionary<string, object> args, Guid orderId, DateTime repaidTime);
+        /// <param name="orderRepayCommand">The order repay command.</param>
+        Task<OrderInfo> RepayOrderAsync(OrderRepay orderRepayCommand);
 
         /// <summary>
         ///     Resets the login password.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
         Task ResetLoginPasswordAsync(ResetLoginPassword command);
 
         /// <summary>
@@ -383,7 +379,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
 
         /// <summary>
-        /// Signs the asynchronous.
+        ///     Signs the asynchronous.
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>

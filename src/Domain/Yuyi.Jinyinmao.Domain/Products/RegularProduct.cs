@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : RegularProduct.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:39 AM
+// Last Modified On : 2015-08-13  23:46
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -377,7 +377,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Reload state data as an asynchronous operation.
+        ///     Reload state data as an asynchronous operation.
         /// </summary>
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
         public async Task<RegularProductInfo> ReloadAsync()
@@ -391,21 +391,23 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task.</returns>
-        public async Task RepayAsync(Dictionary<string, object> args)
+        /// <param name="productRepayCommand">The product repay command.</param>
+        /// <returns>
+        ///     Task.
+        /// </returns>
+        public async Task<RegularProductInfo> RepayAsync(ProductRepay productRepayCommand)
         {
             if (!this.State.SoldOut)
             {
-                return;
+                return await this.GetRegularProductInfoAsync();
             }
 
             if (this.State.Repaid && this.State.RepaidTime.HasValue)
             {
-                return;
+                return await this.GetRegularProductInfoAsync();
             }
 
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
 
             foreach (OrderInfo order in this.PaidOrders)
             {
@@ -420,6 +422,8 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaiseRegularProductRepaidEvent();
+
+            return await this.GetRegularProductInfoAsync();
         }
 
         /// <summary>
@@ -478,10 +482,16 @@ namespace Yuyi.Jinyinmao.Domain
                 IUser user = this.GrainFactory.GetGrain<IUser>(VariableHelper.TransferDestinationId);
                 UserInfo userInfo = await user.GetUserInfoAsync();
 
+                order.OrderId = Guid.NewGuid();
                 order.UserInfo = userInfo;
                 order.Cellphone = userInfo.Cellphone;
                 order.AccountTransactionId = Guid.Empty;
                 order.UserId = userInfo.UserId;
+
+                this.State.Orders.Remove(orderId);
+
+                this.State.Orders.Add(orderId, order);
+
                 this.ReloadOrderData();
                 return order;
             }

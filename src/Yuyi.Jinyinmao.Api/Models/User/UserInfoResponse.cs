@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserInfoResponse.cs
-// Created          : 2015-08-11  4:31 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  11:04 AM
+// Last Modified On : 2015-08-13  22:12
 // ***********************************************************************
 // <copyright file="UserInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -211,7 +211,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         public long ShangInvestingPrincipal { get; set; }
 
         /// <summary>
-        /// 今天是否签到
+        ///     今天是否签到
         /// </summary>
         [Required]
         [JsonProperty("signed")]
@@ -296,6 +296,8 @@ namespace Yuyi.Jinyinmao.Api.Models
             {
                 Balance = info.Balance,
                 BankCardsCount = info.BankCardsCount,
+                BankInvestingInterest = info.BankInvestingInterest,
+                BankInvestingPrincipal = info.BankInvestingPrincipal,
                 Cellphone = info.Cellphone,
                 Closed = info.Closed,
                 Credential = info.Credential,
@@ -316,6 +318,9 @@ namespace Yuyi.Jinyinmao.Api.Models
                 PaymentPasswordErrorCount = info.PaymentPasswordErrorCount,
                 RealName = info.RealName,
                 RegisterTime = info.RegisterTime,
+                ShangInvestingInterest = info.ShangInvestingInterest,
+                ShangInvestingPrincipal = info.ShangInvestingPrincipal,
+                Signed = info.Signed,
                 TodayJBYWithdrawalAmount = info.TodayJBYWithdrawalAmount,
                 TodayWithdrawalCount = info.TodayWithdrawalCount,
                 TotalInterest = info.TotalInterest,
@@ -324,12 +329,8 @@ namespace Yuyi.Jinyinmao.Api.Models
                 Verified = info.Verified,
                 VerifiedTime = info.VerifiedTime.GetValueOrDefault(),
                 WithdrawalableAmount = info.WithdrawalableAmount,
-                BankInvestingInterest = info.BankInvestingInterest,
-                BankInvestingPrincipal = info.BankInvestingPrincipal,
                 YinInvestingInterest = info.YinInvestingInterest,
-                YinInvestingPrincipal = info.YinInvestingPrincipal,
-                ShangInvestingInterest = info.ShangInvestingInterest,
-                ShangInvestingPrincipal = info.ShangInvestingPrincipal
+                YinInvestingPrincipal = info.YinInvestingPrincipal
             };
         }
     }

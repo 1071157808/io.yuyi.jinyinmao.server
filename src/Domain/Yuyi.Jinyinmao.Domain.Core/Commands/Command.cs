@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-27  12:08 AM
+// File             : Command.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-11  8:11 PM
+// Last Modified On : 2015-08-13  23:16
 // ***********************************************************************
 // <copyright file="Command.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,7 +41,7 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         ///     Gets or sets the command identifier.
         /// </summary>
         /// <value>The command identifier.</value>
-        public Guid CommandId { get; set; }
+        public Guid CommandId { get; }
 
         #endregion ICommand Members
     }

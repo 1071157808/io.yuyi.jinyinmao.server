@@ -1,10 +1,10 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : IRegularProduct.cs
-// Created          : 2015-05-27  7:35 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:44 AM
+// Last Modified On : 2015-08-13  23:39
 // ***********************************************************************
 // <copyright file="IRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
@@ -92,9 +91,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task.</returns>
-        Task RepayAsync(Dictionary<string, object> args);
+        /// <param name="productRepayCommand">The product repay command.</param>
+        /// <returns></returns>
+        Task<RegularProductInfo> RepayAsync(ProductRepay productRepayCommand);
 
         /// <summary>
         ///     Sets to on sale asynchronous.

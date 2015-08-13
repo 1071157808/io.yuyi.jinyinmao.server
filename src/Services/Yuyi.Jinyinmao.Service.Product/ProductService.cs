@@ -275,6 +275,19 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        /// Repays the regular product asynchronous.
+        /// </summary>
+        /// <param name="productRepayCommand">The product repay command.</param>
+        /// <returns>
+        /// Task.
+        /// </returns>
+        public async Task<RegularProductInfo> RepayRegularProductAsync(ProductRepay productRepayCommand)
+        {
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productRepayCommand.ProductId);
+            return await product.RepayAsync(productRepayCommand);
+        }
+
+        /// <summary>
         ///     Sets the current jby product to sold out asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
@@ -294,19 +307,6 @@ namespace Yuyi.Jinyinmao.Service
         {
             IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
             await product.SetToSoldOutAsync();
-            return await this.GetProductInfoAsync(productId);
-        }
-
-        /// <summary>
-        ///     Repays the asynchronous.
-        /// </summary>
-        /// <param name="productId">The product identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task.</returns>
-        public async Task<RegularProductInfo> RepayRegularProductAsync(Guid productId, Dictionary<string, object> args)
-        {
-            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
-            await product.RepayAsync(args);
             return await this.GetProductInfoAsync(productId);
         }
 

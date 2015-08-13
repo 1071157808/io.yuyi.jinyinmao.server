@@ -101,6 +101,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\OrderRepay.cs" />
+    <Compile Include="Commands\ProductRepay.cs" />
     <Compile Include="Commands\AddExtraInterest.cs" />
     <Compile Include="Commands\HideBankCard.cs" />
     <Compile Include="Commands\IssueJBYProduct.cs" />

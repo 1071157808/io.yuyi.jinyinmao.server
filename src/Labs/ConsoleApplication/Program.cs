@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : Program.cs
-// Created          : 2015-04-19  5:34 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  9:16 AM
+// Last Modified On : 2015-08-13  22:54
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -71,14 +71,10 @@ namespace ConsoleApplication
 
         private static void Main(string[] args)
         {
-            var t1 = DateTime.Now.ToChinaStandardTime();
-            Console.WriteLine(t1);
-            Console.WriteLine(t1.Kind);
-            Console.WriteLine(t1.ToChinaStandardTime());
-            var t2 = DateTime.UtcNow.ToChinaStandardTime();
-            Console.WriteLine(t2);
-            Console.WriteLine(t2.Kind);
-            Console.WriteLine(t2.ToChinaStandardTime());
+            int r = 1000;
+            long baseAmount = 100000;
+            long bonus = Convert.ToInt64(Math.Pow(Convert.ToDouble(baseAmount) / 100000000d, 0.25d) * Math.Pow(Convert.ToDouble(r), 2) / 1800);
+            Console.WriteLine(bonus);
         }
     }
 }

@@ -136,7 +136,7 @@
     <value>您已购买成功金银猫理财产品，订单号：{0}，订单金额{1}元。如非本人操作，请致电4008556333</value>
   </data>
   <data name="Sms_OrderRepaid" xml:space="preserve">
-    <value>您购买的金银猫理财产品已经还款，订单号：{0}，本息共计{1}元。如需帮助，请致电4008556333</value>
+    <value>您购买的金银猫理财产品已经还款至您的钱包账户，订单号：{0}，本息共计{1}元。如需帮助，请致电4008556333</value>
   </data>
   <data name="Sms_SignUpSuccessful" xml:space="preserve">
     <value>恭喜您成功注册金银猫。如非本人操作，请致电4008556333</value>
