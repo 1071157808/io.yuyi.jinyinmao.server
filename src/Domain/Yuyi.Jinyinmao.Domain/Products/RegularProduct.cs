@@ -239,17 +239,17 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        public async Task HitShelvesAsync(IssueRegularProduct command)
+        public async Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command)
         {
             if (this.State.ProductId == command.ProductId)
             {
-                return;
+                return null;
             }
 
             if (this.State.ProductId != Guid.Empty)
             {
                 this.GetLogger().Warn(ErrorCode.ApplicationGrainIdConflict, "Conflict product id: ProductId {0}, RegularProductHitShelvesCommand.ProductId {1}", this.State.ProductId, command.ProductId);
-                return;
+                return null;
             }
 
             this.BeginProcessCommandAsync(command);
@@ -318,6 +318,7 @@ namespace Yuyi.Jinyinmao.Domain
             await this.SaveStateAsync();
 
             await this.RaiseRegularProductIssuedEvent();
+            return await this.GetRegularProductInfoAsync();
         }
 
         /// <summary>
@@ -376,14 +377,15 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Reload state data as an asynchronous operation.
+        /// Reload state data as an asynchronous operation.
         /// </summary>
-        /// <returns>Task.</returns>
-        public async Task ReloadAsync()
+        /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
+        public async Task<RegularProductInfo> ReloadAsync()
         {
             await this.ReadStateAsync();
             this.ReloadOrderData();
             await this.SyncAsync();
+            return await this.GetRegularProductInfoAsync();
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task HitShelvesAsync(IssueRegularProduct command);
+        Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
         ///     Hits the shelves.
@@ -56,14 +56,14 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Reloads the jby product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task ReloadJBYProductAsync();
+        Task<JBYProductInfo> ReloadJBYProductAsync();
 
         /// <summary>
         ///     Reloads the regular product asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
-        Task ReloadRegularProductAsync(Guid productId);
+        Task<RegularProductInfo> ReloadRegularProductAsync(Guid productId);
 
         /// <summary>
         ///     Repays the asynchronous.
@@ -71,19 +71,19 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="productId">The product identifier.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Task.</returns>
-        Task RepayRegularProductAsync(Guid productId, Dictionary<string, object> args);
+        Task<RegularProductInfo> RepayRegularProductAsync(Guid productId, Dictionary<string, object> args);
 
         /// <summary>
         ///     Sets the current jby product to sold out asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task SetCurrentJBYProductToSoldOutAsync();
+        Task<JBYProductInfo> SetCurrentJBYProductToSoldOutAsync();
 
         /// <summary>
         ///     Sets the regular product to sold out asynchronous.
         /// </summary>
         /// <param name="productId">The product identifier.</param>
         /// <returns>Task.</returns>
-        Task SetRegularProductToSoldOutAsync(Guid productId);
+        Task<RegularProductInfo> SetRegularProductToSoldOutAsync(Guid productId);
     }
 }

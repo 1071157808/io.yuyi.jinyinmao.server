@@ -74,7 +74,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task HitShelvesAsync(IssueRegularProduct command);
+        Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
         ///     Migrates the asynchronous.
@@ -87,7 +87,7 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Reloads the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task ReloadAsync();
+        Task<RegularProductInfo> ReloadAsync();
 
         /// <summary>
         ///     Repays the asynchronous.

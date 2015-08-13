@@ -60,6 +60,7 @@
       <InternalEndpoint name="ZabbixTrapper" protocol="tcp" port="10051" />
     </Endpoints>
     <Startup>
+      <Task commandLine="OrleansCounterControl.exe" executionContext="elevated" taskType="simple" />
       <Task commandLine="ServerGC.cmd" executionContext="elevated" taskType="simple">
         <Environment>
           <Variable name="UseServerGC" value="True" />
