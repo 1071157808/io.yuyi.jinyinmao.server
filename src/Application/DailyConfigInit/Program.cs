@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  10:16
+// Last Modified On : 2015-08-14  14:06
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -102,7 +102,7 @@ namespace DailyConfigInit
                     }
 
                     config.BonusAmount = 1500 * 100;
-                    config.JBYWithdrawalLimit = config.JBYWithdrawalLimit * 10000 * 100;
+                    config.JBYWithdrawalLimit = 1000 * 10000 * 100;
 
                     table.Execute(TableOperation.Replace(config));
 
@@ -225,7 +225,7 @@ namespace DailyConfigInit
         {
             string helpText = "-C[REQUIRED]     ConnectiongString: ConnectiongString for the storage\n" +
                               "-T[REQUIRED]     TableName: Daily Config table name\n" +
-                              "-V[OPTIONS]      Version: 13.1";
+                              "-V[OPTIONS]      Version: [3.1]";
 
             Console.WriteLine(helpText);
         }
