@@ -7785,10 +7785,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(1238616988, new object[] {@orderInfo} );
             }
             
-            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo> Yuyi.Jinyinmao.Domain.IRegularProduct.CancelOrderAsync(System.Guid @orderId)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo> Yuyi.Jinyinmao.Domain.IRegularProduct.CancelOrderAsync(Yuyi.Jinyinmao.Domain.Commands.CancelOrder @command)
             {
 
-                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(1331124668, new object[] {@orderId} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(-299385472, new object[] {@command} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.CheckSaleStatusAsync()
@@ -7839,10 +7839,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1656425842, null );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.RepayAsync(Yuyi.Jinyinmao.Domain.Commands.ProductRepay @productRepayCommand)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo> Yuyi.Jinyinmao.Domain.IRegularProduct.RepayAsync(Yuyi.Jinyinmao.Domain.Commands.ProductRepay @productRepayCommand)
             {
 
-                return base.InvokeMethodAsync<object>(1711884060, new object[] {@productRepayCommand} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.RegularProductInfo>(1711884060, new object[] {@productRepayCommand} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IRegularProduct.SetToOnSaleAsync()
@@ -7897,8 +7897,8 @@ namespace Yuyi.Jinyinmao.Domain
                         {
                             case 1238616988: 
                                 return ((IRegularProduct)grain).BuildOrderAsync((Yuyi.Jinyinmao.Domain.Dtos.OrderInfo)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 1331124668: 
-                                return ((IRegularProduct)grain).CancelOrderAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case -299385472: 
+                                return ((IRegularProduct)grain).CancelOrderAsync((Yuyi.Jinyinmao.Domain.Commands.CancelOrder)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -918156331: 
                                 return ((IRegularProduct)grain).CheckSaleStatusAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1855450597: 
@@ -7916,7 +7916,7 @@ namespace Yuyi.Jinyinmao.Domain
                             case 1656425842: 
                                 return ((IRegularProduct)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1711884060: 
-                                return ((IRegularProduct)grain).RepayAsync((Yuyi.Jinyinmao.Domain.Commands.ProductRepay)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                                return ((IRegularProduct)grain).RepayAsync((Yuyi.Jinyinmao.Domain.Commands.ProductRepay)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -1048514759: 
                                 return ((IRegularProduct)grain).SetToOnSaleAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case 1119823572: 
@@ -7951,7 +7951,7 @@ namespace Yuyi.Jinyinmao.Domain
                     {
                         case 1238616988:
                             return "BuildOrderAsync";
-                    case 1331124668:
+                    case -299385472:
                             return "CancelOrderAsync";
                     case -918156331:
                             return "CheckSaleStatusAsync";
@@ -8543,10 +8543,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<System.Boolean>(-1470330856, new object[] {@transactionId} );
             }
             
-            System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.RepayOrderAsync(Dictionary<String,Object> @args, System.Guid @orderId, System.DateTime @repaidTime)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo> Yuyi.Jinyinmao.Domain.IUser.RepayOrderAsync(Yuyi.Jinyinmao.Domain.Commands.OrderRepay @orderRepayCommand)
             {
 
-                return base.InvokeMethodAsync<object>(193655753, new object[] {@args, @orderId, @repaidTime} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo>(-595195755, new object[] {@orderRepayCommand} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.IUser.ResetLoginPasswordAsync(Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword @command)
@@ -8753,8 +8753,8 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).ReloadAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -1470330856: 
                                 return ((IUser)grain).RemoveJBYTransactionsAsync((Guid)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
-                            case 193655753: 
-                                return ((IUser)grain).RepayOrderAsync((Dictionary<String,Object>)arguments[0], (Guid)arguments[1], (DateTime)arguments[2]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
+                            case -595195755: 
+                                return ((IUser)grain).RepayOrderAsync((Yuyi.Jinyinmao.Domain.Commands.OrderRepay)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 405897552: 
                                 return ((IUser)grain).ResetLoginPasswordAsync((Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)null; });
                             case -522344164: 
@@ -8897,7 +8897,7 @@ namespace Yuyi.Jinyinmao.Domain
                             return "ReloadAsync";
                     case -1470330856:
                             return "RemoveJBYTransactionsAsync";
-                    case 193655753:
+                    case -595195755:
                             return "RepayOrderAsync";
                     case 405897552:
                             return "ResetLoginPasswordAsync";
@@ -10178,6 +10178,32 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_IssueJBYProductSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
+        
+        private static System.Reflection.FieldInfo fieldInfo8;
+        
+        private static System.Reflection.FieldInfo fieldInfo9;
+        
+        private static System.Reflection.FieldInfo fieldInfo10;
+        
+        private static System.Reflection.FieldInfo fieldInfo11;
+        
+        private static System.Reflection.FieldInfo fieldInfo12;
+        
+        private static System.Reflection.FieldInfo fieldInfo13;
+        
+        private static System.Reflection.FieldInfo fieldInfo14;
+        
+        private static System.Reflection.FieldInfo fieldInfo15;
+        
+        private static System.Reflection.FieldInfo fieldInfo16;
+        
         static Yuyi_Jinyinmao_Domain_Commands_IssueJBYProductSerialization()
         {
             Register();
@@ -10215,25 +10241,65 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.Agreement1 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Agreement2 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.EndSellTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.FinancingSumAmount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.IssueNo = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.IssueTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.ProductCategory = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.ProductName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.ProductNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.StartSellTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.UnitPrice = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.ValueDateMode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.Yield = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            object temp8 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo8.SetValue(objResult, temp8);
+            object temp9 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo9.SetValue(objResult, temp9);
+            object temp10 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo10.SetValue(objResult, temp10);
+            object temp11 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo11.SetValue(objResult, temp11);
+            object temp12 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo12.SetValue(objResult, temp12);
+            object temp13 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo13.SetValue(objResult, temp13);
+            object temp14 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo14.SetValue(objResult, temp14);
+            object temp15 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo15.SetValue(objResult, temp15);
+            object temp16 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo16.SetValue(objResult, temp16);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct), DeepCopier, Serializer, Deserializer);
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<EndSellTime>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<FinancingSumAmount>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<IssueNo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo8 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<IssueTime>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo9 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<ProductCategory>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo10 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<ProductId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo11 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<ProductName>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo12 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<ProductNo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo13 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<StartSellTime>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo14 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<UnitPrice>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo15 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<ValueDateMode>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo16 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueJBYProduct).GetField("<Yield>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10315,6 +10381,70 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Dtos.OrderInfo), DeepCopier, Serializer, Deserializer);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Commands_CancelOrderSerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        static Yuyi_Jinyinmao_Domain_Commands_CancelOrderSerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.CancelOrder input = ((Yuyi.Jinyinmao.Domain.Commands.CancelOrder)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.OrderId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.ProductId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.CancelOrder result = new Yuyi.Jinyinmao.Domain.Commands.CancelOrder();
+            result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.CancelOrder), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.CancelOrder).GetField("<OrderId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.CancelOrder).GetField("<ProductId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.CancelOrder).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10425,6 +10555,60 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_IssueRegularProductSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
+        
+        private static System.Reflection.FieldInfo fieldInfo8;
+        
+        private static System.Reflection.FieldInfo fieldInfo9;
+        
+        private static System.Reflection.FieldInfo fieldInfo10;
+        
+        private static System.Reflection.FieldInfo fieldInfo11;
+        
+        private static System.Reflection.FieldInfo fieldInfo12;
+        
+        private static System.Reflection.FieldInfo fieldInfo13;
+        
+        private static System.Reflection.FieldInfo fieldInfo14;
+        
+        private static System.Reflection.FieldInfo fieldInfo15;
+        
+        private static System.Reflection.FieldInfo fieldInfo16;
+        
+        private static System.Reflection.FieldInfo fieldInfo17;
+        
+        private static System.Reflection.FieldInfo fieldInfo18;
+        
+        private static System.Reflection.FieldInfo fieldInfo19;
+        
+        private static System.Reflection.FieldInfo fieldInfo20;
+        
+        private static System.Reflection.FieldInfo fieldInfo21;
+        
+        private static System.Reflection.FieldInfo fieldInfo22;
+        
+        private static System.Reflection.FieldInfo fieldInfo23;
+        
+        private static System.Reflection.FieldInfo fieldInfo24;
+        
+        private static System.Reflection.FieldInfo fieldInfo25;
+        
+        private static System.Reflection.FieldInfo fieldInfo26;
+        
+        private static System.Reflection.FieldInfo fieldInfo27;
+        
+        private static System.Reflection.FieldInfo fieldInfo28;
+        
+        private static System.Reflection.FieldInfo fieldInfo29;
+        
+        private static System.Reflection.FieldInfo fieldInfo30;
+        
+        private static System.Reflection.FieldInfo fieldInfo31;
+        
         static Yuyi_Jinyinmao_Domain_Commands_IssueRegularProductSerialization()
         {
             Register();
@@ -10478,39 +10662,121 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.Agreement2 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Drawee = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.DraweeInfo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.EndSellTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.EndorseImageLink = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.EnterpriseInfo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.EnterpriseLicense = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.EnterpriseName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.FinancingSumCount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.IssueNo = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.Period = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.PledgeNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.ProductCategory = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.ProductName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.ProductNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.RepaymentDeadline = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.RiskManagement = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.RiskManagementInfo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.RiskManagementMode = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.SettleDate = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.StartSellTime = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
-            result.UnitPrice = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.Usage = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.ValueDate = ((System.Nullable<System.DateTime>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.DateTime>), stream)));
-            result.ValueDateMode = ((System.Nullable<System.Int32>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.Int32>), stream)));
-            result.Yield = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            object temp8 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo8.SetValue(objResult, temp8);
+            object temp9 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo9.SetValue(objResult, temp9);
+            object temp10 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo10.SetValue(objResult, temp10);
+            object temp11 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo11.SetValue(objResult, temp11);
+            object temp12 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo12.SetValue(objResult, temp12);
+            object temp13 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo13.SetValue(objResult, temp13);
+            object temp14 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo14.SetValue(objResult, temp14);
+            object temp15 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo15.SetValue(objResult, temp15);
+            object temp16 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo16.SetValue(objResult, temp16);
+            object temp17 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo17.SetValue(objResult, temp17);
+            object temp18 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo18.SetValue(objResult, temp18);
+            object temp19 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo19.SetValue(objResult, temp19);
+            object temp20 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo20.SetValue(objResult, temp20);
+            object temp21 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo21.SetValue(objResult, temp21);
+            object temp22 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo22.SetValue(objResult, temp22);
+            object temp23 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo23.SetValue(objResult, temp23);
+            object temp24 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo24.SetValue(objResult, temp24);
+            object temp25 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo25.SetValue(objResult, temp25);
+            object temp26 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo26.SetValue(objResult, temp26);
+            object temp27 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo27.SetValue(objResult, temp27);
+            object temp28 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo28.SetValue(objResult, temp28);
+            object temp29 = ((System.Nullable<System.DateTime>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.DateTime>), stream)));
+            fieldInfo29.SetValue(objResult, temp29);
+            object temp30 = ((System.Nullable<System.Int32>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.Int32>), stream)));
+            fieldInfo30.SetValue(objResult, temp30);
+            object temp31 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo31.SetValue(objResult, temp31);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct), DeepCopier, Serializer, Deserializer);
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<Drawee>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<DraweeInfo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo8 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<EndSellTime>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo9 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<EndorseImageLink>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo10 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<EnterpriseInfo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo11 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<EnterpriseLicense>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo12 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<EnterpriseName>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo13 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<FinancingSumCount>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo14 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<IssueNo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo15 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<Period>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo16 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<PledgeNo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo17 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<ProductCategory>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo18 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<ProductId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo19 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<ProductName>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo20 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<ProductNo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo21 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<RepaymentDeadline>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo22 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<RiskManagement>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo23 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<RiskManagementInfo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo24 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<RiskManagementMode>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo25 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<SettleDate>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo26 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<StartSellTime>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo27 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<UnitPrice>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo28 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<Usage>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo29 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<ValueDate>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo30 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<ValueDateMode>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo31 = typeof(Yuyi.Jinyinmao.Domain.Commands.IssueRegularProduct).GetField("<Yield>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10664,6 +10930,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_ProductRepaySerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
         static Yuyi_Jinyinmao_Domain_Commands_ProductRepaySerialization()
         {
             Register();
@@ -10686,14 +10956,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Commands.ProductRepay result = new Yuyi.Jinyinmao.Domain.Commands.ProductRepay();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.ProductRepay), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.ProductRepay).GetField("<ProductId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10702,6 +10979,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_PayByYilianSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
         
         static Yuyi_Jinyinmao_Domain_Commands_PayByYilianSerialization()
         {
@@ -10729,14 +11010,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.Amount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.PayByYilian), DeepCopier, Serializer, Deserializer);
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.PayCommand).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10745,6 +11033,8 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_PayByLianlianSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
         
         static Yuyi_Jinyinmao_Domain_Commands_PayByLianlianSerialization()
         {
@@ -10767,13 +11057,17 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Commands.PayByLianlian result = new Yuyi.Jinyinmao.Domain.Commands.PayByLianlian();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.PayByLianlian), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10879,6 +11173,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_AddBankCardSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
         static Yuyi_Jinyinmao_Domain_Commands_AddBankCardSerialization()
         {
             Register();
@@ -10907,14 +11205,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.CityName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.AddBankCard), DeepCopier, Serializer, Deserializer);
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddBankCard).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -10923,6 +11228,20 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_AddExtraInterestSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
+        
+        private static System.Reflection.FieldInfo fieldInfo8;
         
         static Yuyi_Jinyinmao_Domain_Commands_AddExtraInterestSerialization()
         {
@@ -10951,19 +11270,41 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest result = new Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Description = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.ExtraInterest = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.ExtraPrincipal = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
-            result.OperationId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.OrderId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            object temp8 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo8.SetValue(objResult, temp8);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest).GetField("<Description>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest).GetField("<ExtraInterest>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest).GetField("<ExtraPrincipal>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest).GetField("<OperationId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest).GetField("<OrderId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo8 = typeof(Yuyi.Jinyinmao.Domain.Commands.AddExtraInterest).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11094,6 +11435,16 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_AuthenticateSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
+        
+        private static System.Reflection.FieldInfo fieldInfo8;
+        
+        private static System.Reflection.FieldInfo fieldInfo9;
+        
+        private static System.Reflection.FieldInfo fieldInfo10;
+        
         static Yuyi_Jinyinmao_Domain_Commands_AuthenticateSerialization()
         {
             Register();
@@ -11127,17 +11478,33 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.CityName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Credential = ((Yuyi.Jinyinmao.Domain.Credential)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Credential), stream)));
-            result.CredentialNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.RealName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((Yuyi.Jinyinmao.Domain.Credential)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Credential), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            object temp8 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo8.SetValue(objResult, temp8);
+            object temp9 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo9.SetValue(objResult, temp9);
+            object temp10 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo10.SetValue(objResult, temp10);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.Authenticate), DeepCopier, Serializer, Deserializer);
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.Authenticate).GetField("<Credential>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo8 = typeof(Yuyi.Jinyinmao.Domain.Commands.Authenticate).GetField("<CredentialNo>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo9 = typeof(Yuyi.Jinyinmao.Domain.Commands.Authenticate).GetField("<RealName>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo10 = typeof(Yuyi.Jinyinmao.Domain.Commands.Authenticate).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11479,6 +11846,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_HideBankCardSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
         static Yuyi_Jinyinmao_Domain_Commands_HideBankCardSerialization()
         {
             Register();
@@ -11503,14 +11874,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.HideBankCard result = new Yuyi.Jinyinmao.Domain.Commands.HideBankCard();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.HideBankCard), DeepCopier, Serializer, Deserializer);
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.HideBankCard).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11634,6 +12012,16 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_RegularInvestingSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
+        
         static Yuyi_Jinyinmao_Domain_Commands_RegularInvestingSerialization()
         {
             Register();
@@ -11646,12 +12034,18 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
             result.Amount = input.Amount;
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
-            result.CouponId = ((System.Nullable<System.Int32>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CouponId)));
-            result.ProductCategory = input.ProductCategory;
-            result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.ProductId)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.Nullable<System.Int32>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CouponId)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = input.ProductCategory;
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.ProductId)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            fieldInfo7.SetValue(objResult, temp7);
+            return objResult;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -11671,17 +12065,33 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.RegularInvesting result = new Yuyi.Jinyinmao.Domain.Commands.RegularInvesting();
             result.Amount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.CouponId = ((System.Nullable<System.Int32>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.Int32>), stream)));
-            result.ProductCategory = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.ProductId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.Nullable<System.Int32>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Nullable<System.Int32>), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.RegularInvesting), DeepCopier, Serializer, Deserializer);
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.RegularInvesting).GetField("<CouponId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.RegularInvesting).GetField("<ProductCategory>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.RegularInvesting).GetField("<ProductId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.RegularInvesting).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11690,6 +12100,12 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_JBYInvestingSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
         
         static Yuyi_Jinyinmao_Domain_Commands_JBYInvestingSerialization()
         {
@@ -11703,10 +12119,14 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
             result.Amount = input.Amount;
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
-            result.ProductCategory = input.ProductCategory;
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = input.ProductCategory;
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -11724,15 +12144,25 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.JBYInvesting result = new Yuyi.Jinyinmao.Domain.Commands.JBYInvesting();
             result.Amount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.ProductCategory = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.JBYInvesting), DeepCopier, Serializer, Deserializer);
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.JBYInvesting).GetField("<ProductCategory>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.JBYInvesting).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11741,6 +12171,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_JBYWithdrawalSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
         
         static Yuyi_Jinyinmao_Domain_Commands_JBYWithdrawalSerialization()
         {
@@ -11754,9 +12188,12 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
             result.Amount = input.Amount;
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            fieldInfo4.SetValue(objResult, temp4);
+            return objResult;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -11773,14 +12210,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal result = new Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal();
             result.Amount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal), DeepCopier, Serializer, Deserializer);
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.JBYWithdrawal).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11895,6 +12339,18 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_UserRegisterSerialization
     {
         
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
+        
+        private static System.Reflection.FieldInfo fieldInfo8;
+        
+        private static System.Reflection.FieldInfo fieldInfo9;
+        
         static Yuyi_Jinyinmao_Domain_Commands_UserRegisterSerialization()
         {
             Register();
@@ -11925,18 +12381,101 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.ClientType = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.ContractId = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
-            result.InviteBy = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.OutletCode = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.Password = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            object temp8 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo8.SetValue(objResult, temp8);
+            object temp9 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo9.SetValue(objResult, temp9);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister), DeepCopier, Serializer, Deserializer);
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister).GetField("<ContractId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister).GetField("<InviteBy>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister).GetField("<OutletCode>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo8 = typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister).GetField("<Password>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo9 = typeof(Yuyi.Jinyinmao.Domain.Commands.UserRegister).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
+    internal class Yuyi_Jinyinmao_Domain_Commands_OrderRepaySerialization
+    {
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        static Yuyi_Jinyinmao_Domain_Commands_OrderRepaySerialization()
+        {
+            Register();
+        }
+        
+        public static object DeepCopier(object original)
+        {
+            return original;
+        }
+        
+        public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.OrderRepay input = ((Yuyi.Jinyinmao.Domain.Commands.OrderRepay)(untypedInput));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.OrderId, stream, typeof(System.Guid));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.RepayTime, stream, typeof(System.DateTime));
+            Orleans.Serialization.SerializationManager.SerializeInner(input.UserId, stream, typeof(System.Guid));
+        }
+        
+        public static object Deserializer(System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
+        {
+            Yuyi.Jinyinmao.Domain.Commands.OrderRepay result = new Yuyi.Jinyinmao.Domain.Commands.OrderRepay();
+            result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((System.DateTime)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.DateTime), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
+        }
+        
+        public static void Register()
+        {
+            global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.OrderRepay), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.OrderRepay).GetField("<OrderId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.OrderRepay).GetField("<RepayTime>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.OrderRepay).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11945,6 +12484,14 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_ResetLoginPasswordSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
         
         static Yuyi_Jinyinmao_Domain_Commands_ResetLoginPasswordSerialization()
         {
@@ -11970,16 +12517,29 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword result = new Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Password = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.Salt = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword).GetField("<Password>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword).GetField("<Salt>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -11988,6 +12548,16 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_SetPaymentPasswordSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo2;
+        
+        private static System.Reflection.FieldInfo fieldInfo3;
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
         
         static Yuyi_Jinyinmao_Domain_Commands_SetPaymentPasswordSerialization()
         {
@@ -12000,12 +12570,18 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword result = new Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword();
             Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
-            result.Override = input.Override;
-            result.PaymentPassword = input.PaymentPassword;
-            result.Salt = input.Salt;
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
-            return result;
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = input.Override;
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = input.PaymentPassword;
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = input.Salt;
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -12023,17 +12599,33 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         {
             Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword result = new Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword();
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.Override = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
-            result.PaymentPassword = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.Salt = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp2 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo2.SetValue(objResult, temp2);
+            object temp3 = ((bool)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(bool), stream)));
+            fieldInfo3.SetValue(objResult, temp3);
+            object temp4 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword), DeepCopier, Serializer, Deserializer);
+            fieldInfo2 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo3 = typeof(Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword).GetField("<Override>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword).GetField("<PaymentPassword>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword).GetField("<Salt>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -12042,6 +12634,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_VerifyBankCardSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo6;
+        
+        private static System.Reflection.FieldInfo fieldInfo7;
         
         static Yuyi_Jinyinmao_Domain_Commands_VerifyBankCardSerialization()
         {
@@ -12073,14 +12669,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.BankName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.Cellphone = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
             result.CityName = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp6 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo6.SetValue(objResult, temp6);
+            object temp7 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo7.SetValue(objResult, temp7);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.VerifyBankCard), DeepCopier, Serializer, Deserializer);
+            fieldInfo6 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo7 = typeof(Yuyi.Jinyinmao.Domain.Commands.VerifyBankCard).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
     
@@ -12089,6 +12692,10 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
     internal class Yuyi_Jinyinmao_Domain_Commands_WithdrawalSerialization
     {
+        
+        private static System.Reflection.FieldInfo fieldInfo4;
+        
+        private static System.Reflection.FieldInfo fieldInfo5;
         
         static Yuyi_Jinyinmao_Domain_Commands_WithdrawalSerialization()
         {
@@ -12103,9 +12710,12 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.Amount = input.Amount;
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
             result.BankCardNo = input.BankCardNo;
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
-            return result;
+            object objResult = ((object)(result));
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.CommandId)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -12124,14 +12734,21 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             result.Amount = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
             result.BankCardNo = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
-            result.CommandId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
-            return result;
+            object objResult = ((object)(result));
+            object temp4 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo4.SetValue(objResult, temp4);
+            object temp5 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            fieldInfo5.SetValue(objResult, temp5);
+            return objResult;
         }
         
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.Register(typeof(Yuyi.Jinyinmao.Domain.Commands.Withdrawal), DeepCopier, Serializer, Deserializer);
+            fieldInfo4 = typeof(Yuyi.Jinyinmao.Domain.Commands.Command).GetField("<CommandId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
+            fieldInfo5 = typeof(Yuyi.Jinyinmao.Domain.Commands.Withdrawal).GetField("<UserId>k__BackingField", (System.Reflection.BindingFlags.Instance 
+                            | (System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)));
         }
     }
 }

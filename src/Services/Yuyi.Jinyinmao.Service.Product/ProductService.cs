@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : ProductService.cs
-// Created          : 2015-04-28  11:00 AM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  3:27 AM
+// Last Modified On : 2015-08-14  1:48
 // ***********************************************************************
 // <copyright file="ProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,6 +33,18 @@ namespace Yuyi.Jinyinmao.Service
     public class ProductService : IProductService
     {
         #region IProductService Members
+
+        /// <summary>
+        ///     Cancels the order asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns></returns>
+        public async Task<OrderInfo> CancelOrderAsync(CancelOrder command)
+        {
+            IRegularProduct regularProduct = GrainClient.GrainFactory.GetGrain<IRegularProduct>(command.ProductId);
+
+            return await regularProduct.CancelOrderAsync(command);
+        }
 
         /// <summary>
         ///     Checks the product no exists.
@@ -275,16 +287,16 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Repays the regular product asynchronous.
+        ///     Repays the regular product asynchronous.
         /// </summary>
-        /// <param name="productRepayCommand">The product repay command.</param>
+        /// <param name="command">The command.</param>
         /// <returns>
-        /// Task.
+        ///     Task.
         /// </returns>
-        public async Task<RegularProductInfo> RepayRegularProductAsync(ProductRepay productRepayCommand)
+        public async Task<RegularProductInfo> RepayRegularProductAsync(ProductRepay command)
         {
-            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productRepayCommand.ProductId);
-            return await product.RepayAsync(productRepayCommand);
+            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(command.ProductId);
+            return await product.RepayAsync(command);
         }
 
         /// <summary>
@@ -315,7 +327,7 @@ namespace Yuyi.Jinyinmao.Service
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
                 .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 

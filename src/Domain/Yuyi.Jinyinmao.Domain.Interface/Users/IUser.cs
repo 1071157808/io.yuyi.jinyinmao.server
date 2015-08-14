@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  23:59
+// Last Modified On : 2015-08-14  0:31
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -336,19 +336,24 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Removes the jby transactions asynchronous.
         /// </summary>
-        /// <returns>Task&lt;System.Int32&gt;.</returns>
+        /// <param name="transactionId">The transaction identifier.</param>
+        /// <returns>
+        ///     Task&lt;System.Int32&gt;.
+        /// </returns>
         Task<bool> RemoveJBYTransactionsAsync(Guid transactionId);
 
         /// <summary>
-        /// Repays the order asynchronous.
+        ///     Repays the order asynchronous.
         /// </summary>
         /// <param name="orderRepayCommand">The order repay command.</param>
+        /// <returns></returns>
         Task<OrderInfo> RepayOrderAsync(OrderRepay orderRepayCommand);
 
         /// <summary>
         ///     Resets the login password.
         /// </summary>
         /// <param name="command">The command.</param>
+        /// <returns></returns>
         Task ResetLoginPasswordAsync(ResetLoginPassword command);
 
         /// <summary>

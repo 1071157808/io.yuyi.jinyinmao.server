@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserController.cs
-// Created          : 2015-05-25  4:38 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  3:29 PM
+// Last Modified On : 2015-08-14  9:21
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -77,7 +77,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </summary>
         /// <response code="200"></response>
         /// <response code="400">
-        ///     US:无法获取用户信息
+        ///     US1:无法获取用户信息
         /// </response>
         /// <response code="401"></response>
         /// <response code="500"></response>
@@ -91,7 +91,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             if (userInfo == null)
             {
                 this.TraceWriter.Warn(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UG:无法获取用户信息");
+                return this.BadRequest("US1:无法获取用户信息");
             }
 
             return this.Ok((await GrainClient.GrainFactory.GetGrain<IUser>(userInfo.UserId).SignAsync(this.BuildArgs())).ToResponse());

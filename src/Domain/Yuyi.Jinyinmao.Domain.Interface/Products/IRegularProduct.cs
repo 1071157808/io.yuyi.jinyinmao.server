@@ -31,11 +31,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<OrderInfo> BuildOrderAsync(OrderInfo orderInfo);
 
         /// <summary>
-        ///     Cancels the order asynchronous.
+        /// Cancels the order asynchronous.
         /// </summary>
-        /// <param name="orderId">The order identifier.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> CancelOrderAsync(Guid orderId);
+        Task<OrderInfo> CancelOrderAsync(CancelOrder command);
 
         /// <summary>
         ///     Checks the sale status asynchronous.

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : DevController.cs
-// Created          : 2015-05-25  4:38 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  3:27 AM
+// Last Modified On : 2015-08-14  9:23
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -28,6 +28,7 @@ using Orleans;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain;
+using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
@@ -44,7 +45,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         private readonly IUserService userService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DevController"/> class.
+        ///     Initializes a new instance of the <see cref="DevController" /> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
         public DevController(IUserService userService)
@@ -120,7 +121,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             Guid productId = Guid.ParseExact(productIdentifier, "N");
             Guid orderId = Guid.ParseExact(orderIdentifier, "N");
-            OrderInfo order = await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).CancelOrderAsync(orderId);
+            OrderInfo order = await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).CancelOrderAsync(new CancelOrder
+            {
+                Args = this.BuildArgs(),
+                OrderId = orderId,
+                ProductId = productId
+            });
 
             if (order == null)
             {

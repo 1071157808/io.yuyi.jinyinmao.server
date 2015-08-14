@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// File             : OrderRepay.cs
-// Created          : 2015-08-13  23:37
+// File             : CancelOrder.cs
+// Created          : 2015-08-14  1:26
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  1:26
+// Last Modified On : 2015-08-14  1:48
 // ***********************************************************************
-// <copyright file="OrderRepay.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="CancelOrder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -17,10 +17,10 @@ using Orleans.Concurrency;
 namespace Yuyi.Jinyinmao.Domain.Commands
 {
     /// <summary>
-    ///     OrderRepay
+    ///     CancelOrder
     /// </summary>
     [Immutable]
-    public class OrderRepay : Command
+    public class CancelOrder : Command
     {
         /// <summary>
         ///     订单Id
@@ -28,9 +28,9 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         public Guid OrderId { get; set; }
 
         /// <summary>
-        ///     还款时间
+        ///     产品Id
         /// </summary>
-        public DateTime RepayTime { get; set; }
+        public Guid ProductId { get; set; }
 
         /// <summary>
         ///     用户Id

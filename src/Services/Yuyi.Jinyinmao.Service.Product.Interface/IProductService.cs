@@ -24,6 +24,13 @@ namespace Yuyi.Jinyinmao.Service.Interface
     public interface IProductService : IProductInfoService
     {
         /// <summary>
+        /// Cancels the order asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns></returns>
+        Task<OrderInfo> CancelOrderAsync(CancelOrder command);
+
+        /// <summary>
         ///     Hits the shelves.
         /// </summary>
         /// <param name="command">The command.</param>

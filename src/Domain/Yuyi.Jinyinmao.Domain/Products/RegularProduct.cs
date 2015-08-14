@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  23:46
+// Last Modified On : 2015-08-14  1:18
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -80,40 +80,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return order;
             }
 
-            DateTime valueDate = this.BuildValueDate();
-            long interest = this.BuildInterest(valueDate, orderInfo.Principal);
-
-            order = new OrderInfo
-            {
-                AccountTransactionId = orderInfo.AccountTransactionId,
-                Args = orderInfo.Args,
-                Cellphone = orderInfo.Cellphone,
-                ExtraInterest = 0,
-                ExtraYield = 0,
-                Interest = interest,
-                IsRepaid = orderInfo.IsRepaid,
-                OrderId = orderInfo.OrderId,
-                OrderNo = orderInfo.OrderNo,
-                OrderTime = orderInfo.OrderTime,
-                Principal = orderInfo.Principal,
-                ProductCategory = orderInfo.ProductCategory,
-                ProductId = orderInfo.ProductId,
-                ProductSnapshot = await this.GetRegularProductInfoAsync(),
-                RepaidTime = orderInfo.RepaidTime,
-                ResultCode = orderInfo.ResultCode,
-                ResultTime = orderInfo.ResultTime,
-                SettleDate = this.State.SettleDate.Date,
-                TransDesc = orderInfo.TransDesc,
-                UserId = orderInfo.UserId,
-                UserInfo = orderInfo.UserInfo,
-                ValueDate = valueDate,
-                Yield = this.State.Yield
-            };
+            order = await this.BuildOrderInfo(orderInfo);
 
             this.State.Orders.Add(order.OrderId, order);
-
             await this.SaveStateAsync();
-
             this.ReloadOrderData();
 
             await this.CheckSaleStatusAsync();
@@ -122,16 +92,16 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Cancels the order asynchronous.
+        /// Cancels the order asynchronous.
         /// </summary>
-        /// <param name="orderId">The order identifier.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        public Task<OrderInfo> CancelOrderAsync(Guid orderId)
+        public Task<OrderInfo> CancelOrderAsync(CancelOrder command)
         {
             OrderInfo order;
-            if (this.State.Orders.TryGetValue(orderId, out order))
+            if (this.State.Orders.TryGetValue(command.OrderId, out order))
             {
-                this.State.Orders.Remove(orderId);
+                this.State.Orders.Remove(command.OrderId);
                 this.ReloadOrderData();
                 return Task.FromResult(order);
             }
@@ -317,7 +287,8 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.SaveStateAsync();
 
-            await this.RaiseRegularProductIssuedEvent();
+            await this.RaiseRegularProductIssuedEvent(command);
+
             return await this.GetRegularProductInfoAsync();
         }
 
@@ -391,11 +362,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Repays the asynchronous.
         /// </summary>
-        /// <param name="productRepayCommand">The product repay command.</param>
+        /// <param name="command">The command.</param>
         /// <returns>
         ///     Task.
         /// </returns>
-        public async Task<RegularProductInfo> RepayAsync(ProductRepay productRepayCommand)
+        public async Task<RegularProductInfo> RepayAsync(ProductRepay command)
         {
             if (!this.State.SoldOut)
             {
@@ -411,7 +382,14 @@ namespace Yuyi.Jinyinmao.Domain
 
             foreach (OrderInfo order in this.PaidOrders)
             {
-                await this.GrainFactory.GetGrain<IUser>(order.UserId).RepayOrderAsync(args, order.OrderId, now);
+                await this.GrainFactory.GetGrain<IUser>(order.UserId).RepayOrderAsync(new OrderRepay
+                {
+                    Args = command.Args,
+                    OrderId = order.OrderId,
+                    RepayTime = now,
+                    UserId = order.OrderId
+                });
+
                 order.IsRepaid = true;
                 order.RepaidTime = order.RepaidTime.HasValue ? order.RepaidTime : now;
             }
@@ -421,7 +399,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             await this.SaveStateAsync();
 
-            await this.RaiseRegularProductRepaidEvent();
+            await this.RaiseRegularProductRepaidEvent(command);
 
             return await this.GetRegularProductInfoAsync();
         }
@@ -521,6 +499,39 @@ namespace Yuyi.Jinyinmao.Domain
             return principal * this.State.Yield * dayCount / 3600000;
         }
 
+        private async Task<OrderInfo> BuildOrderInfo(OrderInfo orderInfo)
+        {
+            DateTime valueDate = this.BuildValueDate();
+            long interest = this.BuildInterest(valueDate, orderInfo.Principal);
+
+            return new OrderInfo
+            {
+                AccountTransactionId = orderInfo.AccountTransactionId,
+                Args = orderInfo.Args,
+                Cellphone = orderInfo.Cellphone,
+                ExtraInterest = 0,
+                ExtraYield = 0,
+                Interest = interest,
+                IsRepaid = orderInfo.IsRepaid,
+                OrderId = orderInfo.OrderId,
+                OrderNo = orderInfo.OrderNo,
+                OrderTime = orderInfo.OrderTime,
+                Principal = orderInfo.Principal,
+                ProductCategory = orderInfo.ProductCategory,
+                ProductId = orderInfo.ProductId,
+                ProductSnapshot = await this.GetRegularProductInfoAsync(),
+                RepaidTime = orderInfo.RepaidTime,
+                ResultCode = orderInfo.ResultCode,
+                ResultTime = orderInfo.ResultTime,
+                SettleDate = this.State.SettleDate.Date,
+                TransDesc = orderInfo.TransDesc,
+                UserId = orderInfo.UserId,
+                UserInfo = orderInfo.UserInfo,
+                ValueDate = valueDate,
+                Yield = this.State.Yield
+            };
+        }
+
         private DateTime BuildValueDate()
         {
             return this.State.ValueDateMode == null ?
@@ -544,26 +555,26 @@ namespace Yuyi.Jinyinmao.Domain
             await EventProcessing[@event.GetType()].Invoke(@event);
         }
 
-        private async Task RaiseRegularProductIssuedEvent()
+        private async Task RaiseRegularProductIssuedEvent(IssueRegularProduct command)
         {
             RegularProductIssued @event = new RegularProductIssued
             {
                 Agreement1 = this.State.Agreement1,
                 Agreement2 = this.State.Agreement2,
-                Args = this.State.Args,
+                Args = command.Args,
                 ProductInfo = await this.GetRegularProductInfoAsync()
             };
 
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseRegularProductRepaidEvent()
+        private async Task RaiseRegularProductRepaidEvent(ProductRepay command)
         {
             RegularProductRepaid @event = new RegularProductRepaid
             {
                 Agreement1 = this.State.Agreement1,
                 Agreement2 = this.State.Agreement2,
-                Args = this.State.Args,
+                Args = command.Args,
                 PaidAmount = this.PaidAmount,
                 PaidOrders = this.PaidOrders.Select(o => o.OrderId.ToGuidString()).ToList(),
                 ProductInfo = await this.GetRegularProductInfoAsync()

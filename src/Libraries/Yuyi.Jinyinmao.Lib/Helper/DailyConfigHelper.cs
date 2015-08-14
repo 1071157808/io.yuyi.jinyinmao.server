@@ -51,10 +51,11 @@ namespace Yuyi.Jinyinmao.Packages.Helper
 
             return new DailyConfig
             {
+                BonusAmount = config.BonusAmount,
                 Date = date,
                 DateString = dateString,
                 IsWorkDay = config.IsWorkday,
-                JBYWithdrawalLimit = config.JBYWithdrawalLimit * 1000000,
+                JBYWithdrawalLimit = config.JBYWithdrawalLimit,
                 JBYYield = config.JBYYield
             };
         }
@@ -157,6 +158,12 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     public class ConfigEntity : TableEntity
     {
         /// <summary>
+        /// Gets or sets the bonus amount.
+        /// </summary>
+        /// <value>The bonus amount.</value>
+        public long BonusAmount { get; set; }
+
+        /// <summary>
         ///     Gets or sets the index of the date.
         /// </summary>
         /// <value>The index of the date.</value>
@@ -174,7 +181,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// </summary>
         /// <value>The jby withdrawal limit.</value>
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-        public int JBYWithdrawalLimit { get; set; }
+        public long JBYWithdrawalLimit { get; set; }
 
         /// <summary>
         ///     Gets or sets the jby yield.

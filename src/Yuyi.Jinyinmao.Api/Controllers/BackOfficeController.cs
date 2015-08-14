@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  23:57
+// Last Modified On : 2015-08-14  1:03
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -150,6 +150,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             this.TraceWriter.Info(this.Request, "BackOffice", "JBYProductIssue. {0}", request.ToJson());
 
             JBYProductInfo jbyProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
+
+            if (jbyProductInfo == null)
+            {
+                return this.BadRequest("上架失败");
+            }
 
             return this.Ok(jbyProductInfo.ToResponse());
         }
