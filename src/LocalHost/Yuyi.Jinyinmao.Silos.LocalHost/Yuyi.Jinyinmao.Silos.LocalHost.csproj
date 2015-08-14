@@ -51,10 +51,6 @@
     <DocumentationFile>bin\Cloud\Yuyi.Jinyinmao.Silos.LocalHost.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CounterControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=070f47935e3ed133, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Orleans.CounterControl.1.0.8\lib\net45\CounterControl.exe</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
