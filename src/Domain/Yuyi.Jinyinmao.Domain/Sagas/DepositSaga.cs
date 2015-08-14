@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : DepositSaga.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:44 AM
+// Last Modified On : 2015-08-14  16:07
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,10 +14,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
+using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Helper;
 using Yuyi.Jinyinmao.Service;
@@ -138,6 +140,17 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         [SuppressMessage("ReSharper", "MergeSequentialChecks")]
         public override Task OnActivateAsync()
         {
+            if (!AzureClient.IsInitialized && !GrainClient.IsInitialized)
+            {
+#if DEBUG
+                GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/DebugConfiguration.xml"));
+#elif CLOUD
+            AzureClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/AzureConfiguration.xml"));
+#else
+            GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/ReleaseConfiguration.xml"));
+#endif
+            }
+
             if (this.State.InitData != null && this.State.InitData.InitUserInfo != null)
             {
                 this.User = this.GrainFactory.GetGrain<IUser>(this.State.InitData.InitUserInfo.UserId);

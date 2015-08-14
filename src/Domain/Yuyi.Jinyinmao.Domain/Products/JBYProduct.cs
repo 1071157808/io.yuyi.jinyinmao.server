@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : JBYProduct.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  3:51 AM
+// Last Modified On : 2015-08-14  16:07
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,12 +14,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans;
 using Orleans.Providers;
+using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
@@ -343,6 +345,17 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         public override Task OnActivateAsync()
         {
+            if (!AzureClient.IsInitialized && !GrainClient.IsInitialized)
+            {
+#if DEBUG
+                GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/DebugConfiguration.xml"));
+#elif CLOUD
+            AzureClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/AzureConfiguration.xml"));
+#else
+            GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/ReleaseConfiguration.xml"));
+#endif
+            }
+
             this.ReloadTransactionData();
 
             this.RegisterTimer(o => this.CheckSaleStatusAsync(), new object(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(13));
