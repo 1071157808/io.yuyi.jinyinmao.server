@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  0:35
+// Last Modified On : 2015-08-14  16:25
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,7 +21,6 @@ using Orleans;
 using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Helper;
 using Yuyi.Jinyinmao.Domain.Misc;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Helper;
@@ -488,7 +487,7 @@ namespace Yuyi.Jinyinmao.Domain
                     OrderId = Guid.Empty,
                     ResultCode = 0,
                     ResultTime = null,
-                    SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                    SequenceNo = await this.GetSequenceNoAsync(),
                     Trade = Trade.Debit,
                     TradeCode = TradeCodeHelper.TC1005051001,
                     TransactionId = command.CommandId,
@@ -911,9 +910,9 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = transactionDto.OrderId,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = transactionDto.Trade,
-                TradeCode = TradeCodeHelper.TC1005051001,
+                TradeCode = transactionDto.TradeCode,
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
                 TransDesc = transactionDto.TransDesc,
@@ -965,7 +964,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = command.CommandId,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Credit,
                 TradeCode = tradeCode,
                 TransDesc = "支付成功",
@@ -988,7 +987,7 @@ namespace Yuyi.Jinyinmao.Domain
                 Interest = 0, // to be updated
                 IsRepaid = false,
                 OrderId = command.CommandId,
-                OrderNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                OrderNo = await this.GetSequenceNoAsync(),
                 OrderTime = now,
                 Principal = command.Amount,
                 ProductCategory = command.ProductCategory,
@@ -1084,7 +1083,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = Guid.Empty,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005012003,
                 TransDesc = "支付成功",
@@ -1228,7 +1227,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = Guid.Empty,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Debit,
                 TradeCode = TradeCodeHelper.TC1005011103,
                 TransactionId = transaction.SettleAccountTransactionId,
@@ -1436,7 +1435,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = order.OrderId,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Debit,
                 TradeCode = principalTradeCode,
                 TransactionId = Guid.NewGuid(),
@@ -1455,7 +1454,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = order.OrderId,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Debit,
                 TradeCode = interestTradeCode,
                 TransactionId = Guid.NewGuid(),
@@ -1948,7 +1947,7 @@ namespace Yuyi.Jinyinmao.Domain
                 OrderId = Guid.Empty,
                 ResultCode = 0,
                 ResultTime = null,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005052001,
                 TransactionId = command.CommandId,
@@ -2117,7 +2116,7 @@ namespace Yuyi.Jinyinmao.Domain
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
                 ResultCode = 1,
                 ResultTime = now,
-                SequenceNo = await SequenceNoHelper.GetSequenceNoAsync(),
+                SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005012102,
                 TransDesc = "账户取现手续费",
@@ -2148,6 +2147,11 @@ namespace Yuyi.Jinyinmao.Domain
             long creditingTransAmount = transactions.Where(t => t.Trade == Trade.Credit && t.ResultCode == 0 && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue) < date.AddDays(1).Date).Sum(t => t.Amount);
 
             return investedAmount - creditedTransAmount - creditingTransAmount;
+        }
+
+        private async Task<string> GetSequenceNoAsync()
+        {
+            return await this.GrainFactory.GetGrain<ISequenceGenerator>(GrainTypeHelper.GetSequenceGeneratorGrainTypeKey()).GenerateNoAsync();
         }
 
         /// <summary>

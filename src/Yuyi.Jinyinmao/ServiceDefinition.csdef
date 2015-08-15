@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
-                   schemaVersion="2015-04.2.6">
-  <WebRole name="Yuyi.Jinyinmao.Api" vmsize="Standard_D4">
+<ServiceDefinition name="Yuyi.Jinyinmao" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
+  <WebRole name="Yuyi.Jinyinmao.Api" vmsize="Medium">
     <Sites>
       <Site name="Web">
         <Bindings>
@@ -40,7 +38,7 @@
       <Import moduleName="RemoteAccess" />
     </Imports>
   </WebRole>
-  <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Standard_D4">
+  <WorkerRole name="Yuyi.Jinyinmao.Silo" vmsize="Medium">
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
       <Setting name="ServiceBusConnectionString" />

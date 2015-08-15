@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  16:07
+// Last Modified On : 2015-08-14  17:00
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,14 +14,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans;
 using Orleans.Providers;
-using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
@@ -35,16 +33,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
     [StorageProvider(ProviderName = "SqlDatabase")]
     public class JBYProduct : EntityGrain<IJBYProductState>, IJBYProduct
     {
-        /// <summary>
-        ///     The event processing
-        /// </summary>
-        private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
-        {
-            { typeof(JBYProductIssued), e => GrainClient.GrainFactory.GetGrain<IJBYProductIssuedProcessor>(e.EventId).ProcessEventAsync((JBYProductIssued)e) },
-            { typeof(JBYProductSoldOut), e => GrainClient.GrainFactory.GetGrain<IJBYProductSoldOutProcessor>(e.EventId).ProcessEventAsync((JBYProductSoldOut)e) },
-            { typeof(JBYProductUpdated), e => GrainClient.GrainFactory.GetGrain<IJBYProductUpdatedProcessor>(e.EventId).ProcessEventAsync((JBYProductUpdated)e) }
-        };
-
         private long PaidAmount { get; set; }
 
         #region IJBYProduct Members
@@ -345,23 +333,24 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         public override Task OnActivateAsync()
         {
-            if (!AzureClient.IsInitialized && !GrainClient.IsInitialized)
-            {
-#if DEBUG
-                GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/DebugConfiguration.xml"));
-#elif CLOUD
-            AzureClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/AzureConfiguration.xml"));
-#else
-            GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/ReleaseConfiguration.xml"));
-#endif
-            }
-
             this.ReloadTransactionData();
 
             this.RegisterTimer(o => this.CheckSaleStatusAsync(), new object(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(13));
             this.RegisterTimer(o => this.RefreshAsync(), new object(), TimeSpan.FromMinutes(3), TimeSpan.FromMinutes(7));
 
             return base.OnActivateAsync();
+        }
+
+        private Func<IEvent, Task> GetEventProcessing(Type evenType)
+        {
+            Dictionary<Type, Func<IEvent, Task>> eventProcessing = new Dictionary<Type, Func<IEvent, Task>>
+            {
+                { typeof(JBYProductIssued), e => this.GrainFactory.GetGrain<IJBYProductIssuedProcessor>(e.EventId).ProcessEventAsync((JBYProductIssued)e) },
+                { typeof(JBYProductSoldOut), e => this.GrainFactory.GetGrain<IJBYProductSoldOutProcessor>(e.EventId).ProcessEventAsync((JBYProductSoldOut)e) },
+                { typeof(JBYProductUpdated), e => this.GrainFactory.GetGrain<IJBYProductUpdatedProcessor>(e.EventId).ProcessEventAsync((JBYProductUpdated)e) }
+            };
+
+            return eventProcessing[evenType];
         }
 
         /// <summary>
@@ -377,7 +366,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
             this.StoreEventAsync(@event);
 
-            await EventProcessing[@event.GetType()].Invoke(@event);
+            await this.GetEventProcessing(@event.GetType()).Invoke(@event);
         }
 
         private async Task RaiseJBYPorductUpdatedEvent()

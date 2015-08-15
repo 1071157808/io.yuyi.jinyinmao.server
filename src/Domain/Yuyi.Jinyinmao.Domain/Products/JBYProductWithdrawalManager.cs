@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : JBYProductWithdrawalManager.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:39 AM
+// Last Modified On : 2015-08-14  19:38
 // ***********************************************************************
 // <copyright file="JBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -29,7 +29,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
     public class JBYProductWithdrawalManager : EntityGrain<IJBYProductWithdrawalManagerState>, IJBYProductWithdrawalManager
     {
         private static Tuple<DateTime, DailyConfig> todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.MinValue, null);
-
         private long WithdrawalAmount { get; set; }
 
         #region IJBYProductWithdrawalManager Members
@@ -74,6 +73,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
             return transaction.PredeterminedResultDate;
         }
 
+        #endregion IJBYProductWithdrawalManager Members
+
         private DateTime GetPredeterminedResultDate(long amount)
         {
             DateTime predeterminedResultDate = DateTime.UtcNow.ToChinaStandardTime().Date;
@@ -89,8 +90,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
             }
             return predeterminedResultDate;
         }
-
-        #endregion IJBYProductWithdrawalManager Members
 
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.
@@ -121,7 +120,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         private void ReloadTransactionData()
         {
             this.WithdrawalAmount = this.State.WithdrawalTransactions.Values
-                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8)).Sum(t => Convert.ToInt64(t.Amount));
+                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8)).Sum(t => t.Amount);
         }
 
         private async Task RemovePastTransactionsAsync()

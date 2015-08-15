@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  16:07
+// Last Modified On : 2015-08-14  17:10
 // ***********************************************************************
 // <copyright file="DepositSaga.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,14 +14,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
-using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Domain.Helper;
 using Yuyi.Jinyinmao.Service;
 
 namespace Yuyi.Jinyinmao.Domain.Sagas
@@ -140,17 +137,6 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
         [SuppressMessage("ReSharper", "MergeSequentialChecks")]
         public override Task OnActivateAsync()
         {
-            if (!AzureClient.IsInitialized && !GrainClient.IsInitialized)
-            {
-#if DEBUG
-                GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/DebugConfiguration.xml"));
-#elif CLOUD
-            AzureClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/AzureConfiguration.xml"));
-#else
-            GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/ReleaseConfiguration.xml"));
-#endif
-            }
-
             if (this.State.InitData != null && this.State.InitData.InitUserInfo != null)
             {
                 this.User = this.GrainFactory.GetGrain<IUser>(this.State.InitData.InitUserInfo.UserId);
@@ -192,6 +178,11 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             await this.StoreSagaStateAsync((int)this.State.Status, this.Message, this.Info, 1);
         }
 
+        private async Task<string> GetSequenceNoAsync()
+        {
+            return await this.GrainFactory.GetGrain<ISequenceGenerator>(GrainTypeHelper.GetSequenceGeneratorGrainTypeKey()).GenerateNoAsync();
+        }
+
         private Task InitAsync()
         {
             this.State.Status = DepositSagaStatus.AddBankCard;
@@ -215,7 +206,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
                 if (!userInfo.Verified)
                 {
-                    string sequenceNo = await SequenceNoHelper.GetSequenceNoAsync();
+                    string sequenceNo = await this.GetSequenceNoAsync();
                     AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, this.State.InitData.AuthenticateCommand.CityName,
                         this.State.InitData.AuthenticateCommand.BankCardNo, this.State.InitData.AuthenticateCommand.RealName, this.State.InitData.AuthenticateCommand.BankName, (int)this.State.InitData.AuthenticateCommand.Credential,
                         this.State.InitData.AuthenticateCommand.CredentialNo, this.State.InitData.AuthenticateCommand.Cellphone, userInfo.UserId.ToGuidString());
@@ -291,7 +282,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
 
                 if (!bankCardInfo.VerifiedByYilian)
                 {
-                    string sequenceNo = await SequenceNoHelper.GetSequenceNoAsync();
+                    string sequenceNo = await this.GetSequenceNoAsync();
                     AuthRequestParameter parameter = this.BuildRequestParameter(sequenceNo, bankCardInfo.CityName,
                         bankCardInfo.BankCardNo, userInfo.RealName, bankCardInfo.BankName, (int)userInfo.Credential,
                         userInfo.CredentialNo, bankCardInfo.Cellphone, userInfo.UserId.ToGuidString());

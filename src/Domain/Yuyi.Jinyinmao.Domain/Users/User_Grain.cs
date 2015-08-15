@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  16:06
+// Last Modified On : 2015-08-14  16:53
 // ***********************************************************************
 // <copyright file="User_Grain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,11 +13,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Orleans;
-using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain
@@ -80,17 +77,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public override Task OnActivateAsync()
         {
-            if (!AzureClient.IsInitialized && !GrainClient.IsInitialized)
-            {
-#if DEBUG
-                GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/DebugConfiguration.xml"));
-#elif CLOUD
-            AzureClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/AzureConfiguration.xml"));
-#else
-            GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/ReleaseConfiguration.xml"));
-#endif
-            }
-
             this.ReloadSettleAccountData();
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();

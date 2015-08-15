@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : User_RaiseEvent.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-07  1:37 PM
+// Last Modified On : 2015-08-14  17:03
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Lib;
-using Orleans;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
@@ -27,41 +26,6 @@ namespace Yuyi.Jinyinmao.Domain
     /// </summary>
     public partial class User
     {
-        /// <summary>
-        ///     The event processing
-        /// </summary>
-        private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
-        {
-            { typeof(BankCardAdded), e => GrainClient.GrainFactory.GetGrain<IBankCardAddedProcessor>(e.EventId).ProcessEventAsync((BankCardAdded)e) },
-            { typeof(AuthenticateResulted), e => GrainClient.GrainFactory.GetGrain<IAuthenticateResultedProcessor>(e.EventId).ProcessEventAsync((AuthenticateResulted)e) },
-            { typeof(VerifyBankCardResulted), e => GrainClient.GrainFactory.GetGrain<IVerifyBankCardResultedProcessor>(e.EventId).ProcessEventAsync((VerifyBankCardResulted)e) },
-            { typeof(PayingByYilian), e => GrainClient.GrainFactory.GetGrain<IPayingByYilianProcessor>(e.EventId).ProcessEventAsync((PayingByYilian)e) },
-            { typeof(DepositResulted), e => GrainClient.GrainFactory.GetGrain<IDepositResultedProcessor>(e.EventId).ProcessEventAsync((DepositResulted)e) },
-            { typeof(JBYPurchased), e => GrainClient.GrainFactory.GetGrain<IJBYPurchasedProcessor>(e.EventId).ProcessEventAsync((JBYPurchased)e) },
-            { typeof(OrderPaid), e => GrainClient.GrainFactory.GetGrain<IOrderPaidProcessor>(e.EventId).ProcessEventAsync((OrderPaid)e) },
-            { typeof(UserRegistered), e => GrainClient.GrainFactory.GetGrain<IUserRegisteredProcessor>(e.EventId).ProcessEventAsync((UserRegistered)e) },
-            { typeof(OrderRepaid), e => GrainClient.GrainFactory.GetGrain<IOrderRepaidProcessor>(e.EventId).ProcessEventAsync((OrderRepaid)e) },
-            { typeof(LoginPasswordReset), e => GrainClient.GrainFactory.GetGrain<ILoginPasswordResetProcessor>(e.EventId).ProcessEventAsync((LoginPasswordReset)e) },
-            { typeof(PaymentPasswordReset), e => GrainClient.GrainFactory.GetGrain<IPaymentPasswordResetProcessor>(e.EventId).ProcessEventAsync((PaymentPasswordReset)e) },
-            { typeof(PaymentPasswordSet), e => GrainClient.GrainFactory.GetGrain<IPaymentPasswordSetProcessor>(e.EventId).ProcessEventAsync((PaymentPasswordSet)e) },
-            { typeof(WithdrawalAccepted), e => GrainClient.GrainFactory.GetGrain<IWithdrawalAcceptedProcessor>(e.EventId).ProcessEventAsync((WithdrawalAccepted)e) },
-            { typeof(WithdrawalResulted), e => GrainClient.GrainFactory.GetGrain<IWithdrawalResultedProcessor>(e.EventId).ProcessEventAsync((WithdrawalResulted)e) },
-            { typeof(JBYWithdrawalAccepted), e => GrainClient.GrainFactory.GetGrain<IJBYWithdrawalAcceptedProcessor>(e.EventId).ProcessEventAsync((JBYWithdrawalAccepted)e) },
-            { typeof(JBYWithdrawalResulted), e => GrainClient.GrainFactory.GetGrain<IJBYWithdrawalResultedProcessor>(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) },
-            { typeof(JBYReinvested), e => GrainClient.GrainFactory.GetGrain<IJBYReinvestedProcessor>(e.EventId).ProcessEventAsync((JBYReinvested)e) },
-            { typeof(BankCardHiden), e => GrainClient.GrainFactory.GetGrain<IBankCardHidenProcessor>(e.EventId).ProcessEventAsync((BankCardHiden)e) },
-            { typeof(ExtraInterestAdded), e => GrainClient.GrainFactory.GetGrain<IExtraInterestAddedProcessor>(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) },
-            { typeof(SettleAccountTransactionInserted), e => GrainClient.GrainFactory.GetGrain<ISettleAccountTransactionInsertedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionInserted)e) },
-            { typeof(JBYAccountTransactionInserted), e => GrainClient.GrainFactory.GetGrain<IJBYAccountTransactionInsertedProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionInserted)e) },
-            { typeof(SettleAccountTransactionResulted), e => GrainClient.GrainFactory.GetGrain<ISettleAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionResulted)e) },
-            { typeof(JBYAccountTransactionResulted), e => GrainClient.GrainFactory.GetGrain<IJBYAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionResulted)e) },
-            { typeof(SettleAccountTransactionCanceled), e => GrainClient.GrainFactory.GetGrain<ISettleAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionCanceled)e) },
-            { typeof(JBYAccountTransactionCanceled), e => GrainClient.GrainFactory.GetGrain<IJBYAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionCanceled)e) },
-            { typeof(OrderTransfered), e => GrainClient.GrainFactory.GetGrain<IOrderTransferedProcessor>(e.EventId).ProcessEventAsync((OrderTransfered)e) },
-            { typeof(JBYTransactionTransfered), e => GrainClient.GrainFactory.GetGrain<IJBYTransactionTransferedProcessor>(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) },
-            { typeof(OrderCanceled), e => GrainClient.GrainFactory.GetGrain<IOrderCanceledProcessor>(e.EventId).ProcessEventAsync((OrderCanceled)e) }
-        };
-
         /// <summary>
         ///     Raises the bank card added event.
         /// </summary>
@@ -80,6 +44,43 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
+        private Func<IEvent, Task> GetEventProcessing(Type evenType)
+        {
+            Dictionary<Type, Func<IEvent, Task>> eventProcessing = new Dictionary<Type, Func<IEvent, Task>>
+            {
+                { typeof(BankCardAdded), e => this.GrainFactory.GetGrain<IBankCardAddedProcessor>(e.EventId).ProcessEventAsync((BankCardAdded)e) },
+                { typeof(AuthenticateResulted), e => this.GrainFactory.GetGrain<IAuthenticateResultedProcessor>(e.EventId).ProcessEventAsync((AuthenticateResulted)e) },
+                { typeof(VerifyBankCardResulted), e => this.GrainFactory.GetGrain<IVerifyBankCardResultedProcessor>(e.EventId).ProcessEventAsync((VerifyBankCardResulted)e) },
+                { typeof(PayingByYilian), e => this.GrainFactory.GetGrain<IPayingByYilianProcessor>(e.EventId).ProcessEventAsync((PayingByYilian)e) },
+                { typeof(DepositResulted), e => this.GrainFactory.GetGrain<IDepositResultedProcessor>(e.EventId).ProcessEventAsync((DepositResulted)e) },
+                { typeof(JBYPurchased), e => this.GrainFactory.GetGrain<IJBYPurchasedProcessor>(e.EventId).ProcessEventAsync((JBYPurchased)e) },
+                { typeof(OrderPaid), e => this.GrainFactory.GetGrain<IOrderPaidProcessor>(e.EventId).ProcessEventAsync((OrderPaid)e) },
+                { typeof(UserRegistered), e => this.GrainFactory.GetGrain<IUserRegisteredProcessor>(e.EventId).ProcessEventAsync((UserRegistered)e) },
+                { typeof(OrderRepaid), e => this.GrainFactory.GetGrain<IOrderRepaidProcessor>(e.EventId).ProcessEventAsync((OrderRepaid)e) },
+                { typeof(LoginPasswordReset), e => this.GrainFactory.GetGrain<ILoginPasswordResetProcessor>(e.EventId).ProcessEventAsync((LoginPasswordReset)e) },
+                { typeof(PaymentPasswordReset), e => this.GrainFactory.GetGrain<IPaymentPasswordResetProcessor>(e.EventId).ProcessEventAsync((PaymentPasswordReset)e) },
+                { typeof(PaymentPasswordSet), e => this.GrainFactory.GetGrain<IPaymentPasswordSetProcessor>(e.EventId).ProcessEventAsync((PaymentPasswordSet)e) },
+                { typeof(WithdrawalAccepted), e => this.GrainFactory.GetGrain<IWithdrawalAcceptedProcessor>(e.EventId).ProcessEventAsync((WithdrawalAccepted)e) },
+                { typeof(WithdrawalResulted), e => this.GrainFactory.GetGrain<IWithdrawalResultedProcessor>(e.EventId).ProcessEventAsync((WithdrawalResulted)e) },
+                { typeof(JBYWithdrawalAccepted), e => this.GrainFactory.GetGrain<IJBYWithdrawalAcceptedProcessor>(e.EventId).ProcessEventAsync((JBYWithdrawalAccepted)e) },
+                { typeof(JBYWithdrawalResulted), e => this.GrainFactory.GetGrain<IJBYWithdrawalResultedProcessor>(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) },
+                { typeof(JBYReinvested), e => this.GrainFactory.GetGrain<IJBYReinvestedProcessor>(e.EventId).ProcessEventAsync((JBYReinvested)e) },
+                { typeof(BankCardHiden), e => this.GrainFactory.GetGrain<IBankCardHidenProcessor>(e.EventId).ProcessEventAsync((BankCardHiden)e) },
+                { typeof(ExtraInterestAdded), e => this.GrainFactory.GetGrain<IExtraInterestAddedProcessor>(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) },
+                { typeof(SettleAccountTransactionInserted), e => this.GrainFactory.GetGrain<ISettleAccountTransactionInsertedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionInserted)e) },
+                { typeof(JBYAccountTransactionInserted), e => this.GrainFactory.GetGrain<IJBYAccountTransactionInsertedProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionInserted)e) },
+                { typeof(SettleAccountTransactionResulted), e => this.GrainFactory.GetGrain<ISettleAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionResulted)e) },
+                { typeof(JBYAccountTransactionResulted), e => this.GrainFactory.GetGrain<IJBYAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionResulted)e) },
+                { typeof(SettleAccountTransactionCanceled), e => this.GrainFactory.GetGrain<ISettleAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionCanceled)e) },
+                { typeof(JBYAccountTransactionCanceled), e => this.GrainFactory.GetGrain<IJBYAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionCanceled)e) },
+                { typeof(OrderTransfered), e => this.GrainFactory.GetGrain<IOrderTransferedProcessor>(e.EventId).ProcessEventAsync((OrderTransfered)e) },
+                { typeof(JBYTransactionTransfered), e => this.GrainFactory.GetGrain<IJBYTransactionTransferedProcessor>(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) },
+                { typeof(OrderCanceled), e => this.GrainFactory.GetGrain<IOrderCanceledProcessor>(e.EventId).ProcessEventAsync((OrderCanceled)e) }
+            };
+
+            return eventProcessing[evenType];
+        }
+
         /// <summary>
         ///     Stores the event asynchronous.
         /// </summary>
@@ -93,7 +94,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.StoreEventAsync(@event);
 
-            await EventProcessing[@event.GetType()].Invoke(@event);
+            await this.GetEventProcessing(@event.GetType()).Invoke(@event);
         }
 
         /// <summary>

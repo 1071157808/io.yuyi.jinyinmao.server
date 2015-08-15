@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  23:08
+// Last Modified On : 2015-08-14  17:41
 // ***********************************************************************
 // <copyright file="BonusManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -107,7 +107,7 @@ namespace Yuyi.Jinyinmao.Domain.Misc
                 long bonusAmount = GetTodayConfig().BonusAmount;
                 using (JYMDBContext db = new JYMDBContext())
                 {
-                    long givenBonusAmount = await db.ReadonlyQuery<SettleAccountTransaction>().Where(t => t.ResultCode > 0 && t.TradeCode == TradeCodeHelper.TC1005011107 && t.TransactionTime >= today).SumAsync(t => t.Amount);
+                    long givenBonusAmount = await db.ReadonlyQuery<AccountTransaction>().Where(t => t.ResultCode > 0 && t.TradeCode == TradeCodeHelper.TC1005011107 && t.TransactionTime >= today).SumAsync(t => (long?)t.Amount) ?? 0L;
                     this.RemainWithdrawalAmount = bonusAmount > givenBonusAmount ? bonusAmount - givenBonusAmount : 0;
                 }
             }

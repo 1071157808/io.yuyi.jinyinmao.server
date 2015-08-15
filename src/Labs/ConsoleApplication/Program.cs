@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  22:54
+// Last Modified On : 2015-08-14  19:33
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Packages.Helper;
@@ -71,10 +72,11 @@ namespace ConsoleApplication
 
         private static void Main(string[] args)
         {
-            int r = 1000;
-            long baseAmount = 100000;
-            long bonus = Convert.ToInt64(Math.Pow(Convert.ToDouble(baseAmount) / 100000000d, 0.25d) * Math.Pow(Convert.ToDouble(r), 2) / 1800);
-            Console.WriteLine(bonus);
+            List<int> a = new List<int> { 10, 10 };
+            a.Clear();
+
+            int sum = a.Sum(t => t);
+            Console.WriteLine(sum);
         }
     }
 }

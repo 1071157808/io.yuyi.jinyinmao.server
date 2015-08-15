@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  1:18
+// Last Modified On : 2015-08-14  17:02
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -21,7 +21,6 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Moe.Lib;
 using Orleans;
 using Orleans.Providers;
-using Orleans.Runtime.Host;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
@@ -35,16 +34,6 @@ namespace Yuyi.Jinyinmao.Domain
     [StorageProvider(ProviderName = "SqlDatabase")]
     public class RegularProduct : EntityGrain<IRegularProductState>, IRegularProduct
     {
-        /// <summary>
-        ///     The event processing
-        /// </summary>
-        private static readonly Dictionary<Type, Func<IEvent, Task>> EventProcessing = new Dictionary<Type, Func<IEvent, Task>>
-        {
-            { typeof(RegularProductSoldOut), e => GrainClient.GrainFactory.GetGrain<IRegularProductSoldOutProcessor>(e.EventId).ProcessEventAsync((RegularProductSoldOut)e) },
-            { typeof(RegularProductIssued), e => GrainClient.GrainFactory.GetGrain<IRegularProductIssuedProcessor>(e.EventId).ProcessEventAsync((RegularProductIssued)e) },
-            { typeof(RegularProductRepaid), e => GrainClient.GrainFactory.GetGrain<IRegularProductRepaidProcessor>(e.EventId).ProcessEventAsync((RegularProductRepaid)e) }
-        };
-
         private long PaidAmount { get; set; }
 
         private IEnumerable<OrderInfo> PaidOrders
@@ -93,7 +82,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Cancels the order asynchronous.
+        ///     Cancels the order asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
@@ -487,17 +476,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         public override Task OnActivateAsync()
         {
-            if (!AzureClient.IsInitialized && !GrainClient.IsInitialized)
-            {
-#if DEBUG
-                GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/DebugConfiguration.xml"));
-#elif CLOUD
-            AzureClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/AzureConfiguration.xml"));
-#else
-            GrainClient.Initialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"/ReleaseConfiguration.xml"));
-#endif
-            }
-
             this.ReloadOrderData();
 
             this.RegisterTimer(o => this.CheckSaleStatusAsync(), new object(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(13));
@@ -551,6 +529,18 @@ namespace Yuyi.Jinyinmao.Domain
                 : DateTime.UtcNow.AddHours(8).AddDays(this.State.ValueDateMode.GetValueOrDefault(0)).Date;
         }
 
+        private Func<IEvent, Task> GetEventProcessing(Type evenType)
+        {
+            Dictionary<Type, Func<IEvent, Task>> eventProcessing = new Dictionary<Type, Func<IEvent, Task>>
+            {
+                { typeof(RegularProductSoldOut), e => this.GrainFactory.GetGrain<IRegularProductSoldOutProcessor>(e.EventId).ProcessEventAsync((RegularProductSoldOut)e) },
+                { typeof(RegularProductIssued), e => this.GrainFactory.GetGrain<IRegularProductIssuedProcessor>(e.EventId).ProcessEventAsync((RegularProductIssued)e) },
+                { typeof(RegularProductRepaid), e => this.GrainFactory.GetGrain<IRegularProductRepaidProcessor>(e.EventId).ProcessEventAsync((RegularProductRepaid)e) }
+            };
+
+            return eventProcessing[evenType];
+        }
+
         /// <summary>
         ///     process event as an asynchronous operation.
         /// </summary>
@@ -564,7 +554,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             this.StoreEventAsync(@event);
 
-            await EventProcessing[@event.GetType()].Invoke(@event);
+            await this.GetEventProcessing(@event.GetType()).Invoke(@event);
         }
 
         private async Task RaiseRegularProductIssuedEvent(IssueRegularProduct command)
