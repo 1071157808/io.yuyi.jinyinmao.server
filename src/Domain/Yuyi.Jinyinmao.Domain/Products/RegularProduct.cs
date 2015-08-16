@@ -253,27 +253,9 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.ValueDateMode = command.ValueDateMode;
             this.State.Yield = command.Yield;
 
-            Stream stream = null;
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    stream = await client.GetStreamAsync(command.EndorseImageLink);
-                }
+            string endorseImageLink = await UploadEndorseImage(command.EndorseImageLink, command.ProductId.ToGuidString());
 
-                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference("EndorseImages/" + command.ProductId.ToGuidString());
-                blob.Properties.ContentType = "image/jpeg";
-                await blob.UploadFromStreamAsync(stream);
-                this.State.EndorseImageLink = blob.Uri.AbsoluteUri;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                    stream.Dispose();
-                }
-            }
+            this.State.EndorseImageLink = endorseImageLink;
 
             await this.SaveStateAsync();
 
@@ -465,6 +447,23 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             return null;
+        }
+
+        private static async Task<string> UploadEndorseImage(string endorseImageSourceLink, string imageIdentifier)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Stream stream = await client.GetStreamAsync(endorseImageSourceLink);
+                    stream.CopyTo(memoryStream);
+                }
+
+                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference($"EndorseImages/{imageIdentifier}");
+                blob.Properties.ContentType = "image/jpeg";
+                await blob.UploadFromStreamAsync(memoryStream);
+                return blob.Uri.AbsoluteUri;
+            }
         }
 
         #endregion IRegularProduct Members

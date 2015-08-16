@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  19:33
+// Last Modified On : 2015-08-16  19:35
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,14 +13,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Moe.Lib;
+using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service;
 
 namespace ConsoleApplication
 {
+    public class Apple
+    {
+        public string Color { get; set; }
+        public Guid Id { get; set; }
+        public List<string> Properties { get; set; }
+        public int Size { get; set; }
+    }
+
     internal class Program
     {
         private static async Task DoSomething()
@@ -72,11 +81,14 @@ namespace ConsoleApplication
 
         private static void Main(string[] args)
         {
-            List<int> a = new List<int> { 10, 10 };
-            a.Clear();
+            Regex r = new Regex("^https://[^\\s/$.?#].[^\\s]*$");
+            var result = r.IsMatch("https://files2.jinyinmao.com.cn/abcdiow?t=desd&y=122&_=121");
+            Console.WriteLine(result);
+        }
 
-            int sum = a.Sum(t => t);
-            Console.WriteLine(sum);
+        private static bool TestPostSharp([Required] Apple apple, [StrictlyPositive] int size, [Required] string color)
+        {
+            return apple.Size == size && apple.Color == color;
         }
     }
 }

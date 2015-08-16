@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-24  4:13 PM
+// File             : SiloClusterConfig.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-28  11:51 AM
+// Last Modified On : 2015-08-15  22:42
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -29,7 +30,7 @@ namespace Yuyi.Jinyinmao.Domain
     {
         static SiloClusterConfig()
         {
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
 
             string storageConnectionString = CloudConfigurationManager.GetSetting("DataConnectionString");
             ServiceBusConnectionString = CloudConfigurationManager.GetSetting("ServiceBusConnectionString");
@@ -37,7 +38,7 @@ namespace Yuyi.Jinyinmao.Domain
             CloudStorageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
             CloudTableClient tableClient = CloudStorageAccount.CreateCloudTableClient();
-            tableClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
+            tableClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(2), 6);
             tableClient.DefaultRequestOptions.MaximumExecutionTime = TimeSpan.FromMinutes(5);
             tableClient.DefaultRequestOptions.ServerTimeout = TimeSpan.FromMinutes(5);
             ErrorLogsTable = tableClient.GetTableReference("Errors");
@@ -45,7 +46,7 @@ namespace Yuyi.Jinyinmao.Domain
             SagasTable = tableClient.GetTableReference("Sagas");
 
             CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
-            blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(500), 6);
+            blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(2), 6);
             blobClient.DefaultRequestOptions.MaximumExecutionTime = TimeSpan.FromMinutes(5);
             blobClient.DefaultRequestOptions.ServerTimeout = TimeSpan.FromMinutes(5);
             PublicFileContainer = blobClient.GetContainerReference("publicfiles");
@@ -89,7 +90,8 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets the private file container.
         /// </summary>
         /// <value>The private file container.</value>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public static CloudBlobContainer PrivateFileContainer { get; }
 
         /// <summary>
@@ -108,7 +110,8 @@ namespace Yuyi.Jinyinmao.Domain
         ///     Gets or sets the service bus connectiong string.
         /// </summary>
         /// <value>The service bus connectiong string.</value>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public static string ServiceBusConnectionString { get; private set; }
     }
 }
