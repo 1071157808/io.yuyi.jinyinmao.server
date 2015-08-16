@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : ProductInfoResponse.cs
-// Created          : 2015-08-11  4:31 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  6:59 PM
+// Last Modified On : 2015-08-16  20:46
 // ***********************************************************************
 // <copyright file="ProductInfoResponse.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -26,7 +26,7 @@ namespace Yuyi.Jinyinmao.Api.Models
     public sealed class RegularProductInfoResponse : IResponse
     {
         /// <summary>
-        ///     银行名称
+        ///     银行名称，可能为空
         /// </summary>
         [JsonProperty("bankName")]
         public string BankName { get; set; }
@@ -34,7 +34,8 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     当前购买时计算使用的起息日
         /// </summary>
-        [Required, JsonProperty("currentValueDate")]
+        [Required]
+        [JsonProperty("currentValueDate")]
         public DateTime CurrentValueDate
         {
             get { return this.SpecifyValueDate ? this.ValueDate.Date : DateTime.UtcNow.AddHours(8).Date; }
@@ -55,13 +56,15 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     背书图片地址，绝对路径
         /// </summary>
-        [Required, JsonProperty("endorseImageLink")]
+        [Required]
+        [JsonProperty("endorseImageLink")]
         public string EndorseImageLink { get; set; }
 
         /// <summary>
         ///     停售时间（北京时间）
         /// </summary>
-        [Required, JsonProperty("endSellTime")]
+        [Required]
+        [JsonProperty("endSellTime")]
         public DateTime EndSellTime { get; set; }
 
         /// <summary>
@@ -85,25 +88,29 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     募集总金额，以“分”为单位
         /// </summary>
-        [Required, JsonProperty("financingSumAmount")]
+        [Required]
+        [JsonProperty("financingSumAmount")]
         public long FinancingSumAmount { get; set; }
 
         /// <summary>
         ///     发行编号，即期数，可以重复
         /// </summary>
-        [Required, JsonProperty("issueNo")]
+        [Required]
+        [JsonProperty("issueNo")]
         public int IssueNo { get; set; }
 
         /// <summary>
         ///     发行时间，即上线时间
         /// </summary>
-        [Required, JsonProperty("issueTime")]
+        [Required]
+        [JsonProperty("issueTime")]
         public DateTime IssueTime { get; set; }
 
         /// <summary>
         ///     已售金额，以“万分之一”为单位
         /// </summary>
-        [Required, JsonProperty("paidAmount")]
+        [Required]
+        [JsonProperty("paidAmount")]
         public long PaidAmount { get; set; }
 
         /// <summary>
@@ -115,49 +122,57 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     质押物编号，可以认为是票号、合同号等相关文件的编号
         /// </summary>
-        [Required, JsonProperty("pledgeNo")]
+        [Required]
+        [JsonProperty("pledgeNo")]
         public string PledgeNo { get; set; }
 
         /// <summary>
         ///     产品类别，详细分类参考文档
         /// </summary>
-        [Required, JsonProperty("productCategory")]
+        [Required]
+        [JsonProperty("productCategory")]
         public long ProductCategory { get; set; }
 
         /// <summary>
         ///     产品唯一标识，应该为32位的guid形式的字符串
         /// </summary>
-        [Required, JsonProperty("productIdentifier")]
+        [Required]
+        [JsonProperty("productIdentifier")]
         public string ProductIdentifier { get; set; }
 
         /// <summary>
         ///     产品名称
         /// </summary>
-        [Required, JsonProperty("productName")]
+        [Required]
+        [JsonProperty("productName")]
         public string ProductName { get; set; }
 
         /// <summary>
         ///     产品编号，产品的编号，区别于IssueNo
         /// </summary>
-        [Required, JsonProperty("productNo")]
+        [Required]
+        [JsonProperty("productNo")]
         public string ProductNo { get; set; }
 
         /// <summary>
         ///     产品是否还款
         /// </summary>
-        [Required, JsonProperty("repaid")]
+        [Required]
+        [JsonProperty("repaid")]
         public bool Repaid { get; set; }
 
         /// <summary>
         ///     还款时间
         /// </summary>
-        [Required, JsonProperty("repaidTime")]
+        [Required]
+        [JsonProperty("repaidTime")]
         public DateTime RepaidTime { get; set; }
 
         /// <summary>
         ///     最迟还款日
         /// </summary>
-        [Required, JsonProperty("repaymentDeadline")]
+        [Required]
+        [JsonProperty("repaymentDeadline")]
         public DateTime RepaymentDeadline { get; set; }
 
         /// <summary>
@@ -181,37 +196,43 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     结息日
         /// </summary>
-        [Required, JsonProperty("settleDate")]
+        [Required]
+        [JsonProperty("settleDate")]
         public DateTime SettleDate { get; set; }
 
         /// <summary>
         ///     是否已经售罄
         /// </summary>
-        [Required, JsonProperty("soldOut")]
+        [Required]
+        [JsonProperty("soldOut")]
         public bool SoldOut { get; set; }
 
         /// <summary>
         ///     售罄时间
         /// </summary>
-        [Required, JsonProperty("soldOutTime")]
+        [Required]
+        [JsonProperty("soldOutTime")]
         public DateTime SoldOutTime { get; set; }
 
         /// <summary>
         ///     指定日期起息
         /// </summary>
-        [Required, JsonProperty("specifyValueDate")]
+        [Required]
+        [JsonProperty("specifyValueDate")]
         public bool SpecifyValueDate { get; set; }
 
         /// <summary>
         ///     开售时间
         /// </summary>
-        [Required, JsonProperty("startSellTime")]
+        [Required]
+        [JsonProperty("startSellTime")]
         public DateTime StartSellTime { get; set; }
 
         /// <summary>
         ///     单价，以“分”为单位
         /// </summary>
-        [Required, JsonProperty("unitPrice")]
+        [Required]
+        [JsonProperty("unitPrice")]
         public long UnitPrice { get; set; }
 
         /// <summary>
@@ -223,19 +244,22 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     起息日
         /// </summary>
-        [Required, JsonProperty("valueDate")]
+        [Required]
+        [JsonProperty("valueDate")]
         public DateTime ValueDate { get; set; }
 
         /// <summary>
         ///     先判断是否是指定日期起息；为0，则为购买当日起息，为n，则为T+n日起息；为-n，则为T-n日起息
         /// </summary>
-        [Required, JsonProperty("valueDateMode")]
+        [Required]
+        [JsonProperty("valueDateMode")]
         public int ValueDateMode { get; set; }
 
         /// <summary>
         ///     收益率，以“万分之一”为单位
         /// </summary>
-        [Required, JsonProperty("yield")]
+        [Required]
+        [JsonProperty("yield")]
         public int Yield { get; set; }
     }
 

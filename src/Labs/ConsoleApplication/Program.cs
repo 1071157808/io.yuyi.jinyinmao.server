@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  19:35
+// Last Modified On : 2015-08-16  20:41
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Moe.Lib;
 using PostSharp.Patterns.Contracts;
+using PostSharp.Patterns.Diagnostics;
 using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service;
 
@@ -86,6 +87,7 @@ namespace ConsoleApplication
             Console.WriteLine(result);
         }
 
+        [LogException]
         private static bool TestPostSharp([Required] Apple apple, [StrictlyPositive] int size, [Required] string color)
         {
             return apple.Size == size && apple.Color == color;

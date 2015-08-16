@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  23:24
+// Last Modified On : 2015-08-16  21:47
 // ***********************************************************************
 // <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,8 +13,10 @@
 
 using System;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -24,7 +26,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
     public interface IProductService : IProductInfoService
     {
         /// <summary>
-        /// Cancels the order asynchronous.
+        ///     Cancels the order asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns></returns>
@@ -34,8 +36,9 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Hits the shelves.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command);
+        /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
+        [LogExceptionAspect]
+        Task<RegularProductInfo> HitShelvesAsync([Required] IssueRegularProduct command);
 
         /// <summary>
         ///     Hits the shelves.
