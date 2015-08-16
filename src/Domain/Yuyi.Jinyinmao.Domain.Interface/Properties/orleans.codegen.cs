@@ -6099,17 +6099,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         
         public static object DeepCopier(object original)
         {
-            Yuyi.Jinyinmao.Domain.Events.JBYReinvested input = ((Yuyi.Jinyinmao.Domain.Events.JBYReinvested)(original));
-            Yuyi.Jinyinmao.Domain.Events.JBYReinvested result = new Yuyi.Jinyinmao.Domain.Events.JBYReinvested();
-            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
-            result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
-            result.EventId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.EventId)));
-            result.SourceId = input.SourceId;
-            result.SourceType = input.SourceType;
-            result.TimeStamp = input.TimeStamp;
-            result.TransactionInfo = input.TransactionInfo;
-            result.UserInfo = input.UserInfo;
-            return result;
+            return original;
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
