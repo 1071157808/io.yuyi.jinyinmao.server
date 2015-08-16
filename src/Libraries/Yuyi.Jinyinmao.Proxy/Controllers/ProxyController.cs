@@ -96,19 +96,12 @@ namespace Yuyi.Jinyinmao.Proxy.Controllers
             using (HttpClientHandler handler = new HttpClientHandler { UseCookies = false })
             using (HttpClient client = new HttpClient(handler) { BaseAddress = new Uri(url) })
             {
-                try
-                {
-                    HttpResponseMessage response = await client.SendAsync(request);
-                    response.Headers.Remove("Server");
-                    response.Headers.Remove("X-AspNet-Version");
-                    response.Headers.Remove("X-Powered-By");
-                    response.Headers.TryAddWithoutValidation("X-Date", response.Headers.Date.GetValueOrDefault(new DateTimeOffset(DateTime.UtcNow)).ToString("R"));
-                    return this.ResponseMessage(response);
-                }
-                catch (Exception e)
-                {
-                    return this.InternalServerError(e);
-                }
+                HttpResponseMessage response = await client.SendAsync(request);
+                response.Headers.Remove("Server");
+                response.Headers.Remove("X-AspNet-Version");
+                response.Headers.Remove("X-Powered-By");
+                response.Headers.TryAddWithoutValidation("X-Date", response.Headers.Date.GetValueOrDefault(new DateTimeOffset(DateTime.UtcNow)).ToString("R"));
+                return this.ResponseMessage(response);
             }
         }
     }

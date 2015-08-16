@@ -111,6 +111,10 @@
       <Project>{596f9cb8-45ff-4d76-acd6-037938ed5eee}</Project>
       <Name>Yuyi.Jinyinmao.Domain.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Log\Yuyi.Jinyinmao.Log.csproj">
+      <Project>{7617A0C5-E6B2-4D3F-95C9-F09ED74721C5}</Project>
+      <Name>Yuyi.Jinyinmao.Log</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

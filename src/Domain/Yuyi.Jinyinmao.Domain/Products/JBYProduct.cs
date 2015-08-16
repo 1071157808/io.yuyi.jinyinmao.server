@@ -84,19 +84,19 @@ namespace Yuyi.Jinyinmao.Domain.Products
         }
 
         /// <summary>
-        ///     Cancels the jby transaction asynchronous.
+        /// Cancels the jby transaction asynchronous.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        public async Task<bool> CancelJBYTransactionAsync(Guid transactionId)
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public async Task<JBYAccountTransactionInfo> CancelJBYTransactionAsync(CancelJBYTransaction command)
         {
             if (this.State.SoldOut || this.State.SoldOutTime.HasValue)
             {
-                return false;
+                return null;
             }
 
             JBYAccountTransactionInfo transactionInfo;
-            if (this.State.Transactions.TryGetValue(transactionId, out transactionInfo))
+            if (this.State.Transactions.TryGetValue(command.UserId, out transactionInfo))
             {
                 this.State.Transactions.Remove(transactionInfo.TransactionId);
 
@@ -105,10 +105,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.ReloadTransactionData();
                 await this.CheckSaleStatusAsync();
 
-                return true;
+                return transactionInfo;
             }
 
-            return false;
+            return null;
         }
 
         /// <summary>

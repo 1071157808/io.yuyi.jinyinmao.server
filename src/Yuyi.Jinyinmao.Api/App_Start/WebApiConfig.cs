@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  22:58
+// Last Modified On : 2015-08-17  0:10
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -23,6 +23,7 @@ using Moe.AspNet.MessageHandlers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApiContrib.Formatting.Jsonp;
+using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Api
@@ -39,6 +40,7 @@ namespace Yuyi.Jinyinmao.Api
         public static void Register(HttpConfiguration config)
         {
             config.UseOrderedFilter();
+            config.Filters.Add(new GlobalExceptionFilterAttribute());
 
             config.UseNLog();
 

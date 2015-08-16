@@ -90,6 +90,12 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Log\Yuyi.Jinyinmao.Log.csproj">
+      <Project>{7617a0c5-e6b2-4d3f-95c9-f09ed74721c5}</Project>
+      <Name>Yuyi.Jinyinmao.Log</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\PostSharp.4.1.21\tools\PostSharp.targets" Condition="Exists('..\..\packages\PostSharp.4.1.21\tools\PostSharp.targets')" />
   <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">

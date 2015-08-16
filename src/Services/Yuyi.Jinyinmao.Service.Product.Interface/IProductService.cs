@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  21:47
+// Last Modified On : 2015-08-17  0:28
 // ***********************************************************************
 // <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,7 +45,8 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command);
+        [LogExceptionAspect]
+        Task<JBYProductInfo> HitShelvesAsync([Required] IssueJBYProduct command);
 
         /// <summary>
         ///     Migrates the asynchronous.

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  0:31
+// Last Modified On : 2015-08-17  0:34
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,8 +16,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Orleans;
+using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -59,10 +61,9 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Cancels the jby account transaction asynchronous.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args);
+        [LogExceptionAspect]
+        Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync([Required] CancelJBYTransaction command);
 
         /// <summary>
         ///     Cancels the order asynchronous.
@@ -462,6 +463,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        [LogExceptionAspect]
         Task<SettleAccountTransactionInfo> WithdrawalResultedAsync(Guid transactionId);
     }
 }

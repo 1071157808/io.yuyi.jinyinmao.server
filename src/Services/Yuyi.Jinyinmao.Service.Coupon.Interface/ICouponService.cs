@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -27,6 +28,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;CouponInfo&gt;.</returns>
+        [LogExceptionAspect]
         Task<CouponInfo> GetCouponAsync(Guid userId);
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;List&lt;CouponInfo&gt;&gt;.</returns>
+        [LogExceptionAspect]
         Task<List<CouponInfo>> GetCouponsAsync(Guid userId);
 
         /// <summary>
@@ -42,6 +45,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="couponId">The coupon identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;CouponInfo&gt;.</returns>
+        [LogExceptionAspect]
         Task<CouponInfo> RemoveCouponAsync(int couponId, Guid userId);
 
         /// <summary>
@@ -50,6 +54,7 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="couponId">The coupon identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>Task&lt;CouponInfo&gt;.</returns>
+        [LogExceptionAspect]
         Task<CouponInfo> UseCouponAsync(int couponId, Guid userId);
     }
 }

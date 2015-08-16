@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  17:03
+// Last Modified On : 2015-08-17  1:09
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -48,6 +48,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             Dictionary<Type, Func<IEvent, Task>> eventProcessing = new Dictionary<Type, Func<IEvent, Task>>
             {
+                { typeof(JBYAccountTransactionCanceled), e => this.GrainFactory.GetGrain<IJBYAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionCanceled)e) },
                 { typeof(BankCardAdded), e => this.GrainFactory.GetGrain<IBankCardAddedProcessor>(e.EventId).ProcessEventAsync((BankCardAdded)e) },
                 { typeof(AuthenticateResulted), e => this.GrainFactory.GetGrain<IAuthenticateResultedProcessor>(e.EventId).ProcessEventAsync((AuthenticateResulted)e) },
                 { typeof(VerifyBankCardResulted), e => this.GrainFactory.GetGrain<IVerifyBankCardResultedProcessor>(e.EventId).ProcessEventAsync((VerifyBankCardResulted)e) },
@@ -72,7 +73,6 @@ namespace Yuyi.Jinyinmao.Domain
                 { typeof(SettleAccountTransactionResulted), e => this.GrainFactory.GetGrain<ISettleAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionResulted)e) },
                 { typeof(JBYAccountTransactionResulted), e => this.GrainFactory.GetGrain<IJBYAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionResulted)e) },
                 { typeof(SettleAccountTransactionCanceled), e => this.GrainFactory.GetGrain<ISettleAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionCanceled)e) },
-                { typeof(JBYAccountTransactionCanceled), e => this.GrainFactory.GetGrain<IJBYAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionCanceled)e) },
                 { typeof(OrderTransfered), e => this.GrainFactory.GetGrain<IOrderTransferedProcessor>(e.EventId).ProcessEventAsync((OrderTransfered)e) },
                 { typeof(JBYTransactionTransfered), e => this.GrainFactory.GetGrain<IJBYTransactionTransferedProcessor>(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) },
                 { typeof(OrderCanceled), e => this.GrainFactory.GetGrain<IOrderCanceledProcessor>(e.EventId).ProcessEventAsync((OrderCanceled)e) }
@@ -206,14 +206,14 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Raises the settle account transaction resulted event.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <param name="info">The information.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseJBYAccountTransactionCanceledEvent(Dictionary<string, object> args, JBYAccountTransactionInfo info)
+        private async Task RaiseJBYAccountTransactionCanceledEvent(CancelJBYTransaction command, JBYAccountTransactionInfo info)
         {
             JBYAccountTransactionCanceled @event = new JBYAccountTransactionCanceled
             {
-                Args = args,
+                Args = command.Args,
                 TransactionInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
             };

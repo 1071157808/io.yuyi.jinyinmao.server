@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -26,12 +27,14 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the bank card information.
         /// </summary>
         /// <value>The bank card information.</value>
+        [Reference]
         public BankCardInfo BankCardInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

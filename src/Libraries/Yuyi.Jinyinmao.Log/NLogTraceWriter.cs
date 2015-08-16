@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:45
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  22:59
+// Last Modified On : 2015-08-16  23:57
 // ***********************************************************************
 // <copyright file="NLogTraceWriter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,11 +33,11 @@ namespace Yuyi.Jinyinmao.Log
             new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
                 new Dictionary<TraceLevel, Action<string>>
                 {
-                    { TraceLevel.Debug, NLog.LogManager.GetLogger("TraceLogger").Debug },
-                    { TraceLevel.Info, NLog.LogManager.GetLogger("TraceLogger").Info },
-                    { TraceLevel.Error, NLog.LogManager.GetLogger("TraceLogger").Error },
-                    { TraceLevel.Warn, NLog.LogManager.GetLogger("TraceLogger").Warn },
-                    { TraceLevel.Fatal, NLog.LogManager.GetLogger("TraceLogger").Fatal }
+                    { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
+                    { TraceLevel.Info, LogManager.GetTraceLogger().Info },
+                    { TraceLevel.Error, LogManager.GetTraceLogger().Error },
+                    { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
+                    { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
                 }
                 );
 

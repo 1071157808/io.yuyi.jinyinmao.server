@@ -1,17 +1,18 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-25  3:22 AM
+// File             : PaymentPasswordReset.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-04-27  12:14 AM
+// Last Modified On : 2015-08-17  1:30
 // ***********************************************************************
-// <copyright file="PaymentPasswordReset.cs" company="Shanghai Yuyi">
-//     Copyright ©  2012-2015 Shanghai Yuyi. All rights reserved.
+// <copyright file="PaymentPasswordReset.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -23,9 +24,10 @@ namespace Yuyi.Jinyinmao.Domain.Events
     public class PaymentPasswordReset : Event
     {
         /// <summary>
-        /// Gets or sets the user information.
+        ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

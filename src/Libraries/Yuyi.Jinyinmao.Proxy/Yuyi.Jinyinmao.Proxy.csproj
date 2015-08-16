@@ -120,6 +120,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ProxyController.cs" />
+    <Compile Include="Filters\GlobalExceptionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -136,7 +137,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Yuyi.Jinyinmao.Log\Yuyi.Jinyinmao.Log.csproj">
+      <Project>{7617a0c5-e6b2-4d3f-95c9-f09ed74721c5}</Project>
+      <Name>Yuyi.Jinyinmao.Log</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

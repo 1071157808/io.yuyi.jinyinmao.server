@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-11  1:37 AM
+// File             : IssueJBYProduct.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  10:10 PM
+// Last Modified On : 2015-08-17  0:26
 // ***********************************************************************
 // <copyright file="IssueJBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -23,87 +23,73 @@ namespace Yuyi.Jinyinmao.Domain.Commands
     public class IssueJBYProduct : Command
     {
         /// <summary>
-        ///     Gets or sets the agreement1.
+        ///     第一份协议内容，一般为自动交易授权委托书内容
         /// </summary>
-        /// <value>The agreement1.</value>
         public string Agreement1 { get; set; }
 
         /// <summary>
-        ///     Gets or sets the agreement2.
+        ///     第二份协议内容，一般为金包银投资协议内容
         /// </summary>
-        /// <value>The agreement2.</value>
         public string Agreement2 { get; set; }
 
         /// <summary>
-        ///     Gets or sets the end sell time.
+        ///     停售时间
         /// </summary>
-        /// <value>The end sell time.</value>
         public DateTime EndSellTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the financing sum amount.
+        ///     最大融资额度，以“分”为单位
         /// </summary>
-        /// <value>The financing sum amount.</value>
         public int FinancingSumAmount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the issue no.
+        ///     发行期数，可以重复，必须大于0
         /// </summary>
-        /// <value>The issue no.</value>
         public int IssueNo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the issue time.
+        ///     发行事件，北京时间
         /// </summary>
-        /// <value>The issue time.</value>
         public DateTime IssueTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the product category.
+        ///     产品类别
         /// </summary>
-        /// <value>The product category.</value>
         public long ProductCategory { get; set; }
 
         /// <summary>
-        ///     Gets or sets the product identifier.
+        ///     产品Id
         /// </summary>
-        /// <value>The product identifier.</value>
         public Guid ProductId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the name of the product.
+        ///     产品名称
         /// </summary>
-        /// <value>The name of the product.</value>
         public string ProductName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the product no.
+        ///     产品编号
         /// </summary>
-        /// <value>The product no.</value>
         public string ProductNo { get; set; }
 
         /// <summary>
-        ///     Gets or sets the start sell time.
+        ///     开售时间
         /// </summary>
-        /// <value>The start sell time.</value>
         public DateTime StartSellTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the unit price.
+        ///     单价，以“分”为单位，10000即每份100元
         /// </summary>
-        /// <value>The unit price.</value>
         public int UnitPrice { get; set; }
 
         /// <summary>
-        ///     Gets or sets the value date mode.
+        ///     起息方式
         /// </summary>
-        /// <value>The value date mode.</value>
         public int ValueDateMode { get; set; }
 
         /// <summary>
-        ///     Gets or sets the yield.
+        ///     收益率，以“万分之一”为单位
         /// </summary>
-        /// <value>The yield.</value>
         public int Yield { get; set; }
     }
 }

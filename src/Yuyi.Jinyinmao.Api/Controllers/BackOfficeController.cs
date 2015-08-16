@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  23:24
+// Last Modified On : 2015-08-17  0:35
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -146,7 +146,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            // TODO: log
             this.TraceWriter.Info(this.Request, "BackOffice", "JBYProductIssue. {0}", request.ToJson());
 
             JBYProductInfo jbyProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
@@ -275,14 +274,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> WithdrawalTransactionFinished(string userIdentifier, string transactionIdentifier)
         {
-            Guid userId;
-            if (!Guid.TryParseExact(userIdentifier, "N", out userId))
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
             {
                 return this.BadRequest("用户唯一标识错误");
             }
 
-            Guid transactionId;
-            if (!Guid.TryParseExact(transactionIdentifier, "N", out transactionId))
+            Guid transactionId = transactionIdentifier.AsGuid();
+            if (transactionId == Guid.Empty)
             {
                 return this.BadRequest("流水唯一标识错误");
             }
@@ -355,8 +354,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 { "IssueRequest", request.ToJson(string.Empty) }
             });
 
+            Guid productId = Guid.NewGuid();
+
             return new IssueJBYProduct
             {
+                EntityId = productId,
                 Agreement1 = request.Agreement1,
                 Agreement2 = request.Agreement2,
                 Args = args,
@@ -365,7 +367,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 IssueNo = request.IssueNo,
                 IssueTime = DateTime.UtcNow.AddHours(8),
                 ProductCategory = request.ProductCategory,
-                ProductId = Guid.NewGuid(),
+                ProductId = productId,
                 ProductName = request.ProductName,
                 ProductNo = request.ProductNo,
                 StartSellTime = request.StartSellTime,

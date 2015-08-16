@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using Moe.Lib;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -163,6 +164,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
+        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
@@ -181,6 +183,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the extra interest records.
         /// </summary>
         /// <value>The extra interest records.</value>
+        [Reference]
         public List<ExtraInterestRecord> ExtraInterestRecords { get; set; }
 
         /// <summary>
@@ -241,6 +244,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the product snapshot.
         /// </summary>
         /// <value>The product snapshot.</value>
+        [Reference]
         public RegularProductInfo ProductSnapshot { get; set; }
 
         /// <summary>
@@ -283,6 +287,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [Reference]
         public UserInfo UserInfo { get; set; }
 
         /// <summary>

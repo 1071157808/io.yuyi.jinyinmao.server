@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -103,6 +104,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
+        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
@@ -248,6 +250,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the login names.
         /// </summary>
         /// <value>The login names.</value>
+        [Reference]
         public List<string> LoginNames { get; set; }
 
         /// <summary>

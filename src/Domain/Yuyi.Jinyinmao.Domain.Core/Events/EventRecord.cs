@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-26  11:35 PM
+// File             : EventRecord.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  5:47 PM
+// Last Modified On : 2015-08-17  1:10
 // ***********************************************************************
 // <copyright file="EventRecord.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,7 +30,8 @@ namespace Yuyi.Jinyinmao.Domain
         {
             Event = @event.ToJson(),
             EventId = @event.EventId,
-            EventName = @event.GetType().Name
+            EventName = @event.GetType().Name,
+            SourceId = @event.SourceId
         };
     }
 
@@ -56,5 +57,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The name of the event.</value>
         public string EventName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the source identifier.
+        /// </summary>
+        /// <value>The source identifier.</value>
+        public string SourceId { get; set; }
     }
 }

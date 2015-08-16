@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  9:23
+// Last Modified On : 2015-08-17  1:12
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -42,14 +42,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     [RoutePrefix("")]
     public class DevController : ApiControllerBase
     {
+        private readonly IProductService productService;
         private readonly IUserService userService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DevController" /> class.
         /// </summary>
+        /// <param name="productService">The product service.</param>
         /// <param name="userService">The user service.</param>
-        public DevController(IUserService userService)
+        public DevController(IProductService productService, IUserService userService)
         {
+            this.productService = productService;
             this.userService = userService;
         }
 
@@ -66,10 +69,19 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> CancelJBYAccountTransaction(string userIdentifier, string transactionIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
-            Guid transacationId = Guid.ParseExact(transactionIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
 
-            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).CancelJBYAccountTransactionAsync(transacationId, this.BuildArgs());
+            Guid transacationId = transactionIdentifier.AsGuid();
+            if (transacationId == Guid.Empty)
+            {
+                return this.BadRequest("流水唯一标识错误");
+            }
+
+            JBYAccountTransactionInfo info = await this.userService.CancelJBYTransactionAsync(this.BuildCancelJBYTransactionCommand(transacationId, userId));
 
             if (info == null)
             {
@@ -834,6 +846,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                     .UnregisterAsync();
             }
             return this.Ok();
+        }
+
+        private CancelJBYTransaction BuildCancelJBYTransactionCommand(Guid transacationId, Guid userId)
+        {
+            return new CancelJBYTransaction
+            {
+                Args = this.BuildArgs(),
+                EntityId = userId,
+                TransactionId = transacationId,
+                UserId = userId
+            };
         }
     }
 }

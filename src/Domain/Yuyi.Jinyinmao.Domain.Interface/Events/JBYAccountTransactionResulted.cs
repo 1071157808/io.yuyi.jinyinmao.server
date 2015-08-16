@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -32,6 +33,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the transaction information.
         /// </summary>
         /// <value>The transaction information.</value>
+        [Reference]
         public JBYAccountTransactionInfo TransactionInfo { get; set; }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

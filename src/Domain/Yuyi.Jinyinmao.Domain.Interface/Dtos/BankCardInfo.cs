@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using Moe.Lib;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -123,6 +124,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
+        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>

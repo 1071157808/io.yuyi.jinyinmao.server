@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : IJBYProduct.cs
-// Created          : 2015-05-27  7:35 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:45 AM
+// Last Modified On : 2015-08-17  0:50
 // ***********************************************************************
 // <copyright file="IJBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,8 +14,10 @@
 using System;
 using System.Threading.Tasks;
 using Orleans;
+using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Domain.Products
 {
@@ -29,14 +31,16 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns>Task&lt;System.Nullable&lt;Guid&gt;&gt;.</returns>
-        Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info);
+        [LogExceptionAspect]
+        Task<Guid?> BuildJBYTransactionAsync([Required] JBYAccountTransactionInfo info);
 
         /// <summary>
         ///     Cancels the jby transaction asynchronous.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <returns>Task&lt;System.Boolean&gt;.</returns>
-        Task<bool> CancelJBYTransactionAsync(Guid transactionId);
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        [LogExceptionAspect]
+        Task<JBYAccountTransactionInfo> CancelJBYTransactionAsync(CancelJBYTransaction command);
 
         /// <summary>
         ///     Checks the sale status asynchronous.
@@ -74,7 +78,8 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command);
+        [LogExceptionAspect]
+        Task<JBYProductInfo> HitShelvesAsync([Required] IssueJBYProduct command);
 
         /// <summary>
         ///     Refreshes the asynchronous.

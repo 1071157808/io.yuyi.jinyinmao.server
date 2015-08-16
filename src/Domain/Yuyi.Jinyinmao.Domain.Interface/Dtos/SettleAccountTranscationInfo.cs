@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using Moe.Lib;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -212,6 +213,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

@@ -13,6 +13,7 @@
 
 using System.Collections.Generic;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -39,12 +40,14 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the product information.
         /// </summary>
         /// <value>The product information.</value>
+        [Reference]
         public JBYProductInfo ProductInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the transactions.
         /// </summary>
         /// <value>The transactions.</value>
+        [Reference]
         public List<JBYAccountTransactionInfo> Transactions { get; set; }
     }
 }

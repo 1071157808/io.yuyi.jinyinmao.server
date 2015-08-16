@@ -12,6 +12,7 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -36,6 +37,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the product information.
         /// </summary>
         /// <value>The product information.</value>
+        [Reference]
         public JBYProductInfo ProductInfo { get; set; }
     }
 }

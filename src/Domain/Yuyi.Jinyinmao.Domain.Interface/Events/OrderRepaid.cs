@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-27  7:35 PM
+// File             : OrderRepaid.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  7:08 PM
+// Last Modified On : 2015-08-17  1:30
 // ***********************************************************************
 // <copyright file="OrderRepaid.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -27,12 +28,14 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the interest transaction information.
         /// </summary>
         /// <value>The interest transaction information.</value>
+        [Reference]
         public SettleAccountTransactionInfo InterestTransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the order information.
         /// </summary>
         /// <value>The order information.</value>
+        [Reference]
         public OrderInfo OrderInfo { get; set; }
 
         /// <summary>
@@ -45,6 +48,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the principal transaction information.
         /// </summary>
         /// <value>The principal transaction information.</value>
+        [Reference]
         public SettleAccountTransactionInfo PrincipalTransactionInfo { get; set; }
 
         /// <summary>
@@ -57,6 +61,7 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
+        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

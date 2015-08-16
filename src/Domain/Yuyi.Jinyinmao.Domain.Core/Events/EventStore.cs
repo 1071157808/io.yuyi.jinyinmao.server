@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-26  11:35 PM
+// File             : EventStore.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-22  5:49 PM
+// Last Modified On : 2015-08-17  1:08
 // ***********************************************************************
 // <copyright file="EventStore.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task StoreEventRecordAsync(EventRecord record)
         {
-            CloudBlockBlob blob = SiloClusterConfig.EventStoreContainer.GetBlockBlobReference("{0}-{1}".FormatWith(record.EventName, record.EventId.ToGuidString()));
+            string blobName = $"{record.SourceId}/{record.EventName}/{record.EventId.ToGuidString()}";
+            CloudBlockBlob blob = SiloClusterConfig.EventStoreContainer.GetBlockBlobReference(blobName);
             blob.Properties.ContentType = "application/json; charset=utf-8";
             return blob.UploadTextAsync(record.Event);
         }

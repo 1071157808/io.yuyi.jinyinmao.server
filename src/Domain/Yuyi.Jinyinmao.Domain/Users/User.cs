@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  16:25
+// Last Modified On : 2015-08-17  1:11
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -213,32 +213,32 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Cancel jby account transaction as an asynchronous operation.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        public async Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args)
+        public async Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync(CancelJBYTransaction command)
         {
             JBYAccountTransaction transaction;
-            if (!this.State.JBYAccount.TryGetValue(transactionId, out transaction))
+            if (!this.State.JBYAccount.TryGetValue(command.TransactionId, out transaction))
             {
                 return null;
             }
 
-            bool result = true;
+            JBYAccountTransactionInfo transactionInfo = null;
 
             if (transaction.TradeCode == TradeCodeHelper.TC2001051102)
             {
                 IJBYProduct product = this.GrainFactory.GetGrain<IJBYProduct>(GrainTypeHelper.GetJBYProductGrainTypeLongKey());
-                result = await product.CancelJBYTransactionAsync(transaction.TransactionId);
+                transactionInfo = await product.CancelJBYTransactionAsync(command);
             }
 
-            if (result)
+            if (transactionInfo != null)
             {
                 this.State.JBYAccount.Remove(transaction.TransactionId);
 
                 await this.SaveStateAsync();
                 this.ReloadJBYAccountData();
-                await this.RaiseJBYAccountTransactionCanceledEvent(args, transaction.ToInfo());
+
+                await this.RaiseJBYAccountTransactionCanceledEvent(command, transaction.ToInfo());
 
                 return transaction.ToInfo();
             }

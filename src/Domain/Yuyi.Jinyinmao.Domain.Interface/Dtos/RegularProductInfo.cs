@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Packages.Helper;
 
@@ -195,6 +196,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
+        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>

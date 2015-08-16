@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:05
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  23:08
+// Last Modified On : 2015-08-17  0:00
 // ***********************************************************************
 // <copyright file="LogAspect.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Log
         {
             try
             {
-                JinyinmaoException exception = args.Exception as JinyinmaoException ?? new JinyinmaoException(args.Exception.Message, args.Exception);
+                JinyinmaoException exception = args.Exception.GetJinyinmaoException() ?? new JinyinmaoException(args.Exception.Message, args.Exception);
 
                 StringBuilder argumentsStringBuilder = new StringBuilder();
                 foreach (object argument in args.Arguments)
