@@ -14,8 +14,10 @@
 using System;
 using System.Threading.Tasks;
 using Orleans;
+using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -73,7 +75,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command);
+        [LogExceptionAspect]
+        Task<RegularProductInfo> HitShelvesAsync([Required] IssueRegularProduct command);
 
         /// <summary>
         ///     Migrates the asynchronous.

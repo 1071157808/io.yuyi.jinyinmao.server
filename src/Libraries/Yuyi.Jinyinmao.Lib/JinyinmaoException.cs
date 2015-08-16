@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:34
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  21:36
+// Last Modified On : 2015-08-16  22:54
 // ***********************************************************************
 // <copyright file="JinyinmaoException.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,6 +15,50 @@ using System;
 
 namespace Yuyi.Jinyinmao.Packages
 {
+    /// <summary>
+    ///     ExceptionEx.
+    /// </summary>
+    public static class ExceptionEx
+    {
+        /// <summary>
+        ///     Gets the jinyinmao exception.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <returns>JinyinmaoException.</returns>
+        public static JinyinmaoException GetJinyinmaoException(this Exception exception)
+        {
+            JinyinmaoException jinyinmaoException = exception as JinyinmaoException;
+            if (jinyinmaoException != null)
+            {
+                return jinyinmaoException;
+            }
+
+            if (exception.InnerException != null)
+            {
+                jinyinmaoException = GetJinyinmaoException(exception.InnerException);
+                if (jinyinmaoException != null)
+                {
+                    return jinyinmaoException;
+                }
+            }
+
+            AggregateException aggregateException = exception as AggregateException;
+            if (aggregateException != null)
+            {
+                foreach (Exception e in aggregateException.InnerExceptions)
+                {
+                    jinyinmaoException = GetJinyinmaoException(e);
+                    if (jinyinmaoException != null)
+                    {
+                        return jinyinmaoException;
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
+
     /// <summary>
     ///     JinyinmaoException.
     /// </summary>

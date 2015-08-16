@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-13  23:16
+// Last Modified On : 2015-08-16  23:11
 // ***********************************************************************
 // <copyright file="Command.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -34,6 +34,12 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// </summary>
         /// <value>The arguments.</value>
         public Dictionary<string, object> Args { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the entity identifier.
+        /// </summary>
+        /// <value>The entity identifier.</value>
+        public Guid EntityId { get; set; }
 
         #region ICommand Members
 

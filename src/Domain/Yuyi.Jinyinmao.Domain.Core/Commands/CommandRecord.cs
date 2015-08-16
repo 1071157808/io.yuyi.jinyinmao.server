@@ -37,5 +37,11 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The name of the command.</value>
         public string CommandName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the entity identifier.
+        /// </summary>
+        /// <value>The entity identifier.</value>
+        public Guid EntityId { get; set; }
     }
 }

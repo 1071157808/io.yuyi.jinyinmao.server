@@ -31,7 +31,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public Task StoreCommandRecordAsync(CommandRecord record)
         {
-            CloudBlockBlob blob = SiloClusterConfig.CommandStoreContainer.GetBlockBlobReference("{0}-{1}".FormatWith(record.CommandName, record.CommandId.ToGuidString()));
+            string blobName = $"{record.EntityId.ToGuidString()}/{record.CommandName}/{record.CommandId.ToGuidString()}";
+            CloudBlockBlob blob = SiloClusterConfig.CommandStoreContainer.GetBlockBlobReference(blobName);
             blob.Properties.ContentType = "application/json; charset=utf-8";
             return blob.UploadTextAsync(record.Command);
         }

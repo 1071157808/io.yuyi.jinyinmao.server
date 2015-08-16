@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-28  12:17 PM
+// File             : IssueRegularProduct.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-20  11:00 AM
+// Last Modified On : 2015-08-16  23:02
 // ***********************************************************************
 // <copyright file="IssueRegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using Orleans.Concurrency;
+using PostSharp.Patterns.Contracts;
 
 namespace Yuyi.Jinyinmao.Domain.Commands
 {
@@ -25,11 +26,13 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// <summary>
         ///     第一份协议内容，一般为委托协议内容
         /// </summary>
+        [Required]
         public string Agreement1 { get; set; }
 
         /// <summary>
         ///     第二份协议内容，一般为抵押协议内容
         /// </summary>
+        [Required]
         public string Agreement2 { get; set; }
 
         /// <summary>
@@ -75,16 +78,19 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// <summary>
         ///     最大融资额度，以“分”为单位
         /// </summary>
+        [StrictlyPositive]
         public long FinancingSumCount { get; set; }
 
         /// <summary>
         ///     发行期数，可以重复，必须大于0
         /// </summary>
+        [StrictlyPositive]
         public int IssueNo { get; set; }
 
         /// <summary>
         ///     理财周期，主要用于显示
         /// </summary>
+        [StrictlyPositive]
         public int Period { get; set; }
 
         /// <summary>
@@ -95,22 +101,24 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// <summary>
         ///     产品分类
         /// </summary>
+        [StrictlyPositive]
         public long ProductCategory { get; set; }
 
         /// <summary>
-        ///     Gets or sets the product identifier.
+        ///     产品Id
         /// </summary>
-        /// <value>The product identifier.</value>
         public Guid ProductId { get; set; }
 
         /// <summary>
         ///     产品名称
         /// </summary>
+        [Required]
         public string ProductName { get; set; }
 
         /// <summary>
         ///     产品编号
         /// </summary>
+        [Required]
         public string ProductNo { get; set; }
 
         /// <summary>
@@ -146,6 +154,7 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// <summary>
         ///     单价，以“分”为单位，10000即每份100元
         /// </summary>
+        [StrictlyPositive]
         public int UnitPrice { get; set; }
 
         /// <summary>
@@ -166,6 +175,7 @@ namespace Yuyi.Jinyinmao.Domain.Commands
         /// <summary>
         ///     收益率，以“万分之一”为单位
         /// </summary>
+        [StrictlyPositive]
         public int Yield { get; set; }
     }
 }

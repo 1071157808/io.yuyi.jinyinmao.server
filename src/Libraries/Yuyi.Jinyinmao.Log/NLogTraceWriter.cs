@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:45
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  21:47
+// Last Modified On : 2015-08-16  22:59
 // ***********************************************************************
 // <copyright file="NLogTraceWriter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,9 +13,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Web.Http.Tracing;
+using Moe.AspNet.Utility;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Log
 {
@@ -31,11 +33,11 @@ namespace Yuyi.Jinyinmao.Log
             new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
                 new Dictionary<TraceLevel, Action<string>>
                 {
-                    { TraceLevel.Debug, LogManager.GetLogger("TraceLogger").Debug },
-                    { TraceLevel.Info, LogManager.GetLogger("TraceLogger").Info },
-                    { TraceLevel.Error, LogManager.GetLogger("TraceLogger").Error },
-                    { TraceLevel.Warn, LogManager.GetLogger("TraceLogger").Warn },
-                    { TraceLevel.Fatal, LogManager.GetLogger("TraceLogger").Fatal }
+                    { TraceLevel.Debug, NLog.LogManager.GetLogger("TraceLogger").Debug },
+                    { TraceLevel.Info, NLog.LogManager.GetLogger("TraceLogger").Info },
+                    { TraceLevel.Error, NLog.LogManager.GetLogger("TraceLogger").Error },
+                    { TraceLevel.Warn, NLog.LogManager.GetLogger("TraceLogger").Warn },
+                    { TraceLevel.Fatal, NLog.LogManager.GetLogger("TraceLogger").Fatal }
                 }
                 );
 
@@ -47,6 +49,8 @@ namespace Yuyi.Jinyinmao.Log
         {
             get { return Loggers.Value; }
         }
+
+        #region ITraceWriter Members
 
         /// <summary>
         ///     Invokes the specified traceAction to allow setting values in a new <see cref="T:System.Web.Http.Tracing.TraceRecord" /> if and only if tracing is permitted at the given category and level.
@@ -65,6 +69,16 @@ namespace Yuyi.Jinyinmao.Log
             LogToNlog(record);
         }
 
+        #endregion ITraceWriter Members
+
+        private static void LogToLogger(string category, string logMessage)
+        {
+            if (category == "BackOffice")
+            {
+                LogManager.GetBackOfficeLogger().Info(logMessage);
+            }
+        }
+
         /// <summary>
         ///     Logs to nlog.
         /// </summary>
@@ -73,24 +87,15 @@ namespace Yuyi.Jinyinmao.Log
         {
             StringBuilder messageBuilder = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(traceRecord.Category))
-            {
-                messageBuilder.Append(" " + traceRecord.Category);
-            }
-            else
-            {
-                messageBuilder.Append(" -");
-            }
-
             if (traceRecord.Request != null)
             {
                 if (traceRecord.Request.Method != null)
                 {
-                    messageBuilder.Append(" " + traceRecord.Request.Method);
+                    messageBuilder.Append(traceRecord.Request.Method);
                 }
                 else
                 {
-                    messageBuilder.Append(" -");
+                    messageBuilder.Append("-");
                 }
 
                 if (traceRecord.Request.RequestUri != null)
@@ -107,22 +112,23 @@ namespace Yuyi.Jinyinmao.Log
                 if ((int)traceRecord.Status >= 400)
                 {
                     messageBuilder.Append(Environment.NewLine);
-
                     string request = traceRecord.Request.ToHttpContext().Request.Dump();
                     messageBuilder.Append(request);
                 }
             }
 
-            messageBuilder.Append(traceRecord.Status);
+            messageBuilder.Append(Environment.NewLine);
             messageBuilder.Append(!string.IsNullOrWhiteSpace(traceRecord.Message) ? traceRecord.Message : "-");
 
             if (traceRecord.Exception != null)
             {
-                messageBuilder.Append(traceRecord.Status);
+                messageBuilder.Append(Environment.NewLine);
                 messageBuilder.Append(traceRecord.Exception.GetExceptionString());
             }
 
-            CurrentLogger[traceRecord.Level](messageBuilder.ToString());
+            string logMessage = messageBuilder.ToString();
+            CurrentLogger[traceRecord.Level](logMessage);
+            LogToLogger(traceRecord.Category, logMessage);
         }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  17:02
+// Last Modified On : 2015-08-16  23:24
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -208,13 +208,14 @@ namespace Yuyi.Jinyinmao.Domain
 
             if (this.State.ProductId != Guid.Empty)
             {
-                this.GetLogger().Warn(ErrorCode.ApplicationGrainIdConflict, "Conflict product id: ProductId {0}, RegularProductHitShelvesCommand.ProductId {1}", this.State.ProductId, command.ProductId);
                 return null;
             }
 
             this.BeginProcessCommandAsync(command);
 
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+
+            string endorseImageLink = await UploadEndorseImage(command.EndorseImageLink, command.ProductId.ToGuidString());
 
             this.State.ProductId = command.ProductId;
 
@@ -224,6 +225,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.BankName = command.BankName;
             this.State.Drawee = command.Drawee;
             this.State.DraweeInfo = command.DraweeInfo;
+            this.State.EndorseImageLink = endorseImageLink;
             this.State.EndSellTime = command.EndSellTime;
             this.State.EnterpriseInfo = command.EnterpriseInfo;
             this.State.EnterpriseLicense = command.EnterpriseLicense;
@@ -252,10 +254,6 @@ namespace Yuyi.Jinyinmao.Domain
             this.State.ValueDate = command.ValueDate;
             this.State.ValueDateMode = command.ValueDateMode;
             this.State.Yield = command.Yield;
-
-            string endorseImageLink = await UploadEndorseImage(command.EndorseImageLink, command.ProductId.ToGuidString());
-
-            this.State.EndorseImageLink = endorseImageLink;
 
             await this.SaveStateAsync();
 
@@ -449,6 +447,8 @@ namespace Yuyi.Jinyinmao.Domain
             return null;
         }
 
+        #endregion IRegularProduct Members
+
         private static async Task<string> UploadEndorseImage(string endorseImageSourceLink, string imageIdentifier)
         {
             using (MemoryStream memoryStream = new MemoryStream())
@@ -465,8 +465,6 @@ namespace Yuyi.Jinyinmao.Domain
                 return blob.Uri.AbsoluteUri;
             }
         }
-
-        #endregion IRegularProduct Members
 
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.

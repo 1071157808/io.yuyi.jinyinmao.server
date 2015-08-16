@@ -258,6 +258,10 @@
       <Project>{7B420A40-ACEC-4461-AE6E-CA89E2AD65C9}</Project>
       <Name>Yuyi.Jinyinmao.Lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Log\Yuyi.Jinyinmao.Log.csproj">
+      <Project>{7617a0c5-e6b2-4d3f-95c9-f09ed74721c5}</Project>
+      <Name>Yuyi.Jinyinmao.Log</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\Yuyi.Jinyinmao.Service.Yilian\Yuyi.Jinyinmao.Service.Yilian.csproj">
       <Project>{850e78f8-beee-4dd2-b4d9-ceebe0f4dd5d}</Project>
       <Name>Yuyi.Jinyinmao.Service.Yilian</Name>
