@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  22:53
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  12:38
+// Last Modified On : 2015-08-17  17:18
 // ***********************************************************************
 // <copyright file="NLogExceptionLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -61,11 +61,11 @@ namespace Yuyi.Jinyinmao.Log
                 StringBuilder messageBuilder = new StringBuilder();
 
                 messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
-                messageBuilder.Append(Environment.NewLine);
+                messageBuilder.Append("\r\n");
                 messageBuilder.AppendFormat("{0} {1} {2} {3}", httpContext.Request.HttpMethod, httpContext.Request.RawUrl, httpContext.Response.StatusCode, httpContext.Response.Status);
-                messageBuilder.Append(Environment.NewLine);
+                messageBuilder.Append("\r\n");
                 messageBuilder.Append(request);
-                messageBuilder.Append(Environment.NewLine);
+                messageBuilder.Append("\r\n");
                 messageBuilder.Append(context.Exception.GetExceptionString());
 
                 this.logger.Error(messageBuilder.ToString());

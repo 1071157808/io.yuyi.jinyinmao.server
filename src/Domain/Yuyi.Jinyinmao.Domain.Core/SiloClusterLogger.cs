@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  13:31
+// Last Modified On : 2015-08-17  17:17
 // ***********************************************************************
 // <copyright file="SiloClusterLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -45,9 +45,9 @@ namespace Yuyi.Jinyinmao.Domain
             StringBuilder messageBuilder = new StringBuilder();
 
             messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
-            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append("\r\n");
             messageBuilder.Append(messageTemplate.FormatWith(propertyValues));
-            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append("\r\n");
             messageBuilder.Append(exception.GetExceptionString());
 
             Logger.Error(messageBuilder);
@@ -60,7 +60,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="propertyValues">The property values.</param>
         public static void Log(string messageTemplate, params object[] propertyValues)
         {
-            Logger.Error(messageTemplate, propertyValues);
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append("\r\n");
+            messageBuilder.Append(messageTemplate.FormatWith(propertyValues));
+
+            Logger.Error(messageBuilder);
         }
     }
 
@@ -90,9 +96,9 @@ namespace Yuyi.Jinyinmao.Domain
             StringBuilder messageBuilder = new StringBuilder();
 
             messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
-            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append("\r\n");
             messageBuilder.Append(messageTemplate.FormatWith(propertyValues));
-            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append("\r\n");
             messageBuilder.Append(exception.GetExceptionString());
 
             Logger.Error(messageBuilder);
@@ -105,7 +111,13 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="propertyValues">The property values.</param>
         public static void Log(string messageTemplate, params object[] propertyValues)
         {
-            Logger.Info(messageTemplate, propertyValues);
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append("\r\n");
+            messageBuilder.Append(messageTemplate.FormatWith(propertyValues));
+
+            Logger.Error(messageBuilder);
         }
     }
 }

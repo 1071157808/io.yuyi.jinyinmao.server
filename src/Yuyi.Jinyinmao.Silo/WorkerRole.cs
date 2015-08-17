@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  13:32
+// Last Modified On : 2015-08-17  17:14
 // ***********************************************************************
 // <copyright file="WorkerRole.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,6 +19,7 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
 using Orleans.Runtime.Host;
+using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Silo
@@ -91,6 +92,7 @@ namespace Yuyi.Jinyinmao.Silo
             config.Globals.ResendOnTimeout = true;
             config.Globals.ResponseTimeout = TimeSpan.FromMinutes(2);
             config.Globals.MaxResendCount = 10;
+            SiloClusterConfig.CheckStorage();
             TraceLogger.LogConsumers.Add(new NLoggerSiloTraceWriter());
 
             // It is IMPORTANT to start the silo not in OnStart but in Run.

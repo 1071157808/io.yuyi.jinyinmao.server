@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:08
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  14:54
+// Last Modified On : 2015-08-17  17:19
 // ***********************************************************************
 // <copyright file="LogManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.

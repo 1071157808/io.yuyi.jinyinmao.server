@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:45
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  12:48
+// Last Modified On : 2015-08-17  17:37
 // ***********************************************************************
 // <copyright file="NLogTraceWriter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -30,11 +30,11 @@ namespace Yuyi.Jinyinmao.Log
             new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
                 new Dictionary<TraceLevel, Action<string>>
                 {
-                    { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
-                    { TraceLevel.Info, LogManager.GetTraceLogger().Info },
-                    { TraceLevel.Error, LogManager.GetTraceLogger().Error },
-                    { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
-                    { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
+                    { TraceLevel.Debug, LogManager.GetApplicationLogger().Debug },
+                    { TraceLevel.Info, LogManager.GetApplicationLogger().Info },
+                    { TraceLevel.Error, LogManager.GetApplicationLogger().Error },
+                    { TraceLevel.Warn, LogManager.GetApplicationLogger().Warn },
+                    { TraceLevel.Fatal, LogManager.GetApplicationLogger().Fatal }
                 }
                 );
 
@@ -42,11 +42,11 @@ namespace Yuyi.Jinyinmao.Log
             new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
                 new Dictionary<TraceLevel, Action<string>>
                 {
-                    { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
-                    { TraceLevel.Info, LogManager.GetTraceLogger().Info },
-                    { TraceLevel.Error, LogManager.GetTraceLogger().Error },
-                    { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
-                    { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
+                    { TraceLevel.Debug, LogManager.GetBackOfficeLogger().Debug },
+                    { TraceLevel.Info, LogManager.GetBackOfficeLogger().Info },
+                    { TraceLevel.Error, LogManager.GetBackOfficeLogger().Error },
+                    { TraceLevel.Warn, LogManager.GetBackOfficeLogger().Warn },
+                    { TraceLevel.Fatal, LogManager.GetBackOfficeLogger().Fatal }
                 }
                 );
 
@@ -135,6 +135,7 @@ namespace Yuyi.Jinyinmao.Log
             StringBuilder messageBuilder = new StringBuilder();
 
             messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append("\r\n");
 
             if (traceRecord.Request != null)
             {
@@ -160,18 +161,18 @@ namespace Yuyi.Jinyinmao.Log
 
                 if ((int)traceRecord.Status >= 400)
                 {
-                    messageBuilder.Append(Environment.NewLine);
+                    messageBuilder.Append("\r\n");
                     string request = traceRecord.Request.ToHttpContext().Request.Dump();
                     messageBuilder.Append(request);
                 }
             }
 
-            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append("\r\n");
             messageBuilder.Append(!string.IsNullOrWhiteSpace(traceRecord.Message) ? traceRecord.Message : "-");
 
             if (traceRecord.Exception != null)
             {
-                messageBuilder.Append(Environment.NewLine);
+                messageBuilder.Append("\r\n");
                 messageBuilder.Append(traceRecord.Exception.GetExceptionString());
             }
 

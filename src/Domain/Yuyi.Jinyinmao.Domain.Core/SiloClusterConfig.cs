@@ -44,9 +44,6 @@ namespace Yuyi.Jinyinmao.Domain
             CacheTable = tableClient.GetTableReference("JYMCache");
             SagasTable = tableClient.GetTableReference("JYMSagaLogs");
 
-            CacheTable.CreateIfNotExists();
-            SagasTable.CreateIfNotExists();
-
             CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
             blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(2), 6);
             blobClient.DefaultRequestOptions.MaximumExecutionTime = TimeSpan.FromMinutes(5);
@@ -55,11 +52,6 @@ namespace Yuyi.Jinyinmao.Domain
             PrivateFileContainer = blobClient.GetContainerReference("privatefiles");
             CommandStoreContainer = blobClient.GetContainerReference("commands");
             EventStoreContainer = blobClient.GetContainerReference("events");
-
-            PublicFileContainer.CreateIfNotExists();
-            PrivateFileContainer.CreateIfNotExists();
-            CommandStoreContainer.CreateIfNotExists();
-            EventStoreContainer.CreateIfNotExists();
         }
 
         /// <summary>
@@ -114,5 +106,19 @@ namespace Yuyi.Jinyinmao.Domain
         [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public static string ServiceBusConnectionString { get; private set; }
+
+        /// <summary>
+        /// Checks the storage.
+        /// </summary>
+        public static void CheckStorage()
+        {
+            CacheTable.CreateIfNotExists();
+            SagasTable.CreateIfNotExists();
+
+            PublicFileContainer.CreateIfNotExists();
+            PrivateFileContainer.CreateIfNotExists();
+            CommandStoreContainer.CreateIfNotExists();
+            EventStoreContainer.CreateIfNotExists();
+        }
     }
 }
