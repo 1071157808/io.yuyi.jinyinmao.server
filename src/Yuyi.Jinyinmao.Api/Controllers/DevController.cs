@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  17:40
+// Last Modified On : 2015-08-17  20:02
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
 using Moe.Lib;
@@ -201,42 +200,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("")]
         public IHttpActionResult Get()
         {
-            this.TraceWriter.Debug(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Application Logger Debug test");
-            this.TraceWriter.Info(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Application Logger Info test");
-            this.TraceWriter.Warn(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Application Logger Warn test");
-            this.TraceWriter.Error(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Application Logger Error test");
-            this.TraceWriter.Fatal(this.Request, "Application", "This is from Yuyi.Jinyinmao.Api. Application Logger Fatal test.");
+            LogManager.GetTraceLogger().Debug("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Debug");
+            LogManager.GetApplicationLogger().Debug("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Debug");
+            LogManager.GetErrorLogger().Debug("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Debug");
 
-            this.TraceWriter.Debug(this.Request, "BackOffice", "This is from Yuyi.Jinyinmao.Api. BackOffice Logger Debug test");
-            this.TraceWriter.Info(this.Request, "BackOffice", "This is from Yuyi.Jinyinmao.Api. BackOffice Logger Info test");
-            this.TraceWriter.Warn(this.Request, "BackOffice", "This is from Yuyi.Jinyinmao.Api. BackOffice Logger Warn test");
-            this.TraceWriter.Error(this.Request, "BackOffice", "This is from Yuyi.Jinyinmao.Api. BackOffice Logger Error test");
-            this.TraceWriter.Fatal(this.Request, "BackOffice", "This is from Yuyi.Jinyinmao.Api. BackOffice Logger Fatal test.");
+            LogManager.GetTraceLogger().Info("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Info");
+            LogManager.GetApplicationLogger().Info("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Info");
+            LogManager.GetErrorLogger().Info("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Info");
 
-            LogManager.GetTraceLogger().Debug("This is from Yuyi.Jinyinmao.Api. Trace Logger Debug test");
-            LogManager.GetApplicationLogger().Debug("This is from Yuyi.Jinyinmao.Api. Application Logger Debug test");
-            LogManager.GetBackOfficeLogger().Debug("This is from Yuyi.Jinyinmao.Api. BackOffice Logger Debug test");
-            LogManager.GetErrorLogger().Debug("This is from Yuyi.Jinyinmao.Api. Error Logger Debug test");
+            LogManager.GetTraceLogger().Warn("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Warn");
+            LogManager.GetApplicationLogger().Warn("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Warn");
+            LogManager.GetErrorLogger().Warn("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Warn");
 
-            LogManager.GetTraceLogger().Info("This is from Yuyi.Jinyinmao.Api. Trace Logger Info test");
-            LogManager.GetApplicationLogger().Info("This is from Yuyi.Jinyinmao.Api. Application Logger Info test");
-            LogManager.GetBackOfficeLogger().Info("This is from Yuyi.Jinyinmao.Api. BackOffice Logger Info test");
-            LogManager.GetErrorLogger().Info("This is from Yuyi.Jinyinmao.Api. Error Logger Info test");
+            LogManager.GetTraceLogger().Error("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Error");
+            LogManager.GetApplicationLogger().Error("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Error");
+            LogManager.GetErrorLogger().Error("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Error");
 
-            LogManager.GetTraceLogger().Warn("This is from Yuyi.Jinyinmao.Api. Trace Logger Warn test");
-            LogManager.GetApplicationLogger().Warn("This is from Yuyi.Jinyinmao.Api. Application Logger Warn test");
-            LogManager.GetBackOfficeLogger().Warn("This is from Yuyi.Jinyinmao.Api. BackOffice Logger Warn test");
-            LogManager.GetErrorLogger().Warn("This is from Yuyi.Jinyinmao.Api. Error Logger Warn test");
-
-            LogManager.GetTraceLogger().Error("This is from Yuyi.Jinyinmao.Api. Trace Logger Error test");
-            LogManager.GetApplicationLogger().Error("This is from Yuyi.Jinyinmao.Api. Application Logger Error test");
-            LogManager.GetBackOfficeLogger().Error("This is from Yuyi.Jinyinmao.Api. BackOffice Logger Error test");
-            LogManager.GetErrorLogger().Error("This is from Yuyi.Jinyinmao.Api. Error Logger Error test");
-
-            LogManager.GetTraceLogger().Fatal("This is from Yuyi.Jinyinmao.Api. Trace Logger Fatal test");
-            LogManager.GetApplicationLogger().Fatal("This is from Yuyi.Jinyinmao.Api. Application Logger Fatal test");
-            LogManager.GetBackOfficeLogger().Fatal("This is from Yuyi.Jinyinmao.Api. BackOffice Logger Fatal test");
-            LogManager.GetErrorLogger().Fatal("This is from Yuyi.Jinyinmao.Api. Error Logger Fatal test");
+            LogManager.GetTraceLogger().Fatal("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Fatal");
+            LogManager.GetApplicationLogger().Fatal("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Fatal");
+            LogManager.GetErrorLogger().Fatal("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Fatal");
 
             return this.Ok(
                 new

@@ -325,10 +325,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(SetSettleAccountTransactionResult command);
 
         /// <summary>
-        ///     Signs the asynchronous.
+        /// Signs the asynchronous.
         /// </summary>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        Task<SettleAccountTransactionInfo> SignAsync();
+        Task<SettleAccountTransactionInfo> SignAsync(Sign command);
 
         /// <summary>
         ///     Synchronizes the asynchronous.

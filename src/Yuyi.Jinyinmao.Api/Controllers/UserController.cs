@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  10:30
+// Last Modified On : 2015-08-17  20:01
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,10 +14,9 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
-using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -64,12 +63,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> Get()
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UG:无法获取用户信息");
-            }
-
             return this.Ok(userInfo.ToResponse());
         }
 
@@ -88,16 +81,19 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> Sign()
         {
-            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("US1:无法获取用户信息");
-            }
-
-            SettleAccountTransactionInfo settleAccountTransactionInfo = await this.userService.SignAsync(this.CurrentUser.Id);
+            SettleAccountTransactionInfo settleAccountTransactionInfo = await this.userService.SignAsync(this.BuildSignCommand());
 
             return this.Ok(settleAccountTransactionInfo.ToResponse());
+        }
+
+        private Sign BuildSignCommand()
+        {
+            return new Sign
+            {
+                EntityId = this.CurrentUser.Id,
+                Args = this.BuildArgs(),
+                UserIdentifier = this.CurrentUser.Id
+            };
         }
     }
 }

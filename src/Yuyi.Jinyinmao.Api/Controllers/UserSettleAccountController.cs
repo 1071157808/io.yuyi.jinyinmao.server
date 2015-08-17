@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-25  4:38 PM
+// File             : UserSettleAccountController.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-02  11:37 PM
+// Last Modified On : 2015-08-17  20:02
 // ***********************************************************************
 // <copyright file="UserSettleAccountController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -68,7 +67,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("Deposit/Yilian"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("Deposit/Yilian")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> DepositFromYilian(DepositFromYilianRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
@@ -105,7 +107,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAI:查询不到该账户的信息</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Info"), CookieAuthorize, ResponseType(typeof(SettleAccountInfoResponse))]
+        [HttpGet]
+        [Route("Info")]
+        [CookieAuthorize]
+        [ResponseType(typeof(SettleAccountInfoResponse))]
         public async Task<IHttpActionResult> Info()
         {
             SettleAccountInfo info = await this.userInfoService.GetSettleAccountInfoAsync(this.CurrentUser.Id);
@@ -128,7 +133,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAT1:交易流水不存在</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transaction/{transactionIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        [HttpGet]
+        [Route("Transaction/{transactionIdentifier:length(32)}")]
+        [CookieAuthorize]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> Transaction(string transactionIdentifier)
         {
             Guid transactionId;
@@ -157,7 +165,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAT1:交易流水不存在</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transactions/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<SettleAccountTransactionInfoResponse>))]
+        [HttpGet]
+        [Route("Transactions/{pageIndex:int=0}")]
+        [CookieAuthorize]
+        [ResponseType(typeof(PaginatedResponse<SettleAccountTransactionInfoResponse>))]
         public async Task<IHttpActionResult> Transactions(int pageIndex = 0)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
@@ -201,7 +212,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SettleAccountTransactionInfoResponse))]
+        [Route("Withdrawal")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> Withdrawal(WithdrawalRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
@@ -217,12 +232,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("USAW1:暂时无法取现");
-            }
 
             if (userInfo.TodayWithdrawalCount >= VariableHelper.DailyWithdrawalLimitCount)
             {

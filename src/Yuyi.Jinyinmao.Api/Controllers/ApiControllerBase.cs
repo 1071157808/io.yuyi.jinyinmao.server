@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : ApiControllerBase.cs
-// Created          : 2015-07-27  12:43 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  7:01 PM
+// Last Modified On : 2015-08-17  20:02
 // ***********************************************************************
 // <copyright file="ApiControllerBase.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -19,12 +19,13 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Utility;
 using Moe.Lib;
+using NLog;
 using Orleans;
 using Orleans.Runtime.Host;
+using LogManager = Yuyi.Jinyinmao.Log.LogManager;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
 {
@@ -64,12 +65,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         protected CurrentUser CurrentUser => this.currentUser ?? (this.currentUser = this.GetCurrentUser());
 
         /// <summary>
-        ///     Gets the trace writer.
+        ///     Gets the application logger.
         /// </summary>
-        /// <value>The trace writer.</value>
-        protected ITraceWriter TraceWriter
+        /// <value>The application logger.</value>
+        protected ILogger ApplicationLogger
         {
-            get { return this.Configuration.Services.GetTraceWriter(); }
+            get { return LogManager.GetApplicationLogger(); }
         }
 
         /// <summary>

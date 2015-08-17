@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  23:13
+// Last Modified On : 2015-08-17  20:49
 // ***********************************************************************
 // <copyright file="EntityGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -81,7 +81,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         protected void BeginProcessCommandAsync(ICommand command)
         {
-            this.StoreCommandAsync(command).Forget(e => SiloClusterErrorLogger.Log(e, "EntityCommandStoringError: {0}".FormatWith(e.Message)));
+            this.StoreCommandAsync(command).Forget(e => SiloClusterErrorLogger.LogError("EntityCommandStoringError: {0}".FormatWith(e.Message), e));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Yuyi.Jinyinmao.Domain
         protected void StoreEventAsync(IEvent @event)
         {
             EventRecord record = @event.ToRecord();
-            this.EventStore.StoreEventRecordAsync(record).Forget(e => SiloClusterErrorLogger.Log(e, "EntityEventStoringError: {0}".FormatWith(e.Message)));
+            this.EventStore.StoreEventRecordAsync(record).Forget(e => SiloClusterErrorLogger.LogError("EntityEventStoringError: {0}".FormatWith(e.Message), e));
         }
 
         /// <summary>

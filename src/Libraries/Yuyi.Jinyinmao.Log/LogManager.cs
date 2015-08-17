@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:08
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  17:19
+// Last Modified On : 2015-08-17  22:04
 // ***********************************************************************
 // <copyright file="LogManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,9 @@
 // ***********************************************************************
 
 using System;
+using System.Text;
+using Microsoft.WindowsAzure.ServiceRuntime;
+using Moe.Lib;
 using NLog;
 using NLog.Config;
 using NLog.Extensions.AzureTableStorage;
@@ -20,12 +23,74 @@ using NLog.Targets.Wrappers;
 namespace Yuyi.Jinyinmao.Log
 {
     /// <summary>
+    ///     ILoggerEx.
+    /// </summary>
+    public static class LoggerEx
+    {
+        /// <summary>
+        ///     Logs the error.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        public static void LogError(this ILogger logger, string message)
+        {
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append("   ");
+            messageBuilder.Append(RoleEnvironment.CurrentRoleInstance.Role.Name + RoleEnvironment.CurrentRoleInstance.Id);
+            messageBuilder.Append("   ");
+            messageBuilder.Append(message);
+
+            logger.Error(messageBuilder);
+        }
+
+        /// <summary>
+        ///     Logs the error.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        public static void LogError(this ILogger logger, string message, Exception exception)
+        {
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append("   ");
+            messageBuilder.Append(RoleEnvironment.CurrentRoleInstance.Role.Name + RoleEnvironment.CurrentRoleInstance.Id);
+            messageBuilder.Append("   ");
+            messageBuilder.Append(message);
+            messageBuilder.Append("   ");
+            messageBuilder.Append(exception.GetExceptionString());
+
+            logger.Error(messageBuilder);
+        }
+
+        /// <summary>
+        ///     Logs the message.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        public static void LogMessage(this ILogger logger, string message)
+        {
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append("   ");
+            messageBuilder.Append(RoleEnvironment.CurrentRoleInstance.Role.Name + RoleEnvironment.CurrentRoleInstance.Id);
+            messageBuilder.Append("   ");
+            messageBuilder.Append(message);
+
+            logger.Info(messageBuilder);
+        }
+    }
+
+    /// <summary>
     ///     LogManager.
     /// </summary>
     public static class LogManager
     {
         private static readonly Lazy<ILogger> ApplicationLogger = new Lazy<ILogger>(() => InitApplicationLogger());
-        private static readonly Lazy<ILogger> BackOfficeLogger = new Lazy<ILogger>(() => InitBackOfficeLogger());
         private static readonly Lazy<ILogger> ErrorLogger = new Lazy<ILogger>(() => InitErrorLogger());
         private static readonly Lazy<ILogger> TraceLogger = new Lazy<ILogger>(() => InitTraceLogger());
 
@@ -35,7 +100,6 @@ namespace Yuyi.Jinyinmao.Log
 
             AzureTableStorageTarget azureErrorTarget = new AzureTableStorageTarget();
             AzureTableStorageTarget azureTraceTarget = new AzureTableStorageTarget();
-            AzureTableStorageTarget azureBackOfficeTarget = new AzureTableStorageTarget();
             AzureTableStorageTarget azureApplicationTarget = new AzureTableStorageTarget();
             AsyncTargetWrapper azureErrorTargetWrapper = new AsyncTargetWrapper
             {
@@ -47,11 +111,6 @@ namespace Yuyi.Jinyinmao.Log
                 WrappedTarget = azureTraceTarget,
                 OverflowAction = AsyncTargetWrapperOverflowAction.Grow
             };
-            AsyncTargetWrapper azureBackOfficeTargetWrapper = new AsyncTargetWrapper
-            {
-                WrappedTarget = azureBackOfficeTarget,
-                OverflowAction = AsyncTargetWrapperOverflowAction.Grow
-            };
             AsyncTargetWrapper azureApplicationTargetWrapper = new AsyncTargetWrapper
             {
                 WrappedTarget = azureApplicationTarget,
@@ -60,7 +119,6 @@ namespace Yuyi.Jinyinmao.Log
 
             config.AddTarget("azureErrorTarget", azureErrorTargetWrapper);
             config.AddTarget("azureTraceTarget", azureTraceTargetWrapper);
-            config.AddTarget("azureBackOfficeTarget", azureBackOfficeTargetWrapper);
             config.AddTarget("azureApplicationTarget", azureApplicationTargetWrapper);
 
             azureErrorTarget.ConnectionStringKey = "DataConnectionString";
@@ -71,17 +129,12 @@ namespace Yuyi.Jinyinmao.Log
             azureTraceTarget.Layout = "${message}";
             azureTraceTarget.TableName = "JYMTraceLogs";
 
-            azureBackOfficeTarget.ConnectionStringKey = "DataConnectionString";
-            azureBackOfficeTarget.Layout = "${message}";
-            azureBackOfficeTarget.TableName = "JYMBackOfficeLogs";
-
             azureApplicationTarget.ConnectionStringKey = "DataConnectionString";
             azureApplicationTarget.Layout = "${message}";
             azureApplicationTarget.TableName = "JYMApplicationLogs";
 
             config.LoggingRules.Add(new LoggingRule("ErrorLogger", LogLevel.Error, azureErrorTarget));
-            config.LoggingRules.Add(new LoggingRule("TraceLogger", LogLevel.Info, azureTraceTarget));
-            config.LoggingRules.Add(new LoggingRule("BackOfficeLogger", LogLevel.Info, azureBackOfficeTarget));
+            config.LoggingRules.Add(new LoggingRule("TraceLogger", LogLevel.Error, azureTraceTarget));
             config.LoggingRules.Add(new LoggingRule("ApplicationLogger", LogLevel.Info, azureApplicationTarget));
 
             NLog.LogManager.Configuration = config;
@@ -94,15 +147,6 @@ namespace Yuyi.Jinyinmao.Log
         public static ILogger GetApplicationLogger()
         {
             return ApplicationLogger.Value;
-        }
-
-        /// <summary>
-        ///     Gets the back office logger.
-        /// </summary>
-        /// <returns>ILogger.</returns>
-        public static ILogger GetBackOfficeLogger()
-        {
-            return BackOfficeLogger.Value;
         }
 
         /// <summary>
@@ -126,11 +170,6 @@ namespace Yuyi.Jinyinmao.Log
         private static ILogger InitApplicationLogger()
         {
             return NLog.LogManager.GetLogger("ApplicationLogger");
-        }
-
-        private static ILogger InitBackOfficeLogger()
-        {
-            return NLog.LogManager.GetLogger("BackOfficeLogger");
         }
 
         private static ILogger InitErrorLogger()

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-26  11:35 PM
+// File             : EventProcessingLogger.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  10:55 PM
+// Last Modified On : 2015-08-17  20:49
 // ***********************************************************************
 // <copyright file="EventProcessingLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -31,7 +31,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="exception">The exception.</param>
         public void LogError(Guid eventId, string message, Exception exception = null)
         {
-            SiloClusterErrorLogger.Log(exception, "EventProcessingError: {0}".FormatWith(message));
+            SiloClusterErrorLogger.LogError("EventProcessingError: {0}".FormatWith(message), exception);
         }
 
         #endregion IEventProcessingLogger Members

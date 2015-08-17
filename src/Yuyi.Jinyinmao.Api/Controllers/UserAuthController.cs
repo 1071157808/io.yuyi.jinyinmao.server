@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  8:54
+// Last Modified On : 2015-08-17  20:01
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using System.Web.Security;
 using Moe.AspNet.Filters;
 using Moe.AspNet.Utility;
@@ -101,12 +100,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UAA1:无法开通快捷支付功能");
-            }
 
             if (userInfo.Closed)
             {
@@ -272,12 +265,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             UserInfo userInfo = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UARPP4:无法重置支付密码");
-            }
-
             if (userInfo.Closed)
             {
                 return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
@@ -338,12 +325,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UASPP3:无法设置支付密码");
-            }
 
             if (userInfo.Closed)
             {

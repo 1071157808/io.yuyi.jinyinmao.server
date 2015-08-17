@@ -74,7 +74,8 @@ namespace Yuyi.Jinyinmao.Domain
                 { typeof(SettleAccountTransactionCanceled), e => this.GrainFactory.GetGrain<ISettleAccountTransactionCanceledProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionCanceled)e) },
                 { typeof(OrderTransfered), e => this.GrainFactory.GetGrain<IOrderTransferedProcessor>(e.EventId).ProcessEventAsync((OrderTransfered)e) },
                 { typeof(JBYTransactionTransfered), e => this.GrainFactory.GetGrain<IJBYTransactionTransferedProcessor>(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) },
-                { typeof(OrderCanceled), e => this.GrainFactory.GetGrain<IOrderCanceledProcessor>(e.EventId).ProcessEventAsync((OrderCanceled)e) }
+                { typeof(OrderCanceled), e => this.GrainFactory.GetGrain<IOrderCanceledProcessor>(e.EventId).ProcessEventAsync((OrderCanceled)e) },
+                { typeof(UserSigned), e=> this.GrainFactory.GetGrain<IUserSignedProcessor>(e.EventId).ProcessEventAsync((UserSigned)e) }
             };
 
             return eventProcessing[evenType];
@@ -149,28 +150,6 @@ namespace Yuyi.Jinyinmao.Domain
             DepositResulted @event = new DepositResulted
             {
                 Args = command.Args,
-                Result = result,
-                TransDesc = message,
-                TransactionInfo = info,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-
-            await this.ProcessEventAsync(@event);
-        }
-
-        /// <summary>
-        ///     Raises the deposit resulted event.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        /// <param name="info">The information.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
-        /// <returns>Task.</returns>
-        private async Task RaiseDepositResultedEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info, bool result, string message)
-        {
-            DepositResulted @event = new DepositResulted
-            {
-                Args = args,
                 Result = result,
                 TransDesc = message,
                 TransactionInfo = info,
@@ -485,6 +464,18 @@ namespace Yuyi.Jinyinmao.Domain
             UserRegistered @event = new UserRegistered
             {
                 Args = command.Args,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+
+            await this.ProcessEventAsync(@event);
+        }
+
+        private async Task RaiseUserSignedEvent(Sign command, SettleAccountTransactionInfo settleAccountTransactionInfo)
+        {
+            UserSigned @event = new UserSigned
+            {
+                Args = command.Args,
+                TransactionInfo = settleAccountTransactionInfo,
                 UserInfo = await this.GetUserInfoAsync()
             };
 

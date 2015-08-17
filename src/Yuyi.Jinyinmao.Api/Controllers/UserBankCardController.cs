@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  2:42
+// Last Modified On : 2015-08-17  20:01
 // ***********************************************************************
 // <copyright file="UserBankCardController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,9 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
-using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Api.Models.User;
@@ -85,12 +83,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBCABC1:无法添加银行卡");
-            }
-
             if (userInfo.Closed)
             {
                 return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
@@ -154,12 +146,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBCABCBY1:无法添加银行卡");
-            }
-
             if (userInfo.Closed)
             {
                 return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
@@ -203,11 +189,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> Index()
         {
             List<BankCardInfo> cards = await this.userInfoService.GetBankCardInfosAsync(this.CurrentUser.Id);
-            if (cards == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBI1:无法获取用户信息");
-            }
 
             return this.Ok(cards.OrderByDescending(c => c.VerifiedByYilian).ThenByDescending(c => c.AddingTime).Select(c => c.ToResponse()).ToList());
         }
@@ -265,12 +246,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> RemoveBankCard(DeleteBankCardRequest request)
         {
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
-
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBCDBC1:无法删除银行卡");
-            }
 
             if (userInfo.Closed)
             {
@@ -332,12 +307,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (userInfo == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-AddBankCard:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBCVBC1:无法添加银行卡");
-            }
-
             if (userInfo.Closed)
             {
                 return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
@@ -384,11 +353,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> WithdrawalableCardInfos()
         {
             List<BankCardInfo> cards = await this.userInfoService.GetWithdrawalableBankCardInfosAsync(this.CurrentUser.Id);
-            if (cards == null)
-            {
-                this.TraceWriter.Error(this.Request, "Application", "User-GetBankCards:Can not load user bank cards data.{0}".FormatWith(this.CurrentUser.Id));
-                return this.BadRequest("UBWCI:无法获取用户信息");
-            }
 
             return this.Ok(cards.OrderByDescending(c => c.WithdrawAmount).Select(c => c.ToResponse()).ToList());
         }

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  14:32
+// Last Modified On : 2015-08-17  20:41
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -98,12 +98,12 @@ namespace Yuyi.Jinyinmao.Domain
                     JBYAccountTransactionInfo transactionInfo = await this.JBYReinvestingAsync();
                     builder.Append(transactionInfo == null ? "JBYReinvesting: SKIPPED." : "JBYReinvesting: {0}".FormatWith(transactionInfo.ToJson()));
 
-                    SiloClusterTraceLogger.Log(builder.ToString());
+                    SiloClusterApplicationLogger.LogMessage(builder.ToString());
                 }
             }
             catch (Exception e)
             {
-                SiloClusterErrorLogger.Log(e, "UserDailyWorkError: {0}".FormatWith(e.Message));
+                SiloClusterErrorLogger.LogError("UserDailyWorkError: {0}".FormatWith(e.Message), e);
             }
         }
 

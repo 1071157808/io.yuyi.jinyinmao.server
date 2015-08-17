@@ -170,6 +170,7 @@
     <Compile Include="EventProcessor\JBYAccountTransactionCanceledProcessor.cs" />
     <Compile Include="EventProcessor\JBYTransactionTransferedProcessor.cs" />
     <Compile Include="EventProcessor\OrderCanceledProcessor.cs" />
+    <Compile Include="EventProcessor\UserSignedProcessor.cs" />
     <Compile Include="EventProcessor\OrderTransferedProcessor.cs" />
     <Compile Include="EventProcessor\SettleAccountTransactionCanceledProcessor.cs" />
     <Compile Include="EventProcessor\SettleAccountTransactionResultedProcessor.cs" />

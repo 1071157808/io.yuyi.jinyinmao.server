@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-19  5:34 PM
+// File             : WebApiConfig.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-31  12:35 AM
+// Last Modified On : 2015-08-17  19:52
 // ***********************************************************************
 // <copyright file="WebApiConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -39,8 +39,8 @@ namespace Yuyi.Jinyinmao.Api.Sms
             config.Services.Add(typeof(IExceptionLogger), new ExceptionLogger());
 
             SystemDiagnosticsTraceWriter traceWriter = config.EnableSystemDiagnosticsTracing();
-            traceWriter.IsVerbose = true;
-            traceWriter.MinimumLevel = TraceLevel.Info;
+            traceWriter.IsVerbose = false;
+            traceWriter.MinimumLevel = TraceLevel.Error;
 
             JsonMediaTypeFormatter formatter = new JsonMediaTypeFormatter
             {

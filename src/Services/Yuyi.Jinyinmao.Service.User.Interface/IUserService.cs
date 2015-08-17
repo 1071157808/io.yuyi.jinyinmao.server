@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  10:10
+// Last Modified On : 2015-08-17  20:10
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -120,9 +120,9 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <summary>
         ///     Signs the asynchronous.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        Task<SettleAccountTransactionInfo> SignAsync(Guid userId);
+        Task<SettleAccountTransactionInfo> SignAsync(Sign command);
 
         /// <summary>
         ///     Verifies the bank card asynchronous.

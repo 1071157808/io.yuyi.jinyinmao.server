@@ -117,6 +117,7 @@
     <Compile Include="Commands\PayByYilian.cs" />
     <Compile Include="Commands\PayCommand.cs" />
     <Compile Include="Commands\RegularInvesting.cs" />
+    <Compile Include="Commands\Sign.cs" />
     <Compile Include="Commands\VerifyBankCard.cs" />
     <Compile Include="Commands\Withdrawal.cs" />
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="EventProcessor\IJBYAccountTransactionCanceledProcessor.cs" />
     <Compile Include="EventProcessor\IJBYTransactionTransferedProcessor.cs" />
     <Compile Include="EventProcessor\IOrderCanceledProcessor.cs" />
+    <Compile Include="EventProcessor\IUserSignedProcessor.cs" />
     <Compile Include="EventProcessor\IOrderTransferedProcessor.cs" />
     <Compile Include="EventProcessor\ISettleAccountTransactionCanceledProcessor.cs" />
     <Compile Include="EventProcessor\ISettleAccountTransactionResultedProcessor.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="Events\PayingByYilian.cs" />
     <Compile Include="Events\RegularProductIssued.cs" />
     <Compile Include="Events\RegularProductSoldOut.cs" />
+    <Compile Include="Events\UserSigned.cs" />
     <Compile Include="Events\VerifyBankCardResulted.cs" />
     <Compile Include="Events\WithdrawalAccepted.cs" />
     <Compile Include="Events\WithdrawalResulted.cs" />

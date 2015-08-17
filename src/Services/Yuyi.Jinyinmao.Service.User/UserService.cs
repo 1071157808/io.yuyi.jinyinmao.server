@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  8:53
+// Last Modified On : 2015-08-17  20:10
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,7 +36,7 @@ namespace Yuyi.Jinyinmao.Service
         #region IUserService Members
 
         /// <summary>
-        /// Adds the bank card asynchronous.
+        ///     Adds the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;BankCardInfo&gt;.</returns>
@@ -406,7 +406,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Hides the bank card asynchronous.
+        ///     Hides the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;BankCardInfo&gt;.</returns>
@@ -471,7 +471,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Resets the login password.
+        ///     Resets the login password.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -482,7 +482,7 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Sets the payment password asynchronous.
+        ///     Sets the payment password asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -493,14 +493,14 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        /// Signs the asynchronous.
+        ///     Signs the asynchronous.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        public Task<SettleAccountTransactionInfo> SignAsync(Guid userId)
+        public Task<SettleAccountTransactionInfo> SignAsync(Sign command)
         {
-            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
-            return user.SignAsync();
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserIdentifier);
+            return user.SignAsync(command);
         }
 
         /// <summary>

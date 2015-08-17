@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  2:22
+// Last Modified On : 2015-08-17  22:11
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Moe.AspNet.Filters;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Filters;
@@ -24,6 +23,7 @@ using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Api.Models.BackOffice;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
+using Yuyi.Jinyinmao.Log;
 using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -146,7 +146,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            this.TraceWriter.Info(this.Request, "BackOffice", "JBYProductIssue. {0}", request.ToJson());
+            this.ApplicationLogger.LogMessage("JBYProductIssue. {0}".FormatWith(request.ToJson()));
 
             JBYProductInfo jbyProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
 
@@ -213,7 +213,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品每份单价不能被融资总金额整除");
             }
 
-            this.TraceWriter.Info(this.Request, "BackOffice", "RegularProductIssue. {0}", request.ToJson());
+            this.ApplicationLogger.LogMessage("RegularProductIssue. {0}".FormatWith(request.ToJson()));
 
             RegularProductInfo regularProductInfo = await this.productService.HitShelvesAsync(this.BuildCommand(request));
 
@@ -303,10 +303,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
         private IssueRegularProduct BuildCommand(IssueProductRequest request)
         {
-            Dictionary<string, object> args = this.BuildArgs(new Dictionary<string, object>
-            {
-                { "IssueRequest", request.ToJson(string.Empty) }
-            });
+            Dictionary<string, object> args = this.BuildArgs();
 
             Guid productId = Guid.NewGuid();
 
@@ -349,10 +346,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         private IssueJBYProduct BuildCommand(IssueJBYProductRequest request)
         {
             DailyConfig config = DailyConfigHelper.GetDailyConfig(request.StartSellTime);
-            Dictionary<string, object> args = this.BuildArgs(new Dictionary<string, object>
-            {
-                { "IssueRequest", request.ToJson(string.Empty) }
-            });
+            Dictionary<string, object> args = this.BuildArgs();
 
             Guid productId = Guid.NewGuid();
 

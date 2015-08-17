@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : SagaGrain.cs
-// Created          : 2015-04-26  11:35 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  2:39 AM
+// Last Modified On : 2015-08-17  20:49
 // ***********************************************************************
 // <copyright file="SagaGrain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -149,7 +149,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             catch (Exception e)
             {
-                SiloClusterErrorLogger.Log(e, "SagaErrorLogingError: {0}".FormatWith(e.Message));
+                SiloClusterErrorLogger.LogError("SagaErrorLogingError: {0}".FormatWith(e.Message), e);
             }
         }
 
