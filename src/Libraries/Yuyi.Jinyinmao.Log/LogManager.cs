@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:08
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  13:24
+// Last Modified On : 2015-08-17  14:54
 // ***********************************************************************
 // <copyright file="LogManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,6 +15,7 @@ using System;
 using NLog;
 using NLog.Config;
 using NLog.Extensions.AzureTableStorage;
+using NLog.Targets.Wrappers;
 
 namespace Yuyi.Jinyinmao.Log
 {
@@ -36,11 +37,31 @@ namespace Yuyi.Jinyinmao.Log
             AzureTableStorageTarget azureTraceTarget = new AzureTableStorageTarget();
             AzureTableStorageTarget azureBackOfficeTarget = new AzureTableStorageTarget();
             AzureTableStorageTarget azureApplicationTarget = new AzureTableStorageTarget();
+            AsyncTargetWrapper azureErrorTargetWrapper = new AsyncTargetWrapper
+            {
+                WrappedTarget = azureErrorTarget,
+                OverflowAction = AsyncTargetWrapperOverflowAction.Grow
+            };
+            AsyncTargetWrapper azureTraceTargetWrapper = new AsyncTargetWrapper
+            {
+                WrappedTarget = azureTraceTarget,
+                OverflowAction = AsyncTargetWrapperOverflowAction.Grow
+            };
+            AsyncTargetWrapper azureBackOfficeTargetWrapper = new AsyncTargetWrapper
+            {
+                WrappedTarget = azureBackOfficeTarget,
+                OverflowAction = AsyncTargetWrapperOverflowAction.Grow
+            };
+            AsyncTargetWrapper azureApplicationTargetWrapper = new AsyncTargetWrapper
+            {
+                WrappedTarget = azureApplicationTarget,
+                OverflowAction = AsyncTargetWrapperOverflowAction.Grow
+            };
 
-            config.AddTarget("azureErrorTarget", azureErrorTarget);
-            config.AddTarget("azureTraceTarget", azureTraceTarget);
-            config.AddTarget("azureBackOfficeTarget", azureBackOfficeTarget);
-            config.AddTarget("azureApplicationTarget", azureApplicationTarget);
+            config.AddTarget("azureErrorTarget", azureErrorTargetWrapper);
+            config.AddTarget("azureTraceTarget", azureTraceTargetWrapper);
+            config.AddTarget("azureBackOfficeTarget", azureBackOfficeTargetWrapper);
+            config.AddTarget("azureApplicationTarget", azureApplicationTargetWrapper);
 
             azureErrorTarget.ConnectionStringKey = "DataConnectionString";
             azureErrorTarget.Layout = "${message}";

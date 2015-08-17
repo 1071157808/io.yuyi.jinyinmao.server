@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-15  22:42
+// Last Modified On : 2015-08-17  14:24
 // ***********************************************************************
 // <copyright file="SiloClusterConfig.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -41,9 +41,11 @@ namespace Yuyi.Jinyinmao.Domain
             tableClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(2), 6);
             tableClient.DefaultRequestOptions.MaximumExecutionTime = TimeSpan.FromMinutes(5);
             tableClient.DefaultRequestOptions.ServerTimeout = TimeSpan.FromMinutes(5);
-            ErrorLogsTable = tableClient.GetTableReference("Errors");
-            CacheTable = tableClient.GetTableReference("Cache");
-            SagasTable = tableClient.GetTableReference("Sagas");
+            CacheTable = tableClient.GetTableReference("JYMCache");
+            SagasTable = tableClient.GetTableReference("JYMSagaLogs");
+
+            CacheTable.CreateIfNotExists();
+            SagasTable.CreateIfNotExists();
 
             CloudBlobClient blobClient = CloudStorageAccount.CreateCloudBlobClient();
             blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(2), 6);
@@ -53,6 +55,11 @@ namespace Yuyi.Jinyinmao.Domain
             PrivateFileContainer = blobClient.GetContainerReference("privatefiles");
             CommandStoreContainer = blobClient.GetContainerReference("commands");
             EventStoreContainer = blobClient.GetContainerReference("events");
+
+            PublicFileContainer.CreateIfNotExists();
+            PrivateFileContainer.CreateIfNotExists();
+            CommandStoreContainer.CreateIfNotExists();
+            EventStoreContainer.CreateIfNotExists();
         }
 
         /// <summary>
@@ -73,12 +80,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <value>The command store container.</value>
         public static CloudBlobContainer CommandStoreContainer { get; }
-
-        /// <summary>
-        ///     Gets the error logs table.
-        /// </summary>
-        /// <value>The error logs table.</value>
-        public static CloudTable ErrorLogsTable { get; }
 
         /// <summary>
         ///     Gets the event store container.

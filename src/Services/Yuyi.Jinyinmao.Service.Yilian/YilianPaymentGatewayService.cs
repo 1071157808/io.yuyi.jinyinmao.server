@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : YilianPaymentGatewayService.cs
-// Created          : 2015-04-26  11:05 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-05  3:41 AM
+// Last Modified On : 2015-08-17  14:32
 // ***********************************************************************
 // <copyright file="YilianPaymentGatewayService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -165,7 +165,7 @@ namespace Yuyi.Jinyinmao.Service
                     JArray jArray = resultJObjects.SelectToken("TRANS_DETAILS").Value<JArray>();
                     string result = jArray.First.SelectToken("PAY_STATE").Value<string>();
                     string message = jArray.First.SelectToken("REMARK").Value<string>();
-                    message = message.Substring(message.IndexOf(':') + 1);
+                    message = message.Substring(message.IndexOf(':') + 1).Replace("IVR2：", "");
 
                     // 易联很坑爹，现在这样写，00A4 需要忽略
                     if (result.ToUpper() == "00A4")

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  13:33
+// Last Modified On : 2015-08-17  14:32
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -57,6 +57,16 @@ namespace Yuyi.Jinyinmao.Domain
         /// <returns>Task.</returns>
         public async Task DoDailyWorkAsync(bool force = false)
         {
+            if (this.State.UserId == Guid.Empty && !this.State.Verified)
+            {
+                IGrainReminder reminder = (await this.GetReminders()).FirstOrDefault(r => r.ReminderName == "DailyWork");
+
+                if (reminder != null)
+                {
+                    await this.UnregisterReminder(reminder);
+                }
+            }
+
             try
             {
                 if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 7 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 1))
