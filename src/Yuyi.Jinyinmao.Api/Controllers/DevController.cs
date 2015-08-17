@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  9:54
+// Last Modified On : 2015-08-17  12:32
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -28,6 +28,7 @@ using Orleans;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
 using Yuyi.Jinyinmao.Domain;
+using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
@@ -41,17 +42,14 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     [RoutePrefix("")]
     public class DevController : ApiControllerBase
     {
-        private readonly IProductService productService;
         private readonly IUserService userService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="DevController" /> class.
         /// </summary>
-        /// <param name="productService">The product service.</param>
         /// <param name="userService">The user service.</param>
-        public DevController(IProductService productService, IUserService userService)
+        public DevController(IUserService userService)
         {
-            this.productService = productService;
             this.userService = userService;
         }
 
@@ -82,7 +80,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> CheckProductSaleStatus(string productIdentifier)
         {
-            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).CheckSaleStatusAsync();
             return this.Ok();
         }
@@ -99,9 +102,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DepositSaga(string sagaIdentifier)
         {
-            Guid sagaId = Guid.ParseExact(sagaIdentifier, "N");
-            await GrainClient.GrainFactory.GetGrain<IDepositSaga>(sagaId).ProcessAsync();
+            Guid sagaId = sagaIdentifier.AsGuid();
+            if (sagaId == Guid.Empty)
+            {
+                return this.BadRequest("Saga唯一标识错误");
+            }
 
+            await GrainClient.GrainFactory.GetGrain<IDepositSaga>(sagaId).ProcessAsync();
             return this.Ok();
         }
 
@@ -117,7 +124,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DoDailyWork(string userIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IUser>(userId).DoDailyWorkAsync(true);
             return this.Ok();
         }
@@ -149,7 +161,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DumpProduct(string productIdentifier)
         {
-            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).DumpAsync();
             return this.Ok();
         }
@@ -166,7 +183,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> DumpUser(string userIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IUser>(userId).DumpAsync();
             return this.Ok();
         }
@@ -227,7 +249,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid userId = userIdentifier.AsGuid();
             if (userId == Guid.Empty)
             {
-                return this.BadRequest("无该用户信息");
+                return this.BadRequest("用户唯一标识错误");
             }
 
             UserInfo info = await this.userService.GetUserInfoAsync(userId);
@@ -253,19 +275,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> InsertJBYAccountTranscation(InsertJBYAccountTransactionRequest request)
         {
-            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
-
-            InsertJBYAccountTransactionDto dto = new InsertJBYAccountTransactionDto
+            Guid userId = request.UserIdentifier.AsGuid();
+            if (userId == Guid.Empty)
             {
-                Amount = request.Amount,
-                Args = this.BuildArgs(),
-                Trade = request.Trade,
-                TradeCode = request.TradeCode,
-                TransDesc = request.TransDesc,
-                UserId = userId
-            };
+                return this.BadRequest("用户唯一标识错误");
+            }
 
-            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).InsertJBYAccountTranscationAsync(dto);
+            InsertJBYAccountTransaction command = this.BuildCommand(request, userId);
+
+            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).InsertJBYAccountTranscationAsync(command);
             return this.Ok(info.ToResponse());
         }
 
@@ -283,21 +301,15 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> InsertSettleAccountTranscation(InsertSettleAccountTransactionRequest request)
         {
-            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
-
-            InsertSettleAccountTransactionDto dto = new InsertSettleAccountTransactionDto
+            Guid userId = request.UserIdentifier.AsGuid();
+            if (userId == Guid.Empty)
             {
-                Amount = request.Amount,
-                Args = this.BuildArgs(),
-                BankCardNo = request.BankCardNo,
-                OrderId = request.OrderId.GetValueOrDefault(Guid.Empty),
-                Trade = request.Trade,
-                TradeCode = request.TradeCode,
-                TransDesc = request.TransDesc,
-                UserId = userId
-            };
+                return this.BadRequest("用户唯一标识错误");
+            }
 
-            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).InsertSettleAccountTranscationAsync(dto);
+            InsertSettleAccountTransaction command = this.BuildCommand(request, userId);
+
+            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).InsertSettleAccountTranscationAsync(command);
             return this.Ok(info.ToResponse());
         }
 
@@ -314,7 +326,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> LockUser(string userIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
 
             UserInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).LockAsync();
 
@@ -380,7 +396,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReloadProduct(string productIdentifier)
         {
-            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).ReloadAsync();
             return this.Ok();
         }
@@ -397,7 +418,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReloadUser(string userIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IUser>(userId).ReloadAsync();
             return this.Ok();
         }
@@ -414,7 +440,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> ReprocessDepositSaga(string sagaIdentifier)
         {
-            Guid sagaId = Guid.ParseExact(sagaIdentifier, "N");
+            Guid sagaId = sagaIdentifier.AsGuid();
+            if (sagaId == Guid.Empty)
+            {
+                return this.BadRequest("Saga唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IDepositSaga>(sagaId).ReprocessAsync();
 
             return this.Ok();
@@ -432,10 +463,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> SetJBYAccountTransactionResult(SetJBYAccountTransactionResultRequest request)
         {
-            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
-            Guid transacationId = Guid.ParseExact(request.TransactionIdentifier, "N");
+            Guid userId = request.UserIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
 
-            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).SetJBYAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
+            Guid transacationId = request.TransactionIdentifier.AsGuid();
+            if (transacationId == Guid.Empty)
+            {
+                return this.BadRequest("流水唯一标识错误");
+            }
+
+            SetJBYAccountTransactionResult command = this.BuildCommand(request, userId, transacationId);
+
+            JBYAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).SetJBYAccountTransactionResultAsync(command);
 
             if (info == null)
             {
@@ -472,7 +514,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SetProductToOnSale(string productIdentifier)
         {
-            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).SetToOnSaleAsync();
             return this.Ok();
         }
@@ -489,7 +536,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SetProductToSoldOut(string productIdentifier)
         {
-            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).SetToSoldOutAsync();
             return this.Ok();
         }
@@ -506,10 +558,21 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
         public async Task<IHttpActionResult> SetSettleAccountTransactionResult(SetSettleAccountTransactionResultRequest request)
         {
-            Guid userId = Guid.ParseExact(request.UserIdentifier, "N");
-            Guid transacationId = Guid.ParseExact(request.TransactionIdentifier, "N");
+            Guid userId = request.UserIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
 
-            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).SetSettleAccountTransactionResultAsync(transacationId, request.Result, request.Message, this.BuildArgs());
+            Guid transacationId = request.TransactionIdentifier.AsGuid();
+            if (transacationId == Guid.Empty)
+            {
+                return this.BadRequest("流水唯一标识错误");
+            }
+
+            SetSettleAccountTransactionResult command = this.BuildCommand(request, userId, transacationId);
+
+            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).SetSettleAccountTransactionResultAsync(command);
 
             if (info == null)
             {
@@ -546,7 +609,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SyncProduct(string productIdentifier)
         {
-            Guid productId = Guid.ParseExact(productIdentifier, "N");
+            Guid productId = productIdentifier.AsGuid();
+            if (productId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).SyncAsync();
             return this.Ok();
         }
@@ -563,7 +631,12 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [IpAuthorize(OnlyLocalHost = true)]
         public async Task<IHttpActionResult> SyncUser(string userIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
+
             await GrainClient.GrainFactory.GetGrain<IUser>(userId).SyncAsync();
             return this.Ok();
         }
@@ -581,7 +654,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [ResponseType(typeof(UserInfoResponse))]
         public async Task<IHttpActionResult> UnlockUser(string userIdentifier)
         {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
+            Guid userId = userIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
 
             UserInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).UnlockAsync();
 
@@ -606,6 +683,62 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                     .UnregisterAsync();
             }
             return this.Ok();
+        }
+
+        private InsertSettleAccountTransaction BuildCommand(InsertSettleAccountTransactionRequest request, Guid userId)
+        {
+            return new InsertSettleAccountTransaction
+            {
+                EntityId = userId,
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                OrderId = request.OrderId.GetValueOrDefault(Guid.Empty),
+                Trade = request.Trade,
+                TradeCode = request.TradeCode,
+                TransDesc = request.TransDesc,
+                UserId = userId
+            };
+        }
+
+        private SetJBYAccountTransactionResult BuildCommand(SetJBYAccountTransactionResultRequest request, Guid userId, Guid transacationId)
+        {
+            return new SetJBYAccountTransactionResult
+            {
+                EntityId = userId,
+                Args = this.BuildArgs(),
+                Result = request.Result,
+                TransacationId = transacationId,
+                TransDesc = request.TransDesc,
+                UserId = userId
+            };
+        }
+
+        private SetSettleAccountTransactionResult BuildCommand(SetSettleAccountTransactionResultRequest request, Guid userId, Guid transacationId)
+        {
+            return new SetSettleAccountTransactionResult
+            {
+                EntityId = userId,
+                Args = this.BuildArgs(),
+                Result = request.Result,
+                TransacationId = transacationId,
+                TransDesc = request.TransDesc,
+                UserId = userId
+            };
+        }
+
+        private InsertJBYAccountTransaction BuildCommand(InsertJBYAccountTransactionRequest request, Guid userId)
+        {
+            return new InsertJBYAccountTransaction
+            {
+                EntityId = userId,
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                Trade = request.Trade,
+                TradeCode = request.TradeCode,
+                TransDesc = request.TransDesc,
+                UserId = userId
+            };
         }
     }
 }

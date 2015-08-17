@@ -667,74 +667,41 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Insert jby account transcation as an asynchronous operation.
+        /// Insert jby account transcation as an asynchronous operation.
         /// </summary>
-        /// <param name="transactionDto">The transaction dto.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        public async Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto)
+        public async Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransaction command)
         {
             DateTime now = DateTime.UtcNow.ToChinaStandardTime();
-            JBYAccountTransaction transaction = new JBYAccountTransaction
-            {
-                Amount = transactionDto.Amount,
-                Args = transactionDto.Args,
-                PredeterminedResultDate = now,
-                ProductId = SpecialIdHelper.ReversalJBYTransactionProductId,
-                ResultCode = 1,
-                ResultTime = now,
-                SettleAccountTransactionId = Guid.Empty,
-                Trade = transactionDto.Trade,
-                TradeCode = transactionDto.TradeCode,
-                TransactionId = Guid.NewGuid(),
-                TransactionTime = now,
-                TransDesc = transactionDto.TransDesc,
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync()
-            };
+            JBYAccountTransaction transaction = await this.BuildJBYTransaction(command, now);
 
             this.State.JBYAccount.Add(transaction.TransactionId, transaction);
 
             await this.WriteStateAsync();
             this.ReloadJBYAccountData();
             JBYAccountTransactionInfo transactionInfo = transaction.ToInfo();
-            await this.RaiseTransactionInsertdEvent(transactionDto, transactionInfo);
+            await this.RaiseTransactionInsertdEvent(command, transactionInfo);
 
             return transactionInfo;
         }
 
         /// <summary>
-        ///     insert settle account transcation as an asynchronous operation.
+        /// insert settle account transcation as an asynchronous operation.
         /// </summary>
-        /// <param name="transactionDto">The transaction dto.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        public async Task<SettleAccountTransactionInfo> InsertSettleAccountTranscationAsync(InsertSettleAccountTransactionDto transactionDto)
+        public async Task<SettleAccountTransactionInfo> InsertSettleAccountTranscationAsync(InsertSettleAccountTransaction command)
         {
             DateTime now = DateTime.UtcNow.ToChinaStandardTime();
-            SettleAccountTransaction transaction = new SettleAccountTransaction
-            {
-                Amount = transactionDto.Amount,
-                Args = transactionDto.Args,
-                BankCardNo = transactionDto.BankCardNo,
-                ChannelCode = ChannelCodeHelper.Jinyinmao,
-                OrderId = transactionDto.OrderId,
-                ResultCode = 1,
-                ResultTime = now,
-                SequenceNo = await this.GetSequenceNoAsync(),
-                Trade = transactionDto.Trade,
-                TradeCode = transactionDto.TradeCode,
-                TransactionId = Guid.NewGuid(),
-                TransactionTime = now,
-                TransDesc = transactionDto.TransDesc,
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync()
-            };
+            SettleAccountTransaction transaction = await this.BuildTransaction(command, now);
 
             this.State.SettleAccount.Add(transaction.TransactionId, transaction);
 
             await this.WriteStateAsync();
             this.ReloadSettleAccountData();
             SettleAccountTransactionInfo transactionInfo = transaction.ToInfo();
-            await this.RaiseTransactionInsertdEvent(transactionDto, transactionInfo);
+            await this.RaiseTransactionInsertdEvent(command, transactionInfo);
 
             return transactionInfo;
         }
@@ -1128,28 +1095,25 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Set transaction result as an asynchronous operation.
+        /// Set transaction result as an asynchronous operation.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        public async Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args)
+        public async Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(SetJBYAccountTransactionResult command)
         {
             JBYAccountTransaction transaction;
-            if (!this.State.JBYAccount.TryGetValue(transactionId, out transaction))
+            if (!this.State.JBYAccount.TryGetValue(command.TransacationId, out transaction))
             {
                 return null;
             }
 
-            transaction.ResultCode = result ? 1 : -1;
+            transaction.ResultCode = command.Result ? 1 : -1;
             transaction.ResultTime = DateTime.UtcNow.ToChinaStandardTime();
-            transaction.TransDesc = message;
+            transaction.TransDesc = command.TransDesc;
 
             await this.SaveStateAsync();
             this.ReloadJBYAccountData();
-            await this.RaiseJBYAccountTransactionResultedEvent(args, transaction.ToInfo(), result, message);
+            await this.RaiseJBYAccountTransactionResultedEvent(command, transaction.ToInfo());
 
             return transaction.ToInfo();
         }
@@ -1179,28 +1143,25 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Set transaction result as an asynchronous operation.
+        /// Set transaction result as an asynchronous operation.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        public async Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args)
+        public async Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(SetSettleAccountTransactionResult command)
         {
             SettleAccountTransaction transaction;
-            if (!this.State.SettleAccount.TryGetValue(transactionId, out transaction))
+            if (!this.State.SettleAccount.TryGetValue(command.TransacationId, out transaction))
             {
                 return null;
             }
 
-            transaction.ResultCode = result ? 1 : -1;
+            transaction.ResultCode = command.Result ? 1 : -1;
             transaction.ResultTime = DateTime.UtcNow.ToChinaStandardTime();
-            transaction.TransDesc = message;
+            transaction.TransDesc = command.TransDesc;
 
             await this.SaveStateAsync();
             this.ReloadSettleAccountData();
-            await this.RaiseSettleAccountTransactionResultedEvent(args, transaction.ToInfo(), result, message);
+            await this.RaiseSettleAccountTransactionResultedEvent(command, transaction.ToInfo());
 
             return transaction.ToInfo();
         }
@@ -1396,7 +1357,168 @@ namespace Yuyi.Jinyinmao.Domain
             return info;
         }
 
+        private async Task<JBYAccountTransaction> BuildJBYTransaction(InsertJBYAccountTransaction command, DateTime now)
+        {
+            return new JBYAccountTransaction
+            {
+                Amount = command.Amount,
+                Args = command.Args,
+                PredeterminedResultDate = now,
+                ProductId = SpecialIdHelper.ReversalJBYTransactionProductId,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleAccountTransactionId = Guid.Empty,
+                Trade = command.Trade,
+                TradeCode = command.TradeCode,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                TransDesc = command.TransDesc,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+        }
+
+        private async Task<SettleAccountTransaction> BuildTransaction(InsertSettleAccountTransaction command, DateTime now)
+        {
+            return new SettleAccountTransaction
+            {
+                Amount = command.Amount,
+                Args = command.Args,
+                BankCardNo = command.BankCardNo,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                OrderId = command.OrderId,
+                ResultCode = 1,
+                ResultTime = now,
+                SequenceNo = await this.GetSequenceNoAsync(),
+                Trade = command.Trade,
+                TradeCode = command.TradeCode,
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                TransDesc = command.TransDesc,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+        }
+
         #endregion IUser Members
+
+        /// <summary>
+        ///     JBY compute interest as an asynchronous operation.
+        /// </summary>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        public async Task<JBYAccountTransactionInfo> JBYReinvestingAsync()
+        {
+            this.ReloadJBYAccountData();
+
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+            if (this.State.JBYAccount.Values.Any(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0
+                                                      && t.TransactionTime.Date == now.Date))
+            {
+                return null;
+            }
+
+            long yield = Convert.ToInt64(DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield);
+
+            if (this.JBYAccrualAmount <= 0)
+            {
+                return null;
+            }
+
+            long interest = this.JBYAccrualAmount * yield / 3600000L;
+
+            if (interest <= 0)
+            {
+                return null;
+            }
+
+            JBYAccountTransaction jbyTransaction = await this.BuildJBYReinvestingTransaction(interest, yield, now);
+
+            this.State.JBYAccount.Add(jbyTransaction.TransactionId, jbyTransaction);
+
+            await this.SaveStateAsync();
+            this.ReloadJBYAccountData();
+            await this.RaiseJBYReinvestedEvent(jbyTransaction.ToInfo());
+
+            return jbyTransaction.ToInfo();
+        }
+
+        /// <summary>
+        ///     Gets the last investing confirm time.
+        /// </summary>
+        /// <param name="date">The date.UTC+8</param>
+        /// <returns>System.DateTime.</returns>
+        private static DateTime GetLastInvestingConfirmTime(DateTime date)
+        {
+            DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(date, 1);
+            return confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1);
+        }
+
+        private async Task<SettleAccountTransaction> BuildChargeTransaction(Withdrawal command, long chargeAmount, DateTime now)
+        {
+            return new SettleAccountTransaction
+            {
+                Amount = chargeAmount,
+                Args = command.Args,
+                BankCardNo = string.Empty,
+                ChannelCode = ChannelCodeHelper.Jinyinmao,
+                ResultCode = 1,
+                ResultTime = now,
+                SequenceNo = await this.GetSequenceNoAsync(),
+                Trade = Trade.Credit,
+                TradeCode = TradeCodeHelper.TC1005012102,
+                TransDesc = "账户取现手续费",
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+        }
+
+        /// <summary>
+        ///     Builds the charge transaction.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="transaction">The transaction.</param>
+        /// <returns>Transaction.</returns>
+        private async Task<SettleAccountTransaction> BuildChargeTransactionAsync(Withdrawal command, SettleAccountTransaction transaction)
+        {
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime().AddSeconds(1);
+            long chargeAmount;
+
+            if (this.MonthWithdrawalCount < VariableHelper.MonthFreeWithrawalLimitCount)
+            {
+                chargeAmount = 0;
+            }
+            else
+            {
+                chargeAmount = this.SettleAccountBalance - transaction.Amount;
+            }
+
+            chargeAmount = chargeAmount > VariableHelper.WithdrawalChargeFee ? VariableHelper.WithdrawalChargeFee : chargeAmount;
+
+            return await this.BuildChargeTransaction(command, chargeAmount, now);
+        }
+
+        private async Task<JBYAccountTransaction> BuildInvestingJBYTransaction(JBYInvesting command, DateTime now, SettleAccountTransaction settleTransaction)
+        {
+            return new JBYAccountTransaction
+            {
+                Amount = command.Amount,
+                Args = command.Args,
+                PredeterminedResultDate = now,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleAccountTransactionId = settleTransaction.TransactionId,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC2001051102,
+                TransDesc = "申购成功",
+                TransactionId = command.CommandId,
+                TransactionTime = now,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+        }
 
         private async Task<SettleAccountTransaction> BuildInvestingTransaction(RegularInvesting command, DateTime now, int tradeCode)
         {
@@ -1420,57 +1542,6 @@ namespace Yuyi.Jinyinmao.Domain
             };
         }
 
-        private async Task<Order> BuildTempOrder(RegularInvesting command, SettleAccountTransaction transaction, DateTime now)
-        {
-            return new Order
-            {
-                AccountTransactionId = transaction.TransactionId,
-                Args = command.Args,
-                Cellphone = this.State.Cellphone,
-                ExtraInterest = 0,
-                ExtraInterestRecords = new List<ExtraInterestRecord>(),
-                ExtraYield = 0,
-                Interest = 0, // to be updated
-                IsRepaid = false,
-                OrderId = command.CommandId,
-                OrderNo = await this.GetSequenceNoAsync(),
-                OrderTime = now,
-                Principal = command.Amount,
-                ProductCategory = command.ProductCategory,
-                ProductId = command.ProductId,
-                ProductSnapshot = null, // to be updated
-                RepaidTime = null,
-                ResultCode = 1,
-                ResultTime = now,
-                SettleDate = DateTime.UtcNow, // to be updated
-                TransDesc = "购买成功",
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync(),
-                ValueDate = DateTime.UtcNow, // to be updated
-                Yield = 0 // to be updated
-            };
-        }
-
-        private async Task<JBYAccountTransaction> BuildInvestingJBYTransaction(JBYInvesting command, DateTime now, SettleAccountTransaction settleTransaction)
-        {
-            return new JBYAccountTransaction
-            {
-                Amount = command.Amount,
-                Args = command.Args,
-                PredeterminedResultDate = now,
-                ResultCode = 1,
-                ResultTime = now,
-                SettleAccountTransactionId = settleTransaction.TransactionId,
-                Trade = Trade.Debit,
-                TradeCode = TradeCodeHelper.TC2001051102,
-                TransDesc = "申购成功",
-                TransactionId = command.CommandId,
-                TransactionTime = now,
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-        }
-
         private async Task<SettleAccountTransaction> BuildInvestingTransaction(JBYInvesting command, DateTime now)
         {
             return new SettleAccountTransaction
@@ -1486,6 +1557,27 @@ namespace Yuyi.Jinyinmao.Domain
                 Trade = Trade.Credit,
                 TradeCode = TradeCodeHelper.TC1005012003,
                 TransDesc = "支付成功",
+                TransactionId = Guid.NewGuid(),
+                TransactionTime = now,
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync()
+            };
+        }
+
+        private async Task<JBYAccountTransaction> BuildJBYReinvestingTransaction(long interest, long yield, DateTime now)
+        {
+            return new JBYAccountTransaction
+            {
+                Amount = interest,
+                Args = new Dictionary<string, object> { { "Yield", yield } },
+                PredeterminedResultDate = now,
+                ProductId = SpecialIdHelper.ReinvestingJBYTransactionProductId,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleAccountTransactionId = Guid.Empty,
+                Trade = Trade.Debit,
+                TradeCode = TradeCodeHelper.TC2001011106,
+                TransDesc = "利息复投成功",
                 TransactionId = Guid.NewGuid(),
                 TransactionTime = now,
                 UserId = this.State.UserId,
@@ -1602,6 +1694,37 @@ namespace Yuyi.Jinyinmao.Domain
             };
         }
 
+        private async Task<Order> BuildTempOrder(RegularInvesting command, SettleAccountTransaction transaction, DateTime now)
+        {
+            return new Order
+            {
+                AccountTransactionId = transaction.TransactionId,
+                Args = command.Args,
+                Cellphone = this.State.Cellphone,
+                ExtraInterest = 0,
+                ExtraInterestRecords = new List<ExtraInterestRecord>(),
+                ExtraYield = 0,
+                Interest = 0, // to be updated
+                IsRepaid = false,
+                OrderId = command.CommandId,
+                OrderNo = await this.GetSequenceNoAsync(),
+                OrderTime = now,
+                Principal = command.Amount,
+                ProductCategory = command.ProductCategory,
+                ProductId = command.ProductId,
+                ProductSnapshot = null, // to be updated
+                RepaidTime = null,
+                ResultCode = 1,
+                ResultTime = now,
+                SettleDate = DateTime.UtcNow, // to be updated
+                TransDesc = "购买成功",
+                UserId = this.State.UserId,
+                UserInfo = await this.GetUserInfoAsync(),
+                ValueDate = DateTime.UtcNow, // to be updated
+                Yield = 0 // to be updated
+            };
+        }
+
         private async Task<SettleAccountTransaction> BuildTransaction(Withdrawal command)
         {
             return new SettleAccountTransaction
@@ -1619,125 +1742,6 @@ namespace Yuyi.Jinyinmao.Domain
                 TransactionId = command.CommandId,
                 TransactionTime = DateTime.UtcNow.ToChinaStandardTime(),
                 TransDesc = "取现申请",
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-        }
-
-        /// <summary>
-        ///     JBY compute interest as an asynchronous operation.
-        /// </summary>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-        public async Task<JBYAccountTransactionInfo> JBYReinvestingAsync()
-        {
-            this.ReloadJBYAccountData();
-
-            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
-            if (this.State.JBYAccount.Values.Any(t => t.TradeCode == TradeCodeHelper.TC2001011106 && t.ResultCode > 0
-                                                      && t.TransactionTime.Date == now.Date))
-            {
-                return null;
-            }
-
-            long yield = Convert.ToInt64(DailyConfigHelper.GetDailyConfig(now.AddDays(-1)).JBYYield);
-
-            if (this.JBYAccrualAmount <= 0)
-            {
-                return null;
-            }
-
-            long interest = this.JBYAccrualAmount * yield / 3600000L;
-
-            if (interest <= 0)
-            {
-                return null;
-            }
-
-            JBYAccountTransaction jbyTransaction = await this.BuildJBYReinvestingTransaction(interest, yield, now);
-
-            this.State.JBYAccount.Add(jbyTransaction.TransactionId, jbyTransaction);
-
-            await this.SaveStateAsync();
-            this.ReloadJBYAccountData();
-            await this.RaiseJBYReinvestedEvent(jbyTransaction.ToInfo());
-
-            return jbyTransaction.ToInfo();
-        }
-
-        private async Task<JBYAccountTransaction> BuildJBYReinvestingTransaction(long interest, long yield, DateTime now)
-        {
-            return new JBYAccountTransaction
-            {
-                Amount = interest,
-                Args = new Dictionary<string, object> { { "Yield", yield } },
-                PredeterminedResultDate = now,
-                ProductId = SpecialIdHelper.ReinvestingJBYTransactionProductId,
-                ResultCode = 1,
-                ResultTime = now,
-                SettleAccountTransactionId = Guid.Empty,
-                Trade = Trade.Debit,
-                TradeCode = TradeCodeHelper.TC2001011106,
-                TransDesc = "利息复投成功",
-                TransactionId = Guid.NewGuid(),
-                TransactionTime = now,
-                UserId = this.State.UserId,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-        }
-
-        /// <summary>
-        ///     Gets the last investing confirm time.
-        /// </summary>
-        /// <param name="date">The date.UTC+8</param>
-        /// <returns>System.DateTime.</returns>
-        private static DateTime GetLastInvestingConfirmTime(DateTime date)
-        {
-            DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(date, 1);
-            return confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1);
-        }
-
-        /// <summary>
-        ///     Builds the charge transaction.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="transaction">The transaction.</param>
-        /// <returns>Transaction.</returns>
-        private async Task<SettleAccountTransaction> BuildChargeTransactionAsync(Withdrawal command, SettleAccountTransaction transaction)
-        {
-            DateTime now = DateTime.UtcNow.ToChinaStandardTime().AddSeconds(1);
-            long chargeAmount;
-
-            if (this.MonthWithdrawalCount < VariableHelper.MonthFreeWithrawalLimitCount)
-            {
-                chargeAmount = 0;
-            }
-            else
-            {
-                chargeAmount = this.SettleAccountBalance - transaction.Amount;
-            }
-
-            chargeAmount = chargeAmount > VariableHelper.WithdrawalChargeFee ? VariableHelper.WithdrawalChargeFee : chargeAmount;
-
-            return await this.BuildChargeTransaction(command, chargeAmount, now);
-        }
-
-        private async Task<SettleAccountTransaction> BuildChargeTransaction(Withdrawal command, long chargeAmount, DateTime now)
-        {
-            return new SettleAccountTransaction
-            {
-                Amount = chargeAmount,
-                Args = command.Args,
-                BankCardNo = string.Empty,
-                ChannelCode = ChannelCodeHelper.Jinyinmao,
-                ResultCode = 1,
-                ResultTime = now,
-                SequenceNo = await this.GetSequenceNoAsync(),
-                Trade = Trade.Credit,
-                TradeCode = TradeCodeHelper.TC1005012102,
-                TransDesc = "账户取现手续费",
-                TransactionId = Guid.NewGuid(),
-                TransactionTime = now,
                 UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  1:09
+// Last Modified On : 2015-08-17  12:00
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -181,20 +181,18 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Raises the settle account transaction resulted event.
+        /// Raises the settle account transaction resulted event.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <param name="info">The information.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseJBYAccountTransactionResultedEvent(Dictionary<string, object> args, JBYAccountTransactionInfo info, bool result, string message)
+        private async Task RaiseJBYAccountTransactionResultedEvent(SetJBYAccountTransactionResult command, JBYAccountTransactionInfo info)
         {
             JBYAccountTransactionResulted @event = new JBYAccountTransactionResulted
             {
-                Args = args,
-                Result = result,
-                TransDesc = message,
+                Args = command.Args,
+                Result = command.Result,
+                TransDesc = command.TransDesc,
                 TransactionInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
             };
@@ -436,20 +434,18 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        ///     Raises the settle account transaction resulted event.
+        /// Raises the settle account transaction resulted event.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <param name="info">The information.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
         /// <returns>Task.</returns>
-        private async Task RaiseSettleAccountTransactionResultedEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info, bool result, string message)
+        private async Task RaiseSettleAccountTransactionResultedEvent(SetSettleAccountTransactionResult command, SettleAccountTransactionInfo info)
         {
             SettleAccountTransactionResulted @event = new SettleAccountTransactionResulted
             {
-                Args = args,
-                Result = result,
-                TransDesc = message,
+                Args = command.Args,
+                Result = command.Result,
+                TransDesc = command.TransDesc,
                 TransactionInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
             };
@@ -457,22 +453,22 @@ namespace Yuyi.Jinyinmao.Domain
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseTransactionInsertdEvent(InsertSettleAccountTransactionDto transactionDto, SettleAccountTransactionInfo transactionInfo)
+        private async Task RaiseTransactionInsertdEvent(InsertSettleAccountTransaction command, SettleAccountTransactionInfo transactionInfo)
         {
             SettleAccountTransactionInserted @event = new SettleAccountTransactionInserted
             {
-                Args = transactionDto.Args,
+                Args = command.Args,
                 TransactionInfo = transactionInfo
             };
 
             await this.ProcessEventAsync(@event);
         }
 
-        private async Task RaiseTransactionInsertdEvent(InsertJBYAccountTransactionDto transactionDto, JBYAccountTransactionInfo transactionInfo)
+        private async Task RaiseTransactionInsertdEvent(InsertJBYAccountTransaction command, JBYAccountTransactionInfo transactionInfo)
         {
             JBYAccountTransactionInserted @event = new JBYAccountTransactionInserted
             {
-                Args = transactionDto.Args,
+                Args = command.Args,
                 TransactionInfo = transactionInfo
             };
 

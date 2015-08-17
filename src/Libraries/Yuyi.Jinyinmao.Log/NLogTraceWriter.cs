@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:45
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  23:57
+// Last Modified On : 2015-08-17  12:48
 // ***********************************************************************
 // <copyright file="NLogTraceWriter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -27,28 +27,28 @@ namespace Yuyi.Jinyinmao.Log
     public sealed class NLogTraceWriter : ITraceWriter
     {
         private static readonly Lazy<Dictionary<TraceLevel, Action<string>>> AppicationLoggers =
-                    new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
-                        new Dictionary<TraceLevel, Action<string>>
-                        {
+            new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
+                new Dictionary<TraceLevel, Action<string>>
+                {
                     { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
                     { TraceLevel.Info, LogManager.GetTraceLogger().Info },
                     { TraceLevel.Error, LogManager.GetTraceLogger().Error },
                     { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
                     { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
-                        }
-                        );
+                }
+                );
 
         private static readonly Lazy<Dictionary<TraceLevel, Action<string>>> BackOfficeLoggers =
-                    new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
-                        new Dictionary<TraceLevel, Action<string>>
-                        {
+            new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
+                new Dictionary<TraceLevel, Action<string>>
+                {
                     { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
                     { TraceLevel.Info, LogManager.GetTraceLogger().Info },
                     { TraceLevel.Error, LogManager.GetTraceLogger().Error },
                     { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
                     { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
-                        }
-                        );
+                }
+                );
 
         /// <summary>
         ///     The loggers
@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Log
                 );
 
         /// <summary>
-        /// Gets the current application logger.
+        ///     Gets the current application logger.
         /// </summary>
         /// <value>The current application logger.</value>
         private static Dictionary<TraceLevel, Action<string>> CurrentApplicationLogger
@@ -133,6 +133,8 @@ namespace Yuyi.Jinyinmao.Log
         private static void LogToNlog(TraceRecord traceRecord)
         {
             StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
 
             if (traceRecord.Request != null)
             {

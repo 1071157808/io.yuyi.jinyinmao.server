@@ -1,49 +1,32 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// File             : InsertSettleAccountTransactionDto.cs
-// Created          : 2015-07-31  3:59 PM
+// File             : InsertJBYAccountTransaction.cs
+// Created          : 2015-08-17  10:41
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-31  4:17 PM
+// Last Modified On : 2015-08-17  11:59
 // ***********************************************************************
-// <copyright file="InsertSettleAccountTransactionDto.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="InsertJBYAccountTransaction.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
+using Orleans.Concurrency;
 
-namespace Yuyi.Jinyinmao.Domain.Dtos
+namespace Yuyi.Jinyinmao.Domain.Commands
 {
     /// <summary>
-    ///     InsertSettleAccountTransactionDto.
+    ///     InsertJBYAccountTransaction.
     /// </summary>
-    public class InsertSettleAccountTransactionDto
+    [Immutable]
+    public class InsertJBYAccountTransaction : Command
     {
         /// <summary>
         ///     Gets or sets the amount.
         /// </summary>
         /// <value>The amount.</value>
         public long Amount { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the arguments.
-        /// </summary>
-        /// <value>The arguments.</value>
-        public Dictionary<string, object> Args { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the bank card no.
-        /// </summary>
-        /// <value>The bank card no.</value>
-        public string BankCardNo { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the order identifier.
-        /// </summary>
-        /// <value>The order identifier.</value>
-        public Guid OrderId { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade.

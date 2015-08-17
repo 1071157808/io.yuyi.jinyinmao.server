@@ -21,12 +21,6 @@ namespace Yuyi.Jinyinmao.Api.Models
     public class SetSettleAccountTransactionResultRequest : IRequest
     {
         /// <summary>
-        ///     Gets or sets the message.
-        /// </summary>
-        /// <value>The message.</value>
-        public string Message { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="SetSettleAccountTransactionResultRequest" /> is result.
         /// </summary>
         /// <value><c>true</c> if result; otherwise, <c>false</c>.</value>
@@ -37,6 +31,12 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// </summary>
         /// <value>The transaction identifier.</value>
         public string TransactionIdentifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets the trans desc.
+        /// </summary>
+        /// <value>The trans desc.</value>
+        public string TransDesc { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifeir.

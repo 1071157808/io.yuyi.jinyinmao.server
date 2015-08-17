@@ -101,6 +101,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SetSettleAccountTransactionResult.cs" />
+    <Compile Include="Commands\SetJBYAccountTransactionResult.cs" />
+    <Compile Include="Commands\InsertSettleAccountTransaction.cs" />
+    <Compile Include="Commands\InsertJBYAccountTransaction.cs" />
     <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\OrderRepay.cs" />
     <Compile Include="Commands\ProductRepay.cs" />
@@ -116,8 +120,6 @@
     <Compile Include="Commands\VerifyBankCard.cs" />
     <Compile Include="Commands\Withdrawal.cs" />
     <Compile Include="Dtos\CheckPaymentPasswordResult.cs" />
-    <Compile Include="Dtos\InsertJBYAccountTransactionDto.cs" />
-    <Compile Include="Dtos\InsertSettleAccountTransactionDto.cs" />
     <Compile Include="Dtos\JBYAccountInfo.cs" />
     <Compile Include="Dtos\RegularProductMigrationDto.cs" />
     <Compile Include="Dtos\SettleAccountInfo.cs" />

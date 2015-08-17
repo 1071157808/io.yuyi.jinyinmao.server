@@ -216,18 +216,18 @@ namespace Yuyi.Jinyinmao.Domain
         Task<BankCardInfo> HideBankCardAsync(HideBankCard command);
 
         /// <summary>
-        ///     Inserts the jby account transcation asynchronous.
+        /// Inserts the jby account transcation asynchronous.
         /// </summary>
-        /// <param name="transactionDto">The transaction dto.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransactionDto transactionDto);
+        Task<JBYAccountTransactionInfo> InsertJBYAccountTranscationAsync(InsertJBYAccountTransaction command);
 
         /// <summary>
-        ///     Inserts the settle account transcation asynchronous.
+        /// Inserts the settle account transcation asynchronous.
         /// </summary>
-        /// <param name="transactionDto">The transaction dto.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        Task<SettleAccountTransactionInfo> InsertSettleAccountTranscationAsync(InsertSettleAccountTransactionDto transactionDto);
+        Task<SettleAccountTransactionInfo> InsertSettleAccountTranscationAsync(InsertSettleAccountTransaction command);
 
         /// <summary>
         ///     Investings the asynchronous.
@@ -304,14 +304,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<UserInfo> ResetLoginPasswordAsync(ResetLoginPassword command);
 
         /// <summary>
-        ///     Sets the jby account transaction result asynchronous.
+        /// Sets the jby account transaction result asynchronous.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
+        Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(SetJBYAccountTransactionResult command);
 
         /// <summary>
         /// Sets the payment password asynchronous.
@@ -321,14 +318,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<UserInfo> SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
-        ///     Sets the settle account transaction result asynchronous.
+        /// Sets the settle account transaction result asynchronous.
         /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="result">if set to <c>true</c> [result].</param>
-        /// <param name="message">The message.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="command">The command.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
+        Task<SettleAccountTransactionInfo> SetSettleAccountTransactionResultAsync(SetSettleAccountTransactionResult command);
 
         /// <summary>
         ///     Signs the asynchronous.

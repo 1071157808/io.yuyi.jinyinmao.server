@@ -128,10 +128,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AzureBatchingTableStorageSink.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
-    <Compile Include="LogEventEntity.cs" />
-    <Compile Include="LoggerConfigurationExtensions.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="NLogExceptionLogger.cs" />
     <Compile Include="NLogTraceWriter.cs" />

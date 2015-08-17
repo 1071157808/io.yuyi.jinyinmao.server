@@ -1,25 +1,26 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// File             : InsertJBYAccountTransactionDto.cs
-// Created          : 2015-08-03  11:15 AM
+// File             : AddBankCard - Copy.cs
+// Created          : 2015-08-17  10:41
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  11:16 AM
+// Last Modified On : 2015-08-17  10:54
 // ***********************************************************************
-// <copyright file="InsertJBYAccountTransactionDto.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="AddBankCard - Copy.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
+using Orleans.Concurrency;
 
-namespace Yuyi.Jinyinmao.Domain.Dtos
+namespace Yuyi.Jinyinmao.Domain.Commands
 {
     /// <summary>
-    ///     InsertJBYAccountTransactionDto.
+    ///     InsertSettleAccountTransaction.
     /// </summary>
-    public class InsertJBYAccountTransactionDto
+    [Immutable]
+    public class InsertSettleAccountTransaction : Command
     {
         /// <summary>
         ///     Gets or sets the amount.
@@ -28,10 +29,16 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public long Amount { get; set; }
 
         /// <summary>
-        ///     Gets or sets the arguments.
+        ///     Gets or sets the bank card no.
         /// </summary>
-        /// <value>The arguments.</value>
-        public Dictionary<string, object> Args { get; set; }
+        /// <value>The bank card no.</value>
+        public string BankCardNo { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the order identifier.
+        /// </summary>
+        /// <value>The order identifier.</value>
+        public Guid OrderId { get; set; }
 
         /// <summary>
         ///     Gets or sets the trade.

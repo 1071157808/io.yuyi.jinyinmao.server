@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:08
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  10:35
+// Last Modified On : 2015-08-17  12:48
 // ***********************************************************************
 // <copyright file="LogManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -43,19 +43,19 @@ namespace Yuyi.Jinyinmao.Log
             config.AddTarget("azureApplicationTarget", azureApplicationTarget);
 
             azureErrorTarget.ConnectionStringKey = "DataConnectionString";
-            azureErrorTarget.Layout = "[date:${longdate}] [message:${message}]";
+            azureErrorTarget.Layout = "${message}";
             azureErrorTarget.TableName = "JYMErrorLogs";
 
             azureTraceTarget.ConnectionStringKey = "DataConnectionString";
-            azureTraceTarget.Layout = "[date:${longdate}] [message:${message}]";
+            azureTraceTarget.Layout = "${message}";
             azureTraceTarget.TableName = "JYMTraceLogs";
 
             azureBackOfficeTarget.ConnectionStringKey = "DataConnectionString";
-            azureBackOfficeTarget.Layout = "[date:${longdate}] [message:${message}]";
+            azureBackOfficeTarget.Layout = "${message}";
             azureBackOfficeTarget.TableName = "JYMBackOfficeLogs";
 
             azureApplicationTarget.ConnectionStringKey = "DataConnectionString";
-            azureApplicationTarget.Layout = "[date:${longdate}] [message:${message}]";
+            azureApplicationTarget.Layout = "${message}";
             azureApplicationTarget.TableName = "JYMApplicationLogs";
 
             config.LoggingRules.Add(new LoggingRule("ExceptionLogger", LogLevel.Error, azureErrorTarget));
