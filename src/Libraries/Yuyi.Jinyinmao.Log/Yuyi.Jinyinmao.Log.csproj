@@ -130,7 +130,6 @@
   <ItemGroup>
     <Compile Include="AzureBatchingTableStorageSink.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
-    <Compile Include="LogAspect.cs" />
     <Compile Include="LogEventEntity.cs" />
     <Compile Include="LoggerConfigurationExtensions.cs" />
     <Compile Include="LogManager.cs" />

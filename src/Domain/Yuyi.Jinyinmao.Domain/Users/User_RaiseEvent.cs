@@ -206,24 +206,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Raises the settle account transaction resulted event.
         /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="info">The information.</param>
-        /// <returns>Task.</returns>
-        private async Task RaiseJBYAccountTransactionCanceledEvent(CancelJBYTransaction command, JBYAccountTransactionInfo info)
-        {
-            JBYAccountTransactionCanceled @event = new JBYAccountTransactionCanceled
-            {
-                Args = command.Args,
-                TransactionInfo = info,
-                UserInfo = await this.GetUserInfoAsync()
-            };
-
-            await this.ProcessEventAsync(@event);
-        }
-
-        /// <summary>
-        ///     Raises the settle account transaction resulted event.
-        /// </summary>
         /// <param name="args">The arguments.</param>
         /// <param name="info">The information.</param>
         /// <param name="result">if set to <c>true</c> [result].</param>

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  0:35
+// Last Modified On : 2015-08-17  2:11
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -381,6 +381,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         {
             return new ProductRepay
             {
+                EntityId = productId,
                 Args = this.BuildArgs(),
                 ProductId = productId
             };

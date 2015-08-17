@@ -35,18 +35,6 @@ namespace Yuyi.Jinyinmao.Service
         #region IProductService Members
 
         /// <summary>
-        ///     Cancels the order asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns></returns>
-        public async Task<OrderInfo> CancelOrderAsync(CancelOrder command)
-        {
-            IRegularProduct regularProduct = GrainClient.GrainFactory.GetGrain<IRegularProduct>(command.ProductId);
-
-            return await regularProduct.CancelOrderAsync(command);
-        }
-
-        /// <summary>
         ///     Checks the product no exists.
         /// </summary>
         /// <param name="productNo">The product no.</param>
@@ -242,18 +230,6 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Migrates the asynchronous.
-        /// </summary>
-        /// <param name="productId">The product identifier.</param>
-        /// <param name="migrationDto">The migration dto.</param>
-        /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
-        public async Task<RegularProductInfo> MigrateAsync(Guid productId, RegularProductMigrationDto migrationDto)
-        {
-            IRegularProduct product = GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId);
-            return await product.MigrateAsync(migrationDto);
-        }
-
-        /// <summary>
         ///     Refreshes the jyb product asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
@@ -327,7 +303,7 @@ namespace Yuyi.Jinyinmao.Service
         private static IQueryable<TProduct> GetSortedProductContext<TProduct>(JYMDBContext context) where TProduct : RegularProduct
         {
             return context.ReadonlyQuery<TProduct>().OrderBy(p => p.SoldOut) // 未售罄 => 0, 售罄 =>1.  => 未售罄 > 售罄
-                //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
+                                                                             //.ThenBy(p => p.StartSellTime) // 先开售的产品排前面 => 即在售 > 待售
                 .ThenByDescending(p => p.IssueNo).ThenByDescending(p => p.IssueTime);
         }
 

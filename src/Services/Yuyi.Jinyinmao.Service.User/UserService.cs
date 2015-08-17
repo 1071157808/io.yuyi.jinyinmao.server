@@ -115,17 +115,6 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Cancels the jby transaction asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        public Task<JBYAccountTransactionInfo> CancelJBYTransactionAsync(CancelJBYTransaction command)
-        {
-            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
-            return user.CancelJBYAccountTransactionAsync(command);
-        }
-
-        /// <summary>
         ///     Checks the bank card used asynchronous.
         /// </summary>
         /// <param name="bankCardNo">The bank card no.</param>

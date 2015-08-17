@@ -13,7 +13,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -29,7 +28,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         /// </summary>
         /// <value>The user information.</value>
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

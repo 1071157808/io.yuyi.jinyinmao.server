@@ -101,8 +101,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CancelOrder.cs" />
-    <Compile Include="Commands\CancelJBYTransaction.cs" />
     <Compile Include="Commands\OrderRepay.cs" />
     <Compile Include="Commands\ProductRepay.cs" />
     <Compile Include="Commands\AddExtraInterest.cs" />

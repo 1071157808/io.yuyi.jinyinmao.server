@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  0:41
+// Last Modified On : 2015-08-17  1:54
 // ***********************************************************************
 // <copyright file="IProductInfoService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -53,7 +52,6 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="productId">The product identifier.</param>
         /// <param name="agreementIndex">Index of the agreement.</param>
         /// <returns>Task&lt;System.String&gt;.</returns>
-        [LogExceptionAspect]
         Task<string> GetJBYAgreementAsync(Guid productId, int agreementIndex);
 
         /// <summary>
@@ -66,14 +64,12 @@ namespace Yuyi.Jinyinmao.Service.Interface
         ///     Gets the jby product information asynchronous.
         /// </summary>
         /// <returns>Task&lt;JBYProductInfo&gt;.</returns>
-        [LogExceptionAspect]
         Task<JBYProductInfo> GetJBYProductInfoAsync();
 
         /// <summary>
         ///     Gets the jby product paid amount asynchronous.
         /// </summary>
         /// <returns>Task&lt;System.Int64&gt;.</returns>
-        [LogExceptionAspect]
         Task<long> GetJBYProductPaidAmountAsync();
 
         /// <summary>

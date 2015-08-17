@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  0:34
+// Last Modified On : 2015-08-17  1:54
 // ***********************************************************************
 // <copyright file="IUserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.Threading.Tasks;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -60,14 +59,6 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="authenticateCommand">The authenticate command.</param>
         /// <returns>Task.</returns>
         Task AuthenticateAsync(AddBankCard addBankCardCommand, Authenticate authenticateCommand);
-
-        /// <summary>
-        ///     Cancels the jby transaction asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        [LogExceptionAspect]
-        Task<JBYAccountTransactionInfo> CancelJBYTransactionAsync(CancelJBYTransaction command);
 
         /// <summary>
         ///     Checks the payment password asynchronous.
@@ -167,7 +158,6 @@ namespace Yuyi.Jinyinmao.Service.Interface
         /// <param name="userId">The user identifier.</param>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        [LogExceptionAspect]
         Task<SettleAccountTransactionInfo> WithdrawalResultedAsync(Guid userId, Guid transactionId);
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  1:31
+// Last Modified On : 2015-08-17  1:55
 // ***********************************************************************
 // <copyright file="AuthenticateResulted.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -27,7 +26,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the bank card information.
         /// </summary>
         /// <value>The bank card information.</value>
-        [Reference]
         public BankCardInfo BankCardInfo { get; set; }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
-        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

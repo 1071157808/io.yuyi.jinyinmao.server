@@ -11,13 +11,10 @@
 // </copyright>
 // ***********************************************************************
 
-using System;
 using System.Threading.Tasks;
 using Orleans;
-using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -31,13 +28,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task&lt;OrderInfo&gt;.</returns>
         Task<OrderInfo> BuildOrderAsync(OrderInfo orderInfo);
-
-        /// <summary>
-        /// Cancels the order asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> CancelOrderAsync(CancelOrder command);
 
         /// <summary>
         ///     Checks the sale status asynchronous.
@@ -75,8 +65,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        [LogExceptionAspect]
-        Task<RegularProductInfo> HitShelvesAsync([Required] IssueRegularProduct command);
+        Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
         ///     Migrates the asynchronous.
@@ -115,12 +104,5 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <returns>Task.</returns>
         Task SyncAsync();
-
-        /// <summary>
-        ///     Transfers the order asynchronous.
-        /// </summary>
-        /// <param name="orderId">The order identifier.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> TransferOrderAsync(Guid orderId);
     }
 }

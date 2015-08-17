@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-27  7:35 PM
+// File             : JBYAccountTranscationInfo.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-15  6:46 PM
+// Last Modified On : 2015-08-17  1:55
 // ***********************************************************************
-// <copyright file="JBYAccountTransactionInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="JBYAccountTranscationInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using Moe.Lib;
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -132,7 +131,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>

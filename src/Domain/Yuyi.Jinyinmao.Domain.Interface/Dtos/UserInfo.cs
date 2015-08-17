@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-27  7:35 PM
+// File             : UserInfo.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-09  5:48 PM
+// Last Modified On : 2015-08-17  1:55
 // ***********************************************************************
 // <copyright file="UserInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Models;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
@@ -104,7 +103,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
@@ -250,7 +248,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the login names.
         /// </summary>
         /// <value>The login names.</value>
-        [Reference]
         public List<string> LoginNames { get; set; }
 
         /// <summary>
@@ -302,7 +299,7 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         public long ShangInvestingPrincipal { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="UserInfo"/> is signed.
+        ///     Gets or sets a value indicating whether this <see cref="UserInfo" /> is signed.
         /// </summary>
         /// <value><c>true</c> if signed; otherwise, <c>false</c>.</value>
         public bool Signed { get; set; }

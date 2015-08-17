@@ -13,7 +13,6 @@
 
 using System;
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -28,14 +27,12 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the interest transaction information.
         /// </summary>
         /// <value>The interest transaction information.</value>
-        [Reference]
         public SettleAccountTransactionInfo InterestTransactionInfo { get; set; }
 
         /// <summary>
         ///     Gets or sets the order information.
         /// </summary>
         /// <value>The order information.</value>
-        [Reference]
         public OrderInfo OrderInfo { get; set; }
 
         /// <summary>
@@ -48,7 +45,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the principal transaction information.
         /// </summary>
         /// <value>The principal transaction information.</value>
-        [Reference]
         public SettleAccountTransactionInfo PrincipalTransactionInfo { get; set; }
 
         /// <summary>
@@ -61,7 +57,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
-        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

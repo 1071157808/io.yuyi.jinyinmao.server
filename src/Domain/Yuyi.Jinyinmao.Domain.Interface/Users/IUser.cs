@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  0:34
+// Last Modified On : 2015-08-17  2:22
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,10 +16,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Orleans;
-using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -57,13 +55,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="message">The message.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         Task<UserInfo> AuthenticateResultedAsync(Authenticate command, bool result, string message);
-
-        /// <summary>
-        ///     Cancels the jby account transaction asynchronous.
-        /// </summary>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        [LogExceptionAspect]
-        Task<JBYAccountTransactionInfo> CancelJBYAccountTransactionAsync([Required] CancelJBYTransaction command);
 
         /// <summary>
         ///     Cancels the order asynchronous.
@@ -398,38 +389,6 @@ namespace Yuyi.Jinyinmao.Domain
         Task SyncAsync();
 
         /// <summary>
-        ///     Transfers the jby transaction asynchronous.
-        /// </summary>
-        /// <param name="jbyId">The jby identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        Task<JBYAccountTransactionInfo> TransferJBYTransactionAsync(Guid jbyId, Dictionary<string, object> args);
-
-        /// <summary>
-        ///     Transfers the into jby transaction asynchronous.
-        /// </summary>
-        /// <param name="jbyInfo">The jby information.</param>
-        /// <param name="transactionInfo">The transaction information.</param>
-        /// <returns>Task.</returns>
-        Task TransferJBYTransactionInAsync(JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo);
-
-        /// <summary>
-        ///     Transfers the order asynchronous.
-        /// </summary>
-        /// <param name="orderId">The order identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> TransferOrderAsync(Guid orderId, Dictionary<string, object> args);
-
-        /// <summary>
-        ///     Transfers the information order asynchronous.
-        /// </summary>
-        /// <param name="orderInfo">The order information.</param>
-        /// <param name="transactionInfo">The transaction information.</param>
-        /// <returns>Task.</returns>
-        Task TransferOrderInAsync(OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo);
-
-        /// <summary>
         ///     Unlocks the asynchronous.
         /// </summary>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
@@ -463,7 +422,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         /// <param name="transactionId">The transaction identifier.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        [LogExceptionAspect]
         Task<SettleAccountTransactionInfo> WithdrawalResultedAsync(Guid transactionId);
     }
 }

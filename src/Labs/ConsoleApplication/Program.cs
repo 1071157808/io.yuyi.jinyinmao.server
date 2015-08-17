@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  20:41
+// Last Modified On : 2015-08-17  1:54
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,8 +16,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Moe.Lib;
-using PostSharp.Patterns.Contracts;
-using PostSharp.Patterns.Diagnostics;
 using Yuyi.Jinyinmao.Packages.Helper;
 using Yuyi.Jinyinmao.Service;
 
@@ -85,12 +83,6 @@ namespace ConsoleApplication
             Regex r = new Regex("^https://[^\\s/$.?#].[^\\s]*$");
             var result = r.IsMatch("https://files2.jinyinmao.com.cn/abcdiow?t=desd&y=122&_=121");
             Console.WriteLine(result);
-        }
-
-        [LogException]
-        private static bool TestPostSharp([Required] Apple apple, [StrictlyPositive] int size, [Required] string color)
-        {
-            return apple.Size == size && apple.Color == color;
         }
     }
 }

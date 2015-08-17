@@ -101,8 +101,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.TraceWriter.Warn(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Error(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UAA1:无法开通快捷支付功能");
+            }
+
+            if (userInfo.Closed)
+            {
+                return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
             }
 
             if (!userInfo.HasSetPaymentPassword)
@@ -115,27 +120,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UAA3:已经通过实名认证");
             }
 
-            AddBankCard addBankCardCommand = new AddBankCard
-            {
-                Args = this.BuildArgs(),
-                BankCardNo = request.BankCardNo,
-                BankName = request.BankName,
-                CityName = request.CityName,
-                UserId = this.CurrentUser.Id
-            };
+            AddBankCard addBankCardCommand = this.BuildAddBankCardCommand(request);
 
-            Authenticate authenticateCommand = new Authenticate
-            {
-                Args = this.BuildArgs(),
-                BankCardNo = request.BankCardNo,
-                BankName = request.BankName,
-                Cellphone = this.CurrentUser.Cellphone,
-                CityName = request.CityName,
-                Credential = request.Credential,
-                CredentialNo = request.CredentialNo.ToUpperInvariant(),
-                RealName = request.RealName,
-                UserId = this.CurrentUser.Id
-            };
+            Authenticate authenticateCommand = this.BuildAuthenticateCommand(request);
 
             await this.userService.AuthenticateAsync(addBankCardCommand, authenticateCommand);
 
@@ -234,13 +221,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             {
                 return this.BadRequest("UARLP2:手机号码不存在，密码修改失败");
             }
-            await this.userService.ResetLoginPasswordAsync(new ResetLoginPassword
-            {
-                Password = request.Password,
-                Salt = info.UserId.ToGuidString(),
-                UserId = info.UserId,
-                Args = this.BuildArgs()
-            });
+
+            await this.userService.ResetLoginPasswordAsync(this.BuildResetLoginPasswordCommand(request, info));
 
             return this.Ok();
         }
@@ -265,16 +247,29 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UARPP2:您输入的身份信息错误！请重新输入
         ///     <br />
         ///     UARPP3:支付密码不能与登录密码一致，请选择新的支付密码
+        ///     <br />
+        ///     UARPP4:无法重置支付密码
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
         [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
-            UserInfo info = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
+            UserInfo userInfo = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (info == null || !info.HasSetPaymentPassword ||
-                (info.Verified && (info.RealName != request.UserRealName || !string.Equals(info.CredentialNo, request.CredentialNo, StringComparison.InvariantCultureIgnoreCase))))
+            if (userInfo == null)
+            {
+                this.TraceWriter.Error(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UARPP4:无法重置支付密码");
+            }
+
+            if (userInfo.Closed)
+            {
+                return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
+            }
+
+            if (!userInfo.HasSetPaymentPassword ||
+                (userInfo.Verified && (userInfo.RealName != request.UserRealName || !string.Equals(userInfo.CredentialNo, request.CredentialNo, StringComparison.InvariantCultureIgnoreCase))))
             {
                 return this.BadRequest("UARPP2:您输入的身份信息错误！请重新输入");
             }
@@ -290,14 +285,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UARPP1:该验证码已经失效，请重新获取验证码");
             }
 
-            await this.userService.SetPaymentPasswordAsync(new SetPaymentPassword
-            {
-                Override = true,
-                PaymentPassword = request.Password,
-                Salt = this.CurrentUser.Id.ToGuidString(),
-                UserId = this.CurrentUser.Id,
-                Args = this.BuildArgs()
-            });
+            await this.userService.SetPaymentPasswordAsync(this.BuildSetPaymentPasswordCommand(request));
 
             return this.Ok();
         }
@@ -318,6 +306,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     UASPP1:支付密码不能与登录密码一致，请选择新的支付密码
         ///     <br />
         ///     UASPP2: 支付密码已经设置，请直接使用
+        ///     <br />
+        ///     UASPP3:无法设置支付密码
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
@@ -329,21 +319,25 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UASPP1:支付密码不能与登录密码一致，请选择新的支付密码");
             }
 
-            UserInfo info = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+            UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
 
-            if (info.HasSetPaymentPassword)
+            if (userInfo == null)
+            {
+                this.TraceWriter.Error(this.Request, "Application", "User-Authenticate:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                return this.BadRequest("UASPP3:无法设置支付密码");
+            }
+
+            if (userInfo.Closed)
+            {
+                return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
+            }
+
+            if (userInfo.HasSetPaymentPassword)
             {
                 return this.BadRequest("UASPP2: 支付密码已经设置，请直接使用");
             }
 
-            await this.userService.SetPaymentPasswordAsync(new SetPaymentPassword
-            {
-                Override = false,
-                PaymentPassword = request.Password,
-                Salt = this.CurrentUser.Id.ToGuidString(),
-                UserId = this.CurrentUser.Id,
-                Args = this.BuildArgs()
-            });
+            await this.userService.SetPaymentPasswordAsync(this.BuildSetPaymentPasswordCommand(request));
 
             return this.Ok();
         }
@@ -424,22 +418,95 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UASU2:此号码已注册，请直接登录");
             }
 
-            UserInfo userInfo = await this.userService.RegisterUserAsync(new UserRegister
-            {
-                Cellphone = info.Cellphone,
-                Password = request.Password,
-                UserId = info.UserId,
-                ClientType = request.ClientType.GetValueOrDefault(),
-                ContractId = request.ContractId.GetValueOrDefault(),
-                InviteBy = request.InviteBy ?? "JYM",
-                OutletCode = request.OutletCode ?? "JYM",
-                Args = this.BuildArgs()
-            });
+            UserInfo userInfo = await this.userService.RegisterUserAsync(this.BuildUserRegisterCommand(request, info));
 
             // 自动登陆
             this.SetCookie(userInfo.UserId, userInfo.Cellphone);
 
             return this.Ok(userInfo.ToSignUpResponse());
+        }
+
+        private AddBankCard BuildAddBankCardCommand(AuthenticationRequest request)
+        {
+            return new AddBankCard
+            {
+                EntityId = this.CurrentUser.Id,
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                BankName = request.BankName,
+                CityName = request.CityName,
+                UserId = this.CurrentUser.Id
+            };
+        }
+
+        private Authenticate BuildAuthenticateCommand(AuthenticationRequest request)
+        {
+            return new Authenticate
+            {
+                EntityId = this.CurrentUser.Id,
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                BankName = request.BankName,
+                Cellphone = this.CurrentUser.Cellphone,
+                CityName = request.CityName,
+                Credential = request.Credential,
+                CredentialNo = request.CredentialNo.ToUpperInvariant(),
+                RealName = request.RealName,
+                UserId = this.CurrentUser.Id
+            };
+        }
+
+        private ResetLoginPassword BuildResetLoginPasswordCommand(ResetPasswordRequest request, SignUpUserIdInfo info)
+        {
+            return new ResetLoginPassword
+            {
+                EntityId = info.UserId,
+                Args = this.BuildArgs(),
+                Password = request.Password,
+                Salt = info.UserId.ToGuidString(),
+                UserId = info.UserId
+            };
+        }
+
+        private SetPaymentPassword BuildSetPaymentPasswordCommand(ResetPaymentPasswordRequest request)
+        {
+            return new SetPaymentPassword
+            {
+                EntityId = this.CurrentUser.Id,
+                Args = this.BuildArgs(),
+                Override = true,
+                PaymentPassword = request.Password,
+                Salt = this.CurrentUser.Id.ToGuidString(),
+                UserId = this.CurrentUser.Id
+            };
+        }
+
+        private SetPaymentPassword BuildSetPaymentPasswordCommand(SetPaymentPasswordRequest request)
+        {
+            return new SetPaymentPassword
+            {
+                Args = this.BuildArgs(),
+                Override = false,
+                PaymentPassword = request.Password,
+                Salt = this.CurrentUser.Id.ToGuidString(),
+                UserId = this.CurrentUser.Id
+            };
+        }
+
+        private UserRegister BuildUserRegisterCommand(SignUpRequest request, SignUpUserIdInfo info)
+        {
+            return new UserRegister
+            {
+                EntityId = info.UserId,
+                Args = this.BuildArgs(),
+                Cellphone = info.Cellphone,
+                ClientType = request.ClientType.GetValueOrDefault(),
+                ContractId = request.ContractId.GetValueOrDefault(),
+                InviteBy = request.InviteBy ?? "JYM",
+                OutletCode = request.OutletCode ?? "JYM",
+                Password = request.Password,
+                UserId = info.UserId
+            };
         }
 
         /// <summary>
@@ -450,7 +517,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         private void SetCookie(Guid userId, string cellphone)
         {
             bool isMobileDevice = HttpUtils.IsFromMobileDevice(this.Request);
-            DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(7);
+            DateTime expiry = isMobileDevice ? DateTime.UtcNow.AddDays(7) : DateTime.UtcNow.AddMinutes(30);
             string userData = $"{userId},{cellphone},{expiry.ToBinary()}";
             FormsAuthentication.SetAuthCookie(userData, true);
             HttpCookie cookie = FormsAuthentication.GetAuthCookie(userData, true);

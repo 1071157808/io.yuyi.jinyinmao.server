@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-27  7:35 PM
+// File             : RegularProductInfo.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-25  5:39 PM
+// Last Modified On : 2015-08-17  1:55
 // ***********************************************************************
 // <copyright file="RegularProductInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,7 +17,6 @@ using System.Diagnostics.CodeAnalysis;
 using Moe.Lib;
 using Newtonsoft.Json;
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Models;
 using Yuyi.Jinyinmao.Packages.Helper;
 
@@ -196,7 +195,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>

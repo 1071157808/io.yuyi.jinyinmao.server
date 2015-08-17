@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-16  23:24
+// Last Modified On : 2015-08-17  2:14
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -24,7 +24,6 @@ using Orleans.Providers;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Events;
-using Yuyi.Jinyinmao.Packages.Helper;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -79,24 +78,6 @@ namespace Yuyi.Jinyinmao.Domain
             await this.CheckSaleStatusAsync();
 
             return order;
-        }
-
-        /// <summary>
-        ///     Cancels the order asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        public Task<OrderInfo> CancelOrderAsync(CancelOrder command)
-        {
-            OrderInfo order;
-            if (this.State.Orders.TryGetValue(command.OrderId, out order))
-            {
-                this.State.Orders.Remove(command.OrderId);
-                this.ReloadOrderData();
-                return Task.FromResult(order);
-            }
-
-            return Task.FromResult<OrderInfo>(null);
         }
 
         /// <summary>
@@ -417,36 +398,6 @@ namespace Yuyi.Jinyinmao.Domain
             await DBSyncHelper.SyncRegularProductAsync(await this.GetRegularProductInfoAsync(), this.State.Agreement1, this.State.Agreement2);
         }
 
-        /// <summary>
-        ///     Transfers the order asynchronous.
-        /// </summary>
-        /// <param name="orderId">The order identifier.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        public async Task<OrderInfo> TransferOrderAsync(Guid orderId)
-        {
-            OrderInfo order;
-            if (this.State.Orders.TryGetValue(orderId, out order))
-            {
-                IUser user = this.GrainFactory.GetGrain<IUser>(VariableHelper.TransferDestinationId);
-                UserInfo userInfo = await user.GetUserInfoAsync();
-
-                order.OrderId = Guid.NewGuid();
-                order.UserInfo = userInfo;
-                order.Cellphone = userInfo.Cellphone;
-                order.AccountTransactionId = Guid.Empty;
-                order.UserId = userInfo.UserId;
-
-                this.State.Orders.Remove(orderId);
-
-                this.State.Orders.Add(orderId, order);
-
-                this.ReloadOrderData();
-                return order;
-            }
-
-            return null;
-        }
-
         #endregion IRegularProduct Members
 
         private static async Task<string> UploadEndorseImage(string endorseImageSourceLink, string imageIdentifier)
@@ -459,7 +410,7 @@ namespace Yuyi.Jinyinmao.Domain
                     stream.CopyTo(memoryStream);
                 }
 
-                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference($"EndorseImages/{imageIdentifier}");
+                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference("EndorseImages/{0}".FormatWith(imageIdentifier));
                 blob.Properties.ContentType = "image/jpeg";
                 await blob.UploadFromStreamAsync(memoryStream);
                 return blob.Uri.AbsoluteUri;
@@ -530,9 +481,9 @@ namespace Yuyi.Jinyinmao.Domain
         {
             Dictionary<Type, Func<IEvent, Task>> eventProcessing = new Dictionary<Type, Func<IEvent, Task>>
             {
-                { typeof(RegularProductSoldOut), e => this.GrainFactory.GetGrain<IRegularProductSoldOutProcessor>(e.EventId).ProcessEventAsync((RegularProductSoldOut)e) },
                 { typeof(RegularProductIssued), e => this.GrainFactory.GetGrain<IRegularProductIssuedProcessor>(e.EventId).ProcessEventAsync((RegularProductIssued)e) },
-                { typeof(RegularProductRepaid), e => this.GrainFactory.GetGrain<IRegularProductRepaidProcessor>(e.EventId).ProcessEventAsync((RegularProductRepaid)e) }
+                { typeof(RegularProductRepaid), e => this.GrainFactory.GetGrain<IRegularProductRepaidProcessor>(e.EventId).ProcessEventAsync((RegularProductRepaid)e) },
+                { typeof(RegularProductSoldOut), e => this.GrainFactory.GetGrain<IRegularProductSoldOutProcessor>(e.EventId).ProcessEventAsync((RegularProductSoldOut)e) }
             };
 
             return eventProcessing[evenType];

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-12  12:29 AM
+// File             : JBYProductUpdated.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-17  10:16 PM
+// Last Modified On : 2015-08-17  1:54
 // ***********************************************************************
 // <copyright file="JBYProductUpdated.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -37,7 +36,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the product information.
         /// </summary>
         /// <value>The product information.</value>
-        [Reference]
         public JBYProductInfo ProductInfo { get; set; }
     }
 }

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  19:38
+// Last Modified On : 2015-08-17  2:22
 // ***********************************************************************
 // <copyright file="JBYProductWithdrawalManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -77,18 +77,9 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
         private DateTime GetPredeterminedResultDate(long amount)
         {
-            DateTime predeterminedResultDate = DateTime.UtcNow.ToChinaStandardTime().Date;
             DailyConfig dailyConfig = GetTodayConfig();
-
-            if (this.WithdrawalAmount + amount <= dailyConfig.JBYWithdrawalLimit)
-            {
-                int waitingDays = (int)((this.WithdrawalAmount + amount) / dailyConfig.JBYWithdrawalLimit) + 1;
-
-                DailyConfig config = DailyConfigHelper.GetNextWorkDayConfig(waitingDays - 1);
-
-                predeterminedResultDate = config.Date;
-            }
-            return predeterminedResultDate;
+            int waitingDays = (int)((this.WithdrawalAmount + amount) / dailyConfig.JBYWithdrawalLimit);
+            return DateTime.UtcNow.ToChinaStandardTime().AddDays(waitingDays).Date;
         }
 
         /// <summary>

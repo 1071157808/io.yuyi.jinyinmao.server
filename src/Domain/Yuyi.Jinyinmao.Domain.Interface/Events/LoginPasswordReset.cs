@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-25  3:23 AM
+// File             : LoginPasswordReset.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-18  3:20 AM
+// Last Modified On : 2015-08-17  1:54
 // ***********************************************************************
 // <copyright file="LoginPasswordReset.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,7 +12,6 @@
 // ***********************************************************************
 
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 using Yuyi.Jinyinmao.Domain.Dtos;
 
 namespace Yuyi.Jinyinmao.Domain.Events
@@ -27,7 +26,6 @@ namespace Yuyi.Jinyinmao.Domain.Events
         ///     Gets or sets the user information.
         /// </summary>
         /// <value>The user information.</value>
-        [Reference]
         public UserInfo UserInfo { get; set; }
     }
 }

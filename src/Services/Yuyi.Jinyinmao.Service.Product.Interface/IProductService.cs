@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  0:28
+// Last Modified On : 2015-08-17  2:21
 // ***********************************************************************
 // <copyright file="IProductService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,10 +13,8 @@
 
 using System;
 using System.Threading.Tasks;
-using PostSharp.Patterns.Contracts;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
-using Yuyi.Jinyinmao.Log;
 
 namespace Yuyi.Jinyinmao.Service.Interface
 {
@@ -26,35 +24,18 @@ namespace Yuyi.Jinyinmao.Service.Interface
     public interface IProductService : IProductInfoService
     {
         /// <summary>
-        ///     Cancels the order asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns></returns>
-        Task<OrderInfo> CancelOrderAsync(CancelOrder command);
-
-        /// <summary>
         ///     Hits the shelves.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
-        [LogExceptionAspect]
-        Task<RegularProductInfo> HitShelvesAsync([Required] IssueRegularProduct command);
+        Task<RegularProductInfo> HitShelvesAsync(IssueRegularProduct command);
 
         /// <summary>
         ///     Hits the shelves.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task.</returns>
-        [LogExceptionAspect]
-        Task<JBYProductInfo> HitShelvesAsync([Required] IssueJBYProduct command);
-
-        /// <summary>
-        ///     Migrates the asynchronous.
-        /// </summary>
-        /// <param name="productId">The product identifier.</param>
-        /// <param name="migrationDto">The migration dto.</param>
-        /// <returns>Task&lt;RegularProductInfo&gt;.</returns>
-        Task<RegularProductInfo> MigrateAsync(Guid productId, RegularProductMigrationDto migrationDto);
+        Task<JBYProductInfo> HitShelvesAsync(IssueJBYProduct command);
 
         /// <summary>
         ///     Refreshes the jyb product asynchronous.

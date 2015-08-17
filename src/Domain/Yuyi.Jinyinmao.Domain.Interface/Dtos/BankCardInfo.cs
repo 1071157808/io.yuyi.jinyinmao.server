@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : BankCardInfo.cs
-// Created          : 2015-05-27  7:35 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-28  11:45 AM
+// Last Modified On : 2015-08-17  1:55
 // ***********************************************************************
 // <copyright file="BankCardInfo.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using Moe.Lib;
 using Orleans.Concurrency;
-using PostSharp.Patterns.Model;
 
 namespace Yuyi.Jinyinmao.Domain.Dtos
 {
@@ -124,7 +123,6 @@ namespace Yuyi.Jinyinmao.Domain.Dtos
         ///     Gets or sets the arguments.
         /// </summary>
         /// <value>The arguments.</value>
-        [Reference]
         public Dictionary<string, object> Args { get; set; }
 
         /// <summary>
