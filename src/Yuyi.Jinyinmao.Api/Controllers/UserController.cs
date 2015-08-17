@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  10:10
+// Last Modified On : 2015-08-17  10:30
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -66,7 +66,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
             if (userInfo == null)
             {
-                this.TraceWriter.Warn(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Error(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UG:无法获取用户信息");
             }
 
@@ -91,7 +91,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
             if (userInfo == null)
             {
-                this.TraceWriter.Warn(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Error(this.Request, "Application", "User:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("US1:无法获取用户信息");
             }
 

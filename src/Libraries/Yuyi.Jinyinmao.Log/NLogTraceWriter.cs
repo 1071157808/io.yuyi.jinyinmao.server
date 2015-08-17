@@ -26,6 +26,30 @@ namespace Yuyi.Jinyinmao.Log
     /// </summary>
     public sealed class NLogTraceWriter : ITraceWriter
     {
+        private static readonly Lazy<Dictionary<TraceLevel, Action<string>>> AppicationLoggers =
+                    new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
+                        new Dictionary<TraceLevel, Action<string>>
+                        {
+                    { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
+                    { TraceLevel.Info, LogManager.GetTraceLogger().Info },
+                    { TraceLevel.Error, LogManager.GetTraceLogger().Error },
+                    { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
+                    { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
+                        }
+                        );
+
+        private static readonly Lazy<Dictionary<TraceLevel, Action<string>>> BackOfficeLoggers =
+                    new Lazy<Dictionary<TraceLevel, Action<string>>>(() =>
+                        new Dictionary<TraceLevel, Action<string>>
+                        {
+                    { TraceLevel.Debug, LogManager.GetTraceLogger().Debug },
+                    { TraceLevel.Info, LogManager.GetTraceLogger().Info },
+                    { TraceLevel.Error, LogManager.GetTraceLogger().Error },
+                    { TraceLevel.Warn, LogManager.GetTraceLogger().Warn },
+                    { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
+                        }
+                        );
+
         /// <summary>
         ///     The loggers
         /// </summary>
@@ -40,6 +64,24 @@ namespace Yuyi.Jinyinmao.Log
                     { TraceLevel.Fatal, LogManager.GetTraceLogger().Fatal }
                 }
                 );
+
+        /// <summary>
+        /// Gets the current application logger.
+        /// </summary>
+        /// <value>The current application logger.</value>
+        private static Dictionary<TraceLevel, Action<string>> CurrentApplicationLogger
+        {
+            get { return AppicationLoggers.Value; }
+        }
+
+        /// <summary>
+        ///     Gets the current back office logger.
+        /// </summary>
+        /// <value>The current back office logger.</value>
+        private static Dictionary<TraceLevel, Action<string>> CurrentBackOfficeLogger
+        {
+            get { return BackOfficeLoggers.Value; }
+        }
 
         /// <summary>
         ///     Gets the current logger.
@@ -71,11 +113,16 @@ namespace Yuyi.Jinyinmao.Log
 
         #endregion ITraceWriter Members
 
-        private static void LogToLogger(string category, string logMessage)
+        private static void LogToLogger(string category, TraceLevel level, string logMessage)
         {
             if (category == "BackOffice")
             {
-                LogManager.GetBackOfficeLogger().Info(logMessage);
+                CurrentBackOfficeLogger[level](logMessage);
+            }
+
+            if (category == "Appication")
+            {
+                CurrentApplicationLogger[level](logMessage);
             }
         }
 
@@ -128,7 +175,7 @@ namespace Yuyi.Jinyinmao.Log
 
             string logMessage = messageBuilder.ToString();
             CurrentLogger[traceRecord.Level](logMessage);
-            LogToLogger(traceRecord.Category, logMessage);
+            LogToLogger(traceRecord.Category, traceRecord.Level, logMessage);
         }
     }
 }

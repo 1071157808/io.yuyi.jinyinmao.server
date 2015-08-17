@@ -211,8 +211,13 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.TraceWriter.Warn(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Error(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("UJW3:暂时无法赎回");
+            }
+
+            if (userInfo.Closed)
+            {
+                return this.BadRequest("UC:该账户已经被锁定，请联系金银猫客服");
             }
 
             if (userInfo.TodayJBYWithdrawalAmount + request.Amount > VariableHelper.DailyJBYWithdrawalAmountLimit)
