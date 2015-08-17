@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  1:56
+// Last Modified On : 2015-08-17  9:54
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -56,90 +56,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        ///     Cancels the order.
-        /// </summary>
-        /// <param name="userIdentifier">The user identifier.</param>
-        /// <param name="orderIdentifier">The order identifier.</param>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("CancelOrder/{userIdentifier:length(32)}/{orderIdentifier:length(32)}")]
-        [ActionParameterRequired]
-        [ActionParameterValidate(Order = 1)]
-        [IpAuthorize(OnlyLocalHost = true)]
-        [ResponseType(typeof(OrderInfoResponse))]
-        public async Task<IHttpActionResult> CancelOrder(string userIdentifier, string orderIdentifier)
-        {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
-            Guid orderId = Guid.ParseExact(orderIdentifier, "N");
-
-            OrderInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).CancelOrderAsync(orderId, this.BuildArgs());
-
-            if (info == null)
-            {
-                return this.BadRequest("未找到对应的订单");
-            }
-
-            return this.Ok(info.ToResponse());
-        }
-
-        /// <summary>
-        ///     Cancels the settle account transaction result.
-        /// </summary>
-        /// <param name="userIdentifier">The user identifier.</param>
-        /// <param name="transactionIdentifier">The transaction identifier.</param>
-        /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
-        [Route("CancelSettleAccountTransactionResult/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}")]
-        [ActionParameterRequired]
-        [ActionParameterValidate(Order = 1)]
-        [IpAuthorize(OnlyLocalHost = true)]
-        [ResponseType(typeof(SettleAccountTransactionInfoResponse))]
-        public async Task<IHttpActionResult> CancelSettleAccountTransactionResult(string userIdentifier, string transactionIdentifier)
-        {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
-            Guid transacationId = Guid.ParseExact(transactionIdentifier, "N");
-
-            SettleAccountTransactionInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).CancelSettleAccountTransactionAsync(transacationId, this.BuildArgs());
-
-            if (info == null)
-            {
-                return this.BadRequest("未找到对应的账户流水");
-            }
-
-            return this.Ok(info.ToResponse());
-        }
-
-        /// <summary>
-        ///     Changes the cellphone.
-        /// </summary>
-        /// <param name="userIdentifier">用户唯一标识</param>
-        /// <param name="cellphone">需要修改为的手机号</param>
-        /// <response code="200"></response>
-        /// <response code="401"></response>
-        /// <response code="403"></response>
-        /// <response code="500"></response>
-        [Route("ChangeCellphone/{userIdentifier:length(32)}/{cellphone:length(11)}")]
-        [IpAuthorize(OnlyLocalHost = true)]
-        public async Task<IHttpActionResult> ChangeCellphone(string userIdentifier, string cellphone)
-        {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
-
-            ICellphone cellphoneGrain = GrainClient.GrainFactory.GetGrain<ICellphone>(GrainTypeHelper.GetCellphoneGrainTypeLongKey(cellphone));
-            CellphoneInfo cellphoneInfo = await cellphoneGrain.GetCellphoneInfoAsync();
-            if (cellphoneInfo.Registered)
-            {
-                return this.BadRequest("修改的目标手机号已经被注册");
-            }
-
-            if (RegexUtility.CellphoneRegex.IsMatch(cellphone))
-            {
-                IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
-                UserInfo info = await user.ChangeCellphoneAsync(cellphone);
-                await user.SyncAsync();
-                return this.Ok(info);
-            }
-            return this.BadRequest("手机号格式不正确");
-        }
-
-        /// <summary>
         ///     CheckJBYProductSaleStatus
         /// </summary>
         /// <response code="200"></response>
@@ -169,23 +85,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid productId = Guid.ParseExact(productIdentifier, "N");
             await GrainClient.GrainFactory.GetGrain<IRegularProduct>(productId).CheckSaleStatusAsync();
             return this.Ok();
-        }
-
-        /// <summary>
-        ///     ClearUnauthenticatedInfoAsync
-        /// </summary>
-        /// <response code="200"></response>
-        /// <response code="401"></response>
-        /// <response code="403"></response>
-        /// <response code="500"></response>
-        [Route("ClearUnauthenticatedInfoAsync/{userIdentifier:length(32)}")]
-        [IpAuthorize(OnlyLocalHost = true)]
-        [ResponseType(typeof(UserInfoResponse))]
-        public async Task<IHttpActionResult> ClearUnauthenticatedInfoAsync(string userIdentifier)
-        {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
-            UserInfo info = await GrainClient.GrainFactory.GetGrain<IUser>(userId).ClearUnauthenticatedInfoAsync();
-            return this.Ok(info.ToResponse());
         }
 
         /// <summary>
@@ -501,26 +400,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             Guid userId = Guid.ParseExact(userIdentifier, "N");
             await GrainClient.GrainFactory.GetGrain<IUser>(userId).ReloadAsync();
             return this.Ok();
-        }
-
-        /// <summary>
-        ///     RemoveJBYReversalTransactions
-        /// </summary>
-        /// <param name="userIdentifier">用户唯一标识</param>
-        /// <param name="transactionIdentifier">流水唯一标识</param>
-        /// <response code="200"></response>
-        /// <response code="401"></response>
-        /// <response code="403"></response>
-        /// <response code="500"></response>
-        [Route("RemoveJBYReversalTransaction/{userIdentifier:length(32)}/{transactionIdentifier:length(32)}")]
-        [IpAuthorize(OnlyLocalHost = true)]
-        public async Task<IHttpActionResult> RemoveJBYReversalTransaction(string userIdentifier, string transactionIdentifier)
-        {
-            Guid userId = Guid.ParseExact(userIdentifier, "N");
-            Guid transactionId = Guid.ParseExact(transactionIdentifier, "N");
-
-            bool result = await GrainClient.GrainFactory.GetGrain<IUser>(userId).RemoveJBYTransactionsAsync(transactionId);
-            return this.Ok(new { Result = result });
         }
 
         /// <summary>

@@ -123,7 +123,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SagasTransfer.psproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\Yuyi.Jinyinmao.Domain.Core\Yuyi.Jinyinmao.Domain.Core.csproj">

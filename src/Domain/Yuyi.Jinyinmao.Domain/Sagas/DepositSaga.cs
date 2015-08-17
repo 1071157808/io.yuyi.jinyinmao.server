@@ -151,7 +151,7 @@ namespace Yuyi.Jinyinmao.Domain.Sagas
             string[] address = cityName.Split('|');
             return new PaymentRequestParameter(batchNo, sequenceNo, bankCardNo, realName, address[0],
                 address[1], bankName, credential, credentialNo, cellphone, userId,
-                "YL" + DateTime.UtcNow.AddHours(8).Date.ToString("yyyyMMdd"), decimal.Divide(amount, 100));
+                "YL" + DateTime.UtcNow.ToChinaStandardTime().Date.ToString("yyyyMMdd"), decimal.Divide(amount, 100));
         }
 
         private AuthRequestParameter BuildRequestParameter(string sequenceNo, string cityName, string bankCardNo, string realName, string bankName, int credential, string credentialNo, string cellphone, string userId)

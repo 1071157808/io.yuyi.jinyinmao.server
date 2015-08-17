@@ -101,9 +101,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\OrderRepay.cs" />
     <Compile Include="Commands\ProductRepay.cs" />
-    <Compile Include="Commands\AddExtraInterest.cs" />
     <Compile Include="Commands\HideBankCard.cs" />
     <Compile Include="Commands\IssueJBYProduct.cs" />
     <Compile Include="Commands\IssueRegularProduct.cs" />
@@ -130,7 +130,6 @@
     <Compile Include="EventProcessor\IOrderTransferedProcessor.cs" />
     <Compile Include="EventProcessor\ISettleAccountTransactionCanceledProcessor.cs" />
     <Compile Include="EventProcessor\ISettleAccountTransactionResultedProcessor.cs" />
-    <Compile Include="EventProcessor\IExtraInterestAddedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYReinvestedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalAcceptedProcessor.cs" />
     <Compile Include="EventProcessor\IJBYWithdrawalResultedProcessor.cs" />
@@ -145,7 +144,6 @@
     <Compile Include="Events\OrderTransfered.cs" />
     <Compile Include="Events\SettleAccountTransactionCanceled.cs" />
     <Compile Include="Events\SettleAccountTransactionResulted.cs" />
-    <Compile Include="Events\ExtraInterestAdded.cs" />
     <Compile Include="Events\JBYReinvested.cs" />
     <Compile Include="Events\JBYWithdrawalAccepted.cs" />
     <Compile Include="Events\JBYWithdrawalResulted.cs" />
@@ -201,7 +199,6 @@
     <Compile Include="Transcation\SettleAccountTranscation.cs" />
     <Compile Include="Users\BankCard.cs" />
     <Compile Include="Commands\AddBankCard.cs" />
-    <Compile Include="Commands\Authenticate.cs" />
     <Compile Include="Commands\ResetLoginPassword.cs" />
     <Compile Include="Commands\SetPaymentPassword.cs" />
     <Compile Include="Dtos\BankCardInfo.cs" />
@@ -233,7 +230,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Yuyi.Jinyinmao.Domain.Interface.psproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">

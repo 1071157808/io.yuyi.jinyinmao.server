@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ClientConfiguration xmlns="urn:orleans">
-  <Messaging ResponseTimeout="120" ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Info">
-    <TraceLevelOverride LogPrefix="Application" TraceLevel="Info" />
-  </Tracing>
-</ClientConfiguration>

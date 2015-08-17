@@ -1,10 +1,10 @@
-// ***********************************************************************
+﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-25  4:38 PM
+// File             : UserJBYController.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-30  1:19 AM
+// Last Modified On : 2015-08-17  8:56
 // ***********************************************************************
 // <copyright file="UserJBYController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -57,7 +57,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UJI:查询不到该账户的信息</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Info"), CookieAuthorize, ResponseType(typeof(JBYAccountInfoResponse))]
+        [HttpGet]
+        [Route("Info")]
+        [CookieAuthorize]
+        [ResponseType(typeof(JBYAccountInfoResponse))]
         public async Task<IHttpActionResult> Info()
         {
             JBYAccountInfo info = await this.userInfoService.GetJBYAccountInfoAsync(this.CurrentUser.Id);
@@ -80,7 +83,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAT1:交易流水不存在</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transactions/Reinvesting/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<JBYTransactionInfoResponse>))]
+        [HttpGet]
+        [Route("Transactions/Reinvesting/{pageIndex:int=0}")]
+        [CookieAuthorize]
+        [ResponseType(typeof(PaginatedResponse<JBYTransactionInfoResponse>))]
         public async Task<IHttpActionResult> ReinvestingTransactions(int pageIndex = 0)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
@@ -105,7 +111,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">UJT1:交易流水不存在</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transaction/{transactionIdentifier:length(32)}"), CookieAuthorize, ResponseType(typeof(JBYTransactionInfoResponse))]
+        [HttpGet]
+        [Route("Transaction/{transactionIdentifier:length(32)}")]
+        [CookieAuthorize]
+        [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> Transaction(string transactionIdentifier)
         {
             Guid transactionId;
@@ -134,7 +143,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">USAT1:交易流水不存在</response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [HttpGet, Route("Transactions/{pageIndex:int=0}"), CookieAuthorize, ResponseType(typeof(PaginatedResponse<JBYTransactionInfoResponse>))]
+        [HttpGet]
+        [Route("Transactions/{pageIndex:int=0}")]
+        [CookieAuthorize]
+        [ResponseType(typeof(PaginatedResponse<JBYTransactionInfoResponse>))]
         public async Task<IHttpActionResult> Transactions(int pageIndex = 0)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
@@ -176,7 +188,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("Withdrawal"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(JBYTransactionInfoResponse))]
+        [Route("Withdrawal")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(JBYTransactionInfoResponse))]
         public async Task<IHttpActionResult> Withdrawal(JBYWithdrawalRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.PaymentPassword);
@@ -209,12 +225,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("UJW5:赎回金额超过限制");
             }
 
-            JBYAccountTransactionInfo info = await this.userService.WithdrawalAsync(new JBYWithdrawal
-            {
-                Amount = request.Amount,
-                Args = this.BuildArgs(),
-                UserId = this.CurrentUser.Id
-            });
+            JBYAccountTransactionInfo info = await this.userService.JBYWithdrawalAsync(this.BuildJBYWithdrawalCommand(request));
 
             if (info == null)
             {
@@ -222,6 +233,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(info.ToResponse());
+        }
+
+        private JBYWithdrawal BuildJBYWithdrawalCommand(JBYWithdrawalRequest request)
+        {
+            return new JBYWithdrawal
+            {
+                EntityId = this.CurrentUser.Id,
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                UserId = this.CurrentUser.Id
+            };
         }
     }
 }

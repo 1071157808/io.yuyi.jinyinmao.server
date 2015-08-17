@@ -172,7 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DataTransfer.psproj" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

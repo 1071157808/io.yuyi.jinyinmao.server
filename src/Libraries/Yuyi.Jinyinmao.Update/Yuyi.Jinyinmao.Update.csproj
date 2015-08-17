@@ -112,7 +112,6 @@
     <None Include="Web.Cloud.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Yuyi.Jinyinmao.Update.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

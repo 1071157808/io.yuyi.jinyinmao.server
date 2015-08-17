@@ -157,7 +157,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Yuyi.Jinyinmao.Service.Product.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

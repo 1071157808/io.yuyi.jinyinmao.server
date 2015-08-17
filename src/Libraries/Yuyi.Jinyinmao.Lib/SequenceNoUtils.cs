@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-04-26  1:41 AM
+// File             : SequenceNoUtils.cs
+// Created          : 2015-08-16  21:43
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-05-24  10:06 PM
+// Last Modified On : 2015-08-17  9:54
 // ***********************************************************************
 // <copyright file="SequenceNoUtils.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -14,6 +14,7 @@
 using System;
 using System.Globalization;
 using System.Text;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Packages
 {
@@ -34,7 +35,7 @@ namespace Yuyi.Jinyinmao.Packages
             DateTime currentTime;
             lock (LockObject)
             {
-                currentTime = DateTime.UtcNow.AddHours(8);
+                currentTime = DateTime.UtcNow.ToChinaStandardTime();
             }
 
             int year = currentTime.Year - 2013;

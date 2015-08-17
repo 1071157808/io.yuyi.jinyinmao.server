@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserAuthController.cs
-// Created          : 2015-05-25  4:38 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-07-30  1:43 PM
+// Last Modified On : 2015-08-17  8:54
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -82,7 +82,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("Authenticate"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("Authenticate")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> Authenticate(AuthenticationRequest request)
         {
             request.CredentialNo = request.CredentialNo.ToUpperInvariant();
@@ -141,7 +144,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200"></response>
         /// <response code="400">UACC:手机号格式不正确</response>
         /// <response code="500"></response>
-        [HttpGet, Route("CheckCellphone"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(CheckCellphoneResult))]
+        [HttpGet]
+        [Route("CheckCellphone")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(CheckCellphoneResult))]
         public async Task<IHttpActionResult> CheckCellphone(string cellphone)
         {
             cellphone = cellphone ?? "";
@@ -174,7 +181,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("CheckPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("CheckPaymentPassword")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> CheckPaymentPassword(CheckPaymentPasswordRequest request)
         {
             CheckPaymentPasswordResult result = await this.userService.CheckPaymentPasswordAsync(this.CurrentUser.Id, request.Password);
@@ -207,7 +217,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("ResetLoginPassword"), ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("ResetLoginPassword")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetLoginPassword(ResetPasswordRequest request)
         {
             UseVeriCodeResult veriCodeResult = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.ResetLoginPassword);
@@ -252,7 +264,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("ResetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("ResetPaymentPassword")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
             UserInfo userInfo = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
@@ -311,7 +326,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// </response>
         /// <response code="401">AUTH:请先登录</response>
         /// <response code="500"></response>
-        [Route("SetPaymentPassword"), CookieAuthorize, ActionParameterRequired, ActionParameterValidate(Order = 1)]
+        [Route("SetPaymentPassword")]
+        [CookieAuthorize]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
         public async Task<IHttpActionResult> SetPaymentPassword(SetPaymentPasswordRequest request)
         {
             if (await this.userService.CheckPasswordAsync(this.CurrentUser.Id, request.Password))
@@ -354,7 +372,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="200"></response>
         /// <response code="400">请求格式不合法</response>
         /// <response code="500"></response>
-        [Route("SignIn"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignInResponse))]
+        [Route("SignIn")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(SignInResponse))]
         public async Task<IHttpActionResult> SignIn(SignInRequest request)
         {
             SignInResult signInResult = await this.userService.CheckPasswordViaCellphoneAsync(request.LoginName, request.Password);
@@ -374,7 +395,8 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         ///     客户端可以通过直接清除Cookie MA的值实现注销
         /// </remarks>
         /// <response code="200">注销成功</response>
-        [HttpGet, Route("SignOut")]
+        [HttpGet]
+        [Route("SignOut")]
         public IHttpActionResult SignOut()
         {
             FormsAuthentication.SignOut();
@@ -396,12 +418,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         /// <response code="400">
         ///     请求格式不合法
         ///     <br />
-        ///     UAS01:请输入正确的验证码
+        ///     UASU1:请输入正确的验证码
         ///     <br />
-        ///     UAS02:此号码已注册，请直接登录
+        ///     UASU2:此号码已注册，请直接登录
+        ///     <br />
+        ///     UASU3:注册失败
         /// </response>
         /// <response code="500"></response>
-        [Route("SignUp"), ActionParameterRequired, ActionParameterValidate(Order = 1), ResponseType(typeof(SignUpResponse))]
+        [Route("SignUp")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [ResponseType(typeof(SignUpResponse))]
         public async Task<IHttpActionResult> SignUp(SignUpRequest request)
         {
             UseVeriCodeResult result = await this.veriCodeService.UseAsync(request.Token, VeriCodeType.SignUp);
@@ -419,6 +446,11 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo userInfo = await this.userService.RegisterUserAsync(this.BuildUserRegisterCommand(request, info));
+
+            if (userInfo == null)
+            {
+                return this.BadRequest("UASU3:注册失败");
+            }
 
             // 自动登陆
             this.SetCookie(userInfo.UserId, userInfo.Cellphone);

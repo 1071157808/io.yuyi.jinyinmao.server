@@ -67,7 +67,6 @@ namespace Yuyi.Jinyinmao.Domain
                 { typeof(JBYWithdrawalResulted), e => this.GrainFactory.GetGrain<IJBYWithdrawalResultedProcessor>(e.EventId).ProcessEventAsync((JBYWithdrawalResulted)e) },
                 { typeof(JBYReinvested), e => this.GrainFactory.GetGrain<IJBYReinvestedProcessor>(e.EventId).ProcessEventAsync((JBYReinvested)e) },
                 { typeof(BankCardHiden), e => this.GrainFactory.GetGrain<IBankCardHidenProcessor>(e.EventId).ProcessEventAsync((BankCardHiden)e) },
-                { typeof(ExtraInterestAdded), e => this.GrainFactory.GetGrain<IExtraInterestAddedProcessor>(e.EventId).ProcessEventAsync((ExtraInterestAdded)e) },
                 { typeof(SettleAccountTransactionInserted), e => this.GrainFactory.GetGrain<ISettleAccountTransactionInsertedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionInserted)e) },
                 { typeof(JBYAccountTransactionInserted), e => this.GrainFactory.GetGrain<IJBYAccountTransactionInsertedProcessor>(e.EventId).ProcessEventAsync((JBYAccountTransactionInserted)e) },
                 { typeof(SettleAccountTransactionResulted), e => this.GrainFactory.GetGrain<ISettleAccountTransactionResultedProcessor>(e.EventId).ProcessEventAsync((SettleAccountTransactionResulted)e) },
@@ -176,28 +175,6 @@ namespace Yuyi.Jinyinmao.Domain
                 TransDesc = message,
                 TransactionInfo = info,
                 UserInfo = await this.GetUserInfoAsync()
-            };
-
-            await this.ProcessEventAsync(@event);
-        }
-
-        /// <summary>
-        ///     Raises the extra interest added event.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="info">The information.</param>
-        /// <param name="amount">The amount.</param>
-        /// <returns>Task.</returns>
-        private async Task RaiseExtraInterestAddedEvent(AddExtraInterest command, OrderInfo info, int amount)
-        {
-            ExtraInterestAdded @event = new ExtraInterestAdded
-            {
-                Amount = amount,
-                Args = command.Args,
-                Description = command.Description,
-                ExtraInterest = command.ExtraInterest,
-                ExtraPrincipal = command.ExtraPrincipal,
-                OrderInfo = info
             };
 
             await this.ProcessEventAsync(@event);

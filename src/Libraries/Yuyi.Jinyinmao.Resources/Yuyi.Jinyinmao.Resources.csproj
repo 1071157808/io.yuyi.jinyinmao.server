@@ -79,7 +79,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Yuyi.Jinyinmao.Resources.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

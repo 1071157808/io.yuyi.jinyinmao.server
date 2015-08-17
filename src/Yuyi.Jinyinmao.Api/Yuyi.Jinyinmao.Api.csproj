@@ -233,7 +233,6 @@
     <None Include="Web.Cloud.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Yuyi.Jinyinmao.Api.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectConfig.cs" />

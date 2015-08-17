@@ -204,7 +204,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Yuyi.Jinyinmao.Domain.Core.psproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">

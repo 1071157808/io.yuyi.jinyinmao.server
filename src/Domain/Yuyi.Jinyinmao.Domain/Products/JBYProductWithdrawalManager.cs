@@ -98,11 +98,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
 
         private static DailyConfig GetTodayConfig()
         {
-            if (todayConfig.Item1 < DateTime.UtcNow.AddHours(8).Date.AddMinutes(20) || todayConfig.Item1 < DateTime.UtcNow.AddHours(8).AddMinutes(-10))
+            if (todayConfig.Item1 < DateTime.UtcNow.ToChinaStandardTime().Date.AddMinutes(20) || todayConfig.Item1 < DateTime.UtcNow.ToChinaStandardTime().AddMinutes(-10))
             {
                 DailyConfig config = DailyConfigHelper.GetTodayDailyConfig();
 
-                todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.UtcNow.AddHours(8), config);
+                todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.UtcNow.ToChinaStandardTime(), config);
             }
 
             return todayConfig.Item2;
@@ -111,13 +111,13 @@ namespace Yuyi.Jinyinmao.Domain.Products
         private void ReloadTransactionData()
         {
             this.WithdrawalAmount = this.State.WithdrawalTransactions.Values
-                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8)).Sum(t => t.Amount);
+                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.ToChinaStandardTime()).Sum(t => t.Amount);
         }
 
         private async Task RemovePastTransactionsAsync()
         {
             List<Guid> toRemove = this.State.WithdrawalTransactions.Values
-                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.AddHours(8))
+                .Where(t => !t.PredeterminedResultDate.HasValue || t.PredeterminedResultDate.Value.Date < DateTime.UtcNow.ToChinaStandardTime())
                 .Select(t => t.TransactionId).ToList();
 
             foreach (Guid id in toRemove)

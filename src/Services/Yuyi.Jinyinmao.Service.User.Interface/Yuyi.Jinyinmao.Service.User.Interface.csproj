@@ -104,7 +104,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Yuyi.Jinyinmao.Service.User.Interface.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

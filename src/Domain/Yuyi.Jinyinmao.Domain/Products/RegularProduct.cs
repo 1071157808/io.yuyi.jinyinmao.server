@@ -53,7 +53,7 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
-            if (this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
+            if (this.State.StartSellTime > DateTime.UtcNow.ToChinaStandardTime())
             {
                 return null;
             }
@@ -382,7 +382,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
 
             this.State.SoldOut = true;
-            this.State.SoldOutTime = DateTime.UtcNow.AddHours(8);
+            this.State.SoldOutTime = DateTime.UtcNow.ToChinaStandardTime();
 
             await this.SaveStateAsync();
 
@@ -473,8 +473,8 @@ namespace Yuyi.Jinyinmao.Domain
         private DateTime BuildValueDate()
         {
             return this.State.ValueDateMode == null ?
-                this.State.ValueDate.GetValueOrDefault(DateTime.UtcNow.AddHours(8).Date)
-                : DateTime.UtcNow.AddHours(8).AddDays(this.State.ValueDateMode.GetValueOrDefault(0)).Date;
+                this.State.ValueDate.GetValueOrDefault(DateTime.UtcNow.ToChinaStandardTime().Date)
+                : DateTime.UtcNow.ToChinaStandardTime().AddDays(this.State.ValueDateMode.GetValueOrDefault(0)).Date;
         }
 
         private Func<IEvent, Task> GetEventProcessing(Type evenType)

@@ -44,7 +44,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
         public async Task<Guid?> BuildJBYTransactionAsync(JBYAccountTransactionInfo info)
         {
-            if (info.Amount > this.State.FinancingSumAmount - this.PaidAmount || this.State.SoldOut || this.State.StartSellTime > DateTime.UtcNow.AddHours(8))
+            if (info.Amount > this.State.FinancingSumAmount - this.PaidAmount || this.State.SoldOut || this.State.StartSellTime > DateTime.UtcNow.ToChinaStandardTime())
             {
                 return null;
             }
@@ -89,7 +89,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         /// <returns>Task.</returns>
         public Task CheckSaleStatusAsync()
         {
-            if (!this.State.SoldOut && (this.PaidAmount >= this.State.FinancingSumAmount || this.State.EndSellTime.AddMinutes(3) <= DateTime.UtcNow.AddHours(8)))
+            if (!this.State.SoldOut && (this.PaidAmount >= this.State.FinancingSumAmount || this.State.EndSellTime.AddMinutes(3) <= DateTime.UtcNow.ToChinaStandardTime()))
             {
                 Task.Factory.StartNew(() => this.SetToSoldOutAsync());
             }
@@ -190,7 +190,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.State.StartSellTime = command.StartSellTime;
                 this.State.Transactions = new Dictionary<Guid, JBYAccountTransactionInfo>();
                 this.State.UnitPrice = command.UnitPrice;
-                this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
+                this.State.UpdateTime = DateTime.UtcNow.ToChinaStandardTime();
                 this.State.ValueDateMode = command.ValueDateMode;
                 this.State.Yield = command.Yield;
 
@@ -214,7 +214,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             }
 
             string productIdentifier = this.State.ProductId.ToGuidString();
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
             Models.JBYProduct nextProduct;
             using (JYMDBContext db = new JYMDBContext())
             {
@@ -243,7 +243,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 this.State.StartSellTime = nextProduct.StartSellTime;
                 this.State.Transactions = new Dictionary<Guid, JBYAccountTransactionInfo>();
                 this.State.UnitPrice = nextProduct.UnitPrice;
-                this.State.UpdateTime = DateTime.UtcNow.AddHours(8);
+                this.State.UpdateTime = DateTime.UtcNow.ToChinaStandardTime();
                 this.State.ValueDateMode = nextProduct.ValueDateMode;
                 this.State.Yield = nextProduct.Yield;
 
@@ -280,7 +280,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
             }
 
             this.State.SoldOut = true;
-            this.State.SoldOutTime = DateTime.UtcNow.AddHours(8);
+            this.State.SoldOutTime = DateTime.UtcNow.ToChinaStandardTime();
 
             await this.SaveStateAsync();
 

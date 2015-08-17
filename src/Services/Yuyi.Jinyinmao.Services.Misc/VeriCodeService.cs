@@ -90,7 +90,7 @@ namespace Yuyi.Jinyinmao.Service
                     code.ErrorCount = 0;
                     code.Verified = false;
                     code.Used = false;
-                    code.BuildAt = DateTime.UtcNow.AddHours(8);
+                    code.BuildAt = DateTime.UtcNow.ToChinaStandardTime();
                 }
 
                 // 没有记录，重新生成
@@ -102,7 +102,7 @@ namespace Yuyi.Jinyinmao.Service
                         Token = Guid.NewGuid().ToGuidString(),
                         Code = veriCode,
                         ErrorCount = 0,
-                        BuildAt = DateTime.UtcNow.AddHours(8),
+                        BuildAt = DateTime.UtcNow.ToChinaStandardTime(),
                         Times = 1,
                         Type = (int)type,
                         Used = false,
@@ -134,7 +134,7 @@ namespace Yuyi.Jinyinmao.Service
             using (JYMDBContext context = new JYMDBContext())
             {
                 // 验证码的使用有效期为30分钟
-                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);
+                DateTime availableTime = DateTime.UtcNow.ToChinaStandardTime().AddMinutes(-VeriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
                     .FirstOrDefaultAsync(v => v.Token == token && v.Type == (int)type && v.BuildAt >= availableTime);
 
@@ -163,7 +163,7 @@ namespace Yuyi.Jinyinmao.Service
             using (JYMDBContext context = new JYMDBContext())
             {
                 // 只取有效期内的验证码
-                DateTime availableTime = DateTime.UtcNow.AddHours(8).AddMinutes(-VeriCodeValidityInMinute);
+                DateTime availableTime = DateTime.UtcNow.ToChinaStandardTime().AddMinutes(-VeriCodeValidityInMinute);
                 VeriCode veriCode = await context.Query<VeriCode>().OrderByDescending(v => v.BuildAt)
                     .FirstOrDefaultAsync(v => v.Cellphone == cellphone && v.Type == (int)type && v.BuildAt >= availableTime && !v.Used);
 

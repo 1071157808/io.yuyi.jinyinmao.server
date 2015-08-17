@@ -83,7 +83,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SmsClient.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

@@ -109,7 +109,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IJI4:产品剩余份额不足");
             }
 
-            if (productInfo.StartSellTime > DateTime.UtcNow.AddHours(8))
+            if (productInfo.StartSellTime > DateTime.UtcNow.ToChinaStandardTime())
             {
                 return this.BadRequest("IJI5:该产品未开售");
             }
@@ -119,7 +119,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IJI6:购买金额错误");
             }
 
-            if (productInfo.SoldOut || productInfo.EndSellTime < DateTime.UtcNow.AddHours(8))
+            if (productInfo.SoldOut || productInfo.EndSellTime < DateTime.UtcNow.ToChinaStandardTime())
             {
                 return this.BadRequest("IJI8:该产品已售罄");
             }
@@ -199,7 +199,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("IRI4:产品剩余份额不足");
             }
 
-            if (productInfo.StartSellTime > DateTime.UtcNow.AddHours(8))
+            if (productInfo.StartSellTime > DateTime.UtcNow.ToChinaStandardTime())
             {
                 return this.BadRequest("IRI5:该产品未开售");
             }

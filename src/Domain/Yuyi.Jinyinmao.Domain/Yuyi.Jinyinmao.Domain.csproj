@@ -175,7 +175,6 @@
     <Compile Include="EventProcessor\SettleAccountTransactionResultedProcessor.cs" />
     <Compile Include="EventProcessor\JBYAccountTransactionResultedEventProcessor .cs" />
     <Compile Include="EventProcessor\DepositResultedProcessor.cs" />
-    <Compile Include="EventProcessor\ExtraInterestAddedProcessor.cs" />
     <Compile Include="EventProcessor\JBYAccountTransactionInsertedProcessor.cs" />
     <Compile Include="EventProcessor\SettleAccountTransactionInsertedProcessor.cs" />
     <Compile Include="EventProcessor\JBYReinvestedProcessor.cs" />
@@ -221,7 +220,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Yuyi.Jinyinmao.Domain.psproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">

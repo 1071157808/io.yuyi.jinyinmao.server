@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  2:11
+// Last Modified On : 2015-08-17  2:22
 // ***********************************************************************
 // <copyright file="BackOfficeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -131,7 +131,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest($"上架失败：金包银产品期数必须大于 {maxIssueNo}");
             }
 
-            if (request.EndSellTime < DateTime.UtcNow.AddHours(8).AddMinutes(10))
+            if (request.EndSellTime < DateTime.UtcNow.ToChinaStandardTime().AddMinutes(10))
             {
                 return this.BadRequest("上架失败：产品停售时间已过");
             }
@@ -193,7 +193,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("上架失败：产品编号已存在");
             }
 
-            if (request.EndSellTime < DateTime.UtcNow.AddHours(8).AddMinutes(10))
+            if (request.EndSellTime < DateTime.UtcNow.ToChinaStandardTime().AddMinutes(10))
             {
                 return this.BadRequest("上架失败：产品停售时间已过");
             }
@@ -365,7 +365,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 EndSellTime = request.EndSellTime,
                 FinancingSumAmount = request.FinancingSumAmount,
                 IssueNo = request.IssueNo,
-                IssueTime = DateTime.UtcNow.AddHours(8),
+                IssueTime = DateTime.UtcNow.ToChinaStandardTime(),
                 ProductCategory = request.ProductCategory,
                 ProductId = productId,
                 ProductName = request.ProductName,

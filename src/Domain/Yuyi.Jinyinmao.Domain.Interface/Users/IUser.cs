@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  2:22
+// Last Modified On : 2015-08-17  8:53
 // ***********************************************************************
 // <copyright file="IUser.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -34,13 +34,6 @@ namespace Yuyi.Jinyinmao.Domain
         Task<BankCardInfo> AddBankCardAsync(AddBankCard command);
 
         /// <summary>
-        ///     Adds the extra interest to order.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command);
-
-        /// <summary>
         ///     Authenticates the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -55,29 +48,6 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="message">The message.</param>
         /// <returns>Task&lt;UserInfo&gt;.</returns>
         Task<UserInfo> AuthenticateResultedAsync(Authenticate command, bool result, string message);
-
-        /// <summary>
-        ///     Cancels the order asynchronous.
-        /// </summary>
-        /// <param name="orderId">The order identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        Task<OrderInfo> CancelOrderAsync(Guid orderId, Dictionary<string, object> args);
-
-        /// <summary>
-        ///     Cancels the settle account transaction asynchronous.
-        /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        Task<SettleAccountTransactionInfo> CancelSettleAccountTransactionAsync(Guid transactionId, Dictionary<string, object> args);
-
-        /// <summary>
-        ///     Changes the cellphone asynchronous.
-        /// </summary>
-        /// <param name="cellphone">The cellphone.</param>
-        /// <returns>Task&lt;UserInfo&gt;.</returns>
-        Task<UserInfo> ChangeCellphoneAsync(string cellphone);
 
         /// <summary>
         ///     Checks the password asynchronous.
@@ -102,13 +72,7 @@ namespace Yuyi.Jinyinmao.Domain
         Task<CheckPaymentPasswordResult> CheckPaymentPasswordAsync(string paymentPassword);
 
         /// <summary>
-        ///     Clears the unauthenticated information asynchronous.
-        /// </summary>
-        /// <returns>Task&lt;UserInfo&gt;.</returns>
-        Task<UserInfo> ClearUnauthenticatedInfoAsync();
-
-        /// <summary>
-        ///     Deposits the asynchronous.
+        /// Deposits the asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;Tuple&lt;UserInfo, SettleAccountTransactionInfo, BankCardInfo&gt;&gt;.</returns>
@@ -245,11 +209,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<List<BankCardInfo>> GetWithdrawalableBankCardInfosAsync();
 
         /// <summary>
-        ///     Hides the bank card asynchronous.
+        /// Hides the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task HideBankCardAsync(HideBankCard command);
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
+        Task<BankCardInfo> HideBankCardAsync(HideBankCard command);
 
         /// <summary>
         ///     Inserts the jby account transcation asynchronous.
@@ -326,15 +290,6 @@ namespace Yuyi.Jinyinmao.Domain
         Task ReloadAsync();
 
         /// <summary>
-        ///     Removes the jby transactions asynchronous.
-        /// </summary>
-        /// <param name="transactionId">The transaction identifier.</param>
-        /// <returns>
-        ///     Task&lt;System.Int32&gt;.
-        /// </returns>
-        Task<bool> RemoveJBYTransactionsAsync(Guid transactionId);
-
-        /// <summary>
         ///     Repays the order asynchronous.
         /// </summary>
         /// <param name="orderRepayCommand">The order repay command.</param>
@@ -342,11 +297,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<OrderInfo> RepayOrderAsync(OrderRepay orderRepayCommand);
 
         /// <summary>
-        ///     Resets the login password.
+        /// Resets the login password.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns></returns>
-        Task ResetLoginPasswordAsync(ResetLoginPassword command);
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> ResetLoginPasswordAsync(ResetLoginPassword command);
 
         /// <summary>
         ///     Sets the jby account transaction result asynchronous.
@@ -359,11 +314,11 @@ namespace Yuyi.Jinyinmao.Domain
         Task<JBYAccountTransactionInfo> SetJBYAccountTransactionResultAsync(Guid transactionId, bool result, string message, Dictionary<string, object> args);
 
         /// <summary>
-        ///     Sets the payment password asynchronous.
+        /// Sets the payment password asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        Task SetPaymentPasswordAsync(SetPaymentPassword command);
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        Task<UserInfo> SetPaymentPasswordAsync(SetPaymentPassword command);
 
         /// <summary>
         ///     Sets the settle account transaction result asynchronous.
@@ -378,9 +333,8 @@ namespace Yuyi.Jinyinmao.Domain
         /// <summary>
         ///     Signs the asynchronous.
         /// </summary>
-        /// <param name="args">The arguments.</param>
         /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
-        Task<SettleAccountTransactionInfo> SignAsync(Dictionary<string, object> args);
+        Task<SettleAccountTransactionInfo> SignAsync();
 
         /// <summary>
         ///     Synchronizes the asynchronous.

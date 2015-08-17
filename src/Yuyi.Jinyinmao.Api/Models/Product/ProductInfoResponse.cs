@@ -38,7 +38,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         [JsonProperty("currentValueDate")]
         public DateTime CurrentValueDate
         {
-            get { return this.SpecifyValueDate ? this.ValueDate.Date : DateTime.UtcNow.AddHours(8).Date; }
+            get { return this.SpecifyValueDate ? this.ValueDate.Date : DateTime.UtcNow.ToChinaStandardTime().Date; }
         }
 
         /// <summary>

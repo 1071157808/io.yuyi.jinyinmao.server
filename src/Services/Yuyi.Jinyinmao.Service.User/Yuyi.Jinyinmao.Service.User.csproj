@@ -167,7 +167,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Yuyi.Jinyinmao.Service.User.psproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientConfiguration.xml">

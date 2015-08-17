@@ -59,12 +59,12 @@ namespace Yuyi.Jinyinmao.Domain
         {
             try
             {
-                if (force || (DateTime.UtcNow.AddHours(8).Hour <= 5 && DateTime.UtcNow.AddHours(8).Hour >= 2))
+                if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 5 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 2))
                 {
                     StringBuilder builder = new StringBuilder();
                     builder.Append("UserDailyWork: UserId-{0}\n".FormatWith(this.State.UserId));
 
-                    DateTime now = DateTime.UtcNow.AddHours(8);
+                    DateTime now = DateTime.UtcNow.ToChinaStandardTime();
                     List<JBYAccountTransaction> jbyWithdrawalTransactions = this.State.JBYAccount.Values
                         .Where(t => t.TradeCode == TradeCodeHelper.TC2001012002 && t.ResultCode == 0 && t.PredeterminedResultDate.HasValue
                                     && t.PredeterminedResultDate.GetValueOrDefault(DateTime.MaxValue).Date < now)

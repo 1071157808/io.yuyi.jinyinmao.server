@@ -89,11 +89,11 @@ namespace Yuyi.Jinyinmao.Domain.Misc
 
         private static DailyConfig GetTodayConfig()
         {
-            if (todayConfig.Item1 < DateTime.UtcNow.AddHours(8).Date.AddMinutes(20) || todayConfig.Item1 < DateTime.UtcNow.AddHours(8).AddMinutes(-10))
+            if (todayConfig.Item1 < DateTime.UtcNow.ToChinaStandardTime().Date.AddMinutes(20) || todayConfig.Item1 < DateTime.UtcNow.ToChinaStandardTime().AddMinutes(-10))
             {
                 DailyConfig config = DailyConfigHelper.GetTodayDailyConfig();
 
-                todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.UtcNow.AddHours(8), config);
+                todayConfig = new Tuple<DateTime, DailyConfig>(DateTime.UtcNow.ToChinaStandardTime(), config);
             }
 
             return todayConfig.Item2;

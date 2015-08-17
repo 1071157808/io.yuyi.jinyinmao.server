@@ -140,7 +140,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Yuyi.Jinyinmao.Log.psproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Yuyi.Jinyinmao.Lib\Yuyi.Jinyinmao.Lib.csproj">

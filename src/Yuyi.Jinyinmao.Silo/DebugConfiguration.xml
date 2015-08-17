@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ClientConfiguration xmlns="urn:orleans">
-  <Gateway Address="localhost" Port="30000" />
-  <Messaging ResponseTimeout="120" ResendOnTimeout="true" MaxResendCount="10" />
-  <Tracing DefaultTraceLevel="Warning" TraceToConsole="true" TraceToFile="{0}-{1}.log" WriteTraces="true">
-    <TraceLevelOverride LogPrefix="Application" TraceLevel="Warning" />
-  </Tracing>
-</ClientConfiguration>

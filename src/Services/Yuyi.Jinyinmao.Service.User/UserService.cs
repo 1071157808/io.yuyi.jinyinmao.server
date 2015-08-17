@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : UserService.cs
-// Created          : 2015-08-12  2:04 AM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-12  3:27 AM
+// Last Modified On : 2015-08-17  8:53
 // ***********************************************************************
 // <copyright file="UserService.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,10 +36,10 @@ namespace Yuyi.Jinyinmao.Service
         #region IUserService Members
 
         /// <summary>
-        ///     Adds the bank card asynchronous.
+        /// Adds the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
         public Task<BankCardInfo> AddBankCardAsync(AddBankCard command)
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
@@ -67,28 +67,6 @@ namespace Yuyi.Jinyinmao.Service
                 PayByYilianCommand = null,
                 VerifyBankCardCommand = verifyBankCardCommand
             });
-        }
-
-        /// <summary>
-        ///     Adds the extra interest to order.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;OrderInfo&gt;.</returns>
-        public Task<OrderInfo> AddExtraInterestToOrderAsync(AddExtraInterest command)
-        {
-            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
-            return user.AddExtraInterestToOrderAsync(command);
-        }
-
-        /// <summary>
-        ///     Authenticatings the asynchronous.
-        /// </summary>
-        /// <param name="command">The apply for authentication.</param>
-        /// <returns>Task.</returns>
-        public Task AuthenticateAsync(Authenticate command)
-        {
-            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
-            return user.AuthenticateAsync(command);
         }
 
         /// <summary>
@@ -200,16 +178,6 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
             return user.CheckPaymentPasswordAsync(paymentPassword);
-        }
-
-        /// <summary>
-        ///     Clears the unauthenticated information.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        public Task ClearUnauthenticatedInfo(Guid userId)
-        {
-            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
-            return user.ClearUnauthenticatedInfoAsync();
         }
 
         /// <summary>
@@ -438,11 +406,11 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Hides the bank card asynchronous.
+        /// Hides the bank card asynchronous.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        public Task HideBankCardAsync(HideBankCard command)
+        /// <returns>Task&lt;BankCardInfo&gt;.</returns>
+        public Task<BankCardInfo> HideBankCardAsync(HideBankCard command)
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.HideBankCardAsync(command);
@@ -471,6 +439,17 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
+        ///     Withdrawals the asynchronous.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
+        public Task<JBYAccountTransactionInfo> JBYWithdrawalAsync(JBYWithdrawal command)
+        {
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
+            return user.JBYWithdrawalAsync(command);
+        }
+
+        /// <summary>
         /// </summary>
         /// <param name="command">The command.</param>
         /// <returns>Task&lt;ICommandHanderResult&lt;TResult&gt;&gt;.</returns>
@@ -492,25 +471,36 @@ namespace Yuyi.Jinyinmao.Service
         }
 
         /// <summary>
-        ///     Resets the login password.
+        /// Resets the login password.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <returns>Task.</returns>
-        public Task ResetLoginPasswordAsync(ResetLoginPassword command)
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public Task<UserInfo> ResetLoginPasswordAsync(ResetLoginPassword command)
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.ResetLoginPasswordAsync(command);
         }
 
         /// <summary>
-        ///     Sets the payment password asynchronous.
+        /// Sets the payment password asynchronous.
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns>Task.</returns>
-        public Task SetPaymentPasswordAsync(SetPaymentPassword command)
+        /// <param name="command">The command.</param>
+        /// <returns>Task&lt;UserInfo&gt;.</returns>
+        public Task<UserInfo> SetPaymentPasswordAsync(SetPaymentPassword command)
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.SetPaymentPasswordAsync(command);
+        }
+
+        /// <summary>
+        /// Signs the asynchronous.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Task&lt;SettleAccountTransactionInfo&gt;.</returns>
+        public Task<SettleAccountTransactionInfo> SignAsync(Guid userId)
+        {
+            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(userId);
+            return user.SignAsync();
         }
 
         /// <summary>
@@ -544,17 +534,6 @@ namespace Yuyi.Jinyinmao.Service
         {
             IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
             return user.WithdrawalAsync(command);
-        }
-
-        /// <summary>
-        ///     Withdrawals the asynchronous.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>Task&lt;JBYAccountTransactionInfo&gt;.</returns>
-        public Task<JBYAccountTransactionInfo> WithdrawalAsync(JBYWithdrawal command)
-        {
-            IUser user = GrainClient.GrainFactory.GetGrain<IUser>(command.UserId);
-            return user.JBYWithdrawalAsync(command);
         }
 
         /// <summary>

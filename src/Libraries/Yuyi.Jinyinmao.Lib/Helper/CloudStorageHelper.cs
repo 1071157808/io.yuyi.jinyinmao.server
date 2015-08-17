@@ -75,7 +75,7 @@ namespace Yuyi.Jinyinmao.Helper
             TableCacheEntity cache = new TableCacheEntity
             {
                 Data = data.ToJson(),
-                LocalTime = DateTime.UtcNow.AddHours(8),
+                LocalTime = DateTime.UtcNow.ToChinaStandardTime(),
                 PartitionKey = cacheName,
                 RowKey = cacheId,
                 UnixTimeStamp = DateTime.UtcNow.UnixTimeStamp()

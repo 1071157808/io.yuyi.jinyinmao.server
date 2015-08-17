@@ -172,7 +172,7 @@ namespace Yuyi.Jinyinmao.Domain
 
             Dictionary<string, long> bankCards = this.State.BankCards.Where(kv => kv.Value.Dispaly && kv.Value.Verified).ToDictionary(kv => kv.Key, kv => 0L);
 
-            DateTime todayDate = DateTime.UtcNow.AddHours(8).Date;
+            DateTime todayDate = DateTime.UtcNow.ToChinaStandardTime().Date;
             DateTime monthDate = new DateTime(todayDate.Year, todayDate.Month, 1).Date;
 
             foreach (SettleAccountTransaction transaction in this.State.SettleAccount.Values.OrderBy(t => t.TransactionTime))

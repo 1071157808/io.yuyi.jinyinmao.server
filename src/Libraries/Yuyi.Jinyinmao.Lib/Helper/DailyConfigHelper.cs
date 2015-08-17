@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-11  12:41 PM
+// File             : DailyConfigHelper.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-08  4:00 PM
+// Last Modified On : 2015-08-17  9:54
 // ***********************************************************************
 // <copyright file="DailyConfigHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Packages.Helper
 {
@@ -67,7 +68,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <returns>DateTime.</returns>
         public static DailyConfig GetLastWorkDayConfig(int offset = 0)
         {
-            return GetLastWorkDayConfig(DateTime.UtcNow.AddHours(8), offset);
+            return GetLastWorkDayConfig(DateTime.UtcNow.ToChinaStandardTime(), offset);
         }
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <returns>DailyConfig.</returns>
         public static DailyConfig GetNextWorkDayConfig(int offset = 0)
         {
-            return GetNextWorkDayConfig(DateTime.UtcNow.AddHours(8), offset);
+            return GetNextWorkDayConfig(DateTime.UtcNow.ToChinaStandardTime(), offset);
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
         /// <returns>DailyConfig.</returns>
         public static DailyConfig GetTodayDailyConfig()
         {
-            return GetDailyConfig(DateTime.UtcNow.AddHours(8));
+            return GetDailyConfig(DateTime.UtcNow.ToChinaStandardTime());
         }
     }
 
@@ -158,7 +159,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     public class ConfigEntity : TableEntity
     {
         /// <summary>
-        /// Gets or sets the bonus amount.
+        ///     Gets or sets the bonus amount.
         /// </summary>
         /// <value>The bonus amount.</value>
         public long BonusAmount { get; set; }
@@ -197,7 +198,7 @@ namespace Yuyi.Jinyinmao.Packages.Helper
     public class DailyConfig
     {
         /// <summary>
-        /// Gets or sets the bonus amount.
+        ///     Gets or sets the bonus amount.
         /// </summary>
         /// <value>The bonus amount.</value>
         public long BonusAmount { get; set; }

@@ -90,13 +90,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAD3:该银行卡不能用于签约支付");
             }
 
-            await this.userService.DepositAsync(new PayByYilian
-            {
-                Amount = request.Amount,
-                Args = this.BuildArgs(),
-                BankCardNo = request.BankCardNo,
-                UserId = this.CurrentUser.Id
-            });
+            await this.userService.DepositAsync(this.BuildPayByYilianCommand(request));
 
             return this.Ok();
         }
@@ -226,7 +220,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             if (userInfo == null)
             {
-                this.TraceWriter.Warn(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
+                this.TraceWriter.Error(this.Request, "Application", "UserSettleAccount-Withdrawal:Can not load user data.{0}".FormatWith(this.CurrentUser.Id));
                 return this.BadRequest("USAW1:暂时无法取现");
             }
 
@@ -258,13 +252,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("USAW4:取现额度超过限制");
             }
 
-            SettleAccountTransactionInfo info = await this.userService.WithdrawalAsync(new Withdrawal
-            {
-                Amount = request.Amount,
-                Args = this.BuildArgs(),
-                BankCardNo = request.BankCardNo,
-                UserId = this.CurrentUser.Id
-            });
+            SettleAccountTransactionInfo info = await this.userService.WithdrawalAsync(this.BuildWithdrawalCommand(request));
 
             if (info == null)
             {
@@ -272,6 +260,30 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             return this.Ok(info.ToResponse());
+        }
+
+        private PayByYilian BuildPayByYilianCommand(DepositFromYilianRequest request)
+        {
+            return new PayByYilian
+            {
+                EntityId = this.CurrentUser.Id,
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                UserId = this.CurrentUser.Id
+            };
+        }
+
+        private Withdrawal BuildWithdrawalCommand(WithdrawalRequest request)
+        {
+            return new Withdrawal
+            {
+                EntityId = this.CurrentUser.Id,
+                Amount = request.Amount,
+                Args = this.BuildArgs(),
+                BankCardNo = request.BankCardNo,
+                UserId = this.CurrentUser.Id
+            };
         }
     }
 }

@@ -293,7 +293,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
                 CloudTableClient client = StorageAccount.CreateCloudTableClient();
 
                 IEnumerable<App> apps = client.GetTableReference("ApiKeys").ExecuteQuery(Query);
-                Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.AddHours(8)).ToDictionary(app => app.AppId);
+                Dictionary<Guid, App> tempAllowedApps = apps.Where(a => a.Expiry > DateTime.UtcNow.ToChinaStandardTime()).ToDictionary(app => app.AppId);
                 allowedApps = tempAllowedApps;
             }
         }

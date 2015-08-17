@@ -37,7 +37,7 @@ namespace Yuyi.Jinyinmao.Service
         public async Task<CouponInfo> GetCouponAsync(Guid userId)
         {
             string userIdentifier = userId.ToGuidString();
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
             using (JYMDBContext db = new JYMDBContext())
             {
                 PrincipalCoupon coupon = await db.ReadonlyQuery<PrincipalCoupon>()
@@ -73,7 +73,7 @@ namespace Yuyi.Jinyinmao.Service
         public async Task<List<CouponInfo>> GetCouponsAsync(Guid userId)
         {
             string userIdentifier = userId.ToGuidString();
-            DateTime now = DateTime.UtcNow.AddHours(8);
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
             using (JYMDBContext db = new JYMDBContext())
             {
                 List<PrincipalCoupon> coupons = await db.ReadonlyQuery<PrincipalCoupon>()
@@ -165,7 +165,7 @@ namespace Yuyi.Jinyinmao.Service
                 };
 
                 coupon.UseFlag = true;
-                coupon.UseTime = DateTime.UtcNow.AddHours(8);
+                coupon.UseTime = DateTime.UtcNow.ToChinaStandardTime();
 
                 await db.ExecuteSaveChangesAsync();
 

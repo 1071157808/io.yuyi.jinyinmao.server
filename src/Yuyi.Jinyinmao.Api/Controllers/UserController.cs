@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  9:21
+// Last Modified On : 2015-08-17  10:10
 // ***********************************************************************
 // <copyright file="UserController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -16,10 +16,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Tracing;
 using Moe.Lib;
-using Orleans;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
-using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Service.Interface;
 
@@ -32,14 +30,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
     public class UserController : ApiControllerBase
     {
         private readonly IUserInfoService userInfoService;
+        private readonly IUserService userService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="UserController" /> class.
         /// </summary>
         /// <param name="userInfoService">The user information service.</param>
-        public UserController(IUserInfoService userInfoService)
+        /// <param name="userService">The user service.</param>
+        public UserController(IUserInfoService userInfoService, IUserService userService)
         {
             this.userInfoService = userInfoService;
+            this.userService = userService;
         }
 
         /// <summary>
@@ -94,7 +95,9 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 return this.BadRequest("US1:无法获取用户信息");
             }
 
-            return this.Ok((await GrainClient.GrainFactory.GetGrain<IUser>(userInfo.UserId).SignAsync(this.BuildArgs())).ToResponse());
+            SettleAccountTransactionInfo settleAccountTransactionInfo = await this.userService.SignAsync(this.CurrentUser.Id);
+
+            return this.Ok(settleAccountTransactionInfo.ToResponse());
         }
     }
 }

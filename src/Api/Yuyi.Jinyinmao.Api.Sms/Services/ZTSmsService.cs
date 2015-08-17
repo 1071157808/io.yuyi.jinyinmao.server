@@ -118,7 +118,7 @@ namespace Yuyi.Jinyinmao.Api.Sms.Services
                     PartitionKey = "jinyinmao-api-sms",
                     RowKey = Guid.NewGuid().ToString("N"),
                     Response = responseMessage,
-                    Time = DateTime.UtcNow.AddHours(8)
+                    Time = DateTime.UtcNow.ToChinaStandardTime()
                 }));
             }
 
