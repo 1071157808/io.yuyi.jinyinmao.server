@@ -37,7 +37,7 @@ namespace Yuyi.Jinyinmao.Log
         /// <exception cref="NLog.NLogConfigurationException">Can not find ExceptionLogger</exception>
         public NLogExceptionLogger()
         {
-            this.logger = LogManager.GetExceptionLogger();
+            this.logger = LogManager.GetErrorLogger();
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : User_Reminder.cs
-// Created          : 2015-05-27  7:39 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-03  7:51 AM
+// Last Modified On : 2015-08-17  13:33
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -59,7 +59,7 @@ namespace Yuyi.Jinyinmao.Domain
         {
             try
             {
-                if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 5 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 2))
+                if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 7 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 1))
                 {
                     StringBuilder builder = new StringBuilder();
                     builder.Append("UserDailyWork: UserId-{0}\n".FormatWith(this.State.UserId));

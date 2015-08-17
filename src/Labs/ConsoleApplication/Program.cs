@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  1:54
+// Last Modified On : 2015-08-17  13:56
 // ***********************************************************************
 // <copyright file="Program.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,77 +12,53 @@
 // ***********************************************************************
 
 using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Moe.Lib;
-using Yuyi.Jinyinmao.Packages.Helper;
-using Yuyi.Jinyinmao.Service;
 
 namespace ConsoleApplication
 {
-    public class Apple
-    {
-        public string Color { get; set; }
-        public Guid Id { get; set; }
-        public List<string> Properties { get; set; }
-        public int Size { get; set; }
-    }
-
     internal class Program
     {
-        private static async Task DoSomething()
-        {
-            List<string> transactionIdentifiers = new List<string>
-            {
-                "d926dff2ca0d46d0826df0d0de00d98c",
-                "257bf36b602d4b0bab1ceb6ced06d5c3",
-                "572548d075754d678e6b51cab2e0c7af"
-            };
+        /// <summary>
+        ///     The floor limit
+        /// </summary>
+        private static readonly int FloorLimit = 1;
 
-            Console.WriteLine(transactionIdentifiers.Count);
+        /// <summary>
+        ///     The maximum bonus amount
+        /// </summary>
+        private static readonly long MaxBonusAmount = 1000L;
 
-            YilianPaymentGatewayService service = new YilianPaymentGatewayService();
+        /// <summary>
+        ///     The minimum bonus amount
+        /// </summary>
+        private static readonly long MinBonusAmount = 1L;
 
-            List<string> s = new List<string>();
-            List<string> f = new List<string>();
+        /// <summary>
+        ///     The random
+        /// </summary>
+        private static readonly Random Random = new Random(DateTime.Now.DayOfYear);
 
-            foreach (string identifier in transactionIdentifiers)
-            {
-                YilianRequestResult result;
-                do
-                {
-                    result = await service.QueryRequestAsync(identifier, true);
-                } while (result == null);
-
-                if (result.Message.Contains("成功"))
-                {
-                    s.Add(identifier);
-                    Console.WriteLine("!!!!!!!!" + identifier + result.Message);
-                }
-                else
-                {
-                    f.Add(identifier);
-                    Console.WriteLine("????????" + identifier + result.Message);
-                }
-            }
-
-            Console.WriteLine(s.Join("|"));
-            Console.WriteLine();
-            Console.WriteLine(f.Join("|"));
-        }
-
-        private static DateTime GetLastInvestingConfirmTime(DateTime date)
-        {
-            DailyConfig confirmConfig = DailyConfigHelper.GetLastWorkDayConfig(date, 1);
-            return confirmConfig.Date.Date.AddDays(1).AddMilliseconds(-1);
-        }
+        /// <summary>
+        ///     The upper limit
+        /// </summary>
+        private static readonly int UpperLimit = 1000;
 
         private static void Main(string[] args)
         {
-            Regex r = new Regex("^https://[^\\s/$.?#].[^\\s]*$");
-            var result = r.IsMatch("https://files2.jinyinmao.com.cn/abcdiow?t=desd&y=122&_=121");
-            Console.WriteLine(result);
+            long baseAmount = 100000000;
+            int r = Random.Next(FloorLimit, UpperLimit + 1);
+
+            long bonus = Convert.ToInt64(Math.Pow(Convert.ToDouble(baseAmount) / 100000000d, 0.25d) * Math.Pow(Convert.ToDouble(r), 2d) / 1800);
+
+            if (bonus <= MinBonusAmount)
+            {
+                bonus = MinBonusAmount;
+            }
+            else if (bonus > MaxBonusAmount)
+            {
+                bonus = MaxBonusAmount;
+            }
+
+            Console.WriteLine(bonus);
         }
     }
 }

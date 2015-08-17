@@ -4,7 +4,7 @@
 // Created          : 2015-08-16  21:08
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  12:48
+// Last Modified On : 2015-08-17  13:24
 // ***********************************************************************
 // <copyright file="LogManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -25,7 +25,7 @@ namespace Yuyi.Jinyinmao.Log
     {
         private static readonly Lazy<ILogger> ApplicationLogger = new Lazy<ILogger>(() => InitApplicationLogger());
         private static readonly Lazy<ILogger> BackOfficeLogger = new Lazy<ILogger>(() => InitBackOfficeLogger());
-        private static readonly Lazy<ILogger> ExceptionLogger = new Lazy<ILogger>(() => InitExceptionLogger());
+        private static readonly Lazy<ILogger> ErrorLogger = new Lazy<ILogger>(() => InitErrorLogger());
         private static readonly Lazy<ILogger> TraceLogger = new Lazy<ILogger>(() => InitTraceLogger());
 
         static LogManager()
@@ -58,7 +58,7 @@ namespace Yuyi.Jinyinmao.Log
             azureApplicationTarget.Layout = "${message}";
             azureApplicationTarget.TableName = "JYMApplicationLogs";
 
-            config.LoggingRules.Add(new LoggingRule("ExceptionLogger", LogLevel.Error, azureErrorTarget));
+            config.LoggingRules.Add(new LoggingRule("ErrorLogger", LogLevel.Error, azureErrorTarget));
             config.LoggingRules.Add(new LoggingRule("TraceLogger", LogLevel.Info, azureTraceTarget));
             config.LoggingRules.Add(new LoggingRule("BackOfficeLogger", LogLevel.Info, azureBackOfficeTarget));
             config.LoggingRules.Add(new LoggingRule("ApplicationLogger", LogLevel.Info, azureApplicationTarget));
@@ -85,12 +85,12 @@ namespace Yuyi.Jinyinmao.Log
         }
 
         /// <summary>
-        ///     Gets the exception logger.
+        ///     Gets the error logger.
         /// </summary>
         /// <returns>ILogger.</returns>
-        public static ILogger GetExceptionLogger()
+        public static ILogger GetErrorLogger()
         {
-            return ExceptionLogger.Value;
+            return ErrorLogger.Value;
         }
 
         /// <summary>
@@ -112,9 +112,9 @@ namespace Yuyi.Jinyinmao.Log
             return NLog.LogManager.GetLogger("BackOfficeLogger");
         }
 
-        private static ILogger InitExceptionLogger()
+        private static ILogger InitErrorLogger()
         {
-            return NLog.LogManager.GetLogger("ExceptionLogger");
+            return NLog.LogManager.GetLogger("ErrorLogger");
         }
 
         private static ILogger InitTraceLogger()

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  17:41
+// Last Modified On : 2015-08-17  13:57
 // ***********************************************************************
 // <copyright file="BonusManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -71,7 +71,7 @@ namespace Yuyi.Jinyinmao.Domain.Misc
 
             int r = Random.Next(FloorLimit, UpperLimit + 1);
 
-            long bonus = Convert.ToInt64(Math.Pow(Convert.ToDouble(baseAmount) / 100000000d, 0.25d) * Math.Pow(Convert.ToDouble(r), 0.5d) / 1800);
+            long bonus = Convert.ToInt64(Math.Pow(Convert.ToDouble(baseAmount) / 100000000d, 0.25d) * Math.Pow(Convert.ToDouble(r), 2d) / 1800);
 
             if (bonus <= MinBonusAmount)
             {

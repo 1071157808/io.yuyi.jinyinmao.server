@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-05-22  6:41 PM
+// File             : SiloClusterLogger.cs
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  11:49 PM
+// Last Modified On : 2015-08-17  13:31
 // ***********************************************************************
 // <copyright file="SiloClusterLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,10 +12,10 @@
 // ***********************************************************************
 
 using System;
-using Microsoft.Azure;
-using Microsoft.WindowsAzure.Storage;
-using Serilog;
-using Yuyi.Jinyinmao.Log;
+using System.Text;
+using Moe.Lib;
+using NLog;
+using LogManager = Yuyi.Jinyinmao.Log.LogManager;
 
 namespace Yuyi.Jinyinmao.Domain
 {
@@ -31,10 +31,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         static SiloClusterErrorLogger()
         {
-            CloudStorageAccount storage = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
-            ILogger log = new LoggerConfiguration().WriteTo.AzureTableStorage(storage, "Errors").CreateLogger();
-            Serilog.Log.Logger = log;
-            Logger = log;
+            Logger = LogManager.GetErrorLogger();
         }
 
         /// <summary>
@@ -45,7 +42,15 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="propertyValues">The property values.</param>
         public static void Log(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            Logger.Error(exception, messageTemplate, propertyValues);
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append(messageTemplate.FormatWith(propertyValues));
+            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append(exception.GetExceptionString());
+
+            Logger.Error(messageBuilder);
         }
 
         /// <summary>
@@ -71,10 +76,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// </summary>
         static SiloClusterTraceLogger()
         {
-            CloudStorageAccount storage = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
-            ILogger log = new LoggerConfiguration().WriteTo.AzureTableStorage(storage, "Logs").CreateLogger();
-            Serilog.Log.Logger = log;
-            Logger = log;
+            Logger = LogManager.GetApplicationLogger();
         }
 
         /// <summary>
@@ -85,7 +87,15 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="propertyValues">The property values.</param>
         public static void Log(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            Logger.Error(exception, messageTemplate, propertyValues);
+            StringBuilder messageBuilder = new StringBuilder();
+
+            messageBuilder.Append(DateTime.UtcNow.ToChinaStandardTime().ToString("O"));
+            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append(messageTemplate.FormatWith(propertyValues));
+            messageBuilder.Append(Environment.NewLine);
+            messageBuilder.Append(exception.GetExceptionString());
+
+            Logger.Error(messageBuilder);
         }
 
         /// <summary>
@@ -95,7 +105,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="propertyValues">The property values.</param>
         public static void Log(string messageTemplate, params object[] propertyValues)
         {
-            Logger.Information(messageTemplate, propertyValues);
+            Logger.Info(messageTemplate, propertyValues);
         }
     }
 }
