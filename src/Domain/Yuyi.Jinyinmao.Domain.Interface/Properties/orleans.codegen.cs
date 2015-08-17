@@ -8182,6 +8182,7 @@ namespace Yuyi.Jinyinmao.Domain
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo> Yuyi.Jinyinmao.Domain.IUser.HideBankCardAsync(Yuyi.Jinyinmao.Domain.Commands.HideBankCard @command)
+<<<<<<< HEAD
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>(2006049882, new object[] {@command} );
@@ -8197,6 +8198,23 @@ namespace Yuyi.Jinyinmao.Domain
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(1301102694, new object[] {@command} );
+=======
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.BankCardInfo>(2006049882, new object[] {@command} );
+            }
+            
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.InsertJBYAccountTranscationAsync(Yuyi.Jinyinmao.Domain.Dtos.InsertJBYAccountTransactionDto @transactionDto)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(1851682316, new object[] {@transactionDto} );
+            }
+            
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.InsertSettleAccountTranscationAsync(Yuyi.Jinyinmao.Domain.Dtos.InsertSettleAccountTransactionDto @transactionDto)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(34897117, new object[] {@transactionDto} );
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.OrderInfo> Yuyi.Jinyinmao.Domain.IUser.InvestingAsync(Yuyi.Jinyinmao.Domain.Commands.RegularInvesting @command)
@@ -8265,10 +8283,17 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.UserInfo>(405897552, new object[] {@command} );
             }
             
+<<<<<<< HEAD
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.SetJBYAccountTransactionResultAsync(Yuyi.Jinyinmao.Domain.Commands.SetJBYAccountTransactionResult @command)
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(57602082, new object[] {@command} );
+=======
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.SetJBYAccountTransactionResultAsync(System.Guid @transactionId, bool @result, string @message, Dictionary<String,Object> @args)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYAccountTransactionInfo>(-522344164, new object[] {@transactionId, @result, @message, @args} );
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.UserInfo> Yuyi.Jinyinmao.Domain.IUser.SetPaymentPasswordAsync(Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword @command)
@@ -8277,10 +8302,17 @@ namespace Yuyi.Jinyinmao.Domain
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.UserInfo>(2116538135, new object[] {@command} );
             }
             
+<<<<<<< HEAD
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.SetSettleAccountTransactionResultAsync(Yuyi.Jinyinmao.Domain.Commands.SetSettleAccountTransactionResult @command)
             {
 
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(1281056178, new object[] {@command} );
+=======
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.SetSettleAccountTransactionResultAsync(System.Guid @transactionId, bool @result, string @message, Dictionary<String,Object> @args)
+            {
+
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo>(877844628, new object[] {@transactionId, @result, @message, @args} );
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
             }
             
             System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.SettleAccountTransactionInfo> Yuyi.Jinyinmao.Domain.IUser.SignAsync()
@@ -8403,10 +8435,17 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).GetWithdrawalableBankCardInfosAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2006049882: 
                                 return ((IUser)grain).HideBankCardAsync((Yuyi.Jinyinmao.Domain.Commands.HideBankCard)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+<<<<<<< HEAD
                             case 1267750806: 
                                 return ((IUser)grain).InsertJBYAccountTranscationAsync((Yuyi.Jinyinmao.Domain.Commands.InsertJBYAccountTransaction)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1301102694: 
                                 return ((IUser)grain).InsertSettleAccountTranscationAsync((Yuyi.Jinyinmao.Domain.Commands.InsertSettleAccountTransaction)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+=======
+                            case 1851682316: 
+                                return ((IUser)grain).InsertJBYAccountTranscationAsync((InsertJBYAccountTransactionDto)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 34897117: 
+                                return ((IUser)grain).InsertSettleAccountTranscationAsync((InsertSettleAccountTransactionDto)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
                             case 167616958: 
                                 return ((IUser)grain).InvestingAsync((Yuyi.Jinyinmao.Domain.Commands.RegularInvesting)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case -654612292: 
@@ -8429,12 +8468,21 @@ namespace Yuyi.Jinyinmao.Domain
                                 return ((IUser)grain).RepayOrderAsync((Yuyi.Jinyinmao.Domain.Commands.OrderRepay)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 405897552: 
                                 return ((IUser)grain).ResetLoginPasswordAsync((Yuyi.Jinyinmao.Domain.Commands.ResetLoginPassword)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+<<<<<<< HEAD
                             case 57602082: 
                                 return ((IUser)grain).SetJBYAccountTransactionResultAsync((Yuyi.Jinyinmao.Domain.Commands.SetJBYAccountTransactionResult)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 2116538135: 
                                 return ((IUser)grain).SetPaymentPasswordAsync((Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1281056178: 
                                 return ((IUser)grain).SetSettleAccountTransactionResultAsync((Yuyi.Jinyinmao.Domain.Commands.SetSettleAccountTransactionResult)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+=======
+                            case -522344164: 
+                                return ((IUser)grain).SetJBYAccountTransactionResultAsync((Guid)arguments[0], (Boolean)arguments[1], (String)arguments[2], (Dictionary<String,Object>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 2116538135: 
+                                return ((IUser)grain).SetPaymentPasswordAsync((Yuyi.Jinyinmao.Domain.Commands.SetPaymentPassword)arguments[0]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+                            case 877844628: 
+                                return ((IUser)grain).SetSettleAccountTransactionResultAsync((Guid)arguments[0], (Boolean)arguments[1], (String)arguments[2], (Dictionary<String,Object>)arguments[3]).ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
                             case 68579558: 
                                 return ((IUser)grain).SignAsync().ContinueWith(t => {if (t.Status == System.Threading.Tasks.TaskStatus.Faulted) throw t.Exception; return (object)t.Result; });
                             case 1937280616: 
@@ -8525,9 +8573,15 @@ namespace Yuyi.Jinyinmao.Domain
                             return "GetWithdrawalableBankCardInfosAsync";
                     case 2006049882:
                             return "HideBankCardAsync";
+<<<<<<< HEAD
                     case 1267750806:
                             return "InsertJBYAccountTranscationAsync";
                     case 1301102694:
+=======
+                    case 1851682316:
+                            return "InsertJBYAccountTranscationAsync";
+                    case 34897117:
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
                             return "InsertSettleAccountTranscationAsync";
                     case 167616958:
                             return "InvestingAsync";
@@ -8551,11 +8605,19 @@ namespace Yuyi.Jinyinmao.Domain
                             return "RepayOrderAsync";
                     case 405897552:
                             return "ResetLoginPasswordAsync";
+<<<<<<< HEAD
                     case 57602082:
                             return "SetJBYAccountTransactionResultAsync";
                     case 2116538135:
                             return "SetPaymentPasswordAsync";
                     case 1281056178:
+=======
+                    case -522344164:
+                            return "SetJBYAccountTransactionResultAsync";
+                    case 2116538135:
+                            return "SetPaymentPasswordAsync";
+                    case 877844628:
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
                             return "SetSettleAccountTransactionResultAsync";
                     case 68579558:
                             return "SignAsync";
@@ -11437,6 +11499,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_InsertJBYAccountTransactionSerialization
     {
         
+<<<<<<< HEAD
         private static System.Reflection.FieldInfo fieldInfo3;
         
         private static System.Reflection.FieldInfo fieldInfo4;
@@ -11450,13 +11513,29 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         private static System.Reflection.FieldInfo fieldInfo8;
         
         static Yuyi_Jinyinmao_Domain_Commands_InsertJBYAccountTransactionSerialization()
+=======
+        static Yuyi_Jinyinmao_Domain_Dtos_InsertJBYAccountTransactionDtoSerialization()
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
         {
             Register();
         }
         
         public static object DeepCopier(object original)
         {
+<<<<<<< HEAD
             return original;
+=======
+            Yuyi.Jinyinmao.Domain.Dtos.InsertJBYAccountTransactionDto input = ((Yuyi.Jinyinmao.Domain.Dtos.InsertJBYAccountTransactionDto)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.InsertJBYAccountTransactionDto result = new Yuyi.Jinyinmao.Domain.Dtos.InsertJBYAccountTransactionDto();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Amount = input.Amount;
+            result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
+            result.Trade = input.Trade;
+            result.TradeCode = input.TradeCode;
+            result.TransDesc = input.TransDesc;
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -11464,8 +11543,11 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.InsertJBYAccountTransaction input = ((Yuyi.Jinyinmao.Domain.Commands.InsertJBYAccountTransaction)(untypedInput));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Amount, stream, typeof(long));
             Orleans.Serialization.SerializationManager.SerializeInner(input.Args, stream, typeof(System.Collections.Generic.Dictionary<System.String,System.Object>));
+<<<<<<< HEAD
             Orleans.Serialization.SerializationManager.SerializeInner(input.CommandId, stream, typeof(System.Guid));
             Orleans.Serialization.SerializationManager.SerializeInner(input.EntityId, stream, typeof(System.Guid));
+=======
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
             Orleans.Serialization.SerializationManager.SerializeInner(input.Trade, stream, typeof(Yuyi.Jinyinmao.Domain.Trade));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TradeCode, stream, typeof(int));
             Orleans.Serialization.SerializationManager.SerializeInner(input.TransDesc, stream, typeof(string));
@@ -11477,6 +11559,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             Yuyi.Jinyinmao.Domain.Commands.InsertJBYAccountTransaction result = new Yuyi.Jinyinmao.Domain.Commands.InsertJBYAccountTransaction();
             result.Amount = ((long)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(long), stream)));
             result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Collections.Generic.Dictionary<System.String,System.Object>), stream)));
+<<<<<<< HEAD
             object objResult = ((object)(result));
             object temp3 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             fieldInfo3.SetValue(objResult, temp3);
@@ -11491,6 +11574,13 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
             object temp8 = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
             fieldInfo8.SetValue(objResult, temp8);
             return objResult;
+=======
+            result.Trade = ((Yuyi.Jinyinmao.Domain.Trade)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(Yuyi.Jinyinmao.Domain.Trade), stream)));
+            result.TradeCode = ((int)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(int), stream)));
+            result.TransDesc = ((string)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(string), stream)));
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeserializeInner(typeof(System.Guid), stream)));
+            return result;
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
         }
         
         public static void Register()
@@ -11517,6 +11607,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
     internal class Yuyi_Jinyinmao_Domain_Commands_InsertSettleAccountTransactionSerialization
     {
         
+<<<<<<< HEAD
         private static System.Reflection.FieldInfo fieldInfo4;
         
         private static System.Reflection.FieldInfo fieldInfo5;
@@ -11532,13 +11623,31 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         private static System.Reflection.FieldInfo fieldInfo10;
         
         static Yuyi_Jinyinmao_Domain_Commands_InsertSettleAccountTransactionSerialization()
+=======
+        static Yuyi_Jinyinmao_Domain_Dtos_InsertSettleAccountTransactionDtoSerialization()
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
         {
             Register();
         }
         
         public static object DeepCopier(object original)
         {
+<<<<<<< HEAD
             return original;
+=======
+            Yuyi.Jinyinmao.Domain.Dtos.InsertSettleAccountTransactionDto input = ((Yuyi.Jinyinmao.Domain.Dtos.InsertSettleAccountTransactionDto)(original));
+            Yuyi.Jinyinmao.Domain.Dtos.InsertSettleAccountTransactionDto result = new Yuyi.Jinyinmao.Domain.Dtos.InsertSettleAccountTransactionDto();
+            Orleans.Serialization.SerializationContext.Current.RecordObject(original, result);
+            result.Amount = input.Amount;
+            result.Args = ((System.Collections.Generic.Dictionary<System.String,System.Object>)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.Args)));
+            result.BankCardNo = input.BankCardNo;
+            result.OrderId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.OrderId)));
+            result.Trade = input.Trade;
+            result.TradeCode = input.TradeCode;
+            result.TransDesc = input.TransDesc;
+            result.UserId = ((System.Guid)(Orleans.Serialization.SerializationManager.DeepCopyInner(input.UserId)));
+            return result;
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
         }
         
         public static void Serializer(object untypedInput, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
@@ -12185,6 +12294,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         }
     }
     
+<<<<<<< HEAD
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
@@ -12263,6 +12373,8 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         }
     }
     
+=======
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
@@ -12358,6 +12470,7 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         }
     }
     
+<<<<<<< HEAD
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
@@ -12436,6 +12549,8 @@ namespace Yuyi.Jinyinmao.Domain.InterfaceSerializers
         }
     }
     
+=======
+>>>>>>> 47e03bc950ab8dbf7184466792ec3500df1160ca
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
     [global::Orleans.CodeGeneration.RegisterSerializerAttribute()]
