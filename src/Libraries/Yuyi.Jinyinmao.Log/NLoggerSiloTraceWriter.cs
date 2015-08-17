@@ -1,12 +1,12 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
-// Author           : Siqi Lu
-// Created          : 2015-06-14  6:32 PM
+// File             : NLoggerSiloTraceWriter.cs
+// Created          : 2015-08-17  12:58
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-06-14  11:29 PM
+// Last Modified On : 2015-08-17  13:03
 // ***********************************************************************
-// <copyright file="SiloLogger.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+// <copyright file="NLoggerSiloTraceWriter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
@@ -14,31 +14,26 @@
 using System;
 using System.Net;
 using System.Threading;
-using Microsoft.Azure;
-using Microsoft.WindowsAzure.Storage;
 using Moe.Lib;
+using NLog;
 using Orleans.Runtime;
-using Serilog;
-using Yuyi.Jinyinmao.Log;
+using Logger = Orleans.Runtime.Logger;
 
-namespace Yuyi.Jinyinmao.Silo.Log
+namespace Yuyi.Jinyinmao.Log
 {
     /// <summary>
-    ///     The Log Writer class is a convenient wrapper around the Serilog Trace class.
+    ///     The Log Writer class is a convenient wrapper around the Nlog Trace class.
     /// </summary>
-    public class SiloLogger : LogWriterBase
+    public class NLoggerSiloTraceWriter : LogWriterBase
     {
         private readonly ILogger logger;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SiloLogger" /> class.
+        ///     Initializes a new instance of the <see cref="NLoggerSiloTraceWriter" /> class.
         /// </summary>
-        public SiloLogger()
+        public NLoggerSiloTraceWriter()
         {
-            CloudStorageAccount storage = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
-            ILogger log = new LoggerConfiguration().WriteTo.AzureTableStorage(storage, "SiloLogs").CreateLogger();
-            Serilog.Log.Logger = log;
-            this.logger = log;
+            this.logger = LogManager.GetTraceLogger();
         }
 
         /// <summary>
@@ -85,11 +80,11 @@ namespace Yuyi.Jinyinmao.Silo.Log
                     break;
 
                 case Logger.Severity.Warning:
-                    this.logger.Warning(msg);
+                    this.logger.Warn(msg);
                     break;
 
                 case Logger.Severity.Info:
-                    this.logger.Information(msg);
+                    this.logger.Info(msg);
                     break;
 
                 case Logger.Severity.Verbose:
@@ -98,7 +93,7 @@ namespace Yuyi.Jinyinmao.Silo.Log
 
                 case Logger.Severity.Verbose2:
                 case Logger.Severity.Verbose3:
-                    this.logger.Verbose(msg);
+                    this.logger.Debug(msg);
                     break;
             }
         }
