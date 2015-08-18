@@ -1,18 +1,31 @@
-﻿using System.Web.Hosting;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Web.Http;
+using Moe.AspNet.Utility;
 using Yuyi.Jinyinmao.Api.Link.Models;
 using Yuyi.Jinyinmao.Api.Link.Utils;
-using Moe.AspNet.Utility;
 
 namespace Yuyi.Jinyinmao.Api.Link.Controllers
 {
+    /// <summary>
+    /// HomeController.
+    /// </summary>
     public class HomeController : ApiController
     {
-
-        private static readonly string LinkTableName = "Links";
+        /// <summary>
+        /// The link log table name
+        /// </summary>
         private static readonly string LinkLogTableName = "LinkLogs";
+
+        /// <summary>
+        /// The link table name
+        /// </summary>
+        private static readonly string LinkTableName = "Links";
+
+        /// <summary>
+        /// The partition key
+        /// </summary>
         private static readonly string PartitionKey = "ShortLink";
 
         /// <summary>
@@ -58,27 +71,25 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
             return this.NotFound();
         }
 
-
         /// <summary>
         /// Logs the link hits.
         /// </summary>
         /// <param name="link">The link.</param>
         private void LogLinkHits(Models.Link link)
         {
-                LinkLog linkLog = new LinkLog
-                {
-                    PartitionKey = link.ShortedLink,
-                    RowKey = Guid.NewGuid().ToString(),
-                    Ip = HttpUtils.GetUserHostAddress(this.Request),
-                    UserAgent = HttpUtils.GetUserAgent(this.Request),
-                    SourceUrl = link.ShortedLink,
-                    TargetUrl = link.OriginalLink,
-                    HitTime = DateTime.UtcNow.AddHours(8)
-                };
+            LinkLog linkLog = new LinkLog
+            {
+                PartitionKey = link.ShortedLink,
+                RowKey = Guid.NewGuid().ToString(),
+                Ip = HttpUtils.GetUserHostAddress(this.Request),
+                UserAgent = HttpUtils.GetUserAgent(this.Request),
+                SourceUrl = link.ShortedLink,
+                TargetUrl = link.OriginalLink,
+                HitTime = DateTime.UtcNow.AddHours(8)
+            };
 
-                HostingEnvironment.QueueBackgroundWorkItem(cancellationToken =>
-                    StorageHelper.LogLinkHitsAsync(LinkLogTableName, linkLog ));
+            HostingEnvironment.QueueBackgroundWorkItem(cancellationToken =>
+                StorageHelper.LogLinkHitsAsync(LinkLogTableName, linkLog));
         }
-
     }
 }

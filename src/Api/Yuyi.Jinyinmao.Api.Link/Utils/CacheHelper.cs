@@ -1,18 +1,29 @@
-﻿using System;
+﻿// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : CacheHelper.cs
+// Created          : 2015-08-18  18:36
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-08-18  18:38
+// ***********************************************************************
+// <copyright file="CacheHelper.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
+using System;
 using System.Web;
 using System.Web.Caching;
 
 namespace Yuyi.Jinyinmao.Api.Link.Utils
 {
     /// <summary>
-    /// Class CacheHelper.
+    ///     Class CacheHelper.
     /// </summary>
     public class CacheHelper
     {
-
-
         /// <summary>
-        /// Gets the cache.
+        ///     Gets the cache.
         /// </summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <returns>System.Object.</returns>
@@ -23,7 +34,7 @@ namespace Yuyi.Jinyinmao.Api.Link.Utils
         }
 
         /// <summary>
-        /// Sets the cache.
+        ///     Sets the cache.
         /// </summary>
         /// <param name="cacheKey">The cache key.</param>
         /// <param name="objObject">The object object.</param>
