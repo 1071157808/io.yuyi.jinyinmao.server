@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  20:02
+// Last Modified On : 2015-08-18  14:58
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -26,12 +26,12 @@ using Moe.Lib;
 using Orleans;
 using Yuyi.Jinyinmao.Api.Filters;
 using Yuyi.Jinyinmao.Api.Models;
+using Yuyi.Jinyinmao.Api.Models.Dev;
 using Yuyi.Jinyinmao.Domain;
 using Yuyi.Jinyinmao.Domain.Commands;
 using Yuyi.Jinyinmao.Domain.Dtos;
 using Yuyi.Jinyinmao.Domain.Products;
 using Yuyi.Jinyinmao.Domain.Sagas;
-using Yuyi.Jinyinmao.Log;
 using Yuyi.Jinyinmao.Service.Interface;
 
 namespace Yuyi.Jinyinmao.Api.Controllers
@@ -200,26 +200,6 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         [Route("")]
         public IHttpActionResult Get()
         {
-            LogManager.GetTraceLogger().Debug("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Debug");
-            LogManager.GetApplicationLogger().Debug("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Debug");
-            LogManager.GetErrorLogger().Debug("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Debug");
-
-            LogManager.GetTraceLogger().Info("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Info");
-            LogManager.GetApplicationLogger().Info("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Info");
-            LogManager.GetErrorLogger().Info("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Info");
-
-            LogManager.GetTraceLogger().Warn("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Warn");
-            LogManager.GetApplicationLogger().Warn("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Warn");
-            LogManager.GetErrorLogger().Warn("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Warn");
-
-            LogManager.GetTraceLogger().Error("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Error");
-            LogManager.GetApplicationLogger().Error("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Error");
-            LogManager.GetErrorLogger().Error("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Error");
-
-            LogManager.GetTraceLogger().Fatal("This is from Yuyi.Jinyinmao.Api. LogManager Trace Logger Fatal");
-            LogManager.GetApplicationLogger().Fatal("This is from Yuyi.Jinyinmao.Api. LogManager Application Logger Fatal");
-            LogManager.GetErrorLogger().Fatal("This is from Yuyi.Jinyinmao.Api. LogManager Error Logger Fatal");
-
             return this.Ok(
                 new
                 {
@@ -440,6 +420,38 @@ namespace Yuyi.Jinyinmao.Api.Controllers
 
             await GrainClient.GrainFactory.GetGrain<IUser>(userId).ReloadAsync();
             return this.Ok();
+        }
+
+        /// <summary>
+        /// RepayOrder
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <response code="200"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="500"></response>
+        [Route("RepayOrder")]
+        [ActionParameterRequired]
+        [ActionParameterValidate(Order = 1)]
+        [IpAuthorize(OnlyLocalHost = true)]
+        [ResponseType(typeof(OrderInfoResponse))]
+        public async Task<IHttpActionResult> RepayOrder(RepayOrderRequest request)
+        {
+            Guid userId = request.UserIdentifier.AsGuid();
+            if (userId == Guid.Empty)
+            {
+                return this.BadRequest("用户唯一标识错误");
+            }
+
+            Guid orderId = request.OrderIdentifier.AsGuid();
+            if (orderId == Guid.Empty)
+            {
+                return this.BadRequest("产品唯一标识错误");
+            }
+
+            OrderInfo orderInfo = await GrainClient.GrainFactory.GetGrain<IUser>(userId).RepayOrderAsync(this.BuildOrderRepayCommand(request, userId, orderId));
+
+            return this.Ok(orderInfo.ToResponse());
         }
 
         /// <summary>
@@ -752,6 +764,17 @@ namespace Yuyi.Jinyinmao.Api.Controllers
                 TradeCode = request.TradeCode,
                 TransDesc = request.TransDesc,
                 UserId = userId
+            };
+        }
+
+        private OrderRepay BuildOrderRepayCommand(RepayOrderRequest request, Guid userId, Guid orderId)
+        {
+            return new OrderRepay
+            {
+                EntityId = userId,
+                Args = this.BuildArgs(),
+                OrderId = orderId,
+                RepayTime = request.RepayTime
             };
         }
     }

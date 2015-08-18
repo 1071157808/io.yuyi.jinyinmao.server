@@ -313,6 +313,16 @@ namespace Yuyi.Jinyinmao.Domain.Products
             return base.OnActivateAsync();
         }
 
+        /// <summary>
+        ///     This method is called at the begining of the process of deactivating a grain.
+        /// </summary>
+        public override async Task OnDeactivateAsync()
+        {
+            await this.WriteStateAsync();
+            await this.SyncAsync();
+            await base.OnDeactivateAsync();
+        }
+
         private Func<IEvent, Task> GetEventProcessing(Type evenType)
         {
             Dictionary<Type, Func<IEvent, Task>> eventProcessing = new Dictionary<Type, Func<IEvent, Task>>

@@ -256,6 +256,7 @@
     <Compile Include="Models\BackOffice\IssueProductRequest.cs" />
     <Compile Include="Models\BackOffice\JBYProductRequest.cs" />
     <Compile Include="Models\Coupon\CouponInfoResponse.cs" />
+    <Compile Include="Models\Dev\RepayOrderRequest.cs" />
     <Compile Include="Models\Dev\SetJBYAccountTransactionResultRequest.cs" />
     <Compile Include="Models\Dev\SetSettleAccountTransactionResultRequest.cs" />
     <Compile Include="Models\Investing\InvestingRequest.cs" />

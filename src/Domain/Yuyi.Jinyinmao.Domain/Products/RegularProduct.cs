@@ -400,23 +400,6 @@ namespace Yuyi.Jinyinmao.Domain
 
         #endregion IRegularProduct Members
 
-        private static async Task<string> UploadEndorseImage(string endorseImageSourceLink, string imageIdentifier)
-        {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    Stream stream = await client.GetStreamAsync(endorseImageSourceLink);
-                    stream.CopyTo(memoryStream);
-                }
-
-                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference("EndorseImages/{0}".FormatWith(imageIdentifier));
-                blob.Properties.ContentType = "image/jpeg";
-                await blob.UploadFromStreamAsync(memoryStream);
-                return blob.Uri.AbsoluteUri;
-            }
-        }
-
         /// <summary>
         ///     This method is called at the end of the process of activating a grain.
         ///     It is called before any messages have been dispatched to the grain.
@@ -429,6 +412,35 @@ namespace Yuyi.Jinyinmao.Domain
             this.RegisterTimer(o => this.CheckSaleStatusAsync(), new object(), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(13));
 
             return base.OnActivateAsync();
+        }
+
+        /// <summary>
+        ///     This method is called at the begining of the process of deactivating a grain.
+        /// </summary>
+        public override async Task OnDeactivateAsync()
+        {
+            await this.WriteStateAsync();
+            await this.SyncAsync();
+            await base.OnDeactivateAsync();
+        }
+
+        private static async Task<string> UploadEndorseImage(string endorseImageSourceLink, string imageIdentifier)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Stream stream = await client.GetStreamAsync(endorseImageSourceLink);
+                    stream.CopyTo(memoryStream);
+                }
+
+                memoryStream.Position = 0;
+
+                CloudBlockBlob blob = SiloClusterConfig.PublicFileContainer.GetBlockBlobReference("EndorseImages/{0}".FormatWith(imageIdentifier));
+                blob.Properties.ContentType = "image/jpeg";
+                await blob.UploadFromStreamAsync(memoryStream);
+                return blob.Uri.AbsoluteUri;
+            }
         }
 
         private long BuildInterest(DateTime valueDate, long principal)

@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : IpAuthorizeAttribute.cs
-// Created          : 2015-05-25  4:38 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-11  10:22 AM
+// Last Modified On : 2015-08-18  16:37
 // ***********************************************************************
 // <copyright file="IpAuthorizeAttribute.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -35,7 +35,7 @@ namespace Yuyi.Jinyinmao.Api.Filters
         public bool OnlyLocalHost { get; set; }
 
         [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Local")]
-        private string[] AdminIps { get; } = { "10.1.10.100", "10.1.10.13", "10.1.10.31", "10.1.10.64", "10.1.5.42" };
+        private string[] AdminIps { get; } = { "10.1.10.33", "10.1.10.38" };
 
         [SuppressMessage("ReSharper", "ReturnTypeCanBeEnumerable.Local")]
         private string[] AllowedIps { get; } = { "101.95.30.142", "211.152.53.50" };

@@ -1,17 +1,19 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : SetSettleAccountTransactionResultRequest.cs
-// Created          : 2015-08-04  12:46 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  12:49 PM
+// Last Modified On : 2015-08-18  18:00
 // ***********************************************************************
 // <copyright file="SetSettleAccountTransactionResultRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
 // </copyright>
 // ***********************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using Moe.AspNet.Models;
+using Newtonsoft.Json;
 
 namespace Yuyi.Jinyinmao.Api.Models
 {
@@ -23,25 +25,32 @@ namespace Yuyi.Jinyinmao.Api.Models
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="SetSettleAccountTransactionResultRequest" /> is result.
         /// </summary>
-        /// <value><c>true</c> if result; otherwise, <c>false</c>.</value>
+        [Required]
+        [JsonProperty("result")]
         public bool Result { get; set; }
 
         /// <summary>
         ///     Gets or sets the transaction identifier.
         /// </summary>
-        /// <value>The transaction identifier.</value>
+        [Required]
+        [StringLength(36, MinimumLength = 36)]
+        [JsonProperty("transactionIdentifier")]
         public string TransactionIdentifier { get; set; }
 
         /// <summary>
-        /// Gets or sets the trans desc.
+        ///     Gets or sets the trans desc.
         /// </summary>
-        /// <value>The trans desc.</value>
+        [Required]
+        [StringLength(20, MinimumLength = 2)]
+        [JsonProperty("transDesc")]
         public string TransDesc { get; set; }
 
         /// <summary>
         ///     Gets or sets the user identifeir.
         /// </summary>
-        /// <value>The user identifeir.</value>
+        [Required]
+        [StringLength(36, MinimumLength = 36)]
+        [JsonProperty("userIdentifier")]
         public string UserIdentifier { get; set; }
     }
 }

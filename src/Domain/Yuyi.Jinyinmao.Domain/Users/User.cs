@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  20:10
+// Last Modified On : 2015-08-18  18:26
 // ***********************************************************************
 // <copyright file="User.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -1030,7 +1030,7 @@ namespace Yuyi.Jinyinmao.Domain
             Order order;
             if (!this.State.Orders.TryGetValue(orderRepayCommand.OrderId, out order))
             {
-                this.GetLogger().Warn(1, "Missing Order data. UserId-{0}, OrderId-{1}.".FormatWith(this.State.UserId, orderRepayCommand.OrderId));
+                this.GetLogger().Error(1, "Missing Order data. UserId-{0}, OrderId-{1}.".FormatWith(this.State.UserId, orderRepayCommand.OrderId));
                 return null;
             }
 

@@ -60,7 +60,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     背书图片链接
         /// </summary>
         [Required]
-        [RegularExpression("^https://[^\\s/$.?#].[^\\s]*$")]
+        [RegularExpression("^https?://[^\\s/$.?#].[^\\s]*$")]
         [JsonProperty("endorseImageLink")]
         public string EndorseImageLink { get; set; }
 

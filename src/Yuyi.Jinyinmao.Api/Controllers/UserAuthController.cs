@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  20:01
+// Last Modified On : 2015-08-18  14:05
 // ***********************************************************************
 // <copyright file="UserAuthController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -100,6 +100,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+            if (userInfo == null)
+            {
+                return this.BadRequest("USERNOTFOUND:用户信息加载错误，请重新登陆");
+            }
 
             if (userInfo.Closed)
             {
@@ -264,6 +268,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         public async Task<IHttpActionResult> ResetPaymentPassword(ResetPaymentPasswordRequest request)
         {
             UserInfo userInfo = await this.userService.GetUserInfoAsync(this.CurrentUser.Id);
+            if (userInfo == null)
+            {
+                return this.BadRequest("USERNOTFOUND:用户信息加载错误，请重新登陆");
+            }
 
             if (userInfo.Closed)
             {
@@ -325,6 +333,10 @@ namespace Yuyi.Jinyinmao.Api.Controllers
             }
 
             UserInfo userInfo = await this.userInfoService.GetUserInfoAsync(this.CurrentUser.Id);
+            if (userInfo == null)
+            {
+                return this.BadRequest("USERNOTFOUND:用户信息加载错误，请重新登陆");
+            }
 
             if (userInfo.Closed)
             {

@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  16:53
+// Last Modified On : 2015-08-18  18:21
 // ***********************************************************************
 // <copyright file="User_Grain.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -36,6 +36,7 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadSettleAccountData();
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
+
             await this.SyncAsync();
         }
 
@@ -81,6 +82,16 @@ namespace Yuyi.Jinyinmao.Domain
             this.ReloadJBYAccountData();
             this.ReloadOrderInfosData();
             return base.OnActivateAsync();
+        }
+
+        /// <summary>
+        ///     This method is called at the begining of the process of deactivating a grain.
+        /// </summary>
+        public override async Task OnDeactivateAsync()
+        {
+            await this.WriteStateAsync();
+            await this.SyncAsync();
+            await base.OnDeactivateAsync();
         }
     }
 }
