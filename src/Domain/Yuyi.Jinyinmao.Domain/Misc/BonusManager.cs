@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-18  14:22
+// Last Modified On : 2015-08-18  19:44
 // ***********************************************************************
 // <copyright file="BonusManager.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -88,6 +88,23 @@ namespace Yuyi.Jinyinmao.Domain.Misc
         }
 
         #endregion IBonusManager Members
+
+        /// <summary>
+        ///     This method is called at the end of the process of activating a grain.
+        ///     It is called before any messages have been dispatched to the grain.
+        ///     For grains with declared persistent state, this method is called after the State property has been populated.
+        /// </summary>
+        public override Task OnActivateAsync()
+        {
+            this.RegisterTimer(o => this.ReloadRemainWithdrawalAmountAsync(), new object(), TimeSpan.FromMinutes(10), TimeSpan.FromHours(3));
+            return base.OnActivateAsync();
+        }
+
+        private Task ReloadRemainWithdrawalAmountAsync()
+        {
+            this.RemainWithdrawalAmount = null;
+            return TaskDone.Done;
+        }
 
         private static DailyConfig GetTodayConfig()
         {

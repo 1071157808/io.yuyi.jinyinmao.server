@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  2:22
+// Last Modified On : 2015-08-18  19:45
 // ***********************************************************************
 // <copyright file="IJBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -73,7 +73,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     Refreshes the asynchronous.
         /// </summary>
         /// <returns>Task.</returns>
-        Task<Task<JBYProductInfo>> RefreshAsync(bool force = false);
+        Task<JBYProductInfo> RefreshAsync(bool force = false);
 
         /// <summary>
         ///     Reloads the asynchronous.

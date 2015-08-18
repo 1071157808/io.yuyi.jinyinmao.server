@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-14  17:00
+// Last Modified On : 2015-08-18  19:45
 // ***********************************************************************
 // <copyright file="JBYProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -206,11 +206,11 @@ namespace Yuyi.Jinyinmao.Domain.Products
         ///     refresh as an asynchronous operation.
         /// </summary>
         /// <returns>Task.</returns>
-        public async Task<Task<JBYProductInfo>> RefreshAsync(bool force = false)
+        public async Task<JBYProductInfo> RefreshAsync(bool force = false)
         {
             if (!force && (!this.State.SoldOut || !this.State.SoldOutTime.HasValue))
             {
-                return this.GetProductInfoAsync();
+                return await this.GetProductInfoAsync();
             }
 
             string productIdentifier = this.State.ProductId.ToGuidString();
@@ -254,7 +254,7 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 await this.RaiseJBYPorductUpdatedEvent();
             }
 
-            return this.GetProductInfoAsync();
+            return await this.GetProductInfoAsync();
         }
 
         /// <summary>
