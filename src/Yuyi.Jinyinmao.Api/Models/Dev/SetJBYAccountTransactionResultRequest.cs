@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-18  17:59
+// Last Modified On : 2015-08-19  18:37
 // ***********************************************************************
 // <copyright file="SetJBYAccountTransactionResultRequest.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -33,7 +33,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     Gets or sets the transaction identifier.
         /// </summary>
         [Required]
-        [StringLength(36, MinimumLength = 36)]
+        [StringLength(32, MinimumLength = 32)]
         [JsonProperty("transactionIdentifier")]
         public string TransactionIdentifier { get; set; }
 
@@ -49,7 +49,7 @@ namespace Yuyi.Jinyinmao.Api.Models
         ///     Gets or sets the user identifeir.
         /// </summary>
         [Required]
-        [StringLength(36, MinimumLength = 36)]
+        [StringLength(32, MinimumLength = 32)]
         [JsonProperty("userIdentifier")]
         public string UserIdentifier { get; set; }
     }

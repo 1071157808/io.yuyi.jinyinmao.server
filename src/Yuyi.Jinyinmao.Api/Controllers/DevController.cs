@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-18  14:58
+// Last Modified On : 2015-08-19  19:35
 // ***********************************************************************
 // <copyright file="DevController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -423,7 +423,7 @@ namespace Yuyi.Jinyinmao.Api.Controllers
         }
 
         /// <summary>
-        /// RepayOrder
+        ///     RepayOrder
         /// </summary>
         /// <param name="request">The request.</param>
         /// <response code="200"></response>

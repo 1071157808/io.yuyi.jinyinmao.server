@@ -1034,15 +1034,10 @@ namespace Yuyi.Jinyinmao.Domain
                 return null;
             }
 
-            if (order.IsRepaid && order.RepaidTime.HasValue)
-            {
-                return order.ToInfo();
-            }
-
-            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+            DateTime repayTime = order.RepaidTime ?? orderRepayCommand.RepayTime;
 
             order.IsRepaid = true;
-            order.RepaidTime = orderRepayCommand.RepayTime;
+            order.RepaidTime = repayTime;
 
             int principalTradeCode;
             int interestTradeCode;
@@ -1057,12 +1052,19 @@ namespace Yuyi.Jinyinmao.Domain
                 interestTradeCode = TradeCodeHelper.TC1005021105;
             }
 
-            SettleAccountTransaction principalTransaction = await this.BuildRepayOrderPrincipalTransaction(order, now, principalTradeCode);
+            SettleAccountTransaction principalTransaction = this.State.SettleAccount.Values.FirstOrDefault(t => t.OrderId == order.OrderId && t.TradeCode == principalTradeCode);
+            if (principalTransaction == null)
+            {
+                principalTransaction = await this.BuildRepayOrderPrincipalTransaction(order, repayTime, principalTradeCode);
+                this.State.SettleAccount.Add(principalTransaction.TransactionId, principalTransaction);
+            }
 
-            SettleAccountTransaction interestTransaction = await this.BuildRepayOrderInterestTransaction(order, now, interestTradeCode);
-
-            this.State.SettleAccount.Add(principalTransaction.TransactionId, principalTransaction);
-            this.State.SettleAccount.Add(interestTransaction.TransactionId, interestTransaction);
+            SettleAccountTransaction interestTransaction = this.State.SettleAccount.Values.FirstOrDefault(t => t.OrderId == order.OrderId && t.TradeCode == interestTradeCode);
+            if (interestTransaction == null)
+            {
+                interestTransaction = await this.BuildRepayOrderInterestTransaction(order, repayTime, interestTradeCode);
+                this.State.SettleAccount.Add(interestTransaction.TransactionId, interestTransaction);
+            }
 
             await this.SaveStateAsync();
             this.ReloadSettleAccountData();
@@ -1608,7 +1610,7 @@ namespace Yuyi.Jinyinmao.Domain
             };
         }
 
-        private async Task<SettleAccountTransaction> BuildRepayOrderInterestTransaction(Order order, DateTime now, int interestTradeCode)
+        private async Task<SettleAccountTransaction> BuildRepayOrderInterestTransaction(Order order, DateTime repayTime, int interestTradeCode)
         {
             return new SettleAccountTransaction
             {
@@ -1618,13 +1620,13 @@ namespace Yuyi.Jinyinmao.Domain
                 ChannelCode = ChannelCodeHelper.Jinyinmao,
                 OrderId = order.OrderId,
                 ResultCode = 1,
-                ResultTime = now,
+                ResultTime = repayTime,
                 SequenceNo = await this.GetSequenceNoAsync(),
                 Trade = Trade.Debit,
                 TradeCode = interestTradeCode,
                 TransactionId = Guid.NewGuid(),
                 TransDesc = "产品结息",
-                TransactionTime = now,
+                TransactionTime = repayTime,
                 UserId = this.State.UserId,
                 UserInfo = await this.GetUserInfoAsync()
             };

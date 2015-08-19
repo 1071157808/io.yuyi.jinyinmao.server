@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  12:00
+// Last Modified On : 2015-08-19  20:23
 // ***********************************************************************
 // <copyright file="User_RaiseEvent.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Moe.Lib;
 using Yuyi.Jinyinmao.Domain.Commands;
@@ -75,7 +76,7 @@ namespace Yuyi.Jinyinmao.Domain
                 { typeof(OrderTransfered), e => this.GrainFactory.GetGrain<IOrderTransferedProcessor>(e.EventId).ProcessEventAsync((OrderTransfered)e) },
                 { typeof(JBYTransactionTransfered), e => this.GrainFactory.GetGrain<IJBYTransactionTransferedProcessor>(e.EventId).ProcessEventAsync((JBYTransactionTransfered)e) },
                 { typeof(OrderCanceled), e => this.GrainFactory.GetGrain<IOrderCanceledProcessor>(e.EventId).ProcessEventAsync((OrderCanceled)e) },
-                { typeof(UserSigned), e=> this.GrainFactory.GetGrain<IUserSignedProcessor>(e.EventId).ProcessEventAsync((UserSigned)e) }
+                { typeof(UserSigned), e => this.GrainFactory.GetGrain<IUserSignedProcessor>(e.EventId).ProcessEventAsync((UserSigned)e) }
             };
 
             return eventProcessing[evenType];
@@ -160,7 +161,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Raises the settle account transaction resulted event.
+        ///     Raises the settle account transaction resulted event.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="info">The information.</param>
@@ -211,6 +212,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="jbyInfo">The jby information.</param>
         /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private async Task RaiseJBYTransactionTransferedEvent(Dictionary<string, object> args, JBYAccountTransactionInfo jbyInfo, SettleAccountTransactionInfo transactionInfo)
         {
             JBYTransactionTransfered @event = new JBYTransactionTransfered
@@ -272,6 +274,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="orderInfo">The order information.</param>
         /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private async Task RaiseOrderCanceledEvent(Dictionary<string, object> args, OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
         {
             OrderCanceled @event = new OrderCanceled
@@ -335,6 +338,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="orderInfo">The order information.</param>
         /// <param name="transactionInfo">The transaction information.</param>
         /// <returns>Task.</returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private async Task RaiseOrderTransferedEvent(Dictionary<string, object> args, OrderInfo orderInfo, SettleAccountTransactionInfo transactionInfo)
         {
             OrderTransfered @event = new OrderTransfered
@@ -400,6 +404,7 @@ namespace Yuyi.Jinyinmao.Domain
         /// <param name="args">The arguments.</param>
         /// <param name="info">The information.</param>
         /// <returns>Task.</returns>
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
         private async Task RaiseSettleAccountTransactionCanceledEvent(Dictionary<string, object> args, SettleAccountTransactionInfo info)
         {
             SettleAccountTransactionCanceled @event = new SettleAccountTransactionCanceled
@@ -413,7 +418,7 @@ namespace Yuyi.Jinyinmao.Domain
         }
 
         /// <summary>
-        /// Raises the settle account transaction resulted event.
+        ///     Raises the settle account transaction resulted event.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="info">The information.</param>

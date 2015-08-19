@@ -9191,8 +9191,6 @@ namespace Yuyi.Jinyinmao.Domain.Products
     using Orleans.Core;
     using System.Collections;
     using Yuyi.Jinyinmao.Domain.Dtos;
-    using System.Threading.Tasks;
-    using System.Threading;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.9.0")]
@@ -9331,10 +9329,10 @@ namespace Yuyi.Jinyinmao.Domain.Products
                 return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo>(-1227025117, new object[] {@command} );
             }
             
-            System.Threading.Tasks.Task<System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo>> Yuyi.Jinyinmao.Domain.Products.IJBYProduct.RefreshAsync(bool @force)
+            System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo> Yuyi.Jinyinmao.Domain.Products.IJBYProduct.RefreshAsync(bool @force)
             {
 
-                return base.InvokeMethodAsync<System.Threading.Tasks.Task<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo>>(1085919239, new object[] {@force} );
+                return base.InvokeMethodAsync<Yuyi.Jinyinmao.Domain.Dtos.JBYProductInfo>(1085919239, new object[] {@force} );
             }
             
             System.Threading.Tasks.Task Yuyi.Jinyinmao.Domain.Products.IJBYProduct.ReloadAsync()

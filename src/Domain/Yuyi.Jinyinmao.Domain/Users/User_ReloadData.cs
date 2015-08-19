@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-18  18:36
+// Last Modified On : 2015-08-19  20:23
 // ***********************************************************************
 // <copyright file="User_ReloadData.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -262,14 +262,14 @@ namespace Yuyi.Jinyinmao.Domain
 
         private void UpdateOrders()
         {
-            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+            DateTime now = DateTime.UtcNow.ToChinaStandardTime().AddDays(-2);
             foreach (KeyValuePair<Guid, Order> order in this.State.Orders.Where(order => !order.Value.IsRepaid && order.Value.ProductSnapshot.RepaymentDeadline <= now))
             {
                 order.Value.IsRepaid = true;
                 order.Value.RepaidTime = order.Value.ProductSnapshot.RepaymentDeadline;
             }
 
-            this.WriteStateAsync();
+            this.SaveStateAsync();
         }
     }
 }

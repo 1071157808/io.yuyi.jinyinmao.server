@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  20:41
+// Last Modified On : 2015-08-19  21:15
 // ***********************************************************************
 // <copyright file="User_Reminder.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -69,10 +69,10 @@ namespace Yuyi.Jinyinmao.Domain
 
             try
             {
-                if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 7 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 1))
+                if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 6 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 1))
                 {
                     StringBuilder builder = new StringBuilder();
-                    builder.Append("UserDailyWork: UserId-{0}\n".FormatWith(this.State.UserId));
+                    builder.Append("UserDailyWork: UserId-{0} ".FormatWith(this.State.UserId));
 
                     DateTime now = DateTime.UtcNow.ToChinaStandardTime();
                     List<JBYAccountTransaction> jbyWithdrawalTransactions = this.State.JBYAccount.Values
@@ -93,12 +93,15 @@ namespace Yuyi.Jinyinmao.Domain
                         builder.Append(transaction.TransactionId + " ");
                     }
 
-                    builder.Append("\n");
-
                     JBYAccountTransactionInfo transactionInfo = await this.JBYReinvestingAsync();
-                    builder.Append(transactionInfo == null ? "JBYReinvesting: SKIPPED." : "JBYReinvesting: {0}".FormatWith(transactionInfo.ToJson()));
+                    builder.Append(transactionInfo == null ? "JBYReinvesting: SKIPPED." : "JBYReinvesting: {0} ".FormatWith(transactionInfo.ToJson()));
 
                     SiloClusterApplicationLogger.LogMessage(builder.ToString());
+                }
+
+                if (force || (DateTime.UtcNow.ToChinaStandardTime().Hour <= 4 && DateTime.UtcNow.ToChinaStandardTime().Hour >= 3))
+                {
+                    await this.SyncAsync();
                 }
             }
             catch (Exception e)

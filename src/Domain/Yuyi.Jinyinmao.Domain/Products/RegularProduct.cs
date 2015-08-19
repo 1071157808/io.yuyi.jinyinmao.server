@@ -4,7 +4,7 @@
 // Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-17  2:14
+// Last Modified On : 2015-08-19  20:30
 // ***********************************************************************
 // <copyright file="RegularProduct.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -324,12 +324,7 @@ namespace Yuyi.Jinyinmao.Domain
                 return await this.GetRegularProductInfoAsync();
             }
 
-            if (this.State.Repaid && this.State.RepaidTime.HasValue)
-            {
-                return await this.GetRegularProductInfoAsync();
-            }
-
-            DateTime now = DateTime.UtcNow.ToChinaStandardTime();
+            DateTime repayTime = this.State.RepaidTime ?? DateTime.UtcNow.ToChinaStandardTime();
 
             foreach (OrderInfo order in this.PaidOrders)
             {
@@ -337,16 +332,16 @@ namespace Yuyi.Jinyinmao.Domain
                 {
                     Args = command.Args,
                     OrderId = order.OrderId,
-                    RepayTime = now,
+                    RepayTime = repayTime,
                     UserId = order.OrderId
                 });
 
                 order.IsRepaid = true;
-                order.RepaidTime = order.RepaidTime.HasValue ? order.RepaidTime : now;
+                order.RepaidTime = order.RepaidTime ?? repayTime;
             }
 
             this.State.Repaid = true;
-            this.State.RepaidTime = this.State.RepaidTime.HasValue ? this.State.RepaidTime : now;
+            this.State.RepaidTime = this.State.RepaidTime ?? repayTime;
 
             await this.SaveStateAsync();
 
