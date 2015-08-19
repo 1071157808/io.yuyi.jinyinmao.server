@@ -1,10 +1,13 @@
-﻿using System;
+﻿
+using System;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Http;
 using Moe.AspNet.Utility;
 using Yuyi.Jinyinmao.Api.Link.Models;
 using Yuyi.Jinyinmao.Api.Link.Utils;
+using Moe.AspNet.Utility;
+using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Api.Link.Controllers
 {
@@ -36,7 +39,7 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
         [Route("")]
         public IHttpActionResult Index()
         {
-            return this.Ok("index page");
+            return this.Ok();
         }
 
         /// <summary>
@@ -48,8 +51,6 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
         [Route("{url}")]
         public async Task<IHttpActionResult> Jump(string url)
         {
-            Console.WriteLine("jump page: " + url);
-
             //if not in dic, search in db
             Models.Link shortUrl = (Models.Link)CacheHelper.GetCache(url);
 
@@ -58,6 +59,7 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
                 this.LogLinkHits(shortUrl);
                 return this.Redirect(shortUrl.OriginalLink);
             }
+
             //try update data from db
             Models.Link entity = await StorageHelper.FindByCondition<Models.Link>(LinkTableName, PartitionKey, url);
             if (entity != null)
@@ -70,6 +72,7 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
             //if not in
             return this.NotFound();
         }
+
 
         /// <summary>
         /// Logs the link hits.
@@ -85,11 +88,12 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
                 UserAgent = HttpUtils.GetUserAgent(this.Request),
                 SourceUrl = link.ShortedLink,
                 TargetUrl = link.OriginalLink,
-                HitTime = DateTime.UtcNow.AddHours(8)
+                    HitTime = DateTime.UtcNow.ToChinaStandardTime()
             };
 
             HostingEnvironment.QueueBackgroundWorkItem(cancellationToken =>
                 StorageHelper.LogLinkHitsAsync(LinkLogTableName, linkLog));
         }
+
     }
 }
