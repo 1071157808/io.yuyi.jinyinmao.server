@@ -1,38 +1,49 @@
-﻿
+﻿// ***********************************************************************
+// Project          : io.yuyi.jinyinmao.server
+// File             : HomeController.cs
+// Created          : 2015-08-18  18:41
+//
+// Last Modified By : Siqi Lu
+// Last Modified On : 2015-08-19  21:23
+// ***********************************************************************
+// <copyright file="HomeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
+//     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
+// </copyright>
+// ***********************************************************************
+
 using System;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Http;
 using Moe.AspNet.Utility;
+using Moe.Lib;
 using Yuyi.Jinyinmao.Api.Link.Models;
 using Yuyi.Jinyinmao.Api.Link.Utils;
-using Moe.AspNet.Utility;
-using Moe.Lib;
 
 namespace Yuyi.Jinyinmao.Api.Link.Controllers
 {
     /// <summary>
-    /// HomeController.
+    ///     HomeController.
     /// </summary>
     public class HomeController : ApiController
     {
         /// <summary>
-        /// The link log table name
+        ///     The link log table name
         /// </summary>
         private static readonly string LinkLogTableName = "LinkLogs";
 
         /// <summary>
-        /// The link table name
+        ///     The link table name
         /// </summary>
         private static readonly string LinkTableName = "Links";
 
         /// <summary>
-        /// The partition key
+        ///     The partition key
         /// </summary>
         private static readonly string PartitionKey = "ShortLink";
 
         /// <summary>
-        /// Indexes this instance.
+        ///     Indexes this instance.
         /// </summary>
         /// <returns>IHttpActionResult.</returns>
         [HttpGet]
@@ -43,7 +54,7 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
         }
 
         /// <summary>
-        /// Jumps the specified URL.
+        ///     Jumps the specified URL.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>Task&lt;IHttpActionResult&gt;.</returns>
@@ -73,9 +84,8 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
             return this.NotFound();
         }
 
-
         /// <summary>
-        /// Logs the link hits.
+        ///     Logs the link hits.
         /// </summary>
         /// <param name="link">The link.</param>
         private void LogLinkHits(Models.Link link)
@@ -88,12 +98,11 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
                 UserAgent = HttpUtils.GetUserAgent(this.Request),
                 SourceUrl = link.ShortedLink,
                 TargetUrl = link.OriginalLink,
-                    HitTime = DateTime.UtcNow.ToChinaStandardTime()
+                HitTime = DateTime.UtcNow.ToChinaStandardTime()
             };
 
             HostingEnvironment.QueueBackgroundWorkItem(cancellationToken =>
                 StorageHelper.LogLinkHitsAsync(LinkLogTableName, linkLog));
         }
-
     }
 }
