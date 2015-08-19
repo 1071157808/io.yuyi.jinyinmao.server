@@ -31,22 +31,8 @@ namespace Yuyi.Jinyinmao.Api.Link.Utils
         public async static Task<T> FindByCondition<T>(string name, string partitionKey, string rowKey) where T : ITableEntity
         {
             CloudTable table = Client.GetTableReference(name);
-            await table.CreateIfNotExistsAsync();
             TableResult result = await table.ExecuteAsync(TableOperation.Retrieve<T>(partitionKey, rowKey));
             return (T)result.Result;
-        }
-
-        /// <summary>
-        /// insert table as an asynchronous operation.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns>Task.</returns>
-        public async static Task InsertTableAsync(string name, TableEntity entity)
-        {
-            CloudTable table = Client.GetTableReference(name);
-            await table.CreateIfNotExistsAsync();
-            await table.ExecuteAsync(TableOperation.InsertOrReplace(entity));
         }
 
         /// <summary>
@@ -58,8 +44,6 @@ namespace Yuyi.Jinyinmao.Api.Link.Utils
         public async static Task LogLinkHitsAsync(string name, TableEntity entity)
         {
             CloudTable table = Client.GetTableReference(name);
-            await table.CreateIfNotExistsAsync();
-
             await table.ExecuteAsync(TableOperation.InsertOrReplace(entity));
         }
     }
