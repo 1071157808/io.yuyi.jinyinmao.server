@@ -20,15 +20,16 @@ namespace Yuyi.Jinyinmao.Api.Link.Utils
         /// </summary>
         private static readonly CloudTableClient Client = Account.CreateCloudTableClient();
 
+
         /// <summary>
-        /// Finds the by condition.
+        /// Finds the entity by condition.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name">The name.</param>
         /// <param name="partitionKey">The partition key.</param>
         /// <param name="rowKey">The row key.</param>
         /// <returns>Task&lt;T&gt;.</returns>
-        public async static Task<T> FindByCondition<T>(string name, string partitionKey, string rowKey) where T : ITableEntity
+        public async static Task<T> FindEntityByCondition<T>(string name, string partitionKey, string rowKey) where T : ITableEntity
         {
             CloudTable table = Client.GetTableReference(name);
             TableResult result = await table.ExecuteAsync(TableOperation.Retrieve<T>(partitionKey, rowKey));
