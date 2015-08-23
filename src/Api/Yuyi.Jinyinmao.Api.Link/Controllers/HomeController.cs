@@ -1,10 +1,10 @@
-﻿// ***********************************************************************
+// ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : HomeController.cs
 // Created          : 2015-08-18  18:41
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-19  21:23
+// Last Modified On : 2015-08-23  16:22
 // ***********************************************************************
 // <copyright file="HomeController.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -12,6 +12,8 @@
 // ***********************************************************************
 
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -43,6 +45,20 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
         private static readonly string PartitionKey = "ShortLink";
 
         /// <summary>
+        ///     The response
+        /// </summary>
+        private static HttpResponseMessage response;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="HomeController" /> class.
+        /// </summary>
+        public HomeController()
+        {
+            response = new HttpResponseMessage(HttpStatusCode.Found);
+            response.Headers.Add("Cache-Control", "max-age=21600");
+        }
+
+        /// <summary>
         ///     Indexes this instance.
         /// </summary>
         /// <returns>IHttpActionResult.</returns>
@@ -62,22 +78,24 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
         [Route("{url}")]
         public async Task<IHttpActionResult> Jump(string url)
         {
-            //if not in dic, search in db
+            //if not in cache, search in db
             Models.Link shortUrl = (Models.Link)CacheHelper.GetCache(url);
 
             if (shortUrl != null)
             {
                 this.LogLinkHits(shortUrl);
-                return this.Redirect(shortUrl.OriginalLink);
+                response.Headers.Add("Location", shortUrl.OriginalLink);
+                return this.ResponseMessage(response);
             }
 
             //try update data from db
-            Models.Link entity = await StorageHelper.FindByCondition<Models.Link>(LinkTableName, PartitionKey, url);
+            Models.Link entity = await StorageHelper.FindEntityByCondition<Models.Link>(LinkTableName, PartitionKey, url);
             if (entity != null)
             {
                 CacheHelper.SetCache(url, entity, 5);
                 this.LogLinkHits(entity);
-                return this.Redirect(entity.OriginalLink);
+                response.Headers.Add("Location", entity.OriginalLink);
+                return this.ResponseMessage(response);
             }
 
             //if not in

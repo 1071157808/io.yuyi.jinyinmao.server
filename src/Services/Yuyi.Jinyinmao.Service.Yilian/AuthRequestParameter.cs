@@ -1,10 +1,10 @@
 // ***********************************************************************
 // Project          : io.yuyi.jinyinmao.server
 // File             : AuthRequestParameter.cs
-// Created          : 2015-04-26  11:05 PM
+// Created          : 2015-08-13  15:17
 //
 // Last Modified By : Siqi Lu
-// Last Modified On : 2015-08-04  5:40 PM
+// Last Modified On : 2015-08-21  13:22
 // ***********************************************************************
 // <copyright file="AuthRequestParameter.cs" company="Shanghai Yuyi Mdt InfoTech Ltd.">
 //     Copyright ©  2012-2015 Shanghai Yuyi Mdt InfoTech Ltd. All rights reserved.
@@ -61,8 +61,8 @@ namespace Yuyi.Jinyinmao.Service
                 IDNo = idNo,
                 // 手机号
                 MobileNo = mobileNo,
-                //                // 回调URL
-                //                MerchantUrl = "",
+                // 回调URL
+                // MerchantUrl = "",
                 // 模拟产品编号
                 MerOrderNo = "A" + userId.ToUpperInvariant()
             };
@@ -73,13 +73,18 @@ namespace Yuyi.Jinyinmao.Service
         /// <summary>
         ///     “BATCH_NO 批次号”须保证唯一性
         /// </summary>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global"), JsonProperty("BATCH_NO")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        [JsonProperty("BATCH_NO")]
         public string BatchNo { get; set; }
 
         /// <summary>
         ///     交易信息
         /// </summary>
-        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global"), SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global"), SuppressMessage("ReSharper", "MemberCanBeInternal"), JsonProperty("TRANS_DETAILS")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBeInternal")]
+        [JsonProperty("TRANS_DETAILS")]
         public List<TransDetail> TransDetails { get; set; }
     }
 }
