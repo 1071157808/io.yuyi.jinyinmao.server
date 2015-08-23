@@ -55,7 +55,7 @@ namespace Yuyi.Jinyinmao.Api.Link.Controllers
         public HomeController()
         {
             response = new HttpResponseMessage(HttpStatusCode.Found);
-            response.Headers.Add("Cache-Control", "max-age=21600");
+            response.Headers.Add("Cache-Control", "max-age=10800");
         }
 
         /// <summary>
